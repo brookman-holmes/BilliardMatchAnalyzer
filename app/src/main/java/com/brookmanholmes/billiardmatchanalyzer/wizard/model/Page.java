@@ -99,4 +99,8 @@ public abstract class Page implements PageTreeNode {
     }
 
     public abstract void setPlayerNames(String player, String opponent);
+
+    public void setPlayerRanks(int playerRank, int opponentRank) {
+
+    }
 }

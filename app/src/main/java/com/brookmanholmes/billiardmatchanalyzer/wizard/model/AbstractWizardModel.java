@@ -51,6 +51,7 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
         // can get added or removed and will register itself as a listener)
         for (int i = 0; i < mListeners.size(); i++) {
             mRootPageList.setPlayerNames(getPlayerName(), getOpponentName());
+            mRootPageList.setPlayerRanks(getPlayerRank(), getOpponentRank());
             mListeners.get(i).onPageDataChanged(page);
             Log.i("AbstractWizardModel", "onPageDataChanged called");
             Log.i("AbstractWizardModel", getPlayerName() + "'s rank: " + getPlayerRank() + " " + getOpponentName() + "'s rank: " + getOpponentRank());
@@ -58,19 +59,19 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     }
 
     public String getPlayerName() {
-        return mRootPageList.findByKey("PlayerNamePage").getData().getString(PlayerNamePage.PLAYER_NAME_KEY) == null ? "" : mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY);
+        return mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY, "");
     }
 
     public String getOpponentName() {
-        return mRootPageList.findByKey("PlayerNamePage").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY) == null ? "" : mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY);
+        return mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY, "");
     }
 
-    public String getPlayerRank() {
-        return mRootPageList.findByKey("RankPage1").getData().getString(Page.SIMPLE_DATA_KEY) == null ? "0" : mRootPageList.findByKey("RankPage1").getData().getString(Page.SIMPLE_DATA_KEY);
+    public int getPlayerRank() {
+        return Integer.valueOf(mRootPageList.findByKey("RankPage1").getData().getString(Page.SIMPLE_DATA_KEY, "0"));
     }
 
-    public String getOpponentRank() {
-        return mRootPageList.findByKey("RankPage2").getData().getString(Page.SIMPLE_DATA_KEY) == null ? "0" : mRootPageList.findByKey("RankPage2").getData().getString(Page.SIMPLE_DATA_KEY);
+    public int getOpponentRank() {
+        return Integer.valueOf(mRootPageList.findByKey("RankPage2").getData().getString(Page.SIMPLE_DATA_KEY, "0"));
     }
 
     @Override
