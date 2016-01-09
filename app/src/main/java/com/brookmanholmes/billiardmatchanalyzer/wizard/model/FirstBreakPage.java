@@ -20,6 +20,14 @@ public class FirstBreakPage extends SingleFixedChoicePage {
 
     @Override
     public void setPlayerNames(String player, String opponent) {
+        if (mData.getString(SIMPLE_DATA_KEY, "|!_)(@%!)*(!@%$!@").equals(playerName))
+            mData.putString(SIMPLE_DATA_KEY, player);
+        else if (mData.getString(SIMPLE_DATA_KEY, "|!_)(@%!)*(!@%$!@").equals(opponentName))
+            mData.putString(SIMPLE_DATA_KEY, opponent);
+
+        playerName = player;
+        opponentName = opponent;
+
         mChoices.set(0, player);
         mChoices.set(1, opponent);
     }

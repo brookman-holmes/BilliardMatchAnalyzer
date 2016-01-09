@@ -18,6 +18,7 @@ package com.brookmanholmes.billiardmatchanalyzer.wizard.model;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +50,10 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
         // can't use for each because of concurrent modification (review fragment
         // can get added or removed and will register itself as a listener)
         for (int i = 0; i < mListeners.size(); i++) {
-            mListeners.get(i).onPageDataChanged(page);
             mRootPageList.setPlayerNames(getPlayerName(), getOpponentName());
+            mListeners.get(i).onPageDataChanged(page);
+            Log.i("AbstractWizardModel", "onPageDataChanged called");
+            Log.i("AbstractWizardModel", getPlayerName() + "'s rank: " + getPlayerRank() + " " + getOpponentName() + "'s rank: " + getOpponentRank());
         }
     }
 
@@ -60,6 +63,14 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
 
     public String getOpponentName() {
         return mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY) == null ? "" : mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY);
+    }
+
+    public String getPlayerRank() {
+        return mRootPageList.findByKey(getPlayerName() + "'s Rank") == null ? "0" : mRootPageList.findByKey(getPlayerName() + "'s Rank").getData().getString(Page.SIMPLE_DATA_KEY);
+    }
+
+    public String getOpponentRank() {
+        return mRootPageList.findByKey(getOpponentName() + "'s Rank") == null ? "0" : mRootPageList.findByKey(getPlayerName() + "'s Rank").getData().getString(Page.SIMPLE_DATA_KEY);
     }
 
     @Override

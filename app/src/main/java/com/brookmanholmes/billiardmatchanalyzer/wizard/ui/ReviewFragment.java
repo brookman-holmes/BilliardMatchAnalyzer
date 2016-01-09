@@ -69,6 +69,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         return rootView;
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

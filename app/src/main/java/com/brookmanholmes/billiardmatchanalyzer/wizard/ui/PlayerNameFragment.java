@@ -33,7 +33,8 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PlayerNamePage;
 
 public class PlayerNameFragment extends Fragment {
     private static final String ARG_KEY = "key";
-
+    final long DELAY = 200;
+    private long lastKeyPress;
     private PageFragmentCallbacks mCallbacks;
     private String mKey;
     private PlayerNamePage mPage;
@@ -96,41 +97,31 @@ public class PlayerNameFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        playerName.addTextChangedListener(new TextWatcher() {
+        playerName.addTextChangedListener(textWatcher(PlayerNamePage.PLAYER_NAME_KEY));
+        opponentName.addTextChangedListener(textWatcher(PlayerNamePage.OPPONENT_NAME_KEY));
+    }
+
+    private TextWatcher textWatcher(final String key) {
+        return new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1,
-                                          int i2) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-                mPage.getData().putString(PlayerNamePage.PLAYER_NAME_KEY,
-                        (editable != null) ? editable.toString() : null);
-                mPage.notifyDataChanged();
-            }
-        });
+            public void afterTextChanged(final Editable editable) {
+                if (editable.length() >= 2) {
+                    // // TODO: 1/7/2016 add in a debounce here to prevent multiple firings for no reason
+                    mPage.getData().putString(key, editable.toString());
+                    mPage.notifyDataChanged();
 
-        opponentName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1,
-                                          int i2) {
+                }
             }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                mPage.getData().putString(PlayerNamePage.OPPONENT_NAME_KEY,
-                        (editable != null) ? editable.toString() : null);
-                mPage.notifyDataChanged();
-            }
-        });
+        };
     }
 
     @Override

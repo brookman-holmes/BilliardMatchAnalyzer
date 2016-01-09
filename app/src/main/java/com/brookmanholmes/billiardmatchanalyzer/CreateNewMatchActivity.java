@@ -85,7 +85,7 @@ public class CreateNewMatchActivity extends FragmentActivity implements
         mNextButton = (Button) findViewById(R.id.next_button);
         mPrevButton = (Button) findViewById(R.id.prev_button);
 
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 mStepPagerStrip.setCurrentPage(position);
@@ -107,6 +107,7 @@ public class CreateNewMatchActivity extends FragmentActivity implements
                     DialogFragment dg = new DialogFragment() {
                         @Override
                         public Dialog onCreateDialog(Bundle savedInstanceState) {
+                            // TODO: 1/7/2016 insert match into database and launch matchinfoactivity
                             return new AlertDialog.Builder(getActivity())
                                     .setMessage("Create new match?")
                                     .setPositiveButton(android.R.string.ok, null)
