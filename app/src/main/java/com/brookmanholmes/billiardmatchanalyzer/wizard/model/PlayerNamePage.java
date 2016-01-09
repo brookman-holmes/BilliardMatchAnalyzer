@@ -32,6 +32,7 @@ public class PlayerNamePage extends Page {
 
     public PlayerNamePage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
+        setParentKey("PlayerNamePage");
     }
 
     @Override

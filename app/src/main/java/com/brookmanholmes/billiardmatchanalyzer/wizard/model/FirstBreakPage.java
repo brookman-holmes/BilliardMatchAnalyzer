@@ -9,6 +9,7 @@ public class FirstBreakPage extends SingleFixedChoicePage {
 
     public FirstBreakPage(ModelCallbacks callbacks) {
         super(callbacks, "Who breaks first?");
+        setParentKey("FirstBreakPage");
         mChoices.add(playerName);
         mChoices.add(opponentName);
     }

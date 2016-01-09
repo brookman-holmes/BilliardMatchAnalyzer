@@ -1,19 +1,22 @@
 package com.brookmanholmes.billiardmatchanalyzer.wizard.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by Brookman Holmes on 1/7/2016.
  */
-public class BreakTypePage extends SingleFixedChoicePage {
+public class BreakTypePage extends BranchPage {
     String playerName = "Player 1-", opponentName = "Player 2-";
     String valueEnding = " always breaks";
 
     public BreakTypePage(ModelCallbacks callbacks) {
         super(callbacks, "The break");
-        mChoices.add("Winner");
-        mChoices.add("Alternate");
-        mChoices.add("Loser");
-        mChoices.add(playerName + valueEnding);
-        mChoices.add(opponentName + valueEnding);
+        setParentKey("BreakTypePage");
+        addBranch("Winner", new FirstBreakPage(callbacks));
+        addBranch("Alternate", new FirstBreakPage(callbacks));
+        addBranch("Loser", new FirstBreakPage(callbacks));
+        addBranch(playerName + valueEnding);
+        addBranch(opponentName + valueEnding);
     }
 
     @Override
@@ -33,5 +36,16 @@ public class BreakTypePage extends SingleFixedChoicePage {
 
         mChoices.set(3, player + valueEnding);
         mChoices.set(4, opponent + valueEnding);
+    }
+
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
+        super.getReviewItems(dest);
+
+        if (mData.getString(SIMPLE_DATA_KEY, "").equals(playerName + valueEnding)) {
+            dest.add(new ReviewItem("Who breaks first?", playerName, getKey()));
+        } else if (mData.getString(SIMPLE_DATA_KEY, "").equals(opponentName + valueEnding)) {
+            dest.add(new ReviewItem("Who breaks first?", opponentName, getKey()));
+        }
     }
 }

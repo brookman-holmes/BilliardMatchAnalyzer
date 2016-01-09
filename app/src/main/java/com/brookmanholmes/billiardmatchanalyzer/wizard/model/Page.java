@@ -62,8 +62,9 @@ public abstract class Page implements PageTreeNode {
         return this;
     }
 
-    void setParentKey(String parentKey) {
+    Page setParentKey(String parentKey) {
         mParentKey = parentKey;
+        return this;
     }
 
     @Override
@@ -79,7 +80,7 @@ public abstract class Page implements PageTreeNode {
     public abstract Fragment createFragment();
 
     public String getKey() {
-        return (mParentKey != null) ? mParentKey + ":" + mTitle : mTitle;
+        return (mParentKey != null) ? mParentKey : mTitle;
     }
 
     public abstract void getReviewItems(ArrayList<ReviewItem> dest);

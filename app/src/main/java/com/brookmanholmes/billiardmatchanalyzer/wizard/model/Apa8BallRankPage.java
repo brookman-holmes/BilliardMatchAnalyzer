@@ -9,6 +9,7 @@ public class Apa8BallRankPage extends SingleFixedChoicePage {
     public Apa8BallRankPage(ModelCallbacks callbacks, int playerNumber) {
         super(callbacks, "Player " + playerNumber + "-'s Rank");
         this.playerNumber = playerNumber;
+        setParentKey("RankPage" + playerNumber);
         mChoices.add("2");
         mChoices.add("3");
         mChoices.add("4");
