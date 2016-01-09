@@ -28,7 +28,8 @@ public class GameChoicePage extends BranchPage {
         addBranch("BCA 10 ball",
                 new BreakTypePage(callbacks));
 
-        addBranch("Straight pool");
+        addBranch("Straight pool",
+                new FirstBreakPage(callbacks));
     }
 
     @Override
