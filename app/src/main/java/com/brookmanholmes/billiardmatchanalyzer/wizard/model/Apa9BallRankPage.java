@@ -1,5 +1,7 @@
 package com.brookmanholmes.billiardmatchanalyzer.wizard.model;
 
+import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -47,27 +49,6 @@ public class Apa9BallRankPage extends SingleFixedChoicePage {
 
 
     private String getRaceTo() {
-        switch (Integer.valueOf(mData.getString(SIMPLE_DATA_KEY, "0"))) {
-            case 1:
-                return "14";
-            case 2:
-                return "19";
-            case 3:
-                return "25";
-            case 4:
-                return "31";
-            case 5:
-                return "38";
-            case 6:
-                return "46";
-            case 7:
-                return "55";
-            case 8:
-                return "65";
-            case 9:
-                return "75";
-            default:
-                return "0";
-        }
+        return String.valueOf(ApaRaceToHelper.apa9BallRaceTo(Integer.valueOf(mData.getString(SIMPLE_DATA_KEY, "0"))));
     }
 }
