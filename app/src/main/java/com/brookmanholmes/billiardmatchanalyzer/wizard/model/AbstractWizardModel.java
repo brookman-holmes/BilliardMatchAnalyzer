@@ -58,19 +58,19 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     }
 
     public String getPlayerName() {
-        return mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY) == null ? "" : mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY);
+        return mRootPageList.findByKey("PlayerNamePage").getData().getString(PlayerNamePage.PLAYER_NAME_KEY) == null ? "" : mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY);
     }
 
     public String getOpponentName() {
-        return mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY) == null ? "" : mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY);
+        return mRootPageList.findByKey("PlayerNamePage").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY) == null ? "" : mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY);
     }
 
     public String getPlayerRank() {
-        return mRootPageList.findByKey(getPlayerName() + "'s Rank") == null ? "0" : mRootPageList.findByKey(getPlayerName() + "'s Rank").getData().getString(Page.SIMPLE_DATA_KEY);
+        return mRootPageList.findByKey("RankPage1").getData().getString(Page.SIMPLE_DATA_KEY) == null ? "0" : mRootPageList.findByKey("RankPage1").getData().getString(Page.SIMPLE_DATA_KEY);
     }
 
     public String getOpponentRank() {
-        return mRootPageList.findByKey(getOpponentName() + "'s Rank") == null ? "0" : mRootPageList.findByKey(getPlayerName() + "'s Rank").getData().getString(Page.SIMPLE_DATA_KEY);
+        return mRootPageList.findByKey("RankPage2").getData().getString(Page.SIMPLE_DATA_KEY) == null ? "0" : mRootPageList.findByKey("RankPage2").getData().getString(Page.SIMPLE_DATA_KEY);
     }
 
     @Override
