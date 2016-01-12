@@ -43,6 +43,10 @@ public abstract class AbstractPlayer {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void addSafetyAttempt(boolean scratch) {
         safetyAttempts++;
 

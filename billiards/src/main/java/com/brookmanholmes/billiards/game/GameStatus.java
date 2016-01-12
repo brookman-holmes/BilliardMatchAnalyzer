@@ -1,5 +1,6 @@
 package com.brookmanholmes.billiards.game;
 
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
@@ -25,6 +26,7 @@ public final class GameStatus {
     public final int currentPlayerConsecutiveFouls;
     public final boolean winOnBreak;
     public final List<Integer> ballsOnTable;
+    public final BreakType breakType;
 
     GameStatus(Game game) {
         playerAllowedToBreakAgain = game.playerAllowedToBreakAgain;
@@ -41,6 +43,7 @@ public final class GameStatus {
         currentPlayerConsecutiveFouls = game.getCurrentPlayersConsecutiveFouls();
         winOnBreak = game.winOnBreak();
         ballsOnTable = new ArrayList<>(game.ballsOnTable);
+        breakType = game.breakType;
     }
 
     private GameStatus(Builder builder) {
@@ -58,6 +61,7 @@ public final class GameStatus {
         MAX_BALLS = builder.MAX_BALLS;
         GAME_BALL = builder.GAME_BALL;
         ballsOnTable = builder.ballsOnTable;
+        breakType = builder.breakType;
     }
 
 
@@ -135,6 +139,7 @@ public final class GameStatus {
         private int currentPlayerConsecutiveFouls = 0;
         private boolean winOnBreak;
         private List<Integer> ballsOnTable;
+        private BreakType breakType;
 
         public Builder(GameType gameType) throws InvalidGameTypeException {
             this.gameType = gameType;
@@ -182,6 +187,11 @@ public final class GameStatus {
 
         public Builder newGame() {
             newGame = true;
+            return this;
+        }
+
+        public Builder breakType(BreakType breakType) {
+            this.breakType = breakType;
             return this;
         }
 

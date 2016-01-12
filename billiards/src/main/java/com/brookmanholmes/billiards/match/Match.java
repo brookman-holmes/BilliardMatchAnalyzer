@@ -11,6 +11,7 @@ import com.brookmanholmes.billiards.inning.TableStatus;
 import com.brookmanholmes.billiards.inning.TurnEnd;
 import com.brookmanholmes.billiards.inning.TurnEndOptions;
 import com.brookmanholmes.billiards.inning.helpers.TurnEndHelper;
+import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.PlayerPair;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 
@@ -24,6 +25,7 @@ public class Match {
     final long matchId;
     PlayerController<?> playerController;
     TurnEndHelper turnEndHelper;
+    String location;
     Game game;
     List<PlayerPair<?>> players = new ArrayList<>();
     List<GameStatus> gameStatuses = new ArrayList<>();
@@ -31,20 +33,31 @@ public class Match {
     List<GameTurn> undoneTurns = new ArrayList<>();
 
     Match(Builder builder) {
+        location = builder.location;
         matchId = 0;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
-        /* These need to be set
-        builder.playerRank;
-        builder.opponentRank;
-        builder.playerName;
-        builder.opponentName;
-        */
+        playerController = PlayerController.createController(game, builder.playerName, builder.opponentName, builder.playerRank, builder.opponentRank);
+        turnEndHelper = TurnEndHelper.newTurnEndHelper(game.getGameType());
     }
 
-    Match(GameType gameType, PlayerTurn turn, BreakType breakType) {
-        game = Game.newGame(gameType, turn, breakType);
-        turnEndHelper = TurnEndHelper.newTurnEndHelper(game.getGameType());
-        matchId = 0;
+    public long getMatchId() {
+        return matchId;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public GameStatus getGameStatus() {
+        return game.getGameStatus();
+    }
+
+    public AbstractPlayer getPlayer() {
+        return playerController.getPlayer1();
+    }
+
+    public AbstractPlayer getOpponent() {
+        return playerController.getPlayer2();
     }
 
     public GameTurn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
@@ -74,6 +87,7 @@ public class Match {
         private BreakType breakType = BreakType.ALTERNATE;
         private PlayerTurn playerTurn = PlayerTurn.PLAYER;
         private GameType gameType = GameType.BCA_EIGHT_BALL;
+        private String location = "Not set";
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;
@@ -98,6 +112,11 @@ public class Match {
 
         public Builder setPlayerTurn(PlayerTurn playerTurn) {
             this.playerTurn = playerTurn;
+            return this;
+        }
+
+        public Builder setLocation(String location) {
+            this.location = location;
             return this;
         }
     }

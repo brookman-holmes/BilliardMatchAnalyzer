@@ -4,7 +4,6 @@ import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.PlayerPair;
@@ -24,24 +23,33 @@ public class PlayerController<T extends AbstractPlayer> {
     GameStatus gameStatus;
     Turn turn;
 
-    PlayerController() {
+    PlayerController(Game game) {
+        gameStatus = game.getGameStatus();
     }
 
-    public static PlayerController<?> createController(GameType gameType, String playerName, String opponentName) {
-        switch (gameType) {
+    public static PlayerController<?> createController(Game game, String playerName, String opponentName, int playerRank, int opponentRank) {
+        switch (game.getGameType()) {
             case BCA_NINE_BALL:
-                return new NineBallController(playerName, opponentName);
+                return new NineBallController(game, playerName, opponentName);
             case BCA_TEN_BALL:
-                return new TenBallController(playerName, opponentName);
+                return new TenBallController(game, playerName, opponentName);
             case APA_EIGHT_BALL:
-                return new ApaEightBallController(playerName, opponentName);
+                return new ApaEightBallController(game, playerName, opponentName, playerRank, opponentRank);
             case APA_NINE_BALL:
-                return new ApaNineBallController(playerName, opponentName);
+                return new ApaNineBallController(game, playerName, opponentName, playerRank, opponentRank);
             case BCA_EIGHT_BALL:
-                return new EightBallController(playerName, opponentName);
+                return new EightBallController(game, playerName, opponentName);
             default:
-                throw new InvalidGameTypeException(gameType.name());
+                throw new InvalidGameTypeException(game.getGameType().name());
         }
+    }
+
+    public T getPlayer1() {
+        return player1;
+    }
+
+    public T getPlayer2() {
+        return player2;
     }
 
     public PlayerPair<T> updatePlayerStats(GameStatus gameStatus, Turn turn) {
