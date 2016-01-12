@@ -44,7 +44,7 @@ public class Apa9BallRankPage extends SingleFixedChoicePage {
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> dest) {
-        dest.add(new ReviewItem(getTitle(), mData.getString(SIMPLE_DATA_KEY) + ", races to " + getRaceTo(), getKey()));
+        dest.add(new ReviewItem(getTitle(), mData.getString(SIMPLE_DATA_KEY) + ", wins with " + getRaceTo() + " points", getKey()));
     }
 
 

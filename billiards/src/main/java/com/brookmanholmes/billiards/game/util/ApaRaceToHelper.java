@@ -1,6 +1,5 @@
 package com.brookmanholmes.billiards.game.util;
 
-import java.awt.Point;
 
 /**
  * Created by helios on 1/9/2016.
@@ -31,10 +30,9 @@ public class ApaRaceToHelper {
         }
     }
 
-    public static Point apa8BallRaceTo(int playerRank, int opponentRank) {
-        Point point = new Point();
+    public static RaceTo apa8BallRaceTo(int playerRank, int opponentRank) {
         if ((playerRank > 7 || playerRank < 2) || (opponentRank > 7 || opponentRank < 2))
-            return new Point(0,0);
+            return new RaceTo(0,0);
         else {
             switch (playerRank) {
                 case 2:
@@ -54,68 +52,68 @@ public class ApaRaceToHelper {
     }
 
 
-    private static Point playerRankIs2(int opponentRank) {
-        return new Point(2,opponentRank);
+    private static RaceTo playerRankIs2(int opponentRank) {
+        return new RaceTo(2,opponentRank);
     }
 
-    private static Point playerRankIs3(int opponentRank) {
+    private static RaceTo playerRankIs3(int opponentRank) {
         switch (opponentRank) {
             case 2:
-                return new Point(3,2);
+                return new RaceTo(3,2);
             case 3:
-                return new Point(2,2);
+                return new RaceTo(2,2);
             default:
-                return new Point(2,opponentRank - 1);
+                return new RaceTo(2,opponentRank - 1);
         }
     }
 
-    private static Point playerRankIs4(int opponentRank) {
+    private static RaceTo playerRankIs4(int opponentRank) {
         switch (opponentRank) {
             case 2:
-                return new Point(4,2);
+                return new RaceTo(4,2);
             case 7:
-                return new Point(2,5);
+                return new RaceTo(2,5);
             default:
-                return new Point(3, 3 + (opponentRank - 4));
+                return new RaceTo(3, 3 + (opponentRank - 4));
         }
     }
 
-    private static Point playerRankIs5(int opponentRank) {
+    private static RaceTo playerRankIs5(int opponentRank) {
         switch (opponentRank) {
             case 2:
-                return new Point(5,2);
+                return new RaceTo(5,2);
             case 3:
-                return new Point(4,2);
+                return new RaceTo(4,2);
             case 4:
-                return new Point(4,3);
+                return new RaceTo(4,3);
             case 5:
-                return new Point(4,4);
+                return new RaceTo(4,4);
             case 6:
-                return new Point(4,5);
+                return new RaceTo(4,5);
             default:
-                return new Point(3,5);
+                return new RaceTo(3,5);
         }
     }
 
-    private static Point playerRankIs6(int opponentRank) {
+    private static RaceTo playerRankIs6(int opponentRank) {
         switch (opponentRank) {
             case 2:
-                return new Point(6,2);
+                return new RaceTo(6,2);
             case 7:
-                return new Point(4,5);
+                return new RaceTo(4,5);
             default:
-                return new Point(5, 5 + (opponentRank - 6));
+                return new RaceTo(5, 5 + (opponentRank - 6));
         }
     }
 
-    private static Point playerRankIs7(int opponentRank) {
+    private static RaceTo playerRankIs7(int opponentRank) {
         switch (opponentRank) {
             case 2:
-                return new Point(7,2);
+                return new RaceTo(7,2);
             case 3:
-                return new Point(6,2);
+                return new RaceTo(6,2);
             default:
-                return new Point(5, 5 + (opponentRank - 7));
+                return new RaceTo(5, 5 + (opponentRank - 7));
         }
     }
 }

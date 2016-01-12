@@ -71,4 +71,10 @@ public class ReviewItem {
     public void setWeight(int weight) {
         mWeight = weight;
     }
+
+
+    @Override
+    public String toString() {
+        return "\nTitle: " + mTitle + " Display Value: " + mDisplayValue + " Page Key: " + mPageKey;
+    }
 }

@@ -7,6 +7,8 @@ public class BreakTypePage extends SingleFixedChoicePage {
     String playerName = "Player 1-", opponentName = "Player 2-";
     String valueEnding = " always breaks";
 
+
+    // // TODO: 1/12/2016 make it so that selecting player names always breaks doesn't show the first break page
     public BreakTypePage(ModelCallbacks callbacks) {
         super(callbacks, "The break");
         mChoices.add("Winner");

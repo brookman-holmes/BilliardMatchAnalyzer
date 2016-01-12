@@ -16,15 +16,13 @@
 
 package com.brookmanholmes.billiardmatchanalyzer;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +31,15 @@ import android.widget.Button;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.ReviewFragment;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.StepPagerStrip;
+import com.brookmanholmes.billiards.game.InvalidGameTypeException;
+import com.brookmanholmes.billiards.game.util.BreakType;
+import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.match.Match;
 
 import java.util.List;
 
@@ -104,18 +108,10 @@ public class CreateNewMatchActivity extends FragmentActivity implements
             @Override
             public void onClick(View view) {
                 if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {
-                    DialogFragment dg = new DialogFragment() {
-                        @Override
-                        public Dialog onCreateDialog(Bundle savedInstanceState) {
-                            // TODO: 1/7/2016 insert match into database and launch matchinfoactivity
-                            return new AlertDialog.Builder(getActivity())
-                                    .setMessage("Create new match?")
-                                    .setPositiveButton(android.R.string.ok, null)
-                                    .setNegativeButton(android.R.string.cancel, null)
-                                    .create();
-                        }
-                    };
-                    dg.show(getSupportFragmentManager(), "place_order_dialog");
+                    // // TODO: 1/12/2016 insert match and go to MatchInfoActivity
+                    if (mPagerAdapter.getPrimaryItem() instanceof ReviewFragment) {
+                        Match match = MatchCreationHelper.createMatch(((ReviewFragment) mPagerAdapter.getPrimaryItem()).getCurrentReviewItems());
+                    }
                 } else {
                     if (mEditingAfterReview) {
                         mPager.setCurrentItem(mPagerAdapter.getCount() - 1);
@@ -151,7 +147,7 @@ public class CreateNewMatchActivity extends FragmentActivity implements
         if (position == mCurrentPageSequence.size()) {
             mNextButton.setText("Create match");
             mNextButton.setBackgroundResource(R.drawable.finish_background);
-            mNextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
+            mNextButton.setTextAppearance(R.style.TextAppearanceFinish);
         } else {
             mNextButton.setText(mEditingAfterReview
                     ? "Create match"
@@ -159,7 +155,7 @@ public class CreateNewMatchActivity extends FragmentActivity implements
             mNextButton.setBackgroundResource(R.drawable.selectable_item_background);
             TypedValue v = new TypedValue();
             getTheme().resolveAttribute(android.R.attr.textAppearanceMedium, v, true);
-            mNextButton.setTextAppearance(this, v.resourceId);
+            mNextButton.setTextAppearance(v.resourceId);
             mNextButton.setEnabled(position != mPagerAdapter.getCutOffPage());
         }
 
@@ -230,6 +226,132 @@ public class CreateNewMatchActivity extends FragmentActivity implements
         return false;
     }
 
+    private static class MatchCreationHelper {
+        private MatchCreationHelper() {
+
+        }
+
+        public static Match createMatch(List<ReviewItem> reviewItems) {
+            GameType gameType = getGameType(reviewItems);
+            PlayerTurn playerTurn = getPlayerTurn(reviewItems);
+            BreakType breakType = getBreakType(reviewItems);
+            String opponentName = getOpponentName(reviewItems);
+            String playerName = getPlayerName(reviewItems);
+            int playerRank = getPlayerRank(reviewItems);
+            int opponentRank = getOpponentRank(reviewItems);
+
+            Log.i("MatchCreationHelper", "Game: " + gameType.toString() + " Turn: " + playerTurn.toString() + " Break Type: " + breakType.toString() + " Player names: " + playerName + " and " + opponentName +
+                    " Player rank: " + playerRank + " Opponent Rank: " + opponentRank);
+
+            return new Match.Builder(playerName, opponentName).setBreakType(breakType).setPlayerTurn(playerTurn).setPlayerRanks(playerRank, opponentRank).build(gameType);
+        }
+
+        private static GameType getGameType(List<ReviewItem> reviewItems) {
+            for (ReviewItem item : reviewItems) {
+                if (item.getTitle().equals("Game")) {
+                    switch (item.getDisplayValue()) {
+                        case "APA 8 ball":
+                            return GameType.APA_EIGHT_BALL;
+                        case "APA 9 ball":
+                            return GameType.APA_NINE_BALL;
+                        case "BCA 8 ball":
+                            return GameType.BCA_EIGHT_BALL;
+                        case "BCA 9 ball":
+                            return GameType.BCA_NINE_BALL;
+                        case "BCA 10 ball":
+                            return GameType.BCA_TEN_BALL;
+                        case "Straight pool":
+                            return GameType.STRAIGHT_POOL;
+                        case "American Rotation":
+                            return GameType.AMERICAN_ROTATION;
+                        default:
+                            throw new InvalidGameTypeException(item.getDisplayValue());
+                    }
+                }
+            }
+
+            throw new InvalidGameTypeException("No review item with the title 'Game'");
+        }
+
+        private static PlayerTurn getPlayerTurn(List<ReviewItem> reviewItems) {
+            String playerName = getPlayerName(reviewItems);
+            String opponentName = getOpponentName(reviewItems);
+
+            for (ReviewItem item : reviewItems) {
+                if (item.getTitle().equals("Who breaks first?")) {
+                    if (item.getDisplayValue().equals(playerName))
+                        return PlayerTurn.PLAYER;
+                    else if (item.getDisplayValue().equals(opponentName))
+                        return PlayerTurn.OPPONENT;
+                    else
+                        throw new IllegalArgumentException("Incorrect player name, was: " + item.getDisplayValue() + " but should be: " + playerName + " or " + opponentName);
+                }
+            }
+
+            throw new IllegalArgumentException("No review item with the title 'Who breaks first?");
+        }
+
+        private static String getPlayerName(List<ReviewItem> reviewItems) {
+            for (ReviewItem item : reviewItems) {
+                if (item.getTitle().equals("Player 1")) {
+                    return item.getDisplayValue();
+                }
+            }
+
+            throw new IllegalArgumentException("No review item with the title 'Player 1'");
+        }
+
+        private static String getOpponentName(List<ReviewItem> reviewItems) {
+            for (ReviewItem item : reviewItems) {
+                if (item.getTitle().equals("Player 2")) {
+                    return item.getDisplayValue();
+                }
+            }
+
+            throw new IllegalArgumentException("No review item with the title 'Player 2'");
+        }
+
+        private static BreakType getBreakType(List<ReviewItem> reviewItems) {
+            for (ReviewItem item : reviewItems) {
+                if (item.getTitle().equals("The break")) {
+                    switch (item.getDisplayValue()) {
+                        case "Winner":
+                            return BreakType.WINNER;
+                        case "Alternate":
+                            return BreakType.ALTERNATE;
+                        case "Loser":
+                            return BreakType.LOSER;
+                        default:
+                            if (item.getDisplayValue().startsWith(getPlayerName(reviewItems)))
+                                return BreakType.PLAYER;
+                            else if (item.getDisplayValue().startsWith(getOpponentName(reviewItems)))
+                                return BreakType.OPPONENT;
+                    }
+                }
+            }
+
+            throw new IllegalArgumentException("No review item with the title 'The break', or the player name does not exist");
+        }
+
+        private static int getPlayerRank(List<ReviewItem> reviewItems) {
+            for (ReviewItem item : reviewItems) {
+                if (item.getTitle().equals(getPlayerName(reviewItems) + "'s Rank"))
+                    return Integer.valueOf(item.getDisplayValue().substring(0, 1));
+            }
+
+            return 0;
+        }
+
+        private static int getOpponentRank(List<ReviewItem> reviewItems) {
+            for (ReviewItem item : reviewItems) {
+                if (item.getTitle().equals(getOpponentName(reviewItems) + "'s Rank"))
+                    return Integer.valueOf(item.getDisplayValue().substring(0, 1));
+            }
+
+            return 0;
+        }
+    }
+
     public class MyPagerAdapter extends FragmentStatePagerAdapter {
         private int mCutOffPage;
         private Fragment mPrimaryItem;
@@ -262,6 +384,10 @@ public class CreateNewMatchActivity extends FragmentActivity implements
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
             mPrimaryItem = (Fragment) object;
+        }
+
+        public Fragment getPrimaryItem() {
+            return mPrimaryItem;
         }
 
         @Override

@@ -30,4 +30,6 @@ public class Apa8BallRankPage extends SingleFixedChoicePage {
             mTitle = opponent + "'s Rank";
         }
     }
+
+
 }

@@ -32,6 +32,8 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
+import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
+import com.brookmanholmes.billiards.game.util.RaceTo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,9 +114,71 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         });
         mCurrentReviewItems = reviewItems;
 
+        for (ReviewItem item : mCurrentReviewItems) {
+            if (item.getDisplayValue().equals("APA 8 ball")) {
+                int playerRank = getPlayerRank();
+                int opponentRank = getOpponentRank();
+
+                RaceTo raceTo = ApaRaceToHelper.apa8BallRaceTo(playerRank, opponentRank);
+
+                setPlayerRaceToReviewItem(raceTo.getPlayerRaceTo());
+                setOpponentRaceToReviewItem(raceTo.getOpponentRaceTo());
+            }
+        }
+
         if (mReviewAdapter != null) {
             mReviewAdapter.notifyDataSetInvalidated();
         }
+    }
+
+    private void setPlayerRaceToReviewItem(int games) {
+        for (ReviewItem item : mCurrentReviewItems) {
+            if (item.getTitle().equals(getPlayerName() + "'s Rank")) {
+                item.setDisplayValue(item.getDisplayValue() + ", wins with " + games + " games");
+            }
+        }
+    }
+
+    private void setOpponentRaceToReviewItem(int games) {
+        for (ReviewItem item : mCurrentReviewItems) {
+            if (item.getTitle().equals(getOpponentName() + "'s Rank")) {
+                item.setDisplayValue(item.getDisplayValue() + ", wins with " + games + " games");
+            }
+        }
+    }
+
+    private int getPlayerRank() {
+        int rank = 0;
+        for (ReviewItem item : mCurrentReviewItems) {
+            if (item.getTitle().equals(getPlayerName() + "'s Rank")) {
+                rank = Integer.valueOf(item.getDisplayValue());
+            }
+        }
+
+        return rank;
+    }
+
+    private int getOpponentRank() {
+        int rank = 0;
+        for (ReviewItem item : mCurrentReviewItems) {
+            if (item.getTitle().equals(getOpponentName() + "'s Rank")) {
+                rank = Integer.valueOf(item.getDisplayValue());
+            }
+        }
+
+        return rank;
+    }
+
+    public String getPlayerName() {
+        return mCurrentReviewItems.get(0).getDisplayValue();
+    }
+
+    private String getOpponentName() {
+        return mCurrentReviewItems.get(1).getDisplayValue();
+    }
+
+    public List<ReviewItem> getCurrentReviewItems() {
+        return mCurrentReviewItems;
     }
 
     @Override
