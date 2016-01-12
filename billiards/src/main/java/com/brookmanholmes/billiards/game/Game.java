@@ -66,29 +66,21 @@ public abstract class Game {
     }
 
     public static Game newGame(GameType gameType, PlayerTurn turn, BreakType breakType) throws InvalidGameTypeException {
-        Game game;
         // TODO: 10/27/2015 implement straight pool and american rotation games
         switch (gameType) {
             case BCA_NINE_BALL:
-                game = new NineBallGame(turn, breakType);
-                break;
+                return new NineBallGame(turn, breakType);
             case BCA_TEN_BALL:
-                game = new TenBallGame(turn, breakType);
-                break;
+                return new TenBallGame(turn, breakType);
             case APA_EIGHT_BALL:
-                game = new ApaEightBallGame();
-                break;
+                return new ApaEightBallGame();
             case APA_NINE_BALL:
-                game = new ApaNineBallGame();
-                break;
+                return new ApaNineBallGame();
             case BCA_EIGHT_BALL:
-                game = new EightBallGame(turn, breakType);
-                break;
+                return new EightBallGame(turn, breakType);
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }
-
-        return game;
     }
 
     public static PlayerTurn changeTurn(PlayerTurn turn) {

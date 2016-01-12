@@ -2,7 +2,9 @@ package com.brookmanholmes.billiards.player.controller;
 
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.Turn;
+import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.PlayerPair;
@@ -23,6 +25,23 @@ public class PlayerController<T extends AbstractPlayer> {
     Turn turn;
 
     PlayerController() {
+    }
+
+    public static PlayerController<?> createController(GameType gameType, String playerName, String opponentName) {
+        switch (gameType) {
+            case BCA_NINE_BALL:
+                return new NineBallController(playerName, opponentName);
+            case BCA_TEN_BALL:
+                return new TenBallController(playerName, opponentName);
+            case APA_EIGHT_BALL:
+                return new ApaEightBallController(playerName, opponentName);
+            case APA_NINE_BALL:
+                return new ApaNineBallController(playerName, opponentName);
+            case BCA_EIGHT_BALL:
+                return new EightBallController(playerName, opponentName);
+            default:
+                throw new InvalidGameTypeException(gameType.name());
+        }
     }
 
     public PlayerPair<T> updatePlayerStats(GameStatus gameStatus, Turn turn) {
