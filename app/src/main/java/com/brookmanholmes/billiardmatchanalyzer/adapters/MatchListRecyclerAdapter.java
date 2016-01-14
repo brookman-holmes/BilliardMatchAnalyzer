@@ -72,7 +72,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         if (getLocation(cursor).equals(""))
             return getDate(cursor);
         else
-            return getDate(cursor) + " @ " + getLocation(cursor);
+            return getDate(cursor) + "\n@ " + getLocation(cursor);
     }
 
     private String getDate(Cursor cursor) {

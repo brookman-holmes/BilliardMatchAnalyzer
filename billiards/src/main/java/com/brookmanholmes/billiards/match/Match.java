@@ -91,7 +91,7 @@ public class Match {
         private BreakType breakType = BreakType.ALTERNATE;
         private PlayerTurn playerTurn = PlayerTurn.PLAYER;
         private GameType gameType = GameType.BCA_EIGHT_BALL;
-        private String location = "Sam's Billiards  | (Not yet implemented)";
+        private String location = "Sam's Billiards";
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;
