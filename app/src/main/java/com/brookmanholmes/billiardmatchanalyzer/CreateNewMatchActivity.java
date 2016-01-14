@@ -16,6 +16,7 @@
 
 package com.brookmanholmes.billiardmatchanalyzer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
@@ -110,7 +112,7 @@ public class CreateNewMatchActivity extends FragmentActivity implements
                 if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {
                     // // TODO: 1/12/2016 insert match and go to MatchInfoActivity
                     if (mPagerAdapter.getPrimaryItem() instanceof ReviewFragment) {
-                        Match match = MatchCreationHelper.createMatch(((ReviewFragment) mPagerAdapter.getPrimaryItem()).getCurrentReviewItems());
+                        createMatchAndLaunchMatchInfoActivity();
                     }
                 } else {
                     if (mEditingAfterReview) {
@@ -131,6 +133,17 @@ public class CreateNewMatchActivity extends FragmentActivity implements
 
         onPageTreeChanged();
         updateBottomBar();
+    }
+
+    private void createMatchAndLaunchMatchInfoActivity() {
+        Match match = MatchCreationHelper.createMatch(((ReviewFragment) mPagerAdapter.getPrimaryItem()).getCurrentReviewItems());
+        DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
+        databaseAdapter.open();
+
+        databaseAdapter.insertMatch(match);
+
+        Intent intent = new Intent(this, MatchInfoActivity.class);
+        startActivity(intent);
     }
 
     @Override

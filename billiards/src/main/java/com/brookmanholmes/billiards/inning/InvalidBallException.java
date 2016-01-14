@@ -4,7 +4,7 @@ package com.brookmanholmes.billiards.inning;
  * Created by Brookman Holmes on 11/5/2015.
  */
 // TODO: 11/6/2015 subclass this some to make it easier to throw exceptions in TableStatus
-class InvalidBallException extends RuntimeException {
+public class InvalidBallException extends RuntimeException {
     public InvalidBallException() {
     }
 

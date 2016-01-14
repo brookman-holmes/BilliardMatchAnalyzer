@@ -47,8 +47,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static String getCreateMatchTableQuery() {
         return "CREATE TABLE " + DatabaseAdapter.MATCH_TABLE + "("
                 + DatabaseAdapter.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + DatabaseAdapter.COLUMN_GAME_TYPE + " INTEGER NOT NULL DEFAULT 0, "
-                + DatabaseAdapter.COLUMN_BREAK_TYPE + " INTEGER NOT NULL DEFAULT 0, "
+                + DatabaseAdapter.COLUMN_GAME_TYPE + " TEXT COLLATE NOCASE NOT NULL DEFAULT BCA_EIGHT_BALL, "
+                + DatabaseAdapter.COLUMN_BREAK_TYPE + " TEXT COLLATE NOCASE NOT NULL DEFAULT WINNER, "
                 + DatabaseAdapter.COLUMN_LOCATION + " TEXT COLLATE NOCASE DEFAULT NULL, "
                 + DatabaseAdapter.COLUMN_PLAYER_TURN + " INTEGER NOT NULL DEFAULT 0, "
                 + DatabaseAdapter.COLUMN_CREATED_ON + " TEXT COLLATE NOCASE DEFAULT NULL, "

@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Brookman Holmes on 10/27/2015.
  */
 public class Match {
-    final long matchId;
+    long matchId;
     PlayerController<?> playerController;
     TurnEndHelper turnEndHelper;
     String location;
@@ -42,6 +42,10 @@ public class Match {
 
     public long getMatchId() {
         return matchId;
+    }
+
+    public void setMatchId(long matchId) {
+        this.matchId = matchId;
     }
 
     public String getLocation() {
@@ -87,7 +91,7 @@ public class Match {
         private BreakType breakType = BreakType.ALTERNATE;
         private PlayerTurn playerTurn = PlayerTurn.PLAYER;
         private GameType gameType = GameType.BCA_EIGHT_BALL;
-        private String location = "Not set";
+        private String location = "Sam's Billiards  | (Not yet implemented)";
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;

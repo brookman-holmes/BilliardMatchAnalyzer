@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.fab)
     FloatingActionButton fab;
 
+    DatabaseAdapter db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+
+        db = new DatabaseAdapter(this);
+        db.open();
     }
 
     @Override
