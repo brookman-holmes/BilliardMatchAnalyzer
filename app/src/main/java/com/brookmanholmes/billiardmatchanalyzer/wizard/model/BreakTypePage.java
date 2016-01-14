@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Brookman Holmes on 1/7/2016.
  */
-public class BreakTypePage extends BranchPage {
+public class BreakTypePage extends SingleFixedChoicePage {
     String playerName = "Player 1-", opponentName = "Player 2-";
     String valueEnding = " always breaks";
 
@@ -13,12 +13,12 @@ public class BreakTypePage extends BranchPage {
     // // TODO: 1/12/2016 make it so that selecting player names always breaks doesn't show the first break page
     public BreakTypePage(ModelCallbacks callbacks) {
         super(callbacks, "The break");
-        setParentKey("BreakTypePage");
-        addBranch("Winner", new FirstBreakPage(callbacks));
-        addBranch("Alternate", new FirstBreakPage(callbacks));
-        addBranch("Loser", new FirstBreakPage(callbacks));
-        addBranch(playerName + valueEnding);
-        addBranch(opponentName + valueEnding);
+
+        mChoices.add("Winner");
+        mChoices.add("Alternate");
+        mChoices.add("Loser");
+        mChoices.add(playerName + valueEnding);
+        mChoices.add(opponentName + valueEnding);
     }
 
     @Override

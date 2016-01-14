@@ -39,12 +39,6 @@ public class PageList extends ArrayList<Page> implements PageTreeNode {
         }
     }
 
-    public void setPlayerRanks(int playerRank, int opponentRank) {
-        for (Page page : this) {
-            page.setPlayerRanks(playerRank, opponentRank);
-        }
-    }
-
     @Override
     public Page findByKey(String key) {
         for (Page childPage : this) {

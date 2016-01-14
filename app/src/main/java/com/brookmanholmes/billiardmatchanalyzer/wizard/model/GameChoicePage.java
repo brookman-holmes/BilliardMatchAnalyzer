@@ -9,7 +9,7 @@ public class GameChoicePage extends BranchPage {
     public GameChoicePage(ModelCallbacks callbacks) {
         super(callbacks, "Game");
         setParentKey("GameChoicePage");
-        addBranch("American Rotation");
+        //addBranch("American Rotation");
 
         addBranch("APA 8 ball",
                 new Apa8BallRankPage(callbacks, 1),
@@ -28,8 +28,7 @@ public class GameChoicePage extends BranchPage {
         addBranch("BCA 10 ball",
                 new BreakTypePage(callbacks));
 
-        addBranch("Straight pool",
-                new FirstBreakPage(callbacks));
+        //addBranch("Straight pool", new FirstBreakPage(callbacks));
     }
 
     @Override

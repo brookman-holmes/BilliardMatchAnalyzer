@@ -80,7 +80,7 @@ public abstract class Page implements PageTreeNode {
     public abstract Fragment createFragment();
 
     public String getKey() {
-        return (mParentKey != null) ? mParentKey : mTitle;
+        return (mParentKey != null) ? mParentKey + ":" + mTitle : mTitle;
     }
 
     public abstract void getReviewItems(ArrayList<ReviewItem> dest);
@@ -100,7 +100,13 @@ public abstract class Page implements PageTreeNode {
 
     public abstract void setPlayerNames(String player, String opponent);
 
-    public void setPlayerRanks(int playerRank, int opponentRank) {
-
+    @Override
+    public String toString() {
+        return "Page{" +
+                "\n mData=" + mData +
+                "\n mTitle='" + mTitle + '\'' +
+                "\n mRequired=" + mRequired +
+                "\n mParentKey='" + mParentKey + '\'' +
+                '}';
     }
 }

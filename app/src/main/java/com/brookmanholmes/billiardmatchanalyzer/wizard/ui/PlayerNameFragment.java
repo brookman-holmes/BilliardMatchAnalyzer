@@ -114,12 +114,9 @@ public class PlayerNameFragment extends Fragment {
 
             @Override
             public void afterTextChanged(final Editable editable) {
-                if (editable.length() >= 2) {
                     // // TODO: 1/7/2016 add in a debounce here to prevent multiple firings for no reason
                     mPage.getData().putString(key, editable.toString());
                     mPage.notifyDataChanged();
-
-                }
             }
         };
     }
