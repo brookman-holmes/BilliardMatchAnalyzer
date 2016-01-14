@@ -21,8 +21,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         return new PageList(
                 new PlayerNamePage(this, "Players")
                         .setRequired(true),
-                new GameChoicePage(this),
-                new FirstBreakPage(this)
+                new GameChoicePage(this)
         );
     }
 }

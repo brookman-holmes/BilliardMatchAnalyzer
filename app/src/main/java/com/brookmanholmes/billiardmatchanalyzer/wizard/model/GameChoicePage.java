@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class GameChoicePage extends BranchPage {
     public GameChoicePage(ModelCallbacks callbacks) {
         super(callbacks, "Game");
+        setParentKey("GameChoicePage");
         addBranch("American Rotation");
 
         addBranch("APA 8 ball",
@@ -27,7 +28,8 @@ public class GameChoicePage extends BranchPage {
         addBranch("BCA 10 ball",
                 new BreakTypePage(callbacks));
 
-        addBranch("Straight pool");
+        addBranch("Straight pool",
+                new FirstBreakPage(callbacks));
     }
 
     @Override
