@@ -8,7 +8,10 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <RelativeLayout
             android:id="@+id/image"
@@ -22,7 +25,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentEnd="false"
-                android:src="@drawable/test_8_ball" />
+                android:src="@drawable/nine_ball" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -56,6 +59,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/players"
+                android:maxLines="2"
+                android:maxWidth="300dp"
                 android:text="Date @ Location"
                 android:textSize="14sp" />
         </RelativeLayout>

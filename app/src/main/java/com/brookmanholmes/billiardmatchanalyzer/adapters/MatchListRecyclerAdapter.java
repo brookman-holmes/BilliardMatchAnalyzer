@@ -2,9 +2,8 @@ package com.brookmanholmes.billiardmatchanalyzer.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,11 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
+import com.brookmanholmes.billiards.game.util.BreakType;
+import com.brookmanholmes.billiards.game.util.GameType;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,13 +25,9 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 1/13/2016.
  */
 public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRecyclerAdapter.ListItemHolder> {
-    private final Drawable[] images;
-
     public MatchListRecyclerAdapter(Context context) {
         super(null);
-        images = new Drawable[2];
-        images[0] = ContextCompat.getDrawable(context, R.drawable.test_8_ball);
-        images[1] = ContextCompat.getDrawable(context, R.drawable.test_9_ball);
+
         setHasStableIds(true);
     }
 
@@ -38,6 +38,8 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         holder.dateLoc.setText(getDateAndLocation(cursor));
         holder.playerNames.setText(getPlayerNames(cursor));
         holder.breakType.setText(getBreakType(cursor));
+        holder.gameType.setImageResource(getImageId(cursor));
+        Log.i("MatchListRecycler", "Image id: " + getImageId(cursor));
     }
 
     @Override
@@ -48,7 +50,22 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     }
 
     private String getBreakType(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_BREAK_TYPE));
+        switch (BreakType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_BREAK_TYPE)))) {
+            case WINNER:
+                return "Winner breaks";
+            case LOSER:
+                return "Loser breaks";
+            case ALTERNATE:
+                return "Alternating breaks";
+            case PLAYER:
+                return getPlayerName(cursor) + " breaks";
+            case OPPONENT:
+                return getOpponentName(cursor) + " breaks";
+            case GHOST:
+                return "Not sure what to put in here";
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
     private String getDateAndLocation(Cursor cursor) {
@@ -59,25 +76,44 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     }
 
     private String getDate(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_CREATED_ON));
+        SimpleDateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat newFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+        Date date;
+        try {
+            date = oldFormat.parse(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_CREATED_ON)));
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            date = new Date();
+        }
+
+        return newFormat.format(date);
     }
 
     private String getLocation(Cursor cursor) {
         return cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_LOCATION));
     }
 
-    private int getImage(Cursor cursor) {
-        switch (cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE))) {
-            case "BCA_EIGHT_BALL":
-                return 0;
-            case "BCA_NINE_BALL":
-                return 1;
-            case "APA_EIGHT_BALL":
-                return 0;
-            case "APA_NINE_BALL":
-                return 1;
+    private int getImageId(Cursor cursor) {
+        Log.i("MatchListRecycler", cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE))
+                + " == " + GameType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE))));
+
+        switch (GameType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE)))) {
+            case BCA_EIGHT_BALL:
+                return R.drawable.eight_ball;
+            case BCA_NINE_BALL:
+                return R.drawable.nine_ball;
+            case APA_EIGHT_BALL:
+                return R.drawable.eight_ball;
+            case APA_NINE_BALL:
+                return R.drawable.nine_ball;
+            case BCA_TEN_BALL:
+                return R.drawable.ten_ball;
+            case STRAIGHT_POOL:
+                return R.drawable.fourteen_ball;
+            case AMERICAN_ROTATION:
+                return R.drawable.fifteen_ball;
             default:
-                return 0;
+                return R.drawable.eight_ball;
         }
     }
 
