@@ -21,9 +21,9 @@ import java.util.List;
 /**
  * Created by Brookman Holmes on 10/27/2015.
  */
-public class Match {
+public class Match<T extends AbstractPlayer> {
     long matchId;
-    PlayerController<?> playerController;
+    PlayerController<T> playerController;
     TurnEndHelper turnEndHelper;
     String location;
     Game game;
@@ -32,11 +32,11 @@ public class Match {
     List<GameTurn> turns = new ArrayList<>();
     List<GameTurn> undoneTurns = new ArrayList<>();
 
-    Match(Builder builder) {
+    Match(Builder builder, PlayerController<T> playerController) {
         location = builder.location;
         matchId = 0;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
-        playerController = PlayerController.createController(game, builder.playerName, builder.opponentName, builder.playerRank, builder.opponentRank);
+        this.playerController = playerController;
         turnEndHelper = TurnEndHelper.newTurnEndHelper(game.getGameType());
     }
 
@@ -56,11 +56,11 @@ public class Match {
         return game.getGameStatus();
     }
 
-    public AbstractPlayer getPlayer() {
+    public T getPlayer() {
         return playerController.getPlayer1();
     }
 
-    public AbstractPlayer getOpponent() {
+    public T getOpponent() {
         return playerController.getPlayer2();
     }
 
@@ -85,6 +85,15 @@ public class Match {
         return turnEndHelper.create(game.getGameStatus(), nextTurn);
     }
 
+    @Override
+    public String toString() {
+        return "Match{" +
+                "matchId=" + matchId +
+                "\n location='" + location + '\'' +
+                "\n game=" + game.toString() +
+                '}';
+    }
+
     public static class Builder {
         private String playerName, opponentName;
         private int playerRank = 0, opponentRank = 0;
@@ -92,6 +101,7 @@ public class Match {
         private PlayerTurn playerTurn = PlayerTurn.PLAYER;
         private GameType gameType = GameType.BCA_EIGHT_BALL;
         private String location = "Sam's Billiards";
+        private PlayerController<?> playerController;
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;
@@ -104,9 +114,9 @@ public class Match {
             return this;
         }
 
-        public Match build(GameType gameType) {
+        public Match<?> build(GameType gameType) {
             this.gameType = gameType;
-            return new Match(this);
+            return new Match<>(this, PlayerController.createController(Game.newGame(gameType, playerTurn, breakType), playerName, opponentName, playerRank, opponentRank));
         }
 
         public Builder setBreakType(BreakType breakType) {

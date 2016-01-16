@@ -98,6 +98,50 @@ public abstract class AbstractPlayer {
         gameTotal++;
     }
 
+    public int getWins() {
+        return gameWins;
+    }
+
+    public int getGamesPlayed() {
+        return gameTotal;
+    }
+
+    public int getShootingBallsMade() {
+        return shootingBallsMade;
+    }
+
+    public int getShootingAttempts() {
+        return shootingMisses + shootingBallsMade;
+    }
+
+    public int getShootingScratches() {
+        return shootingScratches;
+    }
+
+    public int getSafetyAttempts() {
+        return safetyAttempts;
+    }
+
+    public int getSafetySuccesses() {
+        return safetySuccesses;
+    }
+
+    public int getSafetyScratches() {
+        return safetyScratches;
+    }
+
+    public int getSafetyReturns() {
+        return safetyReturns;
+    }
+
+    public int getSafetyEscapes() {
+        return safetyEscapes;
+    }
+
+    public int getSafetyForcedErrors() {
+        return safetyForcedErrors;
+    }
+
     /**
      * Combined stats functions
      */

@@ -7,6 +7,7 @@
     app:cardUseCompatPadding="true">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
@@ -29,7 +30,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/container"
+            android:id="@+id/container2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="24dp"
@@ -65,22 +66,12 @@
                 android:textSize="14sp" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/matchPreview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/container"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-        </RelativeLayout>
-
         <include
             android:id="@+id/bottom_icons"
             layout="@layout/card_bottom_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/matchPreview"
+            android:layout_below="@+id/container2"
             android:layout_marginTop="-16dp" />
 
     </RelativeLayout>

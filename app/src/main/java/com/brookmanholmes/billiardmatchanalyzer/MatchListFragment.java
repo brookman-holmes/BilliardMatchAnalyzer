@@ -1,17 +1,20 @@
 package com.brookmanholmes.billiardmatchanalyzer;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
-import android.content.Loader;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.brookmanholmes.billiardmatchanalyzer.adapters.MatchListRecyclerAdapter;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.MatchListLoader;
 
@@ -21,7 +24,8 @@ import butterknife.ButterKnife;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MatchListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MatchListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+        MatchInfoRecyclerAdapter.ListItemClickListener {
     private static int LOADER_ID = 100;
 
     @Bind(R.id.scrollView)
@@ -39,12 +43,12 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
         View view = inflater.inflate(R.layout.fragment_list_view, null);
         ButterKnife.bind(this, view);
 
-        adapter = new MatchListRecyclerAdapter(getContext());
+        adapter = new MatchListRecyclerAdapter(this);
 
         database = new DatabaseAdapter(getActivity());
         database.open();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
         getLoaderManager().initLoader(LOADER_ID, getArguments(), this);
@@ -69,7 +73,7 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
      */
     @Override
     public Loader<Cursor> onCreateLoader(int loaderID, Bundle args) {
-        return new MatchListLoader(getActivity());
+        return new MatchListLoader(getContext());
     }
 
     @Override
@@ -80,5 +84,17 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
+    }
+
+    @Override
+    public void onSelectMatch(long id) {
+        Intent intent = new Intent(getActivity(), MatchInfoActivity.class);
+        intent.putExtra("matchId", id);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onLongSelectMatch(long id) {
+        Log.i("MatchListFragment", "Long selected match: " + id);
     }
 }

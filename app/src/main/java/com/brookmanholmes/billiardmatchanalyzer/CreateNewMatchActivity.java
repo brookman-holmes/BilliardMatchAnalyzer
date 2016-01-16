@@ -140,9 +140,11 @@ public class CreateNewMatchActivity extends FragmentActivity implements
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
         databaseAdapter.open();
 
-        databaseAdapter.insertMatch(match);
+        long matchId = databaseAdapter.insertMatch(match);
 
         Intent intent = new Intent(this, MatchInfoActivity.class);
+        intent.putExtra("matchId", matchId);
+
         startActivity(intent);
     }
 

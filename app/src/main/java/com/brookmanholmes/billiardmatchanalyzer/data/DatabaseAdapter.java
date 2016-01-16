@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BallStatus;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.inning.InvalidBallException;
 import com.brookmanholmes.billiards.inning.TableStatus;
 import com.brookmanholmes.billiards.match.Match;
@@ -89,6 +91,65 @@ public class DatabaseAdapter {
     public DatabaseAdapter open() {
         database = databaseHelper.getReadableDatabase();
         return this;
+    }
+
+    public Match<?> getMatch(long id) {
+        final String selection = "m." + COLUMN_ID + " as _id, "
+                + "p." + COLUMN_NAME + " as player_name, "
+                + "opp." + COLUMN_NAME + " as opp_name, "
+                + "p." + COLUMN_ID + " as player_id, "
+                + "opp." + COLUMN_ID + " as opp_id, "
+                + COLUMN_PLAYER_TURN + ", "
+                + COLUMN_GAME_TYPE + ", "
+                + COLUMN_BREAK_TYPE + ", "
+                + COLUMN_CREATED_ON + ", "
+                + COLUMN_PLAYER_RANK + ", "
+                + COLUMN_OPPONENT_RANK + ", "
+                + COLUMN_LOCATION + "\n";
+
+        final String query = "SELECT " + selection + "from " + MATCH_TABLE + " m\n"
+                + "left join (select " + COLUMN_NAME + ", " + COLUMN_MATCH_ID + ", " + COLUMN_ID + " from "
+                + PLAYER_TABLE + " where " + COLUMN_ID + " % 2 = 1) p\n"
+                + "on p." + COLUMN_MATCH_ID + "= m._id\n"
+                + "left join (select " + COLUMN_NAME + ", " + COLUMN_MATCH_ID + ", " + COLUMN_ID + " from "
+                + PLAYER_TABLE + " where " + COLUMN_ID + " % 2 = 0) opp\n"
+                + "on p." + COLUMN_MATCH_ID + "=" + "opp." + COLUMN_MATCH_ID + "\n"
+                + "where m._id = " + id;
+
+        Cursor c = database.rawQuery(query, null);
+        c.moveToFirst();
+
+        Match<?> match = createMatchFromCursor(c);
+
+        c.close();
+
+        return match;
+    }
+
+    private Match<?> createMatchFromCursor(Cursor c) {
+        Match<?> match = new Match.Builder(
+                c.getString(c.getColumnIndex("player_name")),
+                c.getString(c.getColumnIndex("opp_name")))
+                .setPlayerTurn(getPlayerTurn(c))
+                .setBreakType(getBreakType(c))
+                .setPlayerRanks(c.getInt(c.getColumnIndex(COLUMN_PLAYER_RANK)), c.getInt(c.getColumnIndex(COLUMN_OPPONENT_RANK)))
+                .setLocation(c.getString(c.getColumnIndex(COLUMN_LOCATION)))
+                .build(getGameType(c));
+
+        match.setMatchId(c.getLong(c.getColumnIndex("_id")));
+        return match;
+    }
+
+    private PlayerTurn getPlayerTurn(Cursor c) {
+        return PlayerTurn.valueOf(c.getString(c.getColumnIndex(COLUMN_PLAYER_TURN)));
+    }
+
+    private BreakType getBreakType(Cursor c) {
+        return BreakType.valueOf(c.getString(c.getColumnIndex(COLUMN_BREAK_TYPE)));
+    }
+
+    private GameType getGameType(Cursor c) {
+        return GameType.valueOf(c.getString(c.getColumnIndex(COLUMN_GAME_TYPE)));
     }
 
     public Cursor getMatches() {

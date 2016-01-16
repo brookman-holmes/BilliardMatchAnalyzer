@@ -248,4 +248,25 @@ public abstract class Game {
 
         }
     }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "GAME_BALL=" + GAME_BALL +
+                "\n MAX_BALLS=" + MAX_BALLS +
+                "\n breakType=" + breakType +
+                "\n gameType=" + gameType +
+                "\n playerColor=" + playerColor +
+                "\n turn=" + turn +
+                "\n breaker=" + breaker +
+                "\n playerAllowedToBreakAgain=" + playerAllowedToBreakAgain +
+                "\n newGame=" + newGame +
+                "\n allowTurnSkip=" + allowTurnSkip +
+                "\n allowPush=" + allowPush +
+                "\n opponentPlayedSuccessfulSafe=" + opponentPlayedSuccessfulSafe +
+                "\n consecutivePlayerFouls=" + consecutivePlayerFouls +
+                "\n consecutiveOpponentFouls=" + consecutiveOpponentFouls +
+                "\n ballsOnTable=" + ballsOnTable +
+                '}';
+    }
 }

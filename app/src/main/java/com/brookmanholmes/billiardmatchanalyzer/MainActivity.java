@@ -17,7 +17,7 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.fab)
+    @Bind(R.id.createMatch)
     FloatingActionButton fab;
 
     DatabaseAdapter db;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.fab)
+    @OnClick(R.id.createMatch)
     public void createNewMatch() {
         Intent intent = new Intent(this, CreateNewMatchActivity.class);
         startActivity(intent);

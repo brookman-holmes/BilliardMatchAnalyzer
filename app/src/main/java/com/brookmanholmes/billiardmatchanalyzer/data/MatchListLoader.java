@@ -1,8 +1,8 @@
 package com.brookmanholmes.billiardmatchanalyzer.data;
 
 import android.content.Context;
-import android.content.CursorLoader;
 import android.database.Cursor;
+import android.support.v4.content.CursorLoader;
 
 /**
  * Created by Brookman Holmes on 1/13/2016.

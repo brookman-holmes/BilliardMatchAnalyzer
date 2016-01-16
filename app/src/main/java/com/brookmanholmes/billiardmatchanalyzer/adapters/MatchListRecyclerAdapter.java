@@ -1,6 +1,5 @@
 package com.brookmanholmes.billiardmatchanalyzer.adapters;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
@@ -20,15 +20,19 @@ import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 /**
  * Created by Brookman Holmes on 1/13/2016.
  */
 public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRecyclerAdapter.ListItemHolder> {
-    public MatchListRecyclerAdapter(Context context) {
-        super(null);
+    private MatchInfoRecyclerAdapter.ListItemClickListener listener;
 
+    public MatchListRecyclerAdapter(MatchInfoRecyclerAdapter.ListItemClickListener listener) {
+        super(null);
         setHasStableIds(true);
+        this.listener = listener;
     }
 
     @Override
@@ -39,7 +43,6 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         holder.playerNames.setText(getPlayerNames(cursor));
         holder.breakType.setText(getBreakType(cursor));
         holder.gameType.setImageResource(getImageId(cursor));
-        Log.i("MatchListRecycler", "Image id: " + getImageId(cursor));
     }
 
     @Override
@@ -94,9 +97,6 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     }
 
     private int getImageId(Cursor cursor) {
-        Log.i("MatchListRecycler", cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE))
-                + " == " + GameType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE))));
-
         switch (GameType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE)))) {
             case BCA_EIGHT_BALL:
                 return R.drawable.eight_ball;
@@ -133,8 +133,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         return cursor.getLong(cursor.getColumnIndex(DatabaseAdapter.COLUMN_ID));
     }
 
-    public static class ListItemHolder extends RecyclerView.ViewHolder {
-
+    public class ListItemHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.players)
         TextView playerNames;
         @Bind(R.id.breakType)
@@ -153,6 +152,22 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
             ButterKnife.bind(this, itemView);
         }
 
+        @OnClick(R.id.container)
+        public void onClick() {
+            Log.i("ListItemHolder", "onClick container id: " + container.getTag());
+            listener.onSelectMatch(getMatchId());
+        }
+
+        @OnLongClick(R.id.container)
+        public boolean onLongClick() {
+            Log.i("ListItemHolder", "onLongClick container id: " + container.getTag());
+            listener.onLongSelectMatch(getMatchId());
+            return true;
+        }
+
+        private long getMatchId() {
+            return (long) container.getTag();
+        }
     }
 
 }

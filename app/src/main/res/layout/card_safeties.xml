@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?><!--suppress AndroidUnknownAttribute -->
+<view xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/card_view_style"
+    class="android.support.v7.widget.CardView"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:id="@+id/card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/card_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/bottom_icons"
+            layout="@layout/card_bottom_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/container" />
+
+        <GridLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:columnCount="3"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:rowCount="6"
+            android:useDefaultMargins="true">
+
+            <TextView
+                android:id="@+id/tvSafetiesAttemptedPlayer"
+                style="@style/player_stats"
+                android:layout_column="0"
+                android:layout_gravity="center"
+                android:layout_row="0"
+                android:text="0/0"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/safetiesTitleTV"
+                style="@style/card_center_title"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:layout_row="0"
+                android:text="Safeties made / safeties"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvSafetiesAttemptedOpponent"
+                style="@style/player_stats"
+                android:layout_column="2"
+                android:layout_gravity="center"
+                android:layout_row="0"
+                android:text="0/0"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvSafetyPctPlayer"
+                style="@style/player_stats"
+                android:layout_column="0"
+                android:layout_gravity="center"
+                android:layout_row="1"
+                android:text=".000"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/tvSafetyPctOpponent"
+                style="@style/player_stats"
+                android:layout_column="2"
+                android:layout_gravity="center"
+                android:layout_row="1"
+                android:text=".000"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/tvSafetyScratchesPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="center"
+                android:layout_row="2"
+                android:text="0"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvSafetyScratchesTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_row="2"
+                android:text="Safety scratches"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvSafetyScratchesOpponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_gravity="center"
+                android:layout_row="2"
+                android:text="0"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvSafetyPercentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_row="1"
+                android:text="Safety Percentage" />
+
+            <TextView
+                android:id="@+id/tvSafetyEscapesPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="center"
+                android:layout_row="4"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/tvSafetyEscapesTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Safeties escaped" />
+
+            <TextView
+                android:id="@+id/tvSafetyEscapesOpponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/tvSafetyReturnsPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvSafetyReturnsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Safeties returned"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvSafetyReturnsOpponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvForcedErrorsPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/tvForcedErrorsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Forced opponent errors" />
+
+            <TextView
+                android:id="@+id/tvForcedErrorsOpponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0" />
+        </GridLayout>
+    </RelativeLayout>
+</view>
