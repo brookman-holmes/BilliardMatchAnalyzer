@@ -19,12 +19,11 @@ package com.brookmanholmes.billiardmatchanalyzer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,10 +44,11 @@ import com.brookmanholmes.billiards.match.Match;
 
 import java.util.List;
 
-public class CreateNewMatchActivity extends FragmentActivity implements
+public class CreateNewMatchActivity extends AppCompatActivity implements
         PageFragmentCallbacks,
         ReviewFragment.Callbacks,
-        ModelCallbacks {
+        ModelCallbacks,
+        View.OnClickListener {
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
 
@@ -58,7 +58,7 @@ public class CreateNewMatchActivity extends FragmentActivity implements
 
     private boolean mConsumePageSelectedEvent;
 
-    private Button mNextButton;
+    private Button mNextButton, mNextButtonReviewPage;
     private Button mPrevButton;
 
     private List<Page> mCurrentPageSequence;
@@ -106,23 +106,7 @@ public class CreateNewMatchActivity extends FragmentActivity implements
             }
         });
 
-        mNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {
-                    // // TODO: 1/12/2016 insert match and go to MatchInfoActivity
-                    if (mPagerAdapter.getPrimaryItem() instanceof ReviewFragment) {
-                        createMatchAndLaunchMatchInfoActivity();
-                    }
-                } else {
-                    if (mEditingAfterReview) {
-                        mPager.setCurrentItem(mPagerAdapter.getCount() - 1);
-                    } else {
-                        mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-                    }
-                }
-            }
-        });
+        mNextButton.setOnClickListener(this);
 
         mPrevButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,16 +145,14 @@ public class CreateNewMatchActivity extends FragmentActivity implements
         int position = mPager.getCurrentItem();
         if (position == mCurrentPageSequence.size()) {
             mNextButton.setText("Create match");
-            mNextButton.setBackgroundResource(R.drawable.finish_background);
-            mNextButton.setTextAppearance(R.style.TextAppearanceFinish);
+            mNextButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            mNextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
         } else {
             mNextButton.setText(mEditingAfterReview
                     ? "Create match"
                     : "Next");
-            mNextButton.setBackgroundResource(R.drawable.selectable_item_background);
-            TypedValue v = new TypedValue();
-            getTheme().resolveAttribute(android.R.attr.textAppearanceMedium, v, true);
-            mNextButton.setTextAppearance(v.resourceId);
+            mNextButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            mNextButton.setTextAppearance(this, R.style.TextAppearanceUnfinished);
             mNextButton.setEnabled(position != mPagerAdapter.getCutOffPage());
         }
 
@@ -220,6 +202,21 @@ public class CreateNewMatchActivity extends FragmentActivity implements
     @Override
     public Page onGetPage(String key) {
         return mWizardModel.findByKey(key);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {
+            if (mPagerAdapter.getPrimaryItem() instanceof ReviewFragment) {
+                createMatchAndLaunchMatchInfoActivity();
+            }
+        } else {
+            if (mEditingAfterReview) {
+                mPager.setCurrentItem(mPagerAdapter.getCount() - 1);
+            } else {
+                mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+            }
+        }
     }
 
     private boolean recalculateCutOffPage() {
