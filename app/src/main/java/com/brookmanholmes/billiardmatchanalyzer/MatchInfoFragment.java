@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
+import com.brookmanholmes.billiards.match.Match;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,12 +29,24 @@ public class MatchInfoFragment extends Fragment {
     DatabaseAdapter db;
     // TODO: Customize parameters
     private OnListFragmentInteractionListener mListener;
+    private long matchId;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public MatchInfoFragment() {
+    }
+
+    public static MatchInfoFragment createMatchInfoFragment(long matchId) {
+        MatchInfoFragment fragment = new MatchInfoFragment();
+
+        Bundle args = new Bundle();
+        args.putLong(BaseActivity.ARG_MATCH_ID, matchId);
+
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
@@ -45,7 +58,13 @@ public class MatchInfoFragment extends Fragment {
         db = new DatabaseAdapter(getContext());
         db.open();
 
-        adapter = new MatchInfoRecyclerAdapter<>(db.getMatch(1L));
+        if (getArguments() != null) {
+            matchId = getArguments().getLong(BaseActivity.ARG_MATCH_ID);
+        } else {
+            throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
+        }
+
+        adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
@@ -75,6 +94,10 @@ public class MatchInfoFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public MatchInfoRecyclerAdapter<?> createAdapter(Match<?> match) {
+        return null;
     }
 
     /**

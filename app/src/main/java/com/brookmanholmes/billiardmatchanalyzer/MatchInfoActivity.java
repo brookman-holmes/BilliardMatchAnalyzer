@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -17,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MatchInfoActivity extends AppCompatActivity implements MatchInfoFragment.OnListFragmentInteractionListener {
+public class MatchInfoActivity extends BaseActivity implements MatchInfoFragment.OnListFragmentInteractionListener {
     private static final String TAG = "MatchInfoActivity";
 
     @Bind(R.id.toolbar)
@@ -43,10 +42,13 @@ public class MatchInfoActivity extends AppCompatActivity implements MatchInfoFra
         db = new DatabaseAdapter(this);
         db.open();
 
-        Log.i("MatchInfoActivity", "Match id: " + getIntent().getExtras().getLong("matchId"));
-        Match<?> match = db.getMatch(getIntent().getExtras().getLong("matchId"));
+        Log.i("MatchInfoActivity", "Match id: " + getMatchId());
+        Match<?> match = db.getMatch(getMatchId());
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, MatchInfoFragment.createMatchInfoFragment(getMatchId())).commit();
+
 
     }
 
@@ -63,8 +65,13 @@ public class MatchInfoActivity extends AppCompatActivity implements MatchInfoFra
         Snackbar.make(coordinatorLayout, "Add inning", Snackbar.LENGTH_SHORT).show();
     }
 
+
     @Override
     public void onListFragmentInteraction() {
         Log.i(TAG, "Touched item in recycler view");
+    }
+
+    private long getMatchId() {
+        return getIntent().getExtras().getLong(ARG_MATCH_ID);
     }
 }

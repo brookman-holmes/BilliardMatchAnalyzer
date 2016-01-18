@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
+<view xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/card_view_style"
+    class="android.support.v7.widget.CardView"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:id="@+id/card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/card_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/gameSummaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_below="@+id/container"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorPrimary"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Games Summary"
+            android:textColor="@android:color/white"
+            app:layout_column="1" />
+
+        <include
+            android:id="@+id/bottom_icons"
+            layout="@layout/card_bottom_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/container2" />
+
+        <GridLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:columnCount="3"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:rowCount="7"
+            android:useDefaultMargins="true">
+
+            <TextView
+                android:id="@+id/tvRankPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_row="0"
+                android:text="0"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvRankTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_row="0"
+                android:text="Rank"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvRankOpponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_row="0"
+                android:text="0"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvDefensiveShotsOpponent"
+                style="@style/player_stats"
+                android:layout_column="2"
+                android:layout_gravity="center"
+                android:layout_row="3"
+                android:text="0"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/tvDefensiveShotsPlayer"
+                style="@style/player_stats"
+                android:layout_column="0"
+                android:layout_gravity="center"
+                android:layout_row="3"
+                android:text="0"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/tvDefensiveShotsTitle"
+                style="@style/card_center_title"
+                android:layout_below="@+id/tvAggressivenessRating"
+                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_row="3"
+                android:text="Defensive shots"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/tvPlayerPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="center"
+                android:layout_row="1"
+                android:text="0/0"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/tvPointsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:layout_row="1"
+                android:text="Points / points needed"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/tvOpponentPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_gravity="center"
+                android:layout_row="1"
+                android:text="0/0"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/tvMatchPointsPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="center"
+                android:layout_row="2"
+                android:text="0"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvMatchPointsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_row="2"
+                android:text="Match points earned"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvMatchPointsOpponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_row="2"
+                android:text="0"
+                android:textColor="@color/primary_text" />
+
+        </GridLayout>
+
+        <GridLayout
+            android:id="@+id/container2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gameSummaryButton"
+            android:columnCount="2"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="8dp"
+            android:useDefaultMargins="true">
+
+            <TextView
+                android:id="@+id/tvInningsTitle"
+                style="@style/card_center_title"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:text="Innings"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvInningsOpponent"
+                style="@style/player_stats"
+                android:layout_row="1"
+                android:text="0"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:id="@+id/tvDeadBallsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="2"
+                android:text="Dead balls"
+                android:textColor="@color/secondary_text"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvDeadBallsOpponent"
+                style="@style/player_stats"
+                android:layout_row="2"
+                android:text="0"
+                android:textColor="@color/secondary_text"
+                android:visibility="gone" />
+
+        </GridLayout>
+    </RelativeLayout>
+</view>

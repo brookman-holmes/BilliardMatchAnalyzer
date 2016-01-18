@@ -7,12 +7,16 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.Apa;
+import com.brookmanholmes.billiards.player.EarlyWins;
+import com.brookmanholmes.billiards.player.WinsOnBreak;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,7 +27,8 @@ import butterknife.OnClick;
  */
 public abstract class MatchInfoHolder<T extends AbstractPlayer> extends RecyclerView.ViewHolder {
     final View card_layout;
-    final int collapsedHeight = (int) Math.floor(72 * Resources.getSystem().getDisplayMetrics().density);
+    final int collapsedCardHeight = 72;
+    final int collapsedHeight = (int) Math.floor(collapsedCardHeight * Resources.getSystem().getDisplayMetrics().density);
     @Bind(R.id.container)
     GridLayout container;
     @Bind(R.id.infoButton)
@@ -95,6 +100,19 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
         container.animate().alpha(1f).setDuration(alphaDuration).setInterpolator(new DecelerateInterpolator());
     }
 
+    public <S extends Number> void highlightBetterPlayerStats(TextView playerStatView, TextView opponentStatView, S playerStat, S opponentStat) {
+        if (Double.compare(playerStat.doubleValue(), opponentStat.doubleValue()) == 1) {
+            playerStatView.setTypeface(null, Typeface.BOLD);
+            opponentStatView.setTypeface(null, Typeface.NORMAL);
+        } else if (Double.compare(playerStat.doubleValue(), opponentStat.doubleValue()) == -1) {
+            opponentStatView.setTypeface(null, Typeface.BOLD);
+            playerStatView.setTypeface(null, Typeface.NORMAL);
+        } else {
+            playerStatView.setTypeface(null, Typeface.NORMAL);
+            opponentStatView.setTypeface(null, Typeface.NORMAL);
+        }
+    }
+
     public abstract void bind(T player, T opponent);
 
     public static class MatchOverviewHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
@@ -132,16 +150,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
             tvWinPctPlayer.setText(player.getWinPct());
             tvWinPctOpponent.setText(opponent.getWinPct());
             // highlighting of the player who's doing better in this stat
-            if (player.getWins() > opponent.getWins()) {
-                tvWinPctPlayer.setTypeface(null, Typeface.BOLD);
-                tvWinPctOpponent.setTypeface(null, Typeface.NORMAL);
-            } else if (opponent.getWins() > player.getWins()) {
-                tvWinPctOpponent.setTypeface(null, Typeface.BOLD);
-                tvWinPctPlayer.setTypeface(null, Typeface.NORMAL);
-            } else {
-                tvWinPctPlayer.setTypeface(null, Typeface.NORMAL);
-                tvWinPctOpponent.setTypeface(null, Typeface.NORMAL);
-            }
+
+            highlightBetterPlayerStats(tvWinPctPlayer, tvWinPctOpponent, player.getWins(), opponent.getWins());
 
             // Games Won x/y
             tvWinTotalPlayer.setText(player.getWins() + "/" + player.getGamesPlayed());
@@ -153,16 +163,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
             tvAggressivenessRatingOpponent.setText(opponent.getAggressivenessRating());
 
             // highlighting of the player who's doing better in this stat
-            if (Double.compare(Double.parseDouble(player.getTrueShootingPct()), Double.parseDouble(opponent.getTrueShootingPct())) == 1) {
-                tvTSPPlayer.setTypeface(null, Typeface.BOLD);
-                tvTSPOpponent.setTypeface(null, Typeface.NORMAL);
-            } else if (Double.compare(Double.parseDouble(player.getTrueShootingPct()), Double.parseDouble(opponent.getTrueShootingPct())) == -1) {
-                tvTSPOpponent.setTypeface(null, Typeface.BOLD);
-                tvTSPPlayer.setTypeface(null, Typeface.NORMAL);
-            } else {
-                tvTSPPlayer.setTypeface(null, Typeface.NORMAL);
-                tvTSPOpponent.setTypeface(null, Typeface.NORMAL);
-            }
+            highlightBetterPlayerStats(tvTSPPlayer, tvTSPOpponent, Double.parseDouble(player.getTrueShootingPct()), Double.parseDouble(opponent.getTrueShootingPct()));
 
             tvTotalShotsPlayer.setText(player.getShotsSucceeded() + "/" + player.getShotsAttempted());
             tvTotalShotsOpponent.setText(opponent.getShotsSucceeded() + "/" + opponent.getShotsAttempted());
@@ -199,16 +200,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
             tvShootingPctOpponent.setText(opponent.getShootingPct());
 
             // highlighting of the player who's doing better in this stat
-            if (Double.parseDouble(player.getShootingPct()) > Double.parseDouble(opponent.getShootingPct())) {
-                tvShootingPctPlayer.setTypeface(null, Typeface.BOLD);
-                tvShootingPctOpponent.setTypeface(null, Typeface.NORMAL);
-            } else if (Double.parseDouble(opponent.getShootingPct()) > Double.parseDouble(player.getShootingPct())) {
-                tvShootingPctOpponent.setTypeface(null, Typeface.BOLD);
-                tvShootingPctPlayer.setTypeface(null, Typeface.NORMAL);
-            } else {
-                tvShootingPctPlayer.setTypeface(null, Typeface.NORMAL);
-                tvShootingPctOpponent.setTypeface(null, Typeface.NORMAL);
-            }
+            highlightBetterPlayerStats(tvShootingPctPlayer, tvShootingPctOpponent, Double.parseDouble(player.getShootingPct()), Double.parseDouble(opponent.getShootingPct()));
 
             // Shots succeeded / shots attempted
             tvBallTotalPlayer.setText(player.getShootingBallsMade() + "/" + (player.getShootingAttempts()));
@@ -218,31 +210,14 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
             tvAvgBallsTurnPlayer.setText(player.getAvgBallsTurn());
             tvAvgBallsTurnOpponent.setText(opponent.getAvgBallsTurn());
 
-            if (Double.parseDouble(player.getAvgBallsTurn()) > Double.parseDouble(opponent.getAvgBallsTurn())) {
-                tvAvgBallsTurnPlayer.setTypeface(null, Typeface.BOLD);
-                tvAvgBallsTurnOpponent.setTypeface(null, Typeface.NORMAL);
-            } else if (Double.parseDouble(opponent.getAvgBallsTurn()) > Double.parseDouble(player.getAvgBallsTurn())) {
-                tvAvgBallsTurnOpponent.setTypeface(null, Typeface.BOLD);
-                tvAvgBallsTurnPlayer.setTypeface(null, Typeface.NORMAL);
-            } else {
-                tvAvgBallsTurnPlayer.setTypeface(null, Typeface.NORMAL);
-                tvAvgBallsTurnOpponent.setTypeface(null, Typeface.NORMAL);
-            }
+            highlightBetterPlayerStats(tvAvgBallsTurnPlayer, tvAvgBallsTurnOpponent, Double.parseDouble(player.getAvgBallsTurn()), Double.parseDouble(opponent.getAvgBallsTurn()));
+
             // Scratches
             tvScratchesPlayer.setText(String.valueOf(player.getShootingScratches()));
             tvScratchesOpponent.setText(String.valueOf(opponent.getShootingScratches()));
 
             // highlight the player with fewer scratches
-            if (player.getShootingScratches() < opponent.getShootingScratches()) {
-                tvScratchesPlayer.setTypeface(null, Typeface.BOLD);
-                tvScratchesOpponent.setTypeface(null, Typeface.NORMAL);
-            } else if (player.getShootingScratches() > opponent.getShootingScratches()) {
-                tvScratchesPlayer.setTypeface(null, Typeface.NORMAL);
-                tvScratchesOpponent.setTypeface(null, Typeface.BOLD);
-            } else {
-                tvScratchesPlayer.setTypeface(null, Typeface.NORMAL);
-                tvScratchesOpponent.setTypeface(null, Typeface.NORMAL);
-            }
+            highlightBetterPlayerStats(tvScratchesPlayer, tvScratchesOpponent, player.getShootingScratches(), opponent.getShootingScratches());
         }
     }
 
@@ -283,16 +258,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
             tvSafetyPctOpponent.setText(opponent.getSafetyPct());
 
             // highlighting of the player who's doing better in this stat
-            if (Double.parseDouble(player.getSafetyPct()) > Double.parseDouble(opponent.getSafetyPct())) {
-                tvSafetyPctPlayer.setTypeface(null, Typeface.BOLD);
-                tvSafetyPctOpponent.setTypeface(null, Typeface.NORMAL);
-            } else if (Double.parseDouble(opponent.getSafetyPct()) > Double.parseDouble(player.getSafetyPct())) {
-                tvSafetyPctOpponent.setTypeface(null, Typeface.BOLD);
-                tvSafetyPctPlayer.setTypeface(null, Typeface.NORMAL);
-            } else {
-                tvSafetyPctPlayer.setTypeface(null, Typeface.NORMAL);
-                tvSafetyPctOpponent.setTypeface(null, Typeface.NORMAL);
-            }
+            highlightBetterPlayerStats(tvSafetyPctPlayer, tvSafetyPctOpponent, Double.parseDouble(player.getSafetyPct()), Double.parseDouble(opponent.getSafetyPct()));
 
             // Safeties made / safeties attempted
             tvSafetiesAttemptedPlayer.setText(player.getSafetySuccesses() + "/" + player.getSafetyAttempts());
@@ -301,57 +267,214 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
             tvSafetyScratchesOpponent.setText(opponent.getSafetyScratches() + "");
             tvSafetyScratchesPlayer.setText(player.getSafetyScratches() + "");
 
-            if (player.getSafetyScratches() < opponent.getSafetyScratches()) {
-                tvSafetyScratchesOpponent.setTypeface(null, Typeface.NORMAL);
-                tvSafetyScratchesPlayer.setTypeface(null, Typeface.BOLD);
-            } else if (player.getSafetyScratches() > opponent.getSafetyScratches()) {
-                tvSafetyScratchesOpponent.setTypeface(null, Typeface.BOLD);
-                tvSafetyScratchesPlayer.setTypeface(null, Typeface.NORMAL);
-            } else {
-                tvSafetyScratchesOpponent.setTypeface(null, Typeface.NORMAL);
-                tvSafetyScratchesPlayer.setTypeface(null, Typeface.NORMAL);
-            }
+            highlightBetterPlayerStats(tvSafetyScratchesPlayer, tvSafetyScratchesOpponent, player.getSafetyScratches(), opponent.getSafetyScratches());
 
             tvSafetyReturnsPlayer.setText(player.getSafetyReturns() + "");
             tvSafetyReturnsOpponent.setText(opponent.getSafetyReturns() + "");
 
-            if (player.getSafetyReturns() > opponent.getSafetyReturns()) {
-                tvSafetyReturnsOpponent.setTypeface(null, Typeface.NORMAL);
-                tvSafetyReturnsPlayer.setTypeface(null, Typeface.BOLD);
-            } else if (player.getSafetyReturns() < opponent.getSafetyReturns()) {
-                tvSafetyReturnsOpponent.setTypeface(null, Typeface.BOLD);
-                tvSafetyReturnsPlayer.setTypeface(null, Typeface.NORMAL);
-            } else {
-                tvSafetyReturnsOpponent.setTypeface(null, Typeface.NORMAL);
-                tvSafetyReturnsPlayer.setTypeface(null, Typeface.NORMAL);
-            }
+            highlightBetterPlayerStats(tvSafetyReturnsPlayer, tvSafetyReturnsOpponent, player.getSafetyReturns(), opponent.getSafetyReturns());
 
             tvSafetyEscapesPlayer.setText(player.getSafetyEscapes() + "");
             tvSafetyEscapesOpponent.setText(opponent.getSafetyEscapes() + "");
-
-            if (player.getSafetyEscapes() > opponent.getSafetyEscapes()) {
-                tvSafetyEscapesOpponent.setTypeface(null, Typeface.NORMAL);
-                tvSafetyEscapesPlayer.setTypeface(null, Typeface.BOLD);
-            } else if (player.getSafetyEscapes() < opponent.getSafetyEscapes()) {
-                tvSafetyEscapesOpponent.setTypeface(null, Typeface.BOLD);
-                tvSafetyEscapesPlayer.setTypeface(null, Typeface.NORMAL);
-            } else {
-                tvSafetyEscapesOpponent.setTypeface(null, Typeface.NORMAL);
-                tvSafetyEscapesPlayer.setTypeface(null, Typeface.NORMAL);
-            }
+            highlightBetterPlayerStats(tvSafetyEscapesPlayer, tvSafetyEscapesOpponent, player.getSafetyEscapes(), opponent.getSafetyEscapes());
 
             tvForcedErrorsOpponent.setText(opponent.getSafetyForcedErrors() + "");
             tvForcedErrorsPlayer.setText(player.getSafetyForcedErrors() + "");
-            if (player.getSafetyForcedErrors() > opponent.getSafetyForcedErrors()) {
-                tvForcedErrorsPlayer.setTypeface(null, Typeface.BOLD);
-                tvForcedErrorsOpponent.setTypeface(null, Typeface.NORMAL);
-            } else if (player.getSafetyForcedErrors() < opponent.getSafetyForcedErrors()) {
-                tvForcedErrorsPlayer.setTypeface(null, Typeface.NORMAL);
-                tvForcedErrorsOpponent.setTypeface(null, Typeface.BOLD);
-            } else {
-                tvForcedErrorsOpponent.setTypeface(null, Typeface.NORMAL);
-                tvForcedErrorsPlayer.setTypeface(null, Typeface.NORMAL);
-            }
+            highlightBetterPlayerStats(tvForcedErrorsPlayer, tvForcedErrorsOpponent, player.getSafetyForcedErrors(), opponent.getSafetyForcedErrors());
+        }
+    }
+
+    public static class RunOutsHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
+        final TextView tvBreakAndRunPlayer;
+        final TextView tvBreakAndRunOpponent;
+        final TextView tvMaxRunPlayer;
+        final TextView tvMaxRunOpponent;
+        final TextView tvFiveBallRunsPlayer;
+        final TextView tvFiveBallRunsOpponent;
+        final TextView tvEarlyWins;
+        final TextView tvEarlyWinsPlayer;
+        final TextView tvEarlyWinsOpponent;
+        TextView tvMaxBallRunsTitle;
+
+        public RunOutsHolder(View view) {
+            super(view);
+            tvBreakAndRunPlayer = (TextView) view.findViewById(R.id.tvMaxBallRunsPlayer);
+            tvBreakAndRunOpponent = (TextView) view.findViewById(R.id.tvMaxBallRunsOpponent);
+            tvMaxRunPlayer = (TextView) view.findViewById(R.id.tvTierOneRunsPlayer);
+            tvMaxRunOpponent = (TextView) view.findViewById(R.id.tvTierOneRunsOpponent);
+            tvFiveBallRunsPlayer = (TextView) view.findViewById(R.id.tvFiveBallRunsPlayer);
+            tvFiveBallRunsOpponent = (TextView) view.findViewById(R.id.tvFiveBallRunsOpponent);
+            tvEarlyWins = (TextView) view.findViewById(R.id.tvEarlyWinsTitle);
+            tvEarlyWinsPlayer = (TextView) view.findViewById(R.id.tvEarlyWinsPlayer);
+            tvEarlyWinsOpponent = (TextView) view.findViewById(R.id.tvEarlyWinsOpponent);
+
+            tvEarlyWins.setVisibility(View.GONE);
+            tvEarlyWinsPlayer.setVisibility(View.GONE);
+            tvEarlyWinsOpponent.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void bind(T player, T opponent) {
+            title.setText("Run Outs");
+            // Break and runs
+            tvBreakAndRunPlayer.setText(String.format("%d", player.getRunOuts()));
+            tvBreakAndRunOpponent.setText(String.format("%d", opponent.getRunOuts()));
+
+            // highlighting of the player who's doing better in this stat
+            highlightBetterPlayerStats(tvBreakAndRunPlayer, tvBreakAndRunOpponent, player.getRunOuts(), opponent.getRunOuts());
+
+            // table runs
+            tvMaxRunPlayer.setText(String.format("%d", player.getRunTierOne()));
+            tvMaxRunOpponent.setText(String.format("%d", opponent.getRunTierOne()));
+
+            // highlighting of the player who's doing better in this stat
+            highlightBetterPlayerStats(tvMaxRunPlayer, tvMaxRunOpponent, player.getRunTierOne(), opponent.getRunTierOne());
+
+            // 5+ ball runs
+            tvFiveBallRunsPlayer.setText(String.format("%d", player.getRunTierTwo()));
+            tvFiveBallRunsOpponent.setText(String.format("%d", opponent.getRunTierTwo()));
+
+            // highlighting of the player who's doing better in this stat
+            highlightBetterPlayerStats(tvFiveBallRunsPlayer, tvFiveBallRunsOpponent, player.getRunTierTwo(), opponent.getRunTierTwo());
+        }
+    }
+
+    public static class RunOutsWithEarlyWinsHolder<T extends AbstractPlayer & EarlyWins> extends RunOutsHolder<T> {
+        public RunOutsWithEarlyWinsHolder(View view) {
+            super(view);
+
+            tvEarlyWins.setVisibility(View.VISIBLE);
+            tvEarlyWinsPlayer.setVisibility(View.VISIBLE);
+            tvEarlyWinsOpponent.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void bind(T player, T opponent) {
+            super.bind(player, opponent);
+
+            tvEarlyWinsPlayer.setText(String.format("%d", player.getEarlyWins()));
+            tvEarlyWinsOpponent.setText(String.format("%d", opponent.getEarlyWins()));
+
+            // highlighting of the player who's doing better in this stat
+            highlightBetterPlayerStats(tvEarlyWinsPlayer, tvEarlyWinsOpponent, player.getEarlyWins(), opponent.getEarlyWins());
+        }
+    }
+
+    public static class BreaksHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
+        final TextView tvBreakBallsPlayer;
+        final TextView tvBreakBallsOpponent;
+        final TextView tvBreakWinsPlayer;
+        final TextView tvBreakWinsOpponent;
+        final TextView tvBreakContinuationsPlayer;
+        final TextView tvBreakContinuationsOpponent;
+        final TextView tvBreakTotalPlayer;
+        final TextView tvBreakTotalOpponent;
+        final TextView tvEarlyWinsPlayer;
+        final TextView tvEarlyWinsOpponent;
+        final TextView tvBreakScratchesPlayer;
+        final TextView tvBreakScratchesOpponent;
+        final TextView breakWinsTitle;
+
+        public BreaksHolder(View view, int gameBall) {
+            super(view);
+            tvBreakBallsPlayer = (TextView) view.findViewById(R.id.tvAvgBreakBallsPlayer);
+            tvBreakBallsOpponent = (TextView) view.findViewById(R.id.tvAvgBreakBallsOpponent);
+            tvBreakTotalPlayer = (TextView) view.findViewById(R.id.tvBreakTotalPlayer);
+            tvBreakTotalOpponent = (TextView) view.findViewById(R.id.tvBreakTotalOpponent);
+            tvBreakWinsPlayer = (TextView) view.findViewById(R.id.tvBreakWinsPlayer);
+            tvBreakWinsOpponent = (TextView) view.findViewById(R.id.tvBreakWinsOpponent);
+            tvBreakContinuationsPlayer = (TextView) view.findViewById(R.id.tvBreakContinuationsPlayer);
+            tvBreakContinuationsOpponent = (TextView) view.findViewById(R.id.tvBreakContinuationsOpponent);
+            tvBreakScratchesPlayer = (TextView) view.findViewById(R.id.tvBreakScratchesPlayer);
+            tvBreakScratchesOpponent = (TextView) view.findViewById(R.id.tvBreakScratchesOpponent);
+            tvEarlyWinsPlayer = (TextView) view.findViewById(R.id.tvEarlyWinsPlayer);
+            tvEarlyWinsOpponent = (TextView) view.findViewById(R.id.tvEarlyWinsOpponent);
+            breakWinsTitle = (TextView) view.findViewById(R.id.tvBreakWinsTitle);
+            breakWinsTitle.setText(gameBall + " on the break");
+
+            breakWinsTitle.setVisibility(View.GONE);
+            tvBreakWinsPlayer.setVisibility(View.GONE);
+            tvBreakWinsOpponent.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void bind(T player, T opponent) {
+            title.setText("Breaks");
+            // Average balls / break
+            tvBreakBallsPlayer.setText(player.getAvgBallsBreak());
+            tvBreakBallsOpponent.setText(opponent.getAvgBallsBreak());
+
+            // highlighting of the player who's doing better in this stat
+            highlightBetterPlayerStats(tvBreakBallsPlayer, tvBreakBallsOpponent, Double.parseDouble(player.getAvgBallsBreak()), Double.parseDouble(opponent.getAvgBallsBreak()));
+
+            // Successful breaks / breaks attempted
+            tvBreakTotalPlayer.setText(player.getBreakSuccesses() + "/" + player.getBreakAttempts());
+            tvBreakTotalOpponent.setText(opponent.getBreakSuccesses() + "/" + opponent.getBreakAttempts());
+
+            // Number of breakContinuations()
+            tvBreakContinuationsPlayer.setText(String.valueOf(player.getBreakContinuations()));
+            tvBreakContinuationsOpponent.setText(String.valueOf(opponent.getBreakContinuations()));
+            highlightBetterPlayerStats(tvBreakContinuationsPlayer, tvBreakContinuationsOpponent, player.getBreakContinuations(), opponent.getBreakContinuations());
+
+            tvBreakScratchesOpponent.setText(String.valueOf(opponent.getBreakScratches()));
+            tvBreakScratchesPlayer.setText(String.valueOf(player.getBreakScratches()));
+            // highlighting of the player who's doing better in this stat
+            highlightBetterPlayerStats(tvBreakScratchesPlayer, tvBreakScratchesOpponent, player.getBreakScratches(), opponent.getBreakScratches());
+        }
+    }
+
+    public static class BreaksHolderWithBreakWins<T extends AbstractPlayer & WinsOnBreak> extends BreaksHolder<T> {
+        public BreaksHolderWithBreakWins(View view, int gameBall) {
+            super(view, gameBall);
+
+            breakWinsTitle.setVisibility(View.VISIBLE);
+            tvBreakWinsPlayer.setVisibility(View.VISIBLE);
+            tvBreakWinsOpponent.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void bind(T player, T opponent) {
+            super.bind(player, opponent);
+
+            tvBreakWinsPlayer.setText(Integer.toString(player.getWinsOnBreak()));
+            tvBreakWinsOpponent.setText(Integer.toString(opponent.getWinsOnBreak()));
+            // highlighting of the player who's doing better in this stat
+            highlightBetterPlayerStats(tvBreakWinsPlayer, tvBreakWinsOpponent, player.getWinsOnBreak(), opponent.getWinsOnBreak());
+        }
+    }
+
+    public static class ApaPlayer<T extends AbstractPlayer & Apa> extends MatchInfoHolder<T> {
+        Button gameSummaryButton;
+        TextView tvInningsOpponent, tvDefensiveShotsPlayer,
+                tvDefensiveShotsOpponent, tvPointsPlayer, tvPointsOpponent;
+        TextView tvPointsTitle;
+        TextView tvMatchPointsPlayer, tvMatchPointsOpponent;
+        TextView tvRankPlayer, tvRankOpponent;
+
+        public ApaPlayer(View view) {
+            super(view);
+            title.setText("APA Stats");
+            tvPointsTitle = (TextView) view.findViewById(R.id.tvPointsTitle);
+            tvPointsTitle.setText("Games / games needed");
+
+            tvDefensiveShotsPlayer = (TextView) view.findViewById(R.id.tvDefensiveShotsPlayer);
+            tvPointsPlayer = (TextView) view.findViewById(R.id.tvPlayerPoints);
+
+            tvInningsOpponent = (TextView) view.findViewById(R.id.tvInningsOpponent);
+            tvDefensiveShotsOpponent = (TextView) view.findViewById(R.id.tvDefensiveShotsOpponent);
+            tvPointsOpponent = (TextView) view.findViewById(R.id.tvOpponentPoints);
+
+            tvMatchPointsOpponent = (TextView) view.findViewById(R.id.tvMatchPointsOpponent);
+            tvMatchPointsPlayer = (TextView) view.findViewById(R.id.tvMatchPointsPlayer);
+
+            tvRankOpponent = (TextView) view.findViewById(R.id.tvRankOpponent);
+            tvRankPlayer = (TextView) view.findViewById(R.id.tvRankPlayer);
+        }
+
+        @Override
+        public void bind(T player, T opponent) {
+            tvRankPlayer.setText(String.format("%d", player.getRank()));
+            tvRankOpponent.setText(String.format("%d", opponent.getRank()));
         }
     }
 }

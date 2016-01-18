@@ -89,12 +89,13 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onSelectMatch(long id) {
         Intent intent = new Intent(getActivity(), MatchInfoActivity.class);
-        intent.putExtra("matchId", id);
+        intent.putExtra(BaseActivity.ARG_MATCH_ID, id);
         startActivity(intent);
     }
 
     @Override
     public void onLongSelectMatch(long id) {
         Log.i("MatchListFragment", "Long selected match: " + id);
+        // // TODO: 1/16/2016 delete match here
     }
 }

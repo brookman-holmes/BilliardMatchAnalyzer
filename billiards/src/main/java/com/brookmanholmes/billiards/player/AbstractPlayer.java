@@ -142,6 +142,38 @@ public abstract class AbstractPlayer {
         return safetyForcedErrors;
     }
 
+    public int getRunOuts() {
+        return runOuts;
+    }
+
+    public int getRunTierOne() {
+        return runTierOne;
+    }
+
+    public int getRunTierTwo() {
+        return runTierTwo;
+    }
+
+    public int getBreakSuccesses() {
+        return breakSuccesses;
+    }
+
+    public int getBreakAttempts() {
+        return breakAttempts;
+    }
+
+    public int getBreakContinuations() {
+        return breakContinuations;
+    }
+
+    public int getBreakScratches() {
+        return breakScratches;
+    }
+
+    public int getBreakBallsMade() {
+        return breakBallsMade;
+    }
+
     /**
      * Combined stats functions
      */

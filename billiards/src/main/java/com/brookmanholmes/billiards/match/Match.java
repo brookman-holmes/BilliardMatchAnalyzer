@@ -96,12 +96,11 @@ public class Match<T extends AbstractPlayer> {
 
     public static class Builder {
         private String playerName, opponentName;
-        private int playerRank = 0, opponentRank = 0;
+        private int playerRank = 100, opponentRank = 100;
         private BreakType breakType = BreakType.ALTERNATE;
         private PlayerTurn playerTurn = PlayerTurn.PLAYER;
         private GameType gameType = GameType.BCA_EIGHT_BALL;
         private String location = "Sam's Billiards";
-        private PlayerController<?> playerController;
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;

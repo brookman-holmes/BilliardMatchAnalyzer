@@ -22,7 +22,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,7 @@ import com.brookmanholmes.billiards.match.Match;
 
 import java.util.List;
 
-public class CreateNewMatchActivity extends AppCompatActivity implements
+public class CreateNewMatchActivity extends BaseActivity implements
         PageFragmentCallbacks,
         ReviewFragment.Callbacks,
         ModelCallbacks,
@@ -127,7 +126,7 @@ public class CreateNewMatchActivity extends AppCompatActivity implements
         long matchId = databaseAdapter.insertMatch(match);
 
         Intent intent = new Intent(this, MatchInfoActivity.class);
-        intent.putExtra("matchId", matchId);
+        intent.putExtra(ARG_MATCH_ID, matchId);
 
         startActivity(intent);
     }

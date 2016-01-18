@@ -1,10 +1,11 @@
 package com.brookmanholmes.billiardmatchanalyzer;
 
 import android.content.Intent;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,7 +15,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
+    public static final String TAG = "MainActivity";
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.createMatch)
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         db = new DatabaseAdapter(this);
         db.open();
+
+        displayDb();
     }
 
     @Override
@@ -60,5 +65,9 @@ public class MainActivity extends AppCompatActivity {
     public void createNewMatch() {
         Intent intent = new Intent(this, CreateNewMatchActivity.class);
         startActivity(intent);
+    }
+
+    public void displayDb() {
+        Log.i(TAG, DatabaseUtils.dumpCursorToString(db.getMatches()));
     }
 }

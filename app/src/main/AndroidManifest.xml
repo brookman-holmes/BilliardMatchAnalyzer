@@ -27,7 +27,7 @@
         <activity
             android:name=".MatchInfoActivity"
             android:label="Match Info"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".MainActivity" />
 
     </application>
 
