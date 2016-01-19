@@ -1,16 +1,27 @@
 package com.brookmanholmes.billiards.player;
 
+import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
+
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
     WinsOnBreak winsOnBreak;
     int rank;
+    int points = 0;
 
     public ApaNineBallPlayer(String name, int rank) {
         super(name);
         this.rank = rank;
         winsOnBreak = new WinsOnBreakImp();
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
+    }
+
+    public int getPoints() {
+        return points;
     }
 
     @Override
@@ -34,8 +45,10 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
     }
 
     @Override
-    public int getMatchPoints(int opponentScore) {
-        return 0;
+    public int getMatchPoints(int opponentScore, int opponentRank) {
+        if (points == ApaRaceToHelper.apa9BallRaceTo(rank))
+            return 20 - ApaRaceToHelper.getMinimumMatchPointsEarned(opponentRank, opponentScore);
+        else return ApaRaceToHelper.getMinimumMatchPointsEarned(rank, points);
     }
 
     @Override

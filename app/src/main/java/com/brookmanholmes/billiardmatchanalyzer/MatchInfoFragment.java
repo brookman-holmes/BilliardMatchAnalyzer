@@ -1,6 +1,5 @@
 package com.brookmanholmes.billiardmatchanalyzer;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,24 +10,16 @@ import android.view.ViewGroup;
 
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.game.Turn;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class MatchInfoFragment extends Fragment {
     @Bind(R.id.scrollView)
     RecyclerView recyclerView;
     MatchInfoRecyclerAdapter<?> adapter;
     DatabaseAdapter db;
-    // TODO: Customize parameters
-    private OnListFragmentInteractionListener mListener;
     private long matchId;
 
     /**
@@ -72,45 +63,13 @@ public class MatchInfoFragment extends Fragment {
         return view;
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public MatchInfoRecyclerAdapter<?> createAdapter(Match<?> match) {
-        return null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction();
+    public void addTurn(Turn turn) {
+        adapter.addTurn(turn.getTableStatus(), turn.getTurnEnd(), turn.isScratch());
     }
 }
