@@ -38,8 +38,8 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     @Override
     public void onBindViewHolderCursor(ListItemHolder holder, Cursor cursor) {
         holder.container.setTag(getColumnId(cursor));
-        holder.infoButton.setTag(getColumnId(cursor));
-        holder.dateLoc.setText(getDateAndLocation(cursor));
+        holder.location.setText(getLocation(cursor));
+        holder.date.setText(getDate(cursor));
         holder.playerNames.setText(getPlayerNames(cursor));
         holder.breakType.setText(getBreakType(cursor));
         holder.gameType.setImageResource(getImageId(cursor));
@@ -49,7 +49,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     public ListItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ListItemHolder(LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.card_match_row, parent, false));
+                .inflate(R.layout.plain_match_row, parent, false));
     }
 
     private String getBreakType(Cursor cursor) {
@@ -71,16 +71,9 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         }
     }
 
-    private String getDateAndLocation(Cursor cursor) {
-        if (getLocation(cursor).equals(""))
-            return getDate(cursor);
-        else
-            return getDate(cursor) + "\n@ " + getLocation(cursor);
-    }
-
     private String getDate(Cursor cursor) {
         SimpleDateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat newFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+        SimpleDateFormat newFormat = new SimpleDateFormat("EEE, MMM d");
         Date date;
         try {
             date = oldFormat.parse(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_CREATED_ON)));
@@ -143,9 +136,9 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         @Bind(R.id.container)
         View container;
         @Bind(R.id.dateLoc)
-        TextView dateLoc;
-        @Bind(R.id.infoButton)
-        ImageView infoButton;
+        TextView location;
+        @Bind(R.id.date)
+        TextView date;
 
         public ListItemHolder(View itemView) {
             super(itemView);

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    tools:showIn="@layout/card_match_row">
+
+    <ImageView
+        android:id="@+id/imgGameType"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="false"
+        android:layout_centerVertical="true"
+        android:src="@drawable/nine_ball" />
+
+    <TextView
+        android:id="@+id/players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="16dp"
+        android:paddingStart="72dp"
+        android:text="Player vs Player"
+        android:textColor="@color/primary_text"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/breakType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateLoc"
+        android:paddingEnd="16dp"
+        android:paddingStart="72dp"
+        android:text="Alternate break"
+        android:textColor="@color/secondary_text"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/dateLoc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/players"
+        android:maxLines="2"
+        android:maxWidth="300dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="72dp"
+        android:text="Date @ Location"
+        android:textColor="@color/secondary_text"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingEnd="16dp"
+        android:text="Date"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="12sp" />
+</RelativeLayout>

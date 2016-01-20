@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.brookmanholmes.billiardmatchanalyzer.adapters.MatchListRecyclerAdapter;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.SimpleDividerItemDecoration;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.MatchListLoader;
@@ -40,7 +41,7 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_view, null);
+        View view = inflater.inflate(R.layout.fragment_list_view2, null);
         ButterKnife.bind(this, view);
 
         adapter = new MatchListRecyclerAdapter(this);
@@ -49,6 +50,7 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
         database.open();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         recyclerView.setAdapter(adapter);
 
         getLoaderManager().initLoader(LOADER_ID, getArguments(), this);
