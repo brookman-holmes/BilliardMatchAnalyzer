@@ -30,28 +30,36 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                style="@style/WizardFormLabel"
-                android:text="Player 1 Name" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_player_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/playerName"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:hint="Player 1 Name"
                 android:inputType="textCapWords"
                 android:saveEnabled="false" />
 
-            <TextView
-                style="@style/WizardFormLabel"
-                android:text="Player 2 Name" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_opponent_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/opponentName"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:hint="Player 2 Name"
                 android:inputType="textCapWords"
                 android:saveEnabled="false" />
+
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -3,8 +3,8 @@ package com.brookmanholmes.billiardmatchanalyzer;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
 
@@ -41,7 +41,7 @@ public class MatchInfoActivity extends BaseActivity {
 
 
     DatabaseAdapter db;
-    MatchInfoFragment infoFragment;
+    MatchInfoFragment infoFragment, infoFragmentWithCards;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,14 +53,13 @@ public class MatchInfoActivity extends BaseActivity {
         db = new DatabaseAdapter(this);
         db.open();
 
-        Log.i("MatchInfoActivity", "Match id: " + getMatchId());
         Match<?> match = db.getMatch(getMatchId());
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
 
         infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
-
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment).commit();
+        infoFragmentWithCards = MatchInfoFragment.createMatchInfoFragmentWithCardViews(getMatchId());
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, "listview").commit();
 
 
     }
@@ -75,7 +74,10 @@ public class MatchInfoActivity extends BaseActivity {
 
     @OnClick(R.id.addInning)
     public void addInningToMatch() {
-        infoFragment.addTurn(TurnList.getTurns().get(counter++));
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, infoFragmentWithCards);
+        transaction.addToBackStack("cardview");
+        transaction.commit();
     }
 
     private long getMatchId() {

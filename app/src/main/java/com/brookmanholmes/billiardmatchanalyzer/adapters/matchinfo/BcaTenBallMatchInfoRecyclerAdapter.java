@@ -8,9 +8,13 @@ import com.brookmanholmes.billiards.player.TenBallPlayer;
 /**
  * Created by Brookman Holmes on 1/17/2016.
  */
-public class BcaTenBallMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter<TenBallPlayer> {
-    public BcaTenBallMatchInfoRecyclerAdapter(Match<TenBallPlayer> match) {
+class BcaTenBallMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter<TenBallPlayer> {
+    BcaTenBallMatchInfoRecyclerAdapter(Match<TenBallPlayer> match) {
         super(match, 10);
+    }
+
+    BcaTenBallMatchInfoRecyclerAdapter(Match<TenBallPlayer> match, ViewType viewType) {
+        super(match, 10, viewType);
     }
 
     @Override

@@ -29,13 +29,18 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     static final int ITEM_BREAKS = 3;
     static final int ITEM_RUN_OUTS = 4;
     final int gameBall;
-    boolean viewTypeToggle = false;
+    ViewType viewTypeToggle = ViewType.LIST;
     Match<T> match;
 
-
-    public MatchInfoRecyclerAdapter(Match<T> match, int gameBall) {
+    MatchInfoRecyclerAdapter(Match<T> match, int gameBall) {
         this.match = match;
         this.gameBall = gameBall;
+
+    }
+
+    MatchInfoRecyclerAdapter(Match<T> match, int gameBall, ViewType viewType) {
+        this(match, gameBall);
+        viewTypeToggle = viewType;
     }
 
     public static <T extends AbstractPlayer> MatchInfoRecyclerAdapter<?> createMatchAdapter(Match<T> match) {
@@ -51,6 +56,24 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
                 return new ApaMatchInfoRecyclerAdapter<>((Match<ApaNineBallPlayer>) match);
             case APA_EIGHT_BALL:
                 return new ApaMatchInfoRecyclerAdapter<>((Match<ApaEightBallPlayer>) match);
+            default:
+                throw new InvalidGameTypeException(match.getGameStatus().gameType.toString());
+        }
+    }
+
+    public static <T extends AbstractPlayer> MatchInfoRecyclerAdapter<?> createMatchAdapterWithCardViews(Match<T> match) {
+        // this is probably fucking retarded?
+        switch (match.getGameStatus().gameType) {
+            case BCA_NINE_BALL:
+                return new BcaNineBallMatchInfoRecyclerAdapter((Match<NineBallPlayer>) match, ViewType.CARDS);
+            case BCA_EIGHT_BALL:
+                return new BcaEightBallMatchInfoRecyclerAdapter((Match<EightBallPlayer>) match, ViewType.CARDS);
+            case BCA_TEN_BALL:
+                return new BcaTenBallMatchInfoRecyclerAdapter((Match<TenBallPlayer>) match, ViewType.CARDS);
+            case APA_NINE_BALL:
+                return new ApaMatchInfoRecyclerAdapter<>((Match<ApaNineBallPlayer>) match, ViewType.CARDS);
+            case APA_EIGHT_BALL:
+                return new ApaMatchInfoRecyclerAdapter<>((Match<ApaEightBallPlayer>) match, ViewType.CARDS);
             default:
                 throw new InvalidGameTypeException(match.getGameStatus().gameType.toString());
         }
@@ -93,7 +116,7 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
 
     @LayoutRes
     int getLayoutResource(int viewType) {
-        if (viewTypeToggle) {
+        if (viewTypeToggle == ViewType.CARDS) {
             switch (viewType) {
                 case ITEM_RUN_OUTS:
                     return R.layout.card_run_outs;
@@ -141,6 +164,11 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
             default:
                 throw new IllegalArgumentException("No such view type");
         }
+    }
+
+    public enum ViewType {
+        CARDS,
+        LIST
     }
 
     public interface ListItemClickListener {

@@ -30,6 +30,14 @@ public class MatchInfoFragment extends Fragment {
     public MatchInfoFragment() {
     }
 
+    public static MatchInfoFragment createMatchInfoFragmentWithCardViews(long matchId) {
+        MatchInfoFragment fragment = createMatchInfoFragment(matchId);
+
+        fragment.getArguments().putBoolean("Card View", true);
+
+        return fragment;
+    }
+
     public static MatchInfoFragment createMatchInfoFragment(long matchId) {
         MatchInfoFragment fragment = new MatchInfoFragment();
 
@@ -44,7 +52,11 @@ public class MatchInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_view2, container, false);
+        View view;
+        if (getArguments().getBoolean("Card View", false)) {
+            view = inflater.inflate(R.layout.fragment_list_view, container, false);
+        } else
+            view = inflater.inflate(R.layout.fragment_list_view2, container, false);
         ButterKnife.bind(this, view);
 
         db = new DatabaseAdapter(getContext());
@@ -56,10 +68,16 @@ public class MatchInfoFragment extends Fragment {
             throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
         }
 
-        adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+
+        if (getArguments().getBoolean("Card View", false)) {
+            adapter = MatchInfoRecyclerAdapter.createMatchAdapterWithCardViews(db.getMatch(matchId));
+        } else {
+            adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
+            recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+        }
         recyclerView.setAdapter(adapter);
 
         return view;

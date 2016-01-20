@@ -10,11 +10,15 @@ import com.brookmanholmes.billiards.player.interfaces.Apa;
 /**
  * Created by Brookman Holmes on 1/17/2016.
  */
-public class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchInfoRecyclerAdapter<T> {
+class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchInfoRecyclerAdapter<T> {
     static final int ITEM_APA_STATS = 5;
 
-    public ApaMatchInfoRecyclerAdapter(Match<T> match) {
+    ApaMatchInfoRecyclerAdapter(Match<T> match) {
         super(match, match.getGameStatus().GAME_BALL);
+    }
+
+    ApaMatchInfoRecyclerAdapter(Match<T> match, ViewType viewType) {
+        super(match, match.getGameStatus().GAME_BALL, viewType);
     }
 
     @Override
@@ -33,7 +37,7 @@ public class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends
 
     @Override
     int getLayoutResource(int viewType) {
-        if (viewTypeToggle) {
+        if (viewTypeToggle == ViewType.CARDS) {
             switch (viewType) {
                 case ITEM_APA_STATS:
                     return R.layout.card_apa_stats;
