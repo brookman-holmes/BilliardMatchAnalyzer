@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/title"
+    android:alignmentMode="alignBounds"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:useDefaultMargins="true"
+    tools:showIn="@layout/card_shooting_pct">
+
+    <TextView
+        android:id="@+id/tvShootingPctPlayer"
+        style="@style/player_stats"
+        android:layout_column="0"
+        android:layout_gravity="center"
+        android:layout_row="0"
+        android:text=".000"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:id="@+id/shootingPctTitle"
+        style="@style/card_center_title"
+        android:layout_width="wrap_content"
+        android:layout_column="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="center"
+        android:layout_row="0"
+        android:text="Shooting percentage"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:id="@+id/tvShootingPctOpponent"
+        style="@style/player_stats"
+        android:layout_column="2"
+        android:layout_gravity="center"
+        android:layout_row="0"
+        android:text=".000"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:id="@+id/tvBallTotalPlayer"
+        style="@style/player_stats"
+        android:layout_column="0"
+        android:layout_gravity="center"
+        android:layout_row="2"
+        android:text="0/0"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:id="@+id/tvBallTotalTitle"
+        style="@style/card_center_title"
+        android:layout_column="1"
+        android:layout_gravity="center"
+        android:layout_row="2"
+        android:text="Shots made / shots"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:id="@+id/tvBallTotalOpponent"
+        style="@style/player_stats"
+        android:layout_column="2"
+        android:layout_gravity="center"
+        android:layout_row="2"
+        android:text="0/0"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:id="@+id/tvScratchesPlayer"
+        style="@style/player_stats"
+        android:layout_column="0"
+        android:layout_gravity="center"
+        android:layout_row="3"
+        android:text="0"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/tvScratchesTitle"
+        style="@style/card_center_title"
+        android:layout_column="1"
+        android:layout_gravity="center"
+        android:layout_row="3"
+        android:text="Scratches"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/tvScratchesOpponent"
+        style="@style/player_stats"
+        android:layout_alignBottom="@+id/tvScratchesTitle"
+        android:layout_column="2"
+        android:layout_gravity="center"
+        android:layout_row="3"
+        android:text="0"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/tvAvgBallsTurnPlayer"
+        style="@style/player_stats"
+        android:layout_column="0"
+        android:layout_gravity="center"
+        android:layout_row="1"
+        android:text="0"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/tvAvgBallsTitle"
+        style="@style/card_center_title"
+        android:layout_column="1"
+        android:layout_gravity="center"
+        android:layout_row="1"
+        android:text="Average balls / turn"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/tvAvgBallsTurnOpponent"
+        style="@style/player_stats"
+        android:layout_column="2"
+        android:layout_gravity="center"
+        android:layout_row="1"
+        android:text="0"
+        android:textColor="@color/secondary_text" />
+
+</GridLayout>

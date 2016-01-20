@@ -1,11 +1,13 @@
 package com.brookmanholmes.billiards.player;
 
 import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
+import com.brookmanholmes.billiards.player.interfaces.WinsOnBreak;
+import com.brookmanholmes.billiards.player.interfaces.WinsOnBreakImp;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
-public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
+public class ApaNineBallPlayer extends AbstractPlayer implements com.brookmanholmes.billiards.player.interfaces.Apa {
     WinsOnBreak winsOnBreak;
     int rank;
     int points = 0;

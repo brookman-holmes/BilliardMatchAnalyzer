@@ -13,7 +13,7 @@
 
         <include
             android:id="@+id/title"
-            layout="@layout/card_title"
+            layout="@layout/layout_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -34,7 +34,7 @@
 
         <include
             android:id="@+id/bottom_icons"
-            layout="@layout/card_bottom_row"
+            layout="@layout/layout_bottom_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/container2" />

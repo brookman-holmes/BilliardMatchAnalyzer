@@ -1,9 +1,9 @@
-package com.brookmanholmes.billiards.player;
+package com.brookmanholmes.billiards.player.interfaces;
 
 /**
  * Created by Brookman Holmes on 11/4/2015.
  */
-interface ConsecutiveFouls {
+public interface ConsecutiveFouls {
     void addFoul();
 
     void removeFouls();

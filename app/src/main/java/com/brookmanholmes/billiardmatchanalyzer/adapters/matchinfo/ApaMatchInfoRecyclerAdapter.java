@@ -5,7 +5,7 @@ import android.view.View;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.Apa;
+import com.brookmanholmes.billiards.player.interfaces.Apa;
 
 /**
  * Created by Brookman Holmes on 1/17/2016.
@@ -33,11 +33,20 @@ public class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends
 
     @Override
     int getLayoutResource(int viewType) {
-        switch (viewType) {
-            case ITEM_APA_STATS:
-                return R.layout.card_apa_stats;
-            default:
-                return super.getLayoutResource(viewType);
+        if (viewTypeToggle) {
+            switch (viewType) {
+                case ITEM_APA_STATS:
+                    return R.layout.card_apa_stats;
+                default:
+                    return super.getLayoutResource(viewType);
+            }
+        } else {
+            switch (viewType) {
+                case ITEM_APA_STATS:
+                    return R.layout.plain_apa_stats;
+                default:
+                    return super.getLayoutResource(viewType);
+            }
         }
     }
 

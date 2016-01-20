@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.Apa;
-import com.brookmanholmes.billiards.player.EarlyWins;
-import com.brookmanholmes.billiards.player.WinsOnBreak;
+import com.brookmanholmes.billiards.player.interfaces.Apa;
+import com.brookmanholmes.billiards.player.interfaces.EarlyWins;
+import com.brookmanholmes.billiards.player.interfaces.WinsOnBreak;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

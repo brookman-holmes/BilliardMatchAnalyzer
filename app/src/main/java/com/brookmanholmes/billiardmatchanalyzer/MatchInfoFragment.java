@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brookmanholmes.billiardmatchanalyzer.adapters.SimpleDividerItemDecoration;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.game.Turn;
@@ -43,7 +44,7 @@ public class MatchInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_view2, container, false);
         ButterKnife.bind(this, view);
 
         db = new DatabaseAdapter(getContext());
@@ -58,6 +59,7 @@ public class MatchInfoFragment extends Fragment {
         adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         recyclerView.setAdapter(adapter);
 
         return view;

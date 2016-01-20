@@ -81,8 +81,10 @@ public abstract class AbstractPlayer {
         if (scratch)
             breakScratches++;
         else {
-            if (ballsMade > 0)
+            if (ballsMade > 0) {
+                breakBallsMade += ballsMade;
                 breakSuccesses++;
+            }
 
             if (continuation)
                 breakContinuations++;
@@ -226,5 +228,90 @@ public abstract class AbstractPlayer {
         if (getShotsAttempted() > 0) {
             return pctf.format((double) getShotsSucceeded() / (double) getShotsAttempted());
         } else return ZERO_PERCENT;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractPlayer that = (AbstractPlayer) o;
+
+        if (safetyAttempts != that.safetyAttempts) return false;
+        if (safetySuccesses != that.safetySuccesses) return false;
+        if (safetyScratches != that.safetyScratches) return false;
+        if (safetyReturns != that.safetyReturns) return false;
+        if (safetyEscapes != that.safetyEscapes) return false;
+        if (safetyForcedErrors != that.safetyForcedErrors) return false;
+        if (breakSuccesses != that.breakSuccesses) return false;
+        if (breakAttempts != that.breakAttempts) return false;
+        if (breakContinuations != that.breakContinuations) return false;
+        if (breakScratches != that.breakScratches) return false;
+        if (breakBallsMade != that.breakBallsMade) return false;
+        if (shootingBallsMade != that.shootingBallsMade) return false;
+        if (shootingTurns != that.shootingTurns) return false;
+        if (shootingMisses != that.shootingMisses) return false;
+        if (shootingScratches != that.shootingScratches) return false;
+        if (runOuts != that.runOuts) return false;
+        if (runTierOne != that.runTierOne) return false;
+        if (runTierTwo != that.runTierTwo) return false;
+        if (gameTotal != that.gameTotal) return false;
+        if (gameWins != that.gameWins) return false;
+        return name.equals(that.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + safetyAttempts;
+        result = 31 * result + safetySuccesses;
+        result = 31 * result + safetyScratches;
+        result = 31 * result + safetyReturns;
+        result = 31 * result + safetyEscapes;
+        result = 31 * result + safetyForcedErrors;
+        result = 31 * result + breakSuccesses;
+        result = 31 * result + breakAttempts;
+        result = 31 * result + breakContinuations;
+        result = 31 * result + breakScratches;
+        result = 31 * result + breakBallsMade;
+        result = 31 * result + shootingBallsMade;
+        result = 31 * result + shootingTurns;
+        result = 31 * result + shootingMisses;
+        result = 31 * result + shootingScratches;
+        result = 31 * result + runOuts;
+        result = 31 * result + runTierOne;
+        result = 31 * result + runTierTwo;
+        result = 31 * result + gameTotal;
+        result = 31 * result + gameWins;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractPlayer{" +
+                "name='" + name + '\'' +
+                "\n safetyAttempts=" + safetyAttempts +
+                "\n safetySuccesses=" + safetySuccesses +
+                "\n safetyScratches=" + safetyScratches +
+                "\n safetyReturns=" + safetyReturns +
+                "\n safetyEscapes=" + safetyEscapes +
+                "\n safetyForcedErrors=" + safetyForcedErrors +
+                "\n breakSuccesses=" + breakSuccesses +
+                "\n breakAttempts=" + breakAttempts +
+                "\n breakContinuations=" + breakContinuations +
+                "\n breakScratches=" + breakScratches +
+                "\n breakBallsMade=" + breakBallsMade +
+                "\n shootingBallsMade=" + shootingBallsMade +
+                "\n shootingTurns=" + shootingTurns +
+                "\n shootingMisses=" + shootingMisses +
+                "\n shootingScratches=" + shootingScratches +
+                "\n runOuts=" + runOuts +
+                "\n runTierOne=" + runTierOne +
+                "\n runTierTwo=" + runTierTwo +
+                "\n gameTotal=" + gameTotal +
+                "\n gameWins=" + gameWins +
+                '}';
     }
 }

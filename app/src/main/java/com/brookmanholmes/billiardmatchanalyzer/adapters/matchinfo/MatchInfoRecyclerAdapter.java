@@ -29,6 +29,7 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     static final int ITEM_BREAKS = 3;
     static final int ITEM_RUN_OUTS = 4;
     final int gameBall;
+    boolean viewTypeToggle = false;
     Match<T> match;
 
 
@@ -92,19 +93,36 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
 
     @LayoutRes
     int getLayoutResource(int viewType) {
-        switch (viewType) {
-            case ITEM_RUN_OUTS:
-                return R.layout.card_run_outs;
-            case ITEM_BREAKS:
-                return R.layout.card_breaks;
-            case ITEM_MATCH_OVERVIEW:
-                return R.layout.card_match_overview;
-            case ITEM_SAFETIES:
-                return R.layout.card_safeties;
-            case ITEM_SHOOTING_PCT:
-                return R.layout.card_shooting_pct;
-            default:
-                throw new IllegalArgumentException("No such view type");
+        if (viewTypeToggle) {
+            switch (viewType) {
+                case ITEM_RUN_OUTS:
+                    return R.layout.card_run_outs;
+                case ITEM_BREAKS:
+                    return R.layout.card_breaks;
+                case ITEM_MATCH_OVERVIEW:
+                    return R.layout.card_match_overview;
+                case ITEM_SAFETIES:
+                    return R.layout.card_safeties;
+                case ITEM_SHOOTING_PCT:
+                    return R.layout.card_shooting_pct;
+                default:
+                    throw new IllegalArgumentException("No such view type");
+            }
+        } else {
+            switch (viewType) {
+                case ITEM_RUN_OUTS:
+                    return R.layout.plain_runs;
+                case ITEM_BREAKS:
+                    return R.layout.plain_breaks;
+                case ITEM_MATCH_OVERVIEW:
+                    return R.layout.plain_match_overview;
+                case ITEM_SAFETIES:
+                    return R.layout.plain_safeties;
+                case ITEM_SHOOTING_PCT:
+                    return R.layout.plain_shooting;
+                default:
+                    throw new IllegalArgumentException("No such view type");
+            }
         }
     }
 

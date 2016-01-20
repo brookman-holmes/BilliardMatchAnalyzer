@@ -1,11 +1,15 @@
 package com.brookmanholmes.billiards.player;
 
+import com.brookmanholmes.billiards.player.interfaces.ConsecutiveFoulsImp;
+import com.brookmanholmes.billiards.player.interfaces.EarlyWins;
+import com.brookmanholmes.billiards.player.interfaces.EarlyWinsImp;
+
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
-public class TenBallPlayer extends AbstractPlayer implements ConsecutiveFouls, EarlyWins {
+public class TenBallPlayer extends AbstractPlayer implements com.brookmanholmes.billiards.player.interfaces.ConsecutiveFouls, com.brookmanholmes.billiards.player.interfaces.EarlyWins {
     EarlyWins earlyWins;
-    ConsecutiveFouls consecutiveFouls;
+    com.brookmanholmes.billiards.player.interfaces.ConsecutiveFouls consecutiveFouls;
 
     public TenBallPlayer(String name) {
         super(name);

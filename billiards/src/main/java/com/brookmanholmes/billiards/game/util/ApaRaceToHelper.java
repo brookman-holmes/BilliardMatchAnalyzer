@@ -5,6 +5,8 @@ package com.brookmanholmes.billiards.game.util;
  * Created by helios on 1/9/2016.
  */
 public class ApaRaceToHelper {
+    private static int playerScore;
+
     public static int apa9BallRaceTo(int rank) {
         switch (rank) {
             case 1:
@@ -50,7 +52,6 @@ public class ApaRaceToHelper {
             }
         }
     }
-
 
     private static RaceTo playerRankIs2(int opponentRank) {
         return new RaceTo(2,opponentRank);
@@ -142,7 +143,6 @@ public class ApaRaceToHelper {
                 throw new IllegalArgumentException("Player rank must be between 1 and 9, inclusive");
         }
     }
-
 
     private static int minimumMatchPointsForSL1() {
         if (playerScoreLessThan(2))
@@ -312,27 +312,6 @@ public class ApaRaceToHelper {
             return 8;
     }
 
-    private static int minimumMatchPointsForSL8() {
-        if (playerScoreLessThan(13))
-            return 0;
-        else if (playerScoreLessThan(19))
-            return 1;
-        else if (playerScoreLessThan(26))
-            return 2;
-        else if (playerScoreLessThan(32))
-            return 3;
-        else if (playerScoreLessThan(39))
-            return 4;
-        else if (playerScoreLessThan(45))
-            return 5;
-        else if (playerScoreLessThan(52))
-            return 6;
-        else if (playerScoreLessThan(58))
-            return 7;
-        else
-            return 8;
-    }
-
     private static int minimumMatchPointsForSL9() {
         if (playerScoreLessThan(17))
             return 0;
@@ -353,8 +332,6 @@ public class ApaRaceToHelper {
         else
             return 8;
     }
-
-    private static int playerScore;
 
     private static void setPlayerScore(int score) {
         playerScore = score;

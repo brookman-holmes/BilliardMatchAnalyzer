@@ -15,7 +15,7 @@ import com.brookmanholmes.billiards.inning.InvalidBallException;
 import com.brookmanholmes.billiards.inning.TableStatus;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.Apa;
+import com.brookmanholmes.billiards.player.interfaces.Apa;
 
 import org.apache.commons.lang3.StringUtils;
 
