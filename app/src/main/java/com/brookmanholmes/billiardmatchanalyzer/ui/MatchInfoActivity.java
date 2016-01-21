@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer;
+package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BallStatus;

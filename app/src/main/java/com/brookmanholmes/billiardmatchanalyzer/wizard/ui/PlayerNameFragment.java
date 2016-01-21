@@ -21,15 +21,21 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PlayerNamePage;
+
+import java.util.List;
 
 public class PlayerNameFragment extends Fragment {
     private static final String ARG_KEY = "key";
@@ -38,8 +44,8 @@ public class PlayerNameFragment extends Fragment {
     private PageFragmentCallbacks mCallbacks;
     private String mKey;
     private PlayerNamePage mPage;
-    private TextView playerName;
-    private TextView opponentName;
+    private AutoCompleteTextView playerName, opponentName;
+    private List<String> names;
 
     public PlayerNameFragment() {
     }
@@ -60,6 +66,10 @@ public class PlayerNameFragment extends Fragment {
         Bundle args = getArguments();
         mKey = args.getString(ARG_KEY);
         mPage = (PlayerNamePage) mCallbacks.onGetPage(mKey);
+        DatabaseAdapter database = new DatabaseAdapter(getContext());
+        database.open();
+
+        names = database.getNames();
     }
 
     @Override
@@ -68,10 +78,15 @@ public class PlayerNameFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_player_names, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
 
-        playerName = ((TextView) rootView.findViewById(R.id.playerName));
+        ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.select_dialog_item, names);
+
+        playerName = ((AutoCompleteTextView) rootView.findViewById(R.id.playerName));
+        playerName.setAdapter(autoCompleteAdapter);
         playerName.setText(mPage.getData().getString(PlayerNamePage.PLAYER_NAME_KEY));
 
-        opponentName = ((TextView) rootView.findViewById(R.id.opponentName));
+        opponentName = ((AutoCompleteTextView) rootView.findViewById(R.id.opponentName));
+        opponentName.setAdapter(autoCompleteAdapter);
         opponentName.setText(mPage.getData().getString(PlayerNamePage.OPPONENT_NAME_KEY));
         return rootView;
     }
@@ -103,6 +118,7 @@ public class PlayerNameFragment extends Fragment {
 
     private TextWatcher textWatcher(final String key) {
         return new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -114,9 +130,20 @@ public class PlayerNameFragment extends Fragment {
 
             @Override
             public void afterTextChanged(final Editable editable) {
-                    // // TODO: 1/7/2016 add in a debounce here to prevent multiple firings for no reason
-                    mPage.getData().putString(key, editable.toString());
-                    mPage.notifyDataChanged();
+                // // TODO: 1/7/2016 add in a debounce here to prevent multiple firings for no reason
+                if (key.equals(PlayerNamePage.PLAYER_NAME_KEY)) {
+                    if (TextUtils.equals(editable.toString(), opponentName.getText().toString())) {
+                        playerName.setError("Players cannot have the same name");
+                    }
+                } else {
+                    if (TextUtils.equals(editable.toString(), playerName.getText().toString())) {
+                        opponentName.setError("Players cannot have the same name");
+                    }
+                }
+
+
+                mPage.getData().putString(key, editable.toString());
+                mPage.notifyDataChanged();
             }
         };
     }

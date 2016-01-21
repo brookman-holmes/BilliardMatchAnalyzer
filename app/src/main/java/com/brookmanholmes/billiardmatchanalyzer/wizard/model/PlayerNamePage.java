@@ -47,7 +47,8 @@ public class PlayerNamePage extends Page {
 
     @Override
     public boolean isCompleted() {
-        return !TextUtils.isEmpty(mData.getString(PLAYER_NAME_KEY)) && !TextUtils.isEmpty(mData.getString(OPPONENT_NAME_KEY));
+        return !TextUtils.isEmpty(mData.getString(PLAYER_NAME_KEY)) && !TextUtils.isEmpty(mData.getString(OPPONENT_NAME_KEY))
+                && !TextUtils.equals(mData.getString(PLAYER_NAME_KEY), mData.getString(OPPONENT_NAME_KEY));
     }
 
     @Override

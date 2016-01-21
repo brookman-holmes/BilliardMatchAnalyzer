@@ -25,24 +25,27 @@ import static com.brookmanholmes.billiards.game.util.BallStatus.ON_TABLE;
  */
 final public class TableStatus {
     final int GAME_BALL;
+    final GameType gameType;
     final private Map<Integer, BallStatus> table;
 
-    TableStatus(int size, int gameBall) throws InvalidBallException {
+    TableStatus(int size, int gameBall, GameType gameType) throws InvalidBallException {
         if (gameBall > size)
             throw new InvalidBallException("Game ball (" + gameBall
                     + ") is out of range (1-" + size + ")");
 
         GAME_BALL = gameBall;
+        this.gameType = gameType;
         table = new HashMap<>(size);
         setupTable(size, ON_TABLE);
     }
 
-    TableStatus(int size, int gameBall, List<Integer> ballsOnTable) throws InvalidBallException {
+    TableStatus(int size, int gameBall, GameType gameType, List<Integer> ballsOnTable) throws InvalidBallException {
         if (!ballsOnTable.contains(gameBall))
             throw new InvalidBallException("Game (" + gameBall +
                     ")ball not on table, balls on table:" + ballsOnTable.toString());
 
         this.GAME_BALL = gameBall;
+        this.gameType = gameType;
         table = new HashMap<>(size);
         setupTable(size, OFF_TABLE);
 
@@ -54,15 +57,15 @@ final public class TableStatus {
     public static TableStatus newTable(GameType gameType) throws InvalidGameTypeException {
         switch (gameType) {
             case APA_EIGHT_BALL:
-                return new TableStatus(15, 8);
+                return new TableStatus(15, 8, gameType);
             case BCA_EIGHT_BALL:
-                return new TableStatus(15, 8);
+                return new TableStatus(15, 8, gameType);
             case APA_NINE_BALL:
-                return new TableStatus(9, 9);
+                return new TableStatus(9, 9, gameType);
             case BCA_NINE_BALL:
-                return new TableStatus(9, 9);
+                return new TableStatus(9, 9, gameType);
             case BCA_TEN_BALL:
-                return new TableStatus(10, 10);
+                return new TableStatus(10, 10, gameType);
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }
@@ -71,15 +74,15 @@ final public class TableStatus {
     public static TableStatus newTable(GameType gameType, List<Integer> ballsOnTable) throws InvalidGameTypeException {
         switch (gameType) {
             case APA_EIGHT_BALL:
-                return new TableStatus(15, 8, ballsOnTable);
+                return new TableStatus(15, 8, gameType, ballsOnTable);
             case BCA_EIGHT_BALL:
-                return new TableStatus(15, 8, ballsOnTable);
+                return new TableStatus(15, 8, gameType, ballsOnTable);
             case APA_NINE_BALL:
-                return new TableStatus(9, 9, ballsOnTable);
+                return new TableStatus(9, 9, gameType, ballsOnTable);
             case BCA_NINE_BALL:
-                return new TableStatus(9, 9, ballsOnTable);
+                return new TableStatus(9, 9, gameType, ballsOnTable);
             case BCA_TEN_BALL:
-                return new TableStatus(10, 10, ballsOnTable);
+                return new TableStatus(10, 10, gameType, ballsOnTable);
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }
@@ -160,6 +163,10 @@ final public class TableStatus {
             if (table.get(ball) == ON_TABLE)
                 table.put(ball, OFF_TABLE);
         }
+    }
+
+    public GameType getGameType() {
+        return gameType;
     }
 
     public int size() {

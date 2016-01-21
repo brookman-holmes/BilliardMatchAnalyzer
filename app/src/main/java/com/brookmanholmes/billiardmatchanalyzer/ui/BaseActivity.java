@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer;
+package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.support.v7.app.AppCompatActivity;
 

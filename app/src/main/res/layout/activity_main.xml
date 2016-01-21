@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.brookmanholmes.billiardmatchanalyzer.MainActivity">
+    tools:context=".ui.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -33,6 +33,7 @@
         android:elevation="12dp"
         android:src="@android:drawable/ic_input_add"
         android:tint="@android:color/white"
-        app:borderWidth="0dp" />
+        app:borderWidth="0dp"
+        app:layout_behavior="com.brookmanholmes.billiardmatchanalyzer.ui.ScrollAwareFABBehavior" />
 
 </android.support.design.widget.CoordinatorLayout>

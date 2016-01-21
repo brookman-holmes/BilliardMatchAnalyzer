@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.brookmanholmes.billiardmatchanalyzer;
+package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +27,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.CreateNewMatchWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;

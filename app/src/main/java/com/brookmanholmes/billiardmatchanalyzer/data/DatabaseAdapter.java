@@ -20,7 +20,9 @@ import com.brookmanholmes.billiards.player.interfaces.Apa;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
@@ -55,7 +57,7 @@ public class DatabaseAdapter {
     }
 
     private static String tableStatusToString(TableStatus table) {
-        String tableStatus = "";
+        String tableStatus = table.getGameType().toString();
         for (int i = 1; i <= table.size(); i++) {
             tableStatus += table.getBallStatus(i).name() + ",";
         }
@@ -65,12 +67,11 @@ public class DatabaseAdapter {
 
     private static TableStatus stringToTableStatus(String tableInStringForm) {
         String[] ballStatuses = StringUtils.splitByWholeSeparator(tableInStringForm, ",");
-        TableStatus table = TableStatus.newTable(getGameTypeFromTableSize(ballStatuses.length));
+        TableStatus table = TableStatus.newTable(GameType.valueOf(ballStatuses[0]));
 
-        for (int i = 0; i < ballStatuses.length; i++) {
+        for (int i = 1; i < ballStatuses.length; i++) {
             table.setBallTo(BallStatus.valueOf(ballStatuses[i]), i);
         }
-
 
         return table;
     }
@@ -91,6 +92,19 @@ public class DatabaseAdapter {
     public DatabaseAdapter open() {
         database = databaseHelper.getReadableDatabase();
         return this;
+    }
+
+    public List<String> getNames() {
+        ArrayList<String> names = new ArrayList<>();
+        Cursor c = database.query(PLAYER_TABLE, new String[] {COLUMN_NAME}, null, null, COLUMN_NAME, null, null);
+
+        while (c.moveToNext()) {
+            names.add(c.getString(c.getColumnIndex(COLUMN_NAME)));
+        }
+
+        c.close();
+
+        return names;
     }
 
     public Match<?> getMatch(long id) {

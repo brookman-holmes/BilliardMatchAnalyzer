@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer;
+package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.MatchListRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.SimpleDividerItemDecoration;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;

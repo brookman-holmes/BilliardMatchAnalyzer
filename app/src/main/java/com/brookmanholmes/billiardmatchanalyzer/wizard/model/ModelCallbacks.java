@@ -16,9 +16,11 @@
 
 package com.brookmanholmes.billiardmatchanalyzer.wizard.model;
 
+import com.brookmanholmes.billiardmatchanalyzer.ui.MainActivity;
+
 /**
  * Callback interface connecting {@link Page}, {@link AbstractWizardModel}, and model container
- * objects (e.g. {@link com.brookmanholmes.billiardmatchanalyzer.MainActivity}.
+ * objects (e.g. {@link MainActivity}.
  */
 public interface ModelCallbacks {
     void onPageDataChanged(Page page);
