@@ -187,7 +187,7 @@ public abstract class AbstractPlayer {
 
     public String getAvgBallsTurn() {
         if (shootingTurns > 0) {
-            return avgf.format(((double) shootingBallsMade + (double) breakBallsMade) / (double) shootingTurns);
+            return avgf.format(((double) shootingBallsMade) / (double) shootingTurns);
         } else return ZERO;
     }
 
@@ -198,17 +198,17 @@ public abstract class AbstractPlayer {
     }
 
     public String getShootingPct() {
-        if (shootingBallsMade + shootingMisses > 0) {
-            return pctf.format((double) shootingBallsMade / ((double) shootingBallsMade + (double) shootingMisses));
+        if (getShootingAttempts() > 0) {
+            return pctf.format((double) shootingBallsMade / ((double) getShootingAttempts()));
         } else return ZERO_PERCENT;
     }
 
-    public int getShotsAttempted() {
-        return shootingBallsMade + safetyAttempts + breakAttempts + shootingMisses;
+    public int getShotAttemptsOfAllTypes() {
+        return getShootingAttempts() + getBreakAttempts() + getSafetyAttempts();
     }
 
-    public int getShotsSucceeded() {
-        return shootingBallsMade + safetySuccesses + breakSuccesses;
+    public int getShotsSucceededOfAllTypes() {
+        return getShootingBallsMade() + getBreakSuccesses() + getSafetySuccesses();
     }
 
     public String getAvgBallsBreak() {
@@ -219,17 +219,16 @@ public abstract class AbstractPlayer {
 
     public String getAggressivenessRating() {
         if (shootingBallsMade + shootingMisses + safetyAttempts > 0) {
-            return pctf.format((((double) shootingBallsMade + (double) shootingMisses) / ((double) shootingBallsMade + (double) shootingMisses + (double) safetyAttempts)));
+            return pctf.format((((double) getShootingAttempts()) / ((double) getShootingAttempts() + (double) safetyAttempts)));
         } else return ZERO_PERCENT;
 
     }
 
     public String getTrueShootingPct() {
-        if (getShotsAttempted() > 0) {
-            return pctf.format((double) getShotsSucceeded() / (double) getShotsAttempted());
+        if (getShotAttemptsOfAllTypes() > 0) {
+            return pctf.format((double) getShotsSucceededOfAllTypes() / (double) getShotAttemptsOfAllTypes());
         } else return ZERO_PERCENT;
     }
-
 
     @Override
     public boolean equals(Object o) {

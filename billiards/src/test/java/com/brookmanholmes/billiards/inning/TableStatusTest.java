@@ -164,7 +164,7 @@ public class TableStatusTest {
 
     @Test(expected = InvalidBallException.class)
     public void testConstructorThrowsException() {
-        tableStatus = new TableStatus(8, 9);
+        tableStatus = new TableStatus(8, 9, GameType.BCA_NINE_BALL);
     }
 
     @Test(expected = InvalidGameTypeException.class)

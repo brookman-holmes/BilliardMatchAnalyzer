@@ -158,4 +158,113 @@ public abstract class AbstractPlayerTest {
 
         assertThat(actual, is(expected));
     }
+
+    @Test
+    public void checkGetWinPctTextIsCorrect() {
+        assertThat(actual.getWinPct(), is(".000"));
+
+        actual.addGameWon();
+
+        assertThat(actual.getWinPct(), is("1.000"));
+
+        actual.addGameLost();
+
+        assertThat(actual.getWinPct(), is(".500"));
+    }
+
+    @Test
+    public void checkGetAvgBallsTurnIsCorrect() {
+        assertThat(actual.getAvgBallsTurn(), is("0"));
+
+        actual.addShootingBallsMade(5, false);
+        actual.addShootingTurn();
+
+        assertThat(actual.getAvgBallsTurn(), is("5"));
+    }
+
+    @Test
+    public void checkGetAvgBreakBallsIsCorrect() {
+        assertThat(actual.getAvgBallsBreak(), is("0"));
+
+        actual.addBreakShot(5, false, true);
+
+        assertThat(actual.getAvgBallsBreak(), is("0"));
+
+        actual.addBreakShot(5, false, false);
+
+        assertThat(actual.getAvgBallsBreak(), is("2.5"));
+    }
+
+    @Test
+    public void checkGetSafetyPctTextIsCorrect() {
+        assertThat(actual.getSafetyPct(), is(".000"));
+
+        actual.addSafety(false);
+
+        assertThat(actual.getSafetyPct(), is("1.000"));
+
+        actual.addSafetyAttempt(false);
+
+        assertThat(actual.getSafetyPct(), is(".500"));
+    }
+
+    @Test
+    public void checkGetShootingPctTextIsCorrect() {
+        assertThat(actual.getShootingPct(), is(".000"));
+
+        actual.addShootingBallsMade(4, false);
+
+        assertThat(actual.getShootingPct(), is("1.000"));
+
+        actual.addShootingMiss();
+
+        assertThat(actual.getShootingPct(), is(".800"));
+    }
+
+    @Test
+    public void getTotalShotsAttemptedReturns0() {
+        assertThat(actual.getShotAttemptsOfAllTypes(), is(0));
+    }
+
+    @Test
+    public void getTotalShotsAttemptedReturns10() {
+        actual.addBreakShot(3, false, false);
+        actual.addShootingBallsMade(8, false);
+        actual.addSafetyAttempt(true);
+
+        assertThat(actual.getShotAttemptsOfAllTypes(), is(10));
+
+
+        assertThat(actual.getShotsSucceededOfAllTypes(), is(9));
+    }
+
+    @Test
+    public void getAggressivenessRatingIsCorrect() {
+        assertThat(actual.getAggressivenessRating(), is(".000"));
+
+        actual.addShootingBallsMade(8, false);
+        actual.addBreakShot(2, true, false);
+
+        assertThat(actual.getAggressivenessRating(), is("1.000"));
+
+        actual.addSafety(false);
+        actual.addSafetyAttempt(true);
+
+        assertThat(actual.getAggressivenessRating(), is(".800"));
+    }
+
+    @Test
+    public void getTrueShootingPctRatingIsCorrect() {
+        assertThat(actual.getTrueShootingPct(), is(".000"));
+
+        actual.addShootingBallsMade(8, false);
+        actual.addBreakShot(2, true, false);
+        actual.addBreakShot(0, false, true);
+        actual.addShootingMiss();
+        actual.addSafety(false);
+        actual.addSafetyAttempt(true);
+
+        assertThat(actual.getTrueShootingPct(), is(".769"));
+    }
+
 }

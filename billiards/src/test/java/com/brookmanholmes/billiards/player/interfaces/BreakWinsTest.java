@@ -13,8 +13,14 @@ public class BreakWinsTest {
     WinsOnBreak winsOnBreak;
 
     @Before
-    public void setUp() {
+    public void initialize() {
         winsOnBreak = new WinsOnBreakImp();
+    }
+
+    @Test
+    public void objectIsPreparedCorrectly() {
+        assertThat(winsOnBreak.getWinsOnBreak(), is(0));
+        assertThat(winsOnBreak.getEarlyWins(), is(0));
     }
 
     @Test
@@ -22,12 +28,6 @@ public class BreakWinsTest {
         winsOnBreak.addWinOnBreak();
 
         assertThat(winsOnBreak.getWinsOnBreak(), is(1));
-    }
-
-    @Test
-    public void objectIsPreparedCorrectly() {
-        assertThat(winsOnBreak.getWinsOnBreak(), is(0));
-        assertThat(winsOnBreak.getEarlyWins(), is(0));
     }
 
     @Test

@@ -6,8 +6,8 @@ import com.brookmanholmes.billiards.player.TenBallPlayer;
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
-public class TenBallController extends PlayerController<TenBallPlayer> {
-    public TenBallController(Game game, String playerName, String opponentName) {
+class TenBallController extends PlayerController<TenBallPlayer> {
+    TenBallController(Game game, String playerName, String opponentName) {
         super(game);
         player1 = new TenBallPlayer(playerName);
         player2 = new TenBallPlayer(opponentName);

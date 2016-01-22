@@ -165,8 +165,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
             // highlighting of the player who's doing better in this stat
             highlightBetterPlayerStats(tvTSPPlayer, tvTSPOpponent, Double.parseDouble(player.getTrueShootingPct()), Double.parseDouble(opponent.getTrueShootingPct()));
 
-            tvTotalShotsPlayer.setText(player.getShotsSucceeded() + "/" + player.getShotsAttempted());
-            tvTotalShotsOpponent.setText(opponent.getShotsSucceeded() + "/" + opponent.getShotsAttempted());
+            tvTotalShotsPlayer.setText(player.getShotsSucceededOfAllTypes() + "/" + player.getShotAttemptsOfAllTypes());
+            tvTotalShotsOpponent.setText(opponent.getShotsSucceededOfAllTypes() + "/" + opponent.getShotAttemptsOfAllTypes());
         }
     }
 
