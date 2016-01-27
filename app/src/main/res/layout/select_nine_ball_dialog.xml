@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/addNewInningDialogBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/WizardPageTitle"
+        android:textSize="20sp" />
+
+    <GridLayout
+        android:id="@+id/ballGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:columnCount="3"
+        android:padding="16dp"
+        android:rowCount="3"
+        android:useDefaultMargins="true"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/one_ball" />
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/two_ball" />
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/three_ball" />
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/four_ball" />
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/five_ball" />
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/six_ball" />
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/seven_ball" />
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/eight_ball" />
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/one_ball" />
+
+    </GridLayout>
+</RelativeLayout>

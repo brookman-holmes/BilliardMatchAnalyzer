@@ -93,18 +93,6 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         switch (GameType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE)))) {
             case BCA_EIGHT_BALL:
                 return R.drawable.eight_ball;
-            case BCA_NINE_BALL:
-                return R.drawable.nine_ball;
-            case APA_EIGHT_BALL:
-                return R.drawable.eight_ball;
-            case APA_NINE_BALL:
-                return R.drawable.nine_ball;
-            case BCA_TEN_BALL:
-                return R.drawable.ten_ball;
-            case STRAIGHT_POOL:
-                return R.drawable.fourteen_ball;
-            case AMERICAN_ROTATION:
-                return R.drawable.fifteen_ball;
             default:
                 return R.drawable.eight_ball;
         }

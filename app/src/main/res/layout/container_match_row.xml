@@ -14,7 +14,7 @@
         android:layout_height="48dp"
         android:layout_alignParentEnd="false"
         android:layout_centerVertical="true"
-        android:src="@drawable/nine_ball" />
+        android:src="@drawable/one_ball" />
 
     <TextView
         android:id="@+id/players"

@@ -39,8 +39,6 @@ import java.util.List;
 
 public class PlayerNameFragment extends Fragment {
     private static final String ARG_KEY = "key";
-    final long DELAY = 200;
-    private long lastKeyPress;
     private PageFragmentCallbacks mCallbacks;
     private String mKey;
     private PlayerNamePage mPage;

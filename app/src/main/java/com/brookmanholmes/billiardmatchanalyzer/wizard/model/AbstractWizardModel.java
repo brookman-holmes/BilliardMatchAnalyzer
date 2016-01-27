@@ -29,14 +29,14 @@ import java.util.List;
  * To create an actual wizard model, extend this class and implement {@link #onNewRootPageList()}.
  */
 public abstract class AbstractWizardModel implements ModelCallbacks {
-    protected Context mContext;
+    protected Context context;
 
-    private List<ModelCallbacks> mListeners = new ArrayList<ModelCallbacks>();
-    private PageList mRootPageList;
+    private List<ModelCallbacks> listeners = new ArrayList<ModelCallbacks>();
+    private PageList rootPageList;
 
     public AbstractWizardModel(Context context) {
-        mContext = context;
-        mRootPageList = onNewRootPageList();
+        this.context = context;
+        rootPageList = onNewRootPageList();
     }
 
     /**
@@ -48,41 +48,41 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     public void onPageDataChanged(Page page) {
         // can't use for each because of concurrent modification (review fragment
         // can get added or removed and will register itself as a listener)
-        for (int i = 0; i < mListeners.size(); i++) {
-            mRootPageList.setPlayerNames(getPlayerName(), getOpponentName());
-            mListeners.get(i).onPageDataChanged(page);
+        for (int i = 0; i < listeners.size(); i++) {
+            rootPageList.setPlayerNames(getPlayerName(), getOpponentName());
+            listeners.get(i).onPageDataChanged(page);
         }
     }
 
     public String getPlayerName() {
-        return mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY) == null ? "" : mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY);
+        return rootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY) == null ? "" : rootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY);
     }
 
     public String getOpponentName() {
-        return mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY) == null ? "" : mRootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY);
+        return rootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY) == null ? "" : rootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY);
     }
 
     @Override
     public void onPageTreeChanged() {
         // can't use for each because of concurrent modification (review fragment
         // can get added or removed and will register itself as a listener)
-        for (int i = 0; i < mListeners.size(); i++) {
-            mListeners.get(i).onPageTreeChanged();
+        for (int i = 0; i < listeners.size(); i++) {
+            listeners.get(i).onPageTreeChanged();
         }
     }
 
     public Page findByKey(String key) {
-        return mRootPageList.findByKey(key);
+        return rootPageList.findByKey(key);
     }
 
     public void load(Bundle savedValues) {
         for (String key : savedValues.keySet()) {
-            mRootPageList.findByKey(key).resetData(savedValues.getBundle(key));
+            rootPageList.findByKey(key).resetData(savedValues.getBundle(key));
         }
     }
 
     public void registerListener(ModelCallbacks listener) {
-        mListeners.add(listener);
+        listeners.add(listener);
     }
 
     public Bundle save() {
@@ -99,11 +99,11 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
      */
     public List<Page> getCurrentPageSequence() {
         ArrayList<Page> flattened = new ArrayList<Page>();
-        mRootPageList.flattenCurrentPageSequence(flattened);
+        rootPageList.flattenCurrentPageSequence(flattened);
         return flattened;
     }
 
     public void unregisterListener(ModelCallbacks listener) {
-        mListeners.remove(listener);
+        listeners.remove(listener);
     }
 }

@@ -29,8 +29,8 @@ import android.widget.Button;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.CreateNewMatchWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.model.CreateNewMatchWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
@@ -50,69 +50,69 @@ public class CreateNewMatchActivity extends BaseActivity implements
         ReviewFragment.Callbacks,
         ModelCallbacks,
         View.OnClickListener {
-    private ViewPager mPager;
-    private MyPagerAdapter mPagerAdapter;
+    private ViewPager pager;
+    private MyPagerAdapter pagerAdapter;
 
-    private boolean mEditingAfterReview;
+    private boolean editingAfterReview;
 
-    private AbstractWizardModel mWizardModel = new CreateNewMatchWizardModel(this);
+    private AbstractWizardModel wizardModel = new CreateNewMatchWizardModel(this);
 
-    private boolean mConsumePageSelectedEvent;
+    private boolean consumePageSelectedEvent;
 
-    private Button mNextButton, mNextButtonReviewPage;
-    private Button mPrevButton;
+    private Button nextButton;
+    private Button prevButton;
 
-    private List<Page> mCurrentPageSequence;
-    private StepPagerStrip mStepPagerStrip;
+    private List<Page> currentPageSequence;
+    private StepPagerStrip stepPagerStrip;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_match);
 
         if (savedInstanceState != null) {
-            mWizardModel.load(savedInstanceState.getBundle("model"));
+            wizardModel.load(savedInstanceState.getBundle("model"));
         }
 
-        mWizardModel.registerListener(this);
+        wizardModel.registerListener(this);
 
-        mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(mPagerAdapter);
-        mStepPagerStrip = (StepPagerStrip) findViewById(R.id.strip);
-        mStepPagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
+        pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(pagerAdapter);
+        stepPagerStrip = (StepPagerStrip) findViewById(R.id.strip);
+        stepPagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
             @Override
             public void onPageStripSelected(int position) {
-                position = Math.min(mPagerAdapter.getCount() - 1, position);
-                if (mPager.getCurrentItem() != position) {
-                    mPager.setCurrentItem(position);
+                position = Math.min(pagerAdapter.getCount() - 1, position);
+                if (pager.getCurrentItem() != position) {
+                    pager.setCurrentItem(position);
                 }
             }
         });
 
-        mNextButton = (Button) findViewById(R.id.next_button);
-        mPrevButton = (Button) findViewById(R.id.prev_button);
+        nextButton = (Button) findViewById(R.id.next_button);
+        prevButton = (Button) findViewById(R.id.prev_button);
 
-        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                mStepPagerStrip.setCurrentPage(position);
+                stepPagerStrip.setCurrentPage(position);
 
-                if (mConsumePageSelectedEvent) {
-                    mConsumePageSelectedEvent = false;
+                if (consumePageSelectedEvent) {
+                    consumePageSelectedEvent = false;
                     return;
                 }
 
-                mEditingAfterReview = false;
+                editingAfterReview = false;
                 updateBottomBar();
             }
         });
 
-        mNextButton.setOnClickListener(this);
+        nextButton.setOnClickListener(this);
 
-        mPrevButton.setOnClickListener(new View.OnClickListener() {
+        prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+                pager.setCurrentItem(pager.getCurrentItem() - 1);
             }
         });
 
@@ -121,7 +121,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
     }
 
     private void createMatchAndLaunchMatchInfoActivity() {
-        Match match = MatchCreationHelper.createMatch(((ReviewFragment) mPagerAdapter.getPrimaryItem()).getCurrentReviewItems());
+        Match match = MatchCreationHelper.createMatch(((ReviewFragment) pagerAdapter.getPrimaryItem()).getCurrentReviewItems());
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
         databaseAdapter.open();
 
@@ -135,55 +135,55 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
     @Override
     public void onPageTreeChanged() {
-        mCurrentPageSequence = mWizardModel.getCurrentPageSequence();
+        currentPageSequence = wizardModel.getCurrentPageSequence();
         recalculateCutOffPage();
-        mStepPagerStrip.setPageCount(mCurrentPageSequence.size() + 1); // + 1 = review step
-        mPagerAdapter.notifyDataSetChanged();
+        stepPagerStrip.setPageCount(currentPageSequence.size() + 1); // + 1 = review step
+        pagerAdapter.notifyDataSetChanged();
         updateBottomBar();
     }
 
     private void updateBottomBar() {
-        int position = mPager.getCurrentItem();
-        if (position == mCurrentPageSequence.size()) {
-            mNextButton.setText("Create match");
-            mNextButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-            mNextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
+        int position = pager.getCurrentItem();
+        if (position == currentPageSequence.size()) {
+            nextButton.setText("Create match");
+            nextButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            nextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
         } else {
-            mNextButton.setText(mEditingAfterReview
+            nextButton.setText(editingAfterReview
                     ? "Create match"
                     : "Next");
-            mNextButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-            mNextButton.setTextAppearance(this, R.style.TextAppearanceUnfinished);
-            mNextButton.setEnabled(position != mPagerAdapter.getCutOffPage());
+            nextButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            nextButton.setTextAppearance(this, R.style.TextAppearanceUnfinished);
+            nextButton.setEnabled(position != pagerAdapter.getCutOffPage());
         }
 
-        mPrevButton.setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
+        prevButton.setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mWizardModel.unregisterListener(this);
+        wizardModel.unregisterListener(this);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBundle("model", mWizardModel.save());
+        outState.putBundle("model", wizardModel.save());
     }
 
     @Override
     public AbstractWizardModel onGetModel() {
-        return mWizardModel;
+        return wizardModel;
     }
 
     @Override
     public void onEditScreenAfterReview(String key) {
-        for (int i = mCurrentPageSequence.size() - 1; i >= 0; i--) {
-            if (mCurrentPageSequence.get(i).getKey().equals(key)) {
-                mConsumePageSelectedEvent = true;
-                mEditingAfterReview = true;
-                mPager.setCurrentItem(i);
+        for (int i = currentPageSequence.size() - 1; i >= 0; i--) {
+            if (currentPageSequence.get(i).getKey().equals(key)) {
+                consumePageSelectedEvent = true;
+                editingAfterReview = true;
+                pager.setCurrentItem(i);
                 updateBottomBar();
                 break;
             }
@@ -194,7 +194,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
     public void onPageDataChanged(Page page) {
         if (page.isRequired()) {
             if (recalculateCutOffPage()) {
-                mPagerAdapter.notifyDataSetChanged();
+                pagerAdapter.notifyDataSetChanged();
                 updateBottomBar();
             }
         }
@@ -202,37 +202,37 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
     @Override
     public Page onGetPage(String key) {
-        return mWizardModel.findByKey(key);
+        return wizardModel.findByKey(key);
     }
 
     @Override
     public void onClick(View v) {
-        if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {
-            if (mPagerAdapter.getPrimaryItem() instanceof ReviewFragment) {
+        if (pager.getCurrentItem() == currentPageSequence.size()) {
+            if (pagerAdapter.getPrimaryItem() instanceof ReviewFragment) {
                 createMatchAndLaunchMatchInfoActivity();
             }
         } else {
-            if (mEditingAfterReview) {
-                mPager.setCurrentItem(mPagerAdapter.getCount() - 1);
+            if (editingAfterReview) {
+                pager.setCurrentItem(pagerAdapter.getCount() - 1);
             } else {
-                mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+                pager.setCurrentItem(pager.getCurrentItem() + 1);
             }
         }
     }
 
     private boolean recalculateCutOffPage() {
         // Cut off the pager adapter at first required page that isn't completed
-        int cutOffPage = mCurrentPageSequence.size() + 1;
-        for (int i = 0; i < mCurrentPageSequence.size(); i++) {
-            Page page = mCurrentPageSequence.get(i);
+        int cutOffPage = currentPageSequence.size() + 1;
+        for (int i = 0; i < currentPageSequence.size(); i++) {
+            Page page = currentPageSequence.get(i);
             if (page.isRequired() && !page.isCompleted()) {
                 cutOffPage = i;
                 break;
             }
         }
 
-        if (mPagerAdapter.getCutOffPage() != cutOffPage) {
-            mPagerAdapter.setCutOffPage(cutOffPage);
+        if (pagerAdapter.getCutOffPage() != cutOffPage) {
+            pagerAdapter.setCutOffPage(cutOffPage);
             return true;
         }
 
@@ -375,11 +375,11 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
         @Override
         public Fragment getItem(int i) {
-            if (i >= mCurrentPageSequence.size()) {
+            if (i >= currentPageSequence.size()) {
                 return new ReviewFragment();
             }
 
-            return mCurrentPageSequence.get(i).createFragment();
+            return currentPageSequence.get(i).createFragment();
         }
 
         @Override
@@ -405,10 +405,10 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
         @Override
         public int getCount() {
-            if (mCurrentPageSequence == null) {
+            if (currentPageSequence == null) {
                 return 0;
             }
-            return Math.min(mCutOffPage + 1, mCurrentPageSequence.size() + 1);
+            return Math.min(mCutOffPage + 1, currentPageSequence.size() + 1);
         }
 
         public int getCutOffPage() {

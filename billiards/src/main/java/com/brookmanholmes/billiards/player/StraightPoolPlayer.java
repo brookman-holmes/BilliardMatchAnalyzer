@@ -1,12 +1,12 @@
 package com.brookmanholmes.billiards.player;
 
+import com.brookmanholmes.billiards.player.interfaces.ConsecutiveFouls;
 import com.brookmanholmes.billiards.player.interfaces.ConsecutiveFoulsImp;
-
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
-public class StraightPoolPlayer extends AbstractPlayer implements com.brookmanholmes.billiards.player.interfaces.ConsecutiveFouls {
-    com.brookmanholmes.billiards.player.interfaces.ConsecutiveFouls consecutiveFouls;
+public class StraightPoolPlayer extends AbstractPlayer implements ConsecutiveFouls {
+    ConsecutiveFouls consecutiveFouls;
 
     public StraightPoolPlayer(String name) {
         super(name);

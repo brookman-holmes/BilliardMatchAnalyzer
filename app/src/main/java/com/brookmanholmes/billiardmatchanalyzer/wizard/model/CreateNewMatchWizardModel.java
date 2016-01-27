@@ -1,12 +1,6 @@
-package com.brookmanholmes.billiardmatchanalyzer.wizard;
+package com.brookmanholmes.billiardmatchanalyzer.wizard.model;
 
 import android.content.Context;
-
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.FirstBreakPage;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.GameChoicePage;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PageList;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PlayerNamePage;
 
 /**
  * Created by Brookman Holmes on 1/7/2016.
