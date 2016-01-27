@@ -41,8 +41,8 @@ final public class TableStatus {
 
     TableStatus(int size, int gameBall, GameType gameType, List<Integer> ballsOnTable) throws InvalidBallException {
         if (!ballsOnTable.contains(gameBall))
-            throw new InvalidBallException("Game (" + gameBall +
-                    ")ball not on table, balls on table:" + ballsOnTable.toString());
+            throw new InvalidBallException("Game ball (" + gameBall + ") " +
+                    "not on table, balls on table:" + ballsOnTable.toString());
 
         this.GAME_BALL = gameBall;
         this.gameType = gameType;

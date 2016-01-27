@@ -102,6 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
             android:background="@color/colorPrimary"
+            android:elevation="4dp"
             android:foreground="?android:attr/selectableItemBackground"
             android:text="Add inning for"
             android:textColor="@android:color/white" />

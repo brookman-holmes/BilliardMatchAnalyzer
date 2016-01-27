@@ -10,14 +10,16 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
+import com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils;
 import com.brookmanholmes.billiards.match.Match;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
-public class MatchInfoActivity extends BaseActivity implements AddInningFragment.AddInningCallback {
+public class MatchInfoActivity extends BaseActivity {
     private static final String TAG = "MatchInfoActivity";
     @Bind(R.id.bottomsheet)
     BottomSheetLayout bottomSheetLayout;
@@ -31,10 +33,22 @@ public class MatchInfoActivity extends BaseActivity implements AddInningFragment
     TextView opponentName;
     @Bind(R.id.addInning)
     Button addInning;
-    boolean newGame = true;
 
     DatabaseAdapter db;
     MatchInfoFragment infoFragment;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_info);
@@ -51,7 +65,7 @@ public class MatchInfoActivity extends BaseActivity implements AddInningFragment
 
         infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, "listview").commit();
-        addInning.setText(addInning.getText().toString() + " Brookman");
+        addInning.setText("Add inning for " + MatchHelperUtils.getCurrentPlayersName(db.getMatch(getMatchId())));
     }
 
     @Override
@@ -63,8 +77,7 @@ public class MatchInfoActivity extends BaseActivity implements AddInningFragment
 
     @OnClick(R.id.addInning)
     public void addInning(View view) {
-        AddInningFragment.newInning(newGame).show(getSupportFragmentManager(), R.id.bottomsheet);
-        newGame = !newGame;
+        AddInningFragment.newInning(db.getMatch(getMatchId())).show(getSupportFragmentManager(), R.id.bottomsheet);
     }
 
 
@@ -72,8 +85,7 @@ public class MatchInfoActivity extends BaseActivity implements AddInningFragment
         return getIntent().getExtras().getLong(ARG_MATCH_ID);
     }
 
-    @Override
-    public void addInning() {
+    public void onEvent(AddInningFragment dialog) {
         bottomSheetLayout.dismissSheet();
     }
 }

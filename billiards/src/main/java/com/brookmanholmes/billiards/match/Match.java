@@ -9,7 +9,6 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.inning.GameTurn;
 import com.brookmanholmes.billiards.inning.TableStatus;
 import com.brookmanholmes.billiards.inning.TurnEnd;
-import com.brookmanholmes.billiards.inning.TurnEndOptions;
 import com.brookmanholmes.billiards.inning.helpers.TurnEndHelper;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.PlayerPair;
@@ -37,7 +36,6 @@ public class Match<T extends AbstractPlayer> {
         matchId = 0;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
-        turnEndHelper = TurnEndHelper.newTurnEndHelper(game.getGameType());
     }
 
     public long getMatchId() {
@@ -79,10 +77,6 @@ public class Match<T extends AbstractPlayer> {
 
     void updateGameState(Turn turn) {
         gameStatuses.add(game.addTurn(turn));
-    }
-
-    public TurnEndOptions getTurnEndOptions(TableStatus nextTurn) {
-        return turnEndHelper.create(game.getGameStatus(), nextTurn);
     }
 
     @Override

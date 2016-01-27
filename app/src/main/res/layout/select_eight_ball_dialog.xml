@@ -16,11 +16,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
         android:layout_centerHorizontal="true"
-        android:columnCount="3"
+        android:columnCount="5"
         android:padding="16dp"
         android:rowCount="3"
         android:useDefaultMargins="true"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/one_ball"
@@ -76,5 +76,40 @@
             android:layout_height="54dp"
             android:background="@drawable/nine_ball" />
 
+        <ImageView
+            android:id="@+id/ten_ball"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/ten_ball" />
+
+        <ImageView
+            android:id="@+id/eleven_ball"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/eleven_ball" />
+
+        <ImageView
+            android:id="@+id/twelve_ball"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/twelve_ball" />
+
+        <ImageView
+            android:id="@+id/thirteen_ball"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/thirteen_ball" />
+
+        <ImageView
+            android:id="@+id/fourteen_ball"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/fourteen_ball" />
+
+        <ImageView
+            android:id="@+id/fifteen_ball"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/fifteen_ball" />
     </GridLayout>
 </RelativeLayout>
