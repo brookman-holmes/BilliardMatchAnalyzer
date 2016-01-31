@@ -176,6 +176,18 @@ public abstract class AbstractPlayer {
         return breakBallsMade;
     }
 
+    public void addBreakAndRun() {
+        runOuts++;
+    }
+
+    public void addTableRun() {
+        runTierOne++;
+    }
+
+    public void addFourBallRun() {
+        runTierTwo++;
+    }
+
     /**
      * Combined stats functions
      */

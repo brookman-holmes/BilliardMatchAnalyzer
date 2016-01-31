@@ -59,6 +59,21 @@
             style="@style/radio_button_style"
             android:text="Give Shot Back" />
 
+        <RadioButton
+            android:id="@+id/breakMissRB"
+            style="@style/radio_button_style"
+            android:text="Miss" />
+
+        <RadioButton
+            android:id="@+id/continueGameRB"
+            style="@style/radio_button_style"
+            android:text="Continue Game" />
+
+        <RadioButton
+            android:id="@+id/illegalBreakRB"
+            style="@style/radio_button_style"
+            android:text="Illegal Break" />
+
     </RadioGroup>
 
     <Switch

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/addNewInningDialogBox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,59 +23,104 @@
         android:useDefaultMargins="true"
         android:visibility="invisible">
 
-        <ImageView
+
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/one_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/one_ball" />
+            android:background="@drawable/one_ball"
+            app:border_color="#2196F3"
 
-        <ImageView
+            app:shadow="true"
+            app:shadow_color="#000000"
+            app:shadow_radius="10" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/two_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/two_ball" />
+            android:background="@drawable/two_ball"
+            app:border_color="#2196F3"
 
-        <ImageView
+            app:shadow="true"
+            app:shadow_color="#000000"
+            app:shadow_radius="10" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/three_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/three_ball" />
+            android:background="@drawable/three_ball"
+            app:border_color="#2196F3"
 
-        <ImageView
+            app:shadow="true"
+            app:shadow_color="#000000"
+            app:shadow_radius="10" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/four_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/four_ball" />
+            android:background="@drawable/four_ball"
+            app:border_color="#2196F3"
 
-        <ImageView
+            app:shadow="true"
+            app:shadow_color="#000000"
+            app:shadow_radius="10" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/five_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/five_ball" />
+            android:background="@drawable/five_ball"
+            app:border_color="#2196F3"
 
-        <ImageView
+            app:shadow="true"
+            app:shadow_color="#000000"
+            app:shadow_radius="10" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/six_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/six_ball" />
+            android:background="@drawable/six_ball"
+            app:border_color="#2196F3"
+            app:shadow="true"
+            app:shadow_color="#000000"
+            app:shadow_radius="10" />
 
-        <ImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/seven_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/seven_ball" />
+            android:background="@drawable/seven_ball"
+            app:border_color="#2196F3"
 
-        <ImageView
+            app:shadow="true"
+            app:shadow_color="#000000"
+            app:shadow_radius="10" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/eight_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/eight_ball" />
+            android:background="@drawable/eight_ball"
+            app:border_color="#2196F3"
 
-        <ImageView
+            app:shadow="true"
+            app:shadow_color="#000000"
+            app:shadow_radius="10" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/nine_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/nine_ball" />
+            android:background="@drawable/nine_ball"
+            app:border_color="#2196F3"
+
+            app:shadow="true"
+            app:shadow_color="#000000"
+            app:shadow_radius="10" />
 
     </GridLayout>
 </RelativeLayout>

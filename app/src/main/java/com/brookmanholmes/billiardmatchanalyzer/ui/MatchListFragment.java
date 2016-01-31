@@ -14,9 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.ListItemClickListener;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.MatchListRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.SimpleDividerItemDecoration;
-import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.MatchListLoader;
 
@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * A placeholder fragment containing a simple view.
  */
 public class MatchListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        MatchInfoRecyclerAdapter.ListItemClickListener {
+        ListItemClickListener {
     private static int LOADER_ID = 100;
 
     @Bind(R.id.scrollView)

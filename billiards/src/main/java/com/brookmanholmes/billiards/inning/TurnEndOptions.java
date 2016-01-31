@@ -18,7 +18,7 @@ public class TurnEndOptions {
     public final boolean reBreak;
     public final boolean breakMiss;
 
-    TurnEnd defaultCheck;
+    public TurnEnd defaultCheck;
 
     TurnEndOptions(Builder builder) {
         safety = builder.safety;

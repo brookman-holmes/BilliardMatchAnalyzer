@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
-import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
@@ -27,9 +26,9 @@ import butterknife.OnLongClick;
  * Created by Brookman Holmes on 1/13/2016.
  */
 public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRecyclerAdapter.ListItemHolder> {
-    private MatchInfoRecyclerAdapter.ListItemClickListener listener;
+    private ListItemClickListener listener;
 
-    public MatchListRecyclerAdapter(MatchInfoRecyclerAdapter.ListItemClickListener listener) {
+    public MatchListRecyclerAdapter(ListItemClickListener listener) {
         super(null);
         setHasStableIds(true);
         this.listener = listener;

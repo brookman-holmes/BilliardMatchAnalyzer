@@ -13,19 +13,21 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.inning.InvalidBallException;
 import com.brookmanholmes.billiards.inning.TableStatus;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils.GAME_TYPE_KEY;
-import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils.PLAYER_NAME_KEY;
-import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils.getLayoutByGameType;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.PLAYER_NAME_KEY;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.convertIdToBall;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.getLayoutByGameType;
 
 /**
  * Created by Brookman Holmes on 1/23/2016.
@@ -83,8 +85,20 @@ public class SelectBreakBallsDialog extends Fragment {
     @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball, R.id.nine_ball,
             R.id.ten_ball, R.id.eleven_ball, R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball})
-    public void onBallClick(View view) {
-        setBallStatus(convertIdToBall(view.getId()));
+    public void onBallClick(CircularImageView view) {
+        setBallStatus(MatchDialogHelperUtils.convertIdToBall(view.getId()));
+
+        if (tableStatus.getBallStatus(convertIdToBall(view.getId())) == BallStatus.MADE_ON_BREAK) {
+            MatchDialogHelperUtils.setViewToBallMade(view);
+            Log.i(TAG, "Ball made: " + convertIdToBall(view.getId()));
+        } else if (tableStatus.getBallStatus(convertIdToBall(view.getId())) == BallStatus.DEAD_ON_BREAK) {
+            MatchDialogHelperUtils.setViewToBallDead(view);
+            Log.i(TAG, "Ball dead: " + convertIdToBall(view.getId()));
+        } else {
+            MatchDialogHelperUtils.setViewToBallOnTable(view);
+            Log.i(TAG, "Ball on table: " + convertIdToBall(view.getId()));
+        }
+
         EventBus.getDefault().post(new BreakStatus(tableStatus));
     }
 
@@ -101,43 +115,6 @@ public class SelectBreakBallsDialog extends Fragment {
                 break;
             default:
                 Log.i(TAG, "This probably shouldn't be called and I'm not sure how to handle it if so...");
-        }
-    }
-
-    private int convertIdToBall(int id) {
-        switch (id) {
-            case R.id.one_ball:
-                return 1;
-            case R.id.two_ball:
-                return 2;
-            case R.id.three_ball:
-                return 3;
-            case R.id.four_ball:
-                return 4;
-            case R.id.five_ball:
-                return 5;
-            case R.id.six_ball:
-                return 6;
-            case R.id.seven_ball:
-                return 7;
-            case R.id.eight_ball:
-                return 8;
-            case R.id.nine_ball:
-                return 9;
-            case R.id.ten_ball:
-                return 10;
-            case R.id.eleven_ball:
-                return 11;
-            case R.id.twelve_ball:
-                return 12;
-            case R.id.thirteen_ball:
-                return 13;
-            case R.id.fourteen_ball:
-                return 14;
-            case R.id.fifteen_ball:
-                return 15;
-            default:
-                throw new InvalidBallException("This ball does not exist");
         }
     }
 

@@ -113,6 +113,19 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
         }
     }
 
+    public <S extends Number> void highlightPlayerStat(TextView playerStatView, TextView opponentStatView, S playerStat, S opponentStat) {
+        if (Double.compare(playerStat.doubleValue(), opponentStat.doubleValue()) == -1) {
+            playerStatView.setTypeface(null, Typeface.BOLD);
+            opponentStatView.setTypeface(null, Typeface.NORMAL);
+        } else if (Double.compare(playerStat.doubleValue(), opponentStat.doubleValue()) == 1) {
+            opponentStatView.setTypeface(null, Typeface.BOLD);
+            playerStatView.setTypeface(null, Typeface.NORMAL);
+        } else {
+            playerStatView.setTypeface(null, Typeface.NORMAL);
+            opponentStatView.setTypeface(null, Typeface.NORMAL);
+        }
+    }
+
     public abstract void bind(T player, T opponent);
 
     public static class MatchOverviewHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
@@ -217,7 +230,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
             tvScratchesOpponent.setText(String.valueOf(opponent.getShootingScratches()));
 
             // highlight the player with fewer scratches
-            highlightBetterPlayerStats(tvScratchesPlayer, tvScratchesOpponent, player.getShootingScratches(), opponent.getShootingScratches());
+            highlightPlayerStat(tvScratchesPlayer, tvScratchesOpponent, player.getShootingScratches(), opponent.getShootingScratches());
         }
     }
 
@@ -267,7 +280,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
             tvSafetyScratchesOpponent.setText(opponent.getSafetyScratches() + "");
             tvSafetyScratchesPlayer.setText(player.getSafetyScratches() + "");
 
-            highlightBetterPlayerStats(tvSafetyScratchesPlayer, tvSafetyScratchesOpponent, player.getSafetyScratches(), opponent.getSafetyScratches());
+            highlightPlayerStat(tvSafetyScratchesPlayer, tvSafetyScratchesOpponent, player.getSafetyScratches(), opponent.getSafetyScratches());
 
             tvSafetyReturnsPlayer.setText(player.getSafetyReturns() + "");
             tvSafetyReturnsOpponent.setText(opponent.getSafetyReturns() + "");
@@ -280,7 +293,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
 
             tvForcedErrorsOpponent.setText(opponent.getSafetyForcedErrors() + "");
             tvForcedErrorsPlayer.setText(player.getSafetyForcedErrors() + "");
-            highlightBetterPlayerStats(tvForcedErrorsPlayer, tvForcedErrorsOpponent, player.getSafetyForcedErrors(), opponent.getSafetyForcedErrors());
+            highlightPlayerStat(tvForcedErrorsPlayer, tvForcedErrorsOpponent, player.getSafetyForcedErrors(), opponent.getSafetyForcedErrors());
         }
     }
 
@@ -419,7 +432,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends Recycler
             tvBreakScratchesOpponent.setText(String.valueOf(opponent.getBreakScratches()));
             tvBreakScratchesPlayer.setText(String.valueOf(player.getBreakScratches()));
             // highlighting of the player who's doing better in this stat
-            highlightBetterPlayerStats(tvBreakScratchesPlayer, tvBreakScratchesOpponent, player.getBreakScratches(), opponent.getBreakScratches());
+            highlightPlayerStat(tvBreakScratchesPlayer, tvBreakScratchesOpponent, player.getBreakScratches(), opponent.getBreakScratches());
         }
     }
 

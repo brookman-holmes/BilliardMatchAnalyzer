@@ -11,7 +11,6 @@ import com.brookmanholmes.billiards.inning.TableStatus;
 import com.brookmanholmes.billiards.inning.TurnEnd;
 import com.brookmanholmes.billiards.inning.helpers.TurnEndHelper;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.PlayerPair;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 
 import java.util.ArrayList;
@@ -26,14 +25,13 @@ public class Match<T extends AbstractPlayer> {
     TurnEndHelper turnEndHelper;
     String location;
     Game game;
-    List<PlayerPair<?>> players = new ArrayList<>();
     List<GameStatus> gameStatuses = new ArrayList<>();
-    List<GameTurn> turns = new ArrayList<>();
-    List<GameTurn> undoneTurns = new ArrayList<>();
+    List<Turn> turns = new ArrayList<>();
+    List<Turn> undoneTurns = new ArrayList<>();
 
     Match(Builder builder, PlayerController<T> playerController) {
         location = builder.location;
-        matchId = 0;
+        matchId = builder.id;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
     }
@@ -62,17 +60,28 @@ public class Match<T extends AbstractPlayer> {
         return playerController.getPlayer2();
     }
 
-    public GameTurn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
-        GameTurn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus);
+    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
+        Turn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus);
 
         updatePlayerStats(turn);
         updateGameState(turn);
 
+        turns.add(turn);
+
         return turn;
     }
 
+    public void addTurn(Turn turn) {
+        updatePlayerStats(turn);
+        updateGameState(turn);
+    }
+
     void updatePlayerStats(Turn turn) {
-        players.add(playerController.updatePlayerStats(game.getGameStatus(), turn));
+
+    }
+
+    public int getTurnCount() {
+        return turns.size();
     }
 
     void updateGameState(Turn turn) {
@@ -95,6 +104,7 @@ public class Match<T extends AbstractPlayer> {
         private PlayerTurn playerTurn = PlayerTurn.PLAYER;
         private GameType gameType = GameType.BCA_EIGHT_BALL;
         private String location = "Sam's Billiards";
+        private long id;
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;
@@ -124,6 +134,11 @@ public class Match<T extends AbstractPlayer> {
 
         public Builder setLocation(String location) {
             this.location = location;
+            return this;
+        }
+
+        public Builder setMatchId(long id) {
+            this.id = id;
             return this;
         }
     }

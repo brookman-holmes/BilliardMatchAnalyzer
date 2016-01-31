@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.AddInningFragment;
-import com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils;
+import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.inning.TableStatus;
 
@@ -23,8 +23,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils.GAME_TYPE_KEY;
-import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils.getLayoutByGameType;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.BALLS_ON_TABLE_KEY;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.convertIdToBall;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.getLayoutByGameType;
 
 /**
  * Created by Brookman Holmes on 1/23/2016.
@@ -61,6 +63,7 @@ public class SelectBallsDialog extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gameType = GameType.valueOf(getArguments().getString(GAME_TYPE_KEY));
+        tableStatus = TableStatus.newTable(gameType, getArguments().getIntegerArrayList(BALLS_ON_TABLE_KEY));
     }
 
     @Nullable
@@ -68,7 +71,7 @@ public class SelectBallsDialog extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutByGameType(gameType), container, false);
         ButterKnife.bind(this, view);
-        title.setText("Select balls made by " + getArguments().getString(MatchHelperUtils.PLAYER_NAME_KEY, "--"));
+        title.setText("Select balls made by " + getArguments().getString(MatchDialogHelperUtils.PLAYER_NAME_KEY, "--"));
 
         view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -88,18 +91,45 @@ public class SelectBallsDialog extends Fragment {
         return view;
     }
 
+    @Nullable
     @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
-            R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball, R.id.nine_ball})
+            R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball, R.id.nine_ball,
+            R.id.ten_ball, R.id.eleven_ball, R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball})
     public void onBallClick(View view) {
+        setBallStatus(convertIdToBall(view.getId()));
+
+        if (tableStatus.getBallStatus(convertIdToBall(view.getId())) == com.brookmanholmes.billiards.game.util.BallStatus.MADE) {
+            MatchDialogHelperUtils.setViewToBallMade(view);
+            Log.i(TAG, "Ball made: " + convertIdToBall(view.getId()));
+        } else if (tableStatus.getBallStatus(convertIdToBall(view.getId())) == com.brookmanholmes.billiards.game.util.BallStatus.DEAD) {
+            MatchDialogHelperUtils.setViewToBallDead(view);
+            Log.i(TAG, "Ball dead: " + convertIdToBall(view.getId()));
+        } else {
+            MatchDialogHelperUtils.setViewToBallOnTable(view);
+            Log.i(TAG, "Ball on table: " + convertIdToBall(view.getId()));
+        }
+
         EventBus.getDefault().post(new BallStatus(tableStatus));
     }
 
-    public void onEvent(SelectBreakBallsDialog.BreakStatus update) {
-        Log.i(TAG, "SelectBreakBallsDialog.BreakStatus called in " + TAG);
+    public void onEvent(AddInningFragment.Update update) {
+        this.tableStatus = update.tableStatus;
     }
 
-    public void onEvent(AddInningFragment.Update update) {
-        Log.i(TAG, "SelectBallsDialog.Update called");
+    private void setBallStatus(int ball) {
+        switch (tableStatus.getBallStatus(ball)) {
+            case ON_TABLE:
+                tableStatus.setBallTo(com.brookmanholmes.billiards.game.util.BallStatus.MADE, ball);
+                break;
+            case MADE:
+                tableStatus.setBallTo(com.brookmanholmes.billiards.game.util.BallStatus.DEAD, ball);
+                break;
+            case DEAD:
+                tableStatus.setBallTo(com.brookmanholmes.billiards.game.util.BallStatus.ON_TABLE, ball);
+                break;
+            default:
+                Log.i(TAG, "This probably shouldn't be called and I'm not sure how to handle it if so...");
+        }
     }
 
     public static class BallStatus {

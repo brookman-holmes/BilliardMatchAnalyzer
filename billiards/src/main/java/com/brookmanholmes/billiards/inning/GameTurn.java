@@ -59,4 +59,40 @@ public class GameTurn implements com.brookmanholmes.billiards.game.Turn {
     public TableStatus getTableStatus() {
         return tableStatus;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GameTurn gameTurn = (GameTurn) o;
+
+        if (scratch != gameTurn.scratch) return false;
+        if (matchId != gameTurn.matchId) return false;
+        if (inningNumber != gameTurn.inningNumber) return false;
+        if (!tableStatus.equals(gameTurn.tableStatus)) return false;
+        return turnEnd == gameTurn.turnEnd;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = tableStatus.hashCode();
+        result = 31 * result + turnEnd.hashCode();
+        result = 31 * result + (scratch ? 1 : 0);
+        result = 31 * result + (int) (matchId ^ (matchId >>> 32));
+        result = 31 * result + inningNumber;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GameTurn{" +
+                "tableStatus=" + tableStatus +
+                "\n turnEnd=" + turnEnd +
+                "\n scratch=" + scratch +
+                "\n matchId=" + matchId +
+                "\n inningNumber=" + inningNumber +
+                '}';
+    }
 }

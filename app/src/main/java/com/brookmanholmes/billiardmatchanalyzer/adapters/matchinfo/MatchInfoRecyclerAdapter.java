@@ -35,7 +35,6 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     MatchInfoRecyclerAdapter(Match<T> match, int gameBall) {
         this.match = match;
         this.gameBall = gameBall;
-
     }
 
     MatchInfoRecyclerAdapter(Match<T> match, int gameBall, ViewType viewType) {
@@ -171,8 +170,4 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
         LIST
     }
 
-    public interface ListItemClickListener {
-        void onSelectMatch(long id);
-        void onLongSelectMatch(long id);
-    }
 }

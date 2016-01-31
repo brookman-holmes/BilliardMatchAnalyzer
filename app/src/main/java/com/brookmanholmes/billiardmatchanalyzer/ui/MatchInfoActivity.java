@@ -3,14 +3,14 @@ package com.brookmanholmes.billiardmatchanalyzer.ui;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils;
+import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
+import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.match.Match;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 
@@ -65,14 +65,7 @@ public class MatchInfoActivity extends BaseActivity {
 
         infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, "listview").commit();
-        addInning.setText("Add inning for " + MatchHelperUtils.getCurrentPlayersName(db.getMatch(getMatchId())));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_match_info, menu);
-        return true;
+        setBottomBarText();
     }
 
     @OnClick(R.id.addInning)
@@ -85,7 +78,15 @@ public class MatchInfoActivity extends BaseActivity {
         return getIntent().getExtras().getLong(ARG_MATCH_ID);
     }
 
-    public void onEvent(AddInningFragment dialog) {
+    public void onEvent(AddInningFragment.AddTurnToMatchInfo turnEndSelected) {
+        Turn turn = infoFragment.addTurn(turnEndSelected.tableStatus, turnEndSelected.turnEnd, turnEndSelected.scratch);
+        db.insertInning(turn, getMatchId(), db.getMatch(getMatchId()).getTurnCount());
         bottomSheetLayout.dismissSheet();
+
+        setBottomBarText();
+    }
+
+    public void setBottomBarText() {
+        addInning.setText("Add turn for " + MatchDialogHelperUtils.getCurrentPlayersName(db.getMatch(getMatchId())));
     }
 }

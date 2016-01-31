@@ -67,7 +67,7 @@ public abstract class CursorRecyclerAdapter<ListItemHolder extends android.suppo
     }
 
     /**
-     * This method will move the Cursor to the correct position and call
+     * This addWinOnBreak will move the Cursor to the correct position and call
      * {@link #onBindViewHolderCursor(android.support.v7.widget.RecyclerView.ViewHolder,
      * android.database.Cursor)}.
      *
@@ -175,7 +175,7 @@ public abstract class CursorRecyclerAdapter<ListItemHolder extends android.suppo
 
     /**
      * <p>Converts the cursor into a CharSequence. Subclasses should override this
-     * method to convert their results. The default implementation returns an
+     * addWinOnBreak to convert their results. The default implementation returns an
      * empty String for null values or the default String representation of
      * the value.</p>
      *
@@ -194,10 +194,10 @@ public abstract class CursorRecyclerAdapter<ListItemHolder extends android.suppo
      * {@link android.widget.FilterQueryProvider}.
      * If no provider is specified, the current cursor is not filtered and returned.
      * <p/>
-     * After this method returns the resulting cursor is passed to {@link #changeCursor(Cursor)}
+     * After this addWinOnBreak returns the resulting cursor is passed to {@link #changeCursor(Cursor)}
      * and the previous cursor is closed.
      * <p/>
-     * This method is always executed on a background thread, not on the
+     * This addWinOnBreak is always executed on a background thread, not on the
      * application's main thread (or UI thread.)
      * <p/>
      * Contract: when constraint is null or empty, the original results,
@@ -240,7 +240,7 @@ public abstract class CursorRecyclerAdapter<ListItemHolder extends android.suppo
      * Sets the query filter provider used to filter the current Cursor.
      * The provider's
      * {@link android.widget.FilterQueryProvider#runQuery(CharSequence)}
-     * method is invoked when filtering is requested by a client of
+     * addWinOnBreak is invoked when filtering is requested by a client of
      * this adapter.
      *
      * @param filterQueryProvider the filter query provider or null to remove it

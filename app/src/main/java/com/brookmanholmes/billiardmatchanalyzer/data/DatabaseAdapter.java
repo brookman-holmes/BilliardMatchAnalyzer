@@ -11,8 +11,9 @@ import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.inning.InvalidBallException;
+import com.brookmanholmes.billiards.inning.GameTurn;
 import com.brookmanholmes.billiards.inning.TableStatus;
+import com.brookmanholmes.billiards.inning.TurnEnd;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.interfaces.Apa;
@@ -57,9 +58,12 @@ public class DatabaseAdapter {
     }
 
     private static String tableStatusToString(TableStatus table) {
-        String tableStatus = table.getGameType().toString();
+        String tableStatus = table.getGameType().toString() + ",";
         for (int i = 1; i <= table.size(); i++) {
-            tableStatus += table.getBallStatus(i).name() + ",";
+            tableStatus += table.getBallStatus(i).name();
+
+            if (i != table.size())
+                tableStatus += ",";
         }
 
         return tableStatus;
@@ -74,19 +78,6 @@ public class DatabaseAdapter {
         }
 
         return table;
-    }
-
-    private static GameType getGameTypeFromTableSize(int size) {
-        switch (size) {
-            case 9:
-                return GameType.APA_NINE_BALL;
-            case 10:
-                return GameType.BCA_TEN_BALL;
-            case 15:
-                return GameType.BCA_EIGHT_BALL;
-            default:
-                throw new InvalidBallException("Invalid size: " + size);
-        }
     }
 
     public DatabaseAdapter open() {
@@ -136,6 +127,9 @@ public class DatabaseAdapter {
         Match<?> match = createMatchFromCursor(c);
 
         c.close();
+
+        for (Turn turn : getMatchInnings(id))
+            match.addTurn(turn);
 
         return match;
     }
@@ -267,5 +261,35 @@ public class DatabaseAdapter {
         inningValues.put(COLUMN_INNING_NUMBER, inningId);
 
         return database.insert(INNINGS_TABLE, null, inningValues);
+    }
+
+    public List<Turn> getMatchInnings(long id) {
+        List<Turn> innings = new ArrayList<>();
+
+        Cursor c = database.query(
+                INNINGS_TABLE,
+                null,
+                COLUMN_MATCH_ID + "=?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                COLUMN_INNING_NUMBER + " ASC");
+
+        while (c.moveToNext()) {
+            innings.add(buildTurnFromCursor(c));
+        }
+        c.close();
+
+        return innings;
+    }
+
+    public Turn buildTurnFromCursor(Cursor cursor) {
+        return new GameTurn(
+                cursor.getInt(cursor.getColumnIndex(COLUMN_INNING_NUMBER)),
+                cursor.getLong(cursor.getColumnIndex(COLUMN_MATCH_ID)),
+                cursor.getInt(cursor.getColumnIndex(COLUMN_SCRATCH)) == 1,
+                TurnEnd.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TURN_END))),
+                stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS)))
+        );
     }
 }

@@ -33,4 +33,5 @@ dependencies {
     compile 'com.flipboard:bottomsheet-core:1.5.0'
     compile 'com.flipboard:bottomsheet-commons:1.5.0'
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.mikhaellopez:circularimageview:2.1.1'
 }

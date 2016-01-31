@@ -13,6 +13,8 @@ import com.brookmanholmes.billiardmatchanalyzer.adapters.SimpleDividerItemDecora
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.game.Turn;
+import com.brookmanholmes.billiards.inning.TableStatus;
+import com.brookmanholmes.billiards.inning.TurnEnd;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -90,7 +92,7 @@ public class MatchInfoFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    public void addTurn(Turn turn) {
-        adapter.addTurn(turn.getTableStatus(), turn.getTurnEnd(), turn.isScratch());
+    public Turn addTurn(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
+        return adapter.addTurn(tableStatus, turnEnd, scratch);
     }
 }

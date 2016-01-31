@@ -10,12 +10,12 @@ import android.support.annotation.NonNull;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
     private static DatabaseHelper sInstance;
 
     /**
      * Constructor should be private to prevent direct instantiation.
-     * make call to static method "getInstance()" instead.
+     * make call to static addWinOnBreak "getInstance()" instead.
      */
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

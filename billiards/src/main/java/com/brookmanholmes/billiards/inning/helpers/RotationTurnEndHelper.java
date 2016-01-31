@@ -25,4 +25,10 @@ class RotationTurnEndHelper extends TurnEndHelper {
     boolean showSafety() {
         return super.showSafety() && nextInning.getDeadBalls() == 0;
     }
+
+    // // TODO: 1/29/2016 add in a test to make sure that push shot doesn't show when making the 9 on the break
+    @Override
+    boolean showPush() {
+        return super.showPush() && !showWin();
+    }
 }

@@ -15,12 +15,12 @@
  */
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,37 +30,30 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.ui.dialogs.SelectBallsDialog;
 import com.brookmanholmes.billiardmatchanalyzer.ui.dialogs.SelectBreakBallsDialog;
 import com.brookmanholmes.billiardmatchanalyzer.ui.dialogs.SelectTurnEndDialog;
-import com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PageList;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SelectBallsPage;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SelectBreakBallsPage;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.TurnEndPage;
+import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.StepPagerStrip;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.inning.TableStatus;
+import com.brookmanholmes.billiards.inning.TurnEnd;
 import com.brookmanholmes.billiards.match.Match;
 import com.flipboard.bottomsheet.commons.BottomSheetFragment;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils.BALLS_ON_TABLE_KEY;
-import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils.GAME_TYPE_KEY;
-import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchHelperUtils.NEW_GAME_KEY;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.BALLS_ON_TABLE_KEY;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.NEW_GAME_KEY;
 
 /**
  * Created by Brookman Holmes on 1/23/2016.
  */
-public class AddInningFragment extends BottomSheetFragment implements ModelCallbacks {
+public class AddInningFragment extends BottomSheetFragment {
     private static final String TAG = "AddInningFragment";
     @Bind(R.id.pager)
     ViewPager pager;
@@ -71,14 +64,12 @@ public class AddInningFragment extends BottomSheetFragment implements ModelCallb
     @Bind(R.id.strip)
     StepPagerStrip stepPagerStrip;
     MyPagerAdapter pagerAdapter;
-    AbstractWizardModel wizardModel;
-    boolean consumePageSelectedEvent;
-    List<Page> currentPageSequence;
 
     TableStatus tableStatus;
+    SelectTurnEndDialog.TurnEndSelected turnEndSelected;
 
     public static AddInningFragment newInning(Match<?> match) {
-        Bundle args = MatchHelperUtils.createBundleFromMatch(match);
+        Bundle args = MatchDialogHelperUtils.createBundleFromMatch(match);
 
         AddInningFragment fragment = new AddInningFragment();
         fragment.setArguments(args);
@@ -100,15 +91,6 @@ public class AddInningFragment extends BottomSheetFragment implements ModelCallb
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean isNewGame = getArguments().getBoolean(NEW_GAME_KEY, false);
-
-        wizardModel = getModel(isNewGame);
-
-        if (savedInstanceState != null) {
-            wizardModel.load(savedInstanceState.getBundle("model"));
-        }
-        wizardModel.registerListener(this);
-
         tableStatus = TableStatus.newTable(GameType.valueOf(getArguments().getString(GAME_TYPE_KEY)),
                 getArguments().getIntegerArrayList(BALLS_ON_TABLE_KEY));
     }
@@ -118,8 +100,6 @@ public class AddInningFragment extends BottomSheetFragment implements ModelCallb
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_inning, container, false);
         ButterKnife.bind(this, view);
-
-        wizardModel.registerListener(this);
 
         pagerAdapter = new MyPagerAdapter(getChildFragmentManager());
         pager.setAdapter(pagerAdapter);
@@ -137,114 +117,54 @@ public class AddInningFragment extends BottomSheetFragment implements ModelCallb
             @Override
             public void onPageSelected(int position) {
                 stepPagerStrip.setCurrentPage(position);
-
-                if (consumePageSelectedEvent) {
-                    consumePageSelectedEvent = false;
-                    return;
-                }
-
                 updateBottomBar();
             }
         });
 
-        onPageTreeChanged();
         updateBottomBar();
         return view;
     }
 
-    @Override
-    public void onPageTreeChanged() {
-        currentPageSequence = wizardModel.getCurrentPageSequence();
-        recalculateCutOffPage();
-        stepPagerStrip.setPageCount(currentPageSequence.size());
-        pagerAdapter.notifyDataSetChanged();
-        updateBottomBar();
-    }
-
     private void updateBottomBar() {
-        int position = pager.getCurrentItem() + 1;
-        if (position == currentPageSequence.size()) {
+        if (pager.getCurrentItem() + 1 == pagerAdapter.getCount()) {
             nextButton.setText("Add inning");
-            nextButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            nextButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
             nextButton.setTextAppearance(getContext(), R.style.TextAppearanceFinish);
         } else {
             nextButton.setText("Next");
-            nextButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            nextButton.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
             nextButton.setTextAppearance(getContext(), R.style.TextAppearanceUnfinished);
-            nextButton.setEnabled(position != pagerAdapter.getCutOffPage());
         }
 
-        prevButton.setVisibility(position <= 1 ? View.INVISIBLE : View.VISIBLE);
+        prevButton.setVisibility(pager.getCurrentItem() <= 0 ? View.INVISIBLE : View.VISIBLE);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        wizardModel.unregisterListener(this);
+    public void onEvent(SelectBreakBallsDialog.BreakStatus breakStatus) {
+        this.tableStatus = breakStatus.tableStatus;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBundle("model", wizardModel.save());
-    }
-
-    @Override
-    public void onPageDataChanged(Page page) {
-        if (page.isRequired()) {
-            if (recalculateCutOffPage()) {
-                pagerAdapter.notifyDataSetChanged();
-                updateBottomBar();
-            }
-        }
-    }
-
-    private boolean recalculateCutOffPage() {
-        // Cut off the pager adapter at first required page that isn't completed
-        int cutOffPage = currentPageSequence.size() + 1;
-        for (int i = 0; i < currentPageSequence.size(); i++) {
-            Page page = currentPageSequence.get(i);
-            if (page.isRequired() && !page.isCompleted()) {
-                cutOffPage = i;
-                break;
-            }
-        }
-
-        if (pagerAdapter.getCutOffPage() != cutOffPage) {
-            pagerAdapter.setCutOffPage(cutOffPage);
-            return true;
-        }
-
-        return false;
-    }
-
-    public void onEvent(SelectBreakBallsDialog.BreakStatus update) {
-        Log.i(TAG, "SelectBreakBallsDialog.BreakStatus called in " + TAG);
+    public void onEvent(SelectBallsDialog.BallStatus ballStatus) {
+        this.tableStatus = ballStatus.tableStatus;
     }
 
     public void onEvent(SelectTurnEndDialog.TurnEndSelected turnEndSelected) {
-        Log.i(TAG, "SelectTurnEndDialog.TurnEndSelected called in " + TAG);
-        EventBus.getDefault().post(new Update(tableStatus));
+        Log.i(TAG, "turnEndSelected called");
+        this.turnEndSelected = turnEndSelected;
     }
 
     @OnClick(R.id.next_button)
     public void nextPage(TextView textView) {
         if (textView.getText().equals("Add inning"))
-            EventBus.getDefault().post(this);
-
-        pager.setCurrentItem(pager.getCurrentItem() + 1);
-
+            EventBus.getDefault().post(new AddTurnToMatchInfo(tableStatus, turnEndSelected.turnEnd, turnEndSelected.scratch));
+        else {
+            pager.setCurrentItem(pager.getCurrentItem() + 1);
+            EventBus.getDefault().post(new Update(tableStatus));
+        }
     }
 
     @OnClick(R.id.prev_button)
     public void previousPage() {
         pager.setCurrentItem(pager.getCurrentItem() - 1);
-    }
-
-    private AbstractWizardModel getModel(boolean isNewGame) {
-        if (isNewGame)
-            return new AddInningWizardWithBreak(getContext());
-        else return new AddInningWizard(getContext());
     }
 
     public static class Update {
@@ -255,83 +175,52 @@ public class AddInningFragment extends BottomSheetFragment implements ModelCallb
         }
     }
 
-    public class MyPagerAdapter extends FragmentPagerAdapter {
-        private int mCutOffPage;
-        private Fragment mPrimaryItem;
+    public static class AddTurnToMatchInfo {
+        public final TableStatus tableStatus;
+        public final TurnEnd turnEnd;
+        public final boolean scratch;
 
+        public AddTurnToMatchInfo(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
+            this.tableStatus = tableStatus;
+            this.turnEnd = turnEnd;
+            this.scratch = scratch;
+        }
+    }
+
+    public class MyPagerAdapter extends FragmentPagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int i) {
-            return currentPageSequence.get(i).createFragment();
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            // TODO: be smarter about this
-            if (object == mPrimaryItem) {
-                // Re-use the current fragment (its position never changes)
-                return POSITION_UNCHANGED;
-            }
-
-            return POSITION_NONE;
-        }
-
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            super.setPrimaryItem(container, position, object);
-            mPrimaryItem = (Fragment) object;
+            if (getArguments().getBoolean(NEW_GAME_KEY))
+                switch (i) {
+                    case 0:
+                        return SelectBreakBallsDialog.create(getArguments());
+                    case 1:
+                        return SelectBallsDialog.create(getArguments());
+                    case 2:
+                        return SelectTurnEndDialog.create(getArguments());
+                    default:
+                        throw new IllegalStateException("Invalid position in pager adapter");
+                }
+            else
+                switch (i) {
+                    case 0:
+                        return SelectBallsDialog.create(getArguments());
+                    case 1:
+                        return SelectTurnEndDialog.create(getArguments());
+                    default:
+                        throw new IllegalStateException("Invalid position in pager adapter");
+                }
         }
 
         @Override
         public int getCount() {
-            if (currentPageSequence == null) {
-                return 0;
-            }
-
-            return Math.min(mCutOffPage, currentPageSequence.size());
-        }
-
-        public int getCutOffPage() {
-            return mCutOffPage;
-        }
-
-        public void setCutOffPage(int cutOffPage) {
-            if (cutOffPage < 0) {
-                cutOffPage = Integer.MAX_VALUE;
-            }
-            mCutOffPage = cutOffPage;
-        }
-    }
-
-    public class AddInningWizardWithBreak extends AbstractWizardModel {
-        public AddInningWizardWithBreak(Context context) {
-            super(context);
-
-        }
-
-        @Override
-        protected PageList onNewRootPageList() {
-            return new PageList(
-                    new SelectBreakBallsPage(this, getArguments()),
-                    new SelectBallsPage(this, getArguments()),
-                    new TurnEndPage(this, getArguments()));
-
-        }
-    }
-
-    public class AddInningWizard extends AbstractWizardModel {
-        public AddInningWizard(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected PageList onNewRootPageList() {
-            return new PageList(
-                    new SelectBallsPage(this, getArguments()),
-                    new TurnEndPage(this, getArguments()));
+            if (getArguments().getBoolean(NEW_GAME_KEY))
+                return 3;
+            else return 2;
         }
     }
 }

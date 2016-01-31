@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.utils;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.view.View;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.game.GameStatus;
@@ -10,6 +11,7 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.inning.InvalidBallException;
 import com.brookmanholmes.billiards.match.Match;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by Brookman Holmes on 1/27/2016.
  */
-public class MatchHelperUtils {
+public class MatchDialogHelperUtils {
     public static final String NEW_GAME_KEY = "new game";
     public static final String PLAYER_NAME_KEY = "player name";
     public static final String GAME_TYPE_KEY = "game type";
@@ -32,7 +34,7 @@ public class MatchHelperUtils {
     public static final String BREAK_TYPE_KEY = "break type";
     public static final String SUCCESSFUL_SAFE_KEY = "successful safe";
 
-    private MatchHelperUtils() {
+    private MatchDialogHelperUtils() {
     }
 
     public static Bundle createBundleFromMatch(Match<?> match) {
@@ -114,5 +116,54 @@ public class MatchHelperUtils {
         // // TODO: 1/27/2016 ballsOnTable is not set
 
         return gameStatus.build();
+    }
+
+    public static int convertIdToBall(int id) {
+        switch (id) {
+            case R.id.one_ball:
+                return 1;
+            case R.id.two_ball:
+                return 2;
+            case R.id.three_ball:
+                return 3;
+            case R.id.four_ball:
+                return 4;
+            case R.id.five_ball:
+                return 5;
+            case R.id.six_ball:
+                return 6;
+            case R.id.seven_ball:
+                return 7;
+            case R.id.eight_ball:
+                return 8;
+            case R.id.nine_ball:
+                return 9;
+            case R.id.ten_ball:
+                return 10;
+            case R.id.eleven_ball:
+                return 11;
+            case R.id.twelve_ball:
+                return 12;
+            case R.id.thirteen_ball:
+                return 13;
+            case R.id.fourteen_ball:
+                return 14;
+            case R.id.fifteen_ball:
+                return 15;
+            default:
+                throw new InvalidBallException("This ball does not exist");
+        }
+    }
+
+    public static void setViewToBallMade(View view) {
+
+    }
+
+    public static void setViewToBallDead(View view) {
+
+    }
+
+    public static void setViewToBallOnTable(View view) {
+
     }
 }
