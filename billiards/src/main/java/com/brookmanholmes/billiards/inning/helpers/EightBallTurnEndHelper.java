@@ -36,11 +36,11 @@ class EightBallTurnEndHelper extends TurnEndHelper {
 
     boolean currentPlayerBallsRemaining() {
         if (game.currentPlayerColor == PlayerColor.SOLIDS) {
-            return TableUtils.getSolidsRemaining(nextInning) > 0;
+            return TableUtils.getSolidsRemaining(nextInning.getBallStatuses()) > 0;
         } else if (game.currentPlayerColor == PlayerColor.STRIPES) {
-            return TableUtils.getStripesRemaining(nextInning) > 0;
+            return TableUtils.getStripesRemaining(nextInning.getBallStatuses()) > 0;
         } else {
-            return TableUtils.getSolidsRemaining(nextInning) > 0 && TableUtils.getStripesRemaining(nextInning) > 0;
+            return TableUtils.getSolidsRemaining(nextInning.getBallStatuses()) > 0 && TableUtils.getStripesRemaining(nextInning.getBallStatuses()) > 0;
         }
     }
 }

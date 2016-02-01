@@ -16,6 +16,8 @@ class NineBallController extends PlayerController<NineBallPlayer> {
     void addBreakingStats(NineBallPlayer player) {
         super.addBreakingStats(player);
 
-        ControllerHelperMethods.addWinOnBreak(player);
+
+        if (turn.getGameBallMadeOnBreak())
+            ControllerHelperMethods.addWinOnBreak(player);
     }
 }

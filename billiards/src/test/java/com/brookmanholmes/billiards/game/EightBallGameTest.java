@@ -53,7 +53,7 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
     public void tableStatusShouldContain15Balls() {
         Turn turn = turn().win();
 
-        assertThat(turn.getTableStatus().getBallsRemaining(), is(15));
+        assertThat(turn.getBallsRemaining(), is(15));
     }
 
     @Test

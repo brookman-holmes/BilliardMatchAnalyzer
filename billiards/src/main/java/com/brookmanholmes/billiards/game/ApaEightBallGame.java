@@ -22,11 +22,11 @@ class ApaEightBallGame extends EightBallGame {
     @Override
     PlayerColor setPlayerColor(Turn turn) {
         if (newGame && turn.getBreakBallsMade() > 0) {
-            if (TableUtils.getSolidsMadeOnBreak(turn.getTableStatus()) == TableUtils.getStripesMadeOnBreak(turn.getTableStatus())) {
+            if (TableUtils.getSolidsMadeOnBreak(turn.getBallStatuses()) == TableUtils.getStripesMadeOnBreak(turn.getBallStatuses())) {
                 return super.setPlayerColor(turn);
-            } else if (TableUtils.getSolidsMadeOnBreak(turn.getTableStatus()) > 0) {
+            } else if (TableUtils.getSolidsMadeOnBreak(turn.getBallStatuses()) > 0) {
                 return convertCurrentPlayerColorToPlayerColor(PlayerColor.SOLIDS);
-            } else if (TableUtils.getStripesMadeOnBreak(turn.getTableStatus()) > 0) {
+            } else if (TableUtils.getStripesMadeOnBreak(turn.getBallStatuses()) > 0) {
                 return convertCurrentPlayerColorToPlayerColor(PlayerColor.STRIPES);
             } else return PlayerColor.OPEN; // this will never happen
         } else

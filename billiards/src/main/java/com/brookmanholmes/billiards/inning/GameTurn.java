@@ -1,11 +1,16 @@
 package com.brookmanholmes.billiards.inning;
 
+import com.brookmanholmes.billiards.game.Turn;
+import com.brookmanholmes.billiards.game.util.BallStatus;
+import com.brookmanholmes.billiards.game.util.GameType;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Brookman Holmes on 10/30/2015.
  */
-public class GameTurn implements com.brookmanholmes.billiards.game.Turn {
+public class GameTurn implements Turn {
     final TableStatus tableStatus;
     final TurnEnd turnEnd;
     final boolean scratch;
@@ -56,8 +61,49 @@ public class GameTurn implements com.brookmanholmes.billiards.game.Turn {
     }
 
     @Override
-    public TableStatus getTableStatus() {
-        return tableStatus;
+    public boolean getGameBallMadeOnBreak() {
+        return tableStatus.getGameBallMadeOnBreak();
+    }
+
+    @Override
+    public boolean getGameBallMade() {
+        return tableStatus.getGameBallMade();
+    }
+
+    @Override
+    public int getBallsRemaining() {
+        return tableStatus.getBallsRemaining();
+    }
+
+    @Override
+    public BallStatus getBallStatus(int ball) {
+        return tableStatus.getBallStatus(ball);
+    }
+
+    @Override
+    public boolean getGameBallMadeIllegally() {
+        return tableStatus.getGameBallMadeIllegally();
+    }
+
+    @Override
+    public List<BallStatus> getBallStatuses() {
+        List<BallStatus> ballStatuses = new ArrayList<>();
+
+        for (int ball = 1; ball <= tableStatus.size(); ball++) {
+            ballStatuses.add(tableStatus.getBallStatus(ball));
+        }
+
+        return ballStatuses;
+    }
+
+    @Override
+    public int size() {
+        return tableStatus.size();
+    }
+
+    @Override
+    public GameType getGameType() {
+        return tableStatus.getGameType();
     }
 
     @Override

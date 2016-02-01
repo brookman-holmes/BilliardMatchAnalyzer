@@ -77,7 +77,7 @@ public class Match<T extends AbstractPlayer> {
     }
 
     void updatePlayerStats(Turn turn) {
-
+        playerController.updatePlayerStats(game.getGameStatus(), turn);
     }
 
     public int getTurnCount() {

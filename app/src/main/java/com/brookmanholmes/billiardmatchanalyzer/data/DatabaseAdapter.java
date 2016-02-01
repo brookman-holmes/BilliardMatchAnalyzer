@@ -3,7 +3,9 @@ package com.brookmanholmes.billiardmatchanalyzer.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.Turn;
@@ -39,17 +41,15 @@ public class DatabaseAdapter {
     public static final String COLUMN_CREATED_ON = "created_on";
     public static final String COLUMN_PLAYER_RANK = "player_rank";
     public static final String COLUMN_OPPONENT_RANK = "opponent_rank";
-
     public static final String INNINGS_TABLE = "innings";
     public static final String COLUMN_TABLE_STATUS = "table_status";
     public static final String COLUMN_TURN_END = "turn_end";
     public static final String COLUMN_SCRATCH = "scratch";
     public static final String COLUMN_MATCH_ID = "match_id";
     public static final String COLUMN_INNING_NUMBER = "inning_number";
-
     public static final String PLAYER_TABLE = "players";
     public static final String COLUMN_NAME = "name";
-
+    private static final String TAG = "DatabaseAdapter";
     private final DatabaseHelper databaseHelper;
     private SQLiteDatabase database;
 
@@ -57,7 +57,7 @@ public class DatabaseAdapter {
         databaseHelper = DatabaseHelper.getInstance(context);
     }
 
-    private static String tableStatusToString(TableStatus table) {
+    private static String tableStatusToString(Turn table) {
         String tableStatus = table.getGameType().toString() + ",";
         for (int i = 1; i <= table.size(); i++) {
             tableStatus += table.getBallStatus(i).name();
@@ -254,7 +254,7 @@ public class DatabaseAdapter {
 
         ContentValues inningValues = new ContentValues();
 
-        inningValues.put(COLUMN_TABLE_STATUS, tableStatusToString(turn.getTableStatus()));
+        inningValues.put(COLUMN_TABLE_STATUS, tableStatusToString(turn));
         inningValues.put(COLUMN_MATCH_ID, matchId);
         inningValues.put(COLUMN_SCRATCH, turn.isScratch());
         inningValues.put(COLUMN_TURN_END, turn.getTurnEnd().toString());
@@ -291,5 +291,9 @@ public class DatabaseAdapter {
                 TurnEnd.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TURN_END))),
                 stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS)))
         );
+    }
+
+    public void logDatabase(String table) {
+        Log.i(TAG, DatabaseUtils.dumpCursorToString(database.query(table, null, null, null, null, null, null)));
     }
 }

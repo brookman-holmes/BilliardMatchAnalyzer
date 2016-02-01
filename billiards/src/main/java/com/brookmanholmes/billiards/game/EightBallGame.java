@@ -47,9 +47,9 @@ class EightBallGame extends Game {
     @Override
     PlayerColor setPlayerColor(Turn turn) {
         if (playerColor == OPEN) {
-            if (TableUtils.getSolidsMade(turn.getTableStatus()) > 0) {
+            if (TableUtils.getSolidsMade(turn.getBallStatuses()) > 0) {
                 return convertCurrentPlayerColorToPlayerColor(SOLIDS);
-            } else if (TableUtils.getStripesMade(turn.getTableStatus()) > 0) {
+            } else if (TableUtils.getStripesMade(turn.getBallStatuses()) > 0) {
                 return convertCurrentPlayerColorToPlayerColor(STRIPES);
             } else
                 return OPEN;

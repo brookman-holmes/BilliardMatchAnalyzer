@@ -22,8 +22,10 @@ import static com.brookmanholmes.billiards.game.util.BallStatus.ON_TABLE;
 
 /**
  * Created by Brookman Holmes on 10/25/2015.
+ * TODO: create an interface for this class so that Turn can implement it and use it to get to this instead
+ *       of chaining calls to Turn.getTableStatus()
  */
-final public class TableStatus {
+final public class TableStatus implements ITableStatus {
     final int GAME_BALL;
     final GameType gameType;
     final private Map<Integer, BallStatus> table;
@@ -99,6 +101,17 @@ final public class TableStatus {
         return ballsOffTable;
     }
 
+    public List<BallStatus> getBallStatuses() {
+        return new ArrayList<>(table.values());
+    }
+
+    public void removeBallsFromTable(List<Integer> ballsToRemove) {
+        for (int ball : ballsToRemove) {
+            if (table.get(ball) == ON_TABLE)
+                table.put(ball, OFF_TABLE);
+        }
+    }
+
     public void setBallTo(BallStatus status, int... i) throws InvalidBallException {
         for (int ball : i) {
             if (table.get(ball) == null) {
@@ -158,13 +171,6 @@ final public class TableStatus {
         else throw new InvalidBallException();
     }
 
-    public void removeBallsFromTable(List<Integer> ballsToRemove) {
-        for (int ball : ballsToRemove) {
-            if (table.get(ball) == ON_TABLE)
-                table.put(ball, OFF_TABLE);
-        }
-    }
-
     public GameType getGameType() {
         return gameType;
     }
@@ -205,4 +211,6 @@ final public class TableStatus {
                 ", GAME_BALL=" + GAME_BALL +
                 '}';
     }
+
+
 }

@@ -34,7 +34,8 @@ public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
     public void showPushOnBallsMadeOnBreak() {
         helper.game = gameBuilder.allowPush().newGame().build();
         tableStatus.setBallTo(BallStatus.MADE_ON_BREAK, 1);
-        helper.nextInning = tableStatus;
+        setupTurn();
+        helper.nextInning = turn;
 
         assertThat(helper.showPush(), is(true));
     }
@@ -42,14 +43,16 @@ public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
     @Test
     public void dontShowPushOnBallsMadeOnBreakWithMoreBallsMade() {
         helper.game = gameBuilder.allowPush().build();
-        helper.nextInning = tableStatus;
+        setupTurn();
+        helper.nextInning = turn;
 
         assertThat(helper.showPush(), is(true));
     }
 
     @Test
     public void showTurnSkipAfterPush() {
-        helper.nextInning = tableStatus;
+        setupTurn();
+        helper.nextInning = turn;
         helper.game = gameBuilder.allowSkip().build();
 
         assertThat(helper.showTurnSkip(), is(true));
@@ -58,7 +61,8 @@ public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
     @Test
     public void dontShowTurnSkipAfterPushWithMoreBallsMade() {
         tableStatus.setBallTo(BallStatus.MADE, 3);
-        helper.nextInning = tableStatus;
+        setupTurn();
+        helper.nextInning = turn;
         helper.game = gameBuilder.allowSkip().build();
 
         assertThat(helper.showTurnSkip(), is(false));

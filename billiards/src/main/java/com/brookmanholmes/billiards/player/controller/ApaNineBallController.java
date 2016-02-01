@@ -16,6 +16,9 @@ class ApaNineBallController extends PlayerController<ApaNineBallPlayer> {
     void addBreakingStats(ApaNineBallPlayer player) {
         super.addBreakingStats(player);
 
-        ControllerHelperMethods.addWinOnBreak(player);
+
+        if (turn.getGameBallMadeOnBreak()) {
+            ControllerHelperMethods.addWinOnBreak(player);
+        }
     }
 }

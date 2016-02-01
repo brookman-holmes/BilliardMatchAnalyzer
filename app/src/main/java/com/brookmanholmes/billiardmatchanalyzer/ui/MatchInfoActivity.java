@@ -64,8 +64,15 @@ public class MatchInfoActivity extends BaseActivity {
         opponentName.setText(match.getOpponent().getName());
 
         infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, "listview").commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, "infoFragment").commit();
         setBottomBarText();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (infoFragment == null)
+            infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag("infoFragment");
     }
 
     @OnClick(R.id.addInning)

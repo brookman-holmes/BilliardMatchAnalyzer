@@ -1,9 +1,12 @@
 package com.brookmanholmes.billiards.inning.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.inning.GameTurn;
 import com.brookmanholmes.billiards.inning.TableStatus;
+import com.brookmanholmes.billiards.inning.TurnEnd;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public abstract class AbstractTurnEndHelperTest {
     TurnEndHelper helper;
     TableStatus tableStatus;
+    Turn turn;
     GameType gameType;
     GameStatus.Builder gameBuilder;
     int GAME_BALL;
@@ -26,12 +30,17 @@ public abstract class AbstractTurnEndHelperTest {
     @Before
     public abstract void setUp();
 
+    void setupTurn() {
+        turn = new GameTurn(0, 0, false, TurnEnd.MISS, tableStatus);
+    }
+
     @Test
     public void showWinIfWinOnBreakIsTrue() {
         tableStatus.setBallTo(BallStatus.MADE_ON_BREAK, GAME_BALL);
 
         helper.game = gameBuilder.newGame().build();
-        helper.nextInning = tableStatus;
+        setupTurn();
+        helper.nextInning = turn;
 
         assertThat(helper.showWin(), is(helper.game.winOnBreak));
     }
@@ -39,7 +48,8 @@ public abstract class AbstractTurnEndHelperTest {
     @Test
     public void showScratchOnDeadBall() {
         tableStatus.setBallTo(BallStatus.DEAD, 5);
-        helper.nextInning = tableStatus;
+        setupTurn();
+        helper.nextInning = turn;
 
         assertThat(helper.checkScratch(), is(showScratchOnDeadBall));
     }
@@ -47,7 +57,8 @@ public abstract class AbstractTurnEndHelperTest {
     @Test
     public void showScratchOnDeadBallOnBreak() {
         tableStatus.setBallTo(BallStatus.DEAD_ON_BREAK, 5);
-        helper.nextInning = tableStatus;
+        setupTurn();
+        helper.nextInning = turn;
 
         // TODO: 11/14/2015 when i do straight pool this will have to be modified
         assertThat(helper.checkScratch(), is(true));
@@ -57,7 +68,8 @@ public abstract class AbstractTurnEndHelperTest {
     public void showLoss() {
         setupLossStuff();
 
-        helper.nextInning = tableStatus;
+        setupTurn();
+        helper.nextInning = turn;
         helper.game = gameBuilder.build();
 
         assertThat(helper.showLoss(), is(true));
@@ -66,7 +78,8 @@ public abstract class AbstractTurnEndHelperTest {
     @Test
     public void showDefaultSelection() {
         helper.game = gameBuilder.build();
-        helper.nextInning = tableStatus;
+        setupTurn();
+        helper.nextInning = turn;
 
         assertThat(helper.showMiss(), is(true));
         assertThat(helper.showSafety(), is(true));
@@ -76,7 +89,8 @@ public abstract class AbstractTurnEndHelperTest {
     @Test
     public void showBreakMiss() {
         helper.game = gameBuilder.newGame().build();
-        helper.nextInning = tableStatus;
+        setupTurn();
+        helper.nextInning = turn;
 
         assertThat(helper.showBreakMiss(), is(true));
     }

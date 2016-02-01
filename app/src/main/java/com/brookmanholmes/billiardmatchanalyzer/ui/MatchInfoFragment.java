@@ -95,4 +95,11 @@ public class MatchInfoFragment extends Fragment {
     public Turn addTurn(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
         return adapter.addTurn(tableStatus, turnEnd, scratch);
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
+    }
 }

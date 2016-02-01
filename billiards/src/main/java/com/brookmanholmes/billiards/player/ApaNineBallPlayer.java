@@ -19,6 +19,20 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
         winsOnBreak = new WinsOnBreakImp();
     }
 
+    @Override
+    public void addBreakShot(int ballsMade, boolean continuation, boolean scratch) {
+        super.addBreakShot(ballsMade, continuation, scratch);
+
+        if (!scratch)
+            points += ballsMade;
+    }
+
+    @Override
+    public void addShootingBallsMade(int ballsMade, boolean scratch) {
+        super.addShootingBallsMade(ballsMade, scratch);
+        points += ballsMade;
+    }
+
     public void addPoints(int points) {
         this.points += points;
     }
@@ -52,6 +66,13 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
         if (points == ApaRaceToHelper.apa9BallRaceTo(rank))
             return 20 - ApaRaceToHelper.getMinimumMatchPointsEarned(opponentRank, opponentScore);
         else return ApaRaceToHelper.getMinimumMatchPointsEarned(rank, points);
+    }
+
+    @Override
+    public void addGameWon() {
+        super.addGameWon();
+        // the player had to have made the 9 ball to get to this point... I think...
+        points++;
     }
 
     @Override
