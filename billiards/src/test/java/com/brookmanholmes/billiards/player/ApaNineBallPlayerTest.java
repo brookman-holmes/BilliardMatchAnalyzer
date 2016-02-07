@@ -35,4 +35,52 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
 
         assertThat(actual.getPoints(), is(3));
     }
+
+    @Test
+    public void addPlayerStatsWorksCorrectlyForNineBall() {
+        ApaNineBallPlayer player = new ApaNineBallPlayer(testName, 5);
+
+        player.addEarlyWin();
+        player.addWinOnBreak();
+
+        actual.addPlayerStats(player);
+
+        expected.addEarlyWin();
+        expected.addWinOnBreak();
+
+        assertThat(actual, is(expected));
+    }
+
+    @Override
+    @Test
+    public void addBreakShotWithBallsMadeButNoContinuation() {
+        expected.points += 2;
+        super.addBreakShotWithBallsMadeButNoContinuation();
+    }
+
+    @Override
+    @Test
+    public void addGameWonAddsOneToTotalAndWins() {
+        expected.points += 1;
+        super.addGameWonAddsOneToTotalAndWins();
+    }
+
+    @Test
+    public void addBreakShotWithBallsMadeWithContinuation() {
+        expected.points += 2;
+        super.addBreakShotWithBallsMadeWithContinuation();
+    }
+
+    @Test
+    public void addShootingBallsMadeAdds8BallsMade() {
+        expected.points += 8;
+        super.addShootingBallsMadeAdds8BallsMade();
+    }
+
+    @Override
+    @Test
+    public void addShootingBallsMadeAdds8BallsMadeWithScratch() {
+        expected.points += 8;
+        super.addShootingBallsMadeAdds8BallsMadeWithScratch();
+    }
 }

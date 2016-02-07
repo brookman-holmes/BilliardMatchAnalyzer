@@ -114,8 +114,10 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
         expected.breakBallsMade += 2;
 
         assertThat(actual, is(expected));
+    }
 
-        // now add in a break with continuation
+    @Test
+    public void addBreakShotWithBallsMadeWithContinuation() {
         actual.addBreakShot(2, true, false);
 
         expected.breakAttempts++;

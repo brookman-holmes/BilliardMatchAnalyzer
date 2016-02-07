@@ -20,12 +20,10 @@ public class TenBallPlayerTest extends AbstractPlayerTest {
         TenBallPlayer player = new TenBallPlayer(testName);
 
         player.addEarlyWin();
-        player.addFoul();
 
         actual.addPlayerStats(player);
 
         ((TenBallPlayer) expected).addEarlyWin();
-        ((TenBallPlayer) expected).addFoul();
 
         assertThat(actual, is(expected));
     }

@@ -27,7 +27,8 @@ class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
     void addRunOutStats(ApaEightBallPlayer player) {
         super.addRunOutStats(player);
 
-        ControllerHelperMethods.addEarlyWin(player);
+        if (turn.getBallsRemaining() > 0)
+            ControllerHelperMethods.addEarlyWin(player);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class TurnList {
     // Roberts scratches on the break
     static Turn turn8 = turn().deadOnBreak(6).scratch().breakMiss();
     // Shaw runs out
-    static Turn turn9 = turn().madeBalls(1, 2, 3, 4, 5, 7, 8, 9, 10).win();
+    static Turn turn9 = turn().offTable(6).madeBalls(1, 2, 3, 4, 5, 7, 8, 9, 10).win();
     /**
      * GAME 4
      */
@@ -91,7 +91,7 @@ public class TurnList {
     // Roberts break and misses
     static Turn turn26 = turn().breakBalls(3, 7).miss();
     // Shaw runs out
-    static Turn turn27 = turn().madeBalls(1, 2, 4, 5, 6, 8, 9, 10).win();
+    static Turn turn27 = turn().offTable(3, 7).madeBalls(1, 2, 4, 5, 6, 8, 9, 10).win();
     /**
      * GAME 10
      */

@@ -76,4 +76,33 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
     public int getRank() {
         return rank;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ApaEightBallPlayer that = (ApaEightBallPlayer) o;
+
+        if (rank != that.rank) return false;
+        return winsOnBreak.equals(that.winsOnBreak);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + winsOnBreak.hashCode();
+        result = 31 * result + rank;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ApaEightBallPlayer{" +
+                "winsOnBreak=" + winsOnBreak +
+                ", rank=" + rank +
+                "} " + super.toString();
+    }
 }

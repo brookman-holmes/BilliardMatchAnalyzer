@@ -38,7 +38,6 @@ public class WinsOnBreakImp extends EarlyWinsImp implements WinsOnBreak {
         WinsOnBreakImp that = (WinsOnBreakImp) o;
 
         return winsOnBreak == that.winsOnBreak;
-
     }
 
     @Override
@@ -46,5 +45,13 @@ public class WinsOnBreakImp extends EarlyWinsImp implements WinsOnBreak {
         int result = super.hashCode();
         result = 31 * result + winsOnBreak;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WinsOnBreakImp{" +
+                "winsOnBreak=" + winsOnBreak +
+                "\nearlyWins=" + earlyWins +
+                '}';
     }
 }

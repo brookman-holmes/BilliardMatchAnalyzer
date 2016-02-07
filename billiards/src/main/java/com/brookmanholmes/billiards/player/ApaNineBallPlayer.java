@@ -102,4 +102,36 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
     public int getRank() {
         return rank;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ApaNineBallPlayer that = (ApaNineBallPlayer) o;
+
+        if (rank != that.rank) return false;
+        if (points != that.points) return false;
+        return winsOnBreak.equals(that.winsOnBreak);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + winsOnBreak.hashCode();
+        result = 31 * result + rank;
+        result = 31 * result + points;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ApaNineBallPlayer{" +
+                "winsOnBreak=" + winsOnBreak +
+                ", rank=" + rank +
+                ", points=" + points +
+                "} " + super.toString();
+    }
 }

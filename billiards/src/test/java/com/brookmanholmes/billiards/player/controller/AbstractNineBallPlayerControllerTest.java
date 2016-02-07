@@ -18,10 +18,10 @@ public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPla
         playerController.turn = turnBuilder.breakBalls(game.getGameStatus().GAME_BALL).win();
         playerController.addBreakingStats(actualPlayer);
 
-        expectedPlayer.addEarlyWin();
         expectedPlayer.addWinOnBreak();
         expectedPlayer.addBreakShot(1, false, false);
 
+        assertThat(playerController.isGameOver(), is(true));
         assertThat(actualPlayer, is(expectedPlayer));
     }
 

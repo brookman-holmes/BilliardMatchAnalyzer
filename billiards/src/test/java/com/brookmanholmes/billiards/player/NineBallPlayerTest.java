@@ -21,13 +21,11 @@ public class NineBallPlayerTest extends AbstractPlayerTest {
 
         player.addEarlyWin();
         player.addWinOnBreak();
-        player.addFoul();
 
         actual.addPlayerStats(player);
 
         ((NineBallPlayer) expected).addEarlyWin();
         ((NineBallPlayer) expected).addWinOnBreak();
-        ((NineBallPlayer) expected).addFoul();
 
         assertThat(actual, is(expected));
     }
