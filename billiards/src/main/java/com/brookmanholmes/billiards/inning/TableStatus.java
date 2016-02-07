@@ -22,10 +22,8 @@ import static com.brookmanholmes.billiards.game.util.BallStatus.ON_TABLE;
 
 /**
  * Created by Brookman Holmes on 10/25/2015.
- * TODO: create an interface for this class so that Turn can implement it and use it to get to this instead
- *       of chaining calls to Turn.getTableStatus()
  */
-final public class TableStatus implements ITableStatus {
+final public class TableStatus implements TableStatusInterface {
     final int GAME_BALL;
     final GameType gameType;
     final private Map<Integer, BallStatus> table;

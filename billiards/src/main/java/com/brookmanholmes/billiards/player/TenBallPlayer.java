@@ -19,6 +19,19 @@ public class TenBallPlayer extends AbstractPlayer implements ConsecutiveFouls, E
     }
 
     @Override
+    public void addPlayerStats(AbstractPlayer player) {
+        super.addPlayerStats(player);
+
+        if (player instanceof EarlyWins) {
+            earlyWins.addEarlyWins(((EarlyWins) player).getEarlyWins());
+        }
+
+        if (player instanceof ConsecutiveFouls) {
+            consecutiveFouls.addFouls(((ConsecutiveFouls) player).getFouls());
+        }
+    }
+
+    @Override
     public void addFoul() {
         consecutiveFouls.addFoul();
     }
@@ -41,5 +54,15 @@ public class TenBallPlayer extends AbstractPlayer implements ConsecutiveFouls, E
     @Override
     public int getEarlyWins() {
         return earlyWins.getEarlyWins();
+    }
+
+    @Override
+    public void addEarlyWins(int wins) {
+        earlyWins.addEarlyWins(wins);
+    }
+
+    @Override
+    public void addFouls(int fouls) {
+        consecutiveFouls.addFouls(fouls);
     }
 }

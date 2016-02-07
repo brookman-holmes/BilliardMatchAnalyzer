@@ -8,6 +8,7 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.inning.TurnBuilder;
 import com.brookmanholmes.billiards.inning.TurnEnd;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.Pair;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -102,7 +103,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
         playerController.addShootingStats(actualPlayer);
 
         expectedPlayer.addShootingMiss();
-        expectedPlayer.addShootingTurn();
+        expectedPlayer.addShootingBallsMade(0, false);
 
         testPlayerEquality();
     }
@@ -135,6 +136,8 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     @Test
     public void safetyMissTurnEndGivesASafetyAttempt() {
         playerController.turn = turnBuilder.safetyMiss();
+        playerController.gameStatus = game.getGameStatus();
+
         playerController.addSafetyStats(actualPlayer);
 
         expectedPlayer.addSafetyAttempt(false);
@@ -145,6 +148,8 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     @Test
     public void safetyMissTurnEndWithScratchGivesASafetyAttempt() {
         playerController.turn = turnBuilder.scratch().safetyMiss();
+        playerController.gameStatus = game.getGameStatus();
+
         playerController.addSafetyStats(actualPlayer);
 
         expectedPlayer.addSafetyAttempt(true);
@@ -240,106 +245,23 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     }
 
     @Test
-    public void addGamesToPlayersReturnsWinForPlayer1() {
-        playerController.turn = turnBuilder.win();
-        playerController.gameStatus = game.getGameStatus();
-        playerController.addGamesToPlayers();
+    public void test1() {
+        Pair<T> players = playerController.updatePlayerStats(game.getGameStatus(), breakAndRunTurn());
+        game.addTurn(breakAndRunTurn());
 
-        T expectedPlayer1 = getBlankPlayer();
-        expectedPlayer1.addGameWon();
-        T expectedPlayer2 = getBlankPlayer();
-        expectedPlayer2.addGameLost();
 
-        assertThat(playerController.player1, is(expectedPlayer1));
-        assertThat(playerController.player2, is(expectedPlayer2));
+        T player1 = getBreakAndRunPlayer();
+        player1.addGameWon();
+        player1.addBreakAndRun();
+
+        assertThat(players.getPlayer(), is(player1));
+
+        T player2 = getBlankPlayer();
+        player2.addGameLost();
+
+        assertThat(players.getOpponent(), is(player2));
     }
 
-    @Test
-    public void addGamesToPlayersReturnsWinForPlayer2() {
-        playerController.turn = turnBuilder.lose();
-        playerController.gameStatus = game.getGameStatus();
-        playerController.addGamesToPlayers();
-
-
-        T expectedPlayer1 = getBlankPlayer();
-        expectedPlayer1.addGameLost();
-        T expectedPlayer2 = getBlankPlayer();
-        expectedPlayer2.addGameWon();
-
-        assertThat(playerController.player1, is(expectedPlayer1));
-        assertThat(playerController.player2, is(expectedPlayer2));
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void getGameWinnerThrowsIllegalStateExceptionIfCalledWithoutAGameOver() {
-        playerController.turn = turnBuilder.miss();
-
-        playerController.getGameWinner();
-    }
-
-    @Test
-    public void addStatsToPlayerCorrectlyAddsStats() {
-        playerController.turn = breakAndRunTurn();
-        playerController.gameStatus = game.getGameStatus();
-        playerController.addStatsToPlayer(playerController.player1);
-
-        expectedPlayer = getBreakAndRunPlayer();
-        expectedPlayer.addGameWon();
-        expectedPlayer.addBreakAndRun();
-        expectedPlayer.addShootingTurn();
-
-        assertThat(playerController.player1, is(expectedPlayer));
-    }
-
-    @Test
-    public void updatePlayerStatsCorrectlySetsVariables() {
-        playerController.updatePlayerStats(game.getGameStatus(), breakAndRunTurn());
-
-
-        expectedPlayer = getBreakAndRunPlayer();
-        expectedPlayer.addGameWon();
-        expectedPlayer.addBreakAndRun();
-        expectedPlayer.addShootingTurn();
-
-        assertThat(playerController.turn, is(breakAndRunTurn()));
-        assertThat(playerController.gameStatus, is(game.getGameStatus()));
-        assertThat(playerController.player1, is(expectedPlayer));
-    }
-
-    @Test
-    public void updatePlayerStatsCorrectlySetsVariablesForMultipleTurns() {
-        playerController.updatePlayerStats(game.getGameStatus(), failedRunOutTurn());
-
-        expectedPlayer = failedRunOutPlayer();
-
-        assertThat(playerController.turn, is(failedRunOutTurn()));
-        assertThat(playerController.gameStatus, is(game.getGameStatus()));
-        assertThat(playerController.player1, is(expectedPlayer));
-
-        game.addTurn(failedRunOutTurn());
-
-        playerController.updatePlayerStats(game.getGameStatus(), fourBallRunTurn());
-
-        expectedPlayer.addGameLost();
-        assertThat(playerController.turn, is(fourBallRunTurn()));
-        assertThat(playerController.gameStatus, is(game.getGameStatus()));
-        assertThat(playerController.player1, is(expectedPlayer));
-        assertThat(playerController.player2, is(fourBallRunOutPlayer()));
-    }
-
-    @Test
-    public void getPlayer1ReturnsPlayer1() {
-        playerController.updatePlayerStats(game.getGameStatus(), breakAndRunTurn());
-
-        assertThat(playerController.player1, is(playerController.getPlayer1()));
-    }
-
-    @Test
-    public void getPlayer2ReturnsPlayer2() {
-        playerController.updatePlayerStats(game.getGameStatus(), breakAndRunTurn());
-
-        assertThat(playerController.player2, is(playerController.getPlayer2()));
-    }
 
     @Test(expected = IllegalStateException.class)
     public void updatePlayerStatsThrowsIllegalStateExceptionOnNullInput() {

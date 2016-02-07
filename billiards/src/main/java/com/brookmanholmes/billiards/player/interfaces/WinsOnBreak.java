@@ -7,4 +7,6 @@ public interface WinsOnBreak extends EarlyWins {
     void addWinOnBreak();
 
     int getWinsOnBreak();
+
+    void addWinsOnBreak(int wins);
 }

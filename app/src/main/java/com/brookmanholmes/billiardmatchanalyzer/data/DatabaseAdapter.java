@@ -142,9 +142,9 @@ public class DatabaseAdapter {
                 .setBreakType(getBreakType(c))
                 .setPlayerRanks(c.getInt(c.getColumnIndex(COLUMN_PLAYER_RANK)), c.getInt(c.getColumnIndex(COLUMN_OPPONENT_RANK)))
                 .setLocation(c.getString(c.getColumnIndex(COLUMN_LOCATION)))
+                .setMatchId(c.getLong(c.getColumnIndex("_id")))
                 .build(getGameType(c));
 
-        match.setMatchId(c.getLong(c.getColumnIndex("_id")));
         return match;
     }
 
@@ -278,6 +278,7 @@ public class DatabaseAdapter {
         while (c.moveToNext()) {
             innings.add(buildTurnFromCursor(c));
         }
+
         c.close();
 
         return innings;

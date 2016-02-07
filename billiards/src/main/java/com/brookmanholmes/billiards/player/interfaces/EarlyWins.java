@@ -7,4 +7,6 @@ public interface EarlyWins {
     void addEarlyWin();
 
     int getEarlyWins();
+
+    void addEarlyWins(int wins);
 }

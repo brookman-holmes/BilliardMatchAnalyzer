@@ -15,11 +15,13 @@ import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.inning.TableStatus;
 import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.match.MatchInterface;
+import com.brookmanholmes.billiards.player.AbstractPlayer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MatchInfoFragment extends Fragment {
+public class MatchInfoFragment extends Fragment implements MatchInterface {
     @Bind(R.id.scrollView)
     RecyclerView recyclerView;
     MatchInfoRecyclerAdapter<?> adapter;
@@ -92,8 +94,44 @@ public class MatchInfoFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    public Turn addTurn(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
-        return adapter.addTurn(tableStatus, turnEnd, scratch);
+    @Override
+    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
+        return adapter.createAndAddTurnToMatch(tableStatus, turnEnd, scratch);
+    }
+
+    @Override
+    public String getCurrentPlayersName() {
+        return adapter.getCurrentPlayersName();
+    }
+
+    @Override
+    public boolean undoLastTurn() {
+        return adapter.undoLastTurn();
+    }
+
+    @Override
+    public AbstractPlayer getPlayer() {
+        return adapter.getPlayer();
+    }
+
+    @Override
+    public AbstractPlayer getOpponent() {
+        return adapter.getOpponent();
+    }
+
+    @Override
+    public String getLocation() {
+        return adapter.getLocation();
+    }
+
+    @Override
+    public int getTurnCount() {
+        return adapter.getTurnCount();
+    }
+
+    @Override
+    public boolean redoUndoneTurn() {
+        return adapter.redoUndoneTurn();
     }
 
     @Override

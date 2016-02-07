@@ -38,4 +38,15 @@ public class ConsecutiveFoulsTest {
 
         assertThat(consecutiveFouls.getFouls(), is(0));
     }
+
+    @Test
+    public void addingMultipleFouls() {
+        consecutiveFouls.addFouls(3);
+
+        assertThat(consecutiveFouls.getFouls(), is(3));
+
+        consecutiveFouls.addFouls(0);
+
+        assertThat(consecutiveFouls.getFouls(), is(0));
+    }
 }

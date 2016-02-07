@@ -14,6 +14,15 @@ public class StraightPoolPlayer extends AbstractPlayer implements ConsecutiveFou
     }
 
     @Override
+    public void addPlayerStats(AbstractPlayer player) {
+        super.addPlayerStats(player);
+
+        if (player instanceof ConsecutiveFouls) {
+            consecutiveFouls.addFouls(((ConsecutiveFouls) player).getFouls());
+        }
+    }
+
+    @Override
     public void addFoul() {
         consecutiveFouls.addFoul();
     }
@@ -26,5 +35,10 @@ public class StraightPoolPlayer extends AbstractPlayer implements ConsecutiveFou
     @Override
     public int getFouls() {
         return consecutiveFouls.getFouls();
+    }
+
+    @Override
+    public void addFouls(int fouls) {
+        consecutiveFouls.addFouls(fouls);
     }
 }

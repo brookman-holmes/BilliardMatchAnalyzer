@@ -7,8 +7,16 @@ import com.brookmanholmes.billiards.player.StraightPoolPlayer;
  */
 class StraightPoolController extends PlayerController<StraightPoolPlayer> {
     StraightPoolController(String playerName, String opponentName) {
-        super();
-        player1 = new StraightPoolPlayer(playerName);
-        player2 = new StraightPoolPlayer(opponentName);
+        super(playerName, opponentName);
+    }
+
+    @Override
+    public StraightPoolPlayer newPlayer() {
+        return new StraightPoolPlayer(playerName);
+    }
+
+    @Override
+    public StraightPoolPlayer newOpponent() {
+        return new StraightPoolPlayer(opponentName);
     }
 }

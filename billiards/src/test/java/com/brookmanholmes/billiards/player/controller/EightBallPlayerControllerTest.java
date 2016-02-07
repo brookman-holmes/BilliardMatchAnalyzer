@@ -64,7 +64,6 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<
         player.addShootingBallsMade(5, false);
         player.addGameWon();
         player.addFourBallRun();
-        player.addShootingTurn();
 
         return player;
     }
@@ -74,7 +73,6 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<
         EightBallPlayer player = new EightBallPlayer("");
         player.addBreakShot(3, false, false);
         player.addShootingBallsMade(0, false);
-        player.addShootingTurn();
         player.addShootingMiss();
 
         return player;

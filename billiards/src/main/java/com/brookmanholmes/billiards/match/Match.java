@@ -9,26 +9,28 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.inning.GameTurn;
 import com.brookmanholmes.billiards.inning.TableStatus;
 import com.brookmanholmes.billiards.inning.TurnEnd;
-import com.brookmanholmes.billiards.inning.helpers.TurnEndHelper;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.Pair;
+import com.brookmanholmes.billiards.player.controller.ControllerHelperMethods;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+
 
 /**
  * Created by Brookman Holmes on 10/27/2015.
  */
-public class Match<T extends AbstractPlayer> {
+public class Match<T extends AbstractPlayer> implements MatchInterface {
     long matchId;
     PlayerController<T> playerController;
-    TurnEndHelper turnEndHelper;
     String location;
     Game game;
-    List<GameStatus> gameStatuses = new ArrayList<>();
-    List<Turn> turns = new ArrayList<>();
-    List<Turn> undoneTurns = new ArrayList<>();
 
+    ArrayDeque<T> player1 = new ArrayDeque<>();
+    ArrayDeque<T> player2 = new ArrayDeque<>();
+
+    ArrayDeque<Turn> turns = new ArrayDeque<>();
+    ArrayDeque<GameStatus> games = new ArrayDeque<>();
     Match(Builder builder, PlayerController<T> playerController) {
         location = builder.location;
         matchId = builder.id;
@@ -53,20 +55,23 @@ public class Match<T extends AbstractPlayer> {
     }
 
     public T getPlayer() {
-        return playerController.getPlayer1();
+        return ControllerHelperMethods.getPlayerFromList(player1, playerController.newPlayer());
     }
 
     public T getOpponent() {
-        return playerController.getPlayer2();
+        return ControllerHelperMethods.getPlayerFromList(player2, playerController.newOpponent());
+    }
+
+    public String getCurrentPlayersName() {
+        if (game.getTurn() == PlayerTurn.PLAYER)
+            return playerController.getPlayerName();
+        else return playerController.getOpponentName();
     }
 
     public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
         Turn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus);
 
-        updatePlayerStats(turn);
-        updateGameState(turn);
-
-        turns.add(turn);
+        addTurn(turn);
 
         return turn;
     }
@@ -74,10 +79,15 @@ public class Match<T extends AbstractPlayer> {
     public void addTurn(Turn turn) {
         updatePlayerStats(turn);
         updateGameState(turn);
+
+        turns.push(turn);
     }
 
     void updatePlayerStats(Turn turn) {
-        playerController.updatePlayerStats(game.getGameStatus(), turn);
+        Pair<T> pair = playerController.updatePlayerStats(getGameStatus(), turn);
+
+        player1.push(pair.getPlayer());
+        player2.push(pair.getOpponent());
     }
 
     public int getTurnCount() {
@@ -85,16 +95,19 @@ public class Match<T extends AbstractPlayer> {
     }
 
     void updateGameState(Turn turn) {
-        gameStatuses.add(game.addTurn(turn));
+        games.push(game.addTurn(turn));
     }
 
-    @Override
-    public String toString() {
-        return "Match{" +
-                "matchId=" + matchId +
-                "\n location='" + location + '\'' +
-                "\n game=" + game.toString() +
-                '}';
+    public boolean undoTurn() {
+        if (turns.size() > 0) {
+            player1.pop();
+            player2.pop();
+
+            turns.pop();
+
+            game.setGameStatus(games.pop());
+            return true;
+        } else return false;
     }
 
     public static class Builder {

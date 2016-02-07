@@ -12,6 +12,7 @@ import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.inning.TableStatus;
 import com.brookmanholmes.billiards.inning.TurnEnd;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.match.MatchInterface;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
@@ -22,7 +23,8 @@ import com.brookmanholmes.billiards.player.TenBallPlayer;
 /**
  * Created by Brookman Holmes on 1/13/2016.
  */
-public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends RecyclerView.Adapter<MatchInfoHolder<T>> {
+public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends RecyclerView.Adapter<MatchInfoHolder<T>>
+        implements MatchInterface<T> {
     static final int ITEM_MATCH_OVERVIEW = 0;
     static final int ITEM_SHOOTING_PCT = 1;
     static final int ITEM_SAFETIES = 2;
@@ -99,18 +101,36 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
         return position;
     }
 
-    public Turn addTurn(TableStatus table, TurnEnd turnEnd, boolean scratch) {
-        Turn turn = match.createAndAddTurnToMatch(table, turnEnd, scratch);
+    @Override
+    public T getPlayer() {
+        return match.getPlayer();
+    }
+
+    @Override
+    public T getOpponent() {
+        return match.getOpponent();
+    }
+
+    @Override
+    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
+        Turn turn = match.createAndAddTurnToMatch(tableStatus, turnEnd, scratch);
         notifyDataSetChanged();
         return turn;
     }
 
-    T getPlayer() {
-        return match.getPlayer();
+    @Override
+    public String getLocation() {
+        return match.getLocation();
     }
 
-    T getOpponent() {
-        return match.getOpponent();
+    @Override
+    public String getCurrentPlayersName() {
+        return match.getCurrentPlayersName();
+    }
+
+    @Override
+    public int getTurnCount() {
+        return match.getTurnCount();
     }
 
     @LayoutRes

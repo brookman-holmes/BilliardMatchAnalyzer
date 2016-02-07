@@ -9,4 +9,6 @@ public interface ConsecutiveFouls {
     void removeFouls();
 
     int getFouls();
+
+    void addFouls(int fouls);
 }

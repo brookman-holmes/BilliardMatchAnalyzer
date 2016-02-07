@@ -52,7 +52,6 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<Te
         player.addBreakShot(2, true, false);
         player.addShootingBallsMade(1, false);
         player.addSafety(false);
-        player.addShootingTurn();
 
         return player;
     }
@@ -63,7 +62,6 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<Te
         player.addShootingBallsMade(7, false);
         player.addGameWon();
         player.addFourBallRun();
-        player.addShootingTurn();
 
         return player;
     }

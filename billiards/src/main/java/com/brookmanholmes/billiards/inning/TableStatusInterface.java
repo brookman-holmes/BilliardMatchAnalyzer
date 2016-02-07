@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Brookman Holmes on 1/31/2016.
  */
-public interface ITableStatus {
+public interface TableStatusInterface {
     int getShootingBallsMade();
 
     int getDeadBalls();

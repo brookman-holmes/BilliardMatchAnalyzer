@@ -23,7 +23,10 @@ public final class GameStatus {
     public final boolean allowPush;
     public final boolean allowTurnSkip;
     public final PlayerColor currentPlayerColor;
+    public final PlayerColor playerColor;
     public final int currentPlayerConsecutiveFouls;
+    public final int consecutivePlayerFouls;
+    public final int consecutiveOpponentFouls;
     public final boolean winOnBreak;
     public final List<Integer> ballsOnTable;
     public final BreakType breakType;
@@ -44,6 +47,10 @@ public final class GameStatus {
         winOnBreak = game.winOnBreak();
         ballsOnTable = new ArrayList<>(game.ballsOnTable);
         breakType = game.breakType;
+
+        playerColor = game.playerColor;
+        consecutiveOpponentFouls = game.consecutiveOpponentFouls;
+        consecutivePlayerFouls = game.consecutivePlayerFouls;
     }
 
     private GameStatus(Builder builder) {
@@ -62,6 +69,10 @@ public final class GameStatus {
         GAME_BALL = builder.GAME_BALL;
         ballsOnTable = builder.ballsOnTable;
         breakType = builder.breakType;
+
+        playerColor = builder.playerColor;
+        consecutiveOpponentFouls = builder.consecutiveOpponentFouls;
+        consecutivePlayerFouls = builder.consecutivePlayerFouls;
     }
 
 
@@ -140,6 +151,10 @@ public final class GameStatus {
         private boolean winOnBreak;
         private List<Integer> ballsOnTable;
         private BreakType breakType;
+
+        private int consecutivePlayerFouls;
+        private int consecutiveOpponentFouls;
+        private PlayerColor playerColor;
 
         public Builder(GameType gameType) throws InvalidGameTypeException {
             this.gameType = gameType;
@@ -227,6 +242,21 @@ public final class GameStatus {
 
         public Builder currentPlayerConsecutiveFouls(int fouls) {
             currentPlayerConsecutiveFouls = fouls;
+            return this;
+        }
+
+        public Builder consecutivePlayerFouls(int fouls) {
+            consecutivePlayerFouls = fouls;
+            return this;
+        }
+
+        public Builder consecutiveOpponentFouls(int fouls) {
+            consecutiveOpponentFouls = fouls;
+            return this;
+        }
+
+        public Builder playerColor(PlayerColor color) {
+            playerColor = color;
             return this;
         }
 

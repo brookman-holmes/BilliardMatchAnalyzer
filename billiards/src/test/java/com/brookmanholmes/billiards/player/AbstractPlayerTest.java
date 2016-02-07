@@ -9,13 +9,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 1/19/2016.
  */
-public abstract class AbstractPlayerTest {
-    AbstractPlayer actual;
-    AbstractPlayer expected;
+public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
+    T actual;
+    T expected;
     String testName = "";
 
     @Before
     public abstract void setUp();
+
+    @Test
+    public void getNameReturnsName() {
+        assertThat(actual.getName(), is(""));
+    }
 
     @Test
     public void addSafetyAttemptAddsOneToTotal() {
@@ -41,6 +46,7 @@ public abstract class AbstractPlayerTest {
         actual.addShootingBallsMade(8, false);
 
         expected.shootingBallsMade += 8;
+        expected.shootingTurns++;
 
         assertThat(actual, is(expected));
     }
@@ -51,6 +57,7 @@ public abstract class AbstractPlayerTest {
 
         expected.shootingBallsMade += 8;
         expected.shootingScratches++;
+        expected.shootingTurns++;
 
         assertThat(actual, is(expected));
     }
@@ -74,7 +81,7 @@ public abstract class AbstractPlayerTest {
 
     @Test
     public void addShootingTurnAddsOnlyOneTurn() {
-        actual.addShootingTurn();
+        actual.addShootingBallsMade(0, false);
 
         expected.shootingTurns++;
 
@@ -177,7 +184,6 @@ public abstract class AbstractPlayerTest {
         assertThat(actual.getAvgBallsTurn(), is("0"));
 
         actual.addShootingBallsMade(5, false);
-        actual.addShootingTurn();
 
         assertThat(actual.getAvgBallsTurn(), is("5"));
     }

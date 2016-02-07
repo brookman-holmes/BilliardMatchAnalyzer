@@ -8,7 +8,6 @@ import com.brookmanholmes.billiards.inning.TableStatus;
 import com.brookmanholmes.billiards.inning.TurnEnd;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.brookmanholmes.billiards.game.util.PlayerColor.OPEN;
@@ -49,22 +48,6 @@ public abstract class Game {
         ballsOnTable = newTable();
     }
 
-    Game(Game oldGame) {
-        gameType = oldGame.gameType;
-        GAME_BALL = oldGame.GAME_BALL;
-        MAX_BALLS = oldGame.MAX_BALLS;
-        Collections.copy(ballsOnTable, oldGame.ballsOnTable);
-        playerAllowedToBreakAgain = oldGame.playerAllowedToBreakAgain;
-        newGame = oldGame.newGame;
-        opponentPlayedSuccessfulSafe = oldGame.opponentPlayedSuccessfulSafe;
-        turn = oldGame.turn;
-        breaker = oldGame.breaker;
-        breakType = oldGame.breakType;
-        playerColor = oldGame.playerColor;
-        allowPush = oldGame.allowPush;
-        allowTurnSkip = oldGame.allowTurnSkip;
-    }
-
     public static Game newGame(GameType gameType, PlayerTurn turn, BreakType breakType) throws InvalidGameTypeException {
         // TODO: 10/27/2015 implement straight pool and american rotation games
         switch (gameType) {
@@ -85,6 +68,21 @@ public abstract class Game {
 
     public static PlayerTurn changeTurn(PlayerTurn turn) {
         return turn.nextPlayer();
+    }
+
+    public void setGameStatus(GameStatus gameStatus) {
+        this.turn = gameStatus.turn;
+        this.breaker = gameStatus.breaker;
+        this.playerAllowedToBreakAgain = gameStatus.playerAllowedToBreakAgain;
+        this.newGame = gameStatus.newGame;
+        this.allowPush = gameStatus.allowPush;
+        this.allowTurnSkip = gameStatus.allowTurnSkip;
+        this.opponentPlayedSuccessfulSafe = gameStatus.opponentPlayedSuccessfulSafe;
+        this.consecutiveOpponentFouls = gameStatus.consecutiveOpponentFouls;
+        this.consecutivePlayerFouls = gameStatus.consecutivePlayerFouls;
+        this.playerColor = gameStatus.playerColor;
+
+        ballsOnTable = new ArrayList<>(gameStatus.ballsOnTable);
     }
 
     abstract boolean setAllowPush(Turn turn);

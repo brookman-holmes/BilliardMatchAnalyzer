@@ -20,6 +20,16 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
     }
 
     @Override
+    public void addPlayerStats(AbstractPlayer player) {
+        super.addPlayerStats(player);
+
+        if (player instanceof Apa) {
+            winsOnBreak.addWinsOnBreak(((Apa) player).getWinsOnBreak());
+            winsOnBreak.addEarlyWins(((Apa) player).getEarlyWins());
+        }
+    }
+
+    @Override
     public void addEarlyWin() {
         winsOnBreak.addEarlyWin();
     }
@@ -37,6 +47,16 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
     @Override
     public int getWinsOnBreak() {
         return winsOnBreak.getWinsOnBreak();
+    }
+
+    @Override
+    public void addWinsOnBreak(int wins) {
+        winsOnBreak.addWinsOnBreak(wins);
+    }
+
+    @Override
+    public void addEarlyWins(int wins) {
+        winsOnBreak.addEarlyWins(wins);
     }
 
     @Override

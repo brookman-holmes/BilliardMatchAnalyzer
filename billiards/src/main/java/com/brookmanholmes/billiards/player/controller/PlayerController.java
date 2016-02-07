@@ -6,6 +6,10 @@ import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.EightBallPlayer;
+import com.brookmanholmes.billiards.player.NineBallPlayer;
+import com.brookmanholmes.billiards.player.Pair;
+import com.brookmanholmes.billiards.player.TenBallPlayer;
 
 import static com.brookmanholmes.billiards.inning.TurnEnd.BREAK_MISS;
 import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_LOST;
@@ -17,12 +21,26 @@ import static com.brookmanholmes.billiards.inning.TurnEnd.SAFETY_ERROR;
 /**
  * Created by Brookman Holmes on 10/28/2015.
  */
-public class PlayerController<T extends AbstractPlayer> {
-    T player1, player2;
+public abstract class PlayerController<T extends AbstractPlayer> {
     GameStatus gameStatus;
     Turn turn;
+    String playerName, opponentName;
 
-    PlayerController() {
+    PlayerController(String playerName, String opponentName) {
+        this.playerName = playerName;
+        this.opponentName = opponentName;
+    }
+
+    public static PlayerController<NineBallPlayer> createNineBallController(String playerName, String opponentName) {
+        return new NineBallController(playerName, opponentName);
+    }
+
+    public static PlayerController<TenBallPlayer> createTenBallController(String playerName, String opponentName) {
+        return new TenBallController(playerName, opponentName);
+    }
+
+    public static PlayerController<EightBallPlayer> createEightBallController(String playerName, String opponentName) {
+        return new EightBallController(playerName, opponentName);
     }
 
     public static PlayerController<?> createController(Game game, String playerName, String opponentName, int playerRank, int opponentRank) {
@@ -42,20 +60,24 @@ public class PlayerController<T extends AbstractPlayer> {
         }
     }
 
-    public T getPlayer1() {
-        return player1;
+    public String getPlayerName() {
+        return playerName;
     }
 
-    public T getPlayer2() {
-        return player2;
+    public String getOpponentName() {
+        return opponentName;
     }
 
-    public void updatePlayerStats(GameStatus gameStatus, Turn turn) {
-        if (turn == null || gameStatus == null)
+    public Pair<T> updatePlayerStats(GameStatus gameStatus, Turn turn) {
+        if (turn == null || gameStatus == null) {
             throw new IllegalStateException("Cannot input null game status or turn");
+        }
 
         this.gameStatus = gameStatus;
         this.turn = turn;
+
+        T player1 = newPlayer();
+        T player2 = newOpponent();
 
         switch (gameStatus.turn) {
             case PLAYER:
@@ -67,9 +89,15 @@ public class PlayerController<T extends AbstractPlayer> {
             default:
                 throw new IllegalStateException("I'm not sure if this is possible to reach");
         }
+
+        if (isGameOver()) {
+            addGamesToPlayers(player1, player2);
+        }
+
+        return new Pair<>(player1, player2);
     }
 
-    void addGamesToPlayers() {
+    void addGamesToPlayers(T player1, T player2) {
         if (getGameWinner() == PlayerTurn.PLAYER) {
             player1.addGameWon();
             player2.addGameLost();
@@ -100,10 +128,6 @@ public class PlayerController<T extends AbstractPlayer> {
 
         if (gameStatus.newGame)
             addBreakingStats(player);
-
-        if (isGameOver()) {
-            addGamesToPlayers();
-        }
     }
 
     void addSafetyStats(T player) {
@@ -111,16 +135,17 @@ public class PlayerController<T extends AbstractPlayer> {
             player.addSafety(gameStatus.opponentPlayedSuccessfulSafe);
         else if (turn.getTurnEnd() == SAFETY_ERROR)
             player.addSafetyAttempt(turn.isScratch());
+
+        if (gameStatus.opponentPlayedSuccessfulSafe && turn.getShootingBallsMade() > 0)
+            player.addSafetyEscape();
     }
 
     void addShootingStats(T player) {
-        if (setAddTurnToPlayer())
-            player.addShootingTurn();
-
         if (turn.getTurnEnd() == MISS)
             player.addShootingMiss();
 
-        player.addShootingBallsMade(turn.getShootingBallsMade(), turn.isScratch());
+        if (setAddTurnToPlayer())
+            player.addShootingBallsMade(turn.getShootingBallsMade(), turn.isScratch());
     }
 
     boolean setAddTurnToPlayer() {
@@ -152,4 +177,8 @@ public class PlayerController<T extends AbstractPlayer> {
     int getMaximumBallsMakeable() {
         return gameStatus.MAX_BALLS;
     }
+
+    public abstract T newPlayer();
+
+    public abstract T newOpponent();
 }

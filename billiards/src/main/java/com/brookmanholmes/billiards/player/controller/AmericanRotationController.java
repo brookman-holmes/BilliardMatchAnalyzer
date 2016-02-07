@@ -7,13 +7,21 @@ import com.brookmanholmes.billiards.player.AmericanRotationPlayer;
  */
 class AmericanRotationController extends PlayerController<AmericanRotationPlayer> {
     AmericanRotationController(String playerName, String opponentName) {
-        super();
-        player1 = new AmericanRotationPlayer(playerName);
-        player2 = new AmericanRotationPlayer(opponentName);
+        super(playerName, opponentName);
     }
 
     @Override
     int getMaximumBallsMakeable() {
         return 15;
+    }
+
+    @Override
+    public AmericanRotationPlayer newPlayer() {
+        return new AmericanRotationPlayer(playerName);
+    }
+
+    @Override
+    public AmericanRotationPlayer newOpponent() {
+        return new AmericanRotationPlayer(opponentName);
     }
 }

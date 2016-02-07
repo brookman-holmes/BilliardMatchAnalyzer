@@ -7,9 +7,7 @@ import com.brookmanholmes.billiards.player.NineBallPlayer;
  */
 class NineBallController extends PlayerController<NineBallPlayer> {
     NineBallController(String playerName, String opponentName) {
-        super();
-        player1 = new NineBallPlayer(playerName);
-        player2 = new NineBallPlayer(opponentName);
+        super(playerName, opponentName);
     }
 
     @Override
@@ -19,5 +17,22 @@ class NineBallController extends PlayerController<NineBallPlayer> {
 
         if (turn.getGameBallMadeOnBreak())
             ControllerHelperMethods.addWinOnBreak(player);
+    }
+
+    @Override
+    void addRunOutStats(NineBallPlayer player) {
+        super.addRunOutStats(player);
+
+        ControllerHelperMethods.addEarlyWin(player);
+    }
+
+    @Override
+    public NineBallPlayer newOpponent() {
+        return new NineBallPlayer(opponentName);
+    }
+
+    @Override
+    public NineBallPlayer newPlayer() {
+        return new NineBallPlayer(playerName);
     }
 }

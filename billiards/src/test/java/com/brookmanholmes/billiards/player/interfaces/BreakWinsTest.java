@@ -36,4 +36,18 @@ public class BreakWinsTest {
 
         assertThat(winsOnBreak.getEarlyWins(), is(1));
     }
+
+    @Test
+    public void testAddingMultipleEarlyWins() {
+        winsOnBreak.addEarlyWins(3);
+
+        assertThat(winsOnBreak.getEarlyWins(), is(3));
+    }
+
+    @Test
+    public void testAddingMultipleBreakWins() {
+        winsOnBreak.addWinsOnBreak(3);
+
+        assertThat(winsOnBreak.getWinsOnBreak(), is(3));
+    }
 }

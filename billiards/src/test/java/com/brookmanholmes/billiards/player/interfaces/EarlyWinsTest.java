@@ -29,4 +29,18 @@ public class EarlyWinsTest {
     public void objectIsPreparedCorrectly() {
         assertThat(earlyWins.getEarlyWins(), is(0));
     }
+
+    @Test
+    public void testAddingEarlyWins() {
+        earlyWins.addEarlyWin();
+
+        assertThat(earlyWins.getEarlyWins(), is(1));
+    }
+
+    @Test
+    public void testAddingMultipleEarlyWins() {
+        earlyWins.addEarlyWins(3);
+
+        assertThat(earlyWins.getEarlyWins(), is(3));
+    }
 }

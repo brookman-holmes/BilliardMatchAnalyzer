@@ -25,6 +25,14 @@ public class ConsecutiveFoulsImp implements ConsecutiveFouls {
     }
 
     @Override
+    public void addFouls(int fouls) {
+        if (fouls == 0)
+            removeFouls();
+        else
+            consecutiveFouls += fouls;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

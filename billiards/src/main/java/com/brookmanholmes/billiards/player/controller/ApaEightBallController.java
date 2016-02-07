@@ -6,10 +6,13 @@ import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
  * Created by Brookman Holmes on 1/12/2016.
  */
 class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
+    int playerRank, opponentRank;
+
     ApaEightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
-        super();
-        player1 = new ApaEightBallPlayer(playerName, playerRank);
-        player2 = new ApaEightBallPlayer(opponentName, opponentRank);
+        super(playerName, opponentName);
+
+        this.playerRank = playerRank;
+        this.opponentRank = opponentRank;
     }
 
     @Override
@@ -21,7 +24,25 @@ class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
     }
 
     @Override
+    void addRunOutStats(ApaEightBallPlayer player) {
+        super.addRunOutStats(player);
+
+        ControllerHelperMethods.addEarlyWin(player);
+    }
+
+    @Override
     int getMaximumBallsMakeable() {
         return 8;
+    }
+
+
+    @Override
+    public ApaEightBallPlayer newPlayer() {
+        return new ApaEightBallPlayer(playerName, playerRank);
+    }
+
+    @Override
+    public ApaEightBallPlayer newOpponent() {
+        return new ApaEightBallPlayer(opponentName, opponentRank);
     }
 }

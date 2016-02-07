@@ -4,7 +4,7 @@ import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.inning.ITableStatus;
+import com.brookmanholmes.billiards.inning.TableStatusInterface;
 import com.brookmanholmes.billiards.inning.TurnEnd;
 import com.brookmanholmes.billiards.inning.TurnEndOptions;
 
@@ -13,7 +13,7 @@ import com.brookmanholmes.billiards.inning.TurnEndOptions;
  * Created by Brookman Holmes on 10/30/2015.
  */
 abstract public class TurnEndHelper {
-    ITableStatus nextInning;
+    TableStatusInterface nextInning;
     GameStatus game;
 
     TurnEndHelper() {
@@ -102,7 +102,7 @@ abstract public class TurnEndHelper {
         }
     }
 
-    public TurnEndOptions create(GameStatus game, ITableStatus nextInning) {
+    public TurnEndOptions create(GameStatus game, TableStatusInterface nextInning) {
         this.game = game;
         this.nextInning = nextInning;
 

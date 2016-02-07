@@ -43,6 +43,33 @@ public abstract class AbstractPlayer {
         this.name = name;
     }
 
+    public void addPlayerStats(AbstractPlayer player) {
+        this.safetyAttempts += player.safetyAttempts;
+        this.safetyReturns += player.safetyReturns;
+        this.safetySuccesses += player.safetySuccesses;
+        this.safetyScratches += player.safetyScratches;
+        this.safetyEscapes += player.safetyEscapes;
+        this.safetyForcedErrors += player.safetyForcedErrors;
+
+        this.breakSuccesses += player.breakSuccesses;
+        this.breakAttempts += player.breakAttempts;
+        this.breakContinuations += player.breakContinuations;
+        this.breakScratches += player.breakScratches;
+        this.breakBallsMade += player.breakBallsMade;
+
+        shootingBallsMade += player.shootingBallsMade;
+        shootingTurns += player.shootingTurns;
+        shootingMisses += player.shootingMisses;
+        shootingScratches += player.shootingScratches;
+
+        runOuts += player.runOuts;
+        runTierOne += player.runTierOne;
+        runTierTwo += player.runTierTwo;
+
+        gameTotal += player.gameTotal;
+        gameWins += player.gameWins;
+    }
+
     public String getName() {
         return name;
     }
@@ -62,6 +89,7 @@ public abstract class AbstractPlayer {
 
     public void addShootingBallsMade(int ballsMade, boolean scratch) {
         shootingBallsMade += ballsMade;
+        shootingTurns++;
 
         if (scratch)
             shootingScratches++;
@@ -69,10 +97,6 @@ public abstract class AbstractPlayer {
 
     public void addShootingMiss() {
         shootingMisses++;
-    }
-
-    public void addShootingTurn() {
-        shootingTurns++;
     }
 
     public void addBreakShot(int ballsMade, boolean continuation, boolean scratch) {
@@ -186,6 +210,10 @@ public abstract class AbstractPlayer {
 
     public void addFourBallRun() {
         runTierTwo++;
+    }
+
+    public void addSafetyEscape() {
+        safetyEscapes++;
     }
 
     /**
