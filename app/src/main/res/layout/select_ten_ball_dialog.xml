@@ -19,8 +19,7 @@
         android:columnCount="5"
         android:padding="16dp"
         android:rowCount="2"
-        android:useDefaultMargins="true"
-        android:visibility="visible">
+        android:useDefaultMargins="true">
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/one_ball"

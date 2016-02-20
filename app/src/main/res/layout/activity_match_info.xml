@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.flipboard.bottomsheet.BottomSheetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottomsheet"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context=".ui.MatchInfoActivity">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.MatchInfoActivity">
 
         <FrameLayout
             android:id="@+id/fragment_container"
@@ -107,4 +102,3 @@
             android:text="Add inning for"
             android:textColor="@android:color/white" />
     </android.support.design.widget.CoordinatorLayout>
-</com.flipboard.bottomsheet.BottomSheetLayout>

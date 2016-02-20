@@ -21,7 +21,8 @@ import java.util.ArrayList;
  */
 public class MatchDialogHelperUtils {
     public static final String NEW_GAME_KEY = "new game";
-    public static final String PLAYER_NAME_KEY = "player name";
+    public static final String OPPOSING_PLAYER_NAME_KEY = "opposing player name";
+    public static final String CURRENT_PLAYER_NAME_KEY = "player name";
     public static final String GAME_TYPE_KEY = "game type";
     public static final String BALLS_ON_TABLE_KEY = "balls on table";
     public static final String TURN_KEY = "turn";
@@ -39,8 +40,10 @@ public class MatchDialogHelperUtils {
 
     public static Bundle createBundleFromMatch(Match<?> match) {
         Bundle args = new Bundle();
+
         args.putBoolean(NEW_GAME_KEY, match.getGameStatus().newGame);
-        args.putString(PLAYER_NAME_KEY, getCurrentPlayersName(match));
+        args.putString(CURRENT_PLAYER_NAME_KEY, getCurrentPlayersName(match));
+        args.putString(OPPOSING_PLAYER_NAME_KEY, getOpposingPlayersName(match));
         args.putString(GAME_TYPE_KEY, match.getGameStatus().gameType.toString());
         args.putIntegerArrayList(BALLS_ON_TABLE_KEY, new ArrayList<>(match.getGameStatus().ballsOnTable));
         args.putString(TURN_KEY, match.getGameStatus().turn.toString());
@@ -59,6 +62,18 @@ public class MatchDialogHelperUtils {
             case OPPONENT:
                 return match.getOpponent().getName();
             case PLAYER:
+                return match.getPlayer().getName();
+            default:
+                throw new IllegalStateException("There is no such player turn: "
+                        + match.getGameStatus().turn.toString());
+        }
+    }
+
+    public static String getOpposingPlayersName(Match<?> match) {
+        switch (match.getGameStatus().turn) {
+            case PLAYER:
+                return match.getOpponent().getName();
+            case OPPONENT:
                 return match.getPlayer().getName();
             default:
                 throw new IllegalStateException("There is no such player turn: "

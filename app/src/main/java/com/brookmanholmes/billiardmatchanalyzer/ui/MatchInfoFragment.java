@@ -35,14 +35,6 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
     public MatchInfoFragment() {
     }
 
-    public static MatchInfoFragment createMatchInfoFragmentWithCardViews(long matchId) {
-        MatchInfoFragment fragment = createMatchInfoFragment(matchId);
-
-        fragment.getArguments().putBoolean("Card View", true);
-
-        return fragment;
-    }
-
     public static MatchInfoFragment createMatchInfoFragment(long matchId) {
         MatchInfoFragment fragment = new MatchInfoFragment();
 
@@ -77,12 +69,9 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if (getArguments().getBoolean("Card View", false)) {
-            adapter = MatchInfoRecyclerAdapter.createMatchAdapterWithCardViews(db.getMatch(matchId));
-        } else {
-            adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
-            recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
-        }
+        adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -104,9 +93,8 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
         return adapter.getCurrentPlayersName();
     }
 
-    @Override
     public boolean undoLastTurn() {
-        return adapter.undoLastTurn();
+        return false;
     }
 
     @Override
@@ -129,9 +117,8 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
         return adapter.getTurnCount();
     }
 
-    @Override
     public boolean redoUndoneTurn() {
-        return adapter.redoUndoneTurn();
+        return false;
     }
 
     @Override

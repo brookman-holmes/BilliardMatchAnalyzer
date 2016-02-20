@@ -20,8 +20,7 @@
         android:columnCount="3"
         android:padding="16dp"
         android:rowCount="3"
-        android:useDefaultMargins="true"
-        android:visibility="invisible">
+        android:useDefaultMargins="true">
 
 
         <com.mikhaellopez.circularimageview.CircularImageView

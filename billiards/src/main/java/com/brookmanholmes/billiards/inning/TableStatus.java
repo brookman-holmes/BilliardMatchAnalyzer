@@ -100,7 +100,12 @@ final public class TableStatus implements TableStatusInterface {
     }
 
     public List<BallStatus> getBallStatuses() {
-        return new ArrayList<>(table.values());
+        List<BallStatus> ballStatuses = new ArrayList<>();
+        for (int i = 1; i <= size(); i++) {
+            ballStatuses.add(table.get(i));
+        }
+
+        return ballStatuses;
     }
 
     public void removeBallsFromTable(List<Integer> ballsToRemove) {
