@@ -30,40 +30,40 @@ public abstract class Page implements PageTreeNode {
      */
     public static final String SIMPLE_DATA_KEY = "_";
 
-    protected ModelCallbacks mCallbacks;
+    protected ModelCallbacks modelCallbacks;
 
     /**
      * Current wizard values/selections.
      */
-    protected Bundle mData = new Bundle();
-    protected String mTitle;
-    protected boolean mRequired = false;
-    protected String mParentKey;
+    protected Bundle data = new Bundle();
+    protected String title;
+    protected boolean required = false;
+    protected String parentKey;
 
     protected Page(ModelCallbacks callbacks, String title) {
-        mCallbacks = callbacks;
-        mTitle = title;
+        modelCallbacks = callbacks;
+        this.title = title;
     }
 
     public Bundle getData() {
-        return mData;
+        return data;
     }
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
     public boolean isRequired() {
-        return mRequired;
+        return required;
     }
 
     public Page setRequired(boolean required) {
-        mRequired = required;
+        this.required = required;
         return this;
     }
 
     Page setParentKey(String parentKey) {
-        mParentKey = parentKey;
+        this.parentKey = parentKey;
         return this;
     }
 
@@ -80,7 +80,7 @@ public abstract class Page implements PageTreeNode {
     public abstract Fragment createFragment();
 
     public String getKey() {
-        return (mParentKey != null) ? mParentKey + ":" + mTitle : mTitle;
+        return (parentKey != null) ? parentKey + ":" + title : title;
     }
 
     public abstract void getReviewItems(ArrayList<ReviewItem> dest);
@@ -90,23 +90,18 @@ public abstract class Page implements PageTreeNode {
     }
 
     public void resetData(Bundle data) {
-        mData = data;
+        this.data = data;
         notifyDataChanged();
     }
 
     public void notifyDataChanged() {
-        mCallbacks.onPageDataChanged(this);
+        modelCallbacks.onPageDataChanged(this);
     }
-
-    public abstract void setPlayerNames(String player, String opponent);
 
     @Override
     public String toString() {
         return "Page{" +
-                "\n mData=" + mData +
-                "\n mTitle='" + mTitle + '\'' +
-                "\n mRequired=" + mRequired +
-                "\n mParentKey='" + mParentKey + '\'' +
-                '}';
+                getKey() +
+                "}";
     }
 }

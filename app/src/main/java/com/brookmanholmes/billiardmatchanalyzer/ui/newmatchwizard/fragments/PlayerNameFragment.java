@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.brookmanholmes.billiardmatchanalyzer.wizard.ui;
+package com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,15 +33,16 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PlayerNamePage;
+import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model.PlayerNamePage;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 
 import java.util.List;
 
 public class PlayerNameFragment extends Fragment {
     private static final String ARG_KEY = "key";
-    private PageFragmentCallbacks mCallbacks;
-    private String mKey;
-    private PlayerNamePage mPage;
+    private PageFragmentCallbacks callbacks;
+    private String key;
+    private PlayerNamePage page;
     private AutoCompleteTextView playerName, opponentName;
     private List<String> names;
 
@@ -62,8 +63,8 @@ public class PlayerNameFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        mKey = args.getString(ARG_KEY);
-        mPage = (PlayerNamePage) mCallbacks.onGetPage(mKey);
+        key = args.getString(ARG_KEY);
+        page = (PlayerNamePage) callbacks.onGetPage(key);
         DatabaseAdapter database = new DatabaseAdapter(getContext());
         database.open();
 
@@ -74,18 +75,18 @@ public class PlayerNameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_player_names, container, false);
-        ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
+        ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
 
         ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.select_dialog_item, names);
 
         playerName = ((AutoCompleteTextView) rootView.findViewById(R.id.playerName));
         playerName.setAdapter(autoCompleteAdapter);
-        playerName.setText(mPage.getData().getString(PlayerNamePage.PLAYER_NAME_KEY));
+        playerName.setText(page.getData().getString(PlayerNamePage.PLAYER_NAME_KEY));
 
         opponentName = ((AutoCompleteTextView) rootView.findViewById(R.id.opponentName));
         opponentName.setAdapter(autoCompleteAdapter);
-        opponentName.setText(mPage.getData().getString(PlayerNamePage.OPPONENT_NAME_KEY));
+        opponentName.setText(page.getData().getString(PlayerNamePage.OPPONENT_NAME_KEY));
         return rootView;
     }
 
@@ -97,13 +98,13 @@ public class PlayerNameFragment extends Fragment {
             throw new ClassCastException("Activity must implement PageFragmentCallbacks");
         }
 
-        mCallbacks = (PageFragmentCallbacks) activity;
+        callbacks = (PageFragmentCallbacks) activity;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
+        callbacks = null;
     }
 
     @Override
@@ -140,8 +141,8 @@ public class PlayerNameFragment extends Fragment {
                 }
 
 
-                mPage.getData().putString(key, editable.toString());
-                mPage.notifyDataChanged();
+                page.getData().putString(key, editable.toString());
+                page.notifyDataChanged();
             }
         };
     }

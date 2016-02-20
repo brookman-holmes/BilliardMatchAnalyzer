@@ -39,7 +39,7 @@ public class MultipleFixedChoicePage extends SingleFixedChoicePage {
     public void getReviewItems(ArrayList<ReviewItem> dest) {
         StringBuilder sb = new StringBuilder();
 
-        ArrayList<String> selections = mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
+        ArrayList<String> selections = data.getStringArrayList(Page.SIMPLE_DATA_KEY);
         if (selections != null && selections.size() > 0) {
             for (String selection : selections) {
                 if (sb.length() > 0) {
@@ -54,7 +54,7 @@ public class MultipleFixedChoicePage extends SingleFixedChoicePage {
 
     @Override
     public boolean isCompleted() {
-        ArrayList<String> selections = mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
+        ArrayList<String> selections = data.getStringArrayList(Page.SIMPLE_DATA_KEY);
         return selections != null && selections.size() > 0;
     }
 }

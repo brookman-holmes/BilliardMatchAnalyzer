@@ -28,7 +28,7 @@ import java.util.Arrays;
  * A page offering the user a number of mutually exclusive choices.
  */
 public class SingleFixedChoicePage extends Page {
-    protected ArrayList<String> mChoices = new ArrayList<String>();
+    protected ArrayList<String> choices = new ArrayList<String>();
 
     public SingleFixedChoicePage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
@@ -40,35 +40,30 @@ public class SingleFixedChoicePage extends Page {
     }
 
     public String getOptionAt(int position) {
-        return mChoices.get(position);
+        return choices.get(position);
     }
 
     public int getOptionCount() {
-        return mChoices.size();
+        return choices.size();
     }
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> dest) {
-        dest.add(new ReviewItem(getTitle(), mData.getString(SIMPLE_DATA_KEY), getKey()));
+        dest.add(new ReviewItem(getTitle(), data.getString(SIMPLE_DATA_KEY), getKey()));
     }
 
     @Override
     public boolean isCompleted() {
-        return !TextUtils.isEmpty(mData.getString(SIMPLE_DATA_KEY));
+        return !TextUtils.isEmpty(data.getString(SIMPLE_DATA_KEY));
     }
 
     public SingleFixedChoicePage setChoices(String... choices) {
-        mChoices.addAll(Arrays.asList(choices));
+        this.choices.addAll(Arrays.asList(choices));
         return this;
     }
 
     public SingleFixedChoicePage setValue(String value) {
-        mData.putString(SIMPLE_DATA_KEY, value);
+        data.putString(SIMPLE_DATA_KEY, value);
         return this;
-    }
-
-    @Override
-    public void setPlayerNames(String player, String opponent) {
-
     }
 }

@@ -49,17 +49,8 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
         // can't use for each because of concurrent modification (review fragment
         // can get added or removed and will register itself as a listener)
         for (int i = 0; i < listeners.size(); i++) {
-            rootPageList.setPlayerNames(getPlayerName(), getOpponentName());
             listeners.get(i).onPageDataChanged(page);
         }
-    }
-
-    public String getPlayerName() {
-        return rootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY) == null ? "" : rootPageList.findByKey("Players").getData().getString(PlayerNamePage.PLAYER_NAME_KEY);
-    }
-
-    public String getOpponentName() {
-        return rootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY) == null ? "" : rootPageList.findByKey("Players").getData().getString(PlayerNamePage.OPPONENT_NAME_KEY);
     }
 
     @Override

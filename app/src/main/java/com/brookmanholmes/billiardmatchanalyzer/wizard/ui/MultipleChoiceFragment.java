@@ -40,10 +40,10 @@ import java.util.Set;
 public class MultipleChoiceFragment extends ListFragment {
     private static final String ARG_KEY = "key";
 
-    private PageFragmentCallbacks mCallbacks;
-    private String mKey;
-    private List<String> mChoices;
-    private Page mPage;
+    private PageFragmentCallbacks callbacks;
+    private String key;
+    private List<String> choices;
+    private Page page;
 
     public MultipleChoiceFragment() {
     }
@@ -62,13 +62,13 @@ public class MultipleChoiceFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        mKey = args.getString(ARG_KEY);
-        mPage = mCallbacks.onGetPage(mKey);
+        key = args.getString(ARG_KEY);
+        page = callbacks.onGetPage(key);
 
-        MultipleFixedChoicePage fixedChoicePage = (MultipleFixedChoicePage) mPage;
-        mChoices = new ArrayList<String>();
+        MultipleFixedChoicePage fixedChoicePage = (MultipleFixedChoicePage) page;
+        choices = new ArrayList<>();
         for (int i = 0; i < fixedChoicePage.getOptionCount(); i++) {
-            mChoices.add(fixedChoicePage.getOptionAt(i));
+            choices.add(fixedChoicePage.getOptionAt(i));
         }
     }
 
@@ -76,20 +76,20 @@ public class MultipleChoiceFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
-        ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
+        ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
 
         final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
         setListAdapter(new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_multiple_choice,
                 android.R.id.text1,
-                mChoices));
+                choices));
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         // Pre-select currently selected items.
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                ArrayList<String> selectedItems = mPage.getData().getStringArrayList(
+                ArrayList<String> selectedItems = page.getData().getStringArrayList(
                         Page.SIMPLE_DATA_KEY);
                 if (selectedItems == null || selectedItems.size() == 0) {
                     return;
@@ -97,8 +97,8 @@ public class MultipleChoiceFragment extends ListFragment {
 
                 Set<String> selectedSet = new HashSet<String>(selectedItems);
 
-                for (int i = 0; i < mChoices.size(); i++) {
-                    if (selectedSet.contains(mChoices.get(i))) {
+                for (int i = 0; i < choices.size(); i++) {
+                    if (selectedSet.contains(choices.get(i))) {
                         listView.setItemChecked(i, true);
                     }
                 }
@@ -116,13 +116,13 @@ public class MultipleChoiceFragment extends ListFragment {
             throw new ClassCastException("Activity must implement PageFragmentCallbacks");
         }
 
-        mCallbacks = (PageFragmentCallbacks) activity;
+        callbacks = (PageFragmentCallbacks) activity;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
+        callbacks = null;
     }
 
     @Override
@@ -135,7 +135,7 @@ public class MultipleChoiceFragment extends ListFragment {
             }
         }
 
-        mPage.getData().putStringArrayList(Page.SIMPLE_DATA_KEY, selections);
-        mPage.notifyDataChanged();
+        page.getData().putStringArrayList(Page.SIMPLE_DATA_KEY, selections);
+        page.notifyDataChanged();
     }
 }

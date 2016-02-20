@@ -33,12 +33,6 @@ public class PageList extends ArrayList<Page> implements PageTreeNode {
         }
     }
 
-    public void setPlayerNames(String player, String opponent) {
-        for (Page page : this) {
-            page.setPlayerNames(player, opponent);
-        }
-    }
-
     @Override
     public Page findByKey(String key) {
         for (Page childPage : this) {

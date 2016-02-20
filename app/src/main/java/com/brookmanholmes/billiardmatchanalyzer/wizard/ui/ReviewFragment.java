@@ -41,11 +41,11 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ReviewFragment extends ListFragment implements ModelCallbacks {
-    private Callbacks mCallbacks;
-    private AbstractWizardModel mWizardModel;
-    private List<ReviewItem> mCurrentReviewItems;
+    private Callbacks callbacks;
+    private AbstractWizardModel wizardModel;
+    private List<ReviewItem> reviewItems;
 
-    private ReviewAdapter mReviewAdapter;
+    private ReviewAdapter reviewAdapter;
 
     public ReviewFragment() {
     }
@@ -53,7 +53,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mReviewAdapter = new ReviewAdapter();
+        reviewAdapter = new ReviewAdapter();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         titleView.setTextColor(getResources().getColor(R.color.colorAccent));
 
         ListView listView = (ListView) rootView.findViewById(android.R.id.list);
-        setListAdapter(mReviewAdapter);
+        setListAdapter(reviewAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         return rootView;
     }
@@ -80,10 +80,10 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
             throw new ClassCastException("Activity must implement fragment's callbacks");
         }
 
-        mCallbacks = (Callbacks) activity;
+        callbacks = (Callbacks) activity;
 
-        mWizardModel = mCallbacks.onGetModel();
-        mWizardModel.registerListener(this);
+        wizardModel = callbacks.onGetModel();
+        wizardModel.registerListener(this);
         onPageTreeChanged();
     }
 
@@ -95,15 +95,15 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
+        callbacks = null;
 
-        mWizardModel.unregisterListener(this);
+        wizardModel.unregisterListener(this);
     }
 
     @Override
     public void onPageDataChanged(Page changedPage) {
         ArrayList<ReviewItem> reviewItems = new ArrayList<ReviewItem>();
-        for (Page page : mWizardModel.getCurrentPageSequence()) {
+        for (Page page : wizardModel.getCurrentPageSequence()) {
             page.getReviewItems(reviewItems);
         }
         Collections.sort(reviewItems, new Comparator<ReviewItem>() {
@@ -112,9 +112,9 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
                 return a.getWeight() > b.getWeight() ? +1 : a.getWeight() < b.getWeight() ? -1 : 0;
             }
         });
-        mCurrentReviewItems = reviewItems;
+        this.reviewItems = reviewItems;
 
-        for (ReviewItem item : mCurrentReviewItems) {
+        for (ReviewItem item : this.reviewItems) {
             if (item.getDisplayValue().equals("APA 8 ball")) {
                 int playerRank = getPlayerRank();
                 int opponentRank = getOpponentRank();
@@ -126,13 +126,13 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
             }
         }
 
-        if (mReviewAdapter != null) {
-            mReviewAdapter.notifyDataSetInvalidated();
+        if (reviewAdapter != null) {
+            reviewAdapter.notifyDataSetInvalidated();
         }
     }
 
     private void setPlayerRaceToReviewItem(int games) {
-        for (ReviewItem item : mCurrentReviewItems) {
+        for (ReviewItem item : reviewItems) {
             if (item.getTitle().equals(getPlayerName() + "'s Rank")) {
                 item.setDisplayValue(item.getDisplayValue() + ", wins with " + games + " games");
             }
@@ -140,7 +140,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     }
 
     private void setOpponentRaceToReviewItem(int games) {
-        for (ReviewItem item : mCurrentReviewItems) {
+        for (ReviewItem item : reviewItems) {
             if (item.getTitle().equals(getOpponentName() + "'s Rank")) {
                 item.setDisplayValue(item.getDisplayValue() + ", wins with " + games + " games");
             }
@@ -149,7 +149,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
     private int getPlayerRank() {
         int rank = 0;
-        for (ReviewItem item : mCurrentReviewItems) {
+        for (ReviewItem item : reviewItems) {
             if (item.getTitle().equals(getPlayerName() + "'s Rank")) {
                 rank = Integer.valueOf(item.getDisplayValue());
             }
@@ -160,7 +160,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
     private int getOpponentRank() {
         int rank = 0;
-        for (ReviewItem item : mCurrentReviewItems) {
+        for (ReviewItem item : reviewItems) {
             if (item.getTitle().equals(getOpponentName() + "'s Rank")) {
                 rank = Integer.valueOf(item.getDisplayValue());
             }
@@ -170,20 +170,20 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     }
 
     public String getPlayerName() {
-        return mCurrentReviewItems.get(0).getDisplayValue();
+        return reviewItems.get(0).getDisplayValue();
     }
 
     private String getOpponentName() {
-        return mCurrentReviewItems.get(1).getDisplayValue();
+        return reviewItems.get(1).getDisplayValue();
     }
 
     public List<ReviewItem> getCurrentReviewItems() {
-        return mCurrentReviewItems;
+        return reviewItems;
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        mCallbacks.onEditScreenAfterReview(mCurrentReviewItems.get(position).getPageKey());
+        callbacks.onEditScreenAfterReview(reviewItems.get(position).getPageKey());
     }
 
     public interface Callbacks {
@@ -215,12 +215,12 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
         @Override
         public Object getItem(int position) {
-            return mCurrentReviewItems.get(position);
+            return reviewItems.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return mCurrentReviewItems.get(position).hashCode();
+            return reviewItems.get(position).hashCode();
         }
 
         @Override
@@ -228,7 +228,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             View rootView = inflater.inflate(R.layout.list_item_review, container, false);
 
-            ReviewItem reviewItem = mCurrentReviewItems.get(position);
+            ReviewItem reviewItem = reviewItems.get(position);
             String value = reviewItem.getDisplayValue();
             if (TextUtils.isEmpty(value)) {
                 value = "(None)";
@@ -240,7 +240,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
         @Override
         public int getCount() {
-            return mCurrentReviewItems.size();
+            return reviewItems.size();
         }
     }
 }

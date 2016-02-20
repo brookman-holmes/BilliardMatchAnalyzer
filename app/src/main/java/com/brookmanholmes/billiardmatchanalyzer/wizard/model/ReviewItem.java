@@ -24,57 +24,51 @@ package com.brookmanholmes.billiardmatchanalyzer.wizard.model;
 public class ReviewItem {
     public static final int DEFAULT_WEIGHT = 0;
 
-    private int mWeight;
-    private String mTitle;
-    private String mDisplayValue;
-    private String mPageKey;
+    private int weight;
+    private String title;
+    private String displayValue;
+    private String pageKey;
 
     public ReviewItem(String title, String displayValue, String pageKey) {
         this(title, displayValue, pageKey, DEFAULT_WEIGHT);
     }
 
     public ReviewItem(String title, String displayValue, String pageKey, int weight) {
-        mTitle = title;
-        mDisplayValue = displayValue;
-        mPageKey = pageKey;
-        mWeight = weight;
+        this.title = title;
+        this.displayValue = displayValue;
+        this.pageKey = pageKey;
+        this.weight = weight;
     }
 
     public String getDisplayValue() {
-        return mDisplayValue;
+        return displayValue;
     }
 
     public void setDisplayValue(String displayValue) {
-        mDisplayValue = displayValue;
+        this.displayValue = displayValue;
     }
 
     public String getPageKey() {
-        return mPageKey;
+        return pageKey;
     }
 
     public void setPageKey(String pageKey) {
-        mPageKey = pageKey;
+        this.pageKey = pageKey;
     }
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
     public void setTitle(String title) {
-        mTitle = title;
+        this.title = title;
     }
 
     public int getWeight() {
-        return mWeight;
+        return weight;
     }
 
     public void setWeight(int weight) {
-        mWeight = weight;
-    }
-
-
-    @Override
-    public String toString() {
-        return "\nTitle: " + mTitle + " Display Value: " + mDisplayValue + " Page Key: " + mPageKey;
+        this.weight = weight;
     }
 }

@@ -29,7 +29,7 @@ import java.util.List;
  * next set of steps in the wizard may change.
  */
 public class BranchPage extends SingleFixedChoicePage {
-    private List<Branch> mBranches = new ArrayList<Branch>();
+    protected List<Branch> branches = new ArrayList<Branch>();
 
     public BranchPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
@@ -41,7 +41,7 @@ public class BranchPage extends SingleFixedChoicePage {
             return this;
         }
 
-        for (Branch branch : mBranches) {
+        for (Branch branch : branches) {
             Page found = branch.childPageList.findByKey(key);
             if (found != null) {
                 return found;
@@ -54,8 +54,8 @@ public class BranchPage extends SingleFixedChoicePage {
     @Override
     public void flattenCurrentPageSequence(ArrayList<Page> destination) {
         super.flattenCurrentPageSequence(destination);
-        for (Branch branch : mBranches) {
-            if (branch.choice.equals(mData.getString(Page.SIMPLE_DATA_KEY))) {
+        for (Branch branch : branches) {
+            if (branch.choice.equals(data.getString(Page.SIMPLE_DATA_KEY))) {
                 branch.childPageList.flattenCurrentPageSequence(destination);
                 break;
             }
@@ -67,12 +67,12 @@ public class BranchPage extends SingleFixedChoicePage {
         for (Page page : childPageList) {
             page.setParentKey(choice);
         }
-        mBranches.add(new Branch(choice, childPageList));
+        branches.add(new Branch(choice, childPageList));
         return this;
     }
 
     public BranchPage addBranch(String choice) {
-        mBranches.add(new Branch(choice, new PageList()));
+        branches.add(new Branch(choice, new PageList()));
         return this;
     }
 
@@ -82,52 +82,41 @@ public class BranchPage extends SingleFixedChoicePage {
     }
 
     public String getOptionAt(int position) {
-        return mBranches.get(position).choice;
+        return branches.get(position).choice;
     }
 
     public int getOptionCount() {
-        return mBranches.size();
+        return branches.size();
     }
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> dest) {
-        dest.add(new ReviewItem(getTitle(), mData.getString(SIMPLE_DATA_KEY), getKey()));
+        dest.add(new ReviewItem(getTitle(), data.getString(SIMPLE_DATA_KEY), getKey()));
     }
 
     @Override
     public boolean isCompleted() {
-        return !TextUtils.isEmpty(mData.getString(SIMPLE_DATA_KEY));
+        return !TextUtils.isEmpty(data.getString(SIMPLE_DATA_KEY));
     }
 
     @Override
     public void notifyDataChanged() {
-        mCallbacks.onPageTreeChanged();
+        modelCallbacks.onPageTreeChanged();
         super.notifyDataChanged();
     }
 
-    @Override
-    public void setPlayerNames(String player, String opponent) {
-        for (Branch branch : mBranches) {
-            branch.setPlayerNames(player, opponent);
-        }
-    }
-
     public BranchPage setValue(String value) {
-        mData.putString(SIMPLE_DATA_KEY, value);
+        data.putString(SIMPLE_DATA_KEY, value);
         return this;
     }
 
-    private static class Branch {
+    protected static class Branch {
         public String choice;
         public PageList childPageList;
 
         private Branch(String choice, PageList childPageList) {
             this.choice = choice;
             this.childPageList = childPageList;
-        }
-
-        private void setPlayerNames(String player, String opponent) {
-            childPageList.setPlayerNames(player, opponent);
         }
     }
 }

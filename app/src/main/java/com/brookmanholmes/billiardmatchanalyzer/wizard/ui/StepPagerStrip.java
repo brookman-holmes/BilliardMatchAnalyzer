@@ -33,24 +33,24 @@ public class StepPagerStrip extends View {
     private static final int[] ATTRS = new int[]{
             android.R.attr.gravity
     };
-    private int mPageCount;
-    private int mCurrentPage;
+    private int pageCount;
+    private int currentPage;
 
-    private int mGravity = Gravity.LEFT | Gravity.TOP;
-    private float mTabWidth;
-    private float mTabHeight;
-    private float mTabSpacing;
+    private int gravity = Gravity.LEFT | Gravity.TOP;
+    private float tabWidth;
+    private float tabHeight;
+    private float tabSpacing;
 
-    private Paint mPrevTabPaint;
-    private Paint mSelectedTabPaint;
-    private Paint mSelectedLastTabPaint;
-    private Paint mNextTabPaint;
+    private Paint prevTabPaint;
+    private Paint selectedTabPaint;
+    private Paint selectedLastTabPaint;
+    private Paint nextTabPaint;
 
-    private RectF mTempRectF = new RectF();
+    private RectF tempRectF = new RectF();
 
     //private Scroller mScroller;
 
-    private OnPageSelectedListener mOnPageSelectedListener;
+    private OnPageSelectedListener onPageSelectedListener;
 
     public StepPagerStrip(Context context) {
         this(context, null, 0);
@@ -64,44 +64,44 @@ public class StepPagerStrip extends View {
         super(context, attrs, defStyle);
 
         final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
-        mGravity = a.getInteger(0, mGravity);
+        gravity = a.getInteger(0, gravity);
         a.recycle();
 
         final Resources res = getResources();
-        mTabWidth = res.getDimensionPixelSize(R.dimen.step_pager_tab_width);
-        mTabHeight = res.getDimensionPixelSize(R.dimen.step_pager_tab_height);
-        mTabSpacing = res.getDimensionPixelSize(R.dimen.step_pager_tab_spacing);
+        tabWidth = res.getDimensionPixelSize(R.dimen.step_pager_tab_width);
+        tabHeight = res.getDimensionPixelSize(R.dimen.step_pager_tab_height);
+        tabSpacing = res.getDimensionPixelSize(R.dimen.step_pager_tab_spacing);
 
-        mPrevTabPaint = new Paint();
-        mPrevTabPaint.setColor(res.getColor(R.color.step_pager_previous_tab_color));
+        prevTabPaint = new Paint();
+        prevTabPaint.setColor(res.getColor(R.color.step_pager_previous_tab_color));
 
-        mSelectedTabPaint = new Paint();
-        mSelectedTabPaint.setColor(res.getColor(R.color.step_pager_selected_tab_color));
+        selectedTabPaint = new Paint();
+        selectedTabPaint.setColor(res.getColor(R.color.step_pager_selected_tab_color));
 
-        mSelectedLastTabPaint = new Paint();
-        mSelectedLastTabPaint.setColor(res.getColor(R.color.step_pager_selected_last_tab_color));
+        selectedLastTabPaint = new Paint();
+        selectedLastTabPaint.setColor(res.getColor(R.color.step_pager_selected_last_tab_color));
 
-        mNextTabPaint = new Paint();
-        mNextTabPaint.setColor(res.getColor(R.color.step_pager_next_tab_color));
+        nextTabPaint = new Paint();
+        nextTabPaint.setColor(res.getColor(R.color.step_pager_next_tab_color));
     }
 
     public void setOnPageSelectedListener(OnPageSelectedListener onPageSelectedListener) {
-        mOnPageSelectedListener = onPageSelectedListener;
+        this.onPageSelectedListener = onPageSelectedListener;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mPageCount == 0) {
+        if (pageCount == 0) {
             return;
         }
 
-        float totalWidth = mPageCount * (mTabWidth + mTabSpacing) - mTabSpacing;
+        float totalWidth = pageCount * (tabWidth + tabSpacing) - tabSpacing;
         float totalLeft;
         boolean fillHorizontal = false;
 
-        switch (mGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+        switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
             case Gravity.CENTER_HORIZONTAL:
                 totalLeft = (getWidth() - totalWidth) / 2;
                 break;
@@ -116,35 +116,35 @@ public class StepPagerStrip extends View {
                 totalLeft = getPaddingLeft();
         }
 
-        switch (mGravity & Gravity.VERTICAL_GRAVITY_MASK) {
+        switch (gravity & Gravity.VERTICAL_GRAVITY_MASK) {
             case Gravity.CENTER_VERTICAL:
-                mTempRectF.top = (int) (getHeight() - mTabHeight) / 2;
+                tempRectF.top = (int) (getHeight() - tabHeight) / 2;
                 break;
             case Gravity.BOTTOM:
-                mTempRectF.top = getHeight() - getPaddingBottom() - mTabHeight;
+                tempRectF.top = getHeight() - getPaddingBottom() - tabHeight;
                 break;
             default:
-                mTempRectF.top = getPaddingTop();
+                tempRectF.top = getPaddingTop();
         }
 
-        mTempRectF.bottom = mTempRectF.top + mTabHeight;
+        tempRectF.bottom = tempRectF.top + tabHeight;
 
-        float tabWidth = mTabWidth;
+        float tabWidth = this.tabWidth;
         if (fillHorizontal) {
             tabWidth = (getWidth() - getPaddingRight() - getPaddingLeft()
-                    - (mPageCount - 1) * mTabSpacing) / mPageCount;
+                    - (pageCount - 1) * tabSpacing) / pageCount;
         }
 
-        for (int i = 0; i < mPageCount; i++) {
-            mTempRectF.left = totalLeft + (i * (tabWidth + mTabSpacing));
-            mTempRectF.right = mTempRectF.left + tabWidth;
-            canvas.drawRect(mTempRectF, i < mCurrentPage
-                    ? mPrevTabPaint
-                    : (i > mCurrentPage
-                    ? mNextTabPaint
-                    : (i == mPageCount - 1
-                    ? mSelectedLastTabPaint
-                    : mSelectedTabPaint)));
+        for (int i = 0; i < pageCount; i++) {
+            tempRectF.left = totalLeft + (i * (tabWidth + tabSpacing));
+            tempRectF.right = tempRectF.left + tabWidth;
+            canvas.drawRect(tempRectF, i < currentPage
+                    ? prevTabPaint
+                    : (i > currentPage
+                    ? nextTabPaint
+                    : (i == pageCount - 1
+                    ? selectedLastTabPaint
+                    : selectedTabPaint)));
         }
     }
 
@@ -152,11 +152,11 @@ public class StepPagerStrip extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(
                 View.resolveSize(
-                        (int) (mPageCount * (mTabWidth + mTabSpacing) - mTabSpacing)
+                        (int) (pageCount * (tabWidth + tabSpacing) - tabSpacing)
                                 + getPaddingLeft() + getPaddingRight(),
                         widthMeasureSpec),
                 View.resolveSize(
-                        (int) mTabHeight
+                        (int) tabHeight
                                 + getPaddingTop() + getPaddingBottom(),
                         heightMeasureSpec));
     }
@@ -169,13 +169,13 @@ public class StepPagerStrip extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (mOnPageSelectedListener != null) {
+        if (onPageSelectedListener != null) {
             switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
                 case MotionEvent.ACTION_MOVE:
                     int position = hitTest(event.getX());
                     if (position >= 0) {
-                        mOnPageSelectedListener.onPageStripSelected(position);
+                        onPageSelectedListener.onPageStripSelected(position);
                     }
                     return true;
             }
@@ -184,15 +184,15 @@ public class StepPagerStrip extends View {
     }
 
     private int hitTest(float x) {
-        if (mPageCount == 0) {
+        if (pageCount == 0) {
             return -1;
         }
 
-        float totalWidth = mPageCount * (mTabWidth + mTabSpacing) - mTabSpacing;
+        float totalWidth = pageCount * (tabWidth + tabSpacing) - tabSpacing;
         float totalLeft;
         boolean fillHorizontal = false;
 
-        switch (mGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+        switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
             case Gravity.CENTER_HORIZONTAL:
                 totalLeft = (getWidth() - totalWidth) / 2;
                 break;
@@ -207,22 +207,22 @@ public class StepPagerStrip extends View {
                 totalLeft = getPaddingLeft();
         }
 
-        float tabWidth = mTabWidth;
+        float tabWidth = this.tabWidth;
         if (fillHorizontal) {
             tabWidth = (getWidth() - getPaddingRight() - getPaddingLeft()
-                    - (mPageCount - 1) * mTabSpacing) / mPageCount;
+                    - (pageCount - 1) * tabSpacing) / pageCount;
         }
 
-        float totalRight = totalLeft + (mPageCount * (tabWidth + mTabSpacing));
+        float totalRight = totalLeft + (pageCount * (tabWidth + tabSpacing));
         if (x >= totalLeft && x <= totalRight && totalRight > totalLeft) {
-            return (int) (((x - totalLeft) / (totalRight - totalLeft)) * mPageCount);
+            return (int) (((x - totalLeft) / (totalRight - totalLeft)) * pageCount);
         } else {
             return -1;
         }
     }
 
     public void setCurrentPage(int currentPage) {
-        mCurrentPage = currentPage;
+        this.currentPage = currentPage;
         invalidate();
         scrollCurrentPageIntoView();
 
@@ -232,8 +232,8 @@ public class StepPagerStrip extends View {
     private void scrollCurrentPageIntoView() {
         // TODO: only works with left gravity for now
 //
-//        float widthToActive = getPaddingLeft() + (mCurrentPage + 1) * (mTabWidth + mTabSpacing)
-//                - mTabSpacing;
+//        float widthToActive = getPaddingLeft() + (currentPage + 1) * (tabWidth + tabSpacing)
+//                - tabSpacing;
 //        int viewWidth = getWidth();
 //
 //        int startScrollX = getScrollX();
@@ -249,7 +249,7 @@ public class StepPagerStrip extends View {
     }
 
     public void setPageCount(int count) {
-        mPageCount = count;
+        pageCount = count;
         invalidate();
 
         // TODO: Set content description appropriately

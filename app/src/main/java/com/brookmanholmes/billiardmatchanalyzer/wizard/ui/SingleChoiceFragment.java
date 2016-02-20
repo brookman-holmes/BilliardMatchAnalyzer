@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +38,10 @@ import java.util.List;
 public class SingleChoiceFragment extends ListFragment {
     private static final String ARG_KEY = "key";
 
-    private PageFragmentCallbacks mCallbacks;
-    private List<String> mChoices;
-    private String mKey;
-    private Page mPage;
+    private PageFragmentCallbacks callbacks;
+    private List<String> choices;
+    private String key;
+    private Page page;
 
     public SingleChoiceFragment() {
     }
@@ -59,13 +60,13 @@ public class SingleChoiceFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        mKey = args.getString(ARG_KEY);
-        mPage = mCallbacks.onGetPage(mKey);
+        key = args.getString(ARG_KEY);
+        page = callbacks.onGetPage(key);
 
-        SingleFixedChoicePage fixedChoicePage = (SingleFixedChoicePage) mPage;
-        mChoices = new ArrayList<String>();
+        SingleFixedChoicePage fixedChoicePage = (SingleFixedChoicePage) page;
+        choices = new ArrayList<>();
         for (int i = 0; i < fixedChoicePage.getOptionCount(); i++) {
-            mChoices.add(fixedChoicePage.getOptionAt(i));
+            choices.add(fixedChoicePage.getOptionAt(i));
         }
     }
 
@@ -73,22 +74,30 @@ public class SingleChoiceFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
-        ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
+        ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
+
+        ((TextView) rootView.findViewById(android.R.id.title)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Debug", "Is page completed? " + page.isCompleted());
+                Log.i("Debug", "Item selected: " + page.getData().getString(Page.SIMPLE_DATA_KEY));
+            }
+        });
 
         final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
         setListAdapter(new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_single_choice,
                 android.R.id.text1,
-                mChoices));
+                choices));
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         // Pre-select currently selected item.
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                String selection = mPage.getData().getString(Page.SIMPLE_DATA_KEY);
-                for (int i = 0; i < mChoices.size(); i++) {
-                    if (mChoices.get(i).equals(selection)) {
+                String selection = page.getData().getString(Page.SIMPLE_DATA_KEY);
+                for (int i = 0; i < choices.size(); i++) {
+                    if (choices.get(i).equals(selection)) {
                         listView.setItemChecked(i, true);
                         break;
                     }
@@ -107,19 +116,22 @@ public class SingleChoiceFragment extends ListFragment {
             throw new ClassCastException("Activity must implement PageFragmentCallbacks");
         }
 
-        mCallbacks = (PageFragmentCallbacks) activity;
+        callbacks = (PageFragmentCallbacks) activity;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
+        callbacks = null;
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        mPage.getData().putString(Page.SIMPLE_DATA_KEY,
+        Log.i("scf", "list item clicked");
+        page.getData().putString(Page.SIMPLE_DATA_KEY,
                 getListAdapter().getItem(position).toString());
-        mPage.notifyDataChanged();
+        Log.i("scf", "Data put: " + getListAdapter().getItem(position).toString());
+        Log.i("scf", "data recalled: " + page.getData().getString(Page.SIMPLE_DATA_KEY));
+        page.notifyDataChanged();
     }
 }
