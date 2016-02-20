@@ -16,7 +16,7 @@
 
 package com.brookmanholmes.billiardmatchanalyzer.wizard.ui;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
@@ -109,14 +109,14 @@ public class MultipleChoiceFragment extends ListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        if (!(activity instanceof PageFragmentCallbacks)) {
+        if (!(getActivity() instanceof PageFragmentCallbacks)) {
             throw new ClassCastException("Activity must implement PageFragmentCallbacks");
         }
 
-        callbacks = (PageFragmentCallbacks) activity;
+        callbacks = (PageFragmentCallbacks) getActivity();
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model;
 
-import android.util.Log;
-
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePage;
 
@@ -10,9 +8,12 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePa
  */
 public class FirstBreakPage extends SingleFixedChoicePage implements RequiresPlayerNames {
     String playerName = "Player 1-", opponentName = "Player 2-";
+    String parentPage;
 
-    public FirstBreakPage(ModelCallbacks callbacks) {
+    public FirstBreakPage(ModelCallbacks callbacks, String parentPage) {
         super(callbacks, "Who breaks first?");
+
+        this.parentPage = parentPage;
 
         choices.add(playerName);
         choices.add(opponentName);
@@ -25,8 +26,12 @@ public class FirstBreakPage extends SingleFixedChoicePage implements RequiresPla
 
     @Override
     public boolean isCompleted() {
-        Log.i("fbp", data.getString(SIMPLE_DATA_KEY, "NOTHING HERE"));
         return super.isCompleted();
+    }
+
+    @Override
+    public String getKey() {
+        return parentPage + ":" + super.getKey();
     }
 
     @Override
@@ -41,13 +46,5 @@ public class FirstBreakPage extends SingleFixedChoicePage implements RequiresPla
 
         choices.set(0, playerName);
         choices.set(1, opponentName);
-    }
-
-    @Override
-    public String toString() {
-        return "FirstBreakPage{" +
-                "is completed? " + isCompleted() +
-                "page data: " + data.getString(SIMPLE_DATA_KEY) +
-                "} " + super.toString();
     }
 }

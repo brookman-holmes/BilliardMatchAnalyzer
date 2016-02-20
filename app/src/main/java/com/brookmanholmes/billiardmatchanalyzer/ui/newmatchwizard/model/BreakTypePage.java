@@ -1,11 +1,9 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model;
 
-import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model.RequiresPlayerNames;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePage;
 
 import java.util.ArrayList;
 
@@ -17,12 +15,12 @@ public class BreakTypePage extends BranchPage implements RequiresPlayerNames {
     String playerName = "Player 1-", opponentName = "Player 2-";
     String valueEnding = " always breaks";
 
-    public BreakTypePage(ModelCallbacks callbacks) {
+    public BreakTypePage(ModelCallbacks callbacks, String parentPage) {
         super(callbacks, "The break");
 
-        addBranch("Winner", new FirstBreakPage(callbacks));
-        addBranch("Alternate", new FirstBreakPage(callbacks));
-        addBranch("Loser", new FirstBreakPage(callbacks));
+        addBranch("Winner", new FirstBreakPage(callbacks, parentPage));
+        addBranch("Alternate", new FirstBreakPage(callbacks, parentPage));
+        addBranch("Loser", new FirstBreakPage(callbacks, parentPage));
         addBranch(playerName + valueEnding);
         addBranch(opponentName + valueEnding);
     }
@@ -53,9 +51,9 @@ public class BreakTypePage extends BranchPage implements RequiresPlayerNames {
             }
         }
 
-        if (data.getString(SIMPLE_DATA_KEY, "|!_)(@%!)*(!@%$!@").equals(this.playerName + valueEnding))
+        if (data.getString(SIMPLE_DATA_KEY, "").equals(this.playerName + valueEnding))
             data.putString(SIMPLE_DATA_KEY, playerName + valueEnding);
-        else if (data.getString(SIMPLE_DATA_KEY, "|!_)(@%!)*(!@%$!@").equals(this.opponentName + valueEnding))
+        else if (data.getString(SIMPLE_DATA_KEY, "").equals(this.opponentName + valueEnding))
             data.putString(SIMPLE_DATA_KEY, opponentName + valueEnding);
 
         this.playerName = playerName;

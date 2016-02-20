@@ -16,7 +16,7 @@
 
 package com.brookmanholmes.billiardmatchanalyzer.wizard.ui;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.TextUtils;
@@ -73,14 +73,14 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        if (!(activity instanceof Callbacks)) {
+        if (!(getActivity() instanceof Callbacks)) {
             throw new ClassCastException("Activity must implement fragment's callbacks");
         }
 
-        callbacks = (Callbacks) activity;
+        callbacks = (Callbacks) getActivity();
 
         wizardModel = callbacks.onGetModel();
         wizardModel.registerListener(this);

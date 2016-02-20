@@ -16,7 +16,6 @@
 
 package com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -91,14 +90,14 @@ public class PlayerNameFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        if (!(activity instanceof PageFragmentCallbacks)) {
+        if (!(getActivity() instanceof PageFragmentCallbacks)) {
             throw new ClassCastException("Activity must implement PageFragmentCallbacks");
         }
 
-        callbacks = (PageFragmentCallbacks) activity;
+        callbacks = (PageFragmentCallbacks) getActivity();
     }
 
     @Override

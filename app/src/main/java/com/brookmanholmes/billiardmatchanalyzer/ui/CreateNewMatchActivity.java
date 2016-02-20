@@ -22,15 +22,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model.CreateNewMatchWizardModel;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
@@ -145,8 +144,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
     }
 
     private void updateBottomBar() {
-        Log.i(TAG, "pagerAdapter.getCutOffPage()=" + pagerAdapter.getCutOffPage());
-        Log.i(TAG, "position=" + pager.getCurrentItem());
         int position = pager.getCurrentItem();
         if (position == currentPageSequence.size()) {
             nextButton.setText("Create match");
@@ -159,7 +156,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
             nextButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             nextButton.setTextAppearance(this, R.style.TextAppearanceUnfinished);
             nextButton.setEnabled(position != pagerAdapter.getCutOffPage());
-            Log.i(TAG, "next Button enabled? " + nextButton.isEnabled());
         }
 
         prevButton.setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
@@ -197,11 +193,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
     @Override
     public void onPageDataChanged(Page page) {
-        Log.i(TAG, "onPageDataChanged called");
         if (page.isRequired()) {
-            Log.i(TAG, "page is required");
             if (recalculateCutOffPage()) {
-                Log.i(TAG, "cut off page recalculated");
                 pagerAdapter.notifyDataSetChanged();
                 updateBottomBar();
             }
@@ -231,14 +224,9 @@ public class CreateNewMatchActivity extends BaseActivity implements
     private boolean recalculateCutOffPage() {
         // Cut off the pager adapter at first required page that isn't completed
         int cutOffPage = currentPageSequence.size() + 1;
-        Log.i(TAG, "cut off page is: " + cutOffPage);
         for (int i = 0; i < currentPageSequence.size(); i++) {
             Page page = currentPageSequence.get(i);
             if (page.isRequired() && !page.isCompleted()) {
-                Log.i(TAG, "cut off page is: " + i + " after traversal");
-                Log.i(TAG, "cut off page is: " + page.toString());
-                Log.i(TAG, "is cut off page required? " + page.isRequired());
-                Log.i(TAG, "is cut off page completed? " + page.isCompleted());
                 cutOffPage = i;
                 break;
             }

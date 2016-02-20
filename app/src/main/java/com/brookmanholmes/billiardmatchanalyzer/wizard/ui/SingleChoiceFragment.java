@@ -16,11 +16,10 @@
 
 package com.brookmanholmes.billiardmatchanalyzer.wizard.ui;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,14 +75,6 @@ public class SingleChoiceFragment extends ListFragment {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
 
-        ((TextView) rootView.findViewById(android.R.id.title)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("Debug", "Is page completed? " + page.isCompleted());
-                Log.i("Debug", "Item selected: " + page.getData().getString(Page.SIMPLE_DATA_KEY));
-            }
-        });
-
         final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
         setListAdapter(new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_single_choice,
@@ -109,14 +100,14 @@ public class SingleChoiceFragment extends ListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        if (!(activity instanceof PageFragmentCallbacks)) {
+        if (!(getActivity() instanceof PageFragmentCallbacks)) {
             throw new ClassCastException("Activity must implement PageFragmentCallbacks");
         }
 
-        callbacks = (PageFragmentCallbacks) activity;
+        callbacks = (PageFragmentCallbacks) getActivity();
     }
 
     @Override
@@ -127,11 +118,8 @@ public class SingleChoiceFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Log.i("scf", "list item clicked");
         page.getData().putString(Page.SIMPLE_DATA_KEY,
                 getListAdapter().getItem(position).toString());
-        Log.i("scf", "Data put: " + getListAdapter().getItem(position).toString());
-        Log.i("scf", "data recalled: " + page.getData().getString(Page.SIMPLE_DATA_KEY));
         page.notifyDataChanged();
     }
 }

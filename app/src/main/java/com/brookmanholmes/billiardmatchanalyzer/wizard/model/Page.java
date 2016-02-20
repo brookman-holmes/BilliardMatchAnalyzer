@@ -62,7 +62,7 @@ public abstract class Page implements PageTreeNode {
         return this;
     }
 
-    Page setParentKey(String parentKey) {
+    public Page setParentKey(String parentKey) {
         this.parentKey = parentKey;
         return this;
     }

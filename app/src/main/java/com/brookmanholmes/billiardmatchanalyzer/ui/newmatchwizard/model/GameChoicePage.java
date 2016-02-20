@@ -24,13 +24,13 @@ public class GameChoicePage extends BranchPage implements RequiresPlayerNames {
                 new Apa9BallRankPage(callbacks, 2));
 
         addBranch("BCA 8 ball",
-                new BreakTypePage(callbacks));
+                new BreakTypePage(callbacks, "BCA 8 ball"));
 
         addBranch("BCA 9 ball",
-                new BreakTypePage(callbacks));
+                new BreakTypePage(callbacks, "BCA 9 ball"));
 
         addBranch("BCA 10 ball",
-                new BreakTypePage(callbacks));
+                new BreakTypePage(callbacks, "BCA 10 ball"));
 
         //addBranch("Straight pool", new FirstBreakPage(callbacks));
     }
