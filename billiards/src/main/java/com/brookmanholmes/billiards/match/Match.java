@@ -25,15 +25,15 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     PlayerController<T> playerController;
     String location;
     Game game;
-
     ArrayDeque<T> player1 = new ArrayDeque<>();
     ArrayDeque<T> player2 = new ArrayDeque<>();
-
     ArrayDeque<Turn> turns = new ArrayDeque<>();
     ArrayDeque<GameStatus> games = new ArrayDeque<>();
+    private StatsDetail detail;
     Match(Builder builder, PlayerController<T> playerController) {
         location = builder.location;
         matchId = builder.id;
+        detail = builder.statsDetail;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
     }
@@ -110,6 +110,23 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         } else return false;
     }
 
+    public StatsDetail getStatsLevel() {
+        return detail;
+    }
+
+    @Override
+    public String toString() {
+        return "Match{" +
+                "game=" + game +
+                '}';
+    }
+
+    public enum StatsDetail {
+        SIMPLE,
+        NORMAL,
+        ADVANCED
+    }
+
     public static class Builder {
         private String playerName, opponentName;
         private int playerRank = 100, opponentRank = 100;
@@ -118,6 +135,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         private GameType gameType = GameType.BCA_EIGHT_BALL;
         private String location = "Sam's Billiards";
         private long id;
+        private StatsDetail statsDetail = StatsDetail.NORMAL;
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;
@@ -152,6 +170,11 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
 
         public Builder setMatchId(long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder setStatsDetail(StatsDetail detail) {
+            statsDetail = detail;
             return this;
         }
     }

@@ -60,4 +60,17 @@
         android:text="Date"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/ruleSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imgGameType"
+        android:layout_alignRight="@+id/imgGameType"
+        android:layout_below="@+id/imgGameType"
+        android:gravity="center"
+        android:text="Rule set"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="12sp"
+        android:textStyle="bold" />
 </RelativeLayout>

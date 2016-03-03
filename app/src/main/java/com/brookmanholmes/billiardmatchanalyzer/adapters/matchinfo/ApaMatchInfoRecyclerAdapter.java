@@ -25,11 +25,11 @@ class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchI
     BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_APA_STATS:
-                return new MatchInfoHolder.ApaPlayer<>(view);
+                return new MatchInfoHolder.ApaPlayer<>(view, detail);
             case ITEM_BREAKS:
-                return new MatchInfoHolder.BreaksHolderWithBreakWins<>(view, gameBall);
+                return new MatchInfoHolder.BreaksHolderWithBreakWins<>(view, gameBall, detail);
             case ITEM_RUN_OUTS:
-                return new MatchInfoHolder.RunOutsWithEarlyWinsHolder<>(view);
+                return new MatchInfoHolder.RunOutsWithEarlyWinsHolder<>(view, detail);
             default:
                 return super.getMatchInfoHolderByViewType(view, viewType);
         }

@@ -35,6 +35,7 @@ public class MatchDialogHelperUtils {
     public static final String CONSECUTIVE_FOULS_KEY = "current player consecutive fouls";
     public static final String BREAK_TYPE_KEY = "break type";
     public static final String SUCCESSFUL_SAFE_KEY = "successful safe";
+    public static final String STATS_LEVEL_KEY = "stats level";
 
     private MatchDialogHelperUtils() {
     }
@@ -54,7 +55,7 @@ public class MatchDialogHelperUtils {
         args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.toString());
         args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
         args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
-
+        args.putString(STATS_LEVEL_KEY, match.getStatsLevel().toString());
         return args;
     }
 

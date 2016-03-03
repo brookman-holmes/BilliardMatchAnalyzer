@@ -10,8 +10,9 @@ import java.util.List;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class TurnBuilder {
-    TableStatus tableStatus;
-    TurnEnd turnEnd;
+    public TableStatus tableStatus;
+    public TurnEnd turnEnd;
+    public boolean scratch = false;
 
     public TurnBuilder(GameType gameType) {
         this.tableStatus = TableStatus.newTable(gameType);
@@ -22,4 +23,12 @@ public class TurnBuilder {
     }
 
 
+    @Override
+    public String toString() {
+        return "TurnBuilder{" +
+                "tableStatus=" + tableStatus.toString() +
+                ", turnEnd=" + (turnEnd == null ? "null" : turnEnd.toString()) +
+                ", scratch=" + scratch +
+                '}';
+    }
 }

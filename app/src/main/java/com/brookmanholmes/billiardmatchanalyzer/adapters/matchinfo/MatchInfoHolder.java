@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.interfaces.Apa;
 import com.brookmanholmes.billiards.player.interfaces.EarlyWins;
@@ -39,7 +40,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
     int viewType;
     int expandedHeight = 0;
 
-    public MatchInfoHolder(View view) {
+    public MatchInfoHolder(View view, Match.StatsDetail detailLevel) {
         super(view);
         ButterKnife.bind(this, view);
         card_layout = view;
@@ -127,6 +128,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
 
     public abstract void bind(T player, T opponent);
 
+    protected abstract void setVisibilities(View view, Match.StatsDetail detail);
+
     public static class MatchOverviewHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
         final TextView tvWinPctPlayer;
         final TextView tvWinPctOpponent;
@@ -139,8 +142,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         final TextView tvTotalShotsPlayer;
         final TextView tvTotalShotsOpponent;
 
-        public MatchOverviewHolder(View view) {
-            super(view);
+        public MatchOverviewHolder(View view, Match.StatsDetail detail) {
+            super(view, detail);
             title.setText("Match Overview");
 
             tvWinPctPlayer = (TextView) view.findViewById(R.id.tvWinPercentPlayer);
@@ -154,6 +157,20 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             tvTotalShotsOpponent = (TextView) view.findViewById(R.id.tvTotalShotsOpponent);
             tvTotalShotsPlayer = (TextView) view.findViewById(R.id.tvTotalShotsPlayer);
             viewType = MatchInfoRecyclerAdapter.ITEM_MATCH_OVERVIEW;
+
+            setVisibilities(view, detail);
+        }
+
+        @Override
+        protected void setVisibilities(View view, Match.StatsDetail detail) {
+            if (detail == Match.StatsDetail.SIMPLE) {
+                tvAggressivenessRatingOpponent.setVisibility(View.GONE);
+                tvAggressivenessRatingPlayer.setVisibility(View.GONE);
+                view.findViewById(R.id.tvAggressivenessRating).setVisibility(View.GONE);
+                view.findViewById(R.id.tvTotalShotsTitle).setVisibility(View.GONE);
+                tvTotalShotsOpponent.setVisibility(View.GONE);
+                tvTotalShotsPlayer.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -192,8 +209,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         final TextView tvScratchesPlayer;
         final TextView tvScratchesOpponent;
 
-        public ShootingPctHolder(View view) {
-            super(view);
+        public ShootingPctHolder(View view, Match.StatsDetail detail) {
+            super(view, detail);
             tvShootingPctPlayer = (TextView) view.findViewById(R.id.tvShootingPctPlayer);
             tvShootingPctOpponent = (TextView) view.findViewById(R.id.tvShootingPctOpponent);
             tvBallTotalPlayer = (TextView) view.findViewById(R.id.tvBallTotalPlayer);
@@ -202,6 +219,13 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             tvAvgBallsTurnOpponent = (TextView) view.findViewById(R.id.tvAvgBallsTurnOpponent);
             tvScratchesPlayer = (TextView) view.findViewById(R.id.tvScratchesPlayer);
             tvScratchesOpponent = (TextView) view.findViewById(R.id.tvScratchesOpponent);
+
+            setVisibilities(view, detail);
+        }
+
+        @Override
+        protected void setVisibilities(View view, Match.StatsDetail detail) {
+
         }
 
         @Override
@@ -246,8 +270,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         final TextView tvSafetyEscapesOpponent;
         final TextView tvForcedErrorsPlayer, tvForcedErrorsOpponent;
 
-        public SafetiesHolder(View view) {
-            super(view);
+        public SafetiesHolder(View view, Match.StatsDetail detail) {
+            super(view, detail);
             tvSafetiesAttemptedPlayer = (TextView) view.findViewById(R.id.tvSafetiesAttemptedPlayer);
             tvSafetiesAttemptedOpponent = (TextView) view.findViewById(R.id.tvSafetiesAttemptedOpponent);
             tvSafetyPctPlayer = (TextView) view.findViewById(R.id.tvSafetyPctPlayer);
@@ -260,6 +284,24 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             tvSafetyEscapesOpponent = (TextView) view.findViewById(R.id.tvSafetyEscapesOpponent);
             tvForcedErrorsOpponent = (TextView) view.findViewById(R.id.tvForcedErrorsOpponent);
             tvForcedErrorsPlayer = (TextView) view.findViewById(R.id.tvForcedErrorsPlayer);
+
+            setVisibilities(view, detail);
+        }
+
+        @Override
+        protected void setVisibilities(View view, Match.StatsDetail detail) {
+            if (detail == Match.StatsDetail.SIMPLE) {
+                tvSafetyReturnsPlayer.setVisibility(View.GONE);
+                tvSafetyEscapesPlayer.setVisibility(View.GONE);
+                tvSafetyReturnsOpponent.setVisibility(View.GONE);
+                tvSafetyEscapesOpponent.setVisibility(View.GONE);
+                tvForcedErrorsOpponent.setVisibility(View.GONE);
+                tvForcedErrorsPlayer.setVisibility(View.GONE);
+
+                view.findViewById(R.id.tvForcedErrorsTitle).setVisibility(View.GONE);
+                view.findViewById(R.id.tvSafetyEscapesTitle).setVisibility(View.GONE);
+                view.findViewById(R.id.tvSafetyReturnsTitle).setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -308,8 +350,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         final TextView tvEarlyWinsOpponent;
         TextView tvMaxBallRunsTitle;
 
-        public RunOutsHolder(View view) {
-            super(view);
+        public RunOutsHolder(View view, Match.StatsDetail detail) {
+            super(view, detail);
             tvBreakAndRunPlayer = (TextView) view.findViewById(R.id.tvMaxBallRunsPlayer);
             tvBreakAndRunOpponent = (TextView) view.findViewById(R.id.tvMaxBallRunsOpponent);
             tvMaxRunPlayer = (TextView) view.findViewById(R.id.tvTierOneRunsPlayer);
@@ -323,6 +365,13 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             tvEarlyWins.setVisibility(View.GONE);
             tvEarlyWinsPlayer.setVisibility(View.GONE);
             tvEarlyWinsOpponent.setVisibility(View.GONE);
+
+            setVisibilities(view, detail);
+        }
+
+        @Override
+        protected void setVisibilities(View view, Match.StatsDetail detail) {
+
         }
 
         @Override
@@ -352,8 +401,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
     }
 
     public static class RunOutsWithEarlyWinsHolder<T extends AbstractPlayer & EarlyWins> extends RunOutsHolder<T> {
-        public RunOutsWithEarlyWinsHolder(View view) {
-            super(view);
+        public RunOutsWithEarlyWinsHolder(View view, Match.StatsDetail detail) {
+            super(view, detail);
 
             tvEarlyWins.setVisibility(View.VISIBLE);
             tvEarlyWinsPlayer.setVisibility(View.VISIBLE);
@@ -387,8 +436,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         final TextView tvBreakScratchesOpponent;
         final TextView breakWinsTitle;
 
-        public BreaksHolder(View view, int gameBall) {
-            super(view);
+        public BreaksHolder(View view, int gameBall, Match.StatsDetail detail) {
+            super(view, detail);
             tvBreakBallsPlayer = (TextView) view.findViewById(R.id.tvAvgBreakBallsPlayer);
             tvBreakBallsOpponent = (TextView) view.findViewById(R.id.tvAvgBreakBallsOpponent);
             tvBreakTotalPlayer = (TextView) view.findViewById(R.id.tvBreakTotalPlayer);
@@ -407,6 +456,17 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             breakWinsTitle.setVisibility(View.GONE);
             tvBreakWinsPlayer.setVisibility(View.GONE);
             tvBreakWinsOpponent.setVisibility(View.GONE);
+
+            setVisibilities(view, detail);
+        }
+
+        @Override
+        protected void setVisibilities(View view, Match.StatsDetail detail) {
+            if (detail == Match.StatsDetail.SIMPLE) {
+                tvBreakContinuationsOpponent.setVisibility(View.GONE);
+                tvBreakContinuationsPlayer.setVisibility(View.GONE);
+                view.findViewById(R.id.tvBreakContinuationsTitle).setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -436,8 +496,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
     }
 
     public static class BreaksHolderWithBreakWins<T extends AbstractPlayer & WinsOnBreak> extends BreaksHolder<T> {
-        public BreaksHolderWithBreakWins(View view, int gameBall) {
-            super(view, gameBall);
+        public BreaksHolderWithBreakWins(View view, int gameBall, Match.StatsDetail detail) {
+            super(view, gameBall, detail);
 
             breakWinsTitle.setVisibility(View.VISIBLE);
             tvBreakWinsPlayer.setVisibility(View.VISIBLE);
@@ -463,8 +523,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         TextView tvMatchPointsPlayer, tvMatchPointsOpponent;
         TextView tvRankPlayer, tvRankOpponent;
 
-        public ApaPlayer(View view) {
-            super(view);
+        public ApaPlayer(View view, Match.StatsDetail detail) {
+            super(view, detail);
             title.setText("APA Stats");
             tvPointsTitle = (TextView) view.findViewById(R.id.tvPointsTitle);
             tvPointsTitle.setText("Games / games needed");
@@ -481,6 +541,13 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
 
             tvRankOpponent = (TextView) view.findViewById(R.id.tvRankOpponent);
             tvRankPlayer = (TextView) view.findViewById(R.id.tvRankPlayer);
+
+            setVisibilities(view, detail);
+        }
+
+        @Override
+        protected void setVisibilities(View view, Match.StatsDetail detail) {
+
         }
 
         @Override

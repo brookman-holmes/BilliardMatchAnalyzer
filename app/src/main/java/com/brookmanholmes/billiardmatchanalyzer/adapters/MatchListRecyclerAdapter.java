@@ -41,6 +41,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         holder.playerNames.setText(getPlayerNames(cursor));
         holder.breakType.setText(getBreakType(cursor));
         holder.gameType.setImageResource(getImageId(cursor));
+        holder.ruleSet.setText(getRuleSet(cursor));
     }
 
     @Override
@@ -91,8 +92,41 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         switch (GameType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE)))) {
             case BCA_EIGHT_BALL:
                 return R.drawable.eight_ball;
+            case BCA_NINE_BALL:
+                return R.drawable.nine_ball;
+            case BCA_TEN_BALL:
+                return R.drawable.ten_ball;
+            case APA_EIGHT_BALL:
+                return R.drawable.eight_ball;
+            case APA_NINE_BALL:
+                return R.drawable.nine_ball;
+            case STRAIGHT_POOL:
+                return R.drawable.fourteen_ball;
+            case AMERICAN_ROTATION:
+                return R.drawable.fifteen_ball;
             default:
                 return R.drawable.eight_ball;
+        }
+    }
+
+    private String getRuleSet(Cursor cursor) {
+        switch (GameType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE)))) {
+            case BCA_EIGHT_BALL:
+                return "BCA";
+            case BCA_NINE_BALL:
+                return "BCA";
+            case BCA_TEN_BALL:
+                return "BCA";
+            case APA_EIGHT_BALL:
+                return "APA";
+            case APA_NINE_BALL:
+                return "APA";
+            case STRAIGHT_POOL:
+                return "";
+            case AMERICAN_ROTATION:
+                return "";
+            default:
+                return "";
         }
     }
 
@@ -125,6 +159,8 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         TextView location;
         @Bind(R.id.date)
         TextView date;
+        @Bind(R.id.ruleSet)
+        TextView ruleSet;
 
         public ListItemHolder(View itemView) {
             super(itemView);

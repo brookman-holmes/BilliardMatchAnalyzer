@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,13 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     static final int ITEM_RUN_OUTS = 4;
     static final int ITEM_FOOTER = 10;
     final int gameBall;
+    Match.StatsDetail detail;
     ViewType viewTypeToggle = ViewType.LIST;
     Match<T> match;
 
     MatchInfoRecyclerAdapter(Match<T> match, int gameBall) {
         this.match = match;
+        detail = match.getStatsLevel();
         this.gameBall = gameBall;
     }
 
@@ -118,6 +121,8 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
         Turn turn = match.createAndAddTurnToMatch(tableStatus, turnEnd, scratch);
         notifyDataSetChanged();
+
+        Log.i("RecyclerAdapter", match.toString());
         return turn;
     }
 
@@ -178,15 +183,15 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_MATCH_OVERVIEW:
-                return new MatchInfoHolder.MatchOverviewHolder<>(view);
+                return new MatchInfoHolder.MatchOverviewHolder<>(view, detail);
             case ITEM_SHOOTING_PCT:
-                return new MatchInfoHolder.ShootingPctHolder<>(view);
+                return new MatchInfoHolder.ShootingPctHolder<>(view, detail);
             case ITEM_BREAKS:
-                return new MatchInfoHolder.BreaksHolder<>(view, match.getGameStatus().GAME_BALL);
+                return new MatchInfoHolder.BreaksHolder<>(view, match.getGameStatus().GAME_BALL, detail);
             case ITEM_RUN_OUTS:
-                return new MatchInfoHolder.RunOutsHolder<>(view);
+                return new MatchInfoHolder.RunOutsHolder<>(view, detail);
             case ITEM_SAFETIES:
-                return new MatchInfoHolder.SafetiesHolder<>(view);
+                return new MatchInfoHolder.SafetiesHolder<>(view, detail);
             case ITEM_FOOTER:
                 return new FooterViewHolder<>(view);
             default:

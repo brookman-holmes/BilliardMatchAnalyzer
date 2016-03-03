@@ -46,6 +46,7 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
         return fragment;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,22 +57,8 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
             view = inflater.inflate(R.layout.fragment_list_view2, container, false);
         ButterKnife.bind(this, view);
 
-        db = new DatabaseAdapter(getContext());
-        db.open();
-
-        if (getArguments() != null) {
-            matchId = getArguments().getLong(BaseActivity.ARG_MATCH_ID);
-        } else {
-            throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
-        }
-
-
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
-
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -126,5 +113,16 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
         super.onCreate(savedInstanceState);
 
         setRetainInstance(true);
+
+        db = new DatabaseAdapter(getContext());
+        db.open();
+
+        if (getArguments().getLong(BaseActivity.ARG_MATCH_ID, -1) != -1) {
+            matchId = getArguments().getLong(BaseActivity.ARG_MATCH_ID);
+        } else {
+            throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
+        }
+
+        adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
     }
 }

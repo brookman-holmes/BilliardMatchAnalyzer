@@ -36,6 +36,7 @@ public class DatabaseAdapter {
     public static final String COLUMN_BREAK_TYPE = "break_type";
     public static final String COLUMN_GAME_TYPE = "game_type";
     public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_STATS_DETAIL = "stats_detail";
     public static final String COLUMN_LOCATION = "location";
     public static final String COLUMN_PLAYER_TURN = "player_turn";
     public static final String COLUMN_CREATED_ON = "created_on";
@@ -110,6 +111,7 @@ public class DatabaseAdapter {
                 + COLUMN_CREATED_ON + ", "
                 + COLUMN_PLAYER_RANK + ", "
                 + COLUMN_OPPONENT_RANK + ", "
+                + COLUMN_STATS_DETAIL + ", "
                 + COLUMN_LOCATION + "\n";
 
         final String query = "SELECT " + selection + "from " + MATCH_TABLE + " m\n"
@@ -128,14 +130,14 @@ public class DatabaseAdapter {
 
         c.close();
 
-        for (Turn turn : getMatchInnings(id))
+        for (Turn turn : getMatchTurns(id))
             match.addTurn(turn);
 
         return match;
     }
 
     private Match<?> createMatchFromCursor(Cursor c) {
-        Match<?> match = new Match.Builder(
+        return new Match.Builder(
                 c.getString(c.getColumnIndex("player_name")),
                 c.getString(c.getColumnIndex("opp_name")))
                 .setPlayerTurn(getPlayerTurn(c))
@@ -143,9 +145,8 @@ public class DatabaseAdapter {
                 .setPlayerRanks(c.getInt(c.getColumnIndex(COLUMN_PLAYER_RANK)), c.getInt(c.getColumnIndex(COLUMN_OPPONENT_RANK)))
                 .setLocation(c.getString(c.getColumnIndex(COLUMN_LOCATION)))
                 .setMatchId(c.getLong(c.getColumnIndex("_id")))
+                .setStatsDetail(getStatDetail(c))
                 .build(getGameType(c));
-
-        return match;
     }
 
     private PlayerTurn getPlayerTurn(Cursor c) {
@@ -154,6 +155,10 @@ public class DatabaseAdapter {
 
     private BreakType getBreakType(Cursor c) {
         return BreakType.valueOf(c.getString(c.getColumnIndex(COLUMN_BREAK_TYPE)));
+    }
+
+    private Match.StatsDetail getStatDetail(Cursor c) {
+        return Match.StatsDetail.valueOf(c.getString(c.getColumnIndex(COLUMN_STATS_DETAIL)));
     }
 
     private GameType getGameType(Cursor c) {
@@ -224,6 +229,7 @@ public class DatabaseAdapter {
             matchValues.put(COLUMN_CREATED_ON, getCurrentDate());
             matchValues.put(COLUMN_BREAK_TYPE, status.breakType.name());
             matchValues.put(COLUMN_LOCATION, match.getLocation());
+            matchValues.put(COLUMN_STATS_DETAIL, match.getStatsLevel().name());
 
             if (match.getPlayer() instanceof Apa && match.getOpponent() instanceof Apa) {
                 matchValues.put(COLUMN_PLAYER_RANK, ((Apa) match.getPlayer()).getRank());
@@ -245,7 +251,7 @@ public class DatabaseAdapter {
         return format.format(new Date());
     }
 
-    public long insertInning(Turn turn, long matchId, int inningId) {
+    public long insertTurn(Turn turn, long matchId, int inningId) {
         database.delete(INNINGS_TABLE,
                 COLUMN_MATCH_ID + "=? AND "
                         + COLUMN_INNING_NUMBER + " >= ?",
@@ -263,7 +269,7 @@ public class DatabaseAdapter {
         return database.insert(INNINGS_TABLE, null, inningValues);
     }
 
-    public List<Turn> getMatchInnings(long id) {
+    public List<Turn> getMatchTurns(long id) {
         List<Turn> innings = new ArrayList<>();
 
         Cursor c = database.query(

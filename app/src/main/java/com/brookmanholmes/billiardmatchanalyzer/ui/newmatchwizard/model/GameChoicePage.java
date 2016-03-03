@@ -17,11 +17,13 @@ public class GameChoicePage extends BranchPage implements RequiresPlayerNames {
 
         addBranch("APA 8 ball",
                 new Apa8BallRankPage(callbacks, 1),
-                new Apa8BallRankPage(callbacks, 2));
+                new Apa8BallRankPage(callbacks, 2),
+                new FirstBreakPage(callbacks, "APA 8 ball"));
 
         addBranch("APA 9 ball",
                 new Apa9BallRankPage(callbacks, 1),
-                new Apa9BallRankPage(callbacks, 2));
+                new Apa9BallRankPage(callbacks, 2),
+                new FirstBreakPage(callbacks, "APA 9 ball"));
 
         addBranch("BCA 8 ball",
                 new BreakTypePage(callbacks, "BCA 8 ball"));

@@ -12,14 +12,12 @@ import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.inning.TableStatus;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
     ShotFragment fragment;
-    List<BallStatus> ballStatuses;
     TableStatus tableStatus;
 
     public ShotPage(ModelCallbacks callbacks, Bundle matchData) {
@@ -27,8 +25,8 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
         data.putAll(matchData);
 
-        tableStatus = TableStatus.newTable(MatchDialogHelperUtils.createGameStatusFromBundle(matchData).gameType);
-        ballStatuses = new ArrayList<>();
+        tableStatus = TableStatus.newTable(MatchDialogHelperUtils.createGameStatusFromBundle(matchData).gameType,
+                data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY));
     }
 
     @Override

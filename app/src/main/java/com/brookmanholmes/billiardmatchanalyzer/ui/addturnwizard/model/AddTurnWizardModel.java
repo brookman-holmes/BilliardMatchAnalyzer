@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
@@ -19,9 +20,10 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     public AddTurnWizardModel(Context context, Bundle matchData) {
         super(context);
 
+        turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)),
+                matchData.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY));
         this.matchData = matchData;
         rootPageList = onNewRootPageList();
-        turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)));
     }
 
     @Override
@@ -33,6 +35,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         }
 
         updatePagesWithTurnInfo();
+
+        Log.i("TurnBuilder", turnBuilder.toString());
     }
 
     @Override
@@ -52,9 +56,16 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     @Override
     protected PageList onNewRootPageList() {
-        return new PageList(
-                new BreakPage(this, matchData),
-                new TurnEndPage(this, matchData)
-        );
+        if (matchData.getBoolean(MatchDialogHelperUtils.NEW_GAME_KEY))
+            return new PageList(
+                    new BreakPage(this, matchData),
+                    new TurnEndPage(this, matchData)
+            );
+        else
+            return new PageList(new ShotPage(this, matchData), new TurnEndPage(this, matchData));
+    }
+
+    public TurnBuilder getTurnBuilder() {
+        return turnBuilder;
     }
 }

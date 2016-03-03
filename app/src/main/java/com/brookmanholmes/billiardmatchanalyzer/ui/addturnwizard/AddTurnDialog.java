@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import android.widget.Button;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.AddTurnWizardModel;
+import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
@@ -47,6 +47,8 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     private List<Page> currentPageSequence;
     private boolean consumePageSelectedEvent;
 
+    private AddTurnListener listener;
+
     public AddTurnDialog() {
     }
 
@@ -73,6 +75,11 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         wizardModel.registerListener(this);
 
         pagerAdapter = new MyPagerAdapter(getChildFragmentManager());
+
+        if (!(getActivity() instanceof AddTurnListener))
+            throw new ClassCastException("Activity must implement AddTurnListener");
+
+        listener = (AddTurnListener) getActivity();
     }
 
     @Override
@@ -138,12 +145,10 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     private boolean recalculateCutOffPage() {
         // Cut off the pager adapter at first required page that isn't completed
         int cutOffPage = currentPageSequence.size();
-        Log.i("AddTurnDialog", "PageList size: " + currentPageSequence.size() + " Cut off page: " + cutOffPage);
         for (int i = 0; i < currentPageSequence.size(); i++) {
             Page page = currentPageSequence.get(i);
             if (page.isRequired() && !page.isCompleted()) {
                 cutOffPage = i + 1;
-                Log.i("AddTurnDialog", "New cut off page: " + cutOffPage);
                 break;
             }
         }
@@ -180,7 +185,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     @OnClick(R.id.next_button)
     public void nextButton() {
         if (pager.getCurrentItem() + 1 == currentPageSequence.size()) {
-            Log.i("AddTurnDialog", "Add turn clicked");
+            listener.addTurn(wizardModel.getTurnBuilder());
             dismiss();
         } else {
             pager.setCurrentItem(pager.getCurrentItem() + 1);
@@ -192,6 +197,10 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     public void prevButton() {
         wizardModel.updatePagesWithTurnInfo();
         pager.setCurrentItem(pager.getCurrentItem() - 1);
+    }
+
+    public interface AddTurnListener {
+        void addTurn(TurnBuilder turnBuilder);
     }
 
     public class MyPagerAdapter extends FragmentStatePagerAdapter {

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PageList;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePage;
 
 /**
  * Created by Brookman Holmes on 1/7/2016.
@@ -48,7 +49,8 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     protected PageList onNewRootPageList() {
         return new PageList(
                 new PlayerNamePage(this),
-                new GameChoicePage(this)
+                new GameChoicePage(this),
+                new SingleFixedChoicePage(this, "Stat Detail Level").setChoices("Simple", "Normal", "Advanced").setValue("Normal")
         );
     }
 }

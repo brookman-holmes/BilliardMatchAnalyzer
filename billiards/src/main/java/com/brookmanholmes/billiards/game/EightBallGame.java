@@ -45,6 +45,11 @@ class EightBallGame extends Game {
     }
 
     @Override
+    int getCurrentPlayersConsecutiveFouls() {
+        return 0;
+    }
+
+    @Override
     PlayerColor setPlayerColor(Turn turn) {
         if (playerColor == OPEN) {
             if (TableUtils.getSolidsMade(turn.getBallStatuses()) > 0) {

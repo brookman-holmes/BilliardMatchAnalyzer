@@ -5,12 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+import com.brookmanholmes.billiards.match.Match;
+
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static DatabaseHelper sInstance;
 
     /**
@@ -53,7 +55,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + DatabaseAdapter.COLUMN_PLAYER_TURN + " INTEGER NOT NULL DEFAULT 0, "
                 + DatabaseAdapter.COLUMN_CREATED_ON + " TEXT COLLATE NOCASE DEFAULT NULL, "
                 + DatabaseAdapter.COLUMN_PLAYER_RANK + " INTEGER NOT NULL DEFAULT 0, "
-                + DatabaseAdapter.COLUMN_OPPONENT_RANK + " INTEGER NOT NULL DEFAULT 0"
+                + DatabaseAdapter.COLUMN_OPPONENT_RANK + " INTEGER NOT NULL DEFAULT 0, "
+                + DatabaseAdapter.COLUMN_STATS_DETAIL + " TEXT COLLATE NOCASE DEFAULT " + Match.StatsDetail.NORMAL.name()
                 + ");";
     }
 
