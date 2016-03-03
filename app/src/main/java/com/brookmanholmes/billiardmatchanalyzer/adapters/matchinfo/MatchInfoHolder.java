@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -25,7 +24,7 @@ import butterknife.OnClick;
 /**
  * Created by Brookman Holmes on 1/13/2016.
  */
-public abstract class MatchInfoHolder<T extends AbstractPlayer> extends RecyclerView.ViewHolder {
+public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseViewHolder<T> {
     final View card_layout;
     final int collapsedCardHeight = 72;
     final int collapsedHeight = (int) Math.floor(collapsedCardHeight * Resources.getSystem().getDisplayMetrics().density);

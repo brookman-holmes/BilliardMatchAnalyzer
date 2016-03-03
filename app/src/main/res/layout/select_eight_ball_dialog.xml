@@ -21,94 +21,94 @@
         android:rowCount="3"
         android:useDefaultMargins="true">
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/one_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/one_ball" />
+            android:src="@drawable/one_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/two_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/two_ball" />
+            android:src="@drawable/two_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/three_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/three_ball" />
+            android:src="@drawable/three_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/four_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/four_ball" />
+            android:src="@drawable/four_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/five_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/five_ball" />
+            android:src="@drawable/five_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/six_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/six_ball" />
+            android:src="@drawable/six_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/seven_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/seven_ball" />
+            android:src="@drawable/seven_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/eight_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/eight_ball" />
+            android:src="@drawable/eight_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/nine_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/nine_ball" />
+            android:src="@drawable/nine_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/ten_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/ten_ball" />
+            android:src="@drawable/ten_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/eleven_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/eleven_ball" />
+            android:src="@drawable/eleven_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/twelve_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/twelve_ball" />
+            android:src="@drawable/twelve_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/thirteen_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/thirteen_ball" />
+            android:src="@drawable/thirteen_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/fourteen_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/fourteen_ball" />
+            android:src="@drawable/fourteen_ball_level" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <ImageView
             android:id="@+id/fifteen_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/fifteen_ball" />
+            android:src="@drawable/fifteen_ball_level" />
     </GridLayout>
 </RelativeLayout>

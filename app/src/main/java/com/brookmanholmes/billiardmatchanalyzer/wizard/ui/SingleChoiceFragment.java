@@ -76,7 +76,7 @@ public class SingleChoiceFragment extends ListFragment {
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
 
         final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
-        setListAdapter(new ArrayAdapter<String>(getActivity(),
+        setListAdapter(new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_single_choice,
                 android.R.id.text1,
                 choices));
@@ -103,11 +103,13 @@ public class SingleChoiceFragment extends ListFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (!(getActivity() instanceof PageFragmentCallbacks)) {
-            throw new ClassCastException("Activity must implement PageFragmentCallbacks");
+        if (getParentFragment() instanceof PageFragmentCallbacks) {
+            callbacks = (PageFragmentCallbacks) getParentFragment();
+        } else if (getActivity() instanceof PageFragmentCallbacks) {
+            callbacks = (PageFragmentCallbacks) getActivity();
+        } else {
+            throw new ClassCastException("Activity/ParentFragment must implement PageFragmentCallbacks");
         }
-
-        callbacks = (PageFragmentCallbacks) getActivity();
     }
 
     @Override

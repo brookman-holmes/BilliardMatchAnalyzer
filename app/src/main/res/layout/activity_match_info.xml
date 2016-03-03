@@ -8,97 +8,106 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.MatchInfoActivity">
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"></FrameLayout>
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <RelativeLayout
+            android:id="@+id/playerNameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorPrimary">
 
             <RelativeLayout
-                android:id="@+id/playerNameLayout"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@color/colorPrimary">
+                android:id="@+id/playerSide"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_toStartOf="@id/divider"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
 
-                <RelativeLayout
-                    android:id="@+id/playerSide"
+                <TextView
+                    android:id="@+id/playerName"
                     android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toStartOf="@id/divider"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true">
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="false"
+                    android:layout_centerInParent="true"
+                    android:ellipsize="marquee"
+                    android:maxLength="12"
+                    android:maxLines="1"
+                    android:text="Brookman"
+                    android:textColor="@android:color/white"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/playerName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="false"
-                        android:layout_centerInParent="true"
-                        android:ellipsize="marquee"
-                        android:maxLength="12"
-                        android:maxLines="1"
-                        android:text="Brookman"
-                        android:textColor="@android:color/white"
-                        android:textSize="23sp"
-                        android:textStyle="bold" />
-
-                </RelativeLayout>
-
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_centerHorizontal="true" />
-
-
-                <RelativeLayout
-                    android:id="@+id/opponentSide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_toEndOf="@id/divider"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true">
-
-                    <TextView
-                        android:id="@+id/opponentName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:ellipsize="marquee"
-                        android:maxLength="12"
-                        android:maxLines="1"
-                        android:text="Cliff"
-                        android:textColor="@android:color/white"
-                        android:textSize="23sp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
             </RelativeLayout>
-        </android.support.design.widget.AppBarLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_centerHorizontal="true" />
+
+
+            <RelativeLayout
+                android:id="@+id/opponentSide"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentRight="true"
+                android:layout_toEndOf="@id/divider"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
+
+                <TextView
+                    android:id="@+id/opponentName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:ellipsize="marquee"
+                    android:maxLength="12"
+                    android:maxLines="1"
+                    android:text="Cliff"
+                    android:textColor="@android:color/white"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|end"
+        android:background="@android:color/background_light"
+        android:gravity="end"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/addInning"
-            style="@android:style/ButtonBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:text="Add inning for"
-            android:textColor="@android:color/white" />
-    </android.support.design.widget.CoordinatorLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:elevation="0dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Add turn for"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorAccent" />
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

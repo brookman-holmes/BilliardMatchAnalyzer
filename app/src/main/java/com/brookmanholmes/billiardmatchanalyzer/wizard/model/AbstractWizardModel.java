@@ -30,13 +30,11 @@ import java.util.List;
  */
 public abstract class AbstractWizardModel implements ModelCallbacks {
     protected Context context;
-
+    protected PageList rootPageList;
     private List<ModelCallbacks> listeners = new ArrayList<ModelCallbacks>();
-    private PageList rootPageList;
 
     public AbstractWizardModel(Context context) {
         this.context = context;
-        rootPageList = onNewRootPageList();
     }
 
     /**

@@ -2,7 +2,6 @@ package com.brookmanholmes.billiardmatchanalyzer.adapters;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,13 +133,11 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
 
         @OnClick(R.id.container)
         public void onClick() {
-            Log.i("ListItemHolder", "onClick container id: " + container.getTag());
             listener.onSelectMatch(getMatchId());
         }
 
         @OnLongClick(R.id.container)
         public boolean onLongClick() {
-            Log.i("ListItemHolder", "onLongClick container id: " + container.getTag());
             listener.onLongSelectMatch(getMatchId());
             return true;
         }

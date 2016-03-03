@@ -11,8 +11,10 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PageList;
  */
 public class CreateNewMatchWizardModel extends AbstractWizardModel {
     String playerName, opponentName;
+
     public CreateNewMatchWizardModel(Context context) {
         super(context);
+        rootPageList = onNewRootPageList();
     }
 
     @Override

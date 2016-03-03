@@ -23,13 +23,14 @@ import com.brookmanholmes.billiards.player.TenBallPlayer;
 /**
  * Created by Brookman Holmes on 1/13/2016.
  */
-public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends RecyclerView.Adapter<MatchInfoHolder<T>>
+public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends RecyclerView.Adapter<BaseViewHolder<T>>
         implements MatchInterface<T> {
     static final int ITEM_MATCH_OVERVIEW = 0;
     static final int ITEM_SHOOTING_PCT = 1;
     static final int ITEM_SAFETIES = 2;
     static final int ITEM_BREAKS = 3;
     static final int ITEM_RUN_OUTS = 4;
+    static final int ITEM_FOOTER = 10;
     final int gameBall;
     ViewType viewTypeToggle = ViewType.LIST;
     Match<T> match;
@@ -81,24 +82,26 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     }
 
     @Override
-    public MatchInfoHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(getLayoutResource(viewType), parent, false);
         return getMatchInfoHolderByViewType(view, viewType);
     }
 
     @Override
-    public void onBindViewHolder(MatchInfoHolder<T> holder, int position) {
+    public void onBindViewHolder(BaseViewHolder<T> holder, int position) {
         holder.bind(getPlayer(), getOpponent());
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return 6;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position;
+        if (position != getItemCount() - 1)
+            return position;
+        else return ITEM_FOOTER;
     }
 
     @Override
@@ -147,6 +150,8 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
                     return R.layout.card_safeties;
                 case ITEM_SHOOTING_PCT:
                     return R.layout.card_shooting_pct;
+                case ITEM_FOOTER:
+                    return R.layout.footer;
                 default:
                     throw new IllegalArgumentException("No such view type");
             }
@@ -162,13 +167,15 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
                     return R.layout.plain_safeties;
                 case ITEM_SHOOTING_PCT:
                     return R.layout.plain_shooting;
+                case ITEM_FOOTER:
+                    return R.layout.footer;
                 default:
-                    throw new IllegalArgumentException("No such view type");
+                    throw new IllegalArgumentException("No such view type: " + viewType);
             }
         }
     }
 
-    MatchInfoHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
+    BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_MATCH_OVERVIEW:
                 return new MatchInfoHolder.MatchOverviewHolder<>(view);
@@ -180,6 +187,8 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
                 return new MatchInfoHolder.RunOutsHolder<>(view);
             case ITEM_SAFETIES:
                 return new MatchInfoHolder.SafetiesHolder<>(view);
+            case ITEM_FOOTER:
+                return new FooterViewHolder<>(view);
             default:
                 throw new IllegalArgumentException("No such view type");
         }
@@ -189,5 +198,4 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
         CARDS,
         LIST
     }
-
 }

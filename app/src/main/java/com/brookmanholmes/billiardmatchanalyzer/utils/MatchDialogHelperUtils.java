@@ -1,8 +1,9 @@
 package com.brookmanholmes.billiardmatchanalyzer.utils;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
-import android.view.View;
+import android.widget.ImageView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.game.GameStatus;
@@ -170,15 +171,62 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    public static void setViewToBallMade(View view) {
-
+    @IdRes
+    public static int convertBallToId(int ball) {
+        switch (ball) {
+            case 1:
+                return R.id.one_ball;
+            case 2:
+                return R.id.two_ball;
+            case 3:
+                return R.id.three_ball;
+            case 4:
+                return R.id.four_ball;
+            case 5:
+                return R.id.five_ball;
+            case 6:
+                return R.id.six_ball;
+            case 7:
+                return R.id.seven_ball;
+            case 8:
+                return R.id.eight_ball;
+            case 9:
+                return R.id.nine_ball;
+            case 10:
+                return R.id.ten_ball;
+            case 11:
+                return R.id.eleven_ball;
+            case 12:
+                return R.id.twelve_ball;
+            case 13:
+                return R.id.thirteen_ball;
+            case 14:
+                return R.id.fourteen_ball;
+            case 15:
+                return R.id.fifteen_ball;
+            default:
+                throw new InvalidBallException("Ball must be between 1-15");
+        }
     }
 
-    public static void setViewToBallDead(View view) {
-
+    public static void setViewToBallMade(ImageView view) {
+        if (view != null)
+            view.setImageLevel(2);
     }
 
-    public static void setViewToBallOnTable(View view) {
+    public static void setViewToBallDead(ImageView view) {
+        if (view != null)
+            view.setImageLevel(3);
+    }
 
+    public static void setViewToBallOnTable(ImageView view) {
+        if (view != null) {
+            view.setImageLevel(1);
+        }
+    }
+
+    public static void setViewToBallOffTable(ImageView view) {
+        if (view != null)
+            view.setImageLevel(0);
     }
 }

@@ -102,6 +102,8 @@ public abstract class Page implements PageTreeNode {
     public String toString() {
         return "Page{" +
                 getKey() +
+                ", isCompleted? " + isCompleted() +
+                ", isRequired? " + isRequired() +
                 "}";
     }
 }

@@ -22,7 +22,7 @@ class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchI
     }
 
     @Override
-    MatchInfoHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
+    BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_APA_STATS:
                 return new MatchInfoHolder.ApaPlayer<>(view);
@@ -56,7 +56,7 @@ class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchI
 
     @Override
     public int getItemCount() {
-        return 6;
+        return super.getItemCount() + 1;
     }
 
     @Override

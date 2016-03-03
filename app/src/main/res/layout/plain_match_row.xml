@@ -3,7 +3,8 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="88dp"
-    android:background="?android:attr/selectableItemBackground"
+    android:background="@android:color/white"
+    android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
     <include layout="@layout/container_match_row" />

@@ -3,7 +3,7 @@
     android:id="@+id/scrollView"
     class="android.support.v7.widget.RecyclerView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#0c000000"
     android:orientation="vertical"
     android:paddingLeft="8dp"

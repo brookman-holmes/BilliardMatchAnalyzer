@@ -139,7 +139,6 @@ public class PlayerNameFragment extends Fragment {
                     }
                 }
 
-
                 page.getData().putString(key, editable.toString());
                 page.notifyDataChanged();
             }

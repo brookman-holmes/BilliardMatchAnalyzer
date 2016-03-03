@@ -58,7 +58,7 @@ public class DatabaseAdapter {
     }
 
     private static String tableStatusToString(Turn table) {
-        String tableStatus = table.getGameType().toString() + ",";
+        String tableStatus = table.getGameType().name() + ",";
         for (int i = 1; i <= table.size(); i++) {
             tableStatus += table.getBallStatus(i).name();
 
@@ -219,10 +219,10 @@ public class DatabaseAdapter {
 
             GameStatus status = match.getGameStatus();
 
-            matchValues.put(COLUMN_PLAYER_TURN, status.turn.toString());
-            matchValues.put(COLUMN_GAME_TYPE, status.gameType.toString());
+            matchValues.put(COLUMN_PLAYER_TURN, status.turn.name());
+            matchValues.put(COLUMN_GAME_TYPE, status.gameType.name());
             matchValues.put(COLUMN_CREATED_ON, getCurrentDate());
-            matchValues.put(COLUMN_BREAK_TYPE, status.breakType.toString());
+            matchValues.put(COLUMN_BREAK_TYPE, status.breakType.name());
             matchValues.put(COLUMN_LOCATION, match.getLocation());
 
             if (match.getPlayer() instanceof Apa && match.getOpponent() instanceof Apa) {
@@ -257,7 +257,7 @@ public class DatabaseAdapter {
         inningValues.put(COLUMN_TABLE_STATUS, tableStatusToString(turn));
         inningValues.put(COLUMN_MATCH_ID, matchId);
         inningValues.put(COLUMN_SCRATCH, turn.isScratch());
-        inningValues.put(COLUMN_TURN_END, turn.getTurnEnd().toString());
+        inningValues.put(COLUMN_TURN_END, turn.getTurnEnd().name());
         inningValues.put(COLUMN_INNING_NUMBER, inningId);
 
         return database.insert(INNINGS_TABLE, null, inningValues);

@@ -18,7 +18,7 @@ class BcaTenBallMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter<TenBal
     }
 
     @Override
-    MatchInfoHolder<TenBallPlayer> getMatchInfoHolderByViewType(View view, int viewType) {
+    BaseViewHolder<TenBallPlayer> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_RUN_OUTS:
                 return new MatchInfoHolder.RunOutsWithEarlyWinsHolder<>(view);

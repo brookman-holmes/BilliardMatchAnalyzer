@@ -5,12 +5,11 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiardmatchanalyzer.ui.dialogs.BaseDialog;
+import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.billiards.match.Match;
 
 import butterknife.Bind;
@@ -28,7 +27,7 @@ public class MatchInfoActivity extends BaseActivity {
     @Bind(R.id.opponentName)
     TextView opponentName;
     @Bind(R.id.addInning)
-    Button addInning;
+    View addInning;
 
     DatabaseAdapter db;
     MatchInfoFragment infoFragment;
@@ -57,13 +56,14 @@ public class MatchInfoActivity extends BaseActivity {
         super.onResume();
         if (infoFragment == null)
             infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag("infoFragment");
+        setBottomBarText();
     }
 
     @OnClick(R.id.addInning)
     public void addInning(View view) {
-        DialogFragment dialogFragment = BaseDialog.createBreakBallsDialog(db.getMatch(getMatchId()));
+        DialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
 
-        dialogFragment.show(getSupportFragmentManager(), "select break balls dialog");
+        dialogFragment.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
 
@@ -72,6 +72,5 @@ public class MatchInfoActivity extends BaseActivity {
     }
 
     public void setBottomBarText() {
-        //addInning.setText("Add turn for " + infoFragment.getCurrentPlayersName());
     }
 }

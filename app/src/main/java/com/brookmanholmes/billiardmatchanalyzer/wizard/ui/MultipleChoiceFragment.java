@@ -40,7 +40,7 @@ import java.util.Set;
 public class MultipleChoiceFragment extends ListFragment {
     private static final String ARG_KEY = "key";
 
-    private PageFragmentCallbacks callbacks;
+    protected PageFragmentCallbacks callbacks;
     private String key;
     private List<String> choices;
     private Page page;
@@ -112,11 +112,15 @@ public class MultipleChoiceFragment extends ListFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (!(getActivity() instanceof PageFragmentCallbacks)) {
-            throw new ClassCastException("Activity must implement PageFragmentCallbacks");
+        if (getParentFragment() instanceof PageFragmentCallbacks) {
+            callbacks = (PageFragmentCallbacks) getParentFragment();
+        } else if (getActivity() instanceof PageFragmentCallbacks) {
+            callbacks = (PageFragmentCallbacks) getActivity();
+        } else {
+            throw new ClassCastException("Activity/ParentFragment must implement PageFragmentCallbacks");
         }
 
-        callbacks = (PageFragmentCallbacks) getActivity();
+
     }
 
     @Override

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 /**
  * Created by Brookman Holmes on 1/7/2016.
  */
-// TODO: 2/20/2016 turn into a branch page and remove FirstBreakPage from list and put into here
 public class BreakTypePage extends BranchPage implements RequiresPlayerNames {
     String playerName = "Player 1-", opponentName = "Player 2-";
     String valueEnding = " always breaks";
