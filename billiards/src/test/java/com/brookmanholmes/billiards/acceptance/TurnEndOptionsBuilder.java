@@ -58,11 +58,11 @@ public class TurnEndOptionsBuilder {
     }
 
     public TurnEndOptions reBreak() {
-        return options.allowPlayerToChooseToContinueGame(true).defaultOption(CONTINUE_WITH_GAME).build();
+        return options.allowPlayerToChooseToContinueGame().defaultOption(CONTINUE_WITH_GAME).build();
     }
 
     public TurnEndOptions reBreakOnScratch() {
-        return options.allowPlayerToChooseWhoBreaks(true).defaultOption(CONTINUE_WITH_GAME).build();
+        return options.allowPlayerToChooseWhoBreaks().defaultOption(CONTINUE_WITH_GAME).build();
     }
 
     public TurnEndOptions select(TurnEnd turnEnd) {

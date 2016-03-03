@@ -33,6 +33,15 @@ class EightBallTurnEndHelper extends TurnEndHelper {
         return super.showMiss() && !showLoss();
     }
 
+    @Override
+    boolean showPush() {
+        return false;
+    }
+
+    @Override
+    boolean showTurnSkip() {
+        return false;
+    }
 
     boolean currentPlayerBallsRemaining() {
         if (game.currentPlayerColor == PlayerColor.SOLIDS) {

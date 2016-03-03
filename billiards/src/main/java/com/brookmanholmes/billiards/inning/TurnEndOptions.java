@@ -1,40 +1,20 @@
 package com.brookmanholmes.billiards.inning;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by brookman on 9/26/15.
  */
 public class TurnEndOptions {
-    public final boolean safety;
-    public final boolean safetyMiss;
-    public final boolean miss;
-    public final boolean wonGame;
-    public final boolean lostGame;
-    public final boolean push;
-    public final boolean skip;
-    public final boolean illegalBreak;
     public final boolean scratch;
-    public final boolean continueGame;
-    public final boolean restartGame;
-    public final boolean reBreak;
-    public final boolean breakMiss;
-
+    public List<TurnEnd> possibleEndings = new ArrayList<>();
     public TurnEnd defaultCheck;
 
     TurnEndOptions(Builder builder) {
-        safety = builder.safety;
-        safetyMiss = builder.safetyMiss;
-        miss = builder.miss;
-        wonGame = builder.wonGame;
-        lostGame = builder.lostGame;
-        push = builder.push;
-        skip = builder.skip;
+        possibleEndings = builder.turnEnds;
         scratch = builder.scratch;
-        illegalBreak = builder.illegalBreak;
         defaultCheck = builder.checked;
-        continueGame = builder.continueGame;
-        restartGame = builder.opponentBreaksAgain;
-        reBreak = builder.playerBreaksAgain;
-        breakMiss = builder.breakMiss;
     }
 
     @Override
@@ -44,89 +24,53 @@ public class TurnEndOptions {
 
         TurnEndOptions that = (TurnEndOptions) o;
 
-        if (safety != that.safety) return false;
-        if (safetyMiss != that.safetyMiss) return false;
-        if (miss != that.miss) return false;
-        if (wonGame != that.wonGame) return false;
-        if (lostGame != that.lostGame) return false;
-        if (push != that.push) return false;
-        if (skip != that.skip) return false;
-        if (illegalBreak != that.illegalBreak) return false;
         if (scratch != that.scratch) return false;
-        if (continueGame != that.continueGame) return false;
-        if (restartGame != that.restartGame) return false;
-        if (reBreak != that.reBreak) return false;
-        if (breakMiss != that.breakMiss) return false;
+        // TODO: 2/20/2016 might need to make this more stringent?
+        if (!possibleEndings.containsAll(that.possibleEndings)) return false;
+        if (!that.possibleEndings.containsAll(possibleEndings)) return false;
+        if (possibleEndings.size() != that.possibleEndings.size()) return false;
+
         return defaultCheck == that.defaultCheck;
 
     }
 
     @Override
     public int hashCode() {
-        int result = (safety ? 1 : 0);
-        result = 31 * result + (safetyMiss ? 1 : 0);
-        result = 31 * result + (miss ? 1 : 0);
-        result = 31 * result + (wonGame ? 1 : 0);
-        result = 31 * result + (lostGame ? 1 : 0);
-        result = 31 * result + (push ? 1 : 0);
-        result = 31 * result + (skip ? 1 : 0);
-        result = 31 * result + (illegalBreak ? 1 : 0);
-        result = 31 * result + (scratch ? 1 : 0);
-        result = 31 * result + (continueGame ? 1 : 0);
-        result = 31 * result + (restartGame ? 1 : 0);
-        result = 31 * result + (reBreak ? 1 : 0);
-        result = 31 * result + (breakMiss ? 1 : 0);
+        int result = possibleEndings.hashCode();
         result = 31 * result + defaultCheck.hashCode();
+        result = 31 * result + (scratch ? 1 : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "TurnEndOptions{" +
-                "safety=" + safety +
-                "\n safetyMiss=" + safetyMiss +
-                "\n miss=" + miss +
-                "\n wonGame=" + wonGame +
-                "\n lostGame=" + lostGame +
-                "\n push=" + push +
-                "\n skip=" + skip +
-                "\n illegalBreak=" + illegalBreak +
-                "\n scratch=" + scratch +
-                "\n continueGame=" + continueGame +
-                "\n opponentBreaksAgain=" + restartGame +
-                "\n playerBreaksAgain=" + reBreak +
-                "\n breakMiss=" + breakMiss +
+                "possibleEndings=" + possibleEndings +
                 "\n defaultCheck=" + defaultCheck +
+                ", scratch=" + scratch +
                 '}';
     }
 
     public static class Builder {
-        TurnEnd checked = TurnEnd.MISS;
-        private boolean safety = false;
-        private boolean safetyMiss = false;
-        private boolean miss = false;
-        private boolean wonGame = false;
-        private boolean lostGame = false;
-        private boolean push = false;
-        private boolean skip = false;
-        private boolean illegalBreak = false;
-        private boolean continueGame = false;
-        private boolean opponentBreaksAgain = false;
-        private boolean playerBreaksAgain = false;
-        private boolean breakMiss = false;
-        private boolean scratch = false;
+        private TurnEnd checked = TurnEnd.MISS;
+        private boolean scratch;
+        private List<TurnEnd> turnEnds = new ArrayList<>();
 
 
         public Builder() {
         }
 
         public Builder wonGame(boolean show) {
-            wonGame = show;
+            if (show) {
+                turnEnds.add(TurnEnd.GAME_WON);
+            }
             return this;
         }
 
         public Builder lostGame(boolean show) {
-            lostGame = show;
+            if (show) {
+                turnEnds.add(TurnEnd.GAME_LOST);
+            }
             return this;
         }
 
@@ -136,12 +80,16 @@ public class TurnEndOptions {
         }
 
         public Builder safety(boolean show) {
-            safety = show;
+            if (show) {
+                turnEnds.add(TurnEnd.SAFETY);
+            }
             return this;
         }
 
         public Builder safetyError(boolean show) {
-            safetyMiss = show;
+            if (show) {
+                turnEnds.add(TurnEnd.SAFETY_ERROR);
+            }
             return this;
         }
 
@@ -151,41 +99,51 @@ public class TurnEndOptions {
         }
 
         public Builder miss(boolean show) {
-            miss = show;
+            if (show) {
+                turnEnds.add(TurnEnd.MISS);
+            }
             return this;
         }
 
         public Builder missOnBreak(boolean show) {
-            breakMiss = show;
+            if (show) {
+                turnEnds.add(TurnEnd.BREAK_MISS);
+            }
             return this;
         }
 
         public Builder illegalBreak(boolean show) {
-            illegalBreak = show;
+            if (show) {
+                turnEnds.add(TurnEnd.ILLEGAL_BREAK);
+            }
             return this;
         }
 
         public Builder push(boolean show) {
-            push = show;
+            if (show) {
+                turnEnds.add(TurnEnd.PUSH_SHOT);
+            }
             return this;
         }
 
         public Builder skipTurn(boolean show) {
-            skip = show;
+            if (show) {
+                turnEnds.add(TurnEnd.SKIP_TURN);
+            }
             return this;
         }
 
-        public Builder allowPlayerToChooseToContinueGame(boolean show) {
-            playerBreaksAgain = true;
-            continueGame = true;
+        public Builder allowPlayerToChooseToContinueGame() {
+            turnEnds.add(TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN);
+            turnEnds.add(TurnEnd.CONTINUE_WITH_GAME);
 
             return this;
         }
 
-        public Builder allowPlayerToChooseWhoBreaks(boolean show) {
-            playerBreaksAgain = true;
-            opponentBreaksAgain = true;
-            continueGame = true;
+        public Builder allowPlayerToChooseWhoBreaks() {
+            turnEnds.add(TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN);
+            turnEnds.add(TurnEnd.OPPONENT_BREAKS_AGAIN);
+            turnEnds.add(TurnEnd.CONTINUE_WITH_GAME);
 
             return this;
         }
