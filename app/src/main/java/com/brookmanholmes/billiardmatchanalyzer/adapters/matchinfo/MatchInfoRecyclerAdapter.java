@@ -2,7 +2,6 @@ package com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,8 +120,6 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
         Turn turn = match.createAndAddTurnToMatch(tableStatus, turnEnd, scratch);
         notifyDataSetChanged();
-
-        Log.i("RecyclerAdapter", match.toString());
         return turn;
     }
 

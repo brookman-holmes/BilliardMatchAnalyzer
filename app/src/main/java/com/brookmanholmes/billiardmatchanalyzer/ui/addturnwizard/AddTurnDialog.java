@@ -1,9 +1,8 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -32,7 +31,7 @@ import butterknife.OnClick;
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
-public class AddTurnDialog extends DialogFragment implements PageFragmentCallbacks, ModelCallbacks {
+public class AddTurnDialog extends BottomSheetDialogFragment implements PageFragmentCallbacks, ModelCallbacks {
     @Bind(R.id.pager)
     ViewPager pager;
     @Bind(R.id.strip)
@@ -41,7 +40,6 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     Button nextButton;
     @Bind(R.id.prev_button)
     Button prevButton;
-    Dialog dialog;
     private MyPagerAdapter pagerAdapter;
     private AddTurnWizardModel wizardModel;
     private List<Page> currentPageSequence;
@@ -90,7 +88,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_create_new_match, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_turn, container, false);
         ButterKnife.bind(this, view);
 
         pager.setAdapter(pagerAdapter);

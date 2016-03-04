@@ -28,7 +28,7 @@
             android:src="@drawable/one_ball_level" />
 
         <ImageView
-            android:id="@+id/two_ball_level"
+            android:id="@+id/two_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:src="@drawable/two_ball_level" />

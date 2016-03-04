@@ -55,12 +55,12 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         addBranch(SAFETY_ERROR.toString(), new FoulPage(callbacks));
         addBranch(MISS.toString(), new FoulPage(callbacks));
         addBranch(BREAK_MISS.toString(), new FoulPage(callbacks));
-        addBranch(GAME_WON.toString());
         addBranch(SAFETY.toString());
+        addBranch(ILLEGAL_BREAK.toString(), new FoulPage(callbacks));
+        addBranch(GAME_WON.toString());
         addBranch(PUSH_SHOT.toString());
         addBranch(SKIP_TURN.toString());
         addBranch(GAME_LOST.toString()); // TODO: this should be moved to an end page as a flag and replaced with the actual reason for fouling
-        addBranch(ILLEGAL_BREAK.toString(), new FoulPage(callbacks));
         addBranch(CURRENT_PLAYER_BREAKS_AGAIN.toString());
         addBranch(OPPONENT_BREAKS_AGAIN.toString());
         addBranch(CONTINUE_WITH_GAME.toString()); // TODO: this should start the dialog boxes over from the beginning with reBreak option turned to false
@@ -68,8 +68,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
 
         if (Match.StatsDetail.valueOf(data.getString(STATS_LEVEL_KEY)) == Match.StatsDetail.ADVANCED) {
             // Safety Error branch
-            branches.get(0).childPageList.add(new SingleFixedChoicePage(callbacks, "You left your opponent").setChoices("Fully open", "Difficult shot"));
-            branches.get(0).childPageList.add(new SingleFixedChoicePage(callbacks, "Why?").setChoices("Speed: too fast", "Speed: too slow", "Hit: too thick", "Hit: too thin", "Moved blocker balls"));
+            branches.get(0).childPageList.add(new SingleFixedChoicePage(callbacks, "Why?").setChoices("Speed: too fast", "Speed: too slow", "Hit: too thick", "Hit: too thin"));
 
             // Miss branch
             branches.get(1).childPageList.add(new BranchPage(callbacks, "What did you miss?")
