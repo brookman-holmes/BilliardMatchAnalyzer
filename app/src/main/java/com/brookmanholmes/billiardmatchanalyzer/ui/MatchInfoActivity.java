@@ -1,11 +1,14 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -14,6 +17,9 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.match.Match;
+
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -63,9 +69,29 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     @OnClick(R.id.addInning)
     public void addInning(View view) {
-        DialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
-
+        BottomSheetDialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
         dialogFragment.show(getSupportFragmentManager(), "AddTurnDialog");
+    }
+
+    @OnClick(R.id.playerSide)
+    public void showTestLayout() {
+        String[] shotTypes = new String[] {"Shot type"};
+        String[] angleList = new String[] {"Angle"};
+        String[] howList = new String[] {"How?"};
+        String[] whyList = new String[] {"Why?"};
+
+        View view = getLayoutInflater().inflate(R.layout.content_shooting_stats, null);
+        setupSpinner((Spinner)view.findViewById(R.id.spinner), Arrays.asList(shotTypes));
+        setupSpinner((Spinner)view.findViewById(R.id.spinner2), Arrays.asList(angleList));
+        setupSpinner((Spinner) view.findViewById(R.id.spinner3), Arrays.asList(howList));
+        setupSpinner((Spinner)view.findViewById(R.id.spinner4), Arrays.asList(whyList));
+        new AlertDialog.Builder(this, R.style.AlertDialogTheme).setView(view).setTitle("Shooting Errors").create().show();
+    }
+
+    private void setupSpinner(Spinner spinner, List<String> items) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     private long getMatchId() {

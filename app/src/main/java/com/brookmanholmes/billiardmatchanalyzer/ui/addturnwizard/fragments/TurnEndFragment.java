@@ -70,9 +70,8 @@ public class TurnEndFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_page, container, false);
-        ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
-
+        View rootView = inflater.inflate(R.layout.fragment_add_turn_page, container, false);
+        ((TextView) rootView.findViewById(R.id.title)).setText(page.getTitle());
         listView = (ListView) rootView.findViewById(android.R.id.list);
         adapter = new CustomAdapter(getActivity(),
                 android.R.layout.simple_list_item_single_choice,

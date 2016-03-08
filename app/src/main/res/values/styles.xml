@@ -18,6 +18,18 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowTitleStyle">@style/AdpTitleStyle</item>
+    </style>
+
+    <style name="AdpTitleStyle">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+    </style>
+
 
     <style name="TextAppearanceFinish" parent="android:TextAppearance.Material.Button">
         <item name="android:textColor">#fff</item>
@@ -52,6 +64,13 @@
         <item name="android:text">Players</item>
         <item name="android:textSize">36sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="WizardPageTitle2" parent="WizardPageTitle">
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="WizardFormLabel">

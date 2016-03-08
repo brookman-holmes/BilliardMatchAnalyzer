@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.AddTurnWizardModel;
@@ -40,6 +41,9 @@ public class AddTurnDialog extends BottomSheetDialogFragment implements PageFrag
     Button nextButton;
     @Bind(R.id.prev_button)
     Button prevButton;
+    @Bind(R.id.title)
+    TextView title;
+
     private MyPagerAdapter pagerAdapter;
     private AddTurnWizardModel wizardModel;
     private List<Page> currentPageSequence;
@@ -90,6 +94,8 @@ public class AddTurnDialog extends BottomSheetDialogFragment implements PageFrag
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_turn, container, false);
         ButterKnife.bind(this, view);
+
+        title.setText("Add turn for " + getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY, "null"));
 
         pager.setAdapter(pagerAdapter);
         stepPagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {

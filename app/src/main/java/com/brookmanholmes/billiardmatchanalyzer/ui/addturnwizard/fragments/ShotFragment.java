@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.ShotPage;
@@ -17,6 +18,7 @@ import com.brookmanholmes.billiards.game.util.GameType;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -34,6 +36,8 @@ import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUt
  */
 public class ShotFragment extends Fragment {
     private static final String ARG_KEY = "key";
+    @Bind(R.id.title)
+    TextView title;
     private PageFragmentCallbacks callbacks;
     private String key;
     private ShotPage page;
@@ -83,6 +87,7 @@ public class ShotFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutByGameType(getGameType()), container, false);
         ButterKnife.bind(this, view);
+        title.setText("Input balls made this turn");
 
         return view;
     }

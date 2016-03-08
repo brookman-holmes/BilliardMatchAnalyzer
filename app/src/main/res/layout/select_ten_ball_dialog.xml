@@ -7,8 +7,7 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/WizardPageTitle"
-        android:textSize="20sp" />
+        style="@style/WizardPageTitle2" />
 
     <GridLayout
         android:id="@+id/ballGrid"
@@ -17,7 +16,6 @@
         android:layout_below="@+id/title"
         android:layout_centerHorizontal="true"
         android:columnCount="5"
-        android:padding="16dp"
         android:rowCount="2"
         android:useDefaultMargins="true">
 

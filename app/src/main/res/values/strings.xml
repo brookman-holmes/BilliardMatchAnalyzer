@@ -4,4 +4,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="shot_type_prompt">Shot type</string>
+    <string name="angle_type_prompt">Angle/rails</string>
+    <string name="how_prompt">How?</string>
+    <string name="why_prompt">Why?</string>
 </resources>
