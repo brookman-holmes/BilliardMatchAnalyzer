@@ -1,7 +1,9 @@
 package com.brookmanholmes.billiards.acceptance.eberlecoates;
 
 import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.util.PlayerColor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,14 +35,14 @@ public class GameStatusList {
     static GameStatus afterTurn17 = coatesIsBreaker().turn(OPPONENT).removeBalls(5).build();
     static GameStatus afterTurn18 = coatesIsBreaker().turn(PLAYER).removeBalls(5).safetyLastTurn().build();
     static GameStatus afterTurn19 = eberleBreaking();
-    static GameStatus afterTurn20 = eberleIsBreaker().turn(OPPONENT).removeBalls(1, 2, 3, 4, 5, 6, 7, 8).build();
+    static GameStatus afterTurn20 = eberleIsBreaker().turn(OPPONENT).consecutivePlayerFouls(1).removeBalls(1, 2, 3, 4, 5, 6, 7, 8).build();
     static GameStatus afterTurn21 = coatesBreaking();
     static GameStatus afterTurn22 = coatesIsBreaker().turn(PLAYER).removeBalls(3, 5).safetyLastTurn().build();
     static GameStatus afterTurn23 = coatesIsBreaker().turn(OPPONENT).removeBalls(3, 5).build();
     static GameStatus afterTurn24 = coatesIsBreaker().turn(PLAYER).removeBalls(3, 5).build();
-    static GameStatus afterTurn25 = coatesIsBreaker().turn(OPPONENT).removeBalls(3, 5).build();
-    static GameStatus afterTurn26 = coatesIsBreaker().turn(PLAYER).currentPlayerConsecutiveFouls(1).removeBalls(1, 2, 3, 5).safetyLastTurn().build();
-    static GameStatus afterTurn27 = coatesIsBreaker().turn(OPPONENT).removeBalls(1, 2, 3, 5).build();
+    static GameStatus afterTurn25 = coatesIsBreaker().turn(OPPONENT).consecutivePlayerFouls(1).removeBalls(3, 5).build();
+    static GameStatus afterTurn26 = coatesIsBreaker().turn(PLAYER).currentPlayerConsecutiveFouls(1).consecutivePlayerFouls(1).removeBalls(1, 2, 3, 5).safetyLastTurn().build();
+    static GameStatus afterTurn27 = coatesIsBreaker().turn(OPPONENT).consecutivePlayerFouls(2).removeBalls(1, 2, 3, 5).build();
     static GameStatus afterTurn28 = eberleBreaking();
     static GameStatus afterTurn29 = eberleIsBreaker().turn(OPPONENT).removeBalls(5, 8).build();
     static GameStatus afterTurn30 = eberleIsBreaker().turn(PLAYER).removeBalls(1, 2, 3, 5, 6, 8).safetyLastTurn().build();
@@ -68,11 +70,13 @@ public class GameStatusList {
     static GameStatus afterTurn52 = coatesIsBreaker().turn(PLAYER).removeBalls(1, 4, 5, 6, 2).build();
     static GameStatus afterTurn53 = eberleBreaking();
     static GameStatus afterTurn54 = eberleIsBreaker().turn(OPPONENT).removeBalls(2).build();
-    static GameStatus afterTurn55 = eberleIsBreaker().turn(PLAYER).removeBalls(2).build();
+    static GameStatus afterTurn55 = eberleIsBreaker().turn(PLAYER).consecutiveOpponentFouls(1).removeBalls(2).build();
     static GameStatus endOfMatch = coatesBreaking();
 
     static GameStatus.Builder status() {
-        return new GameStatus.Builder(GameType.BCA_NINE_BALL);
+        return new GameStatus.Builder(GameType.BCA_NINE_BALL)
+                .breakType(BreakType.ALTERNATE)
+                .playerColor(PlayerColor.OPEN);
     }
 
     private static GameStatus eberleBreaking() {

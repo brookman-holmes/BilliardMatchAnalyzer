@@ -96,7 +96,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
 
         assertThat(actual, is(expected));
 
-        // now add in a break scratch
+        // now add in a break foul
         actual.addBreakShot(0, false, true);
 
         expected.breakAttempts++;

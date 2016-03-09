@@ -237,7 +237,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
         Turn mockedTurn = Mockito.mock(Turn.class);
         playerController.turn = mockedTurn;
         for (TurnEnd turnEnd : TurnEnd.values()) {
-            if (turnEnd != TurnEnd.GAME_WON && turnEnd != TurnEnd.GAME_LOST) {
+            if (turnEnd != TurnEnd.GAME_WON) {
                 when(mockedTurn.getTurnEnd()).thenReturn(turnEnd);
                 assertThat(playerController.isGameOver(), is(false));
             }

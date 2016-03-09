@@ -9,7 +9,7 @@ import com.brookmanholmes.billiards.player.AbstractPlayer;
  * Created by Brookman Holmes on 1/31/2016.
  */
 public interface MatchInterface<T extends AbstractPlayer> {
-    Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch);
+    Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost);
 
     T getPlayer();
 

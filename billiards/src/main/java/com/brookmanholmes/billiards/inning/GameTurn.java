@@ -16,13 +16,15 @@ public class GameTurn implements Turn {
     final boolean scratch;
     final long matchId;
     final int inningNumber;
+    final boolean gameLost;
 
-    public GameTurn(int inningNumber, long matchId, boolean scratch, TurnEnd turnEnd, TableStatus tableStatus) {
+    public GameTurn(int inningNumber, long matchId, boolean scratch, TurnEnd turnEnd, TableStatus tableStatus, boolean isGameLost) {
         this.inningNumber = inningNumber;
         this.matchId = matchId;
         this.scratch = scratch;
         this.turnEnd = turnEnd;
         this.tableStatus = tableStatus;
+        this.gameLost = isGameLost;
     }
 
     @Override
@@ -86,6 +88,11 @@ public class GameTurn implements Turn {
     }
 
     @Override
+    public boolean isGameLost() {
+        return gameLost;
+    }
+
+    @Override
     public List<BallStatus> getBallStatuses() {
         List<BallStatus> ballStatuses = new ArrayList<>();
 
@@ -136,7 +143,7 @@ public class GameTurn implements Turn {
         return "GameTurn{" +
                 "tableStatus=" + tableStatus +
                 "\n turnEnd=" + turnEnd +
-                "\n scratch=" + scratch +
+                "\n foul=" + scratch +
                 "\n matchId=" + matchId +
                 "\n inningNumber=" + inningNumber +
                 '}';

@@ -70,7 +70,7 @@ public abstract class AbstractGameTest {
     @Test
     public void getGameWinnerReturnsOpponent() {
         Turn mockedTurn = mock(Turn.class);
-        when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_LOST);
+        when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
 
         game.turn = PlayerTurn.PLAYER;
 
@@ -83,7 +83,8 @@ public abstract class AbstractGameTest {
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_WON);
         assertThat(game.isGameOver(mockedTurn), is(true));
 
-        when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_LOST);
+        when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
+        when(mockedTurn.isGameLost()).thenReturn(true);
         assertThat(game.isGameOver(mockedTurn), is(true));
     }
 

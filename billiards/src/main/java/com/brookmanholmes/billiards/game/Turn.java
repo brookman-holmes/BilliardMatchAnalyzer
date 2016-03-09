@@ -11,6 +11,8 @@ import java.util.List;
 public interface Turn extends TableStatusInterface {
     boolean isScratch();
 
+    boolean isGameLost();
+
     List<Integer> getBallsToRemoveFromTable();
 
     TurnEnd getTurnEnd();

@@ -116,7 +116,8 @@ public class BreakTest {
 
     private Turn createMockTurnWithLoss() {
         Turn mockedTurn = mock(Turn.class);
-        when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_LOST);
+        when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
+        when(mockedTurn.isGameLost()).thenReturn(true);
         return mockedTurn;
     }
 

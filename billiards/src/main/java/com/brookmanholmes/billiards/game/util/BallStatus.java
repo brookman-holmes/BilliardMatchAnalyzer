@@ -18,23 +18,25 @@ public enum BallStatus {
     public String toString() {
         switch (this) {
             case ON_TABLE:
-                return "OnTable";
+                return "On Table";
             case OFF_TABLE:
-                return "OffTable";
+                return "Off Table";
+            case DEAD:
+                return "Dead";
             case MADE:
                 return "Made";
             case MADE_ON_BREAK:
-                return "MadeOnBreak";
+                return "Made On Break";
             case DEAD_ON_BREAK:
-                return "DeadOnBreak";
+                return "Dead On Break";
             case GAME_BALL_MADE_ON_BREAK:
-                return "GameBallMadeOnBreak";
+                return "Game Ball Made On Break";
             case GAME_BALL_MADE_ON_BREAK_THEN_DEAD:
-                return "GameBallMadeOnBreakThenDead";
+                return "Game Ball Made On Break Then Dead";
             case GAME_BALL_MADE_ON_BREAK_THEN_MADE:
-                return "GameBallMadeOnBreakThenMade";
+                return "Game Ball Made On Break Then Made";
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Illegal argument: " + this.name());
         }
     }
 }

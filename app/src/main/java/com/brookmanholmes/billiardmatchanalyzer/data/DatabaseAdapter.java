@@ -45,9 +45,10 @@ public class DatabaseAdapter {
     public static final String INNINGS_TABLE = "innings";
     public static final String COLUMN_TABLE_STATUS = "table_status";
     public static final String COLUMN_TURN_END = "turn_end";
-    public static final String COLUMN_SCRATCH = "scratch";
+    public static final String COLUMN_SCRATCH = "foul";
     public static final String COLUMN_MATCH_ID = "match_id";
     public static final String COLUMN_INNING_NUMBER = "inning_number";
+    public static final String COLUMN_IS_GAME_LOST = "is_game_lost";
     public static final String PLAYER_TABLE = "players";
     public static final String COLUMN_NAME = "name";
     private static final String TAG = "DatabaseAdapter";
@@ -296,7 +297,8 @@ public class DatabaseAdapter {
                 cursor.getLong(cursor.getColumnIndex(COLUMN_MATCH_ID)),
                 cursor.getInt(cursor.getColumnIndex(COLUMN_SCRATCH)) == 1,
                 TurnEnd.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TURN_END))),
-                stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS)))
+                stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS))),
+                cursor.getInt(cursor.getColumnIndex(COLUMN_IS_GAME_LOST)) == 1
         );
     }
 

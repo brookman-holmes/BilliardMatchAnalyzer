@@ -14,7 +14,7 @@ public class TurnEndOptionsList {
     static TurnEndOptions option1 = option().wonGame();
     static TurnEndOptions option2 = option().defaultSelections();
     static TurnEndOptions option3 = option().defaultSelections();
-    static TurnEndOptions option4 = option().lostGame();
+    static TurnEndOptions option4 = option().safetyError().miss().scratch().lostGame().scratch().select(TurnEnd.MISS);
     static TurnEndOptions option5 = option().defaultSelections();
     static TurnEndOptions option6 = option().wonGame();
     static TurnEndOptions option7 = option().scratch().missOnBreak().select(TurnEnd.BREAK_MISS);

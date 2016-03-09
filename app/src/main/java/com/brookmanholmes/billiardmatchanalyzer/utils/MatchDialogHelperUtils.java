@@ -36,6 +36,8 @@ public class MatchDialogHelperUtils {
     public static final String BREAK_TYPE_KEY = "break type";
     public static final String SUCCESSFUL_SAFE_KEY = "successful safe";
     public static final String STATS_LEVEL_KEY = "stats level";
+    public static final String OPPONENT_FOULS_KEY = "opponent fouls";
+    public static final String PLAYER_FOULS_KEY = "player fouls";
 
     private MatchDialogHelperUtils() {
     }
@@ -56,6 +58,8 @@ public class MatchDialogHelperUtils {
         args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
         args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
         args.putString(STATS_LEVEL_KEY, match.getStatsLevel().toString());
+        args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
+        args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
         return args;
     }
 
@@ -130,6 +134,9 @@ public class MatchDialogHelperUtils {
         gameStatus.turn(PlayerTurn.valueOf(args.getString(TURN_KEY)));
         gameStatus.breaker(PlayerTurn.valueOf(args.getString(BREAKER_KEY)));
         gameStatus.currentPlayerColor(PlayerColor.valueOf(args.getString(CURRENT_PLAYER_COLOR_KEY)));
+        gameStatus.consecutiveOpponentFouls(args.getInt(OPPONENT_FOULS_KEY));
+        gameStatus.consecutivePlayerFouls(args.getInt(PLAYER_FOULS_KEY));
+        gameStatus.currentPlayerConsecutiveFouls(args.getInt(CONSECUTIVE_FOULS_KEY));
         // // TODO: 1/27/2016 ballsOnTable is not set
 
         return gameStatus.build();

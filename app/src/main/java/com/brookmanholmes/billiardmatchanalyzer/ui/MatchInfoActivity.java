@@ -104,7 +104,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     @Override
     public void addTurn(TurnBuilder turnBuilder) {
-        Turn turn = infoFragment.createAndAddTurnToMatch(turnBuilder.tableStatus, turnBuilder.turnEnd, turnBuilder.scratch);
+        Turn turn = infoFragment.createAndAddTurnToMatch(
+                turnBuilder.tableStatus,
+                turnBuilder.turnEnd,
+                turnBuilder.scratch,
+                turnBuilder.lostGame);
         db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
 
         setBottomBarText();

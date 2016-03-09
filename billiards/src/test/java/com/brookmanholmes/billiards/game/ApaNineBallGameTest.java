@@ -79,7 +79,7 @@ public class ApaNineBallGameTest extends AbstractGameTest {
     }
 
     Turn createGameTurn(TurnEnd turnEnd, TableStatus tableStatus) {
-        return new GameTurn(0, 0L, false, turnEnd, tableStatus);
+        return new GameTurn(0, 0L, false, turnEnd, tableStatus, false);
     }
 
     TableStatus createTableStatus() {

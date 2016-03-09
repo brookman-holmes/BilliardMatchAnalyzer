@@ -12,7 +12,7 @@ import com.brookmanholmes.billiards.match.Match;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 8;
     private static DatabaseHelper sInstance;
 
     /**
@@ -41,6 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + DatabaseAdapter.COLUMN_TURN_END + " INTEGER NOT NULL, "
                 + DatabaseAdapter.COLUMN_TABLE_STATUS + " TEXT COLLATE NOCASE DEFAULT NULL, "
                 + DatabaseAdapter.COLUMN_SCRATCH + " INTEGER DEFAULT NULL, "
+                + DatabaseAdapter.COLUMN_IS_GAME_LOST + " INTEGER DEFAULT NULL, "
                 + DatabaseAdapter.COLUMN_INNING_NUMBER + " INTEGER DEFAULT 0"
                 + ");";
     }

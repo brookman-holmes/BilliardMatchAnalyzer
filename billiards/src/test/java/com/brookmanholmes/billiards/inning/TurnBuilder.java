@@ -56,46 +56,46 @@ public class TurnBuilder {
     }
 
     public Turn miss() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.MISS, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.MISS, status, false);
     }
 
     public Turn win() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.GAME_WON, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.GAME_WON, status, false);
     }
 
     public Turn lose() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.GAME_LOST, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.MISS, status, true);
     }
 
     public Turn safety() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.SAFETY, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.SAFETY, status, false);
     }
 
     public Turn safetyMiss() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.SAFETY_ERROR, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.SAFETY_ERROR, status, false);
     }
 
     public Turn breakMiss() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.BREAK_MISS, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.BREAK_MISS, status, false);
     }
 
     public Turn push() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.PUSH_SHOT, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.PUSH_SHOT, status, false);
     }
 
     public Turn skipTurn() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.SKIP_TURN, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.SKIP_TURN, status, false);
     }
 
     public Turn continueGame() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.CONTINUE_WITH_GAME, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.CONTINUE_WITH_GAME, status, false);
     }
 
     public Turn currentPlayerBreaks() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, false);
     }
 
     public Turn opposingPlayerBreaks() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.OPPONENT_BREAKS_AGAIN, status);
+        return new GameTurn(0, 0L, scratch, TurnEnd.OPPONENT_BREAKS_AGAIN, status, false);
     }
 }

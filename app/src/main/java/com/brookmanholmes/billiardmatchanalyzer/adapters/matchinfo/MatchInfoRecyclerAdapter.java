@@ -117,8 +117,8 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     }
 
     @Override
-    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
-        Turn turn = match.createAndAddTurnToMatch(tableStatus, turnEnd, scratch);
+    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
+        Turn turn = match.createAndAddTurnToMatch(tableStatus, turnEnd, scratch, isGameLost);
         notifyDataSetChanged();
         return turn;
     }

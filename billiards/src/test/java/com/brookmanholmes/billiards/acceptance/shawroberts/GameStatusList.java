@@ -1,7 +1,9 @@
 package com.brookmanholmes.billiards.acceptance.shawroberts;
 
 import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.util.PlayerColor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,9 +21,9 @@ public class GameStatusList {
     static GameStatus afterTurn3 = shawIsBreaker().turn(PLAYER).allowSkip().removeBalls(7, 9).build();
     static GameStatus afterTurn4 = shawIsBreaker().turn(OPPONENT).removeBalls(7, 9).build();
     static GameStatus afterTurn5 = shawIsBreaker().turn(PLAYER).removeBalls(7, 9, 1, 2, 3, 8).build();
-    static GameStatus afterTurn6 = shawIsBreaker().turn(OPPONENT).removeBalls(1, 2, 3, 4, 5, 7, 8, 9).build();
+    static GameStatus afterTurn6 = shawIsBreaker().turn(OPPONENT).consecutivePlayerFouls(1).removeBalls(1, 2, 3, 4, 5, 7, 8, 9).build();
     static GameStatus afterTurn7 = newGameRobertsBreaking();
-    static GameStatus afterTurn8 = robertsIsBreaker().turn(PLAYER).removeBalls(6).build();
+    static GameStatus afterTurn8 = robertsIsBreaker().turn(PLAYER).consecutiveOpponentFouls(1).removeBalls(6).build();
     static GameStatus afterTurn9 = newGameShawBreaking();
     static GameStatus afterTurn10 = newGameRobertsBreaking();
     static GameStatus afterTurn11 = newGameShawBreaking();
@@ -30,10 +32,10 @@ public class GameStatusList {
     static GameStatus afterTurn14 = newGameRobertsBreaking();
     static GameStatus afterTurn15 = robertsIsBreaker().turn(PLAYER).removeBalls(1, 4, 6).allowSkip().build();
     static GameStatus afterTurn16 = robertsIsBreaker().turn(OPPONENT).removeBalls(1, 4, 6).build();
-    static GameStatus afterTurn17 = robertsIsBreaker().turn(PLAYER).removeBalls(1, 4, 6).build();
+    static GameStatus afterTurn17 = robertsIsBreaker().turn(PLAYER).consecutiveOpponentFouls(1).removeBalls(1, 4, 6).build();
     static GameStatus afterTurn18 = robertsIsBreaker().turn(OPPONENT).removeBalls(1, 4, 6)
-            .currentPlayerConsecutiveFouls(1).safetyLastTurn().build();
-    static GameStatus afterTurn19 = robertsIsBreaker().turn(PLAYER).removeBalls(1, 2, 4, 6).build();
+            .currentPlayerConsecutiveFouls(1).consecutiveOpponentFouls(1).safetyLastTurn().build();
+    static GameStatus afterTurn19 = robertsIsBreaker().turn(PLAYER).consecutiveOpponentFouls(2).removeBalls(1, 2, 4, 6).build();
     static GameStatus afterTurn20 = newGameShawBreaking();
     static GameStatus afterTurn21 = shawIsBreaker().turn(OPPONENT).safetyLastTurn().removeBalls(1, 2).build();
     static GameStatus afterTurn22 = shawIsBreaker().turn(PLAYER).allowSkip().removeBalls(1, 2).build();
@@ -50,7 +52,9 @@ public class GameStatusList {
     static GameStatus endOfMatch = newGameShawBreaking();
 
     static GameStatus.Builder status() {
-        return new GameStatus.Builder(GameType.BCA_TEN_BALL);
+        return new GameStatus.Builder(GameType.BCA_TEN_BALL)
+                .breakType(BreakType.ALTERNATE)
+                .playerColor(PlayerColor.OPEN);
     }
 
     static GameStatus.Builder robertsIsBreaker() {

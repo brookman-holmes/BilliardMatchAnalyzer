@@ -13,13 +13,13 @@ class ApaEightBallTurnEndHelper extends EightBallTurnEndHelper {
     }
 
     @Override
-    boolean showLoss() {
-        return super.showLoss() || nextInning.getBallStatus(game.GAME_BALL) == BallStatus.DEAD_ON_BREAK;
+    boolean lostGame() {
+        return super.lostGame() || nextInning.getBallStatus(game.GAME_BALL) == BallStatus.DEAD_ON_BREAK;
     }
 
     @Override
-    boolean checkScratch() {
-        return super.checkScratch() || nextInning.getDeadBalls() > 0;
+    boolean checkFoul() {
+        return super.checkFoul() || nextInning.getDeadBalls() > 0;
     }
 
     @Override

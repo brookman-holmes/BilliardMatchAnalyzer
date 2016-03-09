@@ -71,8 +71,8 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
     }
 
     @Override
-    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
-        return adapter.createAndAddTurnToMatch(tableStatus, turnEnd, scratch);
+    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
+        return adapter.createAndAddTurnToMatch(tableStatus, turnEnd, scratch, isGameLost);
     }
 
     @Override

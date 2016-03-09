@@ -11,13 +11,13 @@ class RotationTurnEndHelper extends TurnEndHelper {
     }
 
     @Override
-    boolean showLoss() {
-        return game.currentPlayerConsecutiveFouls >= 2;
+    boolean lostGame() {
+        return game.currentPlayerConsecutiveFouls >= 2 && nextInning.getShootingBallsMade() == 0;
     }
 
     @Override
-    boolean checkScratch() {
-        return super.checkScratch() || nextInning.getDeadBalls() > 0;
+    boolean checkFoul() {
+        return super.checkFoul() || nextInning.getDeadBalls() > 0;
     }
 
     @Override
@@ -26,8 +26,9 @@ class RotationTurnEndHelper extends TurnEndHelper {
     }
 
     // // TODO: 1/29/2016 add in a test to make sure that push shot doesn't show when making the 9 on the break
+    // TODO: 3/9/2016 add in test to make sure you don't show push shot when the player fouls
     @Override
     boolean showPush() {
-        return super.showPush() && !showWin();
+        return super.showPush() && !showWin() && !checkFoul();
     }
 }

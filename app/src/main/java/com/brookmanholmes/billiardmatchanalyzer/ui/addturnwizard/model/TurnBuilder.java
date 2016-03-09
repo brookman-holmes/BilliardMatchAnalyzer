@@ -13,6 +13,7 @@ public class TurnBuilder {
     public TableStatus tableStatus;
     public TurnEnd turnEnd;
     public boolean scratch = false;
+    public boolean lostGame = false;
 
     public TurnBuilder(GameType gameType) {
         this.tableStatus = TableStatus.newTable(gameType);
@@ -28,7 +29,7 @@ public class TurnBuilder {
         return "TurnBuilder{" +
                 "tableStatus=" + tableStatus.toString() +
                 ", turnEnd=" + (turnEnd == null ? "null" : turnEnd.toString()) +
-                ", scratch=" + scratch +
+                ", foul=" + scratch +
                 '}';
     }
 }

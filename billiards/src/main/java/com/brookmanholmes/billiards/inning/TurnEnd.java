@@ -11,7 +11,6 @@ public enum TurnEnd {
     SAFETY("Safety"),
     PUSH_SHOT("Push"),
     SKIP_TURN("Give shot back"),
-    GAME_LOST("Game lost"),
     CURRENT_PLAYER_BREAKS_AGAIN("Current player breaks again"),
     OPPONENT_BREAKS_AGAIN("Opposing player breaks again"),
     CONTINUE_WITH_GAME("Continue game"),
@@ -40,8 +39,6 @@ public enum TurnEnd {
                 return PUSH_SHOT;
             case "Give shot back":
                 return SKIP_TURN;
-            case "Game lost":
-                return GAME_LOST;
             case "Current player breaks again":
                 return CURRENT_PLAYER_BREAKS_AGAIN;
             case "Opposing player breaks again":

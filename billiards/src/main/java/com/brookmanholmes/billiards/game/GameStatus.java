@@ -75,7 +75,6 @@ public final class GameStatus {
         consecutivePlayerFouls = builder.consecutivePlayerFouls;
     }
 
-
     @Override
     public String toString() {
         return "GameStatus{" +
@@ -90,8 +89,13 @@ public final class GameStatus {
                 "\n allowPush=" + allowPush +
                 "\n allowTurnSkip=" + allowTurnSkip +
                 "\n currentPlayerColor=" + currentPlayerColor +
+                "\n playerColor=" + playerColor +
                 "\n currentPlayerConsecutiveFouls=" + currentPlayerConsecutiveFouls +
-                "\n ballsOnTable=" + ballsOnTable.toString() +
+                "\n consecutivePlayerFouls=" + consecutivePlayerFouls +
+                "\n consecutiveOpponentFouls=" + consecutiveOpponentFouls +
+                "\n winOnBreak=" + winOnBreak +
+                "\n ballsOnTable=" + ballsOnTable +
+                "\n breakType=" + breakType +
                 '}';
     }
 
@@ -110,10 +114,18 @@ public final class GameStatus {
         if (allowPush != that.allowPush) return false;
         if (allowTurnSkip != that.allowTurnSkip) return false;
         if (currentPlayerConsecutiveFouls != that.currentPlayerConsecutiveFouls) return false;
+        if (consecutivePlayerFouls != that.consecutivePlayerFouls) return false;
+        if (consecutiveOpponentFouls != that.consecutiveOpponentFouls) return false;
+        if (winOnBreak != that.winOnBreak) return false;
         if (turn != that.turn) return false;
         if (breaker != that.breaker) return false;
         if (gameType != that.gameType) return false;
-        return currentPlayerColor == that.currentPlayerColor;
+        if (currentPlayerColor != that.currentPlayerColor) return false;
+        if (playerColor != that.playerColor) return false;
+        if (!ballsOnTable.containsAll(that.ballsOnTable)) return false;
+        if (!that.ballsOnTable.containsAll(ballsOnTable)) return false;
+        if (ballsOnTable.size() != that.ballsOnTable.size()) return false;
+        return breakType == that.breakType;
 
     }
 
@@ -130,10 +142,15 @@ public final class GameStatus {
         result = 31 * result + (allowPush ? 1 : 0);
         result = 31 * result + (allowTurnSkip ? 1 : 0);
         result = 31 * result + currentPlayerColor.hashCode();
+        result = 31 * result + playerColor.hashCode();
         result = 31 * result + currentPlayerConsecutiveFouls;
+        result = 31 * result + consecutivePlayerFouls;
+        result = 31 * result + consecutiveOpponentFouls;
+        result = 31 * result + (winOnBreak ? 1 : 0);
+        result = 31 * result + ballsOnTable.hashCode();
+        result = 31 * result + breakType.hashCode();
         return result;
     }
-
 
     public static final class Builder {
         private int MAX_BALLS;

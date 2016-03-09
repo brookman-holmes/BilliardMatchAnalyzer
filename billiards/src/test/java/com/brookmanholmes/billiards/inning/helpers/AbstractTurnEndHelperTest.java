@@ -31,7 +31,7 @@ public abstract class AbstractTurnEndHelperTest {
     public abstract void setUp();
 
     void setupTurn() {
-        turn = new GameTurn(0, 0, false, TurnEnd.MISS, tableStatus);
+        turn = new GameTurn(0, 0, false, TurnEnd.MISS, tableStatus, false);
     }
 
     @Test
@@ -50,8 +50,9 @@ public abstract class AbstractTurnEndHelperTest {
         tableStatus.setBallTo(BallStatus.DEAD, 5);
         setupTurn();
         helper.nextInning = turn;
+        helper.game = gameBuilder.newGame().build();
 
-        assertThat(helper.checkScratch(), is(showScratchOnDeadBall));
+        assertThat(helper.checkFoul(), is(showScratchOnDeadBall));
     }
 
     @Test
@@ -61,7 +62,7 @@ public abstract class AbstractTurnEndHelperTest {
         helper.nextInning = turn;
 
         // TODO: 11/14/2015 when i do straight pool this will have to be modified
-        assertThat(helper.checkScratch(), is(true));
+        assertThat(helper.checkFoul(), is(true));
     }
 
     @Test
@@ -72,7 +73,7 @@ public abstract class AbstractTurnEndHelperTest {
         helper.nextInning = turn;
         helper.game = gameBuilder.build();
 
-        assertThat(helper.showLoss(), is(true));
+        assertThat(helper.lostGame(), is(true));
     }
 
     @Test

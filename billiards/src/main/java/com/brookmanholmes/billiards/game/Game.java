@@ -109,7 +109,7 @@ public abstract class Game {
     }
 
     boolean isGameOver(Turn turn) {
-        return turn.getTurnEnd() == TurnEnd.GAME_WON || turn.getTurnEnd() == TurnEnd.GAME_LOST;
+        return turn.getTurnEnd() == TurnEnd.GAME_WON || turn.isGameLost();
     }
 
     void startNewGame(Turn turn) {

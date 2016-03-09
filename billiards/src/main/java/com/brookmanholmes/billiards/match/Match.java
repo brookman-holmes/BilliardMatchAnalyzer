@@ -68,8 +68,8 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         else return playerController.getOpponentName();
     }
 
-    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch) {
-        Turn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus);
+    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
+        Turn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost);
 
         addTurn(turn);
 

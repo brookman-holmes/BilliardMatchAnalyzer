@@ -21,7 +21,6 @@ import static com.brookmanholmes.billiards.inning.TurnEnd.BREAK_MISS;
 import static com.brookmanholmes.billiards.inning.TurnEnd.CHANGE_TURN;
 import static com.brookmanholmes.billiards.inning.TurnEnd.CONTINUE_WITH_GAME;
 import static com.brookmanholmes.billiards.inning.TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN;
-import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_LOST;
 import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_WON;
 import static com.brookmanholmes.billiards.inning.TurnEnd.ILLEGAL_BREAK;
 import static com.brookmanholmes.billiards.inning.TurnEnd.MISS;
@@ -38,7 +37,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
 
     private static final String[] breakMissTypes = {"Too hard", "Too soft", "Hit too far to the left", "Hit too far to the right", "Foul", "Kicked into pocket (foul)"};
     private static final String[] illegalBreakTypes = {"Too soft", "Too thin", "CB in pocket"};
-    private static final String[] whyChoices = {"Bad position", "Jacked up", "Lack of focus", "Overspin", "Unintentional english", "Too slow", "Too fast", "CB curved", "On the rail", "Forcing position"};
+    private static final String[] whyChoices = {"Bad position", "Jacked up", "Lack of focus", "Over spin", "Unintentional english", "Too slow", "Too fast", "CB curved", "On the rail", "Forcing position"};
     private static final String[] whyChoicesSafety = {"Too fast", "Too slow", "Too thick", "Too thin"};
     private static final String[] whyChoicesBreak = {"Unintentional english", "Aim", "Unlucky", "Too much follow", "Too much draw", "I need to lift weights"};
     TurnEndHelper turnEndHelper;
@@ -52,17 +51,15 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
 
         turnEndHelper = TurnEndHelper.newTurnEndHelper(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)));
 
-        boolean possiblyLostGame = MatchDialogHelperUtils.createGameStatusFromBundle(data).currentPlayerConsecutiveFouls > 2;
 
-        addBranch(SAFETY_ERROR.toString(), new FoulPage(callbacks, possiblyLostGame));
-        addBranch(MISS.toString(), new FoulPage(callbacks, possiblyLostGame));
-        addBranch(BREAK_MISS.toString(), new FoulPage(callbacks, possiblyLostGame));
+        addBranch(SAFETY_ERROR.toString(), new FoulPage(callbacks, matchData));
+        addBranch(MISS.toString(), new FoulPage(callbacks, matchData));
+        addBranch(BREAK_MISS.toString(), new FoulPage(callbacks, matchData));
         addBranch(SAFETY.toString());
-        addBranch(ILLEGAL_BREAK.toString(), new FoulPage(callbacks, possiblyLostGame));
+        addBranch(ILLEGAL_BREAK.toString(), new FoulPage(callbacks, matchData));
         addBranch(GAME_WON.toString());
         addBranch(PUSH_SHOT.toString());
         addBranch(SKIP_TURN.toString());
-        addBranch(GAME_LOST.toString()); // TODO: this should be moved to an end page as a flag and replaced with the actual reason for fouling
         addBranch(CURRENT_PLAYER_BREAKS_AGAIN.toString());
         addBranch(OPPONENT_BREAKS_AGAIN.toString());
         addBranch(CONTINUE_WITH_GAME.toString()); // TODO: this should start the dialog boxes over from the beginning with reBreak option turned to false
@@ -86,7 +83,6 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
             // Illegal break branch
             branches.get(4).childPageList.add(new HowMissPage(callbacks, illegalBreakTypes, "illegal break"));
             branches.get(4).childPageList.add(new WhyMissPage(callbacks, whyChoicesBreak, "illegal break branch"));
-
         }
     }
 

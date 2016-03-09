@@ -12,7 +12,6 @@ import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
 
 import static com.brookmanholmes.billiards.inning.TurnEnd.BREAK_MISS;
-import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_LOST;
 import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_WON;
 import static com.brookmanholmes.billiards.inning.TurnEnd.MISS;
 import static com.brookmanholmes.billiards.inning.TurnEnd.SAFETY;
@@ -108,13 +107,13 @@ public abstract class PlayerController<T extends AbstractPlayer> {
     }
 
     boolean isGameOver() {
-        return turn.getTurnEnd() == GAME_WON || turn.getTurnEnd() == GAME_LOST;
+        return turn.getTurnEnd() == GAME_WON || turn.isGameLost();
     }
 
     PlayerTurn getGameWinner() {
         if (turn.getTurnEnd() == GAME_WON)
             return gameStatus.turn;
-        else if (turn.getTurnEnd() == GAME_LOST)
+        else if (turn.isGameLost())
             return Game.changeTurn(gameStatus.turn);
         else throw new IllegalStateException("Should not be called if the game is not over");
     }

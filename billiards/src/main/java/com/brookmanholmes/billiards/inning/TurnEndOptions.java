@@ -7,14 +7,16 @@ import java.util.List;
  * Created by brookman on 9/26/15.
  */
 public class TurnEndOptions {
-    public final boolean scratch;
+    public final boolean foul;
+    public final boolean lostGame;
     public List<TurnEnd> possibleEndings = new ArrayList<>();
     public TurnEnd defaultCheck;
 
     TurnEndOptions(Builder builder) {
         possibleEndings = builder.turnEnds;
-        scratch = builder.scratch;
+        foul = builder.scratch;
         defaultCheck = builder.checked;
+        lostGame = builder.lostGame;
     }
 
     @Override
@@ -22,32 +24,33 @@ public class TurnEndOptions {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TurnEndOptions that = (TurnEndOptions) o;
+        TurnEndOptions options = (TurnEndOptions) o;
 
-        if (scratch != that.scratch) return false;
-        // TODO: 2/20/2016 might need to make this more stringent?
-        if (!possibleEndings.containsAll(that.possibleEndings)) return false;
-        if (!that.possibleEndings.containsAll(possibleEndings)) return false;
-        if (possibleEndings.size() != that.possibleEndings.size()) return false;
-
-        return defaultCheck == that.defaultCheck;
+        if (foul != options.foul) return false;
+        if (lostGame != options.lostGame) return false;
+        if (!possibleEndings.containsAll(options.possibleEndings)) return false;
+        if (!options.possibleEndings.containsAll(possibleEndings)) return false;
+        if (possibleEndings.size() != options.possibleEndings.size()) return false;
+        return defaultCheck == options.defaultCheck;
 
     }
 
     @Override
     public int hashCode() {
-        int result = possibleEndings.hashCode();
+        int result = (foul ? 1 : 0);
+        result = 31 * result + possibleEndings.hashCode();
         result = 31 * result + defaultCheck.hashCode();
-        result = 31 * result + (scratch ? 1 : 0);
+        result = 31 * result + (lostGame ? 1 : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "TurnEndOptions{" +
-                "possibleEndings=" + possibleEndings +
+                "foul=" + foul +
+                "\n possibleEndings=" + possibleEndings +
                 "\n defaultCheck=" + defaultCheck +
-                ", scratch=" + scratch +
+                "\n lostGame=" + lostGame +
                 '}';
     }
 
@@ -55,6 +58,7 @@ public class TurnEndOptions {
         private TurnEnd checked = TurnEnd.MISS;
         private boolean scratch;
         private List<TurnEnd> turnEnds = new ArrayList<>();
+        private boolean lostGame;
 
 
         public Builder() {
@@ -68,9 +72,7 @@ public class TurnEndOptions {
         }
 
         public Builder lostGame(boolean show) {
-            if (show) {
-                turnEnds.add(TurnEnd.GAME_LOST);
-            }
+            lostGame = show;
             return this;
         }
 

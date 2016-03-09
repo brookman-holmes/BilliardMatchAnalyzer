@@ -4,7 +4,6 @@ import com.brookmanholmes.billiards.inning.TurnEnd;
 import com.brookmanholmes.billiards.inning.TurnEndOptions;
 
 import static com.brookmanholmes.billiards.inning.TurnEnd.CONTINUE_WITH_GAME;
-import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_LOST;
 import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_WON;
 import static com.brookmanholmes.billiards.inning.TurnEnd.MISS;
 
@@ -18,10 +17,6 @@ public class TurnEndOptionsBuilder {
         return options.wonGame(true).defaultOption(GAME_WON).build();
     }
 
-    public TurnEndOptions lostGame() {
-        return options.lostGame(true).defaultOption(GAME_LOST).build();
-    }
-
     public TurnEndOptionsBuilder missOnBreak() {
         options.missOnBreak(true);
         return this;
@@ -29,6 +24,11 @@ public class TurnEndOptionsBuilder {
 
     public TurnEndOptionsBuilder miss() {
         options.miss(true);
+        return this;
+    }
+
+    public TurnEndOptionsBuilder lostGame() {
+        options.lostGame(true);
         return this;
     }
 

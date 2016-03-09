@@ -10,7 +10,7 @@ class TenBallTurnEndHelper extends RotationTurnEndHelper {
     }
 
     @Override
-    boolean checkScratch() {
+    boolean checkFoul() {
         return nextInning.getDeadBallsOnBreak() > 0;
     }
 }

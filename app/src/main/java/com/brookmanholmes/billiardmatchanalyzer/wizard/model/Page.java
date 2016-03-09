@@ -99,6 +99,31 @@ public abstract class Page implements PageTreeNode {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Page page = (Page) o;
+
+        if (required != page.required) return false;
+        if (!modelCallbacks.equals(page.modelCallbacks)) return false;
+        if (!data.equals(page.data)) return false;
+        if (!title.equals(page.title)) return false;
+        return parentKey.equals(page.parentKey);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = modelCallbacks.hashCode();
+        result = 31 * result + data.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + (required ? 1 : 0);
+        result = 31 * result + parentKey.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Page{" +
                 getKey() +

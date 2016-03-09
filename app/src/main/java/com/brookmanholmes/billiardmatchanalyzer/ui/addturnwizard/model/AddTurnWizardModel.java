@@ -59,10 +59,18 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                     new TurnEndPage(this, matchData)
             );
         else
-            return new PageList(new ShotPage(this, matchData), new TurnEndPage(this, matchData));
+            return new PageList(
+                    new ShotPage(this, matchData),
+                    new TurnEndPage(this, matchData)
+            );
     }
 
     public TurnBuilder getTurnBuilder() {
+        // make sure data is current
+        for (Page page : getCurrentPageSequence())
+            if (page instanceof UpdatesTurnInfo)
+                ((UpdatesTurnInfo) page).updateTurnInfo(turnBuilder);
+
         return turnBuilder;
     }
 }

@@ -38,13 +38,11 @@ abstract public class TurnEndHelper {
 
     abstract boolean showWin();
 
-    abstract boolean showLoss();
+    abstract boolean lostGame();
 
     TurnEnd selection() {
         if (showWin())
             return TurnEnd.GAME_WON;
-        else if (showLoss())
-            return TurnEnd.GAME_LOST;
         else if (showBreakMiss())
             return TurnEnd.BREAK_MISS;
         else return TurnEnd.MISS;
@@ -74,7 +72,7 @@ abstract public class TurnEndHelper {
         return !showWin() && !showBreakMiss();
     }
 
-    boolean checkScratch() {
+    boolean checkFoul() {
         return nextInning.getDeadBallsOnBreak() > 0;
     }
 
@@ -90,12 +88,12 @@ abstract public class TurnEndHelper {
         } else {
             return new TurnEndOptions.Builder()
                     .wonGame(showWin())
-                    .lostGame(showLoss())
+                    .lostGame(lostGame())
                     .safety(showSafety())
                     .safetyError(showSafetyMiss())
                     .miss(showMiss())
                     .missOnBreak(showBreakMiss())
-                    .checkScratch(checkScratch())
+                    .checkScratch(checkFoul())
                     .push(showPush())
                     .skipTurn(showTurnSkip())
                     .defaultOption(selection());
@@ -108,5 +106,4 @@ abstract public class TurnEndHelper {
 
         return createTurnEndOptionsBuilder().build();
     }
-
 }
