@@ -2,7 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -32,7 +32,7 @@ import butterknife.OnClick;
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
-public class AddTurnDialog extends BottomSheetDialogFragment implements PageFragmentCallbacks, ModelCallbacks {
+public class AddTurnDialog extends DialogFragment implements PageFragmentCallbacks, ModelCallbacks {
     @Bind(R.id.pager)
     ViewPager pager;
     @Bind(R.id.strip)
@@ -59,9 +59,16 @@ public class AddTurnDialog extends BottomSheetDialogFragment implements PageFrag
 
         args.putAll(MatchDialogHelperUtils.createBundleFromMatch(match));
         AddTurnDialog addTurnDialog = new AddTurnDialog();
+        addTurnDialog.setStyle(STYLE_NO_FRAME, R.style.AppTheme);
 
         addTurnDialog.setArguments(args);
         return addTurnDialog;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().setWindowAnimations(R.style.CustomDialogTransitionTheme);
     }
 
     @Override
@@ -201,6 +208,11 @@ public class AddTurnDialog extends BottomSheetDialogFragment implements PageFrag
     public void prevButton() {
         wizardModel.updatePagesWithTurnInfo();
         pager.setCurrentItem(pager.getCurrentItem() - 1);
+    }
+
+    @OnClick(R.id.close)
+    public void close() {
+        dismiss();
     }
 
     public interface AddTurnListener {

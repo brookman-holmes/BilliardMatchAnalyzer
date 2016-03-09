@@ -43,14 +43,14 @@
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/prev_button"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:text="Previous" />
@@ -59,7 +59,7 @@
             android:id="@+id/next_button"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
             android:foreground="?android:attr/selectableItemBackground"
             android:text="Next" />

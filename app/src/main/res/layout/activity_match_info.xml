@@ -5,7 +5,6 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".ui.MatchInfoActivity">
 
     <FrameLayout
@@ -30,7 +29,7 @@
         <RelativeLayout
             android:id="@+id/playerNameLayout"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="48dp"
             android:background="@color/colorPrimary">
 
             <RelativeLayout
@@ -91,18 +90,19 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/addInningParent"
+        android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="bottom|end"
         android:background="@android:color/background_light"
+        android:elevation="4dp"
         android:gravity="end"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/addInning"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="fill_parent"
             android:background="?android:attr/selectableItemBackground"
             android:elevation="0dp"
             android:paddingLeft="8dp"

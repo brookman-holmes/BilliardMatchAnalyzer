@@ -110,8 +110,8 @@
 
     <style name="CustomDialogTransitionTheme" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
-        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
 </resources>

@@ -1,8 +1,7 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,8 +28,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private static final String TAG = "MatchInfoActivity";
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.coordinatorLayout)
-    CoordinatorLayout coordinatorLayout;
     @Bind(R.id.playerName)
     TextView playerName;
     @Bind(R.id.opponentName)
@@ -57,6 +54,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, "infoFragment").commit();
+
     }
 
     @Override
@@ -69,7 +67,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     @OnClick(R.id.addInning)
     public void addInning(View view) {
-        BottomSheetDialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
+        DialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
         dialogFragment.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
