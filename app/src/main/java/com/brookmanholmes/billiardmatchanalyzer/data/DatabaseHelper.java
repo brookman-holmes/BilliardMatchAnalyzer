@@ -12,7 +12,7 @@ import com.brookmanholmes.billiards.match.Match;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private static DatabaseHelper sInstance;
 
     /**
@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @NonNull
-    private static String getCreateInningTableQuery() {
+    private static String getCreateTurnsTableQuery() {
         return "CREATE TABLE " + DatabaseAdapter.TURN_TABLE + "("
                 + DatabaseAdapter.COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + DatabaseAdapter.COLUMN_MATCH_ID + " INTEGER NOT NULL, "
@@ -57,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + DatabaseAdapter.COLUMN_CREATED_ON + " TEXT COLLATE NOCASE DEFAULT NULL, "
                 + DatabaseAdapter.COLUMN_PLAYER_RANK + " INTEGER NOT NULL DEFAULT 0, "
                 + DatabaseAdapter.COLUMN_OPPONENT_RANK + " INTEGER NOT NULL DEFAULT 0, "
+                + DatabaseAdapter.COLUMN_NOTES + " TEXT COLLATE NOCASE DEFAULT NULL, "
                 + DatabaseAdapter.COLUMN_STATS_DETAIL + " TEXT COLLATE NOCASE DEFAULT " + Match.StatsDetail.NORMAL.name()
                 + ");";
     }
@@ -72,7 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(getCreateInningTableQuery());
+        db.execSQL(getCreateTurnsTableQuery());
         db.execSQL(getCreateMatchTableQuery());
         db.execSQL(getCreatePlayerTableQuery());
     }

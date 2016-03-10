@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -51,6 +52,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         Match<?> match = db.getMatch(getMatchId());
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
+
+        Log.i(TAG, match.getNotes());
 
         infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, "infoFragment").commit();

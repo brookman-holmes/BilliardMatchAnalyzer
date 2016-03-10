@@ -19,10 +19,10 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
+import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.fragments.PlayerNameFragment;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
-import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.fragments.PlayerNameFragment;
 
 import java.util.ArrayList;
 
@@ -32,6 +32,8 @@ import java.util.ArrayList;
 public class PlayerNamePage extends Page {
     public static final String PLAYER_NAME_KEY = "player name";
     public static final String OPPONENT_NAME_KEY = "opponent name";
+    public static final String LOCATION_KEY = "location";
+    public static final String EXTRA_INFO_KEY = "extras";
 
     public PlayerNamePage(ModelCallbacks callbacks) {
         super(callbacks, "Players");
@@ -49,8 +51,10 @@ public class PlayerNamePage extends Page {
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> dest) {
-        dest.add(new ReviewItem("Player 1", data.getString(PLAYER_NAME_KEY), getKey(), -1));
-        dest.add(new ReviewItem("Player 2", data.getString(OPPONENT_NAME_KEY), getKey(), -1));
+        dest.add(new ReviewItem("Player 1", data.getString(PLAYER_NAME_KEY), getKey()));
+        dest.add(new ReviewItem("Player 2", data.getString(OPPONENT_NAME_KEY), getKey()));
+        if (!data.getString(LOCATION_KEY, "").equals(""))
+            dest.add(new ReviewItem("Location", data.getString(LOCATION_KEY), getKey()));
     }
 
     @Override

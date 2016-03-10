@@ -38,6 +38,7 @@ public class DatabaseAdapter {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_STATS_DETAIL = "stats_detail";
     public static final String COLUMN_LOCATION = "location";
+    public static final String COLUMN_NOTES = "notes";
     public static final String COLUMN_PLAYER_TURN = "player_turn";
     public static final String COLUMN_CREATED_ON = "created_on";
     public static final String COLUMN_PLAYER_RANK = "player_rank";
@@ -112,6 +113,7 @@ public class DatabaseAdapter {
                 + COLUMN_CREATED_ON + ", "
                 + COLUMN_PLAYER_RANK + ", "
                 + COLUMN_OPPONENT_RANK + ", "
+                + COLUMN_NOTES + ", "
                 + COLUMN_STATS_DETAIL + ", "
                 + COLUMN_LOCATION + "\n";
 
@@ -146,6 +148,7 @@ public class DatabaseAdapter {
                 .setPlayerRanks(c.getInt(c.getColumnIndex(COLUMN_PLAYER_RANK)), c.getInt(c.getColumnIndex(COLUMN_OPPONENT_RANK)))
                 .setLocation(c.getString(c.getColumnIndex(COLUMN_LOCATION)))
                 .setMatchId(c.getLong(c.getColumnIndex("_id")))
+                .setNotes(c.getString(c.getColumnIndex(COLUMN_NOTES)))
                 .setStatsDetail(getStatDetail(c))
                 .build(getGameType(c));
     }
@@ -231,6 +234,7 @@ public class DatabaseAdapter {
             matchValues.put(COLUMN_BREAK_TYPE, status.breakType.name());
             matchValues.put(COLUMN_LOCATION, match.getLocation());
             matchValues.put(COLUMN_STATS_DETAIL, match.getStatsLevel().name());
+            matchValues.put(COLUMN_NOTES, match.getNotes());
 
             if (match.getPlayer() instanceof Apa && match.getOpponent() instanceof Apa) {
                 matchValues.put(COLUMN_PLAYER_RANK, ((Apa) match.getPlayer()).getRank());

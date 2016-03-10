@@ -24,6 +24,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     long matchId;
     PlayerController<T> playerController;
     String location;
+    String notes;
     Game game;
     ArrayDeque<T> player1 = new ArrayDeque<>();
     ArrayDeque<T> player2 = new ArrayDeque<>();
@@ -32,6 +33,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     private StatsDetail detail;
     Match(Builder builder, PlayerController<T> playerController) {
         location = builder.location;
+        notes = builder.notes;
         matchId = builder.id;
         detail = builder.statsDetail;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
@@ -48,6 +50,10 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
 
     public String getLocation() {
         return location;
+    }
+
+    public String getNotes() {
+        return notes;
     }
 
     public GameStatus getGameStatus() {
@@ -133,7 +139,8 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         private BreakType breakType = BreakType.ALTERNATE;
         private PlayerTurn playerTurn = PlayerTurn.PLAYER;
         private GameType gameType = GameType.BCA_EIGHT_BALL;
-        private String location = "Sam's Billiards";
+        private String location = "";
+        private String notes = "";
         private long id;
         private StatsDetail statsDetail = StatsDetail.NORMAL;
 
@@ -165,6 +172,11 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
 
         public Builder setLocation(String location) {
             this.location = location;
+            return this;
+        }
+
+        public Builder setNotes(String notes) {
+            this.notes = notes;
             return this;
         }
 

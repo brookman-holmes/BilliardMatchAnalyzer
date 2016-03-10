@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -43,6 +44,7 @@ public class PlayerNameFragment extends Fragment {
     private String key;
     private PlayerNamePage page;
     private AutoCompleteTextView playerName, opponentName;
+    private EditText location, extra;
     private List<String> names;
 
     public PlayerNameFragment() {
@@ -86,6 +88,10 @@ public class PlayerNameFragment extends Fragment {
         opponentName = ((AutoCompleteTextView) rootView.findViewById(R.id.opponentName));
         opponentName.setAdapter(autoCompleteAdapter);
         opponentName.setText(page.getData().getString(PlayerNamePage.OPPONENT_NAME_KEY));
+
+        location = (EditText) rootView.findViewById(R.id.location);
+        extra = (EditText) rootView.findViewById(R.id.extra);
+
         return rootView;
     }
 
@@ -112,6 +118,8 @@ public class PlayerNameFragment extends Fragment {
 
         playerName.addTextChangedListener(textWatcher(PlayerNamePage.PLAYER_NAME_KEY));
         opponentName.addTextChangedListener(textWatcher(PlayerNamePage.OPPONENT_NAME_KEY));
+        location.addTextChangedListener(textWatcher(PlayerNamePage.LOCATION_KEY));
+        extra.addTextChangedListener(textWatcher(PlayerNamePage.EXTRA_INFO_KEY));
     }
 
     private TextWatcher textWatcher(final String key) {
@@ -119,7 +127,6 @@ public class PlayerNameFragment extends Fragment {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -128,12 +135,11 @@ public class PlayerNameFragment extends Fragment {
 
             @Override
             public void afterTextChanged(final Editable editable) {
-                // // TODO: 1/7/2016 add in a debounce here to prevent multiple firings for no reason
                 if (key.equals(PlayerNamePage.PLAYER_NAME_KEY)) {
                     if (TextUtils.equals(editable.toString(), opponentName.getText().toString())) {
                         playerName.setError("Players cannot have the same name");
                     }
-                } else {
+                } else if (key.equals(PlayerNamePage.OPPONENT_NAME_KEY)) {
                     if (TextUtils.equals(editable.toString(), playerName.getText().toString())) {
                         opponentName.setError("Players cannot have the same name");
                     }

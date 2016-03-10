@@ -255,6 +255,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
             String playerName = getPlayerName(reviewItems);
             int playerRank = getPlayerRank(reviewItems);
             int opponentRank = getOpponentRank(reviewItems);
+            String location = getLocation(reviewItems);
+            String notes = getNotes(reviewItems);
             Match.StatsDetail detail = getStatDetailLevel(reviewItems);
 
             return new Match.Builder(playerName, opponentName)
@@ -262,6 +264,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
                     .setStatsDetail(detail)
                     .setPlayerTurn(playerTurn)
                     .setPlayerRanks(playerRank, opponentRank)
+                    .setLocation(location)
+                    .setNotes(notes)
                     .build(gameType);
         }
 
@@ -381,6 +385,24 @@ public class CreateNewMatchActivity extends BaseActivity implements
             }
 
             return Match.StatsDetail.NORMAL;
+        }
+
+        private static String getLocation(List<ReviewItem> reviewItems) {
+            for (ReviewItem item : reviewItems) {
+                if (item.getTitle().equals("Location"))
+                    return item.getDisplayValue();
+            }
+
+            return "";
+        }
+
+        private static String getNotes(List<ReviewItem> reviewItems) {
+            for (ReviewItem item : reviewItems) {
+                if (item.getTitle().equals("Match notes"))
+                    return item.getDisplayValue();
+            }
+
+            return "";
         }
     }
 

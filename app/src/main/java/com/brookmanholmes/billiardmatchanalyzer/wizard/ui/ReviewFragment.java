@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model.PlayerNamePage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
@@ -105,6 +106,11 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         ArrayList<ReviewItem> reviewItems = new ArrayList<ReviewItem>();
         for (Page page : wizardModel.getCurrentPageSequence()) {
             page.getReviewItems(reviewItems);
+        }
+
+        if (!wizardModel.getCurrentPageSequence().get(0).getData().getString(PlayerNamePage.EXTRA_INFO_KEY, "").equals("")) {
+            Page page = wizardModel.getCurrentPageSequence().get(0);
+            reviewItems.add(new ReviewItem("Match notes", page.getData().getString(PlayerNamePage.EXTRA_INFO_KEY), page.getKey()));
         }
         Collections.sort(reviewItems, new Comparator<ReviewItem>() {
             @Override
