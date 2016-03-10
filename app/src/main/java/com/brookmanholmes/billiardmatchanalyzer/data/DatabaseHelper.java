@@ -12,7 +12,7 @@ import com.brookmanholmes.billiards.match.Match;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
     private static DatabaseHelper sInstance;
 
     /**
@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @NonNull
     private static String getCreateInningTableQuery() {
-        return "CREATE TABLE " + DatabaseAdapter.INNINGS_TABLE + "("
+        return "CREATE TABLE " + DatabaseAdapter.TURN_TABLE + "("
                 + DatabaseAdapter.COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + DatabaseAdapter.COLUMN_MATCH_ID + " INTEGER NOT NULL, "
                 + DatabaseAdapter.COLUMN_TURN_END + " INTEGER NOT NULL, "
@@ -79,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseAdapter.INNINGS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DatabaseAdapter.TURN_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + DatabaseAdapter.MATCH_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + DatabaseAdapter.PLAYER_TABLE);
         onCreate(db);

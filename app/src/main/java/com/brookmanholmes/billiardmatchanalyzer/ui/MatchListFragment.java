@@ -1,14 +1,15 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,8 +98,21 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onLongSelectMatch(long id) {
-        Log.i("MatchListFragment", "Long selected match: " + id);
-        // // TODO: 1/16/2016 delete match here
+    public void onLongSelectMatch(final long id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+        builder.setMessage("Would you like to delete this match?")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        database.deleteMatch(id);
+                        getLoaderManager().getLoader(LOADER_ID).onContentChanged();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
     }
 }

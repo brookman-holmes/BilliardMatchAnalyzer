@@ -2,7 +2,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +18,6 @@ public class MainActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.createMatch)
-    FloatingActionButton fab;
 
     DatabaseAdapter db;
 
@@ -34,10 +31,6 @@ public class MainActivity extends BaseActivity {
 
         db = new DatabaseAdapter(this);
         db.open();
-
-        db.logDatabase(DatabaseAdapter.INNINGS_TABLE);
-        db.logDatabase(DatabaseAdapter.MATCH_TABLE);
-        db.logDatabase(DatabaseAdapter.PLAYER_TABLE);
     }
 
     @Override

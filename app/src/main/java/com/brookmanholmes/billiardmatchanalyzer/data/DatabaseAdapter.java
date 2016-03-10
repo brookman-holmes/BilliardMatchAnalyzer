@@ -42,7 +42,7 @@ public class DatabaseAdapter {
     public static final String COLUMN_CREATED_ON = "created_on";
     public static final String COLUMN_PLAYER_RANK = "player_rank";
     public static final String COLUMN_OPPONENT_RANK = "opponent_rank";
-    public static final String INNINGS_TABLE = "innings";
+    public static final String TURN_TABLE = "turns";
     public static final String COLUMN_TABLE_STATUS = "table_status";
     public static final String COLUMN_TURN_END = "turn_end";
     public static final String COLUMN_SCRATCH = "foul";
@@ -253,7 +253,7 @@ public class DatabaseAdapter {
     }
 
     public long insertTurn(Turn turn, long matchId, int inningId) {
-        database.delete(INNINGS_TABLE,
+        database.delete(TURN_TABLE,
                 COLUMN_MATCH_ID + "=? AND "
                         + COLUMN_INNING_NUMBER + " >= ?",
                 new String[]{String.valueOf(matchId),
@@ -267,14 +267,14 @@ public class DatabaseAdapter {
         inningValues.put(COLUMN_TURN_END, turn.getTurnEnd().name());
         inningValues.put(COLUMN_INNING_NUMBER, inningId);
 
-        return database.insert(INNINGS_TABLE, null, inningValues);
+        return database.insert(TURN_TABLE, null, inningValues);
     }
 
     public List<Turn> getMatchTurns(long id) {
         List<Turn> innings = new ArrayList<>();
 
         Cursor c = database.query(
-                INNINGS_TABLE,
+                TURN_TABLE,
                 null,
                 COLUMN_MATCH_ID + "=?",
                 new String[]{String.valueOf(id)},
@@ -300,6 +300,12 @@ public class DatabaseAdapter {
                 stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS))),
                 cursor.getInt(cursor.getColumnIndex(COLUMN_IS_GAME_LOST)) == 1
         );
+    }
+
+    public void deleteMatch(long id) {
+        database.delete(PLAYER_TABLE, COLUMN_MATCH_ID + "=" + id, null);
+        database.delete(TURN_TABLE, COLUMN_MATCH_ID + "=" + id, null);
+        database.delete(MATCH_TABLE, COLUMN_ID + "=" + id, null);
     }
 
     public void logDatabase(String table) {
