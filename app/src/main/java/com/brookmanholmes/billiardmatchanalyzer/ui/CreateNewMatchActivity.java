@@ -132,7 +132,9 @@ public class CreateNewMatchActivity extends BaseActivity implements
         intent.putExtra(ARG_MATCH_ID, matchId);
 
         startActivity(intent);
+        finish();
     }
+
 
     @Override
     public void onPageTreeChanged() {
