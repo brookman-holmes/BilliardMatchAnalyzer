@@ -8,4 +8,9 @@
         android:orderInCategory="100"
         android:title="View match notes"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_game_status"
+        android:orderInCategory="100"
+        android:title="View game status"
+        app:showAsAction="never" />
 </menu>

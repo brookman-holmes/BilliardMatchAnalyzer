@@ -148,6 +148,21 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                             dialog.dismiss();
                         }
                     }).create().show();
+
+        }
+
+        if (id == R.id.action_game_status) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+            // TODO: 3/9/2016 beautify this
+            builder.setTitle("Current Game Status")
+                    .setMessage(db.getMatch(getMatchId()).getGameStatus().toString())
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+
         }
 
         return super.onOptionsItemSelected(item);
