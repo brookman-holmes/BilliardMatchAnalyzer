@@ -1,10 +1,13 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -85,7 +88,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         setupSpinner((Spinner)view.findViewById(R.id.spinner), Arrays.asList(shotTypes));
         setupSpinner((Spinner)view.findViewById(R.id.spinner2), Arrays.asList(angleList));
         setupSpinner((Spinner) view.findViewById(R.id.spinner3), Arrays.asList(howList));
-        setupSpinner((Spinner)view.findViewById(R.id.spinner4), Arrays.asList(whyList));
+        setupSpinner((Spinner) view.findViewById(R.id.spinner4), Arrays.asList(whyList));
         new AlertDialog.Builder(this, R.style.AlertDialogTheme).setView(view).setTitle("Shooting Errors").create().show();
     }
 
@@ -113,5 +116,40 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
 
         setBottomBarText();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_match_info, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.action_notes) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+
+            builder.setTitle("Match Notes")
+                    .setMessage(db.getMatch(getMatchId()).getNotes())
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
