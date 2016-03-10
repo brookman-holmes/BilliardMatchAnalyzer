@@ -78,8 +78,6 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
     private List<String> getPossibleChoices(TurnEndOptions options) {
         List<String> list = new ArrayList<>();
 
-        Log.i("FoulPage", options.possibleEndings.toString());
-
         if (options.lostGame) {
             list.add("Yes, lost game");
             list.add("Yes");

@@ -130,7 +130,9 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     public enum StatsDetail {
         SIMPLE,
         NORMAL,
-        ADVANCED
+        ADVANCED,
+        ADVANCED_PLAYER,
+        ADVANCED_OPPONENT
     }
 
     public static class Builder {

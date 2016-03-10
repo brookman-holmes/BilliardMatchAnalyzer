@@ -140,6 +140,7 @@ public class DatabaseAdapter {
     }
 
     private Match<?> createMatchFromCursor(Cursor c) {
+        Log.i("DatabaseAdapter", getStatDetail(c).toString());
         return new Match.Builder(
                 c.getString(c.getColumnIndex("player_name")),
                 c.getString(c.getColumnIndex("opp_name")))

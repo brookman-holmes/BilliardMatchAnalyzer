@@ -22,6 +22,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -259,6 +260,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
             String notes = getNotes(reviewItems);
             Match.StatsDetail detail = getStatDetailLevel(reviewItems);
 
+            Log.i(TAG, detail.toString());
+
             return new Match.Builder(playerName, opponentName)
                     .setBreakType(breakType)
                     .setStatsDetail(detail)
@@ -376,11 +379,15 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
         private static Match.StatsDetail getStatDetailLevel(List<ReviewItem> reviewItems) {
             for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("Stat Detail Level")) {
+                if (item.getTitle().equals("Detail of Stats")) {
                     if (item.getDisplayValue().equals("Simple"))
                         return Match.StatsDetail.SIMPLE;
                     else if (item.getDisplayValue().equals("Advanced"))
                         return Match.StatsDetail.ADVANCED;
+                    else if (item.getDisplayValue().equals("Advanced stats for " + getPlayerName(reviewItems)))
+                        return Match.StatsDetail.ADVANCED_PLAYER;
+                    else if (item.getDisplayValue().equals("Advanced stats for " + getOpponentName(reviewItems)))
+                        return Match.StatsDetail.ADVANCED_OPPONENT;
                 }
             }
 

@@ -2,12 +2,14 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.TurnEndFragment;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.inning.TurnEnd;
 import com.brookmanholmes.billiards.inning.TurnEndOptions;
 import com.brookmanholmes.billiards.inning.helpers.TurnEndHelper;
@@ -50,8 +52,8 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         data.putAll(matchData);
 
         turnEndHelper = TurnEndHelper.newTurnEndHelper(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)));
-
-
+        PlayerTurn currentPlayer = PlayerTurn.valueOf(data.getString(MatchDialogHelperUtils.TURN_KEY));
+        Match.StatsDetail detail = Match.StatsDetail.valueOf(data.getString(STATS_LEVEL_KEY));
         addBranch(SAFETY_ERROR.toString(), new FoulPage(callbacks, matchData));
         addBranch(MISS.toString(), new FoulPage(callbacks, matchData));
         addBranch(BREAK_MISS.toString(), new FoulPage(callbacks, matchData));
@@ -65,7 +67,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         addBranch(CONTINUE_WITH_GAME.toString()); // TODO: this should start the dialog boxes over from the beginning with reBreak option turned to false
         addBranch(CHANGE_TURN.toString()); // // TODO: this can probably be removed
 
-        if (Match.StatsDetail.valueOf(data.getString(STATS_LEVEL_KEY)) == Match.StatsDetail.ADVANCED) {
+        if (detail == Match.StatsDetail.ADVANCED || currentPlayerTurnAndAdvancedStats(currentPlayer, detail)) {
             // Safety Error branch
             branches.get(0).childPageList.add(new WhyMissPage(callbacks, whyChoicesSafety, "safety error branch"));
 
@@ -84,6 +86,13 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
             branches.get(4).childPageList.add(new HowMissPage(callbacks, illegalBreakTypes, "illegal break"));
             branches.get(4).childPageList.add(new WhyMissPage(callbacks, whyChoicesBreak, "illegal break branch"));
         }
+    }
+
+    private static boolean currentPlayerTurnAndAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
+        Log.i("TurnEndPage", detail.toString());
+        if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
+            return true;
+        else return turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT;
     }
 
     @Override

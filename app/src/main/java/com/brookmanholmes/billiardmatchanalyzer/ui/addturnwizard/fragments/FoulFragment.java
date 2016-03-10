@@ -3,7 +3,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,8 +101,6 @@ public class FoulFragment extends ListFragment {
     }
 
     public void updateOptions(List<String> options, String defaultChecked) {
-        Log.i("FoulFragment", options.toString());
-        Log.i("FoulFragment", defaultChecked);
         adapter.clear();
         adapter.addAll(options);
         adapter.notifyDataSetChanged();
