@@ -103,6 +103,8 @@
             android:id="@+id/addInning"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:background="?android:attr/selectableItemBackground"
             android:elevation="0dp"
             android:paddingLeft="8dp"

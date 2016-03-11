@@ -2,7 +2,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.FoulFragment;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -40,8 +39,6 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
     public void updateTurnInfo(TurnBuilder turnBuilder) {
         turnBuilder.scratch = data.getString(SIMPLE_DATA_KEY, "").startsWith("Yes");
         turnBuilder.lostGame = data.getString(SIMPLE_DATA_KEY, "").equals("Yes, lost game");
-
-        Log.i("FoulPage", turnBuilder.toString());
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.TurnEndFragment;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -67,7 +66,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         addBranch(CONTINUE_WITH_GAME.toString()); // TODO: this should start the dialog boxes over from the beginning with reBreak option turned to false
         addBranch(CHANGE_TURN.toString()); // // TODO: this can probably be removed
 
-        if (detail == Match.StatsDetail.ADVANCED || currentPlayerTurnAndAdvancedStats(currentPlayer, detail)) {
+        if (currentPlayerTurnAndAdvancedStats(currentPlayer, detail)) {
             // Safety Error branch
             branches.get(0).childPageList.add(new WhyMissPage(callbacks, whyChoicesSafety, "safety error branch"));
 
@@ -89,10 +88,11 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     }
 
     private static boolean currentPlayerTurnAndAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
-        Log.i("TurnEndPage", detail.toString());
         if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
             return true;
-        else return turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT;
+        else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
+            return true;
+        else return detail == Match.StatsDetail.ADVANCED;
     }
 
     @Override
