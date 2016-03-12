@@ -70,7 +70,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         dialogFragment.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
-    @OnClick(R.id.playerSide)
+    @OnClick(R.id.playerName)
     public void showTestLayout() {
         DialogFragment dialogFragment = new AdvStatsDialog();
         dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme);

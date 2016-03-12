@@ -41,16 +41,6 @@
             android:tint="@color/colorAccent" />
     </RelativeLayout>
 
-    <com.brookmanholmes.billiardmatchanalyzer.wizard.ui.StepPagerStrip
-        android:id="@+id/strip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:paddingBottom="24dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:paddingTop="8dp" />
-
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
@@ -59,11 +49,15 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp" />
 
-    <View
-        android:id="@+id/divider"
+    <com.brookmanholmes.billiardmatchanalyzer.wizard.ui.StepPagerStrip
+        android:id="@+id/strip"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/line_divider" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:paddingTop="8dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

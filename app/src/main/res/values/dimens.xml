@@ -16,7 +16,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-    <dimen name="step_pager_tab_width">32dp</dimen>
+    <dimen name="step_pager_tab_width">8dp</dimen>
+    <dimen name="step_pager_tab_radius">16dp</dimen>
     <dimen name="step_pager_tab_height">3dp</dimen>
     <dimen name="step_pager_tab_spacing">4dp</dimen>
 </resources>
