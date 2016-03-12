@@ -68,6 +68,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
         ListView listView = (ListView) rootView.findViewById(android.R.id.list);
         setListAdapter(reviewAdapter);
+        listView.setDividerHeight(0);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         return rootView;
     }

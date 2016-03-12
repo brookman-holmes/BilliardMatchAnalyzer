@@ -78,6 +78,7 @@ public class FoulFragment extends ListFragment {
                 android.R.id.text1,
                 new ArrayList<String>());
         setListAdapter(adapter);
+        listView.setDividerHeight(0);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         return rootView;

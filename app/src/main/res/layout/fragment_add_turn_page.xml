@@ -24,9 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:dividerHeight="0dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:saveEnabled="false"
-        android:scrollbarStyle="outsideOverlay" />
+        android:saveEnabled="false" />
 
 </LinearLayout>

@@ -149,9 +149,10 @@ public class CreateNewMatchActivity extends BaseActivity implements
     private void updateBottomBar() {
         int position = pager.getCurrentItem();
         if (position == currentPageSequence.size()) {
-            nextButton.setText("Create match");
             nextButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             nextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
+            nextButton.setText("Create match");
+
         } else {
             nextButton.setText(editingAfterReview
                     ? "Create match"
