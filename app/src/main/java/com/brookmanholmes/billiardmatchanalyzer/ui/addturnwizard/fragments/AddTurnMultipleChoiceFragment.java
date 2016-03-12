@@ -42,6 +42,7 @@ public class AddTurnMultipleChoiceFragment extends MultipleChoiceFragment {
                 android.R.layout.simple_list_item_multiple_choice,
                 android.R.id.text1,
                 choices));
+        listView.setDividerHeight(0);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         // Pre-select currently selected items.

@@ -40,6 +40,7 @@ public class AddTurnSingleChoiceFragment extends SingleChoiceFragment {
                 android.R.layout.simple_list_item_single_choice,
                 android.R.id.text1,
                 choices));
+        listView.setDividerHeight(0);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         // Pre-select currently selected item.
