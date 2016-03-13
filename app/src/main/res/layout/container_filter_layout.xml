@@ -5,9 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="24dp"
     tools:showIn="@layout/container_adv_shooting_stats">
 
     <TextView
@@ -15,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Filter by"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/primary_text" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +25,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:padding="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
             custom:dialogTitle="Shot type" />
 
         <com.brookmanholmes.billiardmatchanalyzer.utils.MultiSelectionSpinner
@@ -35,7 +36,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:padding="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
             android:prompt="@string/angle_type_prompt"
             custom:dialogTitle="Angle/rails" />
     </LinearLayout>
@@ -50,7 +54,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:padding="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
             custom:dialogTitle="How?" />
 
         <com.brookmanholmes.billiardmatchanalyzer.utils.MultiSelectionSpinner
@@ -58,7 +64,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:padding="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
             custom:dialogTitle="Why?" />
     </LinearLayout>
 </LinearLayout>

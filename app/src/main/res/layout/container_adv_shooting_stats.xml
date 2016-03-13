@@ -2,18 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp">
 
-    <include
-        layout="@layout/layout_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textView58"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shooting errors"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:paddingTop="8dp"
         android:text="CUT"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />
@@ -21,9 +28,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_gravity="center_horizontal">
 
         <TextView
             android:id="@+id/textView3"
@@ -90,9 +95,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_gravity="center_horizontal">
 
         <TextView
             android:id="@+id/textView5"
@@ -146,12 +149,18 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <include
+        layout="@layout/container_reason_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
     <include layout="@layout/divider" />
 
-    <include layout="@layout/container_reason_list_layout" />
-
-    <include layout="@layout/divider" />
-
-    <include layout="@layout/container_filter_layout" />
+    <include
+        layout="@layout/container_filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>

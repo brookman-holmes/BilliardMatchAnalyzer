@@ -4,186 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="8dp">
-
-    <include layout="@layout/layout_title" />
-
-    <TextView
-        android:id="@+id/textView42"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:text="Safety results"
-        android:textSize="14sp" />
-
-    <com.brookmanholmes.billiardmatchanalyzer.utils.MultiSelectionSpinner
-        android:id="@+id/spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        custom:dialogTitle="Filter by starting position" />
-
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:alignmentMode="alignBounds"
-        android:columnCount="3"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:useDefaultMargins="true">
-
-        <TextView
-            android:id="@+id/textView26"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical"
-            android:text="Full hook"
-            android:textColor="@color/primary_text"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView27"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical|right"
-            android:text="0"
-            android:textColor="@color/primary_text"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView28"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="-2dp"
-            android:text="(0%)"
-            android:textColor="@color/primary_text"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView29"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical"
-            android:text="Partial hook"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:text="0"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView31"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="-2dp"
-            android:text="(0%)"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView32"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical"
-            android:text="Long T"
-            android:textColor="@color/primary_text"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView33"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:text="0"
-            android:textColor="@color/primary_text"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView34"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="-2dp"
-            android:text="(0%)"
-            android:textColor="@color/primary_text"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView35"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical"
-            android:text="Short T"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:text="0"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView37"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="-2dp"
-            android:text="(0%)"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView38"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical"
-            android:text="Open"
-            android:textColor="@color/primary_text"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView39"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:text="0"
-            android:textColor="@color/primary_text"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView40"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="-2dp"
-            android:text="(0%)"
-            android:textColor="@color/primary_text"
-            android:textSize="12sp" />
-    </GridLayout>
-
-    <include layout="@layout/divider" />
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp">
 
     <TextView
         android:id="@+id/textView41"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingTop="8dp"
-        android:text="Safety misses"
-        android:textSize="14sp" />
+        android:text="Safety errors"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/textView"
@@ -322,5 +153,174 @@
                 android:orientation="horizontal" />
         </LinearLayout>
     </RelativeLayout>
+
+    <include layout="@layout/divider" />
+
+    <TextView
+        android:id="@+id/textView42"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Safety results"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/primary_text" />
+
+    <com.brookmanholmes.billiardmatchanalyzer.utils.MultiSelectionSpinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        custom:dialogTitle="Filter by starting position" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:alignmentMode="alignBounds"
+        android:columnCount="3"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:useDefaultMargins="true">
+
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight=".25"
+            android:layout_gravity="center_vertical"
+            android:text="Full hook"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView27"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight=".25"
+            android:layout_gravity="center_vertical|right"
+            android:text="0"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="-2dp"
+            android:text="(0%)"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight=".25"
+            android:layout_gravity="center_vertical"
+            android:text="Partial hook"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:text="0"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="-2dp"
+            android:text="(0%)"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight=".25"
+            android:layout_gravity="center_vertical"
+            android:text="Long T"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:text="0"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="-2dp"
+            android:text="(0%)"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView35"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight=".25"
+            android:layout_gravity="center_vertical"
+            android:text="Short T"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView36"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:text="0"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView37"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="-2dp"
+            android:text="(0%)"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView38"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight=".25"
+            android:layout_gravity="center_vertical"
+            android:text="Open"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView39"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:text="0"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="-2dp"
+            android:text="(0%)"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+    </GridLayout>
 
 </LinearLayout>

@@ -2,27 +2,37 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
-import com.brookmanholmes.billiardmatchanalyzer.utils.MultiSelectionSpinner;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
  * Created by Brookman Holmes on 3/11/2016.
  */
 public class AdvStatsDialog extends DialogFragment {
+    @Bind(R.id.pager)
+    ViewPager pager;
+    @Bind(R.id.tabs)
+    TabLayout tabLayout;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
-    private PlayerTurn turn = PlayerTurn.PLAYER;
+    private ViewPagerAdapter adapter;
 
     public AdvStatsDialog() {
     }
@@ -45,74 +55,58 @@ public class AdvStatsDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_adv_stats, container, false);
         ButterKnife.bind(this, view);
 
-
+        toolbar.setTitle("Advanced Stats for Brookman");
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        adapter = new ViewPagerAdapter(getChildFragmentManager());
+        pager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(pager);
         return view;
     }
 
+    private static class AdvStats {
+        private static Map<String, Integer> map = new HashMap<>();
 
-    private static class AdvStatViewHolder extends RecyclerView.ViewHolder implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
-        TextView title;
+        private static void func() {
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
 
-        public AdvStatViewHolder(View itemView) {
-            super(itemView);
+            }
+        }
+    }
 
-            title = (TextView) itemView.findViewById(R.id.card_title);
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
         @Override
-        public void selectedIndices(List<Integer> indices) {
-
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 1:
+                    return new AdvSafetyStats();
+                case 2:
+                    return new AdvBreakingStats();
+                case 0:
+                    return new AdvShootingStats();
+                default:
+                    throw new IllegalStateException("View pager out of position (0, 1, 2): " + position);
+            }
         }
 
         @Override
-        public void selectedStrings(List<String> strings) {
-
-        }
-    }
-
-    private static class ShootingViewHolder extends AdvStatViewHolder {
-        String[] shotTypes = new String[]{"Cut", "Long straight shot", "Bank", "Kick", "Combo", "Carom", "Jump"};
-        String[] angleList = new String[]{"0 degrees", "15 degrees", "30 degrees", "45 degrees", "60 degrees", "75 degrees", "90 degrees"};
-        String[] howList = new String[]{"Too thin", "Too thick", "Left of aim point", "Right of aim point"};
-        String[] whyList = new String[]{"Bad position", "Jacked up", "Lack of focus", "Over spin", "Unintentional english", "Too slow", "Too fast", "CB curved", "On the rail", "Forcing position"};
-
-        public ShootingViewHolder(View view) {
-            super(view);
-            title.setText("Shooting Errors");
-            MultiSelectionSpinner spinner1 = (MultiSelectionSpinner) view.findViewById(R.id.spinner);
-            MultiSelectionSpinner spinner2 = (MultiSelectionSpinner) view.findViewById(R.id.spinner2);
-            MultiSelectionSpinner spinner3 = (MultiSelectionSpinner) view.findViewById(R.id.spinner3);
-            MultiSelectionSpinner spinner4 = (MultiSelectionSpinner) view.findViewById(R.id.spinner4);
-
-            spinner1.setItems(shotTypes);
-            spinner2.setItems(angleList);
-            spinner3.setItems(howList);
-            spinner4.setItems(whyList);
-            spinner1.setListener(this);
-            spinner2.setListener(this);
-            spinner3.setListener(this);
-            spinner4.setListener(this);
+        public int getCount() {
+            return 3;
         }
 
-
-    }
-
-    private static class SafetyViewHolder extends AdvStatViewHolder {
-        public SafetyViewHolder(View view) {
-            super(view);
-
-            title.setText("Safeties");
-
-            MultiSelectionSpinner spinner1 = (MultiSelectionSpinner) view.findViewById(R.id.spinner);
-            spinner1.setListener(this);
-            spinner1.setItems(new String[]{"Full hook", "Partial hook", "Long T", "Short T", "Open"});
-        }
-    }
-
-    private static class BreaksViewHolder extends AdvStatViewHolder {
-        public BreaksViewHolder(View itemView) {
-            super(itemView);
-            title.setText("Breaks");
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Shooting";
+                case 1:
+                    return "Safeties";
+                default:
+                    return "Breaks";
+            }
         }
     }
 }

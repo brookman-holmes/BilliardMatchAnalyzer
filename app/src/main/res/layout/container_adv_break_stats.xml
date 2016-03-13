@@ -3,18 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="8dp">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp">
 
-    <include
-        layout="@layout/layout_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textView57"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Break errors"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/textView43"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:paddingTop="8dp"
         android:text="AIM"
         android:textSize="12sp"
         android:textStyle="bold" />
@@ -22,9 +28,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_gravity="center_horizontal">
 
         <TextView
             android:id="@+id/textView44"
@@ -91,9 +95,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_gravity="center_horizontal">
 
         <TextView
             android:id="@+id/textView47"
@@ -146,6 +148,12 @@
                 android:orientation="horizontal" />
         </LinearLayout>
     </RelativeLayout>
+
+    <include
+        layout="@layout/container_reason_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
 
     <include layout="@layout/divider" />
 
@@ -213,9 +221,5 @@
             android:layout_height="wrap_content"
             android:text="0" />
     </GridLayout>
-
-    <include layout="@layout/divider" />
-
-    <include layout="@layout/container_reason_list_layout" />
 
 </LinearLayout>
