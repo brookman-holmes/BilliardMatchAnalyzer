@@ -9,7 +9,6 @@
     android:paddingTop="16dp">
 
     <TextView
-        android:id="@+id/textView41"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Safety errors"
@@ -17,7 +16,6 @@
         android:textColor="@color/primary_text" />
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -86,7 +84,6 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/textView23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -157,7 +154,6 @@
     <include layout="@layout/divider" />
 
     <TextView
-        android:id="@+id/textView42"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
@@ -183,7 +179,6 @@
         android:useDefaultMargins="true">
 
         <TextView
-            android:id="@+id/textView26"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight=".25"
@@ -213,7 +208,6 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView29"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight=".25"
@@ -239,7 +233,6 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight=".25"
@@ -268,7 +261,6 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight=".25"
@@ -294,7 +286,6 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView38"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight=".25"

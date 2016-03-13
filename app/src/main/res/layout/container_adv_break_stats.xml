@@ -8,7 +8,6 @@
     android:paddingTop="16dp">
 
     <TextView
-        android:id="@+id/textView57"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Break errors"
@@ -16,7 +15,6 @@
         android:textColor="@color/primary_text" />
 
     <TextView
-        android:id="@+id/textView43"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -83,7 +81,6 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/textView46"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -154,72 +151,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp" />
-
-    <include layout="@layout/divider" />
-
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp"
-        android:useDefaultMargins="true">
-
-        <TextView
-            android:id="@+id/textView49"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Continuations"
-            android:textColor="@color/primary_text" />
-
-        <TextView
-            android:id="@+id/textView50"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="@color/primary_text" />
-
-        <TextView
-            android:id="@+id/textView51"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fouls" />
-
-        <TextView
-            android:id="@+id/textView52"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0" />
-
-        <TextView
-            android:id="@+id/textView53"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:text="Kicked in"
-            android:textColor="@color/primary_text" />
-
-        <TextView
-            android:id="@+id/textView54"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_row="2"
-            android:text="0"
-            android:textColor="@color/primary_text" />
-
-        <TextView
-            android:id="@+id/textView55"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Break and runs" />
-
-        <TextView
-            android:id="@+id/textView56"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0" />
-    </GridLayout>
 
 </LinearLayout>

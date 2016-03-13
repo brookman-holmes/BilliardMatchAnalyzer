@@ -8,7 +8,6 @@
     tools:showIn="@layout/container_adv_shooting_stats">
 
     <TextView
-        android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Filter by"
