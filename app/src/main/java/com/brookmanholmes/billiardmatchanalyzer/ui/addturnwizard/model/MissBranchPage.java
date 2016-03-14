@@ -16,6 +16,7 @@ public class MissBranchPage extends BranchPage implements UpdatesTurnInfo{
     public MissBranchPage(ModelCallbacks callbacks) {
         super(callbacks, "What did you miss?");
 
+        setParentKey("Miss");
         addBranch("Cut shot", new CutTypePage(callbacks),
                 new AngleTypePage(callbacks),
                 new HowMissPage(callbacks, howMissTypes, "cut miss"));

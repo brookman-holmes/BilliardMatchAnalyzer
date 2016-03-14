@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,9 +52,12 @@ public class AddTurnMultipleChoiceFragment extends MultipleChoiceFragment {
             public void run() {
                 ArrayList<String> selectedItems = page.getData().getStringArrayList(
                         Page.SIMPLE_DATA_KEY);
+
                 if (selectedItems == null || selectedItems.size() == 0) {
                     return;
                 }
+
+                Log.i("atmcf", selectedItems.toString());
 
                 Set<String> selectedSet = new HashSet<String>(selectedItems);
 

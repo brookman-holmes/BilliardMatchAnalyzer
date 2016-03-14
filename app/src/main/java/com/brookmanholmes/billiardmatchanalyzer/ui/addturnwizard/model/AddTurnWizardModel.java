@@ -36,6 +36,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
         Log.i("Model", turnBuilder.advData());
         updatePagesWithTurnInfo();
+
+        Log.i("Model", getCurrentPageSequence().toString());
     }
 
     @Override
