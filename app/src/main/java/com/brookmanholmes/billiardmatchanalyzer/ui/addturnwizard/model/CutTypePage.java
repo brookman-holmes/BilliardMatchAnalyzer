@@ -9,12 +9,18 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePa
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class CutTypePage extends SingleFixedChoicePage {
+public class CutTypePage extends SingleFixedChoicePage implements UpdatesTurnInfo {
     public CutTypePage(ModelCallbacks callbacks) {
-        super(callbacks, "Type of cut");
+        super(callbacks, "What type of cut shot?");
 
-        setChoices("Back cut", "Wing cut", "Down the rail");
+        setChoices("Back cut", "Down the rail", "Wing cut");
         setRequired(true);
+        setValue("Down the rail");
+    }
+
+    @Override
+    public void updateTurnInfo(TurnBuilder turnBuilder) {
+        turnBuilder.shotSubType = data.getString(SIMPLE_DATA_KEY);
     }
 
     @Override

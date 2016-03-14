@@ -100,6 +100,11 @@ public class TurnEndOptions {
             return this;
         }
 
+        public Builder allowPlayerToBreakAgain() {
+            turnEnds.add(TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN);
+            return this;
+        }
+
         public Builder miss(boolean show) {
             if (show) {
                 turnEnds.add(TurnEnd.MISS);

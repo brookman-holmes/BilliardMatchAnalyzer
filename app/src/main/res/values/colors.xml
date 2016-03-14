@@ -8,5 +8,5 @@
     <color name="step_pager_previous_tab_color">#82B1FF</color>
     <color name="step_pager_selected_tab_color">#2979FF</color>
     <color name="step_pager_selected_last_tab_color">#FF5722</color>
-    <color name="step_pager_next_tab_color">#10000000</color>
+    <color name="step_pager_next_tab_color">#F0F0F0</color>
 </resources>

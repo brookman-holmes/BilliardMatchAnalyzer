@@ -41,13 +41,10 @@ public class StepPagerStrip extends View {
     private float tabHeight;
     private float tabSpacing;
     private float radius;
+    private float nonCurrentRadius;
 
-    private Paint prevTabPaint;
+    private Paint unSelectedTabPaint;
     private Paint selectedTabPaint;
-    private Paint selectedLastTabPaint;
-    private Paint nextTabPaint;
-
-    private RectF tempRectF = new RectF();
 
     //private Scroller mScroller;
 
@@ -73,18 +70,13 @@ public class StepPagerStrip extends View {
         tabHeight = res.getDimensionPixelSize(R.dimen.step_pager_tab_height);
         tabSpacing = res.getDimensionPixelSize(R.dimen.step_pager_tab_spacing);
         radius = 16;
+        nonCurrentRadius = 8;
 
-        prevTabPaint = new Paint();
-        prevTabPaint.setColor(res.getColor(R.color.step_pager_previous_tab_color));
+        unSelectedTabPaint = new Paint();
+        unSelectedTabPaint.setColor(res.getColor(R.color.step_pager_next_tab_color));
 
         selectedTabPaint = new Paint();
         selectedTabPaint.setColor(res.getColor(R.color.step_pager_selected_tab_color));
-
-        selectedLastTabPaint = new Paint();
-        selectedLastTabPaint.setColor(res.getColor(R.color.step_pager_selected_last_tab_color));
-
-        nextTabPaint = new Paint();
-        nextTabPaint.setColor(res.getColor(R.color.step_pager_next_tab_color));
     }
 
     public void setOnPageSelectedListener(OnPageSelectedListener onPageSelectedListener) {
@@ -141,13 +133,9 @@ public class StepPagerStrip extends View {
         for (int i = 0; i < pageCount; i++) {
             float cx = totalcx + (i * (tabWidth + tabSpacing));
 
-            canvas.drawCircle(cx, center, radius, i < currentPage
-                    ? prevTabPaint
-                    : (i > currentPage
-                    ? nextTabPaint
-                    : (i == pageCount - 1
-                    ? selectedLastTabPaint
-                    : selectedTabPaint)));
+            canvas.drawCircle(cx, center,
+                    i == currentPage ? radius : nonCurrentRadius,
+                    i == currentPage ? selectedTabPaint : unSelectedTabPaint);
         }
     }
 

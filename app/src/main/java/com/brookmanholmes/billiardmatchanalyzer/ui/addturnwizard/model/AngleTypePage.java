@@ -9,13 +9,20 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePa
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class AngleTypePage extends SingleFixedChoicePage {
+public class AngleTypePage extends SingleFixedChoicePage implements UpdatesTurnInfo {
 
     public AngleTypePage(ModelCallbacks callbacks) {
-        super(callbacks, "Degree of cut");
+        super(callbacks, "What was the degree of cut?");
 
-        setChoices("15 degrees", "30 degrees", "45 degrees", "60 degrees", "75 degrees", "90 degrees");
+        setChoices("15°", "30°", "45°", "60°", "75°", "90°");
         setRequired(true);
+        setValue("45°");
+    }
+
+    @Override
+    public void updateTurnInfo(TurnBuilder turnBuilder) {
+        turnBuilder.angleType.clear();
+        turnBuilder.angleType.add(data.getString(SIMPLE_DATA_KEY));
     }
 
     @Override

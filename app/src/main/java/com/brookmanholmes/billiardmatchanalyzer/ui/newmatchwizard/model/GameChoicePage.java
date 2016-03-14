@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class GameChoicePage extends BranchPage implements RequiresPlayerNames {
     public GameChoicePage(ModelCallbacks callbacks) {
-        super(callbacks, "Game");
+        super(callbacks, "Select a game");
         //addBranch("American Rotation");
 
         addBranch("APA 8 ball",
@@ -35,11 +35,9 @@ public class GameChoicePage extends BranchPage implements RequiresPlayerNames {
                 new BreakTypePage(callbacks, "BCA 10 ball"));
 
         //addBranch("Straight pool", new FirstBreakPage(callbacks));
-    }
 
-    @Override
-    public boolean isRequired() {
-        return true;
+        setRequired(true);
+        setValue("BCA 9 ball");
     }
 
     @Override

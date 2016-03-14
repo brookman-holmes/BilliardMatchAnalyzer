@@ -22,11 +22,8 @@ public class BreakTypePage extends BranchPage implements RequiresPlayerNames {
         addBranch("Loser", new FirstBreakPage(callbacks, parentPage));
         addBranch(playerName + valueEnding);
         addBranch(opponentName + valueEnding);
-    }
-
-    @Override
-    public boolean isRequired() {
-        return true;
+        setValue("Alternate");
+        setRequired(true);
     }
 
     @Override

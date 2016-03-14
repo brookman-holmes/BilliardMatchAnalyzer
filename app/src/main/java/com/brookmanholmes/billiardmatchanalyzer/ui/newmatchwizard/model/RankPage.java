@@ -13,11 +13,8 @@ public abstract class RankPage extends SingleFixedChoicePage implements Requires
         super(callbacks, "Player " + playerNumber + "-'s Rank");
         this.playerNumber = playerNumber;
         setChoices();
-    }
-
-    @Override
-    public boolean isRequired() {
-        return true;
+        setRequired(true);
+        setValue("5");
     }
 
     protected abstract void setChoices();

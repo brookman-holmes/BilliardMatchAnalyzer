@@ -31,7 +31,6 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
         data.putAll(matchData);
 
         setChoices(defaultChoicesWithLoss);
-
         setValue("No");
     }
 
@@ -77,7 +76,9 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
 
         if (options.lostGame) {
             list.add("Yes, lost game");
-            list.add("Yes");
+
+            if (!isGameLostForReal())
+                list.add("Yes");
 
             if (options.possibleEndings.contains(TurnEnd.SAFETY))
                 list.add("No");
@@ -95,6 +96,11 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
         if (options.lostGame && options.foul)
             return "Yes, lost game";
         else return options.foul ? "Yes" : "No";
+    }
+
+    private boolean isGameLostForReal() {
+        return GameType.valueOf(data.getString(GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL ||
+                GameType.valueOf(data.getString(GAME_TYPE_KEY)) == GameType.APA_EIGHT_BALL;
     }
 
     @Override

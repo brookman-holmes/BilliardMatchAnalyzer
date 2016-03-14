@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.TurnEndFragment;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -9,6 +10,7 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.inning.TableStatus;
 import com.brookmanholmes.billiards.inning.TurnEnd;
 import com.brookmanholmes.billiards.inning.TurnEndOptions;
 import com.brookmanholmes.billiards.inning.helpers.TurnEndHelper;
@@ -35,7 +37,6 @@ import static com.brookmanholmes.billiards.inning.TurnEnd.SKIP_TURN;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
-
     private static final String[] breakMissTypes = {"Too hard", "Too soft", "Hit too far to the left", "Hit too far to the right", "Foul", "Kicked into pocket (foul)"};
     private static final String[] illegalBreakTypes = {"Too soft", "Too thin", "CB in pocket"};
     private static final String[] whyChoices = {"Bad position", "Jacked up", "Lack of focus", "Over spin", "Unintentional english", "Too slow", "Too fast", "CB curved", "On the rail", "Forcing position"};
@@ -49,6 +50,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         super(callbacks, "How did your turn end?");
 
         data.putAll(matchData);
+        setRequired(true);
 
         turnEndHelper = TurnEndHelper.newTurnEndHelper(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)));
         PlayerTurn currentPlayer = PlayerTurn.valueOf(data.getString(MatchDialogHelperUtils.TURN_KEY));
@@ -104,6 +106,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     public void getNewTurnInfo(TurnBuilder turnBuilder) {
         TurnEndOptions options = turnEndHelper.create(MatchDialogHelperUtils.createGameStatusFromBundle(data),
                 turnBuilder.tableStatus);
+
         updateFragment(options);
     }
 
@@ -116,18 +119,13 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         return TurnEnd.fromString(data.getString(SIMPLE_DATA_KEY, "Miss"));
     }
 
-    @Override
-    public boolean isRequired() {
-        return true;
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return super.isCompleted();
-    }
-
     public void registerListener(TurnEndFragment fragment) {
         this.fragment = fragment;
+        TurnEndOptions options = turnEndHelper.create(MatchDialogHelperUtils.createGameStatusFromBundle(data),
+                TableStatus.newTable(MatchDialogHelperUtils.createGameStatusFromBundle(data).gameType,
+                        data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY)));
+        Log.i("options", options.possibleEndings.toString());
+        updateFragment(options);
     }
 
     public void unregisterListener() {

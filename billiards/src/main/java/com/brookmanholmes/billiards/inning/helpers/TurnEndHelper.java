@@ -83,8 +83,8 @@ abstract public class TurnEndHelper {
     TurnEndOptions.Builder createTurnEndOptionsBuilder() {
         if (game.playerAllowedToBreakAgain) {
             return new TurnEndOptions.Builder().allowPlayerToChooseWhoBreaks().defaultOption(TurnEnd.CONTINUE_WITH_GAME);
-        } else if (game.gameType == GameType.BCA_EIGHT_BALL && nextInning.getBallStatus(8) == BallStatus.MADE_ON_BREAK && nextInning.getShootingBallsMade() == 0 && nextInning.getDeadBalls() == 0) {
-            return new TurnEndOptions.Builder().allowPlayerToChooseToContinueGame().defaultOption(TurnEnd.CONTINUE_WITH_GAME);
+        } else if (game.gameType == GameType.BCA_EIGHT_BALL && nextInning.getGameBallMadeOnBreak()  && nextInning.getShootingBallsMade() == 0 && nextInning.getDeadBalls() == 0) {
+            return new TurnEndOptions.Builder().allowPlayerToChooseToContinueGame().allowPlayerToBreakAgain().defaultOption(TurnEnd.CONTINUE_WITH_GAME);
         } else {
             return new TurnEndOptions.Builder()
                     .wonGame(showWin())

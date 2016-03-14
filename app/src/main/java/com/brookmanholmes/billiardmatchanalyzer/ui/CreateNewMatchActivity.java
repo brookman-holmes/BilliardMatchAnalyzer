@@ -275,7 +275,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
         private static GameType getGameType(List<ReviewItem> reviewItems) {
             for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("Game")) {
+                if (item.getTitle().equals("Select a game")) {
                     switch (item.getDisplayValue()) {
                         case "APA 8 ball":
                             return GameType.APA_EIGHT_BALL;
@@ -380,7 +380,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
         private static Match.StatsDetail getStatDetailLevel(List<ReviewItem> reviewItems) {
             for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("Detail of Stats")) {
+                if (item.getTitle().equals("Select detail level for stats")) {
                     if (item.getDisplayValue().equals("Simple"))
                         return Match.StatsDetail.SIMPLE;
                     else if (item.getDisplayValue().equals("Advanced"))

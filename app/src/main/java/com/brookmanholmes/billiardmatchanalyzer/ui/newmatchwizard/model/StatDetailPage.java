@@ -11,15 +11,11 @@ public class StatDetailPage extends SingleFixedChoicePage implements RequiresPla
     String startValue = "Advanced stats for ";
 
     public StatDetailPage(ModelCallbacks callbacks) {
-        super(callbacks, "Detail of Stats");
+        super(callbacks, "Select detail level for stats");
 
         setChoices("Simple", "Normal", "Advanced", startValue + playerName, startValue + opponentName);
         setValue("Normal");
-    }
-
-    @Override
-    public boolean isRequired() {
-        return true;
+        setRequired(true);
     }
 
     @Override
