@@ -79,6 +79,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
             if (page instanceof UpdatesTurnInfo)
                 ((UpdatesTurnInfo) page).updateTurnInfo(turnBuilder);
 
+        Log.i("Model", turnBuilder.toString());
         Log.i("Model", turnBuilder.advData());
         return turnBuilder;
     }

@@ -42,6 +42,7 @@ public class TurnBuilder {
         return "TurnBuilder{" +
                 "tableStatus=" + tableStatus.toString() +
                 ", turnEnd=" + (turnEnd == null ? "null" : turnEnd.toString()) +
+                ", lostGame=" + lostGame +
                 ", foul=" + scratch +
                 '}';
     }

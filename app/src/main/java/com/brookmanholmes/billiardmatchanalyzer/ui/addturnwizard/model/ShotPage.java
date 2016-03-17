@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.ShotFragment;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -9,7 +10,10 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 import com.brookmanholmes.billiards.game.util.BallStatus;
+import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.inning.TableStatus;
+import com.brookmanholmes.billiards.inning.TableUtils;
 
 import java.util.ArrayList;
 
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
     ShotFragment fragment;
     TableStatus tableStatus;
+    PlayerColor playerColor = PlayerColor.OPEN;
 
     public ShotPage(ModelCallbacks callbacks, Bundle matchData) {
         super(callbacks, "Shot page");
@@ -27,6 +32,7 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
         tableStatus = TableStatus.newTable(MatchDialogHelperUtils.createGameStatusFromBundle(matchData).gameType,
                 data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY));
+        playerColor = PlayerColor.valueOf(data.getString(MatchDialogHelperUtils.CURRENT_PLAYER_COLOR_KEY));
     }
 
     @Override
@@ -49,13 +55,34 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
     public BallStatus updateBallStatus(int ball) {
         BallStatus ballStatus = tableStatus.getBallStatus(ball);
 
-        BallStatus newBallStatus = incrementBallStatus(ballStatus);
-        tableStatus.setBallTo(newBallStatus, ball);
+        if (playerColor == PlayerColor.SOLIDS)
+            if (ball >= 1 && ball <= 8)
+                ballStatus = incrementBallStatus(ballStatus);
+            else
+                ballStatus = incrementDeadBallStatus(ballStatus);
+        else if (playerColor == PlayerColor.STRIPES)
+            if (ball >= 8 && ball <= 15)
+                ballStatus = incrementBallStatus(ballStatus);
+            else
+                ballStatus = incrementDeadBallStatus(ballStatus);
+        else
+            ballStatus = incrementBallStatus(ballStatus);
+
+        tableStatus.setBallTo(ballStatus, ball);
+
+        if (GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL)
+            if (PlayerColor.valueOf(data.getString(MatchDialogHelperUtils.CURRENT_PLAYER_COLOR_KEY)) == PlayerColor.OPEN)
+                if (TableUtils.getSolidsMade(tableStatus.getBallStatuses()) > TableUtils.getStripesMade(tableStatus.getBallStatuses()))
+                    playerColor = PlayerColor.SOLIDS;
+                else if (TableUtils.getSolidsMade(tableStatus.getBallStatuses()) < TableUtils.getStripesMade(tableStatus.getBallStatuses()))
+                    playerColor = PlayerColor.STRIPES;
+                else
+                    playerColor = PlayerColor.OPEN;
 
         notifyDataChanged();
         updateFragment();
 
-        return newBallStatus;
+        return ballStatus;
     }
 
     private BallStatus incrementBallStatus(BallStatus ballStatus) {
@@ -63,6 +90,24 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
             case ON_TABLE:
                 return BallStatus.MADE;
             case MADE:
+                return BallStatus.DEAD;
+            case DEAD:
+                return BallStatus.ON_TABLE;
+            // game ball for 8/10 ball
+            case GAME_BALL_MADE_ON_BREAK:
+                return BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
+            case GAME_BALL_MADE_ON_BREAK_THEN_MADE:
+                return BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
+            case GAME_BALL_MADE_ON_BREAK_THEN_DEAD:
+                return BallStatus.GAME_BALL_MADE_ON_BREAK;
+            default:
+                return ballStatus;
+        }
+    }
+
+    private BallStatus incrementDeadBallStatus(BallStatus ballStatus) {
+        switch (ballStatus) {
+            case ON_TABLE:
                 return BallStatus.DEAD;
             case DEAD:
                 return BallStatus.ON_TABLE;
@@ -96,7 +141,16 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
     public void updateFragment() {
         if (fragment != null) {
-            fragment.updateView(tableStatus.getBallStatuses());
+            String currentPlayerColor;
+            String playerName = data.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY);
+            if (playerColor == PlayerColor.OPEN) {
+                currentPlayerColor = "Table is open";
+            }
+            else {
+                currentPlayerColor = playerName + " is " + playerColor.toString().toLowerCase();
+            }
+
+            fragment.updateView(tableStatus.getBallStatuses(), currentPlayerColor);
         }
     }
 }

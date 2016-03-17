@@ -3,6 +3,7 @@ package com.brookmanholmes.billiardmatchanalyzer.utils;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -38,6 +39,8 @@ public class MatchDialogHelperUtils {
     public static final String STATS_LEVEL_KEY = "stats level";
     public static final String OPPONENT_FOULS_KEY = "opponent fouls";
     public static final String PLAYER_FOULS_KEY = "player fouls";
+    public static final String PLAYER_COLOR_KEY = "player color";
+
 
     private MatchDialogHelperUtils() {
     }
@@ -139,6 +142,7 @@ public class MatchDialogHelperUtils {
         gameStatus.currentPlayerConsecutiveFouls(args.getInt(CONSECUTIVE_FOULS_KEY));
         // // TODO: 1/27/2016 ballsOnTable is not set
 
+        Log.i("dialoghelper", gameStatus.build().currentPlayerColor.toString());
         return gameStatus.build();
     }
 

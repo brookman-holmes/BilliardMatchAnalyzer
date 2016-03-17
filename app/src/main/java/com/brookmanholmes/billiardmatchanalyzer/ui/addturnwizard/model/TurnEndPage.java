@@ -99,14 +99,20 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
 
     @Override
     public Fragment createFragment() {
-        return TurnEndFragment.create(getKey());
+        TurnEndOptions options = turnEndHelper.create(MatchDialogHelperUtils.createGameStatusFromBundle(data),
+                TableStatus.newTable(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)), data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY)));
+        ArrayList<String> stringList = new ArrayList<>();
+        for (TurnEnd ending : options.possibleEndings) {
+            stringList.add(ending.toString());
+        }
+
+        return TurnEndFragment.create(getKey(), stringList, options.defaultCheck.toString());
     }
 
     @Override
     public void getNewTurnInfo(TurnBuilder turnBuilder) {
         TurnEndOptions options = turnEndHelper.create(MatchDialogHelperUtils.createGameStatusFromBundle(data),
                 turnBuilder.tableStatus);
-
         updateFragment(options);
     }
 
@@ -121,11 +127,6 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
 
     public void registerListener(TurnEndFragment fragment) {
         this.fragment = fragment;
-        TurnEndOptions options = turnEndHelper.create(MatchDialogHelperUtils.createGameStatusFromBundle(data),
-                TableStatus.newTable(MatchDialogHelperUtils.createGameStatusFromBundle(data).gameType,
-                        data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY)));
-        Log.i("options", options.possibleEndings.toString());
-        updateFragment(options);
     }
 
     public void unregisterListener() {

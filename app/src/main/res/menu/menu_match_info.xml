@@ -13,4 +13,10 @@
         android:orderInCategory="100"
         android:title="View game status"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_undo"
+        android:orderInCategory="1"
+        android:title="Undo"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_undo_24dp"/>
 </menu>
