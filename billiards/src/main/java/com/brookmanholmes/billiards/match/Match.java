@@ -104,7 +104,8 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     }
 
     void updateGameState(Turn turn) {
-        games.push(game.addTurn(turn));
+        games.push(game.getGameStatus());
+        game.addTurn(turn);
     }
 
     public boolean undoTurn() {

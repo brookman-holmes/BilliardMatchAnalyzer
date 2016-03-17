@@ -151,6 +151,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 Snackbar.make(layout, "Undid last turn", Snackbar.LENGTH_SHORT).show();
             else
                 Snackbar.make(layout, "Could not undo last turn", Snackbar.LENGTH_SHORT).show();
+
+            setBottomBarText();
         }
 
         return super.onOptionsItemSelected(item);

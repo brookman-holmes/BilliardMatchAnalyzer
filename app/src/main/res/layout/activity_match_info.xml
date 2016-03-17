@@ -5,7 +5,8 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MatchInfoActivity">
+    tools:context=".ui.MatchInfoActivity"
+    android:animateLayoutChanges="true">
 
     <FrameLayout
         android:id="@+id/fragment_container"

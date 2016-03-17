@@ -223,11 +223,7 @@ public class DatabaseAdapter {
     }
 
     public void undoTurn(long id, int turnNumber) {
-        Log.i("DB", "ID = " + id + " and TURN_NUMBER = " + turnNumber);
-        Log.i("DB", DatabaseUtils.dumpCursorToString(database.query(TURN_TABLE, null, COLUMN_MATCH_ID + "= ? and " + COLUMN_TURN_NUMBER + " = ?", new String[] {String.valueOf(id), String.valueOf(turnNumber)}, null, null, null )));
-
-        int num = database.delete(TURN_TABLE, COLUMN_MATCH_ID + "=? and " + COLUMN_TURN_NUMBER + "=?", new String[] {String.valueOf(id), String.valueOf(turnNumber)});
-        Log.i("DB", "number of rows deleted = " + num);
+        database.delete(TURN_TABLE, COLUMN_MATCH_ID + "=? and " + COLUMN_TURN_NUMBER + "=?", new String[] {String.valueOf(id), String.valueOf(turnNumber)});
     }
 
     public long insertMatch(Match match) {
