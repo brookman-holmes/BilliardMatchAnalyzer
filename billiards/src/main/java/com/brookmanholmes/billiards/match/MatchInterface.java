@@ -20,4 +20,8 @@ public interface MatchInterface<T extends AbstractPlayer> {
     String getCurrentPlayersName();
 
     int getTurnCount();
+
+    boolean undoTurn();
+
+    long getMatchId();
 }

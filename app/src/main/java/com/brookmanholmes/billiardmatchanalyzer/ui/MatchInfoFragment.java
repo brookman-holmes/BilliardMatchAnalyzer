@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,8 +81,14 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
         return adapter.getCurrentPlayersName();
     }
 
-    public boolean undoLastTurn() {
-        return false;
+    @Override
+    public boolean undoTurn() {
+        if (adapter.undoTurn()) {
+            db.undoTurn(adapter.getMatchId(), adapter.getTurnCount() + 1);
+            adapter.notifyDataSetChanged();
+            return true;
+        } else
+            return false;
     }
 
     @Override
@@ -104,8 +111,9 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
         return adapter.getTurnCount();
     }
 
-    public boolean redoUndoneTurn() {
-        return false;
+    @Override
+    public long getMatchId() {
+        return adapter.getMatchId();
     }
 
     @Override
@@ -124,5 +132,7 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
         }
 
         adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
+
+        db.logDatabase(DatabaseAdapter.TURN_TABLE);
     }
 }

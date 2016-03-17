@@ -124,6 +124,16 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     }
 
     @Override
+    public boolean undoTurn() {
+        return match.undoTurn();
+    }
+
+    @Override
+    public long getMatchId() {
+        return match.getMatchId();
+    }
+
+    @Override
     public String getLocation() {
         return match.getLocation();
     }

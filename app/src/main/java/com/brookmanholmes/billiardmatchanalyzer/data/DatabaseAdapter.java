@@ -48,7 +48,7 @@ public class DatabaseAdapter {
     public static final String COLUMN_TURN_END = "turn_end";
     public static final String COLUMN_SCRATCH = "foul";
     public static final String COLUMN_MATCH_ID = "match_id";
-    public static final String COLUMN_INNING_NUMBER = "inning_number";
+    public static final String COLUMN_TURN_NUMBER = "turn_number";
     public static final String COLUMN_IS_GAME_LOST = "is_game_lost";
     public static final String PLAYER_TABLE = "players";
     public static final String COLUMN_NAME = "name";
@@ -222,6 +222,14 @@ public class DatabaseAdapter {
         return database.insert(PLAYER_TABLE, null, contentValues);
     }
 
+    public void undoTurn(long id, int turnNumber) {
+        Log.i("DB", "ID = " + id + " and TURN_NUMBER = " + turnNumber);
+        Log.i("DB", DatabaseUtils.dumpCursorToString(database.query(TURN_TABLE, null, COLUMN_MATCH_ID + "= ? and " + COLUMN_TURN_NUMBER + " = ?", new String[] {String.valueOf(id), String.valueOf(turnNumber)}, null, null, null )));
+
+        int num = database.delete(TURN_TABLE, COLUMN_MATCH_ID + "=? and " + COLUMN_TURN_NUMBER + "=?", new String[] {String.valueOf(id), String.valueOf(turnNumber)});
+        Log.i("DB", "number of rows deleted = " + num);
+    }
+
     public long insertMatch(Match match) {
         if (match.getMatchId() == 0) {
             ContentValues matchValues = new ContentValues();
@@ -259,7 +267,7 @@ public class DatabaseAdapter {
     public long insertTurn(Turn turn, long matchId, int inningId) {
         database.delete(TURN_TABLE,
                 COLUMN_MATCH_ID + "=? AND "
-                        + COLUMN_INNING_NUMBER + " >= ?",
+                        + COLUMN_TURN_NUMBER + " >= ?",
                 new String[]{String.valueOf(matchId),
                         String.valueOf(inningId)});
 
@@ -269,7 +277,7 @@ public class DatabaseAdapter {
         inningValues.put(COLUMN_MATCH_ID, matchId);
         inningValues.put(COLUMN_SCRATCH, turn.isScratch());
         inningValues.put(COLUMN_TURN_END, turn.getTurnEnd().name());
-        inningValues.put(COLUMN_INNING_NUMBER, inningId);
+        inningValues.put(COLUMN_TURN_NUMBER, inningId);
 
         return database.insert(TURN_TABLE, null, inningValues);
     }
@@ -284,7 +292,7 @@ public class DatabaseAdapter {
                 new String[]{String.valueOf(id)},
                 null,
                 null,
-                COLUMN_INNING_NUMBER + " ASC");
+                COLUMN_TURN_NUMBER + " ASC");
 
         while (c.moveToNext()) {
             innings.add(buildTurnFromCursor(c));
@@ -297,7 +305,7 @@ public class DatabaseAdapter {
 
     public Turn buildTurnFromCursor(Cursor cursor) {
         return new GameTurn(
-                cursor.getInt(cursor.getColumnIndex(COLUMN_INNING_NUMBER)),
+                cursor.getInt(cursor.getColumnIndex(COLUMN_TURN_NUMBER)),
                 cursor.getLong(cursor.getColumnIndex(COLUMN_MATCH_ID)),
                 cursor.getInt(cursor.getColumnIndex(COLUMN_SCRATCH)) == 1,
                 TurnEnd.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TURN_END))),

@@ -38,6 +38,7 @@ public class ShotFragment extends Fragment {
     private static final String ARG_KEY = "key";
     @Bind(R.id.title)
     TextView title;
+    @Nullable
     @Bind(R.id.playerColor)
     TextView playerColor;
 
@@ -91,7 +92,8 @@ public class ShotFragment extends Fragment {
         View view = inflater.inflate(getLayoutByGameType(getGameType()), container, false);
         ButterKnife.bind(this, view);
         title.setText("Input balls made this turn");
-        playerColor.setVisibility(View.VISIBLE);
+        if (playerColor != null)
+            playerColor.setVisibility(View.VISIBLE);
 
         return view;
     }
@@ -133,7 +135,8 @@ public class ShotFragment extends Fragment {
                 setBallView(ballStatuses.get(i), ballImage);
             }
 
-            this.playerColor.setText(playerColor);
+            if (this.playerColor != null)
+                this.playerColor.setText(playerColor);
         }
     }
 

@@ -16,6 +16,8 @@ import com.brookmanholmes.billiards.player.controller.PlayerController;
 
 import java.util.ArrayDeque;
 
+import sun.rmi.runtime.Log;
+
 
 /**
  * Created by Brookman Holmes on 10/27/2015.
@@ -31,6 +33,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     ArrayDeque<Turn> turns = new ArrayDeque<>();
     ArrayDeque<GameStatus> games = new ArrayDeque<>();
     private StatsDetail detail;
+
     Match(Builder builder, PlayerController<T> playerController) {
         location = builder.location;
         notes = builder.notes;

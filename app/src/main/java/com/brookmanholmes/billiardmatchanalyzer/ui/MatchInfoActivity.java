@@ -2,6 +2,8 @@ package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +35,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     TextView opponentName;
     @Bind(R.id.addInning)
     Button addInning;
+    @Bind(R.id.coordinatorLayout)
+    CoordinatorLayout layout;
 
     DatabaseAdapter db;
     MatchInfoFragment infoFragment;
@@ -53,7 +57,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, "infoFragment").commit();
-
     }
 
     @Override
@@ -141,7 +144,13 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                             dialog.dismiss();
                         }
                     }).create().show();
+        }
 
+        if (id == R.id.action_undo) {
+            if (infoFragment.undoTurn())
+                Snackbar.make(layout, "Undid last turn", Snackbar.LENGTH_SHORT).show();
+            else
+                Snackbar.make(layout, "Could not undo last turn", Snackbar.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
