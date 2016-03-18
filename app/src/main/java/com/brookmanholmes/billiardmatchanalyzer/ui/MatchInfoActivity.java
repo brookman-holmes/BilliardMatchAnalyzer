@@ -27,6 +27,7 @@ import butterknife.OnClick;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
     private static final String TAG = "MatchInfoActivity";
+    public static final String INFO_FRAGMENT_TAG = "infoFragment";
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.playerName)
@@ -55,15 +56,17 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
 
-        infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, "infoFragment").commit();
+        infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag(INFO_FRAGMENT_TAG);
+
+        if (infoFragment == null) {
+            infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, INFO_FRAGMENT_TAG).commit();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (infoFragment == null)
-            infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag("infoFragment");
         setBottomBarText();
     }
 
@@ -147,12 +150,14 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         if (id == R.id.action_undo) {
-            if (infoFragment.undoTurn())
+            if (infoFragment.undoTurn()) {
                 Snackbar.make(layout, "Undid last turn", Snackbar.LENGTH_SHORT).show();
-            else
+                setBottomBarText();
+            }
+            else {
                 Snackbar.make(layout, "Could not undo last turn", Snackbar.LENGTH_SHORT).show();
+            }
 
-            setBottomBarText();
         }
 
         return super.onOptionsItemSelected(item);
