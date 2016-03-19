@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.inning;
+package com.brookmanholmes.billiards.turn;
 
 import java.util.ArrayList;
 import java.util.List;

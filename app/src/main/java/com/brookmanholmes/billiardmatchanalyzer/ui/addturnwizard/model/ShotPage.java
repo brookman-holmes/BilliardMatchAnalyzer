@@ -2,7 +2,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.ShotFragment;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -12,8 +11,8 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
-import com.brookmanholmes.billiards.inning.TableStatus;
-import com.brookmanholmes.billiards.inning.TableUtils;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TableUtils;
 
 import java.util.ArrayList;
 

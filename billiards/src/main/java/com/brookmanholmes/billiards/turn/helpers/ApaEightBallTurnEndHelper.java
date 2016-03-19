@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.inning.helpers;
+package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.util.BallStatus;
 

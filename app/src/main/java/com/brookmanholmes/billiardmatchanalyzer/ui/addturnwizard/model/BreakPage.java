@@ -10,7 +10,7 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.inning.TableStatus;
+import com.brookmanholmes.billiards.turn.TableStatus;
 
 import java.util.ArrayList;
 

@@ -1,11 +1,11 @@
 package com.brookmanholmes.billiards.acceptance;
 
-import com.brookmanholmes.billiards.inning.TurnEnd;
-import com.brookmanholmes.billiards.inning.TurnEndOptions;
+import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
 
-import static com.brookmanholmes.billiards.inning.TurnEnd.CONTINUE_WITH_GAME;
-import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_WON;
-import static com.brookmanholmes.billiards.inning.TurnEnd.MISS;
+import static com.brookmanholmes.billiards.turn.TurnEnd.CONTINUE_WITH_GAME;
+import static com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
+import static com.brookmanholmes.billiards.turn.TurnEnd.MISS;
 
 /**
  * Created by Brookman Holmes on 11/13/2015.

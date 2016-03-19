@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,8 @@ import com.brookmanholmes.billiardmatchanalyzer.adapters.SimpleDividerItemDecora
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.inning.TableStatus;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.match.MatchInterface;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 
@@ -133,6 +132,6 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
 
         adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
 
-        db.logDatabase(DatabaseAdapter.TURN_TABLE);
+        db.logDatabase(DatabaseAdapter.TABLE_TURNS);
     }
 }

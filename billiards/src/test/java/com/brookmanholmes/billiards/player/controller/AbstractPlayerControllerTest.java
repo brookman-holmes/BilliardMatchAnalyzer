@@ -5,8 +5,8 @@ import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.inning.TurnBuilder;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnBuilder;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 

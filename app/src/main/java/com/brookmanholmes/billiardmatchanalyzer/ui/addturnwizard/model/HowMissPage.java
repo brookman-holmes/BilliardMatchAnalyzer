@@ -18,10 +18,12 @@ public class HowMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
 
     @Override
     public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.howTypes.clear();
-        if (data.getStringArrayList(SIMPLE_DATA_KEY) != null) {
-            turnBuilder.howTypes.addAll(data.getStringArrayList(SIMPLE_DATA_KEY));
-        }
+        if (parentKey.equals("break miss how") || parentKey.equals("illegal break how"))
+            turnBuilder.advStats.shotType("Break shot");
+
+        turnBuilder.advStats.clearHowTypes();
+        if (data.getStringArrayList(SIMPLE_DATA_KEY) != null)
+            turnBuilder.advStats.howTypes(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
     @Override

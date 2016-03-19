@@ -3,9 +3,9 @@ package com.brookmanholmes.billiards.game;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.inning.TableStatus;
-import com.brookmanholmes.billiards.inning.TurnBuilder;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnBuilder;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.junit.Before;
 import org.junit.Test;

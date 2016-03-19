@@ -41,8 +41,9 @@ public class MissBranchPage extends BranchPage implements UpdatesTurnInfo{
 
     @Override
     public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.shotType = data.getString(SIMPLE_DATA_KEY);
-        turnBuilder.shotSubType = "";
+        turnBuilder.advStats.shotType(data.getString(SIMPLE_DATA_KEY));
+        turnBuilder.advStats.clearSubType();
+
     }
 
     @Override

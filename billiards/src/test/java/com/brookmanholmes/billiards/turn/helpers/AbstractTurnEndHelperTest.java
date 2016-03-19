@@ -1,12 +1,12 @@
-package com.brookmanholmes.billiards.inning.helpers;
+package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.inning.GameTurn;
-import com.brookmanholmes.billiards.inning.TableStatus;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.GameTurn;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.junit.Before;
 import org.junit.Test;

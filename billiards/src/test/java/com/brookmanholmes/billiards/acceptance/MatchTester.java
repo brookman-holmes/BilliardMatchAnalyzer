@@ -3,8 +3,8 @@ package com.brookmanholmes.billiards.acceptance;
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.inning.TurnEndOptions;
-import com.brookmanholmes.billiards.inning.helpers.TurnEndHelper;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
+import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -24,10 +24,24 @@ public class WhyMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
 
     @Override
     public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.whyTypes.clear();
-        if (data.getStringArrayList(SIMPLE_DATA_KEY) != null) {
-            turnBuilder.whyTypes.addAll(data.getStringArrayList(SIMPLE_DATA_KEY));
+        if (parentKey.equals("break miss why") || parentKey.equals("illegal break why")) {
+            turnBuilder.advStats.shotType("Break shot");
+            turnBuilder.advStats.clearHowTypes();
+            turnBuilder.advStats.clearWhyTypes();
+            turnBuilder.advStats.clearAngle();
+            turnBuilder.advStats.clearSubType();
         }
+        if (parentKey.equals("safety error why")) {
+            turnBuilder.advStats.shotType("Safety error");
+            turnBuilder.advStats.clearAngle();
+            turnBuilder.advStats.clearSubType();
+            turnBuilder.advStats.clearHowTypes();
+            turnBuilder.advStats.clearWhyTypes();
+        }
+
+        turnBuilder.advStats.clearWhyTypes();
+        if (data.getStringArrayList(SIMPLE_DATA_KEY) != null)
+            turnBuilder.advStats.whyTypes(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
 

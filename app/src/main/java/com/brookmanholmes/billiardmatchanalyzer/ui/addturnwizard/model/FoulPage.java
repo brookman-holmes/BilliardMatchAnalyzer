@@ -7,16 +7,14 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.FoulF
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePage;
-import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.inning.TurnEnd;
-import com.brookmanholmes.billiards.inning.TurnEndOptions;
-import com.brookmanholmes.billiards.inning.helpers.TurnEndHelper;
+import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
+import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.CONSECUTIVE_FOULS_KEY;
 import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
 
 /**

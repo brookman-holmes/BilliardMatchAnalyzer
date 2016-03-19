@@ -6,17 +6,16 @@ import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.inning.GameTurn;
-import com.brookmanholmes.billiards.inning.TableStatus;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.billiards.turn.GameTurn;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.controller.ControllerHelperMethods;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 
 import java.util.ArrayDeque;
-
-import sun.rmi.runtime.Log;
 
 
 /**

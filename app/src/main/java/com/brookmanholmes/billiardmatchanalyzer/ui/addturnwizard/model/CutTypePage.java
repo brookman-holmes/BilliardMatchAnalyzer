@@ -20,7 +20,7 @@ public class CutTypePage extends SingleFixedChoicePage implements UpdatesTurnInf
 
     @Override
     public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.shotSubType = data.getString(SIMPLE_DATA_KEY);
+        turnBuilder.advStats.subType(data.getString(SIMPLE_DATA_KEY));
     }
 
     @Override

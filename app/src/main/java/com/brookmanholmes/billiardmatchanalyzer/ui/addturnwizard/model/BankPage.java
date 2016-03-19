@@ -21,10 +21,9 @@ public class BankPage extends MultipleFixedChoicePage implements UpdatesTurnInfo
 
     @Override
     public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.angleType.clear();
-        if (data.getStringArrayList(SIMPLE_DATA_KEY) != null) {
-            turnBuilder.whyTypes.addAll(data.getStringArrayList(SIMPLE_DATA_KEY));
-        }
+        turnBuilder.advStats.clearAngle();
+        if (data.getStringArrayList(SIMPLE_DATA_KEY) != null)
+            turnBuilder.advStats.angle(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
     @Override

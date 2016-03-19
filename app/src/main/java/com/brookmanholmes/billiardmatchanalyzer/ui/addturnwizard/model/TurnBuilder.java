@@ -1,8 +1,9 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.inning.TableStatus;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,7 @@ public class TurnBuilder {
     public TurnEnd turnEnd;
     public boolean scratch = false;
     public boolean lostGame = false;
-    public String shotType = "";
-    public String shotSubType = "";
-    public List<String> angleType = new ArrayList<>();
-    public List<String> howTypes = new ArrayList<>();
-    public List<String> whyTypes = new ArrayList<>();
+    public AdvStats.Builder advStats = new AdvStats.Builder();
 
     public TurnBuilder(GameType gameType) {
         this.tableStatus = TableStatus.newTable(gameType);
@@ -30,11 +27,7 @@ public class TurnBuilder {
     }
 
     public String advData() {
-        return "shotType = " + shotType +
-                "\nshotSubType = " + shotSubType +
-                "\nangleType = " + angleType.toString() +
-                "\nhowTypes = " + howTypes.toString() +
-                "\nwhyTypes = " + whyTypes.toString();
+        return advStats.toString();
     }
 
     @Override

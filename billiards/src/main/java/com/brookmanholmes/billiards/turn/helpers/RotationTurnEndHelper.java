@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.inning.helpers;
+package com.brookmanholmes.billiards.turn.helpers;
 
 /**
  * Created by Brookman Holmes on 10/30/2015.

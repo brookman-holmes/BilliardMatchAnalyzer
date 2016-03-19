@@ -19,6 +19,7 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.billiards.game.Turn;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 
 import butterknife.Bind;
@@ -98,7 +99,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 turnBuilder.turnEnd,
                 turnBuilder.scratch,
                 turnBuilder.lostGame);
-        db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
+        db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount(), turnBuilder.advStats.build());
 
         setBottomBarText();
     }

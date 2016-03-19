@@ -13,7 +13,7 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.inning.InvalidBallException;
+import com.brookmanholmes.billiards.turn.InvalidBallException;
 import com.brookmanholmes.billiards.match.Match;
 
 import java.util.ArrayList;
@@ -141,8 +141,6 @@ public class MatchDialogHelperUtils {
         gameStatus.consecutivePlayerFouls(args.getInt(PLAYER_FOULS_KEY));
         gameStatus.currentPlayerConsecutiveFouls(args.getInt(CONSECUTIVE_FOULS_KEY));
         // // TODO: 1/27/2016 ballsOnTable is not set
-
-        Log.i("dialoghelper", gameStatus.build().currentPlayerColor.toString());
         return gameStatus.build();
     }
 

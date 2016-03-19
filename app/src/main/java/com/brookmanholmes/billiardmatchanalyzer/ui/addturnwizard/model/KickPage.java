@@ -20,8 +20,8 @@ public class KickPage extends SingleFixedChoicePage implements UpdatesTurnInfo{
 
     @Override
     public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.angleType.clear();
-        turnBuilder.angleType.add(data.getString(SIMPLE_DATA_KEY));
+        turnBuilder.advStats.clearAngle();
+        turnBuilder.advStats.angle(data.getString(SIMPLE_DATA_KEY));
     }
 
     @Override

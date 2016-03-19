@@ -1,8 +1,8 @@
 package com.brookmanholmes.billiards.acceptance.hohmannsvb;
 
 import com.brookmanholmes.billiards.acceptance.TurnEndOptionsBuilder;
-import com.brookmanholmes.billiards.inning.TurnEnd;
-import com.brookmanholmes.billiards.inning.TurnEndOptions;
+import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
 
 import java.util.Arrays;
 import java.util.List;
