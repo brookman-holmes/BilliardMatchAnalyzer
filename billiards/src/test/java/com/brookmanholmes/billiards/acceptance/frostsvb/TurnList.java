@@ -2,7 +2,7 @@ package com.brookmanholmes.billiards.acceptance.frostsvb;
 
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.inning.TurnBuilder;
+import com.brookmanholmes.billiards.turn.TurnBuilder;
 
 /**
  * Created by Brookman Holmes on 11/10/2015.

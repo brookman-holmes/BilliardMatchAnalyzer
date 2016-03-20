@@ -4,8 +4,8 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.inning.TableUtils;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.TableUtils;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import static com.brookmanholmes.billiards.game.util.PlayerColor.OPEN;
 import static com.brookmanholmes.billiards.game.util.PlayerColor.SOLIDS;

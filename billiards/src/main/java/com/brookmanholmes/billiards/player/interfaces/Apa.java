@@ -7,4 +7,8 @@ public interface Apa extends WinsOnBreak {
     int getMatchPoints(int opponentScore, int opponentRank);
 
     int getRank();
+
+    int getPoints();
+
+    int getTurns();
 }

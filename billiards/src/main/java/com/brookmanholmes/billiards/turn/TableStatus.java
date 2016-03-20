@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.inning;
+package com.brookmanholmes.billiards.turn;
 
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.util.BallStatus;

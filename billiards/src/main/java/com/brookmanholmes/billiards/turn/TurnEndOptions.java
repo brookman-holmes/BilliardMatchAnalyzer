@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.inning;
+package com.brookmanholmes.billiards.turn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +97,11 @@ public class TurnEndOptions {
 
         public Builder checkScratch(boolean checked) {
             scratch = checked;
+            return this;
+        }
+
+        public Builder allowPlayerToBreakAgain() {
+            turnEnds.add(TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN);
             return this;
         }
 

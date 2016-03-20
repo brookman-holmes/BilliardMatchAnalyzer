@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.inning.TableStatus;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.match.MatchInterface;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
@@ -121,6 +122,16 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
         Turn turn = match.createAndAddTurnToMatch(tableStatus, turnEnd, scratch, isGameLost);
         notifyDataSetChanged();
         return turn;
+    }
+
+    @Override
+    public boolean undoTurn() {
+        return match.undoTurn();
+    }
+
+    @Override
+    public long getMatchId() {
+        return match.getMatchId();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.inning;
+package com.brookmanholmes.billiards.turn;
 
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BallStatus;
@@ -17,6 +17,7 @@ public class GameTurn implements Turn {
     final long matchId;
     final int inningNumber;
     final boolean gameLost;
+    final AdvStats advStats;
 
     public GameTurn(int inningNumber, long matchId, boolean scratch, TurnEnd turnEnd, TableStatus tableStatus, boolean isGameLost) {
         this.inningNumber = inningNumber;
@@ -25,6 +26,17 @@ public class GameTurn implements Turn {
         this.turnEnd = turnEnd;
         this.tableStatus = tableStatus;
         this.gameLost = isGameLost;
+        advStats = null;
+    }
+
+    public GameTurn(int inningNumber, long matchId, boolean scratch, TurnEnd turnEnd, TableStatus tableStatus, boolean isGameLost, AdvStats advStats) {
+        this.inningNumber = inningNumber;
+        this.matchId = matchId;
+        this.scratch = scratch;
+        this.turnEnd = turnEnd;
+        this.tableStatus = tableStatus;
+        this.gameLost = isGameLost;
+        this.advStats = advStats;
     }
 
     @Override

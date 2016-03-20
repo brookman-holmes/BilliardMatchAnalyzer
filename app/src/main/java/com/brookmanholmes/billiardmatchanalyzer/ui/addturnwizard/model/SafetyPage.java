@@ -9,7 +9,7 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePa
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class SafetyPage extends SingleFixedChoicePage {
+public class SafetyPage extends SingleFixedChoicePage implements UpdatesTurnInfo {
     private static final String[] safetyTypes = {"Full hook", "Partial hook", "Long T", "Short T"};
 
     public SafetyPage(ModelCallbacks callbacks) {
@@ -17,6 +17,16 @@ public class SafetyPage extends SingleFixedChoicePage {
 
         setChoices(safetyTypes);
         setRequired(true);
+        setValue("Full hook");
+    }
+
+    @Override
+    public void updateTurnInfo(TurnBuilder turnBuilder) {
+        turnBuilder.advStats.shotType("Safety");
+        turnBuilder.advStats.subType(data.getString(SIMPLE_DATA_KEY));
+        turnBuilder.advStats.clearAngle();
+        turnBuilder.advStats.clearWhyTypes();
+        turnBuilder.advStats.clearHowTypes();
     }
 
     @Override

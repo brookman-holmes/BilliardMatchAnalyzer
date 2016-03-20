@@ -11,11 +11,11 @@ import com.brookmanholmes.billiards.player.NineBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
 
-import static com.brookmanholmes.billiards.inning.TurnEnd.BREAK_MISS;
-import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_WON;
-import static com.brookmanholmes.billiards.inning.TurnEnd.MISS;
-import static com.brookmanholmes.billiards.inning.TurnEnd.SAFETY;
-import static com.brookmanholmes.billiards.inning.TurnEnd.SAFETY_ERROR;
+import static com.brookmanholmes.billiards.turn.TurnEnd.BREAK_MISS;
+import static com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
+import static com.brookmanholmes.billiards.turn.TurnEnd.MISS;
+import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY;
+import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY_ERROR;
 
 /**
  * Created by Brookman Holmes on 10/28/2015.

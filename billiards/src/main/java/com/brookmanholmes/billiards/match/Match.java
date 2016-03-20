@@ -6,9 +6,10 @@ import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.inning.GameTurn;
-import com.brookmanholmes.billiards.inning.TableStatus;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.billiards.turn.GameTurn;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.controller.ControllerHelperMethods;
@@ -31,6 +32,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     ArrayDeque<Turn> turns = new ArrayDeque<>();
     ArrayDeque<GameStatus> games = new ArrayDeque<>();
     private StatsDetail detail;
+
     Match(Builder builder, PlayerController<T> playerController) {
         location = builder.location;
         notes = builder.notes;
@@ -101,7 +103,8 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     }
 
     void updateGameState(Turn turn) {
-        games.push(game.addTurn(turn));
+        games.push(game.getGameStatus());
+        game.addTurn(turn);
     }
 
     public boolean undoTurn() {

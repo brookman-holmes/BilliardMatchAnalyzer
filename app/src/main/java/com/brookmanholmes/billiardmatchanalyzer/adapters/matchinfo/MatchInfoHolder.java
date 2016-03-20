@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.interfaces.Apa;
 import com.brookmanholmes.billiards.player.interfaces.EarlyWins;
 import com.brookmanholmes.billiards.player.interfaces.WinsOnBreak;
@@ -527,7 +528,6 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             super(view, detail);
             title.setText("APA Stats");
             tvPointsTitle = (TextView) view.findViewById(R.id.tvPointsTitle);
-            tvPointsTitle.setText("Games / games needed");
 
             tvDefensiveShotsPlayer = (TextView) view.findViewById(R.id.tvDefensiveShotsPlayer);
             tvPointsPlayer = (TextView) view.findViewById(R.id.tvPlayerPoints);
@@ -552,8 +552,19 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
 
         @Override
         public void bind(T player, T opponent) {
+            if (player instanceof ApaEightBallPlayer) {
+                tvPointsTitle.setText("Games / games needed");
+            }
+
             tvRankPlayer.setText(String.format("%d", player.getRank()));
             tvRankOpponent.setText(String.format("%d", opponent.getRank()));
+
+            tvMatchPointsPlayer.setText(player.getMatchPoints(opponent.getPoints(), opponent.getRank()) + "");
+            tvMatchPointsOpponent.setText(opponent.getMatchPoints(opponent.getPoints(), opponent.getRank()) + "");
+
+            tvInningsOpponent.setText(opponent.getTurns() + "");
+            tvDefensiveShotsOpponent.setText(Integer.toString(opponent.getSafetyAttempts()));
+            tvDefensiveShotsPlayer.setText(Integer.toString(player.getSafetyAttempts()));
         }
     }
 }

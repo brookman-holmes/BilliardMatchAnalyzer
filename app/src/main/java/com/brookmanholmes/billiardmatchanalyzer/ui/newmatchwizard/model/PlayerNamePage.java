@@ -26,9 +26,6 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
 
-/**
- * A page asking for a name and an email.
- */
 public class PlayerNamePage extends Page {
     public static final String PLAYER_NAME_KEY = "player name";
     public static final String OPPONENT_NAME_KEY = "opponent name";
@@ -36,17 +33,13 @@ public class PlayerNamePage extends Page {
     public static final String EXTRA_INFO_KEY = "extras";
 
     public PlayerNamePage(ModelCallbacks callbacks) {
-        super(callbacks, "Players");
+        super(callbacks, "Enter player names");
+        setRequired(true);
     }
 
     @Override
     public Fragment createFragment() {
         return PlayerNameFragment.create(getKey());
-    }
-
-    @Override
-    public boolean isRequired() {
-        return true;
     }
 
     @Override

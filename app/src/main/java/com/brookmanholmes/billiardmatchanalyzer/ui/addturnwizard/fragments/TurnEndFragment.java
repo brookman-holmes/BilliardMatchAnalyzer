@@ -3,6 +3,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import java.util.List;
  */
 public class TurnEndFragment extends ListFragment {
     private static final String ARG_KEY = "key";
+    private static final String ARG_OPTIONS_KEY = "options";
+    private static final String ARG_SELECTION_KEY = "selection";
     ListView listView;
     private PageFragmentCallbacks callbacks;
     private String key;
@@ -32,10 +35,11 @@ public class TurnEndFragment extends ListFragment {
     public TurnEndFragment() {
     }
 
-    public static TurnEndFragment create(String key) {
+    public static TurnEndFragment create(String key, ArrayList<String> options, String selection) {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
-
+        args.putStringArrayList(ARG_OPTIONS_KEY, options);
+        args.putString(ARG_SELECTION_KEY, selection);
         TurnEndFragment fragment = new TurnEndFragment();
         fragment.setArguments(args);
         return fragment;
@@ -81,6 +85,10 @@ public class TurnEndFragment extends ListFragment {
         listView.setDividerHeight(0);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
+        adapter.addAll(getArguments().getStringArrayList(ARG_OPTIONS_KEY));
+        adapter.notifyDataSetChanged();
+        listView.setItemChecked(adapter.getPosition(getArguments().getString(ARG_SELECTION_KEY)), true);
+
         return rootView;
     }
 
@@ -96,6 +104,10 @@ public class TurnEndFragment extends ListFragment {
         callbacks = null;
     }
 
+    public boolean isAdapterEmpty() {
+        return adapter.isEmpty();
+    }
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         updatePage(position);
@@ -105,7 +117,6 @@ public class TurnEndFragment extends ListFragment {
         adapter.clear();
         adapter.addAll(options);
         adapter.notifyDataSetChanged();
-
 
         if (options.contains(getTurnEndFromPage())) {
             listView.setItemChecked(options.indexOf(getTurnEndFromPage()), true);

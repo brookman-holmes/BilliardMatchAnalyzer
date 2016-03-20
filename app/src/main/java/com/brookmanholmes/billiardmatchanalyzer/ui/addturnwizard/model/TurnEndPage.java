@@ -9,33 +9,33 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.inning.TurnEnd;
-import com.brookmanholmes.billiards.inning.TurnEndOptions;
-import com.brookmanholmes.billiards.inning.helpers.TurnEndHelper;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
+import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
 import com.brookmanholmes.billiards.match.Match;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.STATS_LEVEL_KEY;
-import static com.brookmanholmes.billiards.inning.TurnEnd.BREAK_MISS;
-import static com.brookmanholmes.billiards.inning.TurnEnd.CHANGE_TURN;
-import static com.brookmanholmes.billiards.inning.TurnEnd.CONTINUE_WITH_GAME;
-import static com.brookmanholmes.billiards.inning.TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN;
-import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_WON;
-import static com.brookmanholmes.billiards.inning.TurnEnd.ILLEGAL_BREAK;
-import static com.brookmanholmes.billiards.inning.TurnEnd.MISS;
-import static com.brookmanholmes.billiards.inning.TurnEnd.OPPONENT_BREAKS_AGAIN;
-import static com.brookmanholmes.billiards.inning.TurnEnd.PUSH_SHOT;
-import static com.brookmanholmes.billiards.inning.TurnEnd.SAFETY;
-import static com.brookmanholmes.billiards.inning.TurnEnd.SAFETY_ERROR;
-import static com.brookmanholmes.billiards.inning.TurnEnd.SKIP_TURN;
+import static com.brookmanholmes.billiards.turn.TurnEnd.BREAK_MISS;
+import static com.brookmanholmes.billiards.turn.TurnEnd.CHANGE_TURN;
+import static com.brookmanholmes.billiards.turn.TurnEnd.CONTINUE_WITH_GAME;
+import static com.brookmanholmes.billiards.turn.TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN;
+import static com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
+import static com.brookmanholmes.billiards.turn.TurnEnd.ILLEGAL_BREAK;
+import static com.brookmanholmes.billiards.turn.TurnEnd.MISS;
+import static com.brookmanholmes.billiards.turn.TurnEnd.OPPONENT_BREAKS_AGAIN;
+import static com.brookmanholmes.billiards.turn.TurnEnd.PUSH_SHOT;
+import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY;
+import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY_ERROR;
+import static com.brookmanholmes.billiards.turn.TurnEnd.SKIP_TURN;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
-
     private static final String[] breakMissTypes = {"Too hard", "Too soft", "Hit too far to the left", "Hit too far to the right", "Foul", "Kicked into pocket (foul)"};
     private static final String[] illegalBreakTypes = {"Too soft", "Too thin", "CB in pocket"};
     private static final String[] whyChoices = {"Bad position", "Jacked up", "Lack of focus", "Over spin", "Unintentional english", "Too slow", "Too fast", "CB curved", "On the rail", "Forcing position"};
@@ -49,6 +49,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         super(callbacks, "How did your turn end?");
 
         data.putAll(matchData);
+        setRequired(true);
 
         turnEndHelper = TurnEndHelper.newTurnEndHelper(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)));
         PlayerTurn currentPlayer = PlayerTurn.valueOf(data.getString(MatchDialogHelperUtils.TURN_KEY));
@@ -63,27 +64,27 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         addBranch(SKIP_TURN.toString());
         addBranch(CURRENT_PLAYER_BREAKS_AGAIN.toString());
         addBranch(OPPONENT_BREAKS_AGAIN.toString());
-        addBranch(CONTINUE_WITH_GAME.toString()); // TODO: this should start the dialog boxes over from the beginning with reBreak option turned to false
+        addBranch(CONTINUE_WITH_GAME.toString()); // TODO: 3/18/2016 this should be replaced by default miss options
         addBranch(CHANGE_TURN.toString()); // // TODO: this can probably be removed
 
         if (currentPlayerTurnAndAdvancedStats(currentPlayer, detail)) {
             // Safety Error branch
-            branches.get(0).childPageList.add(new WhyMissPage(callbacks, whyChoicesSafety, "safety error branch"));
+            branches.get(0).childPageList.add(new WhyMissPage(callbacks, whyChoicesSafety, "safety error why"));
 
             // Miss branch
             branches.get(1).childPageList.add(new MissBranchPage(callbacks));
             branches.get(1).childPageList.add(new WhyMissPage(callbacks, whyChoices, "miss branch"));
 
             // Break Miss branch
-            branches.get(2).childPageList.add(new HowMissPage(callbacks, breakMissTypes, "break miss"));
-            branches.get(2).childPageList.add(new WhyMissPage(callbacks, whyChoicesBreak, "break miss branch"));
+            branches.get(2).childPageList.add(new HowMissPage(callbacks, breakMissTypes, "break miss how"));
+            branches.get(2).childPageList.add(new WhyMissPage(callbacks, whyChoicesBreak, "break miss why"));
 
             // Safety branch
             branches.get(3).childPageList.add(new SafetyPage(callbacks));
 
             // Illegal break branch
-            branches.get(4).childPageList.add(new HowMissPage(callbacks, illegalBreakTypes, "illegal break"));
-            branches.get(4).childPageList.add(new WhyMissPage(callbacks, whyChoicesBreak, "illegal break branch"));
+            branches.get(4).childPageList.add(new HowMissPage(callbacks, illegalBreakTypes, "illegal break how"));
+            branches.get(4).childPageList.add(new WhyMissPage(callbacks, whyChoicesBreak, "illegal break why"));
         }
     }
 
@@ -97,7 +98,14 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
 
     @Override
     public Fragment createFragment() {
-        return TurnEndFragment.create(getKey());
+        TurnEndOptions options = turnEndHelper.create(MatchDialogHelperUtils.createGameStatusFromBundle(data),
+                TableStatus.newTable(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)), data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY)));
+        ArrayList<String> stringList = new ArrayList<>();
+        for (TurnEnd ending : options.possibleEndings) {
+            stringList.add(ending.toString());
+        }
+
+        return TurnEndFragment.create(getKey(), stringList, options.defaultCheck.toString());
     }
 
     @Override
@@ -114,16 +122,6 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
 
     private TurnEnd getTurnEndFromPageData() {
         return TurnEnd.fromString(data.getString(SIMPLE_DATA_KEY, "Miss"));
-    }
-
-    @Override
-    public boolean isRequired() {
-        return true;
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return super.isCompleted();
     }
 
     public void registerListener(TurnEndFragment fragment) {

@@ -7,12 +7,14 @@ import android.support.annotation.NonNull;
 
 import com.brookmanholmes.billiards.match.Match;
 
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.*;
+
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
     private static DatabaseHelper sInstance;
 
     /**
@@ -34,40 +36,77 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @NonNull
-    private static String getCreateTurnsTableQuery() {
-        return "CREATE TABLE " + DatabaseAdapter.TURN_TABLE + "("
-                + DatabaseAdapter.COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
-                + DatabaseAdapter.COLUMN_MATCH_ID + " INTEGER NOT NULL, "
-                + DatabaseAdapter.COLUMN_TURN_END + " INTEGER NOT NULL, "
-                + DatabaseAdapter.COLUMN_TABLE_STATUS + " TEXT COLLATE NOCASE DEFAULT NULL, "
-                + DatabaseAdapter.COLUMN_SCRATCH + " INTEGER DEFAULT NULL, "
-                + DatabaseAdapter.COLUMN_IS_GAME_LOST + " INTEGER DEFAULT NULL, "
-                + DatabaseAdapter.COLUMN_INNING_NUMBER + " INTEGER DEFAULT 0"
+    public static String getCreateAdvStatsTableQuery() {
+        return "CREATE TABLE " + TABLE_ADV_STATS + "("
+                + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL PRIMARY KEY, "
+                + COLUMN_SHOT_TYPE + " TEXT COLLATE NOCASE DEFAULT NULL, "
+                + COLUMN_SHOT_SUB_TYPE + " TEXT COLLATE NOCASE DEFAULT NULL, "
+                + COLUMN_MATCH_ID + "INTEGER NOT NULL, "
+                + ");";
+    }
+
+    @NonNull
+    public static String getCreateHowTable() {
+        return "CREATE TABLE " + TABLE_HOWS + "("
+                + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
+                + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
+                + COLUMN_HOW + " TEXT COLLATE NO CASE"
+                + ");";
+    }
+
+    @NonNull
+    public static String getCreateWhyTable() {
+        return "CREATE TABLE " + TABLE_WHYS + "("
+                + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
+                + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
+                + COLUMN_WHY + " TEXT COLLATE NO CASE"
+                + ");";
+    }
+
+    @NonNull
+    public static String getCreateAngleTable() {
+        return "CREATE TABLE " + TABLE_ANGLES + "("
+                + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
+                + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
+                + COLUMN_ANGLE + " TEXT COLLATE NO CASE"
+                + ");";
+    }
+
+    @NonNull
+    public static String getCreateTurnsTableQuery() {
+        return "CREATE TABLE " + TABLE_TURNS + "("
+                + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
+                + COLUMN_MATCH_ID + " INTEGER NOT NULL, "
+                + COLUMN_TURN_END + " INTEGER NOT NULL, "
+                + COLUMN_TABLE_STATUS + " TEXT COLLATE NOCASE DEFAULT NULL, "
+                + COLUMN_SCRATCH + " INTEGER DEFAULT NULL, "
+                + COLUMN_IS_GAME_LOST + " INTEGER DEFAULT NULL, "
+                + COLUMN_TURN_NUMBER + " INTEGER DEFAULT 0"
                 + ");";
     }
 
     @NonNull
     private static String getCreateMatchTableQuery() {
-        return "CREATE TABLE " + DatabaseAdapter.MATCH_TABLE + "("
-                + DatabaseAdapter.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + DatabaseAdapter.COLUMN_GAME_TYPE + " TEXT COLLATE NOCASE NOT NULL DEFAULT BCA_EIGHT_BALL, "
-                + DatabaseAdapter.COLUMN_BREAK_TYPE + " TEXT COLLATE NOCASE NOT NULL DEFAULT WINNER, "
-                + DatabaseAdapter.COLUMN_LOCATION + " TEXT COLLATE NOCASE DEFAULT NULL, "
-                + DatabaseAdapter.COLUMN_PLAYER_TURN + " INTEGER NOT NULL DEFAULT 0, "
-                + DatabaseAdapter.COLUMN_CREATED_ON + " TEXT COLLATE NOCASE DEFAULT NULL, "
-                + DatabaseAdapter.COLUMN_PLAYER_RANK + " INTEGER NOT NULL DEFAULT 0, "
-                + DatabaseAdapter.COLUMN_OPPONENT_RANK + " INTEGER NOT NULL DEFAULT 0, "
-                + DatabaseAdapter.COLUMN_NOTES + " TEXT COLLATE NOCASE DEFAULT NULL, "
-                + DatabaseAdapter.COLUMN_STATS_DETAIL + " TEXT COLLATE NOCASE DEFAULT " + Match.StatsDetail.NORMAL.name()
+        return "CREATE TABLE " + TABLE_MATCHES + "("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_GAME_TYPE + " TEXT COLLATE NOCASE NOT NULL DEFAULT BCA_EIGHT_BALL, "
+                + COLUMN_BREAK_TYPE + " TEXT COLLATE NOCASE NOT NULL DEFAULT WINNER, "
+                + COLUMN_LOCATION + " TEXT COLLATE NOCASE DEFAULT NULL, "
+                + COLUMN_PLAYER_TURN + " INTEGER NOT NULL DEFAULT 0, "
+                + COLUMN_CREATED_ON + " TEXT COLLATE NOCASE DEFAULT NULL, "
+                + COLUMN_PLAYER_RANK + " INTEGER NOT NULL DEFAULT 0, "
+                + COLUMN_OPPONENT_RANK + " INTEGER NOT NULL DEFAULT 0, "
+                + COLUMN_NOTES + " TEXT COLLATE NOCASE DEFAULT NULL, "
+                + COLUMN_STATS_DETAIL + " TEXT COLLATE NOCASE DEFAULT " + Match.StatsDetail.NORMAL.name()
                 + ");";
     }
 
     @NonNull
     private static String getCreatePlayerTableQuery() {
-        return "CREATE TABLE " + DatabaseAdapter.PLAYER_TABLE + "("
-                + DatabaseAdapter.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + DatabaseAdapter.COLUMN_NAME + " TEXT COLLATE NOCASE DEFAULT NULL, "
-                + DatabaseAdapter.COLUMN_MATCH_ID + " INTEGER NOT NULL"
+        return "CREATE TABLE " + TABLE_PLAYERS + "("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_NAME + " TEXT COLLATE NOCASE DEFAULT NULL, "
+                + COLUMN_MATCH_ID + " INTEGER NOT NULL"
                 + ");";
     }
 
@@ -76,13 +115,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(getCreateTurnsTableQuery());
         db.execSQL(getCreateMatchTableQuery());
         db.execSQL(getCreatePlayerTableQuery());
+        db.execSQL(getCreateAdvStatsTableQuery());
+        db.execSQL(getCreateAngleTable());
+        db.execSQL(getCreateHowTable());
+        db.execSQL(getCreateWhyTable());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseAdapter.TURN_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseAdapter.MATCH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseAdapter.PLAYER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TURNS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
         onCreate(db);
     }
 }

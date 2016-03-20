@@ -2,6 +2,8 @@ package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +19,7 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.billiards.game.Turn;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 
 import butterknife.Bind;
@@ -25,6 +28,7 @@ import butterknife.OnClick;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
     private static final String TAG = "MatchInfoActivity";
+    public static final String INFO_FRAGMENT_TAG = "infoFragment";
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.playerName)
@@ -33,6 +37,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     TextView opponentName;
     @Bind(R.id.addInning)
     Button addInning;
+    @Bind(R.id.coordinatorLayout)
+    CoordinatorLayout layout;
 
     DatabaseAdapter db;
     MatchInfoFragment infoFragment;
@@ -51,16 +57,17 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
 
-        infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, "infoFragment").commit();
+        infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag(INFO_FRAGMENT_TAG);
 
+        if (infoFragment == null) {
+            infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, INFO_FRAGMENT_TAG).commit();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (infoFragment == null)
-            infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag("infoFragment");
         setBottomBarText();
     }
 
@@ -92,7 +99,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 turnBuilder.turnEnd,
                 turnBuilder.scratch,
                 turnBuilder.lostGame);
-        db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
+        db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount(), turnBuilder.advStats.build());
 
         setBottomBarText();
     }
@@ -141,6 +148,16 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                             dialog.dismiss();
                         }
                     }).create().show();
+        }
+
+        if (id == R.id.action_undo) {
+            if (infoFragment.undoTurn()) {
+                Snackbar.make(layout, "Undid last turn", Snackbar.LENGTH_SHORT).show();
+                setBottomBarText();
+            }
+            else {
+                Snackbar.make(layout, "Could not undo last turn", Snackbar.LENGTH_SHORT).show();
+            }
 
         }
 

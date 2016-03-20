@@ -8,9 +8,9 @@ import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePage;
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.inning.TurnEnd;
-import com.brookmanholmes.billiards.inning.TurnEndOptions;
-import com.brookmanholmes.billiards.inning.helpers.TurnEndHelper;
+import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
+import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,6 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
         data.putAll(matchData);
 
         setChoices(defaultChoicesWithLoss);
-
         setValue("No");
     }
 
@@ -53,7 +52,7 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
         TurnEndOptions options = helper.create(
                 MatchDialogHelperUtils.createGameStatusFromBundle(data), turnBuilder.tableStatus);
 
-        updateFragment(options);
+        updateFragment(options, turnBuilder);
     }
 
     public void registerListener(FoulFragment fragment) {
@@ -65,19 +64,20 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
     }
 
     // TODO: 3/9/2016 make sure that I'm not checking foul when it's possible to have not scratched
-    public void updateFragment(TurnEndOptions options) {
+    public void updateFragment(TurnEndOptions options, TurnBuilder turnBuilder) {
         if (fragment != null) {
             dataAutoUpdated = true;
-            fragment.updateOptions(getPossibleChoices(options), getDefaultCheck(options));
+            fragment.updateOptions(getPossibleChoices(options, turnBuilder), getDefaultCheck(options));
         }
     }
 
-    private List<String> getPossibleChoices(TurnEndOptions options) {
+    private List<String> getPossibleChoices(TurnEndOptions options, TurnBuilder turnBuilder) {
         List<String> list = new ArrayList<>();
 
         if (options.lostGame) {
-            list.add("Yes, lost game");
-            list.add("Yes");
+                list.add("Yes, lost game");
+
+                list.add("Yes");
 
             if (options.possibleEndings.contains(TurnEnd.SAFETY))
                 list.add("No");

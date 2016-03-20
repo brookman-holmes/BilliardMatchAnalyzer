@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.inning;
+package com.brookmanholmes.billiards.turn;
 
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.GameType;
@@ -11,9 +11,9 @@ import static com.brookmanholmes.billiards.game.util.BallStatus.DEAD_ON_BREAK;
 import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
 import static com.brookmanholmes.billiards.game.util.BallStatus.MADE;
 import static com.brookmanholmes.billiards.game.util.BallStatus.MADE_ON_BREAK;
-import static com.brookmanholmes.billiards.inning.TurnEnd.BREAK_MISS;
-import static com.brookmanholmes.billiards.inning.TurnEnd.GAME_WON;
-import static com.brookmanholmes.billiards.inning.TurnEnd.MISS;
+import static com.brookmanholmes.billiards.turn.TurnEnd.BREAK_MISS;
+import static com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
+import static com.brookmanholmes.billiards.turn.TurnEnd.MISS;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -92,7 +92,7 @@ public class GameTurnTest {
     }
 
 
-    private Turn createGameTurn(TableStatus table, boolean scratch, TurnEnd turnEnd, boolean isGameLost) {
-        return new GameTurn(0, 0l, scratch, turnEnd, table, isGameLost);
+    private Turn createGameTurn(TableStatus table, boolean scratch, com.brookmanholmes.billiards.turn.TurnEnd turnEnd, boolean isGameLost) {
+        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0l, scratch, turnEnd, table, isGameLost);
     }
 }

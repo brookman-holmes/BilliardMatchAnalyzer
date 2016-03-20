@@ -1,7 +1,7 @@
-package com.brookmanholmes.billiards.inning.helpers;
+package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.util.PlayerColor;
-import com.brookmanholmes.billiards.inning.TableUtils;
+import com.brookmanholmes.billiards.turn.TableUtils;
 
 /**
  * Created by Brookman Holmes on 10/30/2015.

@@ -12,6 +12,7 @@ import com.brookmanholmes.billiards.player.interfaces.WinsOnBreakImp;
 public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
     WinsOnBreak winsOnBreak;
     int rank;
+    int turns = 0;
 
     public ApaEightBallPlayer(String name, int rank) {
         super(name);
@@ -27,6 +28,16 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
             winsOnBreak.addWinsOnBreak(((Apa) player).getWinsOnBreak());
             winsOnBreak.addEarlyWins(((Apa) player).getEarlyWins());
         }
+    }
+
+    @Override
+    public int getTurns() {
+        return turns;
+    }
+
+    @Override
+    public int getPoints() {
+        return gameWins;
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.brookmanholmes.billiards.match;
 
 import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.inning.TableStatus;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 
 /**
@@ -20,4 +21,8 @@ public interface MatchInterface<T extends AbstractPlayer> {
     String getCurrentPlayersName();
 
     int getTurnCount();
+
+    boolean undoTurn();
+
+    long getMatchId();
 }

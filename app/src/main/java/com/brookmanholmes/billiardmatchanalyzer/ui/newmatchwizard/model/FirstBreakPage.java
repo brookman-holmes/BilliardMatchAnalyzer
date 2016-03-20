@@ -17,11 +17,8 @@ public class FirstBreakPage extends SingleFixedChoicePage implements RequiresPla
 
         choices.add(playerName);
         choices.add(opponentName);
-    }
-
-    @Override
-    public boolean isRequired() {
-        return true;
+        setRequired(true);
+        setValue(playerName);
     }
 
     @Override

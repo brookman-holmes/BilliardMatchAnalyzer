@@ -13,8 +13,8 @@ import com.brookmanholmes.billiardmatchanalyzer.adapters.SimpleDividerItemDecora
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.inning.TableStatus;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.match.MatchInterface;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 
@@ -80,8 +80,14 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
         return adapter.getCurrentPlayersName();
     }
 
-    public boolean undoLastTurn() {
-        return false;
+    @Override
+    public boolean undoTurn() {
+        if (adapter.undoTurn()) {
+            db.undoTurn(adapter.getMatchId(), adapter.getTurnCount() + 1);
+            adapter.notifyDataSetChanged();
+            return true;
+        } else
+            return false;
     }
 
     @Override
@@ -104,8 +110,9 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
         return adapter.getTurnCount();
     }
 
-    public boolean redoUndoneTurn() {
-        return false;
+    @Override
+    public long getMatchId() {
+        return adapter.getMatchId();
     }
 
     @Override
@@ -124,5 +131,7 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
         }
 
         adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
+
+        db.logDatabase(DatabaseAdapter.TABLE_TURNS);
     }
 }

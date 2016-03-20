@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.inning.TableStatusInterface;
-import com.brookmanholmes.billiards.inning.TurnEnd;
+import com.brookmanholmes.billiards.turn.TableStatusInterface;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.List;
 

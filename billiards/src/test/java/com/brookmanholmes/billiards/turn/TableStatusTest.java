@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.inning;
+package com.brookmanholmes.billiards.turn;
 
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.util.GameType;
@@ -25,11 +25,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/5/2015.
  */
 public class TableStatusTest {
-    TableStatus tableStatus;
+    com.brookmanholmes.billiards.turn.TableStatus tableStatus;
 
     @Before
     public void setUp() {
-        tableStatus = TableStatus.newTable(GameType.BCA_EIGHT_BALL);
+        tableStatus = com.brookmanholmes.billiards.turn.TableStatus.newTable(GameType.BCA_EIGHT_BALL);
     }
 
     @Test
@@ -149,7 +149,7 @@ public class TableStatusTest {
 
     @Test
     public void testEquality() {
-        TableStatus table = TableStatus.newTable(GameType.BCA_EIGHT_BALL);
+        com.brookmanholmes.billiards.turn.TableStatus table = com.brookmanholmes.billiards.turn.TableStatus.newTable(GameType.BCA_EIGHT_BALL);
 
         assertThat(table, is(tableStatus));
         assertThat(table, is(table));
@@ -164,12 +164,12 @@ public class TableStatusTest {
 
     @Test(expected = InvalidBallException.class)
     public void testConstructorThrowsException() {
-        tableStatus = new TableStatus(8, 9, GameType.BCA_NINE_BALL);
+        tableStatus = new com.brookmanholmes.billiards.turn.TableStatus(8, 9, GameType.BCA_NINE_BALL);
     }
 
     @Test(expected = InvalidGameTypeException.class)
     public void testStaticMethodThrowsException() {
-        tableStatus = TableStatus.newTable(GameType.AMERICAN_ROTATION);
+        tableStatus = com.brookmanholmes.billiards.turn.TableStatus.newTable(GameType.AMERICAN_ROTATION);
     }
 
     @Test
@@ -178,7 +178,7 @@ public class TableStatusTest {
                 Arrays.asList(1, 2, 3, 6, 7, 8, 9)
         );
 
-        TableStatus table = TableStatus.newTable(GameType.BCA_NINE_BALL, ballsToKeepOnTable);
+        com.brookmanholmes.billiards.turn.TableStatus table = com.brookmanholmes.billiards.turn.TableStatus.newTable(GameType.BCA_NINE_BALL, ballsToKeepOnTable);
 
         assertThat(table.getBallsRemaining(), is(7));
         assertThat(table.getBallsThatAreOffTable().containsAll(Arrays.asList(4, 5)), is(true));
@@ -190,7 +190,7 @@ public class TableStatusTest {
                 Arrays.asList(1, 2, 3, 6, 7, 8)
         );
 
-        TableStatus table = TableStatus.newTable(GameType.BCA_NINE_BALL, ballsToKeepOnTable);
+        com.brookmanholmes.billiards.turn.TableStatus table = com.brookmanholmes.billiards.turn.TableStatus.newTable(GameType.BCA_NINE_BALL, ballsToKeepOnTable);
 
     }
 }

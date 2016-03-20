@@ -9,12 +9,21 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.MultipleFixedChoice
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class HowMissPage extends MultipleFixedChoicePage {
+public class HowMissPage extends MultipleFixedChoicePage implements UpdatesTurnInfo{
     public HowMissPage(ModelCallbacks callbacks, String[] choices, String parentKey) {
         super(callbacks, "How did you miss?");
         setParentKey(parentKey);
         setChoices(choices);
-        setRequired(true);
+    }
+
+    @Override
+    public void updateTurnInfo(TurnBuilder turnBuilder) {
+        if (parentKey.equals("break miss how") || parentKey.equals("illegal break how"))
+            turnBuilder.advStats.shotType("Break shot");
+
+        turnBuilder.advStats.clearHowTypes();
+        if (data.getStringArrayList(SIMPLE_DATA_KEY) != null)
+            turnBuilder.advStats.howTypes(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
     @Override
