@@ -42,6 +42,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     DatabaseAdapter db;
     MatchInfoFragment infoFragment;
+    Menu menu;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +69,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     @Override
     protected void onResume() {
         super.onResume();
-        setBottomBarText();
+        updateViews();
     }
 
     @OnClick(R.id.addInning)
@@ -97,8 +98,19 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         return getIntent().getExtras().getLong(ARG_MATCH_ID);
     }
 
-    public void setBottomBarText() {
+    public void updateViews() {
+        if (menu != null) {
+            updateMenuItems();
+        }
+
         addInning.setText("Add turn for " + infoFragment.getCurrentPlayersName());
+    }
+
+    private void updateMenuItems() {
+        menu.findItem(R.id.action_undo).setEnabled(infoFragment.isUndoTurn());
+        menu.findItem(R.id.action_redo).setEnabled(infoFragment.isRedoTurn());
+        this.menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 64);
+        this.menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 64);
     }
 
     @Override
@@ -111,13 +123,15 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
 
-        setBottomBarText();
+        updateViews();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_match_info, menu);
+        this.menu = menu;
+        updateMenuItems();
         return true;
     }
 
@@ -165,7 +179,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 Snackbar.make(layout, "Undid last turn", Snackbar.LENGTH_SHORT).show();
                 infoFragment.undoTurn();
                 db.undoTurn(getMatchId(), infoFragment.getTurnCount() + 1);
-                setBottomBarText();
+                updateViews();
             }
             else {
                 Snackbar.make(layout, "No turn to undo", Snackbar.LENGTH_SHORT).show();
@@ -178,7 +192,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 Snackbar.make(layout, "Redid last turn", Snackbar.LENGTH_SHORT).show();
                 Turn turn = infoFragment.redoTurn();
                 db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
-                setBottomBarText();
+                updateViews();
             } else {
                 Snackbar.make(layout, "No turn to redo", Snackbar.LENGTH_SHORT).show();
             }

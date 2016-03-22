@@ -28,6 +28,7 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
     DatabaseAdapter db;
     private long matchId;
 
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).

@@ -68,9 +68,8 @@ public abstract class PlayerController<T extends AbstractPlayer> {
     }
 
     public Pair<T> updatePlayerStats(GameStatus gameStatus, Turn turn) {
-        if (turn == null || gameStatus == null) {
-            throw new IllegalStateException("Cannot input null game status or turn");
-        }
+        assert gameStatus != null;
+        assert turn != null;
 
         this.gameStatus = gameStatus;
         this.turn = turn;
