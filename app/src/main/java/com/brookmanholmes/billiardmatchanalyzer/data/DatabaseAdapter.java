@@ -13,13 +13,12 @@ import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.GameTurn;
-import com.brookmanholmes.billiards.turn.TableStatus;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.interfaces.Apa;
+import com.brookmanholmes.billiards.turn.GameTurn;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -271,7 +270,7 @@ public class DatabaseAdapter {
         return format.format(new Date());
     }
 
-    public long insertTurn(Turn turn, long matchId, int turnId, AdvStats advStats) {
+    public long insertTurn(Turn turn, long matchId, int turnId) {
         database.delete(TABLE_TURNS,
                 COLUMN_MATCH_ID + "=? AND "
                         + COLUMN_TURN_NUMBER + " >= ?",

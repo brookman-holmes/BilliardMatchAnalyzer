@@ -15,8 +15,15 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/action_undo"
+        android:icon="@drawable/ic_undo_24dp"
         android:orderInCategory="1"
-        android:title="Undo"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_undo_24dp"/>
+        android:title="Undo turn"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_redo"
+        android:icon="@drawable/ic_redo_24dp"
+        android:orderInCategory="2"
+        android:title="Redo turn"
+        app:showAsAction="ifRoom" />
 </menu>

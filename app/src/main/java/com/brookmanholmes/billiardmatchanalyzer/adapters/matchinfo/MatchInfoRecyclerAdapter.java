@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.TableStatus;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.match.MatchInterface;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
@@ -20,6 +17,8 @@ import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
 import com.brookmanholmes.billiards.player.EightBallPlayer;
 import com.brookmanholmes.billiards.player.NineBallPlayer;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 /**
  * Created by Brookman Holmes on 1/13/2016.
@@ -125,8 +124,26 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     }
 
     @Override
-    public boolean undoTurn() {
-        return match.undoTurn();
+    public void undoTurn() {
+        match.undoTurn();
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean isRedoTurn() {
+        return match.isRedoTurn();
+    }
+
+    @Override
+    public boolean isUndoTurn() {
+        return match.isUndoTurn();
+    }
+
+    @Override
+    public Turn redoTurn() {
+        Turn turn = match.redoTurn();
+        notifyDataSetChanged();
+        return turn;
     }
 
     @Override

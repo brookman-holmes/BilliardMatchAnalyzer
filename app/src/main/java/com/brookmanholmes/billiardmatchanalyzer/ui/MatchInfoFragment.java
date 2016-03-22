@@ -13,10 +13,10 @@ import com.brookmanholmes.billiardmatchanalyzer.adapters.SimpleDividerItemDecora
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.turn.TableStatus;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.match.MatchInterface;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -81,13 +81,23 @@ public class MatchInfoFragment extends Fragment implements MatchInterface {
     }
 
     @Override
-    public boolean undoTurn() {
-        if (adapter.undoTurn()) {
-            db.undoTurn(adapter.getMatchId(), adapter.getTurnCount() + 1);
-            adapter.notifyDataSetChanged();
-            return true;
-        } else
-            return false;
+    public void undoTurn() {
+        adapter.undoTurn();
+    }
+
+    @Override
+    public boolean isRedoTurn() {
+        return adapter.isRedoTurn();
+    }
+
+    @Override
+    public boolean isUndoTurn() {
+        return adapter.isUndoTurn();
+    }
+
+    @Override
+    public Turn redoTurn() {
+        return adapter.redoTurn();
     }
 
     @Override

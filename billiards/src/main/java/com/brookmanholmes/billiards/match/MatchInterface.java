@@ -1,10 +1,9 @@
 package com.brookmanholmes.billiards.match;
 
 import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
 
 /**
  * Created by Brookman Holmes on 1/31/2016.
@@ -22,7 +21,13 @@ public interface MatchInterface<T extends AbstractPlayer> {
 
     int getTurnCount();
 
-    boolean undoTurn();
+    boolean isRedoTurn();
+
+    boolean isUndoTurn();
+
+    Turn redoTurn();
+
+    void undoTurn();
 
     long getMatchId();
 }

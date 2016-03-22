@@ -6,14 +6,13 @@ import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.GameTurn;
-import com.brookmanholmes.billiards.turn.TableStatus;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.controller.ControllerHelperMethods;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
+import com.brookmanholmes.billiards.turn.GameTurn;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.ArrayDeque;
 
@@ -30,6 +29,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     ArrayDeque<T> player1 = new ArrayDeque<>();
     ArrayDeque<T> player2 = new ArrayDeque<>();
     ArrayDeque<Turn> turns = new ArrayDeque<>();
+    ArrayDeque<Turn> undoneTurns = new ArrayDeque<>();
     ArrayDeque<GameStatus> games = new ArrayDeque<>();
     private StatsDetail detail;
 
@@ -107,16 +107,33 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         game.addTurn(turn);
     }
 
-    public boolean undoTurn() {
-        if (turns.size() > 0) {
+    public boolean isRedoTurn() {
+        return undoneTurns.size() > 0;
+    }
+
+    public boolean isUndoTurn() {
+        return turns.size() > 0;
+    }
+
+    @Override
+    public Turn redoTurn() {
+        if (isRedoTurn()) {
+            addTurn(undoneTurns.pop());
+
+            return turns.peek();
+        } else return null;
+    }
+
+    @Override
+    public void undoTurn() {
+        if (isUndoTurn()) {
             player1.pop();
             player2.pop();
 
-            turns.pop();
-
             game.setGameStatus(games.pop());
-            return true;
-        } else return false;
+
+            undoneTurns.push(turns.pop());
+        }
     }
 
     public StatsDetail getStatsLevel() {

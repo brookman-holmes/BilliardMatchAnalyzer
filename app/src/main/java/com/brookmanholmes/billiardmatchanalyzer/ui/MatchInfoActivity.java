@@ -108,7 +108,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 turnBuilder.turnEnd,
                 turnBuilder.scratch,
                 turnBuilder.lostGame);
-        db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount(), turnBuilder.advStats.build());
+
+        db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
 
         setBottomBarText();
     }
@@ -160,14 +161,27 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         if (id == R.id.action_undo) {
-            if (infoFragment.undoTurn()) {
+            if (infoFragment.isUndoTurn()) {
                 Snackbar.make(layout, "Undid last turn", Snackbar.LENGTH_SHORT).show();
+                infoFragment.undoTurn();
+                db.undoTurn(getMatchId(), infoFragment.getTurnCount() + 1);
                 setBottomBarText();
             }
             else {
-                Snackbar.make(layout, "Could not undo last turn", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(layout, "No turn to undo", Snackbar.LENGTH_SHORT).show();
             }
 
+        }
+
+        if (id == R.id.action_redo) {
+            if (infoFragment.isRedoTurn()) {
+                Snackbar.make(layout, "Redid last turn", Snackbar.LENGTH_SHORT).show();
+                Turn turn = infoFragment.redoTurn();
+                db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
+                setBottomBarText();
+            } else {
+                Snackbar.make(layout, "No turn to redo", Snackbar.LENGTH_SHORT).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
