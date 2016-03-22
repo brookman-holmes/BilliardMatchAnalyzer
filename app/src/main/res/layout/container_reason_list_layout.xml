@@ -13,42 +13,49 @@
     tools:showIn="@layout/container_adv_shooting_stats">
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/line0Desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
+        android:layout_columnWeight=".6"
         android:layout_gravity="center_vertical|left"
         android:layout_row="0"
         android:gravity="center"
         android:text="Poor position"
         android:textColor="@color/primary_text"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/line0Count"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_column="1"
-        android:layout_gravity="center_vertical"
+        android:layout_columnWeight=".2"
+        android:layout_gravity="center_vertical|right"
         android:layout_row="0"
+        android:gravity="center"
         android:text="8"
         android:textColor="@color/primary_text"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/line0Pct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_columnWeight=".2"
+        android:layout_gravity="center_vertical|left"
         android:layout_marginLeft="-2dp"
+        android:gravity="center"
         android:text="(40%)"
         android:textColor="@color/primary_text"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/line1Desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
+        android:layout_columnWeight=".6"
         android:layout_gravity="center_vertical|left"
         android:layout_row="1"
         android:gravity="center"
@@ -56,29 +63,34 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/line1Count"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_column="1"
-        android:layout_gravity="center_vertical"
+        android:layout_columnWeight=".2"
+        android:layout_gravity="center_vertical|right"
         android:layout_row="1"
+        android:gravity="center"
         android:text="5"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/line1Pct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_columnWeight=".2"
+        android:layout_gravity="center_vertical|left"
         android:layout_marginLeft="-2dp"
+        android:gravity="center"
         android:text="(25%)"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/line2Desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
+        android:layout_columnWeight=".6"
         android:layout_gravity="center_vertical|left"
         android:layout_row="2"
         android:gravity="center"
@@ -87,54 +99,63 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/line2Count"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_column="1"
-        android:layout_gravity="center_vertical"
+        android:layout_columnWeight=".2"
+        android:layout_gravity="center_vertical|right"
         android:layout_row="2"
+        android:gravity="center"
         android:text="5"
         android:textColor="@color/primary_text"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/line2Pct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_columnWeight=".2"
+        android:layout_gravity="center_vertical|left"
         android:layout_marginLeft="-2dp"
+        android:gravity="center"
         android:text="(25%)"
         android:textColor="@color/primary_text"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/line3Desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
+        android:layout_columnWeight=".6"
         android:layout_gravity="center_vertical|left"
         android:layout_row="3"
         android:gravity="center"
         android:text="On the rail"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/line3Count"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_column="1"
-        android:layout_gravity="center_vertical"
+        android:layout_columnWeight=".2"
+        android:layout_gravity="center_vertical|right"
         android:layout_row="3"
+        android:gravity="center"
         android:text="2"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/line3Pct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_columnWeight=".2"
+        android:layout_gravity="center_vertical|left"
         android:layout_marginLeft="-2dp"
+        android:gravity="center"
         android:text="(10%)"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 
 </GridLayout>

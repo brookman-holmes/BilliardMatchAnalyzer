@@ -1,5 +1,6 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,9 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,6 +24,10 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 3/11/2016.
  */
 public class AdvStatsDialog extends DialogFragment {
+    private static final String ARG_MATCH_ID = "match id";
+    private static final String ARG_PLAYER_NAME = "player name";
+    private static final String ARG_PLAYER_TURN = "player turn";
+
     @Bind(R.id.pager)
     ViewPager pager;
     @Bind(R.id.tabs)
@@ -37,11 +40,26 @@ public class AdvStatsDialog extends DialogFragment {
     public AdvStatsDialog() {
     }
 
+    public static AdvStatsDialog create(long matchId, String player, PlayerTurn playerTurn) {
+        Bundle args = new Bundle();
+
+        AdvStatsDialog dialog = new AdvStatsDialog();
+        args.putString(ARG_PLAYER_NAME, player);
+        args.putLong(ARG_MATCH_ID, matchId);
+        args.putString(ARG_PLAYER_TURN, playerTurn.toString());
+
+        dialog.setArguments(args);
+
+        return dialog;
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // TODO: 3/11/2016 set transition to slide in from the left if it's PLAYER's turn and slide in from right if it's OPPONENT's turn
-        getDialog().getWindow().setWindowAnimations(R.style.CustomDialogTransitionTheme);
+        if (getArguments().getString(ARG_PLAYER_TURN, "").equals(PlayerTurn.PLAYER.toString()))
+            getDialog().getWindow().setWindowAnimations(R.style.SlideInFromLeftDialogTransitionTheme);
+        else
+            getDialog().getWindow().setWindowAnimations(R.style.SlideInFromRightDialogTransitionTheme);
     }
 
     @Override
@@ -55,22 +73,21 @@ public class AdvStatsDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_adv_stats, container, false);
         ButterKnife.bind(this, view);
 
-        toolbar.setTitle("Advanced Stats for Brookman");
+        toolbar.setTitle("Advanced Stats for " + getArguments().getString(ARG_PLAYER_NAME, "ERROR NO NAME PRESENT IN ARGUMENTS"));
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        Drawable backArrow = getResources().getDrawable(R.drawable.ic_arrow_back_24dp);
+        backArrow.setTint(getResources().getColor(android.R.color.white));
+        toolbar.setNavigationIcon(backArrow);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         adapter = new ViewPagerAdapter(getChildFragmentManager());
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         return view;
-    }
-
-    private static class AdvStats {
-        private static Map<String, Integer> map = new HashMap<>();
-
-        private static void func() {
-            for (Map.Entry<String, Integer> entry : map.entrySet()) {
-
-            }
-        }
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -86,7 +103,7 @@ public class AdvStatsDialog extends DialogFragment {
                 case 2:
                     return new AdvBreakingStats();
                 case 0:
-                    return new AdvShootingStats();
+                    return new AdvShootingStatsFragment();
                 default:
                     throw new IllegalStateException("View pager out of position (0, 1, 2): " + position);
             }

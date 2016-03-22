@@ -13,6 +13,7 @@ public class AdvStats {
     private List<String> howTypes = new ArrayList<>();
     private List<String> whyTypes = new ArrayList<>();
     private List<String> angles = new ArrayList<>();
+    private String startingPosition;
 
     private AdvStats(Builder builder) {
         this.shotType = builder.shotType;
@@ -20,10 +21,15 @@ public class AdvStats {
         howTypes.addAll(builder.howTypes);
         whyTypes.addAll(builder.whyTypes);
         angles.addAll(builder.angles);
+        this.startingPosition = builder.startingPosition;
     }
 
     public String getPlayer() {
         return player;
+    }
+
+    public String getStartingPosition() {
+        return startingPosition;
     }
 
     public List<String> getAngles() {
@@ -52,6 +58,7 @@ public class AdvStats {
         private List<String> angles = new ArrayList<>();
         private List<String> howTypes = new ArrayList<>();
         private List<String> whyTypes = new ArrayList<>();
+        private String startingPosition = "";
 
 
         public Builder(String player) {
@@ -67,6 +74,11 @@ public class AdvStats {
 
         public Builder shotType(String shotType) {
             this.shotType = shotType;
+            return this;
+        }
+
+        public Builder startingPosition(String startingPosition) {
+            this.startingPosition = startingPosition;
             return this;
         }
 

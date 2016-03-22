@@ -6,7 +6,6 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.AddTu
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.MultipleFixedChoicePage;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -30,13 +29,6 @@ public class WhyMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
             turnBuilder.advStats.clearWhyTypes();
             turnBuilder.advStats.clearAngle();
             turnBuilder.advStats.clearSubType();
-        }
-        if (parentKey.equals("safety error why")) {
-            turnBuilder.advStats.shotType("Safety error");
-            turnBuilder.advStats.clearAngle();
-            turnBuilder.advStats.clearSubType();
-            turnBuilder.advStats.clearHowTypes();
-            turnBuilder.advStats.clearWhyTypes();
         }
 
         turnBuilder.advStats.clearWhyTypes();

@@ -7,7 +7,36 @@ import android.support.annotation.NonNull;
 
 import com.brookmanholmes.billiards.match.Match;
 
-import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.*;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_ADV_STATS_ID;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_ANGLE;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_BREAK_TYPE;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_CREATED_ON;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_GAME_TYPE;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_HOW;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_ID;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_IS_GAME_LOST;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_LOCATION;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_MATCH_ID;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_NAME;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_NOTES;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_OPPONENT_RANK;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_PLAYER_RANK;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_PLAYER_TURN;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_SCRATCH;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_SHOT_SUB_TYPE;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_SHOT_TYPE;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_STATS_DETAIL;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_TABLE_STATUS;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_TURN_END;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_TURN_NUMBER;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.COLUMN_WHY;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.TABLE_ADV_STATS;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.TABLE_ANGLES;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.TABLE_HOWS;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.TABLE_MATCHES;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.TABLE_PLAYERS;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.TABLE_TURNS;
+import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.TABLE_WHYS;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
@@ -41,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_SHOT_TYPE + " TEXT COLLATE NOCASE DEFAULT NULL, "
                 + COLUMN_SHOT_SUB_TYPE + " TEXT COLLATE NOCASE DEFAULT NULL, "
-                + COLUMN_MATCH_ID + "INTEGER NOT NULL, "
+                + COLUMN_MATCH_ID + "INTEGER NOT NULL"
                 + ");";
     }
 
@@ -50,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return "CREATE TABLE " + TABLE_HOWS + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
-                + COLUMN_HOW + " TEXT COLLATE NO CASE"
+                + COLUMN_HOW + " TEXT COLLATE NOCASE"
                 + ");";
     }
 
@@ -59,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return "CREATE TABLE " + TABLE_WHYS + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
-                + COLUMN_WHY + " TEXT COLLATE NO CASE"
+                + COLUMN_WHY + " TEXT COLLATE NOCASE"
                 + ");";
     }
 
@@ -68,7 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return "CREATE TABLE " + TABLE_ANGLES + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
-                + COLUMN_ANGLE + " TEXT COLLATE NO CASE"
+                + COLUMN_ANGLE + " TEXT COLLATE NOCASE"
                 + ");";
     }
 

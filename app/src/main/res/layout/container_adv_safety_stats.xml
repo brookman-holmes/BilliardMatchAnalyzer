@@ -9,6 +9,7 @@
     android:paddingTop="16dp">
 
     <TextView
+        android:id="@+id/safetyErrorsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Safety errors"
@@ -59,25 +60,35 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/textView21"
             android:layout_toRightOf="@+id/textView22"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/over"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight=".4"
                 android:background="@color/colorAccent"
-                android:orientation="horizontal" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/under"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight=".3"
                 android:background="@color/colorPrimary"
-                android:orientation="horizontal" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -125,31 +136,40 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/textView24"
             android:layout_toRightOf="@+id/textView25"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/slow"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight=".23"
                 android:background="@color/colorAccent"
-                android:orientation="horizontal" />
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/fast"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight=".77"
                 android:background="@color/colorPrimary"
-                android:orientation="horizontal" />
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>
 
     <include layout="@layout/divider" />
 
     <TextView
+        android:id="@+id/successfulSafetiesTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
@@ -175,136 +195,165 @@
         android:useDefaultMargins="true">
 
         <TextView
+            android:id="@+id/tvFullHook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical"
+            android:layout_columnWeight=".6"
+            android:layout_gravity="center_vertical|left"
+            android:gravity="center"
             android:text="Full hook"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView27"
+            android:id="@+id/tvFullHookCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
+            android:layout_columnWeight=".2"
             android:layout_gravity="center_vertical|right"
+            android:gravity="center"
             android:text="0"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView28"
+            android:id="@+id/tvFullHookPct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight=".2"
             android:layout_gravity="center_vertical|left"
             android:layout_marginLeft="-2dp"
+            android:gravity="center"
             android:text="(0%)"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tvPartialHook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical"
+            android:layout_columnWeight=".6"
+            android:layout_gravity="center_vertical|left"
+            android:gravity="center"
             android:text="Partial hook"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView30"
+            android:id="@+id/tvPartialHookCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight=".2"
             android:layout_gravity="center_vertical|right"
+            android:gravity="center"
             android:text="0"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView31"
+            android:id="@+id/tvPartialHookPct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight=".2"
             android:layout_gravity="center_vertical|left"
             android:layout_marginLeft="-2dp"
+            android:gravity="center"
             android:text="(0%)"
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tvLongT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical"
+            android:layout_columnWeight=".6"
+            android:layout_gravity="center_vertical|left"
+            android:gravity="center"
             android:text="Long T"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView33"
+            android:id="@+id/tvLongTCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight=".2"
             android:layout_gravity="center_vertical|right"
+            android:gravity="center"
             android:text="0"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView34"
+            android:id="@+id/tvLongTPct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight=".2"
             android:layout_gravity="center_vertical|left"
             android:layout_marginLeft="-2dp"
+            android:gravity="center"
             android:text="(0%)"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tvShortT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical"
+            android:layout_columnWeight=".6"
+            android:layout_gravity="center_vertical|left"
+            android:gravity="center"
             android:text="Short T"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView36"
+            android:id="@+id/tvShortTCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight=".2"
             android:layout_gravity="center_vertical|right"
+            android:gravity="center"
             android:text="0"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView37"
+            android:id="@+id/tvShortTPct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight=".2"
             android:layout_gravity="center_vertical|left"
             android:layout_marginLeft="-2dp"
+            android:gravity="center"
             android:text="(0%)"
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tvOpen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_columnWeight=".25"
-            android:layout_gravity="center_vertical"
+            android:layout_columnWeight=".6"
+            android:layout_gravity="center_vertical|left"
+            android:gravity="center"
             android:text="Open"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView39"
+            android:id="@+id/tvOpenCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight=".2"
             android:layout_gravity="center_vertical|right"
+            android:gravity="center"
             android:text="0"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView40"
+            android:id="@+id/tvOpenPct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight=".2"
             android:layout_gravity="center_vertical|left"
             android:layout_marginLeft="-2dp"
+            android:gravity="center"
             android:text="(0%)"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />

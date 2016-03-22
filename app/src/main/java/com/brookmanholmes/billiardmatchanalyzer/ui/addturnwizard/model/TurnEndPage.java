@@ -9,11 +9,11 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
 import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
-import com.brookmanholmes.billiards.match.Match;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     private static final String[] breakMissTypes = {"Too hard", "Too soft", "Hit too far to the left", "Hit too far to the right", "Foul", "Kicked into pocket (foul)"};
     private static final String[] illegalBreakTypes = {"Too soft", "Too thin", "CB in pocket"};
     private static final String[] whyChoices = {"Bad position", "Jacked up", "Lack of focus", "Over spin", "Unintentional english", "Too slow", "Too fast", "CB curved", "On the rail", "Forcing position"};
-    private static final String[] whyChoicesSafety = {"Too fast", "Too slow", "Too thick", "Too thin"};
+    private static final String[] howChoicesSafety = {"Too hard", "Too soft", "Too thick", "Too thin"};
     private static final String[] whyChoicesBreak = {"Unintentional english", "Aim", "Unlucky", "Too much follow", "Too much draw", "I need to lift weights"};
     TurnEndHelper turnEndHelper;
     TurnEndFragment fragment;
@@ -69,7 +69,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
 
         if (currentPlayerTurnAndAdvancedStats(currentPlayer, detail)) {
             // Safety Error branch
-            branches.get(0).childPageList.add(new WhyMissPage(callbacks, whyChoicesSafety, "safety error why"));
+            branches.get(0).childPageList.add(new HowMissPage(callbacks, howChoicesSafety, "safety error how"));
 
             // Miss branch
             branches.get(1).childPageList.add(new MissBranchPage(callbacks));

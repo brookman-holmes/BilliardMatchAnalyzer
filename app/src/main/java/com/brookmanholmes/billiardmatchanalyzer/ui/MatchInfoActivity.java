@@ -27,8 +27,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
-    private static final String TAG = "MatchInfoActivity";
     public static final String INFO_FRAGMENT_TAG = "infoFragment";
+    private static final String TAG = "MatchInfoActivity";
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.playerName)
@@ -79,7 +79,16 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     @OnClick(R.id.playerName)
     public void showTestLayout() {
-        DialogFragment dialogFragment = new AdvStatsDialog();
+        DialogFragment dialogFragment =
+                AdvStatsDialog.create(getMatchId(), playerName.getText().toString(), PlayerTurn.PLAYER);
+        dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme);
+        dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
+    }
+
+    @OnClick(R.id.opponentName)
+    public void showTestLayout2() {
+        DialogFragment dialogFragment =
+                AdvStatsDialog.create(getMatchId(), opponentName.getText().toString(), PlayerTurn.OPPONENT);
         dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme);
         dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
     }
