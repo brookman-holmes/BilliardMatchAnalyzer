@@ -99,9 +99,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     public void updateViews() {
-        if (menu != null) {
+        if (menu != null)
             updateMenuItems();
-        }
 
         addInning.setText("Add turn for " + infoFragment.getCurrentPlayersName());
     }
@@ -115,14 +114,21 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     @Override
     public void addTurn(TurnBuilder turnBuilder) {
-        Turn turn = infoFragment.createAndAddTurnToMatch(
+        addTurn(infoFragment.createAndAddTurnToMatch(
                 turnBuilder.tableStatus,
                 turnBuilder.turnEnd,
                 turnBuilder.scratch,
-                turnBuilder.lostGame);
+                turnBuilder.lostGame));
+    }
 
+    private void addTurn(Turn turn) {
         db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
+        updateViews();
+    }
 
+    private void undoTurn() {
+        infoFragment.undoTurn();
+        db.undoTurn(getMatchId(), infoFragment.getTurnCount() + 1);
         updateViews();
     }
 
@@ -141,11 +147,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         if (id == R.id.action_notes) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
@@ -175,27 +176,13 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         if (id == R.id.action_undo) {
-            if (infoFragment.isUndoTurn()) {
-                Snackbar.make(layout, "Undid last turn", Snackbar.LENGTH_SHORT).show();
-                infoFragment.undoTurn();
-                db.undoTurn(getMatchId(), infoFragment.getTurnCount() + 1);
-                updateViews();
-            }
-            else {
-                Snackbar.make(layout, "No turn to undo", Snackbar.LENGTH_SHORT).show();
-            }
-
+            Snackbar.make(layout, "Undid last turn", Snackbar.LENGTH_SHORT).show();
+            undoTurn();
         }
 
         if (id == R.id.action_redo) {
-            if (infoFragment.isRedoTurn()) {
-                Snackbar.make(layout, "Redid last turn", Snackbar.LENGTH_SHORT).show();
-                Turn turn = infoFragment.redoTurn();
-                db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
-                updateViews();
-            } else {
-                Snackbar.make(layout, "No turn to redo", Snackbar.LENGTH_SHORT).show();
-            }
+            Snackbar.make(layout, "Redid last turn", Snackbar.LENGTH_SHORT).show();
+            addTurn(infoFragment.redoTurn());
         }
 
         return super.onOptionsItemSelected(item);
