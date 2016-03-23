@@ -265,6 +265,21 @@ public class DatabaseAdapter {
         return match.getMatchId();
     }
 
+    public void updateMatchNotes(String matchNotes, long matchId) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOTES, matchNotes);
+
+        database.update(TABLE_MATCHES, values, COLUMN_ID + " = ?", new String[]{String.valueOf(matchId)});
+    }
+
+    public void updateMatchLocation(String location, long matchId) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LOCATION, location);
+
+        database.update(TABLE_MATCHES, values, COLUMN_ID + " = ?", new String[]{String.valueOf(matchId)});
+    }
+
+
     private String getCurrentDate() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(new Date());

@@ -7,10 +7,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -170,17 +172,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         int id = item.getItemId();
 
         if (id == R.id.action_notes) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+            displayEditMatchNotesDialog();
+        }
 
-            builder.setTitle("Match Notes")
-                    .setMessage(db.getMatch(getMatchId()).getNotes())
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).create().show();
-
+        if (id == R.id.action_location) {
+            displayEditMatchLocationDialog();
         }
 
         if (id == R.id.action_game_status) {
@@ -207,5 +203,48 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void displayEditMatchNotesDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+        final EditText input = (EditText) getLayoutInflater().inflate(R.layout.edit_text, null);
+        input.setText(db.getMatch(getMatchId()).getNotes());
+        builder.setTitle("Match Notes")
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.updateMatchNotes(input.getText().toString(), getMatchId());
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create().show();
+    }
+
+    private void displayEditMatchLocationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+        final EditText input = (EditText) getLayoutInflater().inflate(R.layout.edit_text, null);
+        input.setText(db.getMatch(getMatchId()).getLocation());
+        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        builder.setTitle("Match Location")
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.updateMatchLocation(input.getText().toString(), getMatchId());
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create().show();
     }
 }
