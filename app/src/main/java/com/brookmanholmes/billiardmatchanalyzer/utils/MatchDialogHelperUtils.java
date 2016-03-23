@@ -3,7 +3,6 @@ package com.brookmanholmes.billiardmatchanalyzer.utils;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -13,8 +12,8 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.turn.InvalidBallException;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.turn.InvalidBallException;
 
 import java.util.ArrayList;
 
@@ -51,16 +50,16 @@ public class MatchDialogHelperUtils {
         args.putBoolean(NEW_GAME_KEY, match.getGameStatus().newGame);
         args.putString(CURRENT_PLAYER_NAME_KEY, getCurrentPlayersName(match));
         args.putString(OPPOSING_PLAYER_NAME_KEY, getOpposingPlayersName(match));
-        args.putString(GAME_TYPE_KEY, match.getGameStatus().gameType.toString());
+        args.putString(GAME_TYPE_KEY, match.getGameStatus().gameType.name());
         args.putIntegerArrayList(BALLS_ON_TABLE_KEY, new ArrayList<>(match.getGameStatus().ballsOnTable));
-        args.putString(TURN_KEY, match.getGameStatus().turn.toString());
-        args.putString(CURRENT_PLAYER_COLOR_KEY, match.getGameStatus().currentPlayerColor.toString());
-        args.putString(BREAKER_KEY, match.getGameStatus().breaker.toString());
+        args.putString(TURN_KEY, match.getGameStatus().turn.name());
+        args.putString(CURRENT_PLAYER_COLOR_KEY, match.getGameStatus().currentPlayerColor.name());
+        args.putString(BREAKER_KEY, match.getGameStatus().breaker.name());
         args.putInt(CONSECUTIVE_FOULS_KEY, match.getGameStatus().currentPlayerConsecutiveFouls);
-        args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.toString());
+        args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.name());
         args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
         args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
-        args.putString(STATS_LEVEL_KEY, match.getStatsLevel().toString());
+        args.putString(STATS_LEVEL_KEY, match.getStatsLevel().name());
         args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
         args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
         return args;

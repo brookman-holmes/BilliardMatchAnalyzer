@@ -38,12 +38,14 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        final int animationDelay = 250; // .25 seconds
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 fab.show();
             }
-        }, 200);
+        }, animationDelay); // display fab after activity starts
     }
 
     @OnClick(R.id.createMatch)
