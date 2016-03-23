@@ -10,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -35,8 +38,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     TextView playerName;
     @Bind(R.id.opponentName)
     TextView opponentName;
-    @Bind(R.id.addInning)
-    Button addInning;
+    @Bind(R.id.buttonAddTurn)
+    Button addTurnButton;
     @Bind(R.id.coordinatorLayout)
     CoordinatorLayout layout;
 
@@ -72,10 +75,31 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         updateViews();
     }
 
-    @OnClick(R.id.addInning)
+    @OnClick(R.id.buttonAddTurn)
     public void addInning(View view) {
-        DialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
-        dialogFragment.show(getSupportFragmentManager(), "AddTurnDialog");
+        TranslateAnimation anim = new TranslateAnimation(0, 0, 0, addTurnButton.getHeight());
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                DialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
+                dialogFragment.show(getSupportFragmentManager(), "AddTurnDialog");
+                addTurnButton.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        anim.setDuration(200);
+        anim.setInterpolator(new DecelerateInterpolator());
+        addTurnButton.startAnimation(anim);
     }
 
     @OnClick(R.id.playerName)
@@ -102,7 +126,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         if (menu != null)
             updateMenuItems();
 
-        addInning.setText("Add turn for " + infoFragment.getCurrentPlayersName());
+        addTurnButton.setText("Add turn for " + infoFragment.getCurrentPlayersName());
     }
 
     private void updateMenuItems() {
@@ -119,6 +143,16 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 turnBuilder.turnEnd,
                 turnBuilder.scratch,
                 turnBuilder.lostGame));
+        animateAddTurnButton();
+    }
+
+    @Override
+    public void dismiss() {
+        animateAddTurnButton();
+    }
+
+    private void animateAddTurnButton() {
+        
     }
 
     private void addTurn(Turn turn) {

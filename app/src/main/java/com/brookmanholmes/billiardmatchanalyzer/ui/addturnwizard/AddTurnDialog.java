@@ -212,11 +212,14 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
 
     @OnClick(R.id.close)
     public void close() {
+        listener.dismiss();
         dismiss();
     }
 
     public interface AddTurnListener {
         void addTurn(TurnBuilder turnBuilder);
+
+        void dismiss();
     }
 
     public class MyPagerAdapter extends FragmentStatePagerAdapter {

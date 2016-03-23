@@ -33,6 +33,7 @@
         android:elevation="12dp"
         android:src="@android:drawable/ic_input_add"
         android:tint="@android:color/white"
+        android:visibility="invisible"
         app:borderWidth="0dp"
         app:layout_behavior="com.brookmanholmes.billiardmatchanalyzer.ui.ScrollAwareFABBehavior" />
 
