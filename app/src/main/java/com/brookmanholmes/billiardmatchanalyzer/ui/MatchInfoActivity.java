@@ -10,9 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -22,6 +19,7 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.billiards.game.Turn;
+import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 
@@ -61,12 +59,18 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
 
+        setToolbarTitle(match.getGameStatus().gameType);
+
         infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag(INFO_FRAGMENT_TAG);
 
         if (infoFragment == null) {
             infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, INFO_FRAGMENT_TAG).commit();
         }
+    }
+
+    private void setToolbarTitle(GameType gameType) {
+        getSupportActionBar().setTitle(gameType.toString() + " Match");
     }
 
     @Override
@@ -77,29 +81,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     @OnClick(R.id.buttonAddTurn)
     public void addInning(View view) {
-        TranslateAnimation anim = new TranslateAnimation(0, 0, 0, addTurnButton.getHeight());
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+        showAddTurnDialog();
+    }
 
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                DialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
-                dialogFragment.show(getSupportFragmentManager(), "AddTurnDialog");
-                addTurnButton.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        anim.setDuration(200);
-        anim.setInterpolator(new DecelerateInterpolator());
-        addTurnButton.startAnimation(anim);
+    private void showAddTurnDialog() {
+        DialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
+        dialogFragment.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
     @OnClick(R.id.playerName)
