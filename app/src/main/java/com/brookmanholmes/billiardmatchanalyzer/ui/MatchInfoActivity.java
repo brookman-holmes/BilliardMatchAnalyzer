@@ -19,6 +19,7 @@ import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
+import com.brookmanholmes.billiardmatchanalyzer.ui.dialog.GameStatusStringBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.GameType;
@@ -181,15 +182,14 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         if (id == R.id.action_game_status) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-            // TODO: 3/9/2016 beautify this
-            builder.setTitle("Current Game Status")
-                    .setMessage(db.getMatch(getMatchId()).getGameStatus().toString())
+            builder.setMessage(GameStatusStringBuilder.getMatchStatusString(db.getMatch(getMatchId())))
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+
                         }
-                    }).create().show();
+                    })
+                    .create().show();
         }
 
         if (id == R.id.action_undo) {
@@ -207,10 +207,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     private void displayEditMatchNotesDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-        final EditText input = (EditText) getLayoutInflater().inflate(R.layout.edit_text, null);
+        View view = getLayoutInflater().inflate(R.layout.edit_text, null);
+        final EditText input = (EditText) view.findViewById(R.id.editText);
         input.setText(db.getMatch(getMatchId()).getNotes());
         builder.setTitle("Match Notes")
-                .setView(input)
+                .setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -228,11 +229,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     private void displayEditMatchLocationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-        final EditText input = (EditText) getLayoutInflater().inflate(R.layout.edit_text, null);
+        View view = getLayoutInflater().inflate(R.layout.edit_text, null);
+        final EditText input = (EditText) view.findViewById(R.id.editText);
         input.setText(db.getMatch(getMatchId()).getLocation());
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         builder.setTitle("Match Location")
-                .setView(input)
+                .setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

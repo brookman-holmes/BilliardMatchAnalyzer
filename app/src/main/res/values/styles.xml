@@ -102,11 +102,13 @@
     <style name="card_center_title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">13sp</item>
     </style>
 
     <style name="player_stats">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">13sp</item>
     </style>
 
     <style name="CustomDialogTransitionTheme" parent="@android:style/Theme.Dialog">

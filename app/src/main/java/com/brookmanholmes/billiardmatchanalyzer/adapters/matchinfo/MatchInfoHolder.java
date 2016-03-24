@@ -28,7 +28,7 @@ import butterknife.OnClick;
  */
 public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseViewHolder<T> {
     final View card_layout;
-    final int collapsedCardHeight = 72;
+    final int collapsedCardHeight = 48;
     final int collapsedHeight = (int) Math.floor(collapsedCardHeight * Resources.getSystem().getDisplayMetrics().density);
     @Bind(R.id.container)
     GridLayout container;
