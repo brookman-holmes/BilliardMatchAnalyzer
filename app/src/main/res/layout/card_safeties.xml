@@ -6,25 +6,23 @@
     app:cardElevation="2dp"
     app:cardUseCompatPadding="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/card_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
         <include
-            android:id="@+id/title"
             layout="@layout/layout_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <include layout="@layout/container_safeties" />
+
         <include
-            android:id="@+id/bottom_icons"
             layout="@layout/layout_bottom_row"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/container" />
-
-        <include layout="@layout/container_safeties" />
-    </RelativeLayout>
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </view>

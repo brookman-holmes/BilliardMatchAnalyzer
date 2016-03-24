@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/tvEarlyWinsTitle"
-        style="@style/container_title"
+        style="@style/player_stats_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -46,7 +46,7 @@
 
     <TextView
         android:id="@+id/tvTierOneRunsTitle"
-        style="@style/container_title"
+        style="@style/player_stats_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -92,7 +92,7 @@
 
     <TextView
         android:id="@+id/tvMaxBallRunsTitle"
-        style="@style/container_title"
+        style="@style/player_stats_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -102,7 +102,7 @@
 
     <TextView
         android:id="@+id/tvFiveBallRunsTitle"
-        style="@style/container_title"
+        style="@style/player_stats_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"

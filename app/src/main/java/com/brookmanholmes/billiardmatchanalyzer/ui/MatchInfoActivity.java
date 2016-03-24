@@ -3,6 +3,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -11,7 +12,6 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -40,7 +40,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     @Bind(R.id.opponentName)
     TextView opponentName;
     @Bind(R.id.buttonAddTurn)
-    Button addTurnButton;
+    FloatingActionButton addTurnButton;
     @Bind(R.id.coordinatorLayout)
     CoordinatorLayout layout;
 
@@ -84,10 +84,18 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     @OnClick(R.id.buttonAddTurn)
     public void addInning(View view) {
-        showAddTurnDialog();
+        addTurnButton.hide(new FloatingActionButton.OnVisibilityChangedListener() {
+            @Override
+            public void onHidden(FloatingActionButton fab) {
+                super.onHidden(fab);
+                showAddTurnDialog();
+            }
+        });
+
     }
 
     private void showAddTurnDialog() {
+
         DialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
         dialogFragment.show(getSupportFragmentManager(), "AddTurnDialog");
     }
@@ -115,8 +123,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     public void updateViews() {
         if (menu != null)
             updateMenuItems();
-
-        addTurnButton.setText("Add turn for " + infoFragment.getCurrentPlayersName());
     }
 
     private void updateMenuItems() {
@@ -142,7 +148,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void animateAddTurnButton() {
-        
+        addTurnButton.show();
     }
 
     private void addTurn(Turn turn) {

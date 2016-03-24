@@ -48,7 +48,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     public ListItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ListItemHolder(LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.plain_match_row, parent, false));
+                .inflate(R.layout.card_match_row, parent, false));
     }
 
     private String getBreakType(Cursor cursor) {

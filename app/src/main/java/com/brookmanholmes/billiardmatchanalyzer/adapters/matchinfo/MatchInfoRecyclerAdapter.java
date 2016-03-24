@@ -33,7 +33,7 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     static final int ITEM_FOOTER = 10;
     final int gameBall;
     Match.StatsDetail detail;
-    ViewType viewTypeToggle = ViewType.LIST;
+    ViewType viewTypeToggle = ViewType.CARDS;
     Match<T> match;
 
     MatchInfoRecyclerAdapter(Match<T> match, int gameBall) {

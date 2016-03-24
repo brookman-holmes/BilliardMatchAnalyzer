@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/card_view_style"
     class="android.support.v7.widget.CardView"
-    android:layout_height="88dp"
+    android:layout_height="wrap_content"
     android:elevation="4dp"
     app:cardUseCompatPadding="true">
 
@@ -11,19 +11,9 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+        android:background="?android:attr/selectableItemBackgroundBorderless">
 
         <include layout="@layout/container_match_row" />
-
-        <include
-            android:id="@+id/bottom_icons"
-            layout="@layout/layout_bottom_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="-16dp" />
 
     </RelativeLayout>
 </view>
