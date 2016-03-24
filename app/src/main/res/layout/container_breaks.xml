@@ -14,7 +14,7 @@
 
     <TextView
         android:id="@+id/tvAvgBreakBallsTitle"
-        style="@style/card_center_title"
+        style="@style/container_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -24,7 +24,7 @@
 
     <TextView
         android:id="@+id/tvBreakTotalTitle"
-        style="@style/card_center_title"
+        style="@style/container_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -34,7 +34,7 @@
 
     <TextView
         android:id="@+id/tvBreakContinuationsTitle"
-        style="@style/card_center_title"
+        style="@style/container_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/tvBreakScratchesTitle"
-        style="@style/card_center_title"
+        style="@style/container_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -54,7 +54,7 @@
 
     <TextView
         android:id="@+id/tvBreakWinsTitle"
-        style="@style/card_center_title"
+        style="@style/container_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"

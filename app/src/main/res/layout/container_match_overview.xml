@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/gamesWonTitle"
-        style="@style/card_center_title"
+        style="@style/container_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -76,7 +76,7 @@
 
     <TextView
         android:id="@+id/tvTotalShotsTitle"
-        style="@style/card_center_title"
+        style="@style/container_title"
         android:layout_below="@+id/tvTrueShootingPct"
         android:layout_column="1"
         android:layout_columnWeight="1"
@@ -87,7 +87,7 @@
 
     <TextView
         android:id="@+id/tvTrueShootingPct"
-        style="@style/card_center_title"
+        style="@style/container_title"
         android:layout_below="@+id/tvAggressivenessRating"
         android:layout_column="1"
         android:layout_columnWeight="1"
@@ -98,7 +98,7 @@
 
     <TextView
         android:id="@+id/tvAggressivenessRating"
-        style="@style/card_center_title"
+        style="@style/container_title"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
