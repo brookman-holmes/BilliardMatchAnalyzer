@@ -12,14 +12,15 @@
         android:layout_centerVertical="true"
         android:paddingLeft="16dp"
         android:text="title"
-        android:textColor="@color/abc_primary_text_material_light"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/collapseExpandButton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:padding="8dp"
         android:src="@drawable/ic_action_collapse" />
