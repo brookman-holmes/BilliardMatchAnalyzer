@@ -7,20 +7,19 @@
 
     <TextView
         style="@style/help_dialog_title"
-        android:paddingTop="0dp"
-        android:text="@string/games_won_title" />
-
-    <TextView
-        style="@style/help_dialog_text"
-        android:text="@string/games_won_description" />
-
-    <TextView
-        style="@style/help_dialog_title"
         android:text="@string/win_pct_title" />
 
     <TextView
         style="@style/help_dialog_text"
         android:text="@string/win_pct_description" />
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:text="@string/games_won_title" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="@string/games_won_description" />
 
     <TextView
         style="@style/help_dialog_title"

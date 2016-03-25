@@ -21,7 +21,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -39,11 +38,12 @@ public class StepPagerStrip extends View {
     private int gravity = Gravity.LEFT | Gravity.TOP;
     private float tabWidth;
     private float tabHeight;
-    private float tabSpacing;
+    private float indicatorSpacing;
     private float radius;
     private float nonCurrentRadius;
 
-    private Paint unSelectedTabPaint;
+    private Paint prevTabPaint;
+    private Paint nextTabPaint;
     private Paint selectedTabPaint;
 
     //private Scroller mScroller;
@@ -68,15 +68,18 @@ public class StepPagerStrip extends View {
         final Resources res = getResources();
         tabWidth = res.getDimensionPixelSize(R.dimen.step_pager_tab_width);
         tabHeight = res.getDimensionPixelSize(R.dimen.step_pager_tab_height);
-        tabSpacing = res.getDimensionPixelSize(R.dimen.step_pager_tab_spacing);
-        radius = 16;
-        nonCurrentRadius = 8;
+        indicatorSpacing = res.getDimensionPixelSize(R.dimen.step_pager_tab_spacing);
+        radius = 14;
+        nonCurrentRadius = 10;
 
-        unSelectedTabPaint = new Paint();
-        unSelectedTabPaint.setColor(res.getColor(R.color.step_pager_next_tab_color));
+        nextTabPaint = new Paint();
+        nextTabPaint.setColor(res.getColor(R.color.step_pager_next_tab_color));
 
         selectedTabPaint = new Paint();
-        selectedTabPaint.setColor(res.getColor(R.color.step_pager_selected_tab_color));
+        selectedTabPaint.setColor(res.getColor(R.color.colorAccent));
+
+        prevTabPaint = new Paint();
+        prevTabPaint.setColor(res.getColor(R.color.colorPrimaryLight));
     }
 
     public void setOnPageSelectedListener(OnPageSelectedListener onPageSelectedListener) {
@@ -91,7 +94,7 @@ public class StepPagerStrip extends View {
             return;
         }
 
-        float totalWidth = pageCount * (tabWidth + tabSpacing) - tabSpacing;
+        float totalWidth = pageCount * (tabWidth + indicatorSpacing) - indicatorSpacing;
         float totalcx;
         float cy;
         boolean fillHorizontal = false;
@@ -127,15 +130,24 @@ public class StepPagerStrip extends View {
         float tabWidth = this.tabWidth;
         if (fillHorizontal) {
             tabWidth = (getWidth() - getPaddingRight() - getPaddingLeft()
-                    - (pageCount - 1) * tabSpacing) / pageCount;
+                    - (pageCount - 1) * indicatorSpacing) / pageCount;
         }
 
         for (int i = 0; i < pageCount; i++) {
-            float cx = totalcx + (i * (tabWidth + tabSpacing));
+            float cx = totalcx + (i * (tabWidth + indicatorSpacing));
+
+            Paint tempPaint;
+
+            if (i < currentPage)
+                tempPaint = prevTabPaint;
+            else if (i > currentPage)
+                tempPaint = nextTabPaint;
+            else
+                tempPaint = selectedTabPaint;
 
             canvas.drawCircle(cx, center,
                     i == currentPage ? radius : nonCurrentRadius,
-                    i == currentPage ? selectedTabPaint : unSelectedTabPaint);
+                    tempPaint);
         }
     }
 
@@ -143,7 +155,7 @@ public class StepPagerStrip extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(
                 View.resolveSize(
-                        (int) (pageCount * (tabWidth + tabSpacing) - tabSpacing)
+                        (int) (pageCount * (tabWidth + indicatorSpacing) - indicatorSpacing)
                                 + getPaddingLeft() + getPaddingRight(),
                         widthMeasureSpec),
                 View.resolveSize(
@@ -179,7 +191,7 @@ public class StepPagerStrip extends View {
             return -1;
         }
 
-        float totalWidth = pageCount * (tabWidth + tabSpacing) - tabSpacing;
+        float totalWidth = pageCount * (tabWidth + indicatorSpacing) - indicatorSpacing;
         float totalLeft;
         boolean fillHorizontal = false;
 
@@ -201,10 +213,10 @@ public class StepPagerStrip extends View {
         float tabWidth = this.tabWidth;
         if (fillHorizontal) {
             tabWidth = (getWidth() - getPaddingRight() - getPaddingLeft()
-                    - (pageCount - 1) * tabSpacing) / pageCount;
+                    - (pageCount - 1) * indicatorSpacing) / pageCount;
         }
 
-        float totalRight = totalLeft + (pageCount * (tabWidth + tabSpacing));
+        float totalRight = totalLeft + (pageCount * (tabWidth + indicatorSpacing));
         if (x >= totalLeft && x <= totalRight && totalRight > totalLeft) {
             return (int) (((x - totalLeft) / (totalRight - totalLeft)) * pageCount);
         } else {
@@ -223,8 +235,8 @@ public class StepPagerStrip extends View {
     private void scrollCurrentPageIntoView() {
         // TODO: only works with left gravity for now
 //
-//        float widthToActive = getPaddingLeft() + (currentPage + 1) * (tabWidth + tabSpacing)
-//                - tabSpacing;
+//        float widthToActive = getPaddingLeft() + (currentPage + 1) * (tabWidth + indicatorSpacing)
+//                - indicatorSpacing;
 //        int viewWidth = getWidth();
 //
 //        int startScrollX = getScrollX();

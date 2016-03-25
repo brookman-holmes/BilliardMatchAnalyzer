@@ -165,7 +165,7 @@ public class MatchInfoFragment extends Fragment implements MatchInterface, View.
             case MatchInfoRecyclerAdapter.ITEM_APA_STATS:
                 return getActivity().getLayoutInflater().inflate(R.layout.dialog_help_safeties, null);
             case MatchInfoRecyclerAdapter.ITEM_BREAKS:
-                return getActivity().getLayoutInflater().inflate(R.layout.dialog_help_apa, null);
+                return getActivity().getLayoutInflater().inflate(R.layout.dialog_help_breaks, null);
             default:
                 throw new IllegalArgumentException("No such help dialog for view id: " + viewId);
         }

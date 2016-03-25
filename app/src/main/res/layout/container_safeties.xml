@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@+id/title"
     android:columnCount="3"
+    android:columnOrderPreserved="true"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:rowCount="6"
@@ -13,63 +14,52 @@
     tools:showIn="@layout/card_safeties">
 
     <TextView
-        android:id="@+id/tvSafetiesAttemptedPlayer"
-        style="@style/player_stats"
-        android:layout_column="0"
-        android:layout_gravity="center"
-        android:layout_row="0"
-        android:textColor="@color/primary_text" />
-
-    <TextView
-        android:id="@+id/safetiesTitleTV"
-        style="@style/player_stats_title"
-        android:layout_column="1"
-        android:layout_columnWeight="1"
-        android:layout_gravity="center"
-        android:layout_row="0"
-        android:text="@string/safeties_made_title"
-        android:textColor="@color/primary_text" />
-
-    <TextView
-        android:id="@+id/tvSafetiesAttemptedOpponent"
-        style="@style/player_stats"
-        android:layout_column="2"
-        android:layout_gravity="center"
-        android:layout_row="0"
-        android:textColor="@color/primary_text" />
-
-    <TextView
         android:id="@+id/tvSafetyPctPlayer"
-        style="@style/player_stats"
-        android:layout_column="0"
         android:layout_gravity="center"
-        android:layout_row="1"
-        android:textColor="@color/secondary_text" />
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:id="@+id/tvSafetyPercentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/safety_pct_title"
+        android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/tvSafetyPctOpponent"
-        style="@style/player_stats"
-        android:layout_column="2"
         android:layout_gravity="center"
-        android:layout_row="1"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:id="@+id/tvSafetiesAttemptedPlayer"
+        android:layout_gravity="center"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/safetiesTitleTV"
+        android:layout_columnWeight="1"
+        android:layout_gravity="center"
+        android:text="@string/safeties_made_title"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/tvSafetiesAttemptedOpponent"
+        android:layout_gravity="center"
         android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvSafetyScratchesPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_column="0"
         android:layout_gravity="center"
-        android:layout_row="2"
         android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/tvSafetyScratchesTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_column="1"
         android:layout_gravity="center"
-        android:layout_row="2"
         android:text="@string/safety_fouls_title"
         android:textColor="@color/primary_text" />
 
@@ -77,40 +67,30 @@
         android:id="@+id/tvSafetyScratchesOpponent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_column="2"
         android:layout_gravity="center"
-        android:layout_row="2"
         android:textColor="@color/primary_text" />
-
-    <TextView
-        android:id="@+id/tvSafetyPercentTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_gravity="center"
-        android:layout_row="1"
-        android:text="@string/safety_pct_title" />
 
     <TextView
         android:id="@+id/tvSafetyEscapesPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_column="0"
         android:layout_gravity="center"
-        android:layout_row="4" />
+        android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvSafetyEscapesTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/safety_escapes_title" />
+        android:text="@string/safety_escapes_title"
+        android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvSafetyEscapesOpponent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvSafetyReturnsPlayer"
@@ -138,18 +118,21 @@
         android:id="@+id/tvForcedErrorsPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvForcedErrorsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/forced_errors_title" />
+        android:text="@string/forced_errors_title"
+        android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvForcedErrorsOpponent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:textColor="@color/secondary_text" />
 </GridLayout>

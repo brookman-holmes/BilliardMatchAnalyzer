@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/title"
-    android:alignmentMode="alignBounds"
+    android:columnCount="3"
+    android:columnOrderPreserved="true"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:useDefaultMargins="true"
@@ -13,105 +14,69 @@
 
     <TextView
         android:id="@+id/tvShootingPctPlayer"
-        style="@style/player_stats"
-        android:layout_column="0"
         android:layout_gravity="center"
-        android:layout_row="0"
         android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/shootingPctTitle"
-        style="@style/player_stats_title"
         android:layout_width="wrap_content"
-        android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:layout_row="0"
         android:text="@string/shooting_pct_title"
         android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/tvShootingPctOpponent"
-        style="@style/player_stats"
-        android:layout_column="2"
         android:layout_gravity="center"
-        android:layout_row="0"
         android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/tvBallTotalPlayer"
-        style="@style/player_stats"
-        android:layout_column="0"
         android:layout_gravity="center"
-        android:layout_row="2"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvBallTotalTitle"
-        style="@style/player_stats_title"
         android:layout_width="wrap_content"
-        android:layout_column="1"
         android:layout_gravity="center"
-        android:layout_row="2"
         android:text="@string/shots_made_title"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvBallTotalOpponent"
-        style="@style/player_stats"
-        android:layout_column="2"
         android:layout_gravity="center"
-        android:layout_row="2"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/tvAvgBallsTurnPlayer"
+        android:layout_gravity="center"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:id="@+id/tvAvgBallsTitle"
+        android:layout_gravity="center"
+        android:text="@string/avg_balls_turn_title"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:id="@+id/tvAvgBallsTurnOpponent"
+        android:layout_gravity="center"
         android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/tvScratchesPlayer"
-        style="@style/player_stats"
-        android:layout_column="0"
         android:layout_gravity="center"
-        android:layout_row="3"
         android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvScratchesTitle"
-        style="@style/player_stats_title"
-        android:layout_column="1"
         android:layout_gravity="center"
-        android:layout_row="3"
         android:text="@string/shooting_fouls_title"
         android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvScratchesOpponent"
-        style="@style/player_stats"
-        android:layout_column="2"
         android:layout_gravity="center"
-        android:layout_row="3"
-        android:textColor="@color/secondary_text" />
-
-    <TextView
-        android:id="@+id/tvAvgBallsTurnPlayer"
-        style="@style/player_stats"
-        android:layout_column="0"
-        android:layout_gravity="center"
-        android:layout_row="1"
-        android:textColor="@color/secondary_text" />
-
-    <TextView
-        android:id="@+id/tvAvgBallsTitle"
-        style="@style/player_stats_title"
-        android:layout_column="1"
-        android:layout_gravity="center"
-        android:layout_row="1"
-        android:text="@string/avg_balls_turn_title"
-        android:textColor="@color/secondary_text" />
-
-    <TextView
-        android:id="@+id/tvAvgBallsTurnOpponent"
-        style="@style/player_stats"
-        android:layout_column="2"
-        android:layout_gravity="center"
-        android:layout_row="1"
         android:textColor="@color/secondary_text" />
 
 </GridLayout>

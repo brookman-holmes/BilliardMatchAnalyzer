@@ -44,7 +44,7 @@
     <string name="safeties_made_description">The number of safeties that you successfully made divided by the number of safeties that you attempted</string>
     <string name="safety_pct_description">Percentage of safeties made</string>
     <string name="safety_fouls_description">Safeties that you attempted that ended up being a foul</string>
-    <string name="safety_escapes_description">The number of times that you came to the table after your opponent played a safety on you that you succesfully made a ball</string>
+    <string name="safety_escapes_description">The number of times that you came to the table after your opponent played a safety on you that you successfully made a ball</string>
     <string name="safety_returns_description">The number of times that you came to the table after your opponent played a safety on you that you successfully played safe back</string>
     <string name="forced_errors_description">The number of times that your opponent forced you into making an error</string>
     <string name="break_continuations_description">The number of times that you were able to pocket a ball immediately following the break</string>
@@ -56,4 +56,12 @@
     <string name="table_runs_description">The number of times that you ran the maximum number of balls possible to win the game</string>
     <string name="five_ball_outs_description">The number of times that you made 5 or fewer balls to win the game</string>
     <string name="early_wins_description">The number of times that you won the game because of making the 8/9/10 ball early, three fouling your opponent, or winning on the break</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="add_turn">Add turn</string>
+    <string name="add_turn_for">Add turn for %1$s</string>
+    <string name="create_match">Create match</string>
+    <string name="match_info_title">%1$s Match</string>
+    <string name="undo_turn">Undid last turn</string>
+    <string name="redo_turn">Redid last turn</string>
 </resources>

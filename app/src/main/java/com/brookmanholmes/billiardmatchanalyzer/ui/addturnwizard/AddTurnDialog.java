@@ -36,7 +36,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     @Bind(R.id.pager)
     ViewPager pager;
     @Bind(R.id.strip)
-    StepPagerStrip stepPagerStrip;
+    StepPagerStrip pagerStrip;
     @Bind(R.id.next_button)
     Button nextButton;
     @Bind(R.id.prev_button)
@@ -91,21 +91,16 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         listener = (AddTurnListener) getActivity();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_turn, container, false);
         ButterKnife.bind(this, view);
 
-        title.setText("Add turn for " + getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY, "null"));
+        title.setText(getResources().getString(R.string.add_turn_for, getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY, "null")));
 
         pager.setAdapter(pagerAdapter);
-        stepPagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
+        pagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
             @Override
             public void onPageStripSelected(int position) {
                 position = Math.min(pagerAdapter.getCount(), position);
@@ -118,8 +113,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                stepPagerStrip.setCurrentPage(position);
-
+                pagerStrip.setCurrentPage(position);
                 if (consumePageSelectedEvent) {
                     consumePageSelectedEvent = false;
                     return;
@@ -130,7 +124,6 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         });
 
         onPageTreeChanged();
-
         return view;
     }
 
@@ -148,7 +141,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     public void onPageTreeChanged() {
         currentPageSequence = wizardModel.getCurrentPageSequence();
         recalculateCutOffPage();
-        stepPagerStrip.setPageCount(currentPageSequence.size());
+        pagerStrip.setPageCount(currentPageSequence.size());
         pagerAdapter.notifyDataSetChanged();
         updateBottomBar();
     }
@@ -180,13 +173,9 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     private void updateBottomBar() {
         int position = pager.getCurrentItem() + 1;
         if (position == currentPageSequence.size()) {
-            nextButton.setText("Add Turn");
-            nextButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-            nextButton.setTextAppearance(getContext(), R.style.TextAppearanceFinish);
+            nextButton.setText(R.string.add_turn);
         } else {
-            nextButton.setText("Next");
-            nextButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-            nextButton.setTextAppearance(getContext(), R.style.TextAppearanceUnfinished);
+            nextButton.setText(R.string.next);
             nextButton.setEnabled(position != pagerAdapter.getCutOffPage());
         }
 

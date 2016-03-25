@@ -45,32 +45,36 @@ import com.brookmanholmes.billiards.match.Match;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class CreateNewMatchActivity extends BaseActivity implements
         PageFragmentCallbacks,
         ReviewFragment.Callbacks,
-        ModelCallbacks,
-        View.OnClickListener {
+        ModelCallbacks {
     private static final String TAG = "CreateNewMatchAct";
 
-    private ViewPager pager;
+    @Bind(R.id.pager)
+    ViewPager pager;
+    @Bind(R.id.next_button)
+    Button nextButton;
+    @Bind(R.id.prev_button)
+    Button prevButton;
+    @Bind(R.id.strip)
+    StepPagerStrip pagerStrip;
+
     private MyPagerAdapter pagerAdapter;
-
     private boolean editingAfterReview;
-
     private AbstractWizardModel wizardModel = new CreateNewMatchWizardModel(this);
-
     private boolean consumePageSelectedEvent;
-
-    private Button nextButton;
-    private Button prevButton;
-
     private List<Page> currentPageSequence;
-    private StepPagerStrip stepPagerStrip;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_match);
 
+        ButterKnife.bind(this);
         if (savedInstanceState != null) {
             wizardModel.load(savedInstanceState.getBundle("model"));
         }
@@ -78,26 +82,20 @@ public class CreateNewMatchActivity extends BaseActivity implements
         wizardModel.registerListener(this);
 
         pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
-        stepPagerStrip = (StepPagerStrip) findViewById(R.id.strip);
-        stepPagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
+        pagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
             @Override
             public void onPageStripSelected(int position) {
                 position = Math.min(pagerAdapter.getCount() - 1, position);
-                if (pager.getCurrentItem() != position) {
+                if (pager.getCurrentItem() != position)
                     pager.setCurrentItem(position);
-                }
             }
         });
-
-        nextButton = (Button) findViewById(R.id.next_button);
-        prevButton = (Button) findViewById(R.id.prev_button);
 
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                stepPagerStrip.setCurrentPage(position);
+                pagerStrip.setCurrentPage(position);
 
                 if (consumePageSelectedEvent) {
                     consumePageSelectedEvent = false;
@@ -106,15 +104,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
                 editingAfterReview = false;
                 updateBottomBar();
-            }
-        });
-
-        nextButton.setOnClickListener(this);
-
-        prevButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pager.setCurrentItem(pager.getCurrentItem() - 1);
             }
         });
 
@@ -136,12 +125,11 @@ public class CreateNewMatchActivity extends BaseActivity implements
         finish();
     }
 
-
     @Override
     public void onPageTreeChanged() {
         currentPageSequence = wizardModel.getCurrentPageSequence();
         recalculateCutOffPage();
-        stepPagerStrip.setPageCount(currentPageSequence.size() + 1); // + 1 = review step
+        pagerStrip.setPageCount(currentPageSequence.size() + 1); // + 1 = review step
         pagerAdapter.notifyDataSetChanged();
         updateBottomBar();
     }
@@ -149,16 +137,11 @@ public class CreateNewMatchActivity extends BaseActivity implements
     private void updateBottomBar() {
         int position = pager.getCurrentItem();
         if (position == currentPageSequence.size()) {
-            nextButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-            nextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
-            nextButton.setText("Create match");
-
+            nextButton.setText(R.string.create_match);
         } else {
             nextButton.setText(editingAfterReview
-                    ? "Create match"
-                    : "Next");
-            nextButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-            nextButton.setTextAppearance(this, R.style.TextAppearanceUnfinished);
+                    ? R.string.create_match
+                    : R.string.next);
             nextButton.setEnabled(position != pagerAdapter.getCutOffPage());
         }
 
@@ -210,8 +193,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         return wizardModel.findByKey(key);
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick(R.id.next_button)
+    public void nextPage(View v) {
         if (pager.getCurrentItem() == currentPageSequence.size()) {
             if (pagerAdapter.getPrimaryItem() instanceof ReviewFragment) {
                 createMatchAndLaunchMatchInfoActivity();
@@ -223,6 +206,11 @@ public class CreateNewMatchActivity extends BaseActivity implements
                 pager.setCurrentItem(pager.getCurrentItem() + 1);
             }
         }
+    }
+
+    @OnClick(R.id.prev_button)
+    public void prevPage(View v) {
+        pager.setCurrentItem(pager.getCurrentItem() - 1);
     }
 
     private boolean recalculateCutOffPage() {

@@ -12,20 +12,19 @@
 
         <TextView
             style="@style/help_dialog_title"
-            android:paddingTop="0dp"
-            android:text="@string/safeties_made_title" />
-
-        <TextView
-            style="@style/help_dialog_text"
-            android:text="@string/safeties_made_description" />
-
-        <TextView
-            style="@style/help_dialog_title"
             android:text="@string/safety_pct_title" />
 
         <TextView
             style="@style/help_dialog_text"
             android:text="@string/safety_pct_description" />
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/safeties_made_title" />
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="@string/safeties_made_description" />
 
         <TextView
             style="@style/help_dialog_title"

@@ -22,7 +22,6 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuild
 import com.brookmanholmes.billiardmatchanalyzer.ui.dialog.GameStatusStringBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 
@@ -62,7 +61,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
 
-        setToolbarTitle(match.getGameStatus().gameType);
+        setToolbarTitle(match.getGameStatus().gameType.toString());
 
         infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag(INFO_FRAGMENT_TAG);
 
@@ -72,8 +71,9 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
     }
 
-    private void setToolbarTitle(GameType gameType) {
-        getSupportActionBar().setTitle(gameType.toString() + " Match");
+    private void setToolbarTitle(String title) {
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setTitle(getResources().getString(R.string.match_info_title, title));
     }
 
     @Override
@@ -84,14 +84,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     @OnClick(R.id.buttonAddTurn)
     public void addInning(View view) {
-        addTurnButton.hide(new FloatingActionButton.OnVisibilityChangedListener() {
-            @Override
-            public void onHidden(FloatingActionButton fab) {
-                super.onHidden(fab);
-                showAddTurnDialog();
-            }
-        });
-
+        showAddTurnDialog();
     }
 
     private void showAddTurnDialog() {
@@ -148,7 +141,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void animateAddTurnButton() {
-        addTurnButton.show();
+        //addTurnButton.show();
     }
 
     private void addTurn(Turn turn) {
@@ -199,12 +192,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         if (id == R.id.action_undo) {
-            Snackbar.make(layout, "Undid last turn", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(layout, R.string.undo_turn, Snackbar.LENGTH_SHORT).show();
             undoTurn();
         }
 
         if (id == R.id.action_redo) {
-            Snackbar.make(layout, "Redid last turn", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(layout, R.string.redo_turn, Snackbar.LENGTH_SHORT).show();
             addTurn(infoFragment.redoTurn());
         }
 
