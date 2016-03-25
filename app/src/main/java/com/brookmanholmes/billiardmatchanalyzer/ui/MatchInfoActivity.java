@@ -1,6 +1,7 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.content.DialogInterface;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
+import com.flipboard.bottomsheet.BottomSheetLayout;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,6 +45,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     FloatingActionButton addTurnButton;
     @Bind(R.id.coordinatorLayout)
     CoordinatorLayout layout;
+    @Bind(R.id.bottomsheet)
+    BottomSheetLayout bottomSheet;
 
     DatabaseAdapter db;
     MatchInfoFragment infoFragment;
@@ -51,6 +56,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_info);
         ButterKnife.bind(this);
+        getDisplaySize();
 
         setSupportActionBar(toolbar);
 
@@ -88,9 +94,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void showAddTurnDialog() {
-
-        DialogFragment dialogFragment = AddTurnDialog.create(db.getMatch(getMatchId()));
-        dialogFragment.show(getSupportFragmentManager(), "AddTurnDialog");
+        AddTurnDialog addTurnDialog = AddTurnDialog.create(db.getMatch(getMatchId()));
+        addTurnDialog.show(getSupportFragmentManager(), R.id.bottomsheet);
     }
 
     @OnClick(R.id.playerName)
@@ -123,6 +128,23 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         menu.findItem(R.id.action_redo).setEnabled(infoFragment.isRedoTurn());
         this.menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 64);
         this.menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 64);
+    }
+
+    private void getDisplaySize() {
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        Log.i(TAG, "Display y: " + point.y);
+
+        bottomSheet.setPeekSheetTranslation(point.y - getStatusBarHeight());
+    }
+
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
@@ -50,8 +49,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 ((RequiresUpdatedTurnInfo) page).getNewTurnInfo(turnBuilder);
             }
         }
-
-        Log.i("AddTurnWizardModel", turnBuilder.toString());
     }
 
     @Override

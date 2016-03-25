@@ -70,8 +70,10 @@
     <style name="WizardPageTitle2" parent="WizardPageTitle">
         <item name="android:layout_marginLeft">0dp</item>
         <item name="android:layout_marginRight">0dp</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">?android:attr/listPreferredItemPaddingLeft</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 

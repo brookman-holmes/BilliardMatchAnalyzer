@@ -141,8 +141,6 @@ public class MatchInfoFragment extends Fragment implements MatchInterface, View.
         }
 
         adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId), this);
-
-        db.logDatabase(DatabaseAdapter.TABLE_TURNS);
     }
 
     @Override
