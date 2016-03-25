@@ -18,7 +18,6 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="0"
-        android:text="0/0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -28,7 +27,7 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:layout_row="0"
-        android:text="Safeties made / safeties"
+        android:text="@string/safeties_made_title"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -37,7 +36,6 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="0"
-        android:text="0/0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -46,7 +44,6 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="1"
-        android:text=".000"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -55,7 +52,6 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="1"
-        android:text=".000"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -65,7 +61,6 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="2"
-        android:text="0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -75,7 +70,7 @@
         android:layout_column="1"
         android:layout_gravity="center"
         android:layout_row="2"
-        android:text="Safety scratches"
+        android:text="@string/safety_fouls_title"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -85,7 +80,6 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="2"
-        android:text="0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -95,7 +89,7 @@
         android:layout_column="1"
         android:layout_gravity="center"
         android:layout_row="1"
-        android:text="Safety Percentage" />
+        android:text="@string/safety_pct_title" />
 
     <TextView
         android:id="@+id/tvSafetyEscapesPlayer"
@@ -103,29 +97,26 @@
         android:layout_height="wrap_content"
         android:layout_column="0"
         android:layout_gravity="center"
-        android:layout_row="4"
-        android:text="0" />
+        android:layout_row="4" />
 
     <TextView
         android:id="@+id/tvSafetyEscapesTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Safeties escaped" />
+        android:text="@string/safety_escapes_title" />
 
     <TextView
         android:id="@+id/tvSafetyEscapesOpponent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="0" />
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/tvSafetyReturnsPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -133,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Safeties returned"
+        android:text="@string/safeties_returned_title"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -141,27 +132,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="0"
         android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/tvForcedErrorsPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="0" />
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/tvForcedErrorsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Forced opponent errors" />
+        android:text="@string/forced_errors_title" />
 
     <TextView
         android:id="@+id/tvForcedErrorsOpponent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="0" />
+        android:layout_gravity="center" />
 </GridLayout>

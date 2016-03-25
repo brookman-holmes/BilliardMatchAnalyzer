@@ -29,7 +29,6 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="0"
-        android:text="0/0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -39,7 +38,7 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:layout_row="0"
-        android:text="Games won / total games"
+        android:text="@string/games_won_title"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -48,7 +47,6 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="1"
-        android:text=".000"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -58,7 +56,7 @@
         android:layout_column="1"
         android:layout_gravity="center"
         android:layout_row="1"
-        android:text="Win percentage" />
+        android:text="@string/win_pct_title" />
 
     <TextView
         android:id="@+id/tvWinTotalsOpponent"
@@ -66,7 +64,6 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="0"
-        android:text="0/0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -75,29 +72,26 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="1"
-        android:text=".000"
         android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvTotalShotsTitle"
         style="@style/player_stats_title"
-        android:layout_below="@+id/tvTrueShootingPct"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:layout_row="4"
-        android:text="Total shots made / total shots"
+        android:text="@string/true_shots_made_title"
         android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tvTrueShootingPct"
         style="@style/player_stats_title"
-        android:layout_below="@+id/tvAggressivenessRating"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:layout_row="3"
-        android:text="True shooting percentage"
+        android:text="@string/tsp_title"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -107,17 +101,15 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:layout_row="5"
-        android:text="Aggressiveness rating"
+        android:text="@string/ar_title"
         android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/tvTrueShootingPctOpponent"
         style="@style/player_stats"
-        android:layout_alignTop="@+id/tvDefensiveShotsPlayer"
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="3"
-        android:text=".000"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -126,7 +118,6 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="5"
-        android:text=".000"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -135,7 +126,6 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="4"
-        android:text="0/0"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -144,17 +134,14 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="3"
-        android:text=".000"
         android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/tvAggressivenessRatingPlayer"
         style="@style/player_stats"
-        android:layout_alignBottom="@+id/tvAggressivenessRating"
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="5"
-        android:text=".000"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -163,6 +150,5 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="4"
-        android:text="0/0"
         android:textColor="@color/secondary_text" />
 </GridLayout>

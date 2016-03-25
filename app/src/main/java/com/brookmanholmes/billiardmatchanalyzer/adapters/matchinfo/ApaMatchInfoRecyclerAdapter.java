@@ -11,25 +11,24 @@ import com.brookmanholmes.billiards.player.interfaces.Apa;
  * Created by Brookman Holmes on 1/17/2016.
  */
 class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchInfoRecyclerAdapter<T> {
-    static final int ITEM_APA_STATS = 5;
 
-    ApaMatchInfoRecyclerAdapter(Match<T> match) {
-        super(match, match.getGameStatus().GAME_BALL);
+    ApaMatchInfoRecyclerAdapter(Match<T> match, View.OnClickListener listener) {
+        super(match, match.getGameStatus().GAME_BALL, listener);
     }
 
-    ApaMatchInfoRecyclerAdapter(Match<T> match, ViewType viewType) {
-        super(match, match.getGameStatus().GAME_BALL, viewType);
+    ApaMatchInfoRecyclerAdapter(Match<T> match, ViewType viewType, View.OnClickListener listener) {
+        super(match, match.getGameStatus().GAME_BALL, viewType, listener);
     }
 
     @Override
     BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_APA_STATS:
-                return new MatchInfoHolder.ApaPlayer<>(view, detail);
+                return new MatchInfoHolder.ApaPlayer<>(view, detail, listener);
             case ITEM_BREAKS:
-                return new MatchInfoHolder.BreaksHolderWithBreakWins<>(view, gameBall, detail);
+                return new MatchInfoHolder.BreaksHolderWithBreakWins<>(view, gameBall, detail, listener);
             case ITEM_RUN_OUTS:
-                return new MatchInfoHolder.RunOutsWithEarlyWinsHolder<>(view, detail);
+                return new MatchInfoHolder.RunOutsWithEarlyWinsHolder<>(view, detail, listener);
             default:
                 return super.getMatchInfoHolderByViewType(view, viewType);
         }
@@ -61,6 +60,23 @@ class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchI
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        switch (position) {
+            case 0:
+                return ITEM_APA_STATS;
+            case 1:
+                return ITEM_SHOOTING_PCT;
+            case 2:
+                return ITEM_SAFETIES;
+            case 3:
+                return ITEM_BREAKS;
+            case 4:
+                return ITEM_RUN_OUTS;
+            case 5:
+                return ITEM_MATCH_OVERVIEW;
+            case 6:
+                return ITEM_FOOTER;
+            default:
+                throw new IllegalArgumentException("Cannot have position: " + position);
+        }
     }
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/alert_dialog_padding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:paddingTop="0dp"
+        android:text="@string/shooting_pct_title" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="@string/shooting_pct_description" />
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:text="@string/avg_balls_turn_title" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="@string/avg_balls_turn_description" />
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:text="@string/shots_made_title" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="@string/shots_made_description" />
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:text="@string/shooting_fouls_title" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="@string/shooting_fouls_description" />
+</LinearLayout>

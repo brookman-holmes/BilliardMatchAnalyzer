@@ -164,7 +164,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
             player.addBreakAndRun();
         else if (turn.getShootingBallsMade() == getMaximumBallsMakeable()) // table run
             player.addTableRun();
-        else if (turn.getShootingBallsMade() >= 4) // four ball run
+        else if (turn.getShootingBallsMade() <= 5) // four ball run
             player.addFourBallRun();
     }
 

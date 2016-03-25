@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/alert_dialog_padding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:paddingTop="0dp"
+        android:text="@string/break_runs_title" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="@string/break_runs_description" />
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:text="@string/table_runs_title" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="@string/table_runs_description" />
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:text="@string/five_ball_outs_title" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="@string/five_ball_outs_description" />
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:text="@string/early_wins_title" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="@string/early_wins_description" />
+
+</LinearLayout>

@@ -19,7 +19,7 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:layout_row="2"
-        android:text="Average balls / break"
+        android:text="@string/avg_break_balls_title"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:layout_row="1"
-        android:text="Ball on break / breaks"
+        android:text="@string/successful_break_title"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -39,7 +39,7 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:layout_row="0"
-        android:text="Continuation on break"
+        android:text="@string/break_continuations_title"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -49,7 +49,7 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:layout_row="3"
-        android:text="Scratch on break"
+        android:text="@string/break_fouls_title"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -59,17 +59,15 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:layout_row="4"
-        android:text="9 on the break"
+        android:text="@string/break_wins_title"
         android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/tvBreakTotalOpponent"
         style="@style/player_stats"
-        android:layout_alignTop="@+id/tvBreakTotalPlayer"
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="1"
-        android:text="0/0"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -78,7 +76,6 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="4"
-        android:text="0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -87,7 +84,6 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="0"
-        android:text="0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -96,7 +92,6 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="3"
-        android:text="0"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -105,7 +100,6 @@
         android:layout_column="2"
         android:layout_gravity="center"
         android:layout_row="2"
-        android:text="0/0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -114,7 +108,6 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="1"
-        android:text="0/0"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -123,7 +116,6 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="4"
-        android:text="0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -132,7 +124,6 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="0"
-        android:text="0"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -141,7 +132,6 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="3"
-        android:text="0"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -150,6 +140,5 @@
         android:layout_column="0"
         android:layout_gravity="center"
         android:layout_row="2"
-        android:text="0/0"
         android:textColor="@color/primary_text" />
 </GridLayout>
