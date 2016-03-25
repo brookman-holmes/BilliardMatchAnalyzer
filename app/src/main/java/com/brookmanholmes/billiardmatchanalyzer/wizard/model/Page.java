@@ -107,7 +107,6 @@ public abstract class Page implements PageTreeNode {
 
         if (required != page.required) return false;
         if (!modelCallbacks.equals(page.modelCallbacks)) return false;
-        if (!data.equals(page.data)) return false;
         if (!title.equals(page.title)) return false;
         return parentKey.equals(page.parentKey);
 
@@ -116,7 +115,6 @@ public abstract class Page implements PageTreeNode {
     @Override
     public int hashCode() {
         int result = modelCallbacks.hashCode();
-        result = 31 * result + data.hashCode();
         result = 31 * result + title.hashCode();
         result = 31 * result + (required ? 1 : 0);
         result = 31 * result + parentKey.hashCode();
@@ -125,10 +123,6 @@ public abstract class Page implements PageTreeNode {
 
     @Override
     public String toString() {
-        return "Page{" +
-                getKey() +
-                ", isCompleted? " + isCompleted() +
-                ", isRequired? " + isRequired() +
-                "}";
+        return title;
     }
 }

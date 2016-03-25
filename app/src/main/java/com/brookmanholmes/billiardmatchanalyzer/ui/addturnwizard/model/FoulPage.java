@@ -23,7 +23,6 @@ import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUt
 public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, RequiresUpdatedTurnInfo {
     private static final String[] defaultChoicesWithLoss = new String[]{"Yes, lost game", "Yes", "No"};
     FoulFragment fragment;
-    boolean dataAutoUpdated = false;
 
     public FoulPage(ModelCallbacks callbacks, Bundle matchData) {
         super(callbacks, "Did you foul?");
@@ -66,12 +65,11 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
     // TODO: 3/9/2016 make sure that I'm not checking foul when it's possible to have not scratched
     public void updateFragment(TurnEndOptions options, TurnBuilder turnBuilder) {
         if (fragment != null) {
-            dataAutoUpdated = true;
-            fragment.updateOptions(getPossibleChoices(options, turnBuilder), getDefaultCheck(options));
+            fragment.updateOptions(getPossibleChoices(options), getDefaultCheck(options));
         }
     }
 
-    private List<String> getPossibleChoices(TurnEndOptions options, TurnBuilder turnBuilder) {
+    private List<String> getPossibleChoices(TurnEndOptions options) {
         List<String> list = new ArrayList<>();
 
         if (options.lostGame) {
@@ -95,13 +93,5 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
         if (options.lostGame && options.foul)
             return "Yes, lost game";
         else return options.foul ? "Yes" : "No";
-    }
-
-    @Override
-    public void notifyDataChanged() {
-        if (!dataAutoUpdated) {
-            super.notifyDataChanged();
-            dataAutoUpdated = false;
-        }
     }
 }

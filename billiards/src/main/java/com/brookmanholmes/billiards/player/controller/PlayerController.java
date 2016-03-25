@@ -10,6 +10,7 @@ import com.brookmanholmes.billiards.player.EightBallPlayer;
 import com.brookmanholmes.billiards.player.NineBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
+import com.brookmanholmes.billiards.player.interfaces.EarlyWins;
 
 import static com.brookmanholmes.billiards.turn.TurnEnd.BREAK_MISS;
 import static com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
@@ -90,6 +91,17 @@ public abstract class PlayerController<T extends AbstractPlayer> {
 
         if (isGameOver()) {
             addGamesToPlayers(player1, player2);
+        }
+
+        if (turn.isGameLost()) {
+            if (player1 instanceof EarlyWins && player2 instanceof EarlyWins) {
+                if (gameStatus.turn == PlayerTurn.PLAYER)
+                    ((EarlyWins) player2).addEarlyWin();
+                if (gameStatus.turn == PlayerTurn.OPPONENT)
+                    ((EarlyWins) player1).addEarlyWin();
+            }
+
+
         }
 
         return new Pair<>(player1, player2);

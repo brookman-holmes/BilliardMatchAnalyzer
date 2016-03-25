@@ -27,7 +27,7 @@
     <string name="ar_title">Aggressiveness rating</string>
     <string name="ar_description">The number of offensive shots taken divided by the total number of shots taken (shots and safeties), break shots are not included in this</string>
     <string name="break_continuations_title">Continuation on break</string>
-    <string name="break_fouls_title">Foul on break</string>
+    <string name="break_fouls_title">Breaking fouls</string>
     <string name="break_wins_title">8/9 ball on the break</string>
     <string name="avg_break_balls_title">Average balls / break</string>
     <string name="successful_break_title">Ball on break / breaks</string>

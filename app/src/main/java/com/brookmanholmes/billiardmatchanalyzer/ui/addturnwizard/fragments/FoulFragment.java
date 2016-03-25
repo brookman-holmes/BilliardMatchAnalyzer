@@ -106,12 +106,16 @@ public class FoulFragment extends ListFragment {
         adapter.addAll(options);
         adapter.notifyDataSetChanged();
 
-        listView.setItemChecked(options.indexOf(defaultChecked), true);
-        updatePage(listView.getCheckedItemPosition());
+        if (options.contains(getFoulFromPage()))
+            listView.setItemChecked(options.indexOf(getFoulFromPage()), true);
+        else {
+            listView.setItemChecked(options.indexOf(defaultChecked), true);
+            updatePage(listView.getCheckedItemPosition());
+        }
     }
 
     private void updatePage(int position) {
-        if (!page.getData().getString(Page.SIMPLE_DATA_KEY, "").equals(adapter.getItem(position))) {
+        if (!getFoulFromPage().equals(adapter.getItem(position))) {
             page.getData().putString(Page.SIMPLE_DATA_KEY, adapter.getItem(position));
             page.notifyDataChanged();
         }
