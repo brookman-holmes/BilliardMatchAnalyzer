@@ -195,8 +195,6 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
 
     public interface AddTurnListener {
         void addTurn(TurnBuilder turnBuilder);
-
-        void dismiss();
     }
 
     public class MyPagerAdapter extends FragmentStatePagerAdapter {

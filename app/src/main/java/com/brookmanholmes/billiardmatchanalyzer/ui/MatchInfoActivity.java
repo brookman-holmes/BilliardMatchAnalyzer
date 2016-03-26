@@ -10,7 +10,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +41,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     @Bind(R.id.opponentName)
     TextView opponentName;
     @Bind(R.id.buttonAddTurn)
-    FloatingActionButton addTurnButton;
+    FloatingActionButton buttonAddTurn;
     @Bind(R.id.coordinatorLayout)
     CoordinatorLayout layout;
     @Bind(R.id.bottomsheet)
@@ -77,9 +76,9 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
     }
 
-    private void setToolbarTitle(String title) {
+    private void setToolbarTitle(String gameType) {
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(getResources().getString(R.string.match_info_title, title));
+            getSupportActionBar().setTitle(getResources().getString(R.string.match_info_title, gameType));
     }
 
     @Override
@@ -133,8 +132,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private void getDisplaySize() {
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
-        Log.i(TAG, "Display y: " + point.y);
-
         bottomSheet.setPeekSheetTranslation(point.y - getStatusBarHeight());
     }
 
@@ -154,16 +151,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 turnBuilder.turnEnd,
                 turnBuilder.scratch,
                 turnBuilder.lostGame));
-        animateAddTurnButton();
-    }
-
-    @Override
-    public void dismiss() {
-        animateAddTurnButton();
-    }
-
-    private void animateAddTurnButton() {
-        //addTurnButton.show();
     }
 
     private void addTurn(Turn turn) {
