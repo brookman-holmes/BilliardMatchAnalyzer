@@ -146,7 +146,6 @@ public abstract class Game {
             case ALTERNATE:
                 return changeTurn(breaker);
             default:
-                // TODO: 10/27/2015 ghost break, which is probably going to be PLAYER
                 return PlayerTurn.PLAYER;
         }
     }

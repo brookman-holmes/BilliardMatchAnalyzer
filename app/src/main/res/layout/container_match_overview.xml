@@ -22,7 +22,7 @@
         android:id="@+id/tvWinPercentTitle"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/win_pct_title"
+        android:text="@string/title_win_pct"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -39,7 +39,7 @@
         android:id="@+id/gamesWonTitle"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/games_won_title"
+        android:text="@string/title_games_won"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -56,7 +56,7 @@
         android:id="@+id/tvTrueShootingPct"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/tsp_title"
+        android:text="@string/title_tsp"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -73,7 +73,7 @@
         android:id="@+id/tvTotalShotsTitle"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/true_shots_made_title"
+        android:text="@string/title_true_shots_made"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -90,7 +90,7 @@
         android:id="@+id/tvAggressivenessRating"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/ar_title"
+        android:text="@string/title_ar"
         android:textColor="@color/primary_text" />
 
     <TextView

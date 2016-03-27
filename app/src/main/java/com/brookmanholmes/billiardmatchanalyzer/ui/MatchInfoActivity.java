@@ -78,7 +78,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     private void setToolbarTitle(String gameType) {
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(getResources().getString(R.string.match_info_title, gameType));
+            getSupportActionBar().setTitle(getResources().getString(R.string.title_match_info, gameType));
     }
 
     @Override

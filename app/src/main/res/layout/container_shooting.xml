@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/shooting_pct_title"
+        android:text="@string/title_shooting_pct"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -39,7 +39,7 @@
         android:id="@+id/tvBallTotalTitle"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/shots_made_title"
+        android:text="@string/title_shots_made"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -55,7 +55,7 @@
     <TextView
         android:id="@+id/tvAvgBallsTitle"
         android:layout_gravity="center"
-        android:text="@string/avg_balls_turn_title"
+        android:text="@string/title_avg_balls_turn"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -71,7 +71,7 @@
     <TextView
         android:id="@+id/tvScratchesTitle"
         android:layout_gravity="center"
-        android:text="@string/shooting_fouls_title"
+        android:text="@string/title_shooting_fouls"
         android:textColor="@color/secondary_text" />
 
     <TextView

@@ -287,6 +287,13 @@ public final class GameStatus {
             return this;
         }
 
+        public Builder setBalls(List<Integer> balls) {
+            ballsOnTable.clear();
+            ballsOnTable.addAll(balls);
+
+            return this;
+        }
+
         public GameStatus build() {
             return new GameStatus(this);
         }

@@ -7,42 +7,42 @@
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/successful_break_title" />
+        android:text="@string/title_successful_break" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/successful_break_description" />
+        android:text="@string/description_successful_break" />
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/avg_break_balls_title" />
+        android:text="@string/title_avg_break_balls" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/avg_break_balls_description" />
+        android:text="@string/description_avg_break_balls" />
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/break_continuations_title" />
+        android:text="@string/title_break_continuations" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/break_continuations_description" />
+        android:text="@string/description_break_continuations" />
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/break_fouls_title" />
+        android:text="@string/title_break_fouls" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/break_fouls_description" />
+        android:text="@string/description_break_fouls" />
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/break_wins_title" />
+        android:text="@string/title_break_wins" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/break_wins_description" />
+        android:text="@string/description_break_wins" />
 
 </LinearLayout>

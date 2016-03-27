@@ -12,51 +12,51 @@
 
         <TextView
             style="@style/help_dialog_title"
-            android:text="@string/safety_pct_title" />
+            android:text="@string/title_safety_pct" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/safety_pct_description" />
+            android:text="@string/description_safety_pct" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:text="@string/safeties_made_title" />
+            android:text="@string/title_safeties_made" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/safeties_made_description" />
+            android:text="@string/description_safeties_made" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:text="@string/safety_fouls_title" />
+            android:text="@string/title_safety_fouls" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/safety_fouls_description" />
+            android:text="@string/description_safety_fouls" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:text="@string/safety_escapes_title" />
+            android:text="@string/title_safety_escapes" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/safety_escapes_description" />
+            android:text="@string/description_safety_escapes" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:text="@string/safeties_returned_title" />
+            android:text="@string/title_safeties_returned" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/safety_returns_description" />
+            android:text="@string/description_safety_returns" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:text="@string/forced_errors_title" />
+            android:text="@string/title_forced_errors" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/forced_errors_description" />
+            android:text="@string/description_forced_errors" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -139,7 +139,8 @@ public class MatchDialogHelperUtils {
         gameStatus.consecutiveOpponentFouls(args.getInt(OPPONENT_FOULS_KEY));
         gameStatus.consecutivePlayerFouls(args.getInt(PLAYER_FOULS_KEY));
         gameStatus.currentPlayerConsecutiveFouls(args.getInt(CONSECUTIVE_FOULS_KEY));
-        // // TODO: 1/27/2016 ballsOnTable is not set
+        gameStatus.setBalls(args.getIntegerArrayList(BALLS_ON_TABLE_KEY));
+
         return gameStatus.build();
     }
 

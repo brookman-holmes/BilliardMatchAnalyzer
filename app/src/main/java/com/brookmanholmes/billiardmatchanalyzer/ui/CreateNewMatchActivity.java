@@ -22,7 +22,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -248,8 +247,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
             String location = getLocation(reviewItems);
             String notes = getNotes(reviewItems);
             Match.StatsDetail detail = getStatDetailLevel(reviewItems);
-
-            Log.i(TAG, detail.toString());
 
             return new Match.Builder(playerName, opponentName)
                     .setBreakType(breakType)

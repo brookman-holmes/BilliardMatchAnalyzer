@@ -21,7 +21,7 @@
         android:id="@+id/tvBreakTotalTitle"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/successful_break_title"
+        android:text="@string/title_successful_break"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -38,7 +38,7 @@
         android:id="@+id/tvAvgBreakBallsTitle"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/avg_break_balls_title"
+        android:text="@string/title_avg_break_balls"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -55,7 +55,7 @@
         android:id="@+id/tvBreakContinuationsTitle"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/break_continuations_title"
+        android:text="@string/title_break_continuations"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -72,7 +72,7 @@
         android:id="@+id/tvBreakScratchesTitle"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/break_fouls_title"
+        android:text="@string/title_break_fouls"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -89,7 +89,7 @@
         android:id="@+id/tvBreakWinsTitle"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/break_wins_title"
+        android:text="@string/title_break_wins"
         android:textColor="@color/primary_text" />
 
     <TextView

@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/safety_pct_title"
+        android:text="@string/title_safety_pct"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -40,7 +40,7 @@
         android:id="@+id/safetiesTitleTV"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
-        android:text="@string/safeties_made_title"
+        android:text="@string/title_safeties_made"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/safety_fouls_title"
+        android:text="@string/title_safety_fouls"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/safety_escapes_title"
+        android:text="@string/title_safety_escapes"
         android:textColor="@color/secondary_text" />
 
     <TextView
@@ -104,7 +104,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/safeties_returned_title"
+        android:text="@string/title_safeties_returned"
         android:textColor="@color/primary_text" />
 
     <TextView
@@ -126,7 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/forced_errors_title"
+        android:text="@string/title_forced_errors"
         android:textColor="@color/secondary_text" />
 
     <TextView
