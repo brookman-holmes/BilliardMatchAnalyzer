@@ -6,19 +6,12 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.AddTu
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.MultipleFixedChoicePage;
 
-import java.util.Arrays;
-
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
 public class WhyMissPage extends MultipleFixedChoicePage implements UpdatesTurnInfo{
-    public WhyMissPage(ModelCallbacks callbacks, String[] choices, String parentKey) {
-        super(callbacks, "Why did you miss?");
-
-        Arrays.sort(choices);
-        setParentKey(parentKey);
-        setChoices(choices);
-        setRequired(true);
+    public WhyMissPage(ModelCallbacks callbacks, String title) {
+        super(callbacks, title);
     }
 
     @Override

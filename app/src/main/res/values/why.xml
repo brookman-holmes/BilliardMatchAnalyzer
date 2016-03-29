@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="why_position">Bad position</string>
+    <string name="why_focus">Lack of focus</string>
+    <string name="why_jacked_up">Jacked up</string>
+    <string name="why_spin">Too much spin</string>
+    <string name="why_english">Unintentional english</string>
+    <string name="why_slow">Hit the ball too soft</string>
+    <string name="why_fast">Hit the ball too hard</string>
+    <string name="why_curved">Cue ball curved</string>
+    <string name="why_rail">Shooting from the rail</string>
+    <string name="why_forcing">Forcing position</string>
+    <string name="why_aim">Poor aim</string>
+    <string name="why_follow">Applied too much top spin</string>
+    <string name="why_draw">Applied too much draw</string>
+
+    <string-array name="why_choices">
+        <item>@string/why_position</item>
+        <item>@string/why_focus</item>
+        <item>@string/why_curved</item>
+        <item>@string/why_english</item>
+        <item>@string/why_fast</item>
+        <item>@string/why_slow</item>
+        <item>@string/why_rail</item>
+        <item>@string/why_forcing</item>
+        <item>@string/why_spin</item>
+        <item>@string/why_jacked_up</item>
+    </string-array>
+
+    <string-array name="why_choices_break">
+        <item>@string/why_english</item>
+        <item>@string/why_aim</item>
+        <item>@string/why_follow</item>
+        <item>@string/why_draw</item>
+    </string-array>
+
+    <string-array name="why_choices_illegal_break">
+        <item>@string/why_slow</item>
+        <item>@string/why_aim</item>
+        <item>@string/why_fast</item>
+        <item>@string/thin_hit</item>
+        <item>@string/thick_hit</item>
+    </string-array>
+</resources>

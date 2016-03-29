@@ -19,6 +19,8 @@ public interface MatchInterface<T extends AbstractPlayer> {
 
     String getCurrentPlayersName();
 
+    String getNonCurrentPlayersName();
+
     int getTurnCount();
 
     boolean isRedoTurn();

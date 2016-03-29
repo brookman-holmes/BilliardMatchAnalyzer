@@ -22,14 +22,14 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     TableStatus tableStatus;
     GameType gameType;
 
-    public BreakPage(ModelCallbacks callbacks, Bundle matchData) {
-        super(callbacks, "Break page");
+    public BreakPage(ModelCallbacks callbacks, String title, String title2, Bundle matchData) {
+        super(callbacks, title);
 
         data.putAll(matchData);
         gameType = MatchDialogHelperUtils.createGameStatusFromBundle(matchData).gameType;
         tableStatus = TableStatus.newTable(gameType);
 
-        addBranch(showShotPage, new ShotPage(callbacks, matchData));
+        addBranch(showShotPage, new ShotPage(callbacks, title2, matchData));
     }
 
     @Override

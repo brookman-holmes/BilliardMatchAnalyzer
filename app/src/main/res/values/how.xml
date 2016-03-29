@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="how_choices_break">
+        <item>@string/too_hard</item>
+        <item>@string/too_soft</item>
+        <item>@string/aim_to_left</item>
+        <item>@string/aim_to_right</item>
+        <item>@string/kicked_in</item>
+    </string-array>
+
+    <string-array name="how_choices_safety">
+        <item>@string/too_hard</item>
+        <item>@string/too_soft</item>
+        <item>@string/thick_hit</item>
+        <item>@string/thin_hit</item>
+    </string-array>
+
+    <string-array name="how_choices">
+        <item>@string/too_hard</item>
+        <item>@string/too_soft</item>
+        <item>@string/aim_to_left</item>
+        <item>@string/aim_to_right</item>
+    </string-array>
+
+
+    <string name="too_hard">Too hard</string>
+    <string name="too_soft">Too soft</string>
+    <string name="aim_to_left">Hit to the left of aim point</string>
+    <string name="aim_to_right">Hit to the right of aim point</string>
+    <string name="kicked_in">Kicked into pocket (foul)</string>
+    <string name="thick_hit">Too thick on OB</string>
+    <string name="thin_hit">Too thin on OB</string>
+</resources>

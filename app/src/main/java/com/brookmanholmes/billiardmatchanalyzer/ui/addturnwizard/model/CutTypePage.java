@@ -10,12 +10,8 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePa
  * Created by Brookman Holmes on 3/7/2016.
  */
 public class CutTypePage extends SingleFixedChoicePage implements UpdatesTurnInfo {
-    public CutTypePage(ModelCallbacks callbacks) {
-        super(callbacks, "What type of cut shot?");
-
-        setChoices("Back cut", "Down the rail", "Wing cut");
-        setRequired(true);
-        setValue("Down the rail");
+    public CutTypePage(ModelCallbacks callbacks, String title) {
+        super(callbacks, title);
     }
 
     @Override

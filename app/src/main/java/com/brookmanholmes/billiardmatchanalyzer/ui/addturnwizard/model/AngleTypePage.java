@@ -11,12 +11,8 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePa
  */
 public class AngleTypePage extends SingleFixedChoicePage implements UpdatesTurnInfo {
 
-    public AngleTypePage(ModelCallbacks callbacks) {
-        super(callbacks, "What was the degree of cut?");
-
-        setChoices("15°", "30°", "45°", "60°", "75°", "90°");
-        setRequired(true);
-        setValue("45°");
+    public AngleTypePage(ModelCallbacks callbacks, String title) {
+        super(callbacks, title);
     }
 
     @Override

@@ -6,17 +6,17 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.AddTu
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.MultipleFixedChoicePage;
 
+import java.util.ArrayList;
+
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class HowMissPage extends MultipleFixedChoicePage implements UpdatesTurnInfo{
-    public HowMissPage(ModelCallbacks callbacks, String[] choices, String parentKey) {
-        super(callbacks, "How did you miss?");
-        setParentKey(parentKey);
-        setChoices(choices);
+public class HowMissPage extends MultipleFixedChoicePage {
+    public HowMissPage(ModelCallbacks callbacks, String title) {
+        super(callbacks, title);
+        data.putStringArrayList(SIMPLE_DATA_KEY, new ArrayList<String>());
     }
 
-    @Override
     public void updateTurnInfo(TurnBuilder turnBuilder) {
         if (parentKey.equals("break miss how") || parentKey.equals("illegal break how")) {
             turnBuilder.advStats.shotType("Break shot");

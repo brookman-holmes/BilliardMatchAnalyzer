@@ -10,14 +10,8 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePa
  * Created by Brookman Holmes on 3/7/2016.
  */
 public class SafetyPage extends SingleFixedChoicePage implements UpdatesTurnInfo {
-    private static final String[] safetyTypes = {"Full hook", "Partial hook", "Long T", "Short T"};
-
-    public SafetyPage(ModelCallbacks callbacks) {
-        super(callbacks, "What type of safety did you make?");
-
-        setChoices(safetyTypes);
-        setRequired(true);
-        setValue("Full hook");
+    public SafetyPage(ModelCallbacks callbacks, String title) {
+        super(callbacks, title);
     }
 
     @Override

@@ -3,9 +3,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.TableStatus;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,9 +11,9 @@ import java.util.List;
  */
 public class TurnBuilder {
     public TableStatus tableStatus;
-    public TurnEnd turnEnd;
-    public boolean scratch = false;
-    public boolean lostGame = false;
+    public String turnEnd;
+    public String scratch;
+    public String lostGame;
     public AdvStats.Builder advStats = new AdvStats.Builder();
 
     public TurnBuilder(GameType gameType) {
@@ -34,7 +32,7 @@ public class TurnBuilder {
     public String toString() {
         return "TurnBuilder{" +
                 "tableStatus=" + tableStatus.toString() +
-                ", turnEnd=" + (turnEnd == null ? "null" : turnEnd.toString()) +
+                ", turnEnd=" + (turnEnd == null ? "null" : turnEnd) +
                 ", lostGame=" + lostGame +
                 ", foul=" + scratch +
                 '}';

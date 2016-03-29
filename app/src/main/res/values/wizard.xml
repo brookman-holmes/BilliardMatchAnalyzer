@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_miss">What did you miss?</string>
+    <string name="miss_cut">Cut shot</string>
+    <string name="miss_long">Long straight shot</string>
+    <string name="miss_bank">Bank shot</string>
+    <string name="miss_kick">Kick shot</string>
+    <string name="miss_combo">Combo</string>
+    <string name="miss_carom">Carom</string>
+    <string name="miss_jump">Jump</string>
+
+    <string name="title_kick_type">What type of kick?</string>
+    <string name="one_rail">1 rail</string>
+    <string name="two_rail">2 rail</string>
+    <string name="three_rail">3 rail</string>
+    <string name="four_rail">4 rail</string>
+
+    <string name="bank_natural">Natural</string>
+    <string name="bank_crossover">Crossover</string>
+    <string name="bank_long_rail">Long rail</string>
+    <string name="bank_short_rail">Short rail</string>
+
+    <string-array name="kicks">
+        <item>@string/one_rail</item>
+        <item>@string/two_rail</item>
+        <item>@string/three_rail</item>
+        <item>@string/four_rail</item>
+    </string-array>
+
+    <string-array name="banks">
+        <item>@array/kicks</item>
+        <item>@string/bank_natural</item>
+        <item>@string/bank_crossover</item>
+        <item>@string/bank_long_rail</item>
+        <item>@string/bank_short_rail</item>
+    </string-array>
+
+    <string-array name="angles">
+        <item>15°</item>
+        <item>30°</item>
+        <item>45°</item>
+        <item>60°</item>
+        <item>75°</item>
+        <item>90°</item>
+    </string-array>
+
+
+    <string name="title_how_miss">How did you miss?</string>
+    <string name="title_why_miss">Why did you miss?</string>
+    <string name="title_turn_end">How did your turn end?</string>
+    <string name="title_foul">Did you foul?</string>
+    <string name="title_safety">What type of safety did you make?</string>
+    <string name="title_angle">What was your angle of cut?</string>
+    <string name="title_kick">How many rails was your kick shot?</string>
+    <string name="title_bank">What kind of bank did you shoot?</string>
+    <string name="title_cut_type">What kind of cut shot was it?</string>
+    <string name="title_break">Input balls you made on the break</string>
+    <string name="title_shot">Input balls you made this turn</string>
+</resources>

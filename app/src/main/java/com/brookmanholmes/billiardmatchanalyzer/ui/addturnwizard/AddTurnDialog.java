@@ -1,11 +1,14 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -184,6 +187,7 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
         } else {
             pager.setCurrentItem(pager.getCurrentItem() + 1);
             wizardModel.updatePagesWithTurnInfo();
+            Log.i("AddTurnDialog", wizardModel.getCurrentPageSequence().toString());
         }
     }
 
@@ -191,6 +195,18 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
     public void prevButton() {
         wizardModel.updatePagesWithTurnInfo();
         pager.setCurrentItem(pager.getCurrentItem() - 1);
+    }
+
+    @OnClick(R.id.imgHelp)
+    public void help() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+        builder.setMessage(wizardModel.getCurrentPageSequence().get(pager.getCurrentItem()).getTitle());
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).create().show();
+
     }
 
     public interface AddTurnListener {
@@ -245,5 +261,7 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
             }
             mCutOffPage = cutOffPage;
         }
+
+
     }
 }

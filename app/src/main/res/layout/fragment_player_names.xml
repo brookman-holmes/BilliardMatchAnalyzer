@@ -34,7 +34,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/player_name_hint"
+                android:hint="@string/hint_player_name"
                 android:labelFor="@id/playerName">
 
                 <AutoCompleteTextView
@@ -51,7 +51,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/opponent_name_hint"
+                android:hint="@string/hint_opponent_name"
                 android:labelFor="@id/opponentName">
 
                 <AutoCompleteTextView
@@ -68,8 +68,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/location_hint"
-                android:labelFor="@id/location">
+                android:hint="@string/hint_location">
 
                 <EditText
                     android:id="@+id/location"
@@ -84,8 +83,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/notes_hint"
-                android:labelFor="@id/extra">
+                android:hint="@string/hint_notes">
 
                 <EditText
                     android:id="@+id/extra"

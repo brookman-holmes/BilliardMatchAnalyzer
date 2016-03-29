@@ -70,8 +70,16 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         return ControllerHelperMethods.getPlayerFromList(player2, playerController.newOpponent());
     }
 
+    @Override
     public String getCurrentPlayersName() {
         if (game.getTurn() == PlayerTurn.PLAYER)
+            return playerController.getPlayerName();
+        else return playerController.getOpponentName();
+    }
+
+    @Override
+    public String getNonCurrentPlayersName() {
+        if (game.getTurn() == PlayerTurn.OPPONENT)
             return playerController.getPlayerName();
         else return playerController.getOpponentName();
     }

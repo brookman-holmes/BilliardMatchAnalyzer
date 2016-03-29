@@ -14,6 +14,8 @@ import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.FoulPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
+import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,15 +103,31 @@ public class FoulFragment extends ListFragment {
         updatePage(position);
     }
 
-    public void updateOptions(List<String> options, String defaultChecked) {
+    public void updateOptions(TurnEndOptions turnEndOptions) {
+        String defaultChecked;
         adapter.clear();
-        adapter.addAll(options);
+        if (turnEndOptions.lostGame) {
+            adapter.add(getString(R.string.foul_lost_game));
+            adapter.add(getString(R.string.yes));
+            defaultChecked = getString(R.string.yes);
+
+            if (turnEndOptions.possibleEndings.contains(TurnEnd.SAFETY))
+                adapter.add(getString(R.string.no));
+        } else if (turnEndOptions.foul) {
+            adapter.add(getString(R.string.yes));
+            defaultChecked = getString(R.string.yes);
+        } else {
+            adapter.add(getString(R.string.yes));
+            adapter.add(getString(R.string.no));
+            defaultChecked = getString(R.string.no);
+        }
+
         adapter.notifyDataSetChanged();
 
-        if (options.contains(getFoulFromPage()))
-            listView.setItemChecked(options.indexOf(getFoulFromPage()), true);
+        if (adapter.contains(getFoulFromPage()))
+            listView.setItemChecked(adapter.getPosition(getFoulFromPage()), true);
         else {
-            listView.setItemChecked(options.indexOf(defaultChecked), true);
+            listView.setItemChecked(adapter.getPosition(defaultChecked), true);
             updatePage(listView.getCheckedItemPosition());
         }
     }
@@ -126,8 +144,14 @@ public class FoulFragment extends ListFragment {
     }
 
     private static class CustomAdapter extends ArrayAdapter<String> {
+        List<String> objects;
         public CustomAdapter(Context context, int resource, int textViewResourceId, List<String> objects) {
             super(context, resource, textViewResourceId, objects);
+            this.objects = objects;
+        }
+
+        boolean contains(String item) {
+            return objects.contains(item);
         }
     }
 }

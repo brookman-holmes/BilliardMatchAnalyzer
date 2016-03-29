@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="turn_safety">Safety</string>
+    <string name="turn_safety_error">Unsuccessful safety</string>
+    <string name="turn_break_miss">Miss on break shot</string>
+    <string name="turn_miss">Miss</string>
+    <string name="turn_push">Push shot</string>
+    <string name="turn_skip">Skip turn</string>
+    <string name="turn_illegal_break">Illegal break</string>
+    <string name="turn_won_game">Won game</string>
+    <string name="turn_current_player_breaks">Have %1$s break</string>
+    <string name="turn_non_current_player_breaks">Have %1$s break</string>
+    <string name="turn_continue_game">Continue with game</string>
+
+    <string name="safety_full_hook">Full hook</string>
+    <string name="safety_partial_hook">Partial hook</string>
+    <string name="safety_long_t">Long T</string>
+    <string name="safety_short_t">Short T</string>
+
+    <string name="foul_lost_game">Yes, lost game</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="cut_back">Back cut</string>
+    <string name="cut_rail">Down the rail</string>
+    <string name="cut_wing">Wing cut</string>
+
+    <string-array name="cut_types">
+        <item>@string/cut_back</item>
+        <item>@string/cut_wing</item>
+        <item>@string/cut_rail</item>
+    </string-array>
+
+    <string-array name="foul_types">
+        <item>@string/foul_lost_game</item>
+        <item>@string/yes</item>
+        <item>@string/no</item>
+    </string-array>
+
+    <string-array name="safety_types">
+        <item>@string/safety_full_hook</item>
+        <item>@string/safety_partial_hook</item>
+        <item>@string/safety_long_t</item>
+        <item>@string/safety_short_t</item>
+    </string-array>
+
+    <string-array name="turn_endings">
+        <item>@string/turn_safety</item>
+        <item>@string/turn_safety_error</item>
+        <item>@string/turn_break_miss</item>
+        <item>@string/turn_miss</item>
+        <item>@string/turn_push</item>
+        <item>@string/turn_skip</item>
+        <item>@string/turn_illegal_break</item>
+        <item>@string/turn_won_game</item>
+        <item>@string/turn_current_player_breaks</item>
+        <item>@string/turn_non_current_player_breaks</item>
+    </string-array>
+</resources>

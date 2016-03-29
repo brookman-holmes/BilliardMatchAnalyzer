@@ -91,7 +91,7 @@ public class ShotFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutByGameType(getGameType()), container, false);
         ButterKnife.bind(this, view);
-        title.setText("Input balls made this turn");
+        title.setText(page.getTitle());
         if (playerColor != null)
             playerColor.setVisibility(View.VISIBLE);
 

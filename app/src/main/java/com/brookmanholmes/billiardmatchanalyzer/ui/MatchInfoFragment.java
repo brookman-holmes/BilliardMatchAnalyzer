@@ -81,6 +81,11 @@ public class MatchInfoFragment extends Fragment implements MatchInterface, View.
     }
 
     @Override
+    public String getNonCurrentPlayersName() {
+        return adapter.getNonCurrentPlayersName();
+    }
+
+    @Override
     public void undoTurn() {
         adapter.undoTurn();
     }

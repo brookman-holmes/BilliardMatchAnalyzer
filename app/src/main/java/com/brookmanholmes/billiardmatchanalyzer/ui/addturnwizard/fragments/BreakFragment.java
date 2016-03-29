@@ -82,7 +82,7 @@ public class BreakFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutByGameType(getGameType()), container, false);
         ButterKnife.bind(this, view);
-        title.setText("Input balls made on break");
+        title.setText(page.getTitle());
 
 
         for (int i = 1; i <= ballIds.length; i++) {

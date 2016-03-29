@@ -1,8 +1,6 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,6 @@ import java.util.Set;
  * Created by Brookman Holmes on 3/7/2016.
  */
 public class AddTurnMultipleChoiceFragment extends MultipleChoiceFragment {
-
     public static AddTurnMultipleChoiceFragment create(String key) {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
@@ -39,36 +36,35 @@ public class AddTurnMultipleChoiceFragment extends MultipleChoiceFragment {
         ((TextView) rootView.findViewById(R.id.title)).setText(page.getTitle());
 
         final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
-        setListAdapter(new ArrayAdapter<String>(getActivity(),
+        setListAdapter(new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_multiple_choice,
                 android.R.id.text1,
                 choices));
         listView.setDividerHeight(0);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        // Pre-select currently selected items.
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                ArrayList<String> selectedItems = page.getData().getStringArrayList(
-                        Page.SIMPLE_DATA_KEY);
-
-                if (selectedItems == null || selectedItems.size() == 0) {
-                    return;
-                }
-
-                Log.i("atmcf", selectedItems.toString());
-
-                Set<String> selectedSet = new HashSet<String>(selectedItems);
-
-                for (int i = 0; i < choices.size(); i++) {
-                    if (selectedSet.contains(choices.get(i))) {
-                        listView.setItemChecked(i, true);
-                    }
-                }
-            }
-        });
-
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // retarded work around for weird bug where items get selected randomly?
+        // Pre-select currently selected items.
+        ArrayList<String> selectedItems = page.getData().getStringArrayList(
+                Page.SIMPLE_DATA_KEY);
+        if (selectedItems == null || selectedItems.size() == 0) {
+            for (int i = 0; i < choices.size(); i++) {
+                getListView().setItemChecked(i, false);
+            }
+
+            return;
+        }
+
+        Set<String> selectedSet = new HashSet<String>(selectedItems);
+
+        for (int i = 0; i < choices.size(); i++) {
+            getListView().setItemChecked(i, selectedSet.contains(choices.get(i)));
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.brookmanholmes.billiardmatchanalyzer.utils;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -14,6 +15,7 @@ import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.InvalidBallException;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.ArrayList;
 
@@ -238,5 +240,35 @@ public class MatchDialogHelperUtils {
     public static void setViewToBallOffTable(ImageView view) {
         if (view != null)
             view.setImageLevel(0);
+    }
+
+    @StringRes
+    public static int convertTurnEndToStringRes(TurnEnd end) {
+        switch (end) {
+            case SAFETY:
+                return R.string.turn_safety;
+            case SAFETY_ERROR:
+                return R.string.turn_safety_error;
+            case MISS:
+                return R.string.turn_miss;
+            case BREAK_MISS:
+                return R.string.turn_break_miss;
+            case GAME_WON:
+                return R.string.turn_won_game;
+            case PUSH_SHOT:
+                return R.string.turn_push;
+            case SKIP_TURN:
+                return R.string.turn_skip;
+            case CURRENT_PLAYER_BREAKS_AGAIN:
+                return R.string.turn_current_player_breaks;
+            case OPPONENT_BREAKS_AGAIN:
+                return R.string.turn_non_current_player_breaks;
+            case CONTINUE_WITH_GAME:
+                return R.string.turn_continue_game;
+            case ILLEGAL_BREAK:
+                return R.string.turn_illegal_break;
+            default:
+                throw new IllegalArgumentException("No such conversion for: " + end.toString());
+        }
     }
 }

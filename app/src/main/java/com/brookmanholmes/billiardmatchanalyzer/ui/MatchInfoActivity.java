@@ -25,6 +25,7 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 
 import butterknife.Bind;
@@ -148,9 +149,60 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     public void addTurn(TurnBuilder turnBuilder) {
         addTurn(infoFragment.createAndAddTurnToMatch(
                 turnBuilder.tableStatus,
-                turnBuilder.turnEnd,
-                turnBuilder.scratch,
-                turnBuilder.lostGame));
+                convertStringToTurnEnd(turnBuilder.turnEnd),
+                convertStringToScratch(turnBuilder.scratch),
+                convertStringToLostGame(turnBuilder.lostGame)));
+    }
+
+    private TurnEnd convertStringToTurnEnd(String turnEnd) {
+        if (turnEnd.equals(getString(R.string.turn_safety)))
+            return TurnEnd.SAFETY;
+        else if (turnEnd.equals(getString(R.string.turn_safety_error)))
+            return TurnEnd.SAFETY_ERROR;
+        else if (turnEnd.equals(getString(R.string.turn_break_miss)))
+            return TurnEnd.BREAK_MISS;
+        else if (turnEnd.equals(getString(R.string.turn_miss)))
+            return TurnEnd.MISS;
+        else if (turnEnd.equals(getString(R.string.turn_push)))
+            return TurnEnd.PUSH_SHOT;
+        else if (turnEnd.equals(getString(R.string.turn_skip)))
+            return TurnEnd.SKIP_TURN;
+        else if (turnEnd.equals(getString(R.string.turn_illegal_break)))
+            return TurnEnd.ILLEGAL_BREAK;
+        else if (turnEnd.equals(getString(R.string.turn_won_game)))
+            return TurnEnd.GAME_WON;
+        else if (turnEnd.equals(getString(R.string.turn_current_player_breaks, infoFragment.getCurrentPlayersName())))
+            return TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN;
+        else if (turnEnd.equals(getString(R.string.turn_non_current_player_breaks, infoFragment.getNonCurrentPlayersName())))
+            return TurnEnd.OPPONENT_BREAKS_AGAIN;
+        else if (turnEnd.equals(getString(R.string.turn_continue_game)))
+            return TurnEnd.CONTINUE_WITH_GAME;
+        else
+            throw new IllegalArgumentException("No such conversion between string and StringRes: " + turnEnd);
+    }
+
+    private boolean convertStringToScratch(String scratch) {
+        if (scratch.equals(getString(R.string.foul_lost_game)))
+            return true;
+        else if (scratch.equals(getString(R.string.yes)))
+            return true;
+        else if (scratch.equals(getString(R.string.no)))
+            return false;
+        else throw new IllegalArgumentException("No such conversion between string " + scratch
+                    + " and StringRes: " + getString(R.string.yes) + " or "
+                    + getString(R.string.no));
+    }
+
+    private boolean convertStringToLostGame(String scratch) {
+        if (scratch.equals(getString(R.string.foul_lost_game)))
+            return true;
+        else if (scratch.equals(getString(R.string.yes)))
+            return false;
+        else if (scratch.equals(getString(R.string.no)))
+            return false;
+        else throw new IllegalArgumentException("No such conversion between string " + scratch
+                    + " and StringRes: " + getString(R.string.yes) + " or "
+                    + getString(R.string.no));
     }
 
     private void addTurn(Turn turn) {

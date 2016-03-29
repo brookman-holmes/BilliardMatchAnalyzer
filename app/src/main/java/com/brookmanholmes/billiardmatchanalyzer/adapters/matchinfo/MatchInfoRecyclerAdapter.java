@@ -166,6 +166,11 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     }
 
     @Override
+    public String getNonCurrentPlayersName() {
+        return match.getNonCurrentPlayersName();
+    }
+
+    @Override
     public int getTurnCount() {
         return match.getTurnCount();
     }

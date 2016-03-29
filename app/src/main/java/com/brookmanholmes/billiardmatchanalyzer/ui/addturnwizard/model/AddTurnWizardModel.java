@@ -2,12 +2,18 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PageList;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.match.Match;
+
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.STATS_LEVEL_KEY;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
@@ -21,8 +27,22 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
         turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)),
                 matchData.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY));
+
+        turnBuilder.scratch = context.getString(R.string.no);
+        turnBuilder.lostGame = context.getString(R.string.no);
+
         this.matchData = matchData;
         rootPageList = onNewRootPageList();
+
+        Log.i("AddTurnModel", rootPageList.toString());
+    }
+
+    private static boolean currentPlayerTurnAndAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
+        if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
+            return true;
+        else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
+            return true;
+        else return detail == Match.StatsDetail.ADVANCED;
     }
 
     @Override
@@ -54,19 +74,177 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     @Override
     protected PageList onNewRootPageList() {
         if (matchData.getBoolean(MatchDialogHelperUtils.ALLOW_BREAK_AGAIN_KEY)) {
-            return new PageList(new TurnEndPage(this, matchData));
+            return new PageList(getTurnEndPage());
         }
 
         if (matchData.getBoolean(MatchDialogHelperUtils.NEW_GAME_KEY))
             return new PageList(
-                    new BreakPage(this, matchData),
-                    new TurnEndPage(this, matchData)
+                    getBreakPage(),
+                    getTurnEndPage()
             );
         else
             return new PageList(
-                    new ShotPage(this, matchData),
-                    new TurnEndPage(this, matchData)
+                    getShotPage(),
+                    getTurnEndPage()
             );
+    }
+
+    private Page getBreakPage() {
+        return new BreakPage(this, context.getString(R.string.title_break), context.getString(R.string.title_shot), matchData);
+    }
+
+    private Page getShotPage() {
+        return new ShotPage(this, context.getString(R.string.title_shot), matchData);
+    }
+
+    private Page getTurnEndPage() {
+        if (currentPlayerTurnAndAdvancedStats(
+                PlayerTurn.valueOf(matchData.getString(MatchDialogHelperUtils.TURN_KEY)),
+                Match.StatsDetail.valueOf(matchData.getString(STATS_LEVEL_KEY)))) {
+            return getAdvTurnEndPage();
+        } else
+            return new TurnEndPage(this, context.getString(R.string.title_turn_end), matchData)
+                    .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"))
+                    .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"))
+                    .addBranch(context.getString(R.string.turn_break_miss), getFoulPage("break"))
+                    .addBranch(context.getString(R.string.turn_safety))
+                    .addBranch(context.getString(R.string.turn_illegal_break), getFoulPage("illegal break"))
+                    .addBranch(context.getString(R.string.turn_won_game))
+                    .addBranch(context.getString(R.string.turn_push))
+                    .addBranch(context.getString(R.string.turn_skip))
+                    .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)))
+                    .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)));
+    }
+
+    private Page getAdvTurnEndPage() {
+        return new TurnEndPage(this, context.getString(R.string.title_turn_end), matchData)
+                .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"), getSafetyErrorBranch())
+                .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"), getMissBranchPage(), getHowMissPage("miss2"), getWhyMissPage("miss3"))
+                .addBranch(context.getString(R.string.turn_break_miss), getFoulPage("break"), getBreakErrorHow(), getBreakErrorWhy())
+                .addBranch(context.getString(R.string.turn_illegal_break), getFoulPage("illegal break"), getIllegalBreakHow(), getIllegalBreakWhy())
+                .addBranch(context.getString(R.string.turn_safety), getSafetyPage())
+                .addBranch(context.getString(R.string.turn_won_game))
+                .addBranch(context.getString(R.string.turn_push))
+                .addBranch(context.getString(R.string.turn_skip))
+                .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)))
+                .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)));
+    }
+
+    private Page getFoulPage(String parentKey) {
+        return new FoulPage(this, context.getString(R.string.title_foul), matchData)
+                .setChoices(context.getResources().getStringArray(R.array.foul_types))
+                .setValue(context.getString(R.string.no))
+                .setParentKey(parentKey)
+                .setRequired(true);
+    }
+
+    private Page getSafetyErrorBranch() {
+        return new HowMissPage(this, context.getString(R.string.title_how_miss))
+                .setChoices(context.getResources().getStringArray(R.array.how_choices_safety))
+                .setParentKey("safety error how")
+                .setRequired(true);
+    }
+
+    private Page getMissBranchPage() {
+        return new MissBranchPage(this, context.getString(R.string.title_miss))
+                .addBranch(context.getString(R.string.miss_cut),
+                        getCutTypePage("cut miss1"),
+                        getAnglePage("cut miss2"))
+
+                .addBranch(context.getString(R.string.miss_long))
+
+                .addBranch(context.getString(R.string.miss_bank),
+                        getBankPage("bank miss1"))
+
+                .addBranch(context.getString(R.string.miss_kick),
+                        getKickPage("kick miss1"))
+
+                .addBranch(context.getString(R.string.miss_combo))
+
+                .addBranch(context.getString(R.string.miss_carom))
+
+                .addBranch(context.getString(R.string.miss_jump))
+                .setValue(context.getString(R.string.miss_cut))
+                .setParentKey("Miss");
+    }
+
+    private Page getWhyMissPage(String parentKey) {
+        return new WhyMissPage(this, context.getString(R.string.title_why_miss))
+                .setChoices(context.getResources().getStringArray(R.array.why_choices))
+                .setRequired(true)
+                .setParentKey(parentKey);
+    }
+
+    private Page getCutTypePage(String parentKey) {
+        return new CutTypePage(this, context.getString(R.string.title_cut_type))
+                .setChoices(context.getResources().getStringArray(R.array.cut_types))
+                .setValue(context.getResources().getString(R.string.cut_rail))
+                .setRequired(true)
+                .setParentKey(parentKey);
+    }
+
+    private Page getAnglePage(String parentKey) {
+        return new AngleTypePage(this, context.getString(R.string.title_angle))
+                .setChoices(context.getResources().getStringArray(R.array.angles))
+                .setValue(context.getResources().getStringArray(R.array.angles)[0])
+                .setRequired(true)
+                .setParentKey(parentKey);
+    }
+
+    private Page getBankPage(String parentKey) {
+        return new BankPage(this, context.getString(R.string.title_bank))
+                .setChoices(context.getResources().getStringArray(R.array.banks))
+                .setParentKey(parentKey);
+    }
+
+    private Page getKickPage(String parentKey) {
+        return new KickPage(this, context.getString(R.string.title_kick_type))
+                .setChoices(context.getResources().getStringArray(R.array.kicks))
+                .setValue(context.getString(R.string.one_rail))
+                .setRequired(true)
+                .setParentKey(parentKey);
+    }
+
+    private Page getBreakErrorHow() {
+        return new HowMissPage(this, context.getString(R.string.title_how_miss))
+                .setChoices(context.getResources().getStringArray(R.array.how_choices_break))
+                .setRequired(true)
+                .setParentKey("break miss how");
+    }
+
+    private Page getBreakErrorWhy() {
+        return new WhyMissPage(this, context.getString(R.string.title_why_miss))
+                .setChoices(context.getResources().getStringArray(R.array.why_choices_break))
+                .setRequired(true)
+                .setParentKey("break miss why");
+    }
+
+    private Page getIllegalBreakHow() {
+        return new HowMissPage(this, context.getString(R.string.title_how_miss))
+                .setChoices(context.getResources().getStringArray(R.array.how_choices_break))
+                .setRequired(true)
+                .setParentKey("illegal break how");
+    }
+
+    private Page getIllegalBreakWhy() {
+        return new WhyMissPage(this, context.getString(R.string.title_why_miss))
+                .setChoices(context.getResources().getStringArray(R.array.why_choices_illegal_break))
+                .setRequired(true)
+                .setParentKey("illegal break why");
+    }
+
+    private Page getSafetyPage() {
+        return new SafetyPage(this, context.getString(R.string.title_safety))
+                .setChoices(context.getResources().getStringArray(R.array.safety_types))
+                .setValue(context.getString(R.string.safety_full_hook))
+                .setRequired(true)
+                .setParentKey("safety what");
+    }
+
+    private Page getHowMissPage(String parentKey) {
+        return new HowMissPage(this, context.getString(R.string.title_how_miss))
+                .setChoices(context.getResources().getStringArray(R.array.how_choices))
+                .setParentKey(parentKey);
     }
 
     public TurnBuilder getTurnBuilder() {
