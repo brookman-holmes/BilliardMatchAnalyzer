@@ -12,6 +12,7 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PageList;
 public class CreateNewMatchWizardModel extends AbstractWizardModel {
     String playerName, opponentName;
 
+    // TODO: 3/28/2016 convert this to use string resources instead of hard coded strings
     public CreateNewMatchWizardModel(Context context) {
         super(context);
         rootPageList = onNewRootPageList();

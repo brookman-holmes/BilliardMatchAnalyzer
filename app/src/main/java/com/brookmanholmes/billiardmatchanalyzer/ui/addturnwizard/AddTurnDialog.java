@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.AddTurnWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
@@ -25,6 +26,7 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.StepPagerStrip;
 import com.brookmanholmes.billiards.match.Match;
 import com.flipboard.bottomsheet.commons.BottomSheetFragment;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
@@ -122,6 +124,14 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
         onPageTreeChanged();
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
     }
 
     @Override

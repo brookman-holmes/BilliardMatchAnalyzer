@@ -14,11 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.ListItemClickListener;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.MatchListRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.MatchListLoader;
+import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,6 +70,8 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
     }
 
     /**

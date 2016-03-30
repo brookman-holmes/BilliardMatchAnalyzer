@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
@@ -17,6 +18,7 @@ import com.brookmanholmes.billiards.match.MatchInterface;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,6 +70,8 @@ public class MatchInfoFragment extends Fragment implements MatchInterface, View.
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
     }
 
     @Override
