@@ -3,13 +3,16 @@ package com.brookmanholmes.billiards.turn.helpers;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.turn.TableStatusInterface;
+import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
 
 
 /**
  * Created by Brookman Holmes on 10/30/2015.
  */
 abstract public class TurnEndHelper {
-    com.brookmanholmes.billiards.turn.TableStatusInterface nextInning;
+    TableStatusInterface nextInning;
     GameStatus game;
 
     TurnEndHelper() {
@@ -36,12 +39,12 @@ abstract public class TurnEndHelper {
 
     abstract boolean lostGame();
 
-    com.brookmanholmes.billiards.turn.TurnEnd selection() {
+    TurnEnd selection() {
         if (showWin())
-            return com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
+            return TurnEnd.GAME_WON;
         else if (showBreakMiss())
-            return com.brookmanholmes.billiards.turn.TurnEnd.BREAK_MISS;
-        else return com.brookmanholmes.billiards.turn.TurnEnd.MISS;
+            return TurnEnd.BREAK_MISS;
+        else return TurnEnd.MISS;
     }
 
     boolean showPush() {
@@ -76,13 +79,13 @@ abstract public class TurnEndHelper {
         return game.newGame && nextInning.getBreakBallsMade() == 0;
     }
 
-    com.brookmanholmes.billiards.turn.TurnEndOptions.Builder createTurnEndOptionsBuilder() {
+    TurnEndOptions.Builder createTurnEndOptionsBuilder() {
         if (game.playerAllowedToBreakAgain) {
-            return new com.brookmanholmes.billiards.turn.TurnEndOptions.Builder().allowPlayerToChooseWhoBreaks().defaultOption(com.brookmanholmes.billiards.turn.TurnEnd.CONTINUE_WITH_GAME);
+            return new TurnEndOptions.Builder().allowPlayerToChooseWhoBreaks().defaultOption(TurnEnd.CONTINUE_WITH_GAME);
         } else if (game.gameType == GameType.BCA_EIGHT_BALL && nextInning.getGameBallMadeOnBreak()  && nextInning.getShootingBallsMade() == 0 && nextInning.getDeadBalls() == 0) {
-            return new com.brookmanholmes.billiards.turn.TurnEndOptions.Builder().allowPlayerToChooseToContinueGame().allowPlayerToBreakAgain().defaultOption(com.brookmanholmes.billiards.turn.TurnEnd.CONTINUE_WITH_GAME);
+            return new TurnEndOptions.Builder().allowPlayerToChooseToContinueGame().defaultOption(TurnEnd.CONTINUE_WITH_GAME);
         } else {
-            return new com.brookmanholmes.billiards.turn.TurnEndOptions.Builder()
+            return new TurnEndOptions.Builder()
                     .wonGame(showWin())
                     .lostGame(lostGame())
                     .safety(showSafety())
@@ -96,7 +99,7 @@ abstract public class TurnEndHelper {
         }
     }
 
-    public com.brookmanholmes.billiards.turn.TurnEndOptions create(GameStatus game, com.brookmanholmes.billiards.turn.TableStatusInterface nextInning) {
+    public TurnEndOptions create(GameStatus game, TableStatusInterface nextInning) {
         this.game = game;
         this.nextInning = nextInning;
 

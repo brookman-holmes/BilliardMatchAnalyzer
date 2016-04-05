@@ -42,7 +42,6 @@ public class PlayerList {
 
         max.addShootingBallsMade(7, false);
         max.addGameWon();
-        max.addFourBallRun();
 
         jeff.addGameLost();
 
@@ -76,7 +75,6 @@ public class PlayerList {
 
         jeff.addShootingBallsMade(6, false);
         jeff.addGameWon();
-        jeff.addFourBallRun();
 
         max.addGameLost();
 
@@ -116,7 +114,6 @@ public class PlayerList {
 
         max.addShootingBallsMade(7, false);
         max.addGameWon();
-        max.addFourBallRun();
 
 
         return new Pair<>(max, jeff);
@@ -177,7 +174,6 @@ public class PlayerList {
         NineBallPlayer jeff = jeff();
 
         jeff.addShootingBallsMade(6, false);
-        jeff.addFourBallRun();
         jeff.addGameWon();
 
         max.addGameLost();
@@ -220,7 +216,6 @@ public class PlayerList {
 
         max.addShootingBallsMade(8, false);
         max.addGameWon();
-        max.addFourBallRun();
 
         max.addSafetyEscape();
 
@@ -246,7 +241,7 @@ public class PlayerList {
 
         jeff.addShootingBallsMade(1, false);
         jeff.addGameWon();
-
+        jeff.addFourBallRun();
 
         max.addGameLost();
 
@@ -363,7 +358,7 @@ public class PlayerList {
 
         jeff.addShootingBallsMade(3, false);
         jeff.addGameWon();
-
+        jeff.addFourBallRun();
         max.addGameLost();
 
         return new Pair<>(max, jeff);
@@ -464,7 +459,6 @@ public class PlayerList {
         NineBallPlayer jeff = jeff();
 
         max.addShootingBallsMade(8, false);
-        max.addFourBallRun();
         max.addGameWon();
 
         jeff.addGameLost();
@@ -489,6 +483,7 @@ public class PlayerList {
 
         max.addShootingBallsMade(3, false);
         max.addGameWon();
+        max.addFourBallRun();
 
         jeff.addGameLost();
 
@@ -521,7 +516,6 @@ public class PlayerList {
         NineBallPlayer jeff = jeff();
 
         max.addShootingBallsMade(6, false);
-        max.addFourBallRun();
         max.addGameWon();
 
         jeff.addGameLost();
@@ -617,7 +611,6 @@ public class PlayerList {
 
         max.addShootingBallsMade(8, false);
         max.addGameWon();
-        max.addFourBallRun();
 
         jeff.addGameLost();
 

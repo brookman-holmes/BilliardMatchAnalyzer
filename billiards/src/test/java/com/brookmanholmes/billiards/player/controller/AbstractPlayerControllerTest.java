@@ -5,10 +5,10 @@ import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.turn.TurnBuilder;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
+import com.brookmanholmes.billiards.turn.TurnBuilder;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -263,12 +263,12 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = AssertionError.class)
     public void updatePlayerStatsThrowsIllegalStateExceptionOnNullInput() {
         playerController.updatePlayerStats(game.getGameStatus(), null);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = AssertionError.class)
     public void updatePlayerStatsThrowsIllegalStateExceptionOnNullInput2() {
         playerController.updatePlayerStats(null, turnBuilder.miss());
     }

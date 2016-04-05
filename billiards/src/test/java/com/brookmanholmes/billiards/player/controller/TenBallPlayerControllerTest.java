@@ -5,8 +5,8 @@ import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.turn.TurnBuilder;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
+import com.brookmanholmes.billiards.turn.TurnBuilder;
 
 /**
  * Created by Brookman Holmes on 1/30/2016.
@@ -33,7 +33,7 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<Te
 
     @Override
     Turn fourBallRunTurn() {
-        return turnBuilder.offTable(1, 2, 3).madeBalls(4, 5, 6, 7, 8, 9, 10).win();
+        return turnBuilder.offTable(1, 2, 3, 5, 6, 7).madeBalls(4, 8, 9, 10).win();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<Te
     @Override
     TenBallPlayer fourBallRunOutPlayer() {
         TenBallPlayer player = new TenBallPlayer("");
-        player.addShootingBallsMade(7, false);
+        player.addShootingBallsMade(4, false);
         player.addGameWon();
         player.addFourBallRun();
 

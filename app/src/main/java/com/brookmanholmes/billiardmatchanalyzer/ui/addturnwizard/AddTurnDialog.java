@@ -1,13 +1,12 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +18,13 @@ import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.AddTurnWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
+import com.brookmanholmes.billiardmatchanalyzer.ui.help.HelpDialogCreator;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.StepPagerStrip;
 import com.brookmanholmes.billiards.match.Match;
-import com.flipboard.bottomsheet.commons.BottomSheetFragment;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
@@ -37,17 +36,12 @@ import butterknife.OnClick;
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
-public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCallbacks, ModelCallbacks {
-    @Bind(R.id.pager)
-    ViewPager pager;
-    @Bind(R.id.strip)
-    StepPagerStrip pagerStrip;
-    @Bind(R.id.next_button)
-    Button nextButton;
-    @Bind(R.id.prev_button)
-    Button prevButton;
-    @Bind(R.id.title)
-    TextView title;
+public class AddTurnDialog extends DialogFragment implements PageFragmentCallbacks, ModelCallbacks {
+    @Bind(R.id.pager) ViewPager pager;
+    @Bind(R.id.strip) StepPagerStrip pagerStrip;
+    @Bind(R.id.next_button) Button nextButton;
+    @Bind(R.id.prev_button) Button prevButton;
+    @Bind(R.id.title) TextView title;
 
     private MyPagerAdapter pagerAdapter;
     private AddTurnWizardModel wizardModel;
@@ -69,8 +63,7 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
         return addTurnDialog;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         wizardModel = new AddTurnWizardModel(getContext(), getArguments());
@@ -89,8 +82,7 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
         listener = (AddTurnListener) getActivity();
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_turn, container, false);
         ButterKnife.bind(this, view);
@@ -127,15 +119,19 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
     }
 
     @Override
-    public void onDestroyView() {
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
+    }
+
+    @Override public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
     }
 
-    @Override
-    public void onPageDataChanged(Page page) {
+    @Override public void onPageDataChanged(Page page) {
         if (page.isRequired()) {
             if (recalculateCutOffPage()) {
                 pagerAdapter.notifyDataSetChanged();
@@ -144,8 +140,7 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
         }
     }
 
-    @Override
-    public void onPageTreeChanged() {
+    @Override public void onPageTreeChanged() {
         currentPageSequence = wizardModel.getCurrentPageSequence();
         recalculateCutOffPage();
         pagerStrip.setPageCount(currentPageSequence.size());
@@ -172,8 +167,7 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
         return false;
     }
 
-    @Override
-    public Page onGetPage(String key) {
+    @Override public Page onGetPage(String key) {
         return wizardModel.findByKey(key);
     }
 
@@ -189,8 +183,7 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
         prevButton.setVisibility(position <= 1 ? View.INVISIBLE : View.VISIBLE);
     }
 
-    @OnClick(R.id.next_button)
-    public void nextButton() {
+    @OnClick(R.id.next_button) public void nextButton() {
         if (pager.getCurrentItem() + 1 == currentPageSequence.size()) {
             listener.addTurn(wizardModel.getTurnBuilder());
             dismiss();
@@ -201,22 +194,16 @@ public class AddTurnDialog extends BottomSheetFragment implements PageFragmentCa
         }
     }
 
-    @OnClick(R.id.prev_button)
-    public void prevButton() {
+    @OnClick(R.id.prev_button) public void prevButton() {
         wizardModel.updatePagesWithTurnInfo();
         pager.setCurrentItem(pager.getCurrentItem() - 1);
     }
 
-    @OnClick(R.id.imgHelp)
-    public void help() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-        builder.setMessage(wizardModel.getCurrentPageSequence().get(pager.getCurrentItem()).getTitle());
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        }).create().show();
-
+    @OnClick(R.id.imgHelp) public void help() {
+        new HelpDialogCreator(getContext(),
+                wizardModel.getCurrentPageSequence().get(pager.getCurrentItem()).getTitle())
+                .create()
+                .show();
     }
 
     public interface AddTurnListener {

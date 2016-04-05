@@ -24,20 +24,26 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     public AddTurnWizardModel(Context context, Bundle matchData) {
         super(context);
+        this.matchData = matchData;
 
         turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)),
                 matchData.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY));
 
         turnBuilder.scratch = context.getString(R.string.no);
         turnBuilder.lostGame = context.getString(R.string.no);
+        turnBuilder.advStats.name(matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY));
 
-        this.matchData = matchData;
+        turnBuilder.advStats.use(currentPlayerTurnAndAdvancedStats());
+
         rootPageList = onNewRootPageList();
 
-        Log.i("AddTurnModel", rootPageList.toString());
+        Log.i("ATWM", turnBuilder.advData());
+        Log.i("ATWM", "opp played safe: " + matchData.getBoolean(MatchDialogHelperUtils.SUCCESSFUL_SAFE_KEY));
     }
 
-    private static boolean currentPlayerTurnAndAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
+    private boolean currentPlayerTurnAndAdvancedStats() {
+        PlayerTurn turn = PlayerTurn.valueOf(matchData.getString(MatchDialogHelperUtils.TURN_KEY));
+        Match.StatsDetail detail = Match.StatsDetail.valueOf(matchData.getString(STATS_LEVEL_KEY));
         if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
             return true;
         else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
@@ -54,6 +60,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         }
 
         updatePagesWithTurnInfo();
+        Log.i("ATWM", turnBuilder.advData());
     }
 
     @Override
@@ -98,9 +105,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getTurnEndPage() {
-        if (currentPlayerTurnAndAdvancedStats(
-                PlayerTurn.valueOf(matchData.getString(MatchDialogHelperUtils.TURN_KEY)),
-                Match.StatsDetail.valueOf(matchData.getString(STATS_LEVEL_KEY)))) {
+        if (currentPlayerTurnAndAdvancedStats()) {
             return getAdvTurnEndPage();
         } else
             return new TurnEndPage(this, context.getString(R.string.title_turn_end), matchData)
@@ -139,9 +144,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getSafetyErrorBranch() {
-        return new HowMissPage(this, context.getString(R.string.title_how_miss))
+        return new SafetyErrorPage(this, context.getString(R.string.title_how_miss))
                 .setChoices(context.getResources().getStringArray(R.array.how_choices_safety))
-                .setParentKey("safety error how")
                 .setRequired(true);
     }
 
@@ -206,10 +210,9 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getBreakErrorHow() {
-        return new HowMissPage(this, context.getString(R.string.title_how_miss))
+        return new BreakErrorPage(this, context.getString(R.string.title_how_miss))
                 .setChoices(context.getResources().getStringArray(R.array.how_choices_break))
-                .setRequired(true)
-                .setParentKey("break miss how");
+                .setRequired(true);
     }
 
     private Page getBreakErrorWhy() {
@@ -220,10 +223,9 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getIllegalBreakHow() {
-        return new HowMissPage(this, context.getString(R.string.title_how_miss))
+        return new BreakErrorPage(this, context.getString(R.string.title_how_miss))
                 .setChoices(context.getResources().getStringArray(R.array.how_choices_break))
-                .setRequired(true)
-                .setParentKey("illegal break how");
+                .setRequired(true);
     }
 
     private Page getIllegalBreakWhy() {
@@ -254,6 +256,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 ((UpdatesTurnInfo) page).updateTurnInfo(turnBuilder);
 
         turnBuilder.advStats.startingPosition(matchData.getBoolean(MatchDialogHelperUtils.SUCCESSFUL_SAFE_KEY) ? "Safe" : "Open");
+        Log.i("ATWM", turnBuilder.advData());
         return turnBuilder;
     }
 }

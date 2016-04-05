@@ -14,6 +14,7 @@ public class AdvStats {
     private List<String> whyTypes = new ArrayList<>();
     private List<String> angles = new ArrayList<>();
     private String startingPosition;
+    private boolean use;
 
     private AdvStats(Builder builder) {
         this.shotType = builder.shotType;
@@ -22,6 +23,12 @@ public class AdvStats {
         whyTypes.addAll(builder.whyTypes);
         angles.addAll(builder.angles);
         this.startingPosition = builder.startingPosition;
+        player = builder.player;
+        use = builder.use;
+    }
+
+    public boolean use() {
+        return use;
     }
 
     public String getPlayer() {
@@ -52,6 +59,19 @@ public class AdvStats {
         return whyTypes;
     }
 
+    @Override public String toString() {
+        return "AdvStats{" +
+                "player='" + player + '\'' +
+                "\n shotType='" + shotType + '\'' +
+                "\n shotSubtype='" + shotSubtype + '\'' +
+                "\n howTypes=" + howTypes +
+                "\n whyTypes=" + whyTypes +
+                "\n angles=" + angles +
+                "\n startingPosition='" + startingPosition + '\'' +
+                "\n use=" + use +
+                '}';
+    }
+
     public static class Builder {
         private String player;
         private String shotType = "", shotSubtype = "";
@@ -59,6 +79,7 @@ public class AdvStats {
         private List<String> howTypes = new ArrayList<>();
         private List<String> whyTypes = new ArrayList<>();
         private String startingPosition = "";
+        private boolean use;
 
 
         public Builder(String player) {
@@ -74,6 +95,11 @@ public class AdvStats {
 
         public Builder shotType(String shotType) {
             this.shotType = shotType;
+            return this;
+        }
+
+        public Builder use(boolean use) {
+            this.use = use;
             return this;
         }
 
@@ -143,14 +169,16 @@ public class AdvStats {
             return new AdvStats(this);
         }
 
-        @Override
-        public String toString() {
+        @Override public String toString() {
             return "Builder{" +
-                    "shotType='" + shotType + '\'' +
-                    ", shotSubtype='" + shotSubtype + '\'' +
-                    ", angles=" + angles +
-                    ", howTypes=" + howTypes +
-                    ", whyTypes=" + whyTypes +
+                    "player='" + player + '\'' +
+                    "\n shotType='" + shotType + '\'' +
+                    "\n shotSubtype='" + shotSubtype + '\'' +
+                    "\n angles=" + angles +
+                    "\n howTypes=" + howTypes +
+                    "\n whyTypes=" + whyTypes +
+                    "\n startingPosition='" + startingPosition + '\'' +
+                    "\n use=" + use +
                     '}';
         }
     }

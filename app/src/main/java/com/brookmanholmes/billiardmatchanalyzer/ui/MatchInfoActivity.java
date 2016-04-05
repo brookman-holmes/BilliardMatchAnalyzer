@@ -25,6 +25,7 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 
@@ -95,7 +96,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     private void showAddTurnDialog() {
         AddTurnDialog addTurnDialog = AddTurnDialog.create(db.getMatch(getMatchId()));
-        addTurnDialog.show(getSupportFragmentManager(), R.id.bottomsheet);
+        addTurnDialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppTheme);
+        addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
     @OnClick(R.id.playerName)
@@ -147,11 +149,18 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     @Override
     public void addTurn(TurnBuilder turnBuilder) {
-        addTurn(infoFragment.createAndAddTurnToMatch(
-                turnBuilder.tableStatus,
-                convertStringToTurnEnd(turnBuilder.turnEnd),
-                convertStringToScratch(turnBuilder.scratch),
-                convertStringToLostGame(turnBuilder.lostGame)));
+        if (turnBuilder.advStats.build().use())
+            addTurn(infoFragment.createAndAddTurnToMatch(
+                    turnBuilder.tableStatus,
+                    convertStringToTurnEnd(turnBuilder.turnEnd),
+                    convertStringToScratch(turnBuilder.scratch),
+                    convertStringToLostGame(turnBuilder.lostGame)), turnBuilder.advStats.build());
+        else
+            addTurn(infoFragment.createAndAddTurnToMatch(
+                    turnBuilder.tableStatus,
+                    convertStringToTurnEnd(turnBuilder.turnEnd),
+                    convertStringToScratch(turnBuilder.scratch),
+                    convertStringToLostGame(turnBuilder.lostGame)));
     }
 
     private TurnEnd convertStringToTurnEnd(String turnEnd) {
@@ -203,6 +212,10 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         else throw new IllegalArgumentException("No such conversion between string " + scratch
                     + " and StringRes: " + getString(R.string.yes) + " or "
                     + getString(R.string.no));
+    }
+
+    private void addTurn(Turn turn, AdvStats advStats) {
+        db.insertTurn(turn, advStats, getMatchId(), infoFragment.getTurnCount());
     }
 
     private void addTurn(Turn turn) {

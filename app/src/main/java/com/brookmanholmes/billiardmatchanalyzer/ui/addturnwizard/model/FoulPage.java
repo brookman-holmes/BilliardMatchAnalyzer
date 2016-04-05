@@ -17,7 +17,6 @@ import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUt
  * Created by Brookman Holmes on 3/3/2016.
  */
 public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, RequiresUpdatedTurnInfo {
-    private static final String[] defaultChoicesWithLoss = new String[]{"Yes, lost game", "Yes", "No"};
     FoulFragment fragment;
 
     public FoulPage(ModelCallbacks callbacks, String title, Bundle matchData) {
@@ -25,19 +24,16 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
         data.putAll(matchData);
     }
 
-    @Override
-    public void updateTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
         turnBuilder.scratch = data.getString(SIMPLE_DATA_KEY, "");
         turnBuilder.lostGame = data.getString(SIMPLE_DATA_KEY, "");
     }
 
-    @Override
-    public Fragment createFragment() {
+    @Override public Fragment createFragment() {
         return FoulFragment.create(getKey());
     }
 
-    @Override
-    public void getNewTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void getNewTurnInfo(TurnBuilder turnBuilder) {
         TurnEndHelper helper = TurnEndHelper.newTurnEndHelper(GameType.valueOf(data.getString(GAME_TYPE_KEY)));
 
         TurnEndOptions options = helper.create(

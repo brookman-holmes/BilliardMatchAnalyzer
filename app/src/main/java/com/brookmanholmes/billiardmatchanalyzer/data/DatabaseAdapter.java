@@ -16,11 +16,10 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.interfaces.Apa;
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.GameTurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,12 +55,12 @@ public class DatabaseAdapter {
     public static final String COLUMN_SHOT_TYPE = "shot_type";
     public static final String COLUMN_SHOT_SUB_TYPE = "shot_sub_type";
     public static final String TABLE_HOWS = "how_table";
-    public static final String COLUMN_HOW = "how";
     public static final String TABLE_WHYS = "why_table";
     public static final String COLUMN_ADV_STATS_ID = "adv_stats_id";
-    public static final String COLUMN_WHY = "why";
     public static final String TABLE_ANGLES = "angle_table";
-    public static final String COLUMN_ANGLE = "angle";
+    public static final String COLUMN_STRING = "string";
+    public static final String COLUMN_STARTING_POSITION = "starting_position";
+    public static final String EMPTY = "";
     private static final String TAG = "DatabaseAdapter";
     private final DatabaseHelper databaseHelper;
     private SQLiteDatabase database;
@@ -83,7 +82,7 @@ public class DatabaseAdapter {
     }
 
     private static TableStatus stringToTableStatus(String tableInStringForm) {
-        String[] ballStatuses = StringUtils.splitByWholeSeparator(tableInStringForm, ",");
+        String[] ballStatuses = splitByWholeSeparator(tableInStringForm, ",");
         TableStatus table = TableStatus.newTable(GameType.valueOf(ballStatuses[0]));
 
         for (int i = 1; i < ballStatuses.length; i++) {
@@ -91,6 +90,160 @@ public class DatabaseAdapter {
         }
 
         return table;
+    }
+
+    public static String[] splitByWholeSeparator(String str, String separator) {
+        return splitByWholeSeparatorWorker(str, separator, -1, false);
+    }
+
+    private static String[] splitByWholeSeparatorWorker(String str, String separator, int max,
+                                                        boolean preserveAllTokens) {
+        if (str == null) {
+            return null;
+        }
+        int len = str.length();
+
+        if (len == 0) {
+            return new String[]{};
+        }
+
+        if ((separator == null) || (EMPTY.equals(separator))) {
+            // Split on whitespace.
+            return splitWorker(str, null, max, preserveAllTokens);
+        }
+
+        int separatorLength = separator.length();
+
+        ArrayList<String> substrings = new ArrayList<>();
+        int numberOfSubstrings = 0;
+        int beg = 0;
+        int end = 0;
+        while (end < len) {
+            end = str.indexOf(separator, beg);
+
+            if (end > -1) {
+                if (end > beg) {
+                    numberOfSubstrings += 1;
+
+                    if (numberOfSubstrings == max) {
+                        end = len;
+                        substrings.add(str.substring(beg));
+                    } else {
+                        // The following is OK, because String.substring( beg, end ) excludes
+                        // the character at the position 'end'.
+                        substrings.add(str.substring(beg, end));
+
+                        // Set the starting point for the next search.
+                        // The following is equivalent to beg = end + (separatorLength - 1) + 1,
+                        // which is the right calculation:
+                        beg = end + separatorLength;
+                    }
+                } else {
+                    // We found a consecutive occurrence of the separator, so skip it.
+                    if (preserveAllTokens) {
+                        numberOfSubstrings += 1;
+                        if (numberOfSubstrings == max) {
+                            end = len;
+                            substrings.add(str.substring(beg));
+                        } else {
+                            substrings.add(EMPTY);
+                        }
+                    }
+                    beg = end + separatorLength;
+                }
+            } else {
+                // String.substring( beg ) goes from 'beg' to the end of the String.
+                substrings.add(str.substring(beg));
+                end = len;
+            }
+        }
+
+        return substrings.toArray(new String[substrings.size()]);
+    }
+
+    private static String[] splitWorker(String str, String separatorChars, int max, boolean preserveAllTokens) {
+        // Performance tuned for 2.0 (JDK1.4)
+        // Direct code is quicker than StringTokenizer.
+        // Also, StringTokenizer uses isSpace() not isWhitespace()
+
+        if (str == null) {
+            return null;
+        }
+        int len = str.length();
+        if (len == 0) {
+            return new String[]{};
+        }
+        List<String> list = new ArrayList<>();
+        int sizePlus1 = 1;
+        int i = 0, start = 0;
+        boolean match = false;
+        boolean lastMatch = false;
+        if (separatorChars == null) {
+            // Null separator means use whitespace
+            while (i < len) {
+                if (Character.isWhitespace(str.charAt(i))) {
+                    if (match || preserveAllTokens) {
+                        lastMatch = true;
+                        if (sizePlus1++ == max) {
+                            i = len;
+                            lastMatch = false;
+                        }
+                        list.add(str.substring(start, i));
+                        match = false;
+                    }
+                    start = ++i;
+                    continue;
+                }
+                lastMatch = false;
+                match = true;
+                i++;
+            }
+        } else if (separatorChars.length() == 1) {
+            // Optimise 1 character case
+            char sep = separatorChars.charAt(0);
+            while (i < len) {
+                if (str.charAt(i) == sep) {
+                    if (match || preserveAllTokens) {
+                        lastMatch = true;
+                        if (sizePlus1++ == max) {
+                            i = len;
+                            lastMatch = false;
+                        }
+                        list.add(str.substring(start, i));
+                        match = false;
+                    }
+                    start = ++i;
+                    continue;
+                }
+                lastMatch = false;
+                match = true;
+                i++;
+            }
+        } else {
+            // standard case
+            while (i < len) {
+                if (separatorChars.indexOf(str.charAt(i)) >= 0) {
+                    if (match || preserveAllTokens) {
+                        lastMatch = true;
+                        if (sizePlus1++ == max) {
+                            i = len;
+                            lastMatch = false;
+                        }
+                        list.add(str.substring(start, i));
+                        match = false;
+                    }
+                    start = ++i;
+                    continue;
+                }
+                lastMatch = false;
+                match = true;
+                i++;
+            }
+        }
+        if (match || (preserveAllTokens && lastMatch)) {
+            list.add(str.substring(start, i));
+        }
+        return list.toArray(new String[list.size()]);
     }
 
     public DatabaseAdapter open() {
@@ -233,7 +386,21 @@ public class DatabaseAdapter {
     }
 
     public void undoTurn(long id, int turnNumber) {
-        database.delete(TABLE_TURNS, COLUMN_MATCH_ID + "=? and " + COLUMN_TURN_NUMBER + "=?", new String[]{String.valueOf(id), String.valueOf(turnNumber)});
+        String selection = COLUMN_MATCH_ID + "=? and " + COLUMN_TURN_NUMBER + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(id), String.valueOf(turnNumber)};
+
+        database.delete(TABLE_TURNS, selection, selectionArgs);
+        Cursor c = database.query(TABLE_ADV_STATS, new String[]{COLUMN_ADV_STATS_ID}, selection, selectionArgs, null, null, null);
+        if (c.moveToFirst()) {
+            long advStatsId = c.getLong(c.getColumnIndex(COLUMN_ADV_STATS_ID));
+            String where = COLUMN_ADV_STATS_ID + "=?";
+            String[] whereArgs = new String[]{String.valueOf(advStatsId)};
+            database.delete(TABLE_ADV_STATS, where, whereArgs);
+            database.delete(TABLE_WHYS, where, whereArgs);
+            database.delete(TABLE_HOWS, where, whereArgs);
+            database.delete(TABLE_ANGLES, where, whereArgs);
+            c.close();
+        }
     }
 
     public long insertMatch(Match match) {
@@ -285,12 +452,12 @@ public class DatabaseAdapter {
         return format.format(new Date());
     }
 
-    public long insertTurn(Turn turn, long matchId, int turnId) {
+    public long insertTurn(Turn turn, long matchId, int turnCount) {
         database.delete(TABLE_TURNS,
                 COLUMN_MATCH_ID + "=? AND "
                         + COLUMN_TURN_NUMBER + " >= ?",
                 new String[]{String.valueOf(matchId),
-                        String.valueOf(turnId)});
+                        String.valueOf(turnCount)});
 
         ContentValues turnValues = new ContentValues();
 
@@ -298,13 +465,39 @@ public class DatabaseAdapter {
         turnValues.put(COLUMN_MATCH_ID, matchId);
         turnValues.put(COLUMN_SCRATCH, turn.isScratch());
         turnValues.put(COLUMN_TURN_END, turn.getTurnEnd().name());
-        turnValues.put(COLUMN_TURN_NUMBER, turnId);
+        turnValues.put(COLUMN_TURN_NUMBER, turnCount);
         turnValues.put(COLUMN_IS_GAME_LOST, turn.isGameLost());
 
-        ContentValues advStatsValue = new ContentValues();
-
-
         return database.insert(TABLE_TURNS, null, turnValues);
+    }
+
+    public long insertTurn(Turn turn, AdvStats advStats, long matchId, int turnCount) {
+        long turnId = insertTurn(turn, matchId, turnCount);
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SHOT_TYPE, advStats.getShotType());
+        values.put(COLUMN_SHOT_SUB_TYPE, advStats.getShotSubtype());
+        values.put(COLUMN_NAME, advStats.getPlayer());
+        values.put(COLUMN_TURN_NUMBER, turnCount);
+        values.put(COLUMN_MATCH_ID, matchId);
+        values.put(COLUMN_STARTING_POSITION, advStats.getStartingPosition());
+
+        long advStatsId = database.insert(TABLE_ADV_STATS, null, values);
+
+        insertAdvStatsList(TABLE_HOWS, advStats.getHowTypes(), advStatsId);
+        insertAdvStatsList(TABLE_WHYS, advStats.getWhyTypes(), advStatsId);
+        insertAdvStatsList(TABLE_ANGLES, advStats.getAngles(), advStatsId);
+
+        return turnId;
+    }
+
+    private void insertAdvStatsList(String table, List<String> values, long advStatsId) {
+        for (String value : values) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COLUMN_STRING, value);
+            contentValues.put(COLUMN_ADV_STATS_ID, advStatsId);
+            database.insert(table, null, contentValues);
+        }
     }
 
     public List<Turn> getMatchTurns(long id) {
@@ -337,6 +530,13 @@ public class DatabaseAdapter {
                 stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS))),
                 cursor.getInt(cursor.getColumnIndex(COLUMN_IS_GAME_LOST)) == 1
         );
+    }
+
+    public List<AdvStats> getAdvStats(long matchId, String playerName) {
+        List<AdvStats> list = new ArrayList<>();
+
+
+        return list;
     }
 
     public void deleteMatch(long id) {

@@ -16,8 +16,8 @@
     </string-array>
 
     <string-array name="how_choices">
-        <item>@string/too_hard</item>
-        <item>@string/too_soft</item>
+        <item>@string/thick_hit</item>
+        <item>@string/thin_hit</item>
         <item>@string/aim_to_left</item>
         <item>@string/aim_to_right</item>
     </string-array>

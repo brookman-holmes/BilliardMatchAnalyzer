@@ -74,10 +74,9 @@ public class NineBallPlayer extends AbstractPlayer implements WinsOnBreak {
         return result;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "NineBallPlayer{" +
                 "winsOnBreak=" + winsOnBreak +
-                '}';
+                "} " + super.toString();
     }
 }

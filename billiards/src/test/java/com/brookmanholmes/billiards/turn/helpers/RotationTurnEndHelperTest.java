@@ -4,6 +4,8 @@ import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
 
 import org.junit.Test;
 
@@ -56,6 +58,10 @@ public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
         helper.game = gameBuilder.allowSkip().build();
 
         assertThat(helper.showTurnSkip(), is(true));
+
+        TurnEndOptions options = helper.createTurnEndOptionsBuilder().build();
+
+        assertThat(options.possibleEndings.contains(TurnEnd.SKIP_TURN), is(true));
     }
 
     @Test

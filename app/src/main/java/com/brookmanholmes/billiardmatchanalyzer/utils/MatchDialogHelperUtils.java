@@ -49,6 +49,7 @@ public class MatchDialogHelperUtils {
     public static Bundle createBundleFromMatch(Match<?> match) {
         Bundle args = new Bundle();
 
+        args.putBoolean(ALLOW_TURN_SKIP_KEY, match.getGameStatus().allowTurnSkip);
         args.putBoolean(NEW_GAME_KEY, match.getGameStatus().newGame);
         args.putString(CURRENT_PLAYER_NAME_KEY, getCurrentPlayersName(match));
         args.putString(OPPOSING_PLAYER_NAME_KEY, getOpposingPlayersName(match));

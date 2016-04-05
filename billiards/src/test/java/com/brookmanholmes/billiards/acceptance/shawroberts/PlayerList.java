@@ -83,6 +83,7 @@ public class PlayerList {
 
         roberts.addShootingBallsMade(2, false);
         roberts.addGameWon();
+        roberts.addFourBallRun();
 
         shaw.addGameLost();
 
@@ -104,7 +105,6 @@ public class PlayerList {
 
         shaw.addShootingBallsMade(9, false);
         shaw.addGameWon();
-        shaw.addFourBallRun();
 
         roberts.addGameLost();
 
@@ -165,7 +165,6 @@ public class PlayerList {
 
         shaw.addShootingBallsMade(7, false);
         shaw.addGameWon();
-        shaw.addFourBallRun();
 
         roberts.addGameLost();
 
@@ -221,7 +220,6 @@ public class PlayerList {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
-        shaw.addFourBallRun();
         shaw.addGameWon();
         shaw.addShootingBallsMade(6, false);
 
@@ -275,7 +273,6 @@ public class PlayerList {
         TenBallPlayer roberts = roberts();
 
         shaw.addShootingBallsMade(8, false);
-        shaw.addFourBallRun();
         shaw.addGameWon();
 
         roberts.addGameLost();
@@ -299,7 +296,6 @@ public class PlayerList {
         TenBallPlayer roberts = roberts();
 
         shaw.addShootingBallsMade(8, false);
-        shaw.addFourBallRun();
         shaw.addGameWon();
 
         roberts.addGameLost();
@@ -322,6 +318,7 @@ public class PlayerList {
 
         roberts.addShootingBallsMade(1, false);
         roberts.addEarlyWin();
+        roberts.addFourBallRun();
         roberts.addGameWon();
 
         shaw.addGameLost();
@@ -363,7 +360,6 @@ public class PlayerList {
 
         shaw.addShootingBallsMade(9, false);
         shaw.addGameWon();
-        shaw.addFourBallRun();
 
         roberts.addGameLost();
 

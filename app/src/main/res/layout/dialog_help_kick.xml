@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/alert_dialog_padding"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:text="How many rails was your kick shot?"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:paddingTop="16dp"
+        android:text="For kick shots you can select how many rails your attempt was"/>
+</LinearLayout>

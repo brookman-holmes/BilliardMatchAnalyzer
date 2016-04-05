@@ -14,6 +14,7 @@
     <string name="two_rail">2 rail</string>
     <string name="three_rail">3 rail</string>
     <string name="four_rail">4 rail</string>
+    <string name="five_rail">5 rail</string>
 
     <string name="bank_natural">Natural</string>
     <string name="bank_crossover">Crossover</string>
@@ -25,6 +26,7 @@
         <item>@string/two_rail</item>
         <item>@string/three_rail</item>
         <item>@string/four_rail</item>
+        <item>@string/five_rail</item>
     </string-array>
 
     <string-array name="banks">

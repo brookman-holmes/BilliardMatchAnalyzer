@@ -9,13 +9,12 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.MultipleFixedChoice
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class WhyMissPage extends MultipleFixedChoicePage implements UpdatesTurnInfo{
+public class WhyMissPage extends MultipleFixedChoicePage implements UpdatesTurnInfo {
     public WhyMissPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 
-    @Override
-    public void updateTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
         if (parentKey.equals("break miss why") || parentKey.equals("illegal break why")) {
             turnBuilder.advStats.shotType("Break shot");
             turnBuilder.advStats.clearHowTypes();

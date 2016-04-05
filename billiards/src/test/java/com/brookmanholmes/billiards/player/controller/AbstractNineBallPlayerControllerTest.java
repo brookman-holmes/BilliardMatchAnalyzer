@@ -37,7 +37,7 @@ public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPla
 
     @Override
     Turn fourBallRunTurn() {
-        return turnBuilder.offTable(1, 2, 3).madeBalls(4, 5, 6, 7, 8, 9).win();
+        return turnBuilder.offTable(1, 2, 3, 4, 5).madeBalls(6, 7, 8, 9).win();
     }
 
     @Override

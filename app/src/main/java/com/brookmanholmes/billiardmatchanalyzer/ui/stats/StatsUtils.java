@@ -1,6 +1,7 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -8,9 +9,6 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.turn.AdvStats;
-
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -31,21 +29,21 @@ public class StatsUtils {
         float leftWeight;
         float rightWeight;
 
-        if (integerPair.getLeft() == 0)
+        if (integerPair.first == 0)
             leftWeight = .1f;
         else
-            leftWeight = (float) integerPair.getLeft() / ((float) integerPair.getLeft() + (float) integerPair.getRight());
+            leftWeight = (float) integerPair.first / ((float) integerPair.first + (float) integerPair.second);
 
-        if (integerPair.getRight() == 0)
+        if (integerPair.second == 0)
             rightWeight = .1f;
         else
-            rightWeight = (float) integerPair.getRight() / ((float) integerPair.getLeft() + (float) integerPair.getRight());
+            rightWeight = (float) integerPair.second / ((float) integerPair.first + (float) integerPair.second);
 
         leftView.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, leftWeight));
         rightView.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, rightWeight));
 
-        leftView.setText(Integer.toString(integerPair.getLeft()));
-        rightView.setText(Integer.toString(integerPair.getRight()));
+        leftView.setText(Integer.toString(integerPair.first));
+        rightView.setText(Integer.toString(integerPair.second));
     }
 
     public static void updateGridOfMissReasons(View view, List<StatLineItem> items) {
@@ -98,7 +96,7 @@ public class StatsUtils {
                 under++;
         }
 
-        return new ImmutablePair<>(over, under);
+        return new Pair<>(over, under);
     }
 
     public static Pair<Integer, Integer> getHowAimErrors(List<AdvStats> stats) {
@@ -111,7 +109,7 @@ public class StatsUtils {
                 right++;
         }
 
-        return new ImmutablePair<>(left, right);
+        return new Pair<>(left, right);
     }
 
     public static Pair<Integer, Integer> getHowSpeedErrors(List<AdvStats> stats) {
@@ -124,7 +122,7 @@ public class StatsUtils {
                 slow++;
         }
 
-        return new ImmutablePair<>(slow, fast);
+        return new Pair<>(slow, fast);
     }
 
     public static List<StatLineItem> getFourMostCommonItems(List<AdvStats> stats) {
