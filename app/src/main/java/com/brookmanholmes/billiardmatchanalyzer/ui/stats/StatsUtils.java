@@ -56,6 +56,10 @@ public class StatsUtils {
                 ((TextView) view.findViewById(R.id.line0Desc)).setText(items.get(0).getDescription());
                 ((TextView) view.findViewById(R.id.line0Count)).setText(items.get(0).getCount());
                 ((TextView) view.findViewById(R.id.line0Pct)).setText(items.get(0).getPercentage());
+            } else {
+                view.findViewById(R.id.line0Desc).setVisibility(View.GONE);
+                view.findViewById(R.id.line0Count).setVisibility(View.GONE);
+                view.findViewById(R.id.line0Pct).setVisibility(View.GONE);
             }
 
             if (items.size() > 1) {
@@ -65,6 +69,10 @@ public class StatsUtils {
                 ((TextView) view.findViewById(R.id.line1Desc)).setText(items.get(1).getDescription());
                 ((TextView) view.findViewById(R.id.line1Count)).setText(items.get(1).getCount());
                 ((TextView) view.findViewById(R.id.line1Pct)).setText(items.get(1).getPercentage());
+            } else {
+                view.findViewById(R.id.line1Desc).setVisibility(View.GONE);
+                view.findViewById(R.id.line1Count).setVisibility(View.GONE);
+                view.findViewById(R.id.line1Pct).setVisibility(View.GONE);
             }
 
             if (items.size() > 2) {
@@ -74,6 +82,10 @@ public class StatsUtils {
                 ((TextView) view.findViewById(R.id.line2Desc)).setText(items.get(2).getDescription());
                 ((TextView) view.findViewById(R.id.line2Count)).setText(items.get(2).getCount());
                 ((TextView) view.findViewById(R.id.line2Pct)).setText(items.get(2).getPercentage());
+            } else {
+                view.findViewById(R.id.line2Desc).setVisibility(View.GONE);
+                view.findViewById(R.id.line2Count).setVisibility(View.GONE);
+                view.findViewById(R.id.line2Pct).setVisibility(View.GONE);
             }
 
             if (items.size() > 3) {
@@ -83,6 +95,10 @@ public class StatsUtils {
                 ((TextView) view.findViewById(R.id.line3Desc)).setText(items.get(3).getDescription());
                 ((TextView) view.findViewById(R.id.line3Count)).setText(items.get(3).getCount());
                 ((TextView) view.findViewById(R.id.line3Pct)).setText(items.get(3).getPercentage());
+            } else {
+                view.findViewById(R.id.line3Desc).setVisibility(View.GONE);
+                view.findViewById(R.id.line3Count).setVisibility(View.GONE);
+                view.findViewById(R.id.line3Pct).setVisibility(View.GONE);
             }
         }
     }
@@ -157,7 +173,7 @@ public class StatsUtils {
         return list;
     }
 
-    public static List<StatLineItem> getSuccessfulSafetyStats(Context context, List<AdvStats> stats) {
+    public static List<StatLineItem> getSafetyStats(Context context, List<AdvStats> stats) {
         int total = stats.size();
 
         List<StatLineItem> list = new ArrayList<>();
@@ -231,7 +247,10 @@ public class StatsUtils {
         }
 
         public String getPercentage() {
-            return "(" + pctf.format((double) count / (double) total) + ")";
+            if (total == 0)
+                return "(" + pctf.format(0) + ")";
+            else
+                return "(" + pctf.format((double) count / (double) total) + ")";
         }
 
         @Override public int compareTo(@NonNull StatLineItem another) {

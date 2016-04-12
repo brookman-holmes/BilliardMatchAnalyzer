@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -201,6 +202,7 @@ public class DatabaseAdapter {
             default:
                 player_search = " (player_name = ? or opp_name = ?) ";
         }
+
         final String selection = "m." + COLUMN_ID + " as _id, "
                 + "p." + COLUMN_NAME + " as player_name, "
                 + "opp." + COLUMN_NAME + " as opp_name, "
@@ -384,7 +386,7 @@ public class DatabaseAdapter {
     public List<AdvStats> getAdvStats(long matchId, String playerName, String[] shotTypes) {
         List<AdvStats> list = new ArrayList<>();
 
-        String query = COLUMN_ADV_STATS_ID + "=? AND " + COLUMN_NAME + "=?";
+        String query = COLUMN_MATCH_ID + "=? AND " + COLUMN_NAME + "=?";
 
         String shotTypesQuery = " AND (";
         for (int i = 0; i < shotTypes.length; i++) {

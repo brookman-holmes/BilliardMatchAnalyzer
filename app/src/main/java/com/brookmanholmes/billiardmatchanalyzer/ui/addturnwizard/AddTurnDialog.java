@@ -186,7 +186,6 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         } else {
             pager.setCurrentItem(pager.getCurrentItem() + 1);
             wizardModel.updatePagesWithTurnInfo();
-            Log.i("AddTurnDialog", wizardModel.getCurrentPageSequence().toString());
         }
     }
 

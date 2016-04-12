@@ -21,9 +21,9 @@
         android:layout_gravity="center_vertical|left"
         android:layout_row="0"
         android:gravity="center"
-        android:text="Poor position"
         android:textColor="@color/primary_text"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line0Count"
@@ -34,9 +34,9 @@
         android:layout_gravity="center_vertical|right"
         android:layout_row="0"
         android:gravity="center"
-        android:text="8"
         android:textColor="@color/primary_text"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line0Pct"
@@ -46,9 +46,9 @@
         android:layout_gravity="center_vertical|left"
         android:layout_marginLeft="-2dp"
         android:gravity="center"
-        android:text="(40%)"
         android:textColor="@color/primary_text"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line1Desc"
@@ -59,8 +59,8 @@
         android:layout_gravity="center_vertical|left"
         android:layout_row="1"
         android:gravity="center"
-        android:text="Unintentional english"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line1Count"
@@ -71,8 +71,8 @@
         android:layout_gravity="center_vertical|right"
         android:layout_row="1"
         android:gravity="center"
-        android:text="5"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line1Pct"
@@ -82,8 +82,8 @@
         android:layout_gravity="center_vertical|left"
         android:layout_marginLeft="-2dp"
         android:gravity="center"
-        android:text="(25%)"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line2Desc"
@@ -94,9 +94,9 @@
         android:layout_gravity="center_vertical|left"
         android:layout_row="2"
         android:gravity="center"
-        android:text="Lack of focus"
         android:textColor="@color/primary_text"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line2Count"
@@ -107,9 +107,9 @@
         android:layout_gravity="center_vertical|right"
         android:layout_row="2"
         android:gravity="center"
-        android:text="5"
         android:textColor="@color/primary_text"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line2Pct"
@@ -119,9 +119,9 @@
         android:layout_gravity="center_vertical|left"
         android:layout_marginLeft="-2dp"
         android:gravity="center"
-        android:text="(25%)"
         android:textColor="@color/primary_text"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line3Desc"
@@ -132,8 +132,8 @@
         android:layout_gravity="center_vertical|left"
         android:layout_row="3"
         android:gravity="center"
-        android:text="On the rail"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line3Count"
@@ -144,8 +144,8 @@
         android:layout_gravity="center_vertical|right"
         android:layout_row="3"
         android:gravity="center"
-        android:text="2"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/line3Pct"
@@ -155,7 +155,7 @@
         android:layout_gravity="center_vertical|left"
         android:layout_marginLeft="-2dp"
         android:gravity="center"
-        android:text="(10%)"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
 </GridLayout>

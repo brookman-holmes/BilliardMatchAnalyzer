@@ -37,8 +37,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
         rootPageList = onNewRootPageList();
 
-        Log.i("ATWM", turnBuilder.advData());
-        Log.i("ATWM", "opp played safe: " + matchData.getBoolean(MatchDialogHelperUtils.SUCCESSFUL_SAFE_KEY));
     }
 
     private boolean currentPlayerTurnAndAdvancedStats() {
@@ -59,7 +57,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         }
 
         updatePagesWithTurnInfo();
-        Log.i("ATWM", turnBuilder.advData());
     }
 
     @Override public void onPageTreeChanged() {
@@ -254,7 +251,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 ((UpdatesTurnInfo) page).updateTurnInfo(turnBuilder);
 
         turnBuilder.advStats.startingPosition(matchData.getBoolean(MatchDialogHelperUtils.SUCCESSFUL_SAFE_KEY) ? "Safe" : "Open");
-        Log.i("ATWM", turnBuilder.advData());
         return turnBuilder;
     }
 }

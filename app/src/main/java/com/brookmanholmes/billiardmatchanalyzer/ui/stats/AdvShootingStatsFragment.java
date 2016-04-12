@@ -55,21 +55,6 @@ public class AdvShootingStatsFragment extends Fragment implements MultiSelection
         String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
         String[] shotTypes = getContext().getResources().getStringArray(R.array.shot_types);
         stats = db.getAdvStats(matchId, playerName, shotTypes);
-
-        /*
-        stats.add(new AdvStats.Builder().shotType("Cut").subType("").angle("60°").howTypes("Too thick", "Left of aim point").whyTypes("Lack of focus").build());
-        stats.add(new AdvStats.Builder().shotType("Cut").subType("").angle("60°").howTypes("Too thick", "Left of aim point").whyTypes("Unintentional english", "CB curved").build());
-        stats.add(new AdvStats.Builder().shotType("Cut").subType("").angle("45°").howTypes("Too thick", "Right of aim point").whyTypes("Unintentional english", "Lack of focus").build());
-        stats.add(new AdvStats.Builder().shotType("Long straight shot").subType("").angle("0°").howTypes("Left of aim point").whyTypes("On the rail").build());
-        stats.add(new AdvStats.Builder().shotType("Long straight shot").subType("").angle("0°").howTypes("Left of aim point").whyTypes("On the rail", "Forcing position").build());
-        stats.add(new AdvStats.Builder().shotType("Long straight shot").subType("").angle("0°").howTypes("Right of aim point").whyTypes("Lack of focus").build());
-        stats.add(new AdvStats.Builder().shotType("Long straight shot").subType("").angle("0°").howTypes("Right of aim point").whyTypes("Forcing position").build());
-        stats.add(new AdvStats.Builder().shotType("Long straight shot").subType("").angle("0°").howTypes("Right of aim point").whyTypes("Forcing position").build());
-        stats.add(new AdvStats.Builder().shotType("Bank").subType("").angle("1 rail", "Long rail", "Natural").howTypes("Too thin").whyTypes("Too fast").build());
-        stats.add(new AdvStats.Builder().shotType("Kick").subType("").angle("3 rail").howTypes("Too thick").whyTypes("Too fast", "Over spin").build());
-        stats.add(new AdvStats.Builder().shotType("Bank").subType("").angle("1 rail", "Short rail", "Crossover").howTypes("Too thick").whyTypes("Too fast").build());
-        stats.add(new AdvStats.Builder().shotType("Jump").subType("").angle("30°").howTypes("Too thick", "Right of aim point").whyTypes("Unintentional english").build());
-        */
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

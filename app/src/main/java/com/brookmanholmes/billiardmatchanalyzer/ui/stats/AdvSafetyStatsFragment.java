@@ -3,7 +3,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,27 +49,6 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
         long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID);
         String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
         stats = db.getAdvStats(matchId, playerName, new String[]{"Safety", "Safety error"});
-        Log.i("ASSF", stats.toString());
-
-        /*
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Partial hook").startingPosition("Open").build());
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Partial hook").startingPosition("Open").build());
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Full hook").startingPosition("Open").build());
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Full hook").startingPosition("Open").build());
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Full hook").startingPosition("Open").build());
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Long T").startingPosition("Open").build());
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Long T").startingPosition("Safe").build());
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Long T").startingPosition("Safe").build());
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Short T").startingPosition("Safe").build());
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Short T").startingPosition("Safe").build());
-        stats.add(new AdvStats.Builder().shotType("Safety").subType("Long T").startingPosition("Safe").build());
-        stats.add(new AdvStats.Builder().shotType("Safety error").howTypes(choices[0], choices[2]).startingPosition("Safe").build());
-        stats.add(new AdvStats.Builder().shotType("Safety error").howTypes(choices[1]).startingPosition("Safe").build());
-        stats.add(new AdvStats.Builder().shotType("Safety error").howTypes(choices[0], choices[3]).startingPosition("Safe").build());
-        stats.add(new AdvStats.Builder().shotType("Safety error").howTypes(choices[1], choices[3]).startingPosition("Open").build());
-        stats.add(new AdvStats.Builder().shotType("Safety error").howTypes(choices[0], choices[3]).startingPosition("Open").build());
-        stats.add(new AdvStats.Builder().shotType("Safety error").howTypes(choices[2]).startingPosition("Open").build());
-        */
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,7 +70,7 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
     }
 
     private void updateSafetyGrid(View view) {
-        List<StatsUtils.StatLineItem> statLineItems = StatsUtils.getSuccessfulSafetyStats(getContext(), stats);
+        List<StatsUtils.StatLineItem> statLineItems = StatsUtils.getSafetyStats(getContext(), stats);
 
         ((TextView) view.findViewById(R.id.tvFullHookCount)).setText(statLineItems.get(0).getCount());
         ((TextView) view.findViewById(R.id.tvFullHookPct)).setText(statLineItems.get(0).getPercentage());
@@ -102,8 +80,10 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
         ((TextView) view.findViewById(R.id.tvLongTPct)).setText(statLineItems.get(2).getPercentage());
         ((TextView) view.findViewById(R.id.tvShortTCount)).setText(statLineItems.get(3).getCount());
         ((TextView) view.findViewById(R.id.tvShortTPct)).setText(statLineItems.get(3).getPercentage());
-        ((TextView) view.findViewById(R.id.tvOpenCount)).setText(statLineItems.get(4).getCount());
-        ((TextView) view.findViewById(R.id.tvOpenPct)).setText(statLineItems.get(4).getPercentage());
+        ((TextView) view.findViewById(R.id.tvDirectShotCount)).setText(statLineItems.get(4).getCount());
+        ((TextView) view.findViewById(R.id.tvDirectShotPct)).setText(statLineItems.get(4).getPercentage());
+        ((TextView) view.findViewById(R.id.tvOpenCount)).setText(statLineItems.get(5).getCount());
+        ((TextView) view.findViewById(R.id.tvOpenPct)).setText(statLineItems.get(5).getPercentage());
 
         safetyErrorsTitle.setText("Safety errors (" + ((TextView) view.findViewById(R.id.tvOpenCount)).getText() + ")");
         safetyResults.setText("Safety results (" + stats.size() + ")");
