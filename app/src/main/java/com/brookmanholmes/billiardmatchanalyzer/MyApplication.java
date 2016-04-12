@@ -3,7 +3,6 @@ package com.brookmanholmes.billiardmatchanalyzer;
 import android.app.Application;
 import android.content.Context;
 
-import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -22,6 +21,5 @@ public class MyApplication extends Application {
     @Override public void onCreate() {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
-        Stetho.initializeWithDefaults(this);
     }
 }
