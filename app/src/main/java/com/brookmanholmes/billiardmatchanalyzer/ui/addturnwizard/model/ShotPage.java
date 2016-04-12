@@ -159,16 +159,7 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
             }
 
-            String currentPlayerColor;
-            String playerName = data.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY);
-            if (playerColor == PlayerColor.OPEN) {
-                currentPlayerColor = "Table is open";
-            }
-            else {
-                currentPlayerColor = playerName + " is " + playerColor.toString().toLowerCase();
-            }
-
-            fragment.updateView(tableStatus.getBallStatuses(), currentPlayerColor);
+            fragment.updateView(tableStatus.getBallStatuses(), playerColor);
         }
     }
 }

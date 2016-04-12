@@ -88,4 +88,7 @@
     <string name="out_of">%1$d / %2$d</string>
     <string name="title_run_outs">Run outs</string>
     <string name="title_games_needed">Games won / games needed</string>
+    <string name="open_table">Table is open</string>
+    <string name="solids_table">%1$s is solids</string>
+    <string name="stripes_table">%1$s is stripes</string>
 </resources>

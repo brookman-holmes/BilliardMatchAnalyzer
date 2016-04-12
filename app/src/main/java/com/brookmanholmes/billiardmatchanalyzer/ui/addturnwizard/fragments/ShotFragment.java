@@ -12,9 +12,11 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.ShotPage;
+import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.util.PlayerColor;
 
 import java.util.List;
 
@@ -114,7 +116,7 @@ public class ShotFragment extends Fragment {
         page.updateBallStatus(ball);
     }
 
-    public void updateView(List<BallStatus> ballStatuses, String playerColor) {
+    public void updateView(List<BallStatus> ballStatuses, PlayerColor playerColor) {
         View view = getView();
 
         if (view != null) {
@@ -124,8 +126,16 @@ public class ShotFragment extends Fragment {
                 setBallView(ballStatuses.get(i), ballImage);
             }
 
-            if (this.playerColor != null)
-                this.playerColor.setText(playerColor);
+            if (this.playerColor != null) {
+                if (playerColor == PlayerColor.OPEN)
+                    this.playerColor.setText(R.string.open_table);
+                else if (playerColor == PlayerColor.SOLIDS)
+                    this.playerColor.setText(getString(R.string.solids_table, getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY, "NO PLAYER NAME IN ARGUMENTS")));
+                else if (playerColor == PlayerColor.STRIPES) {
+                    this.playerColor.setText(getString(R.string.stripes_table, getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY, "NO PLAYER NAME IN ARGUMENTS")));
+                }
+            }
+
         }
     }
 
