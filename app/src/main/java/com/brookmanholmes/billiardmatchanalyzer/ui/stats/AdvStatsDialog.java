@@ -24,16 +24,13 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 3/11/2016.
  */
 public class AdvStatsDialog extends DialogFragment {
-    private static final String ARG_MATCH_ID = "match id";
-    private static final String ARG_PLAYER_NAME = "player name";
-    private static final String ARG_PLAYER_TURN = "player turn";
+    static final String ARG_MATCH_ID = "match id";
+    static final String ARG_PLAYER_NAME = "player name";
+    static final String ARG_PLAYER_TURN = "player turn";
 
-    @Bind(R.id.pager)
-    ViewPager pager;
-    @Bind(R.id.tabs)
-    TabLayout tabLayout;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    @Bind(R.id.pager) ViewPager pager;
+    @Bind(R.id.tabs) TabLayout tabLayout;
+    @Bind(R.id.toolbar) Toolbar toolbar;
 
     private ViewPagerAdapter adapter;
 
@@ -99,11 +96,11 @@ public class AdvStatsDialog extends DialogFragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 1:
-                    return new AdvSafetyStats();
+                    return AdvSafetyStatsFragment.create(getArguments());
                 case 2:
-                    return new AdvBreakingStats();
+                    return AdvBreakingStatsFragment.create(getArguments());
                 case 0:
-                    return new AdvShootingStatsFragment();
+                    return AdvShootingStatsFragment.create(getArguments());
                 default:
                     throw new IllegalStateException("View pager out of position (0, 1, 2): " + position);
             }

@@ -3,12 +3,14 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MultiSelectionSpinner;
 import com.brookmanholmes.billiards.turn.AdvStats;
 
@@ -21,30 +23,36 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
-public class AdvSafetyStats extends Fragment implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
+public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
     private static final String[] choices = {"Too hard", "Too soft", "Too thick", "Too thin"};
-
-    @Bind(R.id.successfulSafetiesTitle)
-    TextView safetyResults;
-    @Bind(R.id.safetyErrorsTitle)
-    TextView safetyErrorsTitle;
-    @Bind(R.id.spinner)
-    MultiSelectionSpinner spinner1;
-    @Bind(R.id.over)
-    TextView overCut;
-    @Bind(R.id.under)
-    TextView underCut;
-    @Bind(R.id.fast)
-    TextView fast;
-    @Bind(R.id.slow)
-    TextView slow;
-
+    @Bind(R.id.successfulSafetiesTitle) TextView safetyResults;
+    @Bind(R.id.safetyErrorsTitle) TextView safetyErrorsTitle;
+    @Bind(R.id.spinner) MultiSelectionSpinner spinner1;
+    @Bind(R.id.over) TextView overCut;
+    @Bind(R.id.under) TextView underCut;
+    @Bind(R.id.fast) TextView fast;
+    @Bind(R.id.slow) TextView slow;
     List<AdvStats> stats = new ArrayList<>();
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public static AdvSafetyStatsFragment create(Bundle args) {
+        AdvSafetyStatsFragment frag = new AdvSafetyStatsFragment();
+        frag.setArguments(args);
+
+        return frag;
+    }
+
+    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DatabaseAdapter db = new DatabaseAdapter(getContext());
+        db.open();
+
+        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID);
+        String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
+        stats = db.getAdvStats(matchId, playerName, new String[]{"Safety", "Safety error"});
+        Log.i("ASSF", stats.toString());
+
+        /*
         stats.add(new AdvStats.Builder().shotType("Safety").subType("Partial hook").startingPosition("Open").build());
         stats.add(new AdvStats.Builder().shotType("Safety").subType("Partial hook").startingPosition("Open").build());
         stats.add(new AdvStats.Builder().shotType("Safety").subType("Full hook").startingPosition("Open").build());
@@ -62,10 +70,10 @@ public class AdvSafetyStats extends Fragment implements MultiSelectionSpinner.On
         stats.add(new AdvStats.Builder().shotType("Safety error").howTypes(choices[1], choices[3]).startingPosition("Open").build());
         stats.add(new AdvStats.Builder().shotType("Safety error").howTypes(choices[0], choices[3]).startingPosition("Open").build());
         stats.add(new AdvStats.Builder().shotType("Safety error").howTypes(choices[2]).startingPosition("Open").build());
+        */
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.container_adv_safety_stats, container, false);
         ButterKnife.bind(this, view);
@@ -78,14 +86,14 @@ public class AdvSafetyStats extends Fragment implements MultiSelectionSpinner.On
     }
 
     public void updateView(View view) {
-        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(stats), overCut, underCut);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(stats), slow, fast);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getContext(), stats), overCut, underCut);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(getContext(), stats), slow, fast);
 
         updateSafetyGrid(view);
     }
 
     private void updateSafetyGrid(View view) {
-        List<StatsUtils.StatLineItem> statLineItems = StatsUtils.getSuccessfulSafetyStats(stats);
+        List<StatsUtils.StatLineItem> statLineItems = StatsUtils.getSuccessfulSafetyStats(getContext(), stats);
 
         ((TextView) view.findViewById(R.id.tvFullHookCount)).setText(statLineItems.get(0).getCount());
         ((TextView) view.findViewById(R.id.tvFullHookPct)).setText(statLineItems.get(0).getPercentage());
@@ -102,13 +110,11 @@ public class AdvSafetyStats extends Fragment implements MultiSelectionSpinner.On
         safetyResults.setText("Safety results (" + stats.size() + ")");
     }
 
-    @Override
-    public void selectedIndices(List<Integer> indices) {
+    @Override public void selectedIndices(List<Integer> indices) {
 
     }
 
-    @Override
-    public void selectedStrings(List<String> strings) {
+    @Override public void selectedStrings(List<String> strings) {
 
     }
 }

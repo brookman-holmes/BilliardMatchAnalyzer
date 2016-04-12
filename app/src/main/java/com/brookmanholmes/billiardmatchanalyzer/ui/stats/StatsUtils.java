@@ -1,5 +1,6 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 import android.view.View;
@@ -86,39 +87,39 @@ public class StatsUtils {
         }
     }
 
-    public static Pair<Integer, Integer> getHowCutErrors(List<AdvStats> stats) {
+    public static Pair<Integer, Integer> getHowCutErrors(Context context, List<AdvStats> stats) {
         int over = 0, under = 0;
 
         for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains("Too thin"))
+            if (stat.getHowTypes().contains(context.getString(R.string.thin_hit)))
                 over++;
-            else if (stat.getHowTypes().contains("Too thick"))
+            else if (stat.getHowTypes().contains(context.getString(R.string.thick_hit)))
                 under++;
         }
 
         return new Pair<>(over, under);
     }
 
-    public static Pair<Integer, Integer> getHowAimErrors(List<AdvStats> stats) {
+    public static Pair<Integer, Integer> getHowAimErrors(Context context, List<AdvStats> stats) {
         int left = 0, right = 0;
 
         for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains("Left of aim point"))
+            if (stat.getHowTypes().contains(context.getString(R.string.aim_to_left)))
                 left++;
-            else if (stat.getHowTypes().contains("Right of aim point"))
+            else if (stat.getHowTypes().contains(context.getString(R.string.aim_to_right)))
                 right++;
         }
 
         return new Pair<>(left, right);
     }
 
-    public static Pair<Integer, Integer> getHowSpeedErrors(List<AdvStats> stats) {
+    public static Pair<Integer, Integer> getHowSpeedErrors(Context context, List<AdvStats> stats) {
         int fast = 0, slow = 0;
 
         for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains("Too hard"))
+            if (stat.getHowTypes().contains(context.getString(R.string.too_hard)))
                 fast++;
-            else if (stat.getHowTypes().contains("Too soft"))
+            else if (stat.getHowTypes().contains(context.getString(R.string.too_soft)))
                 slow++;
         }
 
@@ -128,7 +129,9 @@ public class StatsUtils {
     public static List<StatLineItem> getFourMostCommonItems(List<AdvStats> stats) {
         List<StatLineItem> list = getStats(stats);
 
-        return list.subList(0, 4);
+        if (list.size() > 4)
+            return list.subList(0, 4);
+        else return list;
     }
 
     public static List<StatLineItem> getStats(List<AdvStats> stats) {
@@ -154,36 +157,37 @@ public class StatsUtils {
         return list;
     }
 
-    public static List<StatLineItem> getSuccessfulSafetyStats(List<AdvStats> stats) {
+    public static List<StatLineItem> getSuccessfulSafetyStats(Context context, List<AdvStats> stats) {
         int total = stats.size();
 
         List<StatLineItem> list = new ArrayList<>();
-        list.add(new StatLineItem("Full hook", total));
-        list.add(new StatLineItem("Partial hook", total));
-        list.add(new StatLineItem("Long T", total));
-        list.add(new StatLineItem("Short T", total));
-        list.add(new StatLineItem("Open", total));
+        list.add(new StatLineItem(context.getString(R.string.safety_full_hook), total));
+        list.add(new StatLineItem(context.getString(R.string.safety_partial_hook), total));
+        list.add(new StatLineItem(context.getString(R.string.safety_long_t), total));
+        list.add(new StatLineItem(context.getString(R.string.safety_short_t), total));
+        list.add(new StatLineItem(context.getString(R.string.safety_no_shot), total));
+        list.add(new StatLineItem(context.getString(R.string.safety_open), total));
 
         for (StatLineItem item : list) {
-            item.count = getCountOfSubTypesInList(stats, item.description);
+            item.count = getCountOfSubTypesInList(context, stats, item.description);
         }
 
         return list;
     }
 
-    private static int getCountOfSubTypesInList(List<AdvStats> stats, String item) {
+    private static int getCountOfSubTypesInList(Context context, List<AdvStats> stats, String item) {
         int count = 0;
 
-        if (item.equals("Open")) {
-            for (AdvStats stat : stats) {
+        if (item.equals(context.getString(R.string.safety_open)))
+            for (AdvStats stat : stats)
                 if (stat.getShotType().equals("Safety error"))
                     count++;
-            }
-        } else
-            for (AdvStats stat : stats) {
+                else
+                    ;
+        else
+            for (AdvStats stat : stats)
                 if (stat.getShotSubtype().equals(item))
                     count++;
-            }
 
         return count;
     }
@@ -230,8 +234,7 @@ public class StatsUtils {
             return "(" + pctf.format((double) count / (double) total) + ")";
         }
 
-        @Override
-        public int compareTo(@NonNull StatLineItem another) {
+        @Override public int compareTo(@NonNull StatLineItem another) {
             return Integer.compare(count, another.count);
         }
     }

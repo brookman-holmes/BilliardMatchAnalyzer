@@ -1,7 +1,6 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.content.DialogInterface;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -27,7 +26,6 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.TurnEnd;
-import com.flipboard.bottomsheet.BottomSheetLayout;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,18 +34,11 @@ import butterknife.OnClick;
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
     public static final String INFO_FRAGMENT_TAG = "infoFragment";
     private static final String TAG = "MatchInfoActivity";
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.playerName)
-    TextView playerName;
-    @Bind(R.id.opponentName)
-    TextView opponentName;
-    @Bind(R.id.buttonAddTurn)
-    FloatingActionButton buttonAddTurn;
-    @Bind(R.id.coordinatorLayout)
-    CoordinatorLayout layout;
-    @Bind(R.id.bottomsheet)
-    BottomSheetLayout bottomSheet;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.playerName) TextView playerName;
+    @Bind(R.id.opponentName) TextView opponentName;
+    @Bind(R.id.buttonAddTurn) FloatingActionButton buttonAddTurn;
+    @Bind(R.id.coordinatorLayout) CoordinatorLayout layout;
 
     DatabaseAdapter db;
     MatchInfoFragment infoFragment;
@@ -57,7 +48,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_info);
         ButterKnife.bind(this);
-        getDisplaySize();
 
         setSupportActionBar(toolbar);
 
@@ -83,14 +73,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             getSupportActionBar().setTitle(getResources().getString(R.string.title_match_info, gameType));
     }
 
-    @Override
-    protected void onResume() {
+    @Override protected void onResume() {
         super.onResume();
         updateViews();
     }
 
-    @OnClick(R.id.buttonAddTurn)
-    public void addInning(View view) {
+    @OnClick(R.id.buttonAddTurn) public void addInning(View view) {
         showAddTurnDialog();
     }
 
@@ -100,16 +88,14 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
-    @OnClick(R.id.playerName)
-    public void showTestLayout() {
+    @OnClick(R.id.playerName) public void showTestLayout() {
         DialogFragment dialogFragment =
                 AdvStatsDialog.create(getMatchId(), playerName.getText().toString(), PlayerTurn.PLAYER);
         dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme);
         dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
     }
 
-    @OnClick(R.id.opponentName)
-    public void showTestLayout2() {
+    @OnClick(R.id.opponentName) public void showTestLayout2() {
         DialogFragment dialogFragment =
                 AdvStatsDialog.create(getMatchId(), opponentName.getText().toString(), PlayerTurn.OPPONENT);
         dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme);
@@ -132,23 +118,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         this.menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 64);
     }
 
-    private void getDisplaySize() {
-        Point point = new Point();
-        getWindowManager().getDefaultDisplay().getSize(point);
-        bottomSheet.setPeekSheetTranslation(point.y - getStatusBarHeight());
-    }
-
-    private int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
-
-    @Override
-    public void addTurn(TurnBuilder turnBuilder) {
+    @Override public void addTurn(TurnBuilder turnBuilder) {
         if (turnBuilder.advStats.build().use())
             addTurn(infoFragment.createAndAddTurnToMatch(
                     turnBuilder.tableStatus,
@@ -229,8 +199,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         updateViews();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_match_info, menu);
         this.menu = menu;
@@ -238,8 +207,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.

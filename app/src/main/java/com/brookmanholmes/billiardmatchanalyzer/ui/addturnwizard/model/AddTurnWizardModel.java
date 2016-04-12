@@ -168,6 +168,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 .addBranch(context.getString(R.string.miss_carom))
 
                 .addBranch(context.getString(R.string.miss_jump))
+                .addBranch(context.getString(R.string.miss_masse)) // TODO: 4/10/2016 change values of this branch to be things like curve too soon/late etc.
                 .setValue(context.getString(R.string.miss_cut))
                 .setParentKey("Miss");
     }

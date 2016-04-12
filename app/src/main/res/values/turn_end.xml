@@ -16,6 +16,11 @@
     <string name="safety_partial_hook">Partial hook</string>
     <string name="safety_long_t">Long T</string>
     <string name="safety_short_t">Short T</string>
+    <string name="safety_no_shot">No direct shot</string>
+    <string name="safety_open">Open</string>
+
+    <string name="starting_position_open">Open</string>
+    <string name="starting_position_safe">Safe</string>
 
     <string name="foul_lost_game">Yes, lost game</string>
     <string name="yes">Yes</string>
@@ -42,6 +47,7 @@
         <item>@string/safety_partial_hook</item>
         <item>@string/safety_long_t</item>
         <item>@string/safety_short_t</item>
+        <item>@string/safety_no_shot</item>
     </string-array>
 
     <string-array name="turn_endings">

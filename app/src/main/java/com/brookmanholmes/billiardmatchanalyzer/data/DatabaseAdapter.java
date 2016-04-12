@@ -21,6 +21,9 @@ import com.brookmanholmes.billiards.turn.GameTurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,7 +85,7 @@ public class DatabaseAdapter {
     }
 
     private static TableStatus stringToTableStatus(String tableInStringForm) {
-        String[] ballStatuses = splitByWholeSeparator(tableInStringForm, ",");
+        String[] ballStatuses = StringUtils.splitByWholeSeparator(tableInStringForm, ",");
         TableStatus table = TableStatus.newTable(GameType.valueOf(ballStatuses[0]));
 
         for (int i = 1; i < ballStatuses.length; i++) {
@@ -90,160 +93,6 @@ public class DatabaseAdapter {
         }
 
         return table;
-    }
-
-    public static String[] splitByWholeSeparator(String str, String separator) {
-        return splitByWholeSeparatorWorker(str, separator, -1, false);
-    }
-
-    private static String[] splitByWholeSeparatorWorker(String str, String separator, int max,
-                                                        boolean preserveAllTokens) {
-        if (str == null) {
-            return null;
-        }
-        int len = str.length();
-
-        if (len == 0) {
-            return new String[]{};
-        }
-
-        if ((separator == null) || (EMPTY.equals(separator))) {
-            // Split on whitespace.
-            return splitWorker(str, null, max, preserveAllTokens);
-        }
-
-        int separatorLength = separator.length();
-
-        ArrayList<String> substrings = new ArrayList<>();
-        int numberOfSubstrings = 0;
-        int beg = 0;
-        int end = 0;
-        while (end < len) {
-            end = str.indexOf(separator, beg);
-
-            if (end > -1) {
-                if (end > beg) {
-                    numberOfSubstrings += 1;
-
-                    if (numberOfSubstrings == max) {
-                        end = len;
-                        substrings.add(str.substring(beg));
-                    } else {
-                        // The following is OK, because String.substring( beg, end ) excludes
-                        // the character at the position 'end'.
-                        substrings.add(str.substring(beg, end));
-
-                        // Set the starting point for the next search.
-                        // The following is equivalent to beg = end + (separatorLength - 1) + 1,
-                        // which is the right calculation:
-                        beg = end + separatorLength;
-                    }
-                } else {
-                    // We found a consecutive occurrence of the separator, so skip it.
-                    if (preserveAllTokens) {
-                        numberOfSubstrings += 1;
-                        if (numberOfSubstrings == max) {
-                            end = len;
-                            substrings.add(str.substring(beg));
-                        } else {
-                            substrings.add(EMPTY);
-                        }
-                    }
-                    beg = end + separatorLength;
-                }
-            } else {
-                // String.substring( beg ) goes from 'beg' to the end of the String.
-                substrings.add(str.substring(beg));
-                end = len;
-            }
-        }
-
-        return substrings.toArray(new String[substrings.size()]);
-    }
-
-    private static String[] splitWorker(String str, String separatorChars, int max, boolean preserveAllTokens) {
-        // Performance tuned for 2.0 (JDK1.4)
-        // Direct code is quicker than StringTokenizer.
-        // Also, StringTokenizer uses isSpace() not isWhitespace()
-
-        if (str == null) {
-            return null;
-        }
-        int len = str.length();
-        if (len == 0) {
-            return new String[]{};
-        }
-        List<String> list = new ArrayList<>();
-        int sizePlus1 = 1;
-        int i = 0, start = 0;
-        boolean match = false;
-        boolean lastMatch = false;
-        if (separatorChars == null) {
-            // Null separator means use whitespace
-            while (i < len) {
-                if (Character.isWhitespace(str.charAt(i))) {
-                    if (match || preserveAllTokens) {
-                        lastMatch = true;
-                        if (sizePlus1++ == max) {
-                            i = len;
-                            lastMatch = false;
-                        }
-                        list.add(str.substring(start, i));
-                        match = false;
-                    }
-                    start = ++i;
-                    continue;
-                }
-                lastMatch = false;
-                match = true;
-                i++;
-            }
-        } else if (separatorChars.length() == 1) {
-            // Optimise 1 character case
-            char sep = separatorChars.charAt(0);
-            while (i < len) {
-                if (str.charAt(i) == sep) {
-                    if (match || preserveAllTokens) {
-                        lastMatch = true;
-                        if (sizePlus1++ == max) {
-                            i = len;
-                            lastMatch = false;
-                        }
-                        list.add(str.substring(start, i));
-                        match = false;
-                    }
-                    start = ++i;
-                    continue;
-                }
-                lastMatch = false;
-                match = true;
-                i++;
-            }
-        } else {
-            // standard case
-            while (i < len) {
-                if (separatorChars.indexOf(str.charAt(i)) >= 0) {
-                    if (match || preserveAllTokens) {
-                        lastMatch = true;
-                        if (sizePlus1++ == max) {
-                            i = len;
-                            lastMatch = false;
-                        }
-                        list.add(str.substring(start, i));
-                        match = false;
-                    }
-                    start = ++i;
-                    continue;
-                }
-                lastMatch = false;
-                match = true;
-                i++;
-            }
-        }
-        if (match || (preserveAllTokens && lastMatch)) {
-            list.add(str.substring(start, i));
-        }
-        return list.toArray(new String[list.size()]);
     }
 
     public DatabaseAdapter open() {
@@ -532,9 +381,65 @@ public class DatabaseAdapter {
         );
     }
 
-    public List<AdvStats> getAdvStats(long matchId, String playerName) {
+    public List<AdvStats> getAdvStats(long matchId, String playerName, String[] shotTypes) {
         List<AdvStats> list = new ArrayList<>();
 
+        String query = COLUMN_ADV_STATS_ID + "=? AND " + COLUMN_NAME + "=?";
+
+        String shotTypesQuery = " AND (";
+        for (int i = 0; i < shotTypes.length; i++) {
+            shotTypesQuery += COLUMN_SHOT_TYPE + "=?";
+
+            if (i != shotTypes.length - 1)
+                shotTypesQuery += " OR ";
+        }
+        shotTypesQuery += ")";
+
+        Cursor c = database.query(TABLE_ADV_STATS,
+                null,
+                query + shotTypesQuery,
+                ArrayUtils.addAll(new String[]{String.valueOf(matchId), playerName}, shotTypes),
+                null,
+                null,
+                null);
+
+        while (c.moveToNext()) {
+            list.add(buildAdvStatsFromCursor(c));
+        }
+
+        c.close();
+
+        return list;
+    }
+
+    private AdvStats buildAdvStatsFromCursor(Cursor c) {
+        long advStatsId = c.getLong(c.getColumnIndex(COLUMN_ADV_STATS_ID));
+
+        AdvStats.Builder builder = new AdvStats.Builder(c.getString(c.getColumnIndex(COLUMN_NAME)));
+        builder.startingPosition(c.getString(c.getColumnIndex(COLUMN_STARTING_POSITION)))
+                .shotType(c.getString(c.getColumnIndex(COLUMN_SHOT_TYPE)))
+                .subType(c.getString(c.getColumnIndex(COLUMN_SHOT_SUB_TYPE)))
+                .angle(getAdvStatList(TABLE_ANGLES, advStatsId))
+                .howTypes(getAdvStatList(TABLE_HOWS, advStatsId))
+                .whyTypes(getAdvStatList(TABLE_WHYS, advStatsId));
+
+        return builder.build();
+    }
+
+    private List<String> getAdvStatList(String table, long id) {
+        List<String> list = new ArrayList<>();
+
+        Cursor c = database.query(table, null, COLUMN_ADV_STATS_ID + "=?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null);
+
+        while (c.moveToNext()) {
+            list.add(c.getString(c.getColumnIndex(COLUMN_STRING)));
+        }
+
+        c.close();
 
         return list;
     }

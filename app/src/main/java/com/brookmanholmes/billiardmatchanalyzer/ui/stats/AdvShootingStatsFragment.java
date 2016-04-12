@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MultiSelectionSpinner;
 import com.brookmanholmes.billiards.turn.AdvStats;
 
@@ -27,32 +28,35 @@ public class AdvShootingStatsFragment extends Fragment implements MultiSelection
     String[] howList = new String[]{"Too thin", "Too thick", "Left of aim point", "Right of aim point"};
     String[] whyList = new String[]{"Bad position", "Jacked up", "Lack of focus", "Over spin", "Unintentional english", "Too slow", "Too fast", "CB curved", "On the rail", "Forcing position"};
     List<AdvStats> stats = new ArrayList<>();
+    @Bind(R.id.spinner) MultiSelectionSpinner spinner1;
+    @Bind(R.id.spinner2) MultiSelectionSpinner spinner2;
+    @Bind(R.id.spinner3) MultiSelectionSpinner spinner3;
+    @Bind(R.id.spinner4) MultiSelectionSpinner spinner4;
+    @Bind(R.id.over) TextView overCut;
+    @Bind(R.id.under) TextView underCut;
+    @Bind(R.id.left) TextView leftOfAim;
+    @Bind(R.id.right) TextView rightOfAim;
+    @Bind(R.id.shootingErrorTitle) TextView title;
 
+    public static AdvShootingStatsFragment create(Bundle args) {
+        AdvShootingStatsFragment frag = new AdvShootingStatsFragment();
+        frag.setArguments(args);
 
-    @Bind(R.id.spinner)
-    MultiSelectionSpinner spinner1;
-    @Bind(R.id.spinner2)
-    MultiSelectionSpinner spinner2;
-    @Bind(R.id.spinner3)
-    MultiSelectionSpinner spinner3;
-    @Bind(R.id.spinner4)
-    MultiSelectionSpinner spinner4;
-    @Bind(R.id.over)
-    TextView overCut;
-    @Bind(R.id.under)
-    TextView underCut;
-    @Bind(R.id.left)
-    TextView leftOfAim;
-    @Bind(R.id.right)
-    TextView rightOfAim;
-    @Bind(R.id.shootingErrorTitle)
-    TextView title;
+        return frag;
+    }
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DatabaseAdapter db = new DatabaseAdapter(getContext());
+        db.open();
+
+        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID);
+        String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
+        String[] shotTypes = getContext().getResources().getStringArray(R.array.shot_types);
+        stats = db.getAdvStats(matchId, playerName, shotTypes);
+
+        /*
         stats.add(new AdvStats.Builder().shotType("Cut").subType("").angle("60°").howTypes("Too thick", "Left of aim point").whyTypes("Lack of focus").build());
         stats.add(new AdvStats.Builder().shotType("Cut").subType("").angle("60°").howTypes("Too thick", "Left of aim point").whyTypes("Unintentional english", "CB curved").build());
         stats.add(new AdvStats.Builder().shotType("Cut").subType("").angle("45°").howTypes("Too thick", "Right of aim point").whyTypes("Unintentional english", "Lack of focus").build());
@@ -65,10 +69,10 @@ public class AdvShootingStatsFragment extends Fragment implements MultiSelection
         stats.add(new AdvStats.Builder().shotType("Kick").subType("").angle("3 rail").howTypes("Too thick").whyTypes("Too fast", "Over spin").build());
         stats.add(new AdvStats.Builder().shotType("Bank").subType("").angle("1 rail", "Short rail", "Crossover").howTypes("Too thick").whyTypes("Too fast").build());
         stats.add(new AdvStats.Builder().shotType("Jump").subType("").angle("30°").howTypes("Too thick", "Right of aim point").whyTypes("Unintentional english").build());
+        */
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.container_adv_shooting_stats, container, false);
         ButterKnife.bind(this, view);
@@ -88,8 +92,8 @@ public class AdvShootingStatsFragment extends Fragment implements MultiSelection
     }
 
     public void updateView(View view) {
-        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(stats), leftOfAim, rightOfAim);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(stats), overCut, underCut);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getContext(), stats), leftOfAim, rightOfAim);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getContext(), stats), overCut, underCut);
 
         title.setText("Shooting errors (" + stats.size() + ")");
 
@@ -97,13 +101,11 @@ public class AdvShootingStatsFragment extends Fragment implements MultiSelection
     }
 
 
-    @Override
-    public void selectedIndices(List<Integer> indices) {
+    @Override public void selectedIndices(List<Integer> indices) {
 
     }
 
-    @Override
-    public void selectedStrings(List<String> strings) {
+    @Override public void selectedStrings(List<String> strings) {
 
     }
 }

@@ -8,6 +8,17 @@
     <string name="miss_combo">Combo</string>
     <string name="miss_carom">Carom</string>
     <string name="miss_jump">Jump</string>
+    <string name="miss_masse">Massé/semi-massé</string>
+
+    <string-array name="shot_types">
+        <item>@string/miss_cut</item>
+        <item>@string/miss_long</item>
+        <item>@string/miss_bank</item>
+        <item>@string/miss_kick</item>
+        <item>@string/miss_combo</item>
+        <item>@string/miss_carom</item>
+        <item>@string/miss_jump</item>
+    </string-array>
 
     <string name="title_kick_type">What type of kick?</string>
     <string name="one_rail">1 rail</string>
@@ -30,7 +41,11 @@
     </string-array>
 
     <string-array name="banks">
-        <item>@array/kicks</item>
+        <item>@string/one_rail</item>
+        <item>@string/two_rail</item>
+        <item>@string/three_rail</item>
+        <item>@string/four_rail</item>
+        <item>@string/five_rail</item>
         <item>@string/bank_natural</item>
         <item>@string/bank_crossover</item>
         <item>@string/bank_long_rail</item>
