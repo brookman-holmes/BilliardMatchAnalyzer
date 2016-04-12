@@ -24,8 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MatchInfoFragment extends Fragment implements MatchInterface, View.OnClickListener {
-    @Bind(R.id.scrollView)
-    RecyclerView recyclerView;
+    @Bind(R.id.scrollView) RecyclerView recyclerView;
     MatchInfoRecyclerAdapter<?> adapter;
     DatabaseAdapter db;
     private long matchId;
@@ -49,9 +48,8 @@ public class MatchInfoFragment extends Fragment implements MatchInterface, View.
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                          Bundle savedInstanceState) {
         View view;
         if (getArguments().getBoolean("Card View", false)) {
             view = inflater.inflate(R.layout.fragment_list_view, container, false);
@@ -66,76 +64,62 @@ public class MatchInfoFragment extends Fragment implements MatchInterface, View.
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
+    @Override public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
     }
 
-    @Override
-    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
+    @Override public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
         return adapter.createAndAddTurnToMatch(tableStatus, turnEnd, scratch, isGameLost);
     }
 
-    @Override
-    public String getCurrentPlayersName() {
+    @Override public String getCurrentPlayersName() {
         return adapter.getCurrentPlayersName();
     }
 
-    @Override
-    public String getNonCurrentPlayersName() {
+    @Override public String getNonCurrentPlayersName() {
         return adapter.getNonCurrentPlayersName();
     }
 
-    @Override
-    public void undoTurn() {
+    @Override public void undoTurn() {
         adapter.undoTurn();
     }
 
-    @Override
-    public boolean isRedoTurn() {
+    @Override public boolean isRedoTurn() {
         return adapter.isRedoTurn();
     }
 
-    @Override
-    public boolean isUndoTurn() {
+    @Override public boolean isUndoTurn() {
         return adapter.isUndoTurn();
     }
 
-    @Override
-    public Turn redoTurn() {
+    @Override public Turn redoTurn() {
         return adapter.redoTurn();
     }
 
-    @Override
-    public AbstractPlayer getPlayer() {
+    @Override public AbstractPlayer getPlayer() {
         return adapter.getPlayer();
     }
 
-    @Override
-    public AbstractPlayer getOpponent() {
+    @Override public AbstractPlayer getOpponent() {
         return adapter.getOpponent();
     }
 
-    @Override
-    public String getLocation() {
+    @Override public String getLocation() {
         return adapter.getLocation();
     }
 
-    @Override
-    public int getTurnCount() {
+    @Override public int getTurnCount() {
         return adapter.getTurnCount();
     }
 
-    @Override
-    public long getMatchId() {
+    @Override public long getMatchId() {
         return adapter.getMatchId();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setRetainInstance(true);
@@ -152,8 +136,7 @@ public class MatchInfoFragment extends Fragment implements MatchInterface, View.
         adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId), this);
     }
 
-    @Override
-    public void onClick(View v) {
+    @Override public void onClick(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
         builder.setView(createHelpView((int) v.getTag()))
                 .setPositiveButton(android.R.string.ok, null).create().show();

@@ -33,8 +33,7 @@ public class PageList extends ArrayList<Page> implements PageTreeNode {
         }
     }
 
-    @Override
-    public Page findByKey(String key) {
+    @Override public Page findByKey(String key) {
         for (Page childPage : this) {
             Page found = childPage.findByKey(key);
             if (found != null) {
@@ -45,8 +44,7 @@ public class PageList extends ArrayList<Page> implements PageTreeNode {
         return null;
     }
 
-    @Override
-    public void flattenCurrentPageSequence(ArrayList<Page> dest) {
+    @Override public void flattenCurrentPageSequence(ArrayList<Page> dest) {
         for (Page childPage : this) {
             childPage.flattenCurrentPageSequence(dest);
         }

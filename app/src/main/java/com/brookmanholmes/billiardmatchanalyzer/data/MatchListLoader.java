@@ -12,8 +12,7 @@ public class MatchListLoader extends CursorLoader {
         super(context);
     }
 
-    @Override
-    public Cursor loadInBackground() {
+    @Override public Cursor loadInBackground() {
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(getContext());
         databaseAdapter.open();
         return databaseAdapter.getMatches();

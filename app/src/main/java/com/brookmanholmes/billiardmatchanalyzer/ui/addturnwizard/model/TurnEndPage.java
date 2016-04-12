@@ -34,8 +34,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         turnEndHelper = TurnEndHelper.newTurnEndHelper(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)));
     }
 
-    @Override
-    public Fragment createFragment() {
+    @Override public Fragment createFragment() {
         TurnEndOptions options = turnEndHelper.create(MatchDialogHelperUtils.createGameStatusFromBundle(data),
                 TableStatus.newTable(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)), data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY)));
         ArrayList<String> stringList = new ArrayList<>();
@@ -46,15 +45,13 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         return TurnEndFragment.create(getKey(), stringList, options.defaultCheck.name());
     }
 
-    @Override
-    public void getNewTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void getNewTurnInfo(TurnBuilder turnBuilder) {
         TurnEndOptions options = turnEndHelper.create(MatchDialogHelperUtils.createGameStatusFromBundle(data),
                 turnBuilder.tableStatus);
         updateFragment(options);
     }
 
-    @Override
-    public void updateTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
         turnBuilder.turnEnd = data.getString(SIMPLE_DATA_KEY);
         String temp = data.getString(SIMPLE_DATA_KEY, "");
         if ((temp.equals("Miss on break shot")

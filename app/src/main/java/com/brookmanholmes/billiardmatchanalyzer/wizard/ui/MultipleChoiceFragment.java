@@ -57,8 +57,7 @@ public class MultipleChoiceFragment extends ListFragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
@@ -72,8 +71,7 @@ public class MultipleChoiceFragment extends ListFragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
@@ -88,8 +86,7 @@ public class MultipleChoiceFragment extends ListFragment {
 
         // Pre-select currently selected items.
         new Handler().post(new Runnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
                 ArrayList<String> selectedItems = page.getData().getStringArrayList(
                         Page.SIMPLE_DATA_KEY);
                 if (selectedItems == null || selectedItems.size() == 0) {
@@ -109,8 +106,7 @@ public class MultipleChoiceFragment extends ListFragment {
         return rootView;
     }
 
-    @Override
-    public void onAttach(Context context) {
+    @Override public void onAttach(Context context) {
         super.onAttach(context);
 
         if (getParentFragment() instanceof PageFragmentCallbacks) {
@@ -124,14 +120,12 @@ public class MultipleChoiceFragment extends ListFragment {
 
     }
 
-    @Override
-    public void onDetach() {
+    @Override public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    @Override public void onListItemClick(ListView l, View v, int position, long id) {
         SparseBooleanArray checkedPositions = getListView().getCheckedItemPositions();
         ArrayList<String> selections = new ArrayList<String>();
         for (int i = 0; i < checkedPositions.size(); i++) {

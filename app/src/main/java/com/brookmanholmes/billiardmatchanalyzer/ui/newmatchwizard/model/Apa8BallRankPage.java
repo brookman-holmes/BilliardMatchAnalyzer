@@ -10,8 +10,7 @@ public class Apa8BallRankPage extends RankPage {
         super(callbacks, playerNumber);
     }
 
-    @Override
-    protected void setChoices() {
+    @Override protected void setChoices() {
         choices.add("2");
         choices.add("3");
         choices.add("4");

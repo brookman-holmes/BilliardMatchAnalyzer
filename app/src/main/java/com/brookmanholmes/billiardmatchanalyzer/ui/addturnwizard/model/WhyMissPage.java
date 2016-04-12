@@ -30,8 +30,7 @@ public class WhyMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
 
 
 
-    @Override
-    public Fragment createFragment() {
+    @Override public Fragment createFragment() {
         return AddTurnMultipleChoiceFragment.create(getKey());
     }
 }

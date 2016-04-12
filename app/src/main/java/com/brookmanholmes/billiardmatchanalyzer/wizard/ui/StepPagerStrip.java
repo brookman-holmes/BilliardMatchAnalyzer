@@ -86,8 +86,7 @@ public class StepPagerStrip extends View {
         this.onPageSelectedListener = onPageSelectedListener;
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
+    @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         if (pageCount == 0) {
@@ -151,8 +150,7 @@ public class StepPagerStrip extends View {
         }
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(
                 View.resolveSize(
                         (int) (pageCount * (tabWidth + indicatorSpacing) - indicatorSpacing)
@@ -164,14 +162,12 @@ public class StepPagerStrip extends View {
                         heightMeasureSpec));
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         scrollCurrentPageIntoView();
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    @Override public boolean onTouchEvent(MotionEvent event) {
         if (onPageSelectedListener != null) {
             switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
@@ -263,8 +259,7 @@ public class StepPagerStrip extends View {
     }
 
 //
-//    @Override
-//    public void computeScroll() {
+//    @Override //    public void computeScroll() {
 //        super.computeScroll();
 //        if (mScroller.computeScrollOffset()) {
 //            setScrollX(mScroller.getCurrX());

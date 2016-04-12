@@ -82,8 +82,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         listener = (AddTurnListener) getActivity();
     }
 
-    @Nullable @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_turn, container, false);
         ButterKnife.bind(this, view);
 
@@ -91,8 +90,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
 
         pager.setAdapter(pagerAdapter);
         pagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
-            @Override
-            public void onPageStripSelected(int position) {
+            @Override public void onPageStripSelected(int position) {
                 position = Math.min(pagerAdapter.getCount(), position);
                 if (pager.getCurrentItem() != position) {
                     pager.setCurrentItem(position);
@@ -101,8 +99,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         });
 
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
+            @Override public void onPageSelected(int position) {
                 pagerStrip.setCurrentPage(position);
                 if (consumePageSelectedEvent) {
                     consumePageSelectedEvent = false;
@@ -118,8 +115,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         return view;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getDialog().getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
     }
@@ -218,13 +214,11 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
             super(fm);
         }
 
-        @Override
-        public Fragment getItem(int i) {
+        @Override public Fragment getItem(int i) {
             return currentPageSequence.get(i).createFragment();
         }
 
-        @Override
-        public int getItemPosition(Object object) {
+        @Override public int getItemPosition(Object object) {
             // TODO: be smarter about this
             if (object == mPrimaryItem) {
                 // Re-use the current fragment (its position never changes)
@@ -234,14 +228,12 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
             return POSITION_NONE;
         }
 
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        @Override public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
             mPrimaryItem = (Fragment) object;
         }
 
-        @Override
-        public int getCount() {
+        @Override public int getCount() {
             if (currentPageSequence == null) {
                 return 0;
             }

@@ -68,23 +68,20 @@ public class MultiSelectionSpinner extends Spinner implements
         }
     }
 
-    @Override
-    public boolean performClick() {
+    @Override public boolean performClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(dialogTitle);
         builder.setMultiChoiceItems(_items, mSelection, this);
         _itemsAtStart = getSelectedItemsAsString();
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+            @Override public void onClick(DialogInterface dialog, int which) {
                 System.arraycopy(mSelection, 0, mSelectionAtStart, 0, mSelection.length);
                 listener.selectedIndices(getSelectedIndices());
                 listener.selectedStrings(getSelectedStrings());
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+            @Override public void onClick(DialogInterface dialog, int which) {
                 simple_adapter.clear();
                 simple_adapter.add(buildSelectedItemString());
                 System.arraycopy(mSelectionAtStart, 0, mSelection, 0, mSelectionAtStart.length);
@@ -94,8 +91,7 @@ public class MultiSelectionSpinner extends Spinner implements
         return true;
     }
 
-    @Override
-    public void setAdapter(SpinnerAdapter adapter) {
+    @Override public void setAdapter(SpinnerAdapter adapter) {
         throw new RuntimeException(
                 "setAdapter is not supported by MultiSelectSpinner.");
     }

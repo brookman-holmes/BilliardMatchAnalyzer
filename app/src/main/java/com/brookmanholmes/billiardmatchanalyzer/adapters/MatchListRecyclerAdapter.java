@@ -33,8 +33,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         this.listener = listener;
     }
 
-    @Override
-    public void onBindViewHolderCursor(ListItemHolder holder, Cursor cursor) {
+    @Override public void onBindViewHolderCursor(ListItemHolder holder, Cursor cursor) {
         holder.container.setTag(getColumnId(cursor));
         holder.location.setText(getLocation(cursor));
         holder.date.setText(getDate(cursor));
@@ -44,8 +43,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         holder.ruleSet.setText(getRuleSet(cursor));
     }
 
-    @Override
-    public ListItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public ListItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ListItemHolder(LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.card_match_row, parent, false));
@@ -145,33 +143,24 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     }
 
     public class ListItemHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.players)
-        TextView playerNames;
-        @Bind(R.id.breakType)
-        TextView breakType;
-        @Bind(R.id.imgGameType)
-        ImageView gameType;
-        @Bind(R.id.container)
-        View container;
-        @Bind(R.id.dateLoc)
-        TextView location;
-        @Bind(R.id.date)
-        TextView date;
-        @Bind(R.id.ruleSet)
-        TextView ruleSet;
+        @Bind(R.id.players) TextView playerNames;
+        @Bind(R.id.breakType) TextView breakType;
+        @Bind(R.id.imgGameType) ImageView gameType;
+        @Bind(R.id.container) View container;
+        @Bind(R.id.dateLoc) TextView location;
+        @Bind(R.id.date) TextView date;
+        @Bind(R.id.ruleSet) TextView ruleSet;
 
         public ListItemHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        @OnClick(R.id.container)
-        public void onClick() {
+        @OnClick(R.id.container) public void onClick() {
             listener.onSelectMatch(getMatchId());
         }
 
-        @OnLongClick(R.id.container)
-        public boolean onLongClick() {
+        @OnLongClick(R.id.container) public boolean onLongClick() {
             listener.onLongSelectMatch(getMatchId());
             return true;
         }

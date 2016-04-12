@@ -28,8 +28,7 @@ public class TurnBuilder {
         return advStats.toString();
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "TurnBuilder{" +
                 "tableStatus=" + tableStatus.toString() +
                 ", turnEnd=" + (turnEnd == null ? "null" : turnEnd) +

@@ -30,13 +30,11 @@ public class MultipleFixedChoicePage extends SingleFixedChoicePage {
         super(callbacks, title);
     }
 
-    @Override
-    public Fragment createFragment() {
+    @Override public Fragment createFragment() {
         return MultipleChoiceFragment.create(getKey());
     }
 
-    @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
         StringBuilder sb = new StringBuilder();
 
         ArrayList<String> selections = data.getStringArrayList(Page.SIMPLE_DATA_KEY);
@@ -52,8 +50,7 @@ public class MultipleFixedChoicePage extends SingleFixedChoicePage {
         dest.add(new ReviewItem(getTitle(), sb.toString(), getKey()));
     }
 
-    @Override
-    public boolean isCompleted() {
+    @Override public boolean isCompleted() {
         ArrayList<String> selections = data.getStringArrayList(Page.SIMPLE_DATA_KEY);
         return selections != null && selections.size() > 0;
     }

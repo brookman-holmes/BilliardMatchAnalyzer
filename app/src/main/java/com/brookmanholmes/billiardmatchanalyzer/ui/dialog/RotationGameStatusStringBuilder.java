@@ -18,8 +18,7 @@ class RotationGameStatusStringBuilder extends GameStatusStringBuilder {
         consecutiveOpponentFouls = getPlayerName(PlayerTurn.OPPONENT) + " is on " + status.consecutiveOpponentFouls + " fouls";
     }
 
-    @Override
-    String createGameStatusString() {
+    @Override String createGameStatusString() {
         return gameType
                 + ", " + breakType
                 + "\n" + turn

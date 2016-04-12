@@ -72,8 +72,7 @@ public class AdvShootingStatsFragment extends Fragment implements MultiSelection
         */
     }
 
-    @Nullable @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.container_adv_shooting_stats, container, false);
         ButterKnife.bind(this, view);
 

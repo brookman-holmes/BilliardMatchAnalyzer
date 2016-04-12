@@ -59,8 +59,7 @@ public class PlayerNameFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
@@ -72,8 +71,7 @@ public class PlayerNameFragment extends Fragment {
         names = database.getNames();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_player_names, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
@@ -95,8 +93,7 @@ public class PlayerNameFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onAttach(Context context) {
+    @Override public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getActivity() instanceof PageFragmentCallbacks)) {
@@ -106,14 +103,12 @@ public class PlayerNameFragment extends Fragment {
         callbacks = (PageFragmentCallbacks) getActivity();
     }
 
-    @Override
-    public void onDetach() {
+    @Override public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         playerName.addTextChangedListener(textWatcher(PlayerNamePage.PLAYER_NAME_KEY));
@@ -125,16 +120,13 @@ public class PlayerNameFragment extends Fragment {
     private TextWatcher textWatcher(final String key) {
         return new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
 
-            @Override
-            public void afterTextChanged(final Editable editable) {
+            @Override public void afterTextChanged(final Editable editable) {
                 if (key.equals(PlayerNamePage.PLAYER_NAME_KEY)) {
                     if (TextUtils.equals(editable.toString(), opponentName.getText().toString())) {
                         playerName.setError("Players cannot have the same name");
@@ -151,8 +143,7 @@ public class PlayerNameFragment extends Fragment {
         };
     }
 
-    @Override
-    public void setMenuVisibility(boolean menuVisible) {
+    @Override public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
 
         // In a future update to the support library, this should override setUserVisibleHint

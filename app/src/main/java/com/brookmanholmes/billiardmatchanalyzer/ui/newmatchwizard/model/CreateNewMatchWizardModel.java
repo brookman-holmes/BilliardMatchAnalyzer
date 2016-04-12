@@ -18,8 +18,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         rootPageList = onNewRootPageList();
     }
 
-    @Override
-    public void onPageDataChanged(Page page) {
+    @Override public void onPageDataChanged(Page page) {
         super.onPageDataChanged(page);
 
         if (page instanceof PlayerNamePage) {
@@ -30,8 +29,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         updatePlayerNames();
     }
 
-    @Override
-    public void onPageTreeChanged() {
+    @Override public void onPageTreeChanged() {
         super.onPageTreeChanged();
 
         updatePlayerNames();
@@ -45,8 +43,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         }
     }
 
-    @Override
-    protected PageList onNewRootPageList() {
+    @Override protected PageList onNewRootPageList() {
         return new PageList(
                 new PlayerNamePage(this),
                 new GameChoicePage(this),

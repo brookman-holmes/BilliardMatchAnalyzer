@@ -34,17 +34,14 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
         playerColor = PlayerColor.valueOf(data.getString(MatchDialogHelperUtils.CURRENT_PLAYER_COLOR_KEY));
     }
 
-    @Override
-    public Fragment createFragment() {
+    @Override public Fragment createFragment() {
         return ShotFragment.create(getKey(), getData());
     }
 
-    @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
     }
 
-    @Override
-    public void getNewTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void getNewTurnInfo(TurnBuilder turnBuilder) {
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
             tableStatus.setBallTo(turnBuilder.tableStatus.getBallStatus(ball), ball);
         }
@@ -122,8 +119,7 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
         }
     }
 
-    @Override
-    public void updateTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
             turnBuilder.tableStatus.setBallTo(tableStatus.getBallStatus(ball), ball);
         }

@@ -54,8 +54,7 @@ public class SingleChoiceFragment extends ListFragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
@@ -69,8 +68,7 @@ public class SingleChoiceFragment extends ListFragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
@@ -85,8 +83,7 @@ public class SingleChoiceFragment extends ListFragment {
 
         // Pre-select currently selected item.
         new Handler().post(new Runnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
                 String selection = page.getData().getString(Page.SIMPLE_DATA_KEY);
                 for (int i = 0; i < choices.size(); i++) {
                     if (choices.get(i).equals(selection)) {
@@ -100,8 +97,7 @@ public class SingleChoiceFragment extends ListFragment {
         return rootView;
     }
 
-    @Override
-    public void onAttach(Context context) {
+    @Override public void onAttach(Context context) {
         super.onAttach(context);
 
         if (getParentFragment() instanceof PageFragmentCallbacks) {
@@ -113,14 +109,12 @@ public class SingleChoiceFragment extends ListFragment {
         }
     }
 
-    @Override
-    public void onDetach() {
+    @Override public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    @Override public void onListItemClick(ListView l, View v, int position, long id) {
         page.getData().putString(Page.SIMPLE_DATA_KEY,
                 getListAdapter().getItem(position).toString());
         page.notifyDataChanged();

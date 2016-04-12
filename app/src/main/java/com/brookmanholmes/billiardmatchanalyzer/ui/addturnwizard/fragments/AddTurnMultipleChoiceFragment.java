@@ -29,8 +29,7 @@ public class AddTurnMultipleChoiceFragment extends MultipleChoiceFragment {
         return fragment;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_add_turn_page, container, false);
         ((TextView) rootView.findViewById(R.id.title)).setText(page.getTitle());
@@ -46,8 +45,7 @@ public class AddTurnMultipleChoiceFragment extends MultipleChoiceFragment {
         return rootView;
     }
 
-    @Override
-    public void onResume() {
+    @Override public void onResume() {
         super.onResume();
         // retarded work around for weird bug where items get selected randomly?
         // Pre-select currently selected items.

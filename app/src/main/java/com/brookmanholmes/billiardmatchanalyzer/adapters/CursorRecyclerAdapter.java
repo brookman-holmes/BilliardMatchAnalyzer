@@ -74,8 +74,7 @@ public abstract class CursorRecyclerAdapter<ListItemHolder extends android.suppo
      * @param holder {@inheritDoc}
      * @param i      {@inheritDoc}
      */
-    @Override
-    public void onBindViewHolder(ListItemHolder holder, int i) {
+    @Override public void onBindViewHolder(ListItemHolder holder, int i) {
         if (!mDataValid) {
             throw new IllegalStateException("this should only be called when the cursor is valid");
         }
@@ -98,8 +97,7 @@ public abstract class CursorRecyclerAdapter<ListItemHolder extends android.suppo
      */
     public abstract void onBindViewHolderCursor(ListItemHolder holder, Cursor cursor);
 
-    @Override
-    public int getItemCount() {
+    @Override public int getItemCount() {
         if (mDataValid && mCursor != null) {
             return mCursor.getCount();
         } else {
@@ -110,8 +108,7 @@ public abstract class CursorRecyclerAdapter<ListItemHolder extends android.suppo
     /**
      * @see android.widget.ListAdapter#getItemId(int)
      */
-    @Override
-    public long getItemId(int position) {
+    @Override public long getItemId(int position) {
         if (mDataValid && mCursor != null) {
             if (mCursor.moveToPosition(position)) {
                 return mCursor.getLong(mRowIDColumn);
@@ -279,13 +276,11 @@ class CursorFilter extends Filter {
         mClient = client;
     }
 
-    @Override
-    public CharSequence convertResultToString(Object resultValue) {
+    @Override public CharSequence convertResultToString(Object resultValue) {
         return mClient.convertToString((Cursor) resultValue);
     }
 
-    @Override
-    protected FilterResults performFiltering(CharSequence constraint) {
+    @Override protected FilterResults performFiltering(CharSequence constraint) {
         Cursor cursor = mClient.runQueryOnBackgroundThread(constraint);
 
         FilterResults results = new FilterResults();
@@ -299,8 +294,7 @@ class CursorFilter extends Filter {
         return results;
     }
 
-    @Override
-    protected void publishResults(CharSequence constraint, FilterResults results) {
+    @Override protected void publishResults(CharSequence constraint, FilterResults results) {
         Cursor oldCursor = mClient.getCursor();
 
         if (results.values != null && results.values != oldCursor) {

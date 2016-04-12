@@ -29,8 +29,7 @@ public class AddTurnSingleChoiceFragment extends SingleChoiceFragment {
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_add_turn_page, container, false);
         ((TextView) rootView.findViewById(R.id.title)).setText(page.getTitle());
@@ -45,8 +44,7 @@ public class AddTurnSingleChoiceFragment extends SingleChoiceFragment {
 
         // Pre-select currently selected item.
         new Handler().post(new Runnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
                 String selection = page.getData().getString(Page.SIMPLE_DATA_KEY);
                 for (int i = 0; i < choices.size(); i++) {
                     if (choices.get(i).equals(selection)) {

@@ -225,8 +225,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
             builder.setMessage(GameStatusStringBuilder.getMatchStatusString(db.getMatch(getMatchId())))
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        @Override public void onClick(DialogInterface dialog, int which) {
 
                         }
                     })
@@ -254,14 +253,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         builder.setTitle("Match Notes")
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    @Override public void onClick(DialogInterface dialog, int which) {
                         db.updateMatchNotes(input.getText().toString(), getMatchId());
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    @Override public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
@@ -277,14 +274,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         builder.setTitle("Match Location")
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    @Override public void onClick(DialogInterface dialog, int which) {
                         db.updateMatchLocation(input.getText().toString(), getMatchId());
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    @Override public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })

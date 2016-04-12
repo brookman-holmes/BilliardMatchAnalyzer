@@ -21,18 +21,15 @@ public class FirstBreakPage extends SingleFixedChoicePage implements RequiresPla
         setValue(playerName);
     }
 
-    @Override
-    public boolean isCompleted() {
+    @Override public boolean isCompleted() {
         return super.isCompleted();
     }
 
-    @Override
-    public String getKey() {
+    @Override public String getKey() {
         return parentPage + ":" + super.getKey();
     }
 
-    @Override
-    public void setPlayerNames(String playerName, String opponentName) {
+    @Override public void setPlayerNames(String playerName, String opponentName) {
         if (data.getString(SIMPLE_DATA_KEY, "|!_)(@%!)*(!@%$!@").equals(this.playerName))
             data.putString(SIMPLE_DATA_KEY, playerName);
         else if (data.getString(SIMPLE_DATA_KEY, "|!_)(@%!)*(!@%$!@").equals(this.opponentName))

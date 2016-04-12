@@ -51,8 +51,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         else return detail == Match.StatsDetail.ADVANCED;
     }
 
-    @Override
-    public void onPageDataChanged(Page page) {
+    @Override public void onPageDataChanged(Page page) {
         super.onPageDataChanged(page);
 
         if (page instanceof UpdatesTurnInfo) {
@@ -63,8 +62,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         Log.i("ATWM", turnBuilder.advData());
     }
 
-    @Override
-    public void onPageTreeChanged() {
+    @Override public void onPageTreeChanged() {
         super.onPageTreeChanged();
 
         updatePagesWithTurnInfo();
@@ -78,8 +76,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         }
     }
 
-    @Override
-    protected PageList onNewRootPageList() {
+    @Override protected PageList onNewRootPageList() {
         if (matchData.getBoolean(MatchDialogHelperUtils.ALLOW_BREAK_AGAIN_KEY)) {
             return new PageList(getTurnEndPage());
         }

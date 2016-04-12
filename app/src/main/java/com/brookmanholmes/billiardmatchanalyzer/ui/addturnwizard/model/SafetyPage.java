@@ -14,8 +14,7 @@ public class SafetyPage extends SingleFixedChoicePage implements UpdatesTurnInfo
         super(callbacks, title);
     }
 
-    @Override
-    public void updateTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
         turnBuilder.advStats.shotType("Safety");
         turnBuilder.advStats.subType(data.getString(SIMPLE_DATA_KEY));
         turnBuilder.advStats.clearAngle();
@@ -23,8 +22,7 @@ public class SafetyPage extends SingleFixedChoicePage implements UpdatesTurnInfo
         turnBuilder.advStats.clearHowTypes();
     }
 
-    @Override
-    public Fragment createFragment() {
+    @Override public Fragment createFragment() {
         return AddTurnSingleChoiceFragment.create(getKey());
     }
 }

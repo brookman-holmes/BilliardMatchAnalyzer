@@ -37,8 +37,7 @@ public class BreakFragment extends Fragment {
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
             R.id.nine_ball, R.id.ten_ball, R.id.eleven_ball, R.id.twelve_ball,
             R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball};
-    @Bind(R.id.title)
-    TextView title;
+    @Bind(R.id.title) TextView title;
     private PageFragmentCallbacks callbacks;
     private String key;
     private BreakPage page;
@@ -57,8 +56,7 @@ public class BreakFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
+    @Override public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getParentFragment() instanceof PageFragmentCallbacks)) {
@@ -68,8 +66,7 @@ public class BreakFragment extends Fragment {
         callbacks = (PageFragmentCallbacks) getParentFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
@@ -78,8 +75,7 @@ public class BreakFragment extends Fragment {
     }
 
     @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutByGameType(getGameType()), container, false);
         ButterKnife.bind(this, view);
         title.setText(page.getTitle());
@@ -96,8 +92,7 @@ public class BreakFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onDetach() {
+    @Override public void onDetach() {
         super.onDetach();
         callbacks = null;
     }

@@ -32,8 +32,7 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
         ListItemClickListener {
     private static int LOADER_ID = 100;
 
-    @Bind(R.id.scrollView)
-    RecyclerView recyclerView;
+    @Bind(R.id.scrollView) RecyclerView recyclerView;
 
     private MatchListRecyclerAdapter adapter;
     private DatabaseAdapter database;
@@ -41,8 +40,7 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
     public MatchListFragment() {
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_view2, null);
         ButterKnife.bind(this, view);
@@ -60,14 +58,12 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
         return view;
     }
 
-    @Override
-    public void onResume() {
+    @Override public void onResume() {
         super.onResume();
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
-    @Override
-    public void onDestroyView() {
+    @Override public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
@@ -77,42 +73,35 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
     /**
      * Loader methods
      */
-    @Override
-    public Loader<Cursor> onCreateLoader(int loaderID, Bundle args) {
+    @Override public Loader<Cursor> onCreateLoader(int loaderID, Bundle args) {
         return new MatchListLoader(getContext());
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
+    @Override public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
         adapter.swapCursor(cursor);
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    @Override public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
     }
 
-    @Override
-    public void onSelectMatch(long id) {
+    @Override public void onSelectMatch(long id) {
         Intent intent = new Intent(getActivity(), MatchInfoActivity.class);
         intent.putExtra(BaseActivity.ARG_MATCH_ID, id);
         startActivity(intent);
     }
 
-    @Override
-    public void onLongSelectMatch(final long id) {
+    @Override public void onLongSelectMatch(final long id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
         builder.setMessage("Would you like to delete this match?")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    @Override public void onClick(DialogInterface dialog, int which) {
                         database.deleteMatch(id);
                         getLoaderManager().getLoader(LOADER_ID).onContentChanged();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    @Override public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 }).create().show();

@@ -17,8 +17,7 @@ class BcaNineBallMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter<NineB
         super(match, 9, viewType, listener);
     }
 
-    @Override
-    BaseViewHolder<NineBallPlayer> getMatchInfoHolderByViewType(View view, int viewType) {
+    @Override BaseViewHolder<NineBallPlayer> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_BREAKS:
                 return new MatchInfoHolder.BreaksHolderWithBreakWins<>(view, gameBall, detail, listener);

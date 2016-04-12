@@ -19,8 +19,7 @@ public abstract class RankPage extends SingleFixedChoicePage implements Requires
 
     protected abstract void setChoices();
 
-    @Override
-    public void setPlayerNames(String playerName, String opponentName) {
+    @Override public void setPlayerNames(String playerName, String opponentName) {
         if (playerNumber == 1) {
             title = playerName + "'s Rank";
         } else {

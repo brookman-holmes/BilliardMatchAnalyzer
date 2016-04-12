@@ -36,8 +36,7 @@ public class AdvBreakingStatsFragment extends Fragment {
         stats = db.getAdvStats(matchId, playerName, new String[]{"Break shot"});
     }
 
-    @Nullable @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.container_adv_break_stats, container, false);
     }
 }

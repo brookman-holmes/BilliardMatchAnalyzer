@@ -20,8 +20,7 @@ class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchI
         super(match, match.getGameStatus().GAME_BALL, viewType, listener);
     }
 
-    @Override
-    BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
+    @Override BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_APA_STATS:
                 return new MatchInfoHolder.ApaPlayer<>(view, detail, listener);
@@ -34,8 +33,7 @@ class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchI
         }
     }
 
-    @Override
-    int getLayoutResource(int viewType) {
+    @Override int getLayoutResource(int viewType) {
         if (viewTypeToggle == ViewType.CARDS) {
             switch (viewType) {
                 case ITEM_APA_STATS:
@@ -53,13 +51,11 @@ class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchI
         }
     }
 
-    @Override
-    public int getItemCount() {
+    @Override public int getItemCount() {
         return super.getItemCount() + 1;
     }
 
-    @Override
-    public int getItemViewType(int position) {
+    @Override public int getItemViewType(int position) {
         switch (position) {
             case 0:
                 return ITEM_APA_STATS;

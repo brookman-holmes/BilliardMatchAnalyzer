@@ -32,17 +32,14 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
         addBranch(showShotPage, new ShotPage(callbacks, title2, matchData));
     }
 
-    @Override
-    public Fragment createFragment() {
+    @Override public Fragment createFragment() {
         return BreakFragment.create(getKey(), getData());
     }
 
-    @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
     }
 
-    @Override
-    public void updateTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
             turnBuilder.tableStatus.setBallTo(tableStatus.getBallStatus(ball), ball);
         }

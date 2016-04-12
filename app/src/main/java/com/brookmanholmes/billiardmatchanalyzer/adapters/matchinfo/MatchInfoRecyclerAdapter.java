@@ -86,92 +86,76 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
         }
     }
 
-    @Override
-    public BaseViewHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public BaseViewHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(getLayoutResource(viewType), parent, false);
         view.setTag(viewType);
         return getMatchInfoHolderByViewType(view, viewType);
     }
 
-    @Override
-    public void onBindViewHolder(BaseViewHolder<T> holder, int position) {
+    @Override public void onBindViewHolder(BaseViewHolder<T> holder, int position) {
         holder.bind(getPlayer(), getOpponent());
     }
 
-    @Override
-    public int getItemCount() {
+    @Override public int getItemCount() {
         return 6;
     }
 
-    @Override
-    public int getItemViewType(int position) {
+    @Override public int getItemViewType(int position) {
         if (position != getItemCount() - 1)
             return position;
         else return ITEM_FOOTER;
     }
 
-    @Override
-    public T getPlayer() {
+    @Override public T getPlayer() {
         return match.getPlayer();
     }
 
-    @Override
-    public T getOpponent() {
+    @Override public T getOpponent() {
         return match.getOpponent();
     }
 
-    @Override
-    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
+    @Override public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
         Turn turn = match.createAndAddTurnToMatch(tableStatus, turnEnd, scratch, isGameLost);
         notifyDataSetChanged();
         return turn;
     }
 
-    @Override
-    public void undoTurn() {
+    @Override public void undoTurn() {
         match.undoTurn();
         notifyDataSetChanged();
     }
 
-    @Override
-    public boolean isRedoTurn() {
+    @Override public boolean isRedoTurn() {
         return match.isRedoTurn();
     }
 
-    @Override
-    public boolean isUndoTurn() {
+    @Override public boolean isUndoTurn() {
         return match.isUndoTurn();
     }
 
-    @Override
-    public Turn redoTurn() {
+    @Override public Turn redoTurn() {
         Turn turn = match.redoTurn();
         notifyDataSetChanged();
         return turn;
     }
 
-    @Override
-    public long getMatchId() {
+    @Override public long getMatchId() {
         return match.getMatchId();
     }
 
-    @Override
-    public String getLocation() {
+    @Override public String getLocation() {
         return match.getLocation();
     }
 
-    @Override
-    public String getCurrentPlayersName() {
+    @Override public String getCurrentPlayersName() {
         return match.getCurrentPlayersName();
     }
 
-    @Override
-    public String getNonCurrentPlayersName() {
+    @Override public String getNonCurrentPlayersName() {
         return match.getNonCurrentPlayersName();
     }
 
-    @Override
-    public int getTurnCount() {
+    @Override public int getTurnCount() {
         return match.getTurnCount();
     }
 

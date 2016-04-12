@@ -15,8 +15,7 @@ public class Apa9BallRankPage extends RankPage {
         super(callbacks, playerNumber);
     }
 
-    @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
         dest.add(new ReviewItem(getTitle(), data.getString(Page.SIMPLE_DATA_KEY) + ", wins with " + getRaceTo() + " points", getKey()));
     }
 
@@ -24,8 +23,7 @@ public class Apa9BallRankPage extends RankPage {
         return String.valueOf(ApaRaceToHelper.apa9BallRaceTo(Integer.valueOf(data.getString(Page.SIMPLE_DATA_KEY, "0"))));
     }
 
-    @Override
-    protected void setChoices() {
+    @Override protected void setChoices() {
         choices.add("1");
         choices.add("2");
         choices.add("3");

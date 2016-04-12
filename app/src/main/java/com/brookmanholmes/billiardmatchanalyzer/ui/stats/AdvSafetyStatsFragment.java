@@ -73,8 +73,7 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
         */
     }
 
-    @Nullable @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.container_adv_safety_stats, container, false);
         ButterKnife.bind(this, view);
 

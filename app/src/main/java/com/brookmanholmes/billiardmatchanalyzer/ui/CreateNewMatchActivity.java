@@ -79,8 +79,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
         pagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
-            @Override
-            public void onPageStripSelected(int position) {
+            @Override public void onPageStripSelected(int position) {
                 position = Math.min(pagerAdapter.getCount() - 1, position);
                 if (pager.getCurrentItem() != position)
                     pager.setCurrentItem(position);
@@ -88,8 +87,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         });
 
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
+            @Override public void onPageSelected(int position) {
                 pagerStrip.setCurrentPage(position);
 
                 if (consumePageSelectedEvent) {

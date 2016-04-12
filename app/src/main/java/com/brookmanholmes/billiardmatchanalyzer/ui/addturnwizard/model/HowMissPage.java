@@ -23,8 +23,7 @@ public class HowMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
             turnBuilder.advStats.howTypes(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
-    @Override
-    public Fragment createFragment() {
+    @Override public Fragment createFragment() {
         return AddTurnMultipleChoiceFragment.create(getKey());
     }
 }

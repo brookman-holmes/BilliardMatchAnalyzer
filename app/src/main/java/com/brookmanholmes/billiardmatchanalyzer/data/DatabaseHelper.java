@@ -63,8 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return sInstance;
     }
 
-    @NonNull
-    public static String getCreateAdvStatsTableQuery() {
+    @NonNull public static String getCreateAdvStatsTableQuery() {
         return "CREATE TABLE " + TABLE_ADV_STATS + "("
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_SHOT_TYPE + " TEXT COLLATE NOCASE DEFAULT NULL, "
@@ -76,8 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull
-    public static String getCreateHowTable() {
+    @NonNull public static String getCreateHowTable() {
         return "CREATE TABLE " + TABLE_HOWS + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
@@ -85,8 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull
-    public static String getCreateWhyTable() {
+    @NonNull public static String getCreateWhyTable() {
         return "CREATE TABLE " + TABLE_WHYS + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
@@ -94,8 +91,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull
-    public static String getCreateAngleTable() {
+    @NonNull public static String getCreateAngleTable() {
         return "CREATE TABLE " + TABLE_ANGLES + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
@@ -103,8 +99,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull
-    public static String getCreateTurnsTableQuery() {
+    @NonNull public static String getCreateTurnsTableQuery() {
         return "CREATE TABLE " + TABLE_TURNS + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_MATCH_ID + " INTEGER NOT NULL, "
@@ -116,8 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull
-    private static String getCreateMatchTableQuery() {
+    @NonNull private static String getCreateMatchTableQuery() {
         return "CREATE TABLE " + TABLE_MATCHES + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_GAME_TYPE + " TEXT COLLATE NOCASE NOT NULL DEFAULT BCA_EIGHT_BALL, "
@@ -132,8 +126,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull
-    private static String getCreatePlayerTableQuery() {
+    @NonNull private static String getCreatePlayerTableQuery() {
         return "CREATE TABLE " + TABLE_PLAYERS + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_NAME + " TEXT COLLATE NOCASE DEFAULT NULL, "
@@ -141,8 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
+    @Override public void onCreate(SQLiteDatabase db) {
         db.execSQL(getCreateTurnsTableQuery());
         db.execSQL(getCreateMatchTableQuery());
         db.execSQL(getCreatePlayerTableQuery());
@@ -152,8 +144,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(getCreateWhyTable());
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TURNS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);

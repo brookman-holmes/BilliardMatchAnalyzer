@@ -26,8 +26,7 @@ public class BreakTypePage extends BranchPage implements RequiresPlayerNames {
         setRequired(true);
     }
 
-    @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
         super.getReviewItems(dest);
 
         if (data.getString(SIMPLE_DATA_KEY, "").equals(playerName + valueEnding)) {
@@ -37,8 +36,7 @@ public class BreakTypePage extends BranchPage implements RequiresPlayerNames {
         }
     }
 
-    @Override
-    public void setPlayerNames(String playerName, String opponentName) {
+    @Override public void setPlayerNames(String playerName, String opponentName) {
         for (Branch branch : branches) {
             for (Page page : branch.childPageList) {
                 if (page instanceof RequiresPlayerNames) {

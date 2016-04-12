@@ -14,15 +14,13 @@ public class BankPage extends MultipleFixedChoicePage implements UpdatesTurnInfo
         super(callbacks, title);
     }
 
-    @Override
-    public void updateTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
         turnBuilder.advStats.clearAngle();
         if (data.getStringArrayList(SIMPLE_DATA_KEY) != null)
             turnBuilder.advStats.angle(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
-    @Override
-    public Fragment createFragment() {
+    @Override public Fragment createFragment() {
         return AddTurnMultipleChoiceFragment.create(getKey());
     }
 }

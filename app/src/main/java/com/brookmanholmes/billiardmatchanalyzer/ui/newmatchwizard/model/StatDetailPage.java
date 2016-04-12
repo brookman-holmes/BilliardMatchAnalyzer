@@ -18,8 +18,7 @@ public class StatDetailPage extends SingleFixedChoicePage implements RequiresPla
         setRequired(true);
     }
 
-    @Override
-    public void setPlayerNames(String playerName, String opponentName) {
+    @Override public void setPlayerNames(String playerName, String opponentName) {
         if (data.getString(SIMPLE_DATA_KEY, "|!_)(@%!)*(!@%$!@").equals(startValue + this.playerName))
             data.putString(SIMPLE_DATA_KEY, startValue + playerName);
         else if (data.getString(SIMPLE_DATA_KEY, "|!_)(@%!)*(!@%$!@").equals(startValue + this.opponentName))

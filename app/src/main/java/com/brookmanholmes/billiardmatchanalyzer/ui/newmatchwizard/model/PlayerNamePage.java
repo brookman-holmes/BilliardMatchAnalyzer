@@ -37,21 +37,18 @@ public class PlayerNamePage extends Page {
         setRequired(true);
     }
 
-    @Override
-    public Fragment createFragment() {
+    @Override public Fragment createFragment() {
         return PlayerNameFragment.create(getKey());
     }
 
-    @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
         dest.add(new ReviewItem("Player 1", data.getString(PLAYER_NAME_KEY), getKey()));
         dest.add(new ReviewItem("Player 2", data.getString(OPPONENT_NAME_KEY), getKey()));
         if (!data.getString(LOCATION_KEY, "").equals(""))
             dest.add(new ReviewItem("Location", data.getString(LOCATION_KEY), getKey()));
     }
 
-    @Override
-    public boolean isCompleted() {
+    @Override public boolean isCompleted() {
         return !TextUtils.isEmpty(data.getString(PLAYER_NAME_KEY)) && !TextUtils.isEmpty(data.getString(OPPONENT_NAME_KEY))
                 && !TextUtils.equals(data.getString(PLAYER_NAME_KEY), data.getString(OPPONENT_NAME_KEY));
     }

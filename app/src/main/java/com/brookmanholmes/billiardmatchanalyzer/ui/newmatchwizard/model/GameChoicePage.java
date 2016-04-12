@@ -40,8 +40,7 @@ public class GameChoicePage extends BranchPage implements RequiresPlayerNames {
         setValue("BCA 9 ball");
     }
 
-    @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
         super.getReviewItems(dest);
 
         if (data.getString(SIMPLE_DATA_KEY, "").equals("American Rotation"))
@@ -50,8 +49,7 @@ public class GameChoicePage extends BranchPage implements RequiresPlayerNames {
             dest.add(new ReviewItem("The break", "Winner", getKey()));
     }
 
-    @Override
-    public void setPlayerNames(String playerName, String opponentName) {
+    @Override public void setPlayerNames(String playerName, String opponentName) {
         for (Branch branch : branches) {
             for (Page page : branch.childPageList) {
                 if (page instanceof RequiresPlayerNames) {

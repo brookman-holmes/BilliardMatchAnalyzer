@@ -43,8 +43,7 @@ public class FoulFragment extends ListFragment {
         return fragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
+    @Override public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getParentFragment() instanceof PageFragmentCallbacks)) {
@@ -54,8 +53,7 @@ public class FoulFragment extends ListFragment {
         callbacks = (PageFragmentCallbacks) getParentFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
@@ -63,14 +61,12 @@ public class FoulFragment extends ListFragment {
         page = (FoulPage) callbacks.onGetPage(key);
     }
 
-    @Override
-    public void onResume() {
+    @Override public void onResume() {
         super.onResume();
         page.registerListener(this);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_add_turn_page, container, false);
         ((TextView) rootView.findViewById(R.id.title)).setText(page.getTitle());
@@ -86,20 +82,17 @@ public class FoulFragment extends ListFragment {
         return rootView;
     }
 
-    @Override
-    public void onPause() {
+    @Override public void onPause() {
         page.unregisterListener();
         super.onPause();
     }
 
-    @Override
-    public void onDetach() {
+    @Override public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    @Override public void onListItemClick(ListView l, View v, int position, long id) {
         updatePage(position);
     }
 

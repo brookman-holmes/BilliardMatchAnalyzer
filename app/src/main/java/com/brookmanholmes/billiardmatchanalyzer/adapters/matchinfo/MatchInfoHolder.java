@@ -30,14 +30,10 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
     final View card_layout;
     final int collapsedCardHeight = 48;
     final int collapsedHeight = (int) Math.floor(collapsedCardHeight * Resources.getSystem().getDisplayMetrics().density);
-    @Bind(R.id.container)
-    GridLayout container;
-    @Bind(R.id.infoButton)
-    ImageView infoButton;
-    @Bind(R.id.collapseExpandButton)
-    ImageView collapseExpandButton;
-    @Bind(R.id.card_title)
-    TextView title;
+    @Bind(R.id.container) GridLayout container;
+    @Bind(R.id.infoButton) ImageView infoButton;
+    @Bind(R.id.collapseExpandButton) ImageView collapseExpandButton;
+    @Bind(R.id.card_title) TextView title;
     int viewType;
     int expandedHeight = 0;
     View.OnClickListener listener;
@@ -51,27 +47,23 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         this.listener = listener;
     }
 
-    @OnClick(R.id.infoButton)
-    public void onClickInfoButton(View view) {
+    @OnClick(R.id.infoButton) public void onClickInfoButton(View view) {
         listener.onClick(view);
     }
 
-    @OnClick(R.id.collapseExpandButton)
-    public void onClick() {
+    @OnClick(R.id.collapseExpandButton) public void onClick() {
         if (isViewExpanded()) {
             if (expandedHeight < card_layout.getHeight())
                 expandedHeight = card_layout.getHeight();
             container.animate().alpha(0f).withEndAction(new Runnable() {
-                @Override
-                public void run() {
+                @Override public void run() {
                     container.setVisibility(View.GONE);
                 }
             });
             animateCollapseExpand(card_layout, expandedHeight, collapsedHeight);
         } else {
             container.animate().alpha(1f).withStartAction(new Runnable() {
-                @Override
-                public void run() {
+                @Override public void run() {
                     container.setVisibility(View.VISIBLE);
                 }
             });
@@ -99,8 +91,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         animator.setDuration(scaleDuration);
         animator.setInterpolator(new FastOutSlowInInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
+            @Override public void onAnimationUpdate(ValueAnimator animation) {
                 view.getLayoutParams().height = (Integer) animation.getAnimatedValue();
                 view.requestLayout();
             }
@@ -170,8 +161,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             setVisibilities(view, detail);
         }
 
-        @Override
-        protected void setVisibilities(View view, Match.StatsDetail detail) {
+        @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
             if (detail == Match.StatsDetail.SIMPLE) {
                 tvAggressivenessRatingOpponent.setVisibility(View.GONE);
                 tvAggressivenessRatingPlayer.setVisibility(View.GONE);
@@ -182,8 +172,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             }
         }
 
-        @Override
-        public void bind(T player, T opponent) {
+        @Override public void bind(T player, T opponent) {
             // Games Won Percentage
             tvWinPctPlayer.setText(player.getWinPct());
             tvWinPctOpponent.setText(opponent.getWinPct());
@@ -232,13 +221,11 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             setVisibilities(view, detail);
         }
 
-        @Override
-        protected void setVisibilities(View view, Match.StatsDetail detail) {
+        @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
 
         }
 
-        @Override
-        public void bind(T player, T opponent) {
+        @Override public void bind(T player, T opponent) {
             title.setText("Shooting");
             // Shooting Percentage
             tvShootingPctPlayer.setText(player.getShootingPct());
@@ -297,8 +284,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             setVisibilities(view, detail);
         }
 
-        @Override
-        protected void setVisibilities(View view, Match.StatsDetail detail) {
+        @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
             if (detail == Match.StatsDetail.SIMPLE) {
                 tvSafetyReturnsPlayer.setVisibility(View.GONE);
                 tvSafetyEscapesPlayer.setVisibility(View.GONE);
@@ -313,8 +299,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             }
         }
 
-        @Override
-        public void bind(T player, T opponent) {
+        @Override public void bind(T player, T opponent) {
             title.setText("Safeties");
             // Safety Percentage
             tvSafetyPctPlayer.setText(player.getSafetyPct());
@@ -378,13 +363,11 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             setVisibilities(view, detail);
         }
 
-        @Override
-        protected void setVisibilities(View view, Match.StatsDetail detail) {
+        @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
 
         }
 
-        @Override
-        public void bind(T player, T opponent) {
+        @Override public void bind(T player, T opponent) {
             title.setText("Run Outs");
             // Break and runs
             tvBreakAndRunPlayer.setText(String.format("%d", player.getRunOuts()));
@@ -418,8 +401,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             tvEarlyWinsOpponent.setVisibility(View.VISIBLE);
         }
 
-        @Override
-        public void bind(T player, T opponent) {
+        @Override public void bind(T player, T opponent) {
             super.bind(player, opponent);
 
             tvEarlyWinsPlayer.setText(String.format("%d", player.getEarlyWins()));
@@ -469,8 +451,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             setVisibilities(view, detail);
         }
 
-        @Override
-        protected void setVisibilities(View view, Match.StatsDetail detail) {
+        @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
             if (detail == Match.StatsDetail.SIMPLE) {
                 tvBreakContinuationsOpponent.setVisibility(View.GONE);
                 tvBreakContinuationsPlayer.setVisibility(View.GONE);
@@ -478,8 +459,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             }
         }
 
-        @Override
-        public void bind(T player, T opponent) {
+        @Override public void bind(T player, T opponent) {
             title.setText("Breaks");
             // Average balls / break
             tvBreakBallsPlayer.setText(player.getAvgBallsBreak());
@@ -513,8 +493,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             tvBreakWinsOpponent.setVisibility(View.VISIBLE);
         }
 
-        @Override
-        public void bind(T player, T opponent) {
+        @Override public void bind(T player, T opponent) {
             super.bind(player, opponent);
 
             tvBreakWinsPlayer.setText(Integer.toString(player.getWinsOnBreak()));
@@ -553,13 +532,11 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             setVisibilities(view, detail);
         }
 
-        @Override
-        protected void setVisibilities(View view, Match.StatsDetail detail) {
+        @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
 
         }
 
-        @Override
-        public void bind(T player, T opponent) {
+        @Override public void bind(T player, T opponent) {
             if (player instanceof ApaEightBallPlayer) {
                 tvPointsTitle.setText("Games / games needed");
             }

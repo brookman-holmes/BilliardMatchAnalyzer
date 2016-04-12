@@ -12,8 +12,7 @@ public class FooterViewHolder<T extends AbstractPlayer> extends BaseViewHolder<T
         super(itemView);
     }
 
-    @Override
-    public void bind(AbstractPlayer player, AbstractPlayer opponent) {
+    @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {
 
     }
 }
