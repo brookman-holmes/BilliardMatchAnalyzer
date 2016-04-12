@@ -12,8 +12,7 @@ import com.brookmanholmes.billiards.turn.TurnBuilder;
  * Created by Brookman Holmes on 1/30/2016.
  */
 public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<TenBallPlayer> {
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         game = Game.newGame(GameType.BCA_TEN_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
         playerController = new TenBallController("", "");
         actualPlayer = new TenBallPlayer("");
@@ -21,33 +20,27 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<Te
         turnBuilder = new TurnBuilder(game.getGameType());
     }
 
-    @Override
-    Turn breakAndRunTurn() {
+    @Override Turn breakAndRunTurn() {
         return turnBuilder.breakBalls(1, 3).madeBalls(2, 4, 5, 6, 7, 8, 9, 10).win();
     }
 
-    @Override
-    Turn tableRunTurn() {
+    @Override Turn tableRunTurn() {
         return turnBuilder.madeBalls(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).win();
     }
 
-    @Override
-    Turn fourBallRunTurn() {
+    @Override Turn fourBallRunTurn() {
         return turnBuilder.offTable(1, 2, 3, 5, 6, 7).madeBalls(4, 8, 9, 10).win();
     }
 
-    @Override
-    TenBallPlayer getBlankPlayer() {
+    @Override TenBallPlayer getBlankPlayer() {
         return new TenBallPlayer("");
     }
 
-    @Override
-    Turn failedRunOutTurn() {
+    @Override Turn failedRunOutTurn() {
         return turnBuilder.breakBalls(1, 2).madeBalls(3).safety();
     }
 
-    @Override
-    TenBallPlayer failedRunOutPlayer() {
+    @Override TenBallPlayer failedRunOutPlayer() {
         TenBallPlayer player = new TenBallPlayer("");
         player.addBreakShot(2, true, false);
         player.addShootingBallsMade(1, false);
@@ -56,8 +49,7 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<Te
         return player;
     }
 
-    @Override
-    TenBallPlayer fourBallRunOutPlayer() {
+    @Override TenBallPlayer fourBallRunOutPlayer() {
         TenBallPlayer player = new TenBallPlayer("");
         player.addShootingBallsMade(4, false);
         player.addGameWon();
@@ -66,8 +58,7 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<Te
         return player;
     }
 
-    @Override
-    TenBallPlayer getBreakAndRunPlayer() {
+    @Override TenBallPlayer getBreakAndRunPlayer() {
         TenBallPlayer player = new TenBallPlayer("");
         player.addBreakShot(2, true, false);
         player.addShootingBallsMade(8, false);

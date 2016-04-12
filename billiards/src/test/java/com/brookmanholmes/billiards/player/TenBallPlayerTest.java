@@ -9,8 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 1/19/2016.
  */
 public class TenBallPlayerTest extends AbstractPlayerTest {
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         expected = new TenBallPlayer(testName);
         actual = new TenBallPlayer(testName);
     }

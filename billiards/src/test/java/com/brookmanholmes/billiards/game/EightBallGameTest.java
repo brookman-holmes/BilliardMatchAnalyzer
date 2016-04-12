@@ -21,18 +21,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/6/2015.
  */
 public class EightBallGameTest extends AbstractEightBallGameTest {
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         game = new EightBallGame(PlayerTurn.PLAYER, BreakType.WINNER);
     }
 
-    @Override
-    List<Integer> populateList() {
+    @Override List<Integer> populateList() {
         return Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     }
 
-    @Override
-    Game createNewGame() {
+    @Override Game createNewGame() {
         return new EightBallGame(PlayerTurn.PLAYER, BreakType.WINNER);
     }
 
@@ -123,8 +120,7 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
         assertThat(game.turn, is(PlayerTurn.OPPONENT));
     }
 
-    @Override
-    GameType thisGamesGameType() {
+    @Override GameType thisGamesGameType() {
         return GameType.BCA_EIGHT_BALL;
     }
 }

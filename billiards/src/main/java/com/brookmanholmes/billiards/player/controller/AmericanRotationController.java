@@ -10,18 +10,15 @@ class AmericanRotationController extends PlayerController<AmericanRotationPlayer
         super(playerName, opponentName);
     }
 
-    @Override
-    int getMaximumBallsMakeable() {
+    @Override int getMaximumBallsMakeable() {
         return 15;
     }
 
-    @Override
-    public AmericanRotationPlayer newPlayer() {
+    @Override public AmericanRotationPlayer newPlayer() {
         return new AmericanRotationPlayer(playerName);
     }
 
-    @Override
-    public AmericanRotationPlayer newOpponent() {
+    @Override public AmericanRotationPlayer newOpponent() {
         return new AmericanRotationPlayer(opponentName);
     }
 }

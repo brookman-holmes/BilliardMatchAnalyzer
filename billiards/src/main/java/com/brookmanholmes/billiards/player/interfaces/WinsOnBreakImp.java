@@ -9,28 +9,23 @@ public class WinsOnBreakImp extends EarlyWinsImp implements WinsOnBreak {
     public WinsOnBreakImp() {
     }
 
-    @Override
-    public void addWinOnBreak() {
+    @Override public void addWinOnBreak() {
         winsOnBreak++;
     }
 
-    @Override
-    public int getWinsOnBreak() {
+    @Override public int getWinsOnBreak() {
         return winsOnBreak;
     }
 
-    @Override
-    public void addWinsOnBreak(int wins) {
+    @Override public void addWinsOnBreak(int wins) {
         winsOnBreak += wins;
     }
 
-    @Override
-    public void addEarlyWins(int wins) {
+    @Override public void addEarlyWins(int wins) {
         earlyWins += wins;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
@@ -40,15 +35,13 @@ public class WinsOnBreakImp extends EarlyWinsImp implements WinsOnBreak {
         return winsOnBreak == that.winsOnBreak;
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + winsOnBreak;
         return result;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "WinsOnBreakImp{" +
                 "winsOnBreak=" + winsOnBreak +
                 "\nearlyWins=" + earlyWins +

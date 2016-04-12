@@ -9,8 +9,7 @@ import org.junit.Before;
  */
 public class ApaEightBallPlayerWinsTest extends BreakWinsTest {
     @Before
-    @Override
-    public void initialize() {
+    @Override public void initialize() {
         winsOnBreak = new ApaEightBallPlayer("", 0);
     }
 }

@@ -5,20 +5,17 @@ package com.brookmanholmes.billiards.game.util;
  */
 public enum PlayerColor {
     SOLIDS() {
-        @Override
-        public PlayerColor opposite() {
+        @Override public PlayerColor opposite() {
             return STRIPES;
         }
     },
     STRIPES() {
-        @Override
-        public PlayerColor opposite() {
+        @Override public PlayerColor opposite() {
             return SOLIDS;
         }
     },
     OPEN() {
-        @Override
-        public PlayerColor opposite() {
+        @Override public PlayerColor opposite() {
             return OPEN;
         }
     };

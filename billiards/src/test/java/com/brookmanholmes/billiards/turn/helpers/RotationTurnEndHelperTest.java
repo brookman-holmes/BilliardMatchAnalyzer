@@ -16,8 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/7/2015.
  */
 public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         helper = TurnEndHelper.newTurnEndHelper(GameType.BCA_NINE_BALL);
         tableStatus = TableStatus.newTable(GameType.BCA_NINE_BALL);
         gameType = GameType.BCA_NINE_BALL;
@@ -26,8 +25,7 @@ public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
         gameBuilder = new GameStatus.Builder(gameType);
     }
 
-    @Override
-    void setupLossStuff() {
+    @Override void setupLossStuff() {
         gameBuilder.currentPlayerConsecutiveFouls(2);
     }
 

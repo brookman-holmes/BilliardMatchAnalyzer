@@ -270,8 +270,7 @@ public abstract class AbstractPlayer {
         } else return ZERO_PERCENT;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -301,8 +300,7 @@ public abstract class AbstractPlayer {
 
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + safetyAttempts;
         result = 31 * result + safetySuccesses;
@@ -327,8 +325,7 @@ public abstract class AbstractPlayer {
         return result;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "AbstractPlayer{" +
                 "name='" + name + '\'' +
                 "\n safetyAttempts=" + safetyAttempts +

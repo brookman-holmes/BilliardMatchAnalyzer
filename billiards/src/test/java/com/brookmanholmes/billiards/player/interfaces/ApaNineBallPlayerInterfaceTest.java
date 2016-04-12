@@ -11,8 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 1/22/2016.
  */
 public class ApaNineBallPlayerInterfaceTest extends ApaInterfaceTest {
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         actual = new ApaNineBallPlayer("", rank);
     }
 
@@ -30,23 +29,19 @@ public class ApaNineBallPlayerInterfaceTest extends ApaInterfaceTest {
         assertThat(actual.getMatchPoints(maxOppScore, 4), is(expectedMatchPoints));
     }
 
-    @Override
-    public void getMatchPointsReturns0() {
+    @Override public void getMatchPointsReturns0() {
         playerHasNotYetWonHelper(0, 10, 0);
     }
 
-    @Override
-    public void getMatchPointsReturns1() {
+    @Override public void getMatchPointsReturns1() {
         playerHasNotYetWonHelper(11, 15, 1);
     }
 
-    @Override
-    public void getMatchPointsReturns2() {
+    @Override public void getMatchPointsReturns2() {
         playerHasNotYetWonHelper(16, 21, 2);
     }
 
-    @Override
-    public void getMatchPointsReturns3() {
+    @Override public void getMatchPointsReturns3() {
         playerHasNotYetWonHelper(22, 26, 3);
     }
 

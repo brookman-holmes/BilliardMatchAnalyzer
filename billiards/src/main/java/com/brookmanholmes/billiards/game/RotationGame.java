@@ -15,29 +15,24 @@ abstract class RotationGame extends Game {
         allowPush = true;
     }
 
-    @Override
-    void startNewGame(Turn turn) {
+    @Override void startNewGame(Turn turn) {
         super.startNewGame(turn);
         allowPush = true;
     }
 
-    @Override
-    boolean setAllowPlayerToBreakAgain(Turn turn) {
+    @Override boolean setAllowPlayerToBreakAgain(Turn turn) {
         return false;
     }
 
-    @Override
-    PlayerColor setPlayerColor(Turn turn) {
+    @Override PlayerColor setPlayerColor(Turn turn) {
         return PlayerColor.OPEN;
     }
 
-    @Override
-    boolean setAllowTurnSkip(Turn turn) {
+    @Override boolean setAllowTurnSkip(Turn turn) {
         return turn.getTurnEnd() == TurnEnd.PUSH_SHOT;
     }
 
-    @Override
-    boolean setAllowPush(Turn turn) {
+    @Override boolean setAllowPush(Turn turn) {
         return (turn.getBreakBallsMade() == 0 && !turn.isScratch() && turn.getTurnEnd() == TurnEnd.BREAK_MISS);
     }
 }

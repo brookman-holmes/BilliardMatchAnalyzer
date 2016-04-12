@@ -188,8 +188,7 @@ final public class TableStatus implements TableStatusInterface {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -200,15 +199,13 @@ final public class TableStatus implements TableStatusInterface {
 
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = table.hashCode();
         result = 31 * result + GAME_BALL;
         return result;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "TableStatus{" +
                 "table=" + table.toString() +
                 ", GAME_BALL=" + GAME_BALL +

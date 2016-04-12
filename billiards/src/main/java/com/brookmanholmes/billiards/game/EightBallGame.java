@@ -29,28 +29,23 @@ class EightBallGame extends Game {
             throw new InvalidGameTypeException(gameType.name());
     }
 
-    @Override
-    boolean setAllowPush(Turn turn) {
+    @Override boolean setAllowPush(Turn turn) {
         return false;
     }
 
-    @Override
-    boolean setAllowTurnSkip(Turn turn) {
+    @Override boolean setAllowTurnSkip(Turn turn) {
         return false;
     }
 
-    @Override
-    boolean setAllowPlayerToBreakAgain(Turn turn) {
+    @Override boolean setAllowPlayerToBreakAgain(Turn turn) {
         return turn.getTurnEnd() == TurnEnd.BREAK_MISS && turn.isScratch() && turn.getBallsToRemoveFromTable().contains(GAME_BALL);
     }
 
-    @Override
-    int getCurrentPlayersConsecutiveFouls() {
+    @Override int getCurrentPlayersConsecutiveFouls() {
         return 0;
     }
 
-    @Override
-    PlayerColor setPlayerColor(Turn turn) {
+    @Override PlayerColor setPlayerColor(Turn turn) {
         if (playerColor == OPEN) {
             if (TableUtils.getSolidsMade(turn.getBallStatuses()) > 0) {
                 return convertCurrentPlayerColorToPlayerColor(SOLIDS);

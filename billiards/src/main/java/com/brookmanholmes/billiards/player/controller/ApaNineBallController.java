@@ -18,16 +18,14 @@ class ApaNineBallController extends PlayerController<ApaNineBallPlayer> {
         this.opponentRank = opponentRank;
     }
 
-    @Override
-    public Pair<ApaNineBallPlayer> updatePlayerStats(GameStatus gameStatus, Turn turn) {
+    @Override public Pair<ApaNineBallPlayer> updatePlayerStats(GameStatus gameStatus, Turn turn) {
         Pair<ApaNineBallPlayer> pair = super.updatePlayerStats(gameStatus, turn);
 
         // TODO: 3/18/2016 add in turn information here
         return pair;
     }
 
-    @Override
-    void addBreakingStats(ApaNineBallPlayer player) {
+    @Override void addBreakingStats(ApaNineBallPlayer player) {
         super.addBreakingStats(player);
 
         if (turn.getGameBallMadeOnBreak()) {
@@ -35,21 +33,18 @@ class ApaNineBallController extends PlayerController<ApaNineBallPlayer> {
         }
     }
 
-    @Override
-    void addRunOutStats(ApaNineBallPlayer player) {
+    @Override void addRunOutStats(ApaNineBallPlayer player) {
         super.addRunOutStats(player);
 
         if (turn.getBallsRemaining() > 0)
             ControllerHelperMethods.addEarlyWin(player);
     }
 
-    @Override
-    public ApaNineBallPlayer newPlayer() {
+    @Override public ApaNineBallPlayer newPlayer() {
         return new ApaNineBallPlayer(playerName, playerRank);
     }
 
-    @Override
-    public ApaNineBallPlayer newOpponent() {
+    @Override public ApaNineBallPlayer newOpponent() {
         return new ApaNineBallPlayer(opponentName, opponentRank);
     }
 }

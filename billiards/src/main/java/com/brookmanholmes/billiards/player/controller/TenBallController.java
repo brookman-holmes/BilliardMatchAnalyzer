@@ -10,21 +10,18 @@ class TenBallController extends PlayerController<TenBallPlayer> {
         super(playerName, opponentName);
     }
 
-    @Override
-    void addRunOutStats(TenBallPlayer player) {
+    @Override void addRunOutStats(TenBallPlayer player) {
         super.addRunOutStats(player);
 
         if (turn.getBallsRemaining() > 0)
             ControllerHelperMethods.addEarlyWin(player);
     }
 
-    @Override
-    public TenBallPlayer newPlayer() {
+    @Override public TenBallPlayer newPlayer() {
         return new TenBallPlayer(playerName);
     }
 
-    @Override
-    public TenBallPlayer newOpponent() {
+    @Override public TenBallPlayer newOpponent() {
         return new TenBallPlayer(opponentName);
     }
 }

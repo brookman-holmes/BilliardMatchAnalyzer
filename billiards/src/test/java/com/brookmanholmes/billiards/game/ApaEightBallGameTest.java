@@ -50,23 +50,19 @@ public class ApaEightBallGameTest extends AbstractEightBallGameTest {
         assertThat(game.setPlayerColor(turn), is(PlayerColor.STRIPES));
     }
 
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         game = new ApaEightBallGame();
     }
 
-    @Override
-    List<Integer> populateList() {
+    @Override List<Integer> populateList() {
         return Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     }
 
-    @Override
-    Game createNewGame() {
+    @Override Game createNewGame() {
         return new ApaEightBallGame();
     }
 
-    @Override
-    GameType thisGamesGameType() {
+    @Override GameType thisGamesGameType() {
         return GameType.APA_EIGHT_BALL;
     }
 }

@@ -246,8 +246,7 @@ public abstract class Game {
         }
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "Game{" +
                 "GAME_BALL=" + GAME_BALL +
                 "\n MAX_BALLS=" + MAX_BALLS +

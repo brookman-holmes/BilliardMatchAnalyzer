@@ -39,73 +39,59 @@ public class GameTurn implements Turn {
         this.advStats = advStats;
     }
 
-    @Override
-    public int getShootingBallsMade() {
+    @Override public int getShootingBallsMade() {
         return tableStatus.getShootingBallsMade();
     }
 
-    @Override
-    public int getDeadBalls() {
+    @Override public int getDeadBalls() {
         return tableStatus.getDeadBalls();
     }
 
-    @Override
-    public int getDeadBallsOnBreak() {
+    @Override public int getDeadBallsOnBreak() {
         return tableStatus.getDeadBallsOnBreak();
     }
 
-    @Override
-    public int getBreakBallsMade() {
+    @Override public int getBreakBallsMade() {
         return tableStatus.getBreakBallsMade();
     }
 
-    @Override
-    public boolean isScratch() {
+    @Override public boolean isScratch() {
         return scratch;
     }
 
-    @Override
-    public List<Integer> getBallsToRemoveFromTable() {
+    @Override public List<Integer> getBallsToRemoveFromTable() {
         return tableStatus.getBallsThatAreOffTable();
     }
 
-    @Override
-    public TurnEnd getTurnEnd() {
+    @Override public TurnEnd getTurnEnd() {
         return turnEnd;
     }
 
-    @Override
-    public boolean getGameBallMadeOnBreak() {
+    @Override public boolean getGameBallMadeOnBreak() {
         return tableStatus.getGameBallMadeOnBreak();
     }
 
-    @Override
-    public boolean getGameBallMade() {
+    @Override public boolean getGameBallMade() {
         return tableStatus.getGameBallMade();
     }
 
-    @Override
-    public int getBallsRemaining() {
+    @Override public int getBallsRemaining() {
         return tableStatus.getBallsRemaining();
     }
 
-    @Override
-    public BallStatus getBallStatus(int ball) {
+    @Override public BallStatus getBallStatus(int ball) {
         return tableStatus.getBallStatus(ball);
     }
 
-    @Override
-    public boolean getGameBallMadeIllegally() {
+    @Override public boolean getGameBallMadeIllegally() {
         return tableStatus.getGameBallMadeIllegally();
     }
 
-    @Override
-    public boolean isGameLost() {
+    @Override public boolean isGameLost() {
         return gameLost;
     }
 
-    @Override
-    public List<BallStatus> getBallStatuses() {
+    @Override public List<BallStatus> getBallStatuses() {
         List<BallStatus> ballStatuses = new ArrayList<>();
 
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
@@ -115,18 +101,15 @@ public class GameTurn implements Turn {
         return ballStatuses;
     }
 
-    @Override
-    public int size() {
+    @Override public int size() {
         return tableStatus.size();
     }
 
-    @Override
-    public GameType getGameType() {
+    @Override public GameType getGameType() {
         return tableStatus.getGameType();
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -140,8 +123,7 @@ public class GameTurn implements Turn {
 
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = tableStatus.hashCode();
         result = 31 * result + turnEnd.hashCode();
         result = 31 * result + (scratch ? 1 : 0);
@@ -150,8 +132,7 @@ public class GameTurn implements Turn {
         return result;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "GameTurn{" +
                 "tableStatus=" + tableStatus +
                 "\n turnEnd=" + turnEnd +

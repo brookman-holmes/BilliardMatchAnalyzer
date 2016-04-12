@@ -20,8 +20,7 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
         this.rank = rank;
     }
 
-    @Override
-    public void addPlayerStats(AbstractPlayer player) {
+    @Override public void addPlayerStats(AbstractPlayer player) {
         super.addPlayerStats(player);
 
         if (player instanceof Apa) {
@@ -30,48 +29,39 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
         }
     }
 
-    @Override
-    public int getTurns() {
+    @Override public int getTurns() {
         return turns;
     }
 
-    @Override
-    public int getPoints() {
+    @Override public int getPoints() {
         return gameWins;
     }
 
-    @Override
-    public void addEarlyWin() {
+    @Override public void addEarlyWin() {
         winsOnBreak.addEarlyWin();
     }
 
-    @Override
-    public int getEarlyWins() {
+    @Override public int getEarlyWins() {
         return winsOnBreak.getEarlyWins();
     }
 
-    @Override
-    public void addWinOnBreak() {
+    @Override public void addWinOnBreak() {
         winsOnBreak.addWinOnBreak();
     }
 
-    @Override
-    public int getWinsOnBreak() {
+    @Override public int getWinsOnBreak() {
         return winsOnBreak.getWinsOnBreak();
     }
 
-    @Override
-    public void addWinsOnBreak(int wins) {
+    @Override public void addWinsOnBreak(int wins) {
         winsOnBreak.addWinsOnBreak(wins);
     }
 
-    @Override
-    public void addEarlyWins(int wins) {
+    @Override public void addEarlyWins(int wins) {
         winsOnBreak.addEarlyWins(wins);
     }
 
-    @Override
-    public int getMatchPoints(int opponentScore, int opponentRank) {
+    @Override public int getMatchPoints(int opponentScore, int opponentRank) {
         RaceTo raceTo = ApaRaceToHelper.apa8BallRaceTo(rank, opponentRank);
 
         if (getWins() == raceTo.getPlayerRaceTo()) {
@@ -83,13 +73,11 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
         } else return 0;
     }
 
-    @Override
-    public int getRank() {
+    @Override public int getRank() {
         return rank;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
@@ -101,16 +89,14 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
 
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + winsOnBreak.hashCode();
         result = 31 * result + rank;
         return result;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "ApaEightBallPlayer{" +
                 "winsOnBreak=" + winsOnBreak +
                 ", rank=" + rank +

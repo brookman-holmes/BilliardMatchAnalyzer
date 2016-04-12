@@ -20,8 +20,7 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
         winsOnBreak = new WinsOnBreakImp();
     }
 
-    @Override
-    public void addPlayerStats(AbstractPlayer player) {
+    @Override public void addPlayerStats(AbstractPlayer player) {
         super.addPlayerStats(player);
 
         if (player instanceof Apa) {
@@ -33,16 +32,14 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
             points += ((ApaNineBallPlayer) player).points;
     }
 
-    @Override
-    public void addBreakShot(int ballsMade, boolean continuation, boolean scratch) {
+    @Override public void addBreakShot(int ballsMade, boolean continuation, boolean scratch) {
         super.addBreakShot(ballsMade, continuation, scratch);
 
         if (!scratch)
             points += ballsMade;
     }
 
-    @Override
-    public void addShootingBallsMade(int ballsMade, boolean scratch) {
+    @Override public void addShootingBallsMade(int ballsMade, boolean scratch) {
         super.addShootingBallsMade(ballsMade, scratch);
         points += ballsMade;
     }
@@ -52,67 +49,55 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
     }
 
 
-    @Override
-    public int getTurns() {
+    @Override public int getTurns() {
         return turns;
     }
 
-    @Override
-    public int getPoints() {
+    @Override public int getPoints() {
         return points;
     }
 
-    @Override
-    public void addEarlyWin() {
+    @Override public void addEarlyWin() {
         winsOnBreak.addEarlyWin();
     }
 
-    @Override
-    public int getEarlyWins() {
+    @Override public int getEarlyWins() {
         return winsOnBreak.getEarlyWins();
     }
 
-    @Override
-    public void addWinOnBreak() {
+    @Override public void addWinOnBreak() {
         winsOnBreak.addWinOnBreak();
     }
 
-    @Override
-    public int getWinsOnBreak() {
+    @Override public int getWinsOnBreak() {
         return winsOnBreak.getWinsOnBreak();
     }
 
-    @Override
-    public void addWinsOnBreak(int wins) {
+    @Override public void addWinsOnBreak(int wins) {
         winsOnBreak.addWinsOnBreak(wins);
     }
 
-    @Override
-    public void addEarlyWins(int wins) {
+    @Override public void addEarlyWins(int wins) {
         winsOnBreak.addEarlyWins(wins);
     }
 
-    @Override
-    public int getMatchPoints(int opponentScore, int opponentRank) {
+    @Override public int getMatchPoints(int opponentScore, int opponentRank) {
         if (points == ApaRaceToHelper.apa9BallRaceTo(rank))
             return 20 - ApaRaceToHelper.getMinimumMatchPointsEarned(opponentRank, opponentScore);
         else return ApaRaceToHelper.getMinimumMatchPointsEarned(rank, points);
     }
 
-    @Override
-    public void addGameWon() {
+    @Override public void addGameWon() {
         super.addGameWon();
         // the player had to have made the 9 ball to get to this point... I think...
         points++;
     }
 
-    @Override
-    public int getRank() {
+    @Override public int getRank() {
         return rank;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
@@ -125,8 +110,7 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
 
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + winsOnBreak.hashCode();
         result = 31 * result + rank;
@@ -134,8 +118,7 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
         return result;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "ApaNineBallPlayer{" +
                 "winsOnBreak=" + winsOnBreak +
                 ", rank=" + rank +

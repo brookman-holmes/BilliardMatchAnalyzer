@@ -36,24 +36,20 @@ public class TenBallGameTest extends AbstractRotationGameTest {
         assertThat(game.allowTurnSkip, is(false));
     }
 
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         game = new TenBallGame(PlayerTurn.PLAYER, BreakType.WINNER);
     }
 
-    @Override
-    List<Integer> populateList() {
+    @Override List<Integer> populateList() {
         return Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     }
 
-    @Override
-    Game createNewGame() {
+    @Override Game createNewGame() {
         return new TenBallGame(PlayerTurn.PLAYER, BreakType.WINNER);
     }
 
 
-    @Override
-    GameType thisGamesGameType() {
+    @Override GameType thisGamesGameType() {
         return GameType.BCA_TEN_BALL;
     }
 }

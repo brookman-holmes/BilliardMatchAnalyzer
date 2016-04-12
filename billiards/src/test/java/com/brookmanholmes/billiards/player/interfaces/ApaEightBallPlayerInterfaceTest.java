@@ -17,13 +17,11 @@ public class ApaEightBallPlayerInterfaceTest extends ApaInterfaceTest {
         actual = new ApaEightBallPlayer("", rank);
     }
 
-    @Override
-    public void getMatchPointsReturns0() {
+    @Override public void getMatchPointsReturns0() {
         assertThat(actual.getMatchPoints(0, 4), is(0));
     }
 
-    @Override
-    public void getMatchPointsReturns1() {
+    @Override public void getMatchPointsReturns1() {
         for (int i = 1; i < raceTo.getPlayerRaceTo(); i++) {
             getPlayer().addGameWon();
         }
@@ -33,8 +31,7 @@ public class ApaEightBallPlayerInterfaceTest extends ApaInterfaceTest {
         assertThat(actual.getMatchPoints(0, 4), is(1));
     }
 
-    @Override
-    public void getMatchPointsReturns2() {
+    @Override public void getMatchPointsReturns2() {
         for (int i = 0; i < raceTo.getPlayerRaceTo(); i++) {
             getPlayer().addGameWon();
         }
@@ -44,8 +41,7 @@ public class ApaEightBallPlayerInterfaceTest extends ApaInterfaceTest {
         assertThat(actual.getMatchPoints(1, 4), is(2));
     }
 
-    @Override
-    public void getMatchPointsReturns3() {
+    @Override public void getMatchPointsReturns3() {
         for (int i = 0; i < raceTo.getPlayerRaceTo(); i++) {
             getPlayer().addGameWon();
         }

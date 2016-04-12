@@ -25,8 +25,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ShawVsRobertsTest extends MatchTester {
     PlayerController<TenBallPlayer> controller;
     List<Pair<TenBallPlayer>> expectedPairs;
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         expectedGameStatusList = GameStatusList.getGameStatuses();
         expectedTurnEndOptionsList = TurnEndOptionsList.getOptionsList();
         expectedPairs = PlayerList.getPlayerPairs();

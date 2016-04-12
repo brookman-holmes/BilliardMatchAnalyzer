@@ -16,8 +16,7 @@ public enum BreakType {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return name;
     }
 }

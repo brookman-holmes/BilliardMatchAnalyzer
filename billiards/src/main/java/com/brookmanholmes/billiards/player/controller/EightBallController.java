@@ -10,18 +10,15 @@ class EightBallController extends PlayerController<EightBallPlayer> {
         super(playerName, opponentName);
     }
 
-    @Override
-    int getMaximumBallsMakeable() {
+    @Override int getMaximumBallsMakeable() {
         return 8;
     }
 
-    @Override
-    public EightBallPlayer newPlayer() {
+    @Override public EightBallPlayer newPlayer() {
         return new EightBallPlayer(playerName);
     }
 
-    @Override
-    public EightBallPlayer newOpponent() {
+    @Override public EightBallPlayer newOpponent() {
         return new EightBallPlayer(opponentName);
     }
 }

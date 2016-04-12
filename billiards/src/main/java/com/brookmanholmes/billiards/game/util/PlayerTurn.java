@@ -5,14 +5,12 @@ package com.brookmanholmes.billiards.game.util;
  */
 public enum PlayerTurn {
     PLAYER() {
-        @Override
-        public PlayerTurn nextPlayer() {
+        @Override public PlayerTurn nextPlayer() {
             return OPPONENT;
         }
     },
     OPPONENT() {
-        @Override
-        public PlayerTurn nextPlayer() {
+        @Override public PlayerTurn nextPlayer() {
             return PLAYER;
         }
     };

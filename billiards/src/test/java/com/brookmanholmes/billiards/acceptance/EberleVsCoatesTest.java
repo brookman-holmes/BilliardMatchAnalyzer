@@ -25,8 +25,7 @@ public class EberleVsCoatesTest extends MatchTester {
     PlayerController<NineBallPlayer> controller;
     List<Pair<NineBallPlayer>> expectedPairs;
 
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         expectedGameStatusList = GameStatusList.getGameStatuses();
         expectedTurnEndOptionsList = TurnEndOptionsList.getOptionsList();
         expectedPairs = PlayerList.getPlayerPairs();

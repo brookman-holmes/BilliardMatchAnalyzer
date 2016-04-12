@@ -9,8 +9,7 @@ import org.junit.Before;
  */
 public class NineBallPlayerBreakWinsTest extends BreakWinsTest {
     @Before
-    @Override
-    public void initialize() {
+    @Override public void initialize() {
         winsOnBreak = new NineBallPlayer("");
     }
 }

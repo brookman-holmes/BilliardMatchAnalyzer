@@ -14,13 +14,11 @@ class ApaEightBallGame extends EightBallGame {
         super(GameType.APA_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
     }
 
-    @Override
-    public GameType getGameType() {
+    @Override public GameType getGameType() {
         return GameType.APA_EIGHT_BALL;
     }
 
-    @Override
-    PlayerColor setPlayerColor(Turn turn) {
+    @Override PlayerColor setPlayerColor(Turn turn) {
         if (newGame && turn.getBreakBallsMade() > 0) {
             if (TableUtils.getSolidsMadeOnBreak(turn.getBallStatuses()) == TableUtils.getStripesMadeOnBreak(turn.getBallStatuses())) {
                 return super.setPlayerColor(turn);
@@ -33,8 +31,7 @@ class ApaEightBallGame extends EightBallGame {
             return super.setPlayerColor(turn);
     }
 
-    @Override
-    boolean winOnBreak() {
+    @Override boolean winOnBreak() {
         return true;
     }
 }

@@ -70,15 +70,13 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         return ControllerHelperMethods.getPlayerFromList(player2, playerController.newOpponent());
     }
 
-    @Override
-    public String getCurrentPlayersName() {
+    @Override public String getCurrentPlayersName() {
         if (game.getTurn() == PlayerTurn.PLAYER)
             return playerController.getPlayerName();
         else return playerController.getOpponentName();
     }
 
-    @Override
-    public String getNonCurrentPlayersName() {
+    @Override public String getNonCurrentPlayersName() {
         if (game.getTurn() == PlayerTurn.OPPONENT)
             return playerController.getPlayerName();
         else return playerController.getOpponentName();
@@ -123,8 +121,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         return turns.size() > 0;
     }
 
-    @Override
-    public Turn redoTurn() {
+    @Override public Turn redoTurn() {
         if (isRedoTurn()) {
             addTurn(undoneTurns.pop());
 
@@ -132,8 +129,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         } else return null;
     }
 
-    @Override
-    public void undoTurn() {
+    @Override public void undoTurn() {
         if (isUndoTurn()) {
             player1.pop();
             player2.pop();
@@ -148,8 +144,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         return detail;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "Match{" +
                 "game=" + game +
                 '}';

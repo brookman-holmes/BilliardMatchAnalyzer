@@ -14,8 +14,7 @@ public enum BallStatus {
     GAME_BALL_MADE_ON_BREAK_THEN_MADE,
     GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         switch (this) {
             case ON_TABLE:
                 return "On Table";

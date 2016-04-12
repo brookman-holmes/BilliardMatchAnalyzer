@@ -75,8 +75,7 @@ public final class GameStatus {
         consecutivePlayerFouls = builder.consecutivePlayerFouls;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "GameStatus{" +
                 "GAME_BALL=" + GAME_BALL +
                 "\n MAX_BALLS=" + MAX_BALLS +
@@ -99,8 +98,7 @@ public final class GameStatus {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -129,8 +127,7 @@ public final class GameStatus {
 
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = GAME_BALL;
         result = 31 * result + MAX_BALLS;
         result = 31 * result + (playerAllowedToBreakAgain ? 1 : 0);

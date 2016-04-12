@@ -17,18 +17,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/6/2015.
  */
 public class ApaNineBallGameTest extends AbstractGameTest {
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         game = new ApaNineBallGame();
     }
 
-    @Override
-    List<Integer> populateList() {
+    @Override List<Integer> populateList() {
         return Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
 
-    @Override
-    Game createNewGame() {
+    @Override Game createNewGame() {
         return new ApaNineBallGame();
     }
 
@@ -73,8 +70,7 @@ public class ApaNineBallGameTest extends AbstractGameTest {
         assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(2));
     }
 
-    @Override
-    GameType thisGamesGameType() {
+    @Override GameType thisGamesGameType() {
         return GameType.APA_NINE_BALL;
     }
 

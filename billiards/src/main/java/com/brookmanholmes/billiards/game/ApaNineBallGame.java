@@ -20,23 +20,19 @@ class ApaNineBallGame extends NineBallGame {
                 + (turn.getTurnEnd() == TurnEnd.GAME_WON ? 1 : 0);
     }
 
-    @Override
-    boolean setAllowPush(Turn turn) {
+    @Override boolean setAllowPush(Turn turn) {
         return false;
     }
 
-    @Override
-    boolean setAllowTurnSkip(Turn turn) {
+    @Override boolean setAllowTurnSkip(Turn turn) {
         return false;
     }
 
-    @Override
-    int getCurrentPlayersConsecutiveFouls() {
+    @Override int getCurrentPlayersConsecutiveFouls() {
         return 0;
     }
 
-    @Override
-    void startNewGame(Turn turn) {
+    @Override void startNewGame(Turn turn) {
         super.startNewGame(turn);
         allowPush = false;
     }

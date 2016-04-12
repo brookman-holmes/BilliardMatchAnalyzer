@@ -19,8 +19,7 @@ public class TurnEndOptions {
         lostGame = builder.lostGame;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -35,8 +34,7 @@ public class TurnEndOptions {
 
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = (foul ? 1 : 0);
         result = 31 * result + possibleEndings.hashCode();
         result = 31 * result + defaultCheck.hashCode();
@@ -44,8 +42,7 @@ public class TurnEndOptions {
         return result;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "TurnEndOptions{" +
                 "foul=" + foul +
                 "\n possibleEndings=" + possibleEndings +

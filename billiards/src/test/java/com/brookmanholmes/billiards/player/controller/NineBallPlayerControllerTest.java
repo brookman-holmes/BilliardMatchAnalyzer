@@ -11,8 +11,7 @@ import com.brookmanholmes.billiards.player.NineBallPlayer;
  * Created by Brookman Holmes on 1/30/2016.
  */
 public class NineBallPlayerControllerTest extends AbstractNineBallPlayerControllerTest<NineBallPlayer> {
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
         playerController = new NineBallController("", "");
         actualPlayer = new NineBallPlayer("");
@@ -20,8 +19,7 @@ public class NineBallPlayerControllerTest extends AbstractNineBallPlayerControll
         turnBuilder = new TurnBuilder(game.getGameType());
     }
 
-    @Override
-    NineBallPlayer getBlankPlayer() {
+    @Override NineBallPlayer getBlankPlayer() {
         return new NineBallPlayer("");
     }
 }

@@ -8,8 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 1/19/2016.
  */
 public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer> {
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         expected = new ApaNineBallPlayer(testName, 5);
         actual = new ApaNineBallPlayer(testName, 5);
     }
@@ -51,15 +50,13 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
         assertThat(actual, is(expected));
     }
 
-    @Override
-    @Test
+    @Override @Test
     public void addBreakShotWithBallsMadeButNoContinuation() {
         expected.points += 2;
         super.addBreakShotWithBallsMadeButNoContinuation();
     }
 
-    @Override
-    @Test
+    @Override @Test
     public void addGameWonAddsOneToTotalAndWins() {
         expected.points += 1;
         super.addGameWonAddsOneToTotalAndWins();
@@ -77,8 +74,7 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
         super.addShootingBallsMadeAdds8BallsMade();
     }
 
-    @Override
-    @Test
+    @Override @Test
     public void addShootingBallsMadeAdds8BallsMadeWithScratch() {
         expected.points += 8;
         super.addShootingBallsMadeAdds8BallsMadeWithScratch();

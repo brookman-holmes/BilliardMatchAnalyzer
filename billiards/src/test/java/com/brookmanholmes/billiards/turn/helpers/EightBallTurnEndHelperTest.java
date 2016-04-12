@@ -20,8 +20,7 @@ public class EightBallTurnEndHelperTest extends AbstractTurnEndHelperTest {
         return new TurnBuilder(GameType.BCA_EIGHT_BALL);
     }
 
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         helper = TurnEndHelper.newTurnEndHelper(GameType.BCA_EIGHT_BALL);
         tableStatus = com.brookmanholmes.billiards.turn.TableStatus.newTable(GameType.BCA_EIGHT_BALL);
         gameType = GameType.BCA_EIGHT_BALL;
@@ -29,8 +28,7 @@ public class EightBallTurnEndHelperTest extends AbstractTurnEndHelperTest {
         gameBuilder = new GameStatus.Builder(gameType);
     }
 
-    @Override
-    void setupLossStuff() {
+    @Override void setupLossStuff() {
         tableStatus.setBallTo(BallStatus.DEAD, GAME_BALL);
     }
 

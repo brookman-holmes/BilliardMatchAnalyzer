@@ -14,8 +14,7 @@ public class ApaNineBallPlayerControllerTest extends AbstractNineBallPlayerContr
     int playerRank = 4;
     int opponentRank = 4;
 
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
         playerController = new ApaNineBallController("", "", playerRank, opponentRank);
         actualPlayer = new ApaNineBallPlayer("", playerRank);
@@ -23,8 +22,7 @@ public class ApaNineBallPlayerControllerTest extends AbstractNineBallPlayerContr
         turnBuilder = new TurnBuilder(game.getGameType());
     }
 
-    @Override
-    ApaNineBallPlayer getBlankPlayer() {
+    @Override ApaNineBallPlayer getBlankPlayer() {
         return new ApaNineBallPlayer("", playerRank);
     }
 }

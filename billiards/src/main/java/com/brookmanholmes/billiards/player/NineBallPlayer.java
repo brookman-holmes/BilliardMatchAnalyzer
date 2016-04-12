@@ -14,8 +14,7 @@ public class NineBallPlayer extends AbstractPlayer implements WinsOnBreak {
         winsOnBreak = new WinsOnBreakImp();
     }
 
-    @Override
-    public void addPlayerStats(AbstractPlayer player) {
+    @Override public void addPlayerStats(AbstractPlayer player) {
         super.addPlayerStats(player);
 
         if (player instanceof WinsOnBreak) {
@@ -25,38 +24,31 @@ public class NineBallPlayer extends AbstractPlayer implements WinsOnBreak {
 
     }
 
-    @Override
-    public void addEarlyWin() {
+    @Override public void addEarlyWin() {
         winsOnBreak.addEarlyWin();
     }
 
-    @Override
-    public int getEarlyWins() {
+    @Override public int getEarlyWins() {
         return winsOnBreak.getEarlyWins();
     }
 
-    @Override
-    public void addWinOnBreak() {
+    @Override public void addWinOnBreak() {
         winsOnBreak.addWinOnBreak();
     }
 
-    @Override
-    public int getWinsOnBreak() {
+    @Override public int getWinsOnBreak() {
         return winsOnBreak.getWinsOnBreak();
     }
 
-    @Override
-    public void addWinsOnBreak(int wins) {
+    @Override public void addWinsOnBreak(int wins) {
         winsOnBreak.addWinsOnBreak(wins);
     }
 
-    @Override
-    public void addEarlyWins(int wins) {
+    @Override public void addEarlyWins(int wins) {
         winsOnBreak.addEarlyWins(wins);
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
@@ -67,8 +59,7 @@ public class NineBallPlayer extends AbstractPlayer implements WinsOnBreak {
 
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + winsOnBreak.hashCode();
         return result;

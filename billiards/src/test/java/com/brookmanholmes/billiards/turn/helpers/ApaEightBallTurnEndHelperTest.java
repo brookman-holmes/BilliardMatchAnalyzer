@@ -8,8 +8,7 @@ import com.brookmanholmes.billiards.turn.TableStatus;
  * Created by Brookman Holmes on 11/7/2015.
  */
 public class ApaEightBallTurnEndHelperTest extends EightBallTurnEndHelperTest {
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         helper = TurnEndHelper.newTurnEndHelper(GameType.APA_EIGHT_BALL);
         tableStatus = TableStatus.newTable(GameType.APA_EIGHT_BALL);
         gameType = GameType.APA_EIGHT_BALL;

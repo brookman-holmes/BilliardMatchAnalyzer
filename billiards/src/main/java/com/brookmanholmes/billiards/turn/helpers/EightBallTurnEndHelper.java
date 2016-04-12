@@ -7,44 +7,36 @@ import com.brookmanholmes.billiards.turn.TableUtils;
  * Created by Brookman Holmes on 10/30/2015.
  */
 class EightBallTurnEndHelper extends TurnEndHelper {
-    @Override
-    boolean showWin() {
+    @Override boolean showWin() {
         return !currentPlayerBallsRemaining() && nextInning.getGameBallMade();
     }
 
-    @Override
-    boolean lostGame() {
+    @Override boolean lostGame() {
         return nextInning.getGameBallMadeIllegally()
                 || (currentPlayerBallsRemaining() && nextInning.getGameBallMade());
     }
 
-    @Override
-    boolean checkFoul() {
+    @Override boolean checkFoul() {
         return super.checkFoul() || lostGame();
     }
 
-    @Override
-    boolean showSafety() {
+    @Override boolean showSafety() {
         return super.showSafety() && !lostGame();
     }
 
-    @Override
-    boolean showSafetyMiss() {
+    @Override boolean showSafetyMiss() {
         return super.showSafetyMiss();
     }
 
-    @Override
-    boolean showMiss() {
+    @Override boolean showMiss() {
         return super.showMiss();
     }
 
-    @Override
-    boolean showPush() {
+    @Override boolean showPush() {
         return false;
     }
 
-    @Override
-    boolean showTurnSkip() {
+    @Override boolean showTurnSkip() {
         return false;
     }
 

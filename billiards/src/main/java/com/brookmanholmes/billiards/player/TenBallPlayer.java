@@ -14,8 +14,7 @@ public class TenBallPlayer extends AbstractPlayer implements EarlyWins {
         earlyWins = new EarlyWinsImp();
     }
 
-    @Override
-    public void addPlayerStats(AbstractPlayer player) {
+    @Override public void addPlayerStats(AbstractPlayer player) {
         super.addPlayerStats(player);
 
         if (player instanceof EarlyWins) {
@@ -23,23 +22,19 @@ public class TenBallPlayer extends AbstractPlayer implements EarlyWins {
         }
     }
 
-    @Override
-    public void addEarlyWin() {
+    @Override public void addEarlyWin() {
         earlyWins.addEarlyWin();
     }
 
-    @Override
-    public int getEarlyWins() {
+    @Override public int getEarlyWins() {
         return earlyWins.getEarlyWins();
     }
 
-    @Override
-    public void addEarlyWins(int wins) {
+    @Override public void addEarlyWins(int wins) {
         earlyWins.addEarlyWins(wins);
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
@@ -50,15 +45,13 @@ public class TenBallPlayer extends AbstractPlayer implements EarlyWins {
 
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + earlyWins.hashCode();
         return result;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "TenBallPlayer{" +
                 "earlyWins=" + earlyWins +
                 "\n " + super.toString() +

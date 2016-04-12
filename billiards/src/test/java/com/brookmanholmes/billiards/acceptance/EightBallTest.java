@@ -12,8 +12,7 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
  * Created by Brookman Holmes on 11/16/2015.
  */
 public class EightBallTest extends MatchTester {
-    @Override
-    public void setUp() {
+    @Override public void setUp() {
         expectedGameStatusList = GameStatusList.getGameStatuses();
         expectedTurnEndOptionsList = TurnEndOptionsList.getOptionsList();
         turns = TurnList.getTurns();

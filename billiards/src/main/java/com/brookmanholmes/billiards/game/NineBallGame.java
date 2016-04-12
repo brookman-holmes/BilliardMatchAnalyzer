@@ -22,8 +22,7 @@ class NineBallGame extends RotationGame {
             throw new InvalidGameTypeException(gameType.name());
     }
 
-    @Override
-    boolean winOnBreak() {
+    @Override boolean winOnBreak() {
         return true;
     }
 }
