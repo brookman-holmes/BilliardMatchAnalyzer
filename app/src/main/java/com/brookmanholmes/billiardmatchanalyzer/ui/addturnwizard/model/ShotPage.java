@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.ShotFragment;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -66,19 +67,27 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
         tableStatus.setBallTo(ballStatus, ball);
 
-        if (GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL)
-            if (PlayerColor.valueOf(data.getString(MatchDialogHelperUtils.CURRENT_PLAYER_COLOR_KEY)) == PlayerColor.OPEN)
-                if (TableUtils.getSolidsMade(tableStatus.getBallStatuses()) > TableUtils.getStripesMade(tableStatus.getBallStatuses()))
-                    playerColor = PlayerColor.SOLIDS;
-                else if (TableUtils.getSolidsMade(tableStatus.getBallStatuses()) < TableUtils.getStripesMade(tableStatus.getBallStatuses()))
-                    playerColor = PlayerColor.STRIPES;
-                else
-                    playerColor = PlayerColor.OPEN;
-
         notifyDataChanged();
         updateFragment();
 
         return ballStatus;
+    }
+
+    private PlayerColor setPlayerColorFromBallsMade() {
+        if (TableUtils.getSolidsMade(tableStatus.getBallStatuses()) > TableUtils.getStripesMade(tableStatus.getBallStatuses()))
+            return PlayerColor.SOLIDS;
+        else if (TableUtils.getSolidsMade(tableStatus.getBallStatuses()) < TableUtils.getStripesMade(tableStatus.getBallStatuses()))
+            return PlayerColor.STRIPES;
+        else
+            return PlayerColor.OPEN;
+    }
+
+    private PlayerColor setPlayerColorFromBreakBallsMade() {
+        if (TableUtils.getSolidsMadeOnBreak(tableStatus.getBallStatuses()) > TableUtils.getStripesMadeOnBreak(tableStatus.getBallStatuses()))
+            return PlayerColor.SOLIDS;
+        else if (TableUtils.getSolidsMadeOnBreak(tableStatus.getBallStatuses()) < TableUtils.getStripesMadeOnBreak(tableStatus.getBallStatuses()))
+            return PlayerColor.STRIPES;
+        else return PlayerColor.OPEN;
     }
 
     private BallStatus incrementBallStatus(BallStatus ballStatus) {
@@ -136,6 +145,20 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
     public void updateFragment() {
         if (fragment != null) {
+            if (GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL) {
+
+                if (PlayerColor.valueOf(data.getString(MatchDialogHelperUtils.CURRENT_PLAYER_COLOR_KEY)) == PlayerColor.OPEN)
+                    playerColor = setPlayerColorFromBallsMade();
+
+            } else if (GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)) == GameType.APA_EIGHT_BALL) {
+
+                if (data.getBoolean(MatchDialogHelperUtils.NEW_GAME_KEY) && setPlayerColorFromBreakBallsMade() != PlayerColor.OPEN)
+                    playerColor = setPlayerColorFromBreakBallsMade();
+                else
+                    playerColor = setPlayerColorFromBallsMade();
+
+            }
+
             String currentPlayerColor;
             String playerName = data.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY);
             if (playerColor == PlayerColor.OPEN) {

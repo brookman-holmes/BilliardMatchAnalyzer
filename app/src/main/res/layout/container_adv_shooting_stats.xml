@@ -11,7 +11,7 @@
         android:id="@+id/shootingErrorTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shooting errors"
+        android:text="@string/title_shooting_errors"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/primary_text" />
 

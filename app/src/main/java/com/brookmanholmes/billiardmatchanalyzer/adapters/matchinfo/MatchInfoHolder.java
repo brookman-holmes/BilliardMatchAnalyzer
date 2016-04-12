@@ -144,7 +144,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
 
         public MatchOverviewHolder(View view, Match.StatsDetail detail, View.OnClickListener listener) {
             super(view, detail, listener);
-            title.setText("Match Overview");
+            title.setText(view.getContext().getString(R.string.title_match_overview));
 
             tvWinPctPlayer = (TextView) view.findViewById(R.id.tvWinPercentPlayer);
             tvWinPctOpponent = (TextView) view.findViewById(R.id.tvWinPercentOpponent);
@@ -181,8 +181,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             highlightBetterPlayerStats(tvWinPctPlayer, tvWinPctOpponent, player.getWins(), opponent.getWins());
 
             // Games Won x/y
-            tvWinTotalPlayer.setText(player.getWins() + "/" + player.getGamesPlayed());
-            tvWinTotalOpponent.setText(opponent.getWins() + "/" + opponent.getGamesPlayed());
+            tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGamesPlayed()));
+            tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins() , opponent.getGamesPlayed()));
 
             tvTSPPlayer.setText(player.getTrueShootingPct());
             tvTSPOpponent.setText(opponent.getTrueShootingPct());
@@ -192,8 +192,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             // highlighting of the player who's doing better in this stat
             highlightBetterPlayerStats(tvTSPPlayer, tvTSPOpponent, Double.parseDouble(player.getTrueShootingPct()), Double.parseDouble(opponent.getTrueShootingPct()));
 
-            tvTotalShotsPlayer.setText(player.getShotsSucceededOfAllTypes() + "/" + player.getShotAttemptsOfAllTypes());
-            tvTotalShotsOpponent.setText(opponent.getShotsSucceededOfAllTypes() + "/" + opponent.getShotAttemptsOfAllTypes());
+            tvTotalShotsPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getShotsSucceededOfAllTypes() , player.getShotAttemptsOfAllTypes()));
+            tvTotalShotsOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getShotsSucceededOfAllTypes() , opponent.getShotAttemptsOfAllTypes()));
         }
     }
 
@@ -217,6 +217,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             tvAvgBallsTurnOpponent = (TextView) view.findViewById(R.id.tvAvgBallsTurnOpponent);
             tvScratchesPlayer = (TextView) view.findViewById(R.id.tvScratchesPlayer);
             tvScratchesOpponent = (TextView) view.findViewById(R.id.tvScratchesOpponent);
+            title.setText(view.getContext().getString(R.string.title_shooting));
 
             setVisibilities(view, detail);
         }
@@ -226,7 +227,6 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         }
 
         @Override public void bind(T player, T opponent) {
-            title.setText("Shooting");
             // Shooting Percentage
             tvShootingPctPlayer.setText(player.getShootingPct());
             tvShootingPctOpponent.setText(opponent.getShootingPct());
@@ -235,8 +235,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             highlightBetterPlayerStats(tvShootingPctPlayer, tvShootingPctOpponent, Double.parseDouble(player.getShootingPct()), Double.parseDouble(opponent.getShootingPct()));
 
             // Shots succeeded / shots attempted
-            tvBallTotalPlayer.setText(player.getShootingBallsMade() + "/" + (player.getShootingAttempts()));
-            tvBallTotalOpponent.setText(opponent.getShootingBallsMade() + "/" + (opponent.getShootingAttempts()));
+            tvBallTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getShootingBallsMade() , (player.getShootingAttempts())));
+            tvBallTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getShootingBallsMade() , (opponent.getShootingAttempts())));
 
             // Average balls / turn
             tvAvgBallsTurnPlayer.setText(player.getAvgBallsTurn());
@@ -280,7 +280,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             tvSafetyEscapesOpponent = (TextView) view.findViewById(R.id.tvSafetyEscapesOpponent);
             tvForcedErrorsOpponent = (TextView) view.findViewById(R.id.tvForcedErrorsOpponent);
             tvForcedErrorsPlayer = (TextView) view.findViewById(R.id.tvForcedErrorsPlayer);
-
+            title.setText(view.getContext().getString(R.string.title_safeties));
             setVisibilities(view, detail);
         }
 
@@ -300,7 +300,6 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         }
 
         @Override public void bind(T player, T opponent) {
-            title.setText("Safeties");
             // Safety Percentage
             tvSafetyPctPlayer.setText(player.getSafetyPct());
             tvSafetyPctOpponent.setText(opponent.getSafetyPct());
@@ -309,25 +308,25 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             highlightBetterPlayerStats(tvSafetyPctPlayer, tvSafetyPctOpponent, Double.parseDouble(player.getSafetyPct()), Double.parseDouble(opponent.getSafetyPct()));
 
             // Safeties made / safeties attempted
-            tvSafetiesAttemptedPlayer.setText(player.getSafetySuccesses() + "/" + player.getSafetyAttempts());
-            tvSafetiesAttemptedOpponent.setText(opponent.getSafetySuccesses() + "/" + opponent.getSafetyAttempts());
+            tvSafetiesAttemptedPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getSafetySuccesses() , player.getSafetyAttempts()));
+            tvSafetiesAttemptedOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getSafetySuccesses() , opponent.getSafetyAttempts()));
 
-            tvSafetyScratchesOpponent.setText(opponent.getSafetyScratches() + "");
-            tvSafetyScratchesPlayer.setText(player.getSafetyScratches() + "");
+            tvSafetyScratchesOpponent.setText(String.format("%d", opponent.getSafetyScratches()));
+            tvSafetyScratchesPlayer.setText(String.format("%d", player.getSafetyScratches()));
 
             highlightPlayerStat(tvSafetyScratchesPlayer, tvSafetyScratchesOpponent, player.getSafetyScratches(), opponent.getSafetyScratches());
 
-            tvSafetyReturnsPlayer.setText(player.getSafetyReturns() + "");
-            tvSafetyReturnsOpponent.setText(opponent.getSafetyReturns() + "");
+            tvSafetyReturnsPlayer.setText(String.format("%d", player.getSafetyReturns()));
+            tvSafetyReturnsOpponent.setText(String.format("%d", opponent.getSafetyReturns()));
 
             highlightBetterPlayerStats(tvSafetyReturnsPlayer, tvSafetyReturnsOpponent, player.getSafetyReturns(), opponent.getSafetyReturns());
 
-            tvSafetyEscapesPlayer.setText(player.getSafetyEscapes() + "");
-            tvSafetyEscapesOpponent.setText(opponent.getSafetyEscapes() + "");
+            tvSafetyEscapesPlayer.setText(String.format("%d", player.getSafetyEscapes()));
+            tvSafetyEscapesOpponent.setText(String.format("%d", opponent.getSafetyEscapes()));
             highlightBetterPlayerStats(tvSafetyEscapesPlayer, tvSafetyEscapesOpponent, player.getSafetyEscapes(), opponent.getSafetyEscapes());
 
-            tvForcedErrorsOpponent.setText(opponent.getSafetyForcedErrors() + "");
-            tvForcedErrorsPlayer.setText(player.getSafetyForcedErrors() + "");
+            tvForcedErrorsOpponent.setText(String.format("%d", opponent.getSafetyForcedErrors()));
+            tvForcedErrorsPlayer.setText(String.format("%d", player.getSafetyForcedErrors()));
             highlightPlayerStat(tvForcedErrorsPlayer, tvForcedErrorsOpponent, player.getSafetyForcedErrors(), opponent.getSafetyForcedErrors());
         }
     }
@@ -342,7 +341,6 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         final TextView tvEarlyWins;
         final TextView tvEarlyWinsPlayer;
         final TextView tvEarlyWinsOpponent;
-        TextView tvMaxBallRunsTitle;
 
         public RunOutsHolder(View view, Match.StatsDetail detail, View.OnClickListener listener) {
             super(view, detail, listener);
@@ -360,6 +358,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             tvEarlyWinsPlayer.setVisibility(View.GONE);
             tvEarlyWinsOpponent.setVisibility(View.GONE);
 
+            title.setText(view.getContext().getString(R.string.title_run_outs));
+
             setVisibilities(view, detail);
         }
 
@@ -368,7 +368,6 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         }
 
         @Override public void bind(T player, T opponent) {
-            title.setText("Run Outs");
             // Break and runs
             tvBreakAndRunPlayer.setText(String.format("%d", player.getRunOuts()));
             tvBreakAndRunOpponent.setText(String.format("%d", opponent.getRunOuts()));
@@ -442,12 +441,13 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             tvEarlyWinsPlayer = (TextView) view.findViewById(R.id.tvEarlyWinsPlayer);
             tvEarlyWinsOpponent = (TextView) view.findViewById(R.id.tvEarlyWinsOpponent);
             breakWinsTitle = (TextView) view.findViewById(R.id.tvBreakWinsTitle);
-            breakWinsTitle.setText(gameBall + " on the break"); // TODO: 3/24/2016 fix this here
+            breakWinsTitle.setText(view.getContext().getString(R.string.title_game_won_on_break, gameBall));
 
             breakWinsTitle.setVisibility(View.GONE);
             tvBreakWinsPlayer.setVisibility(View.GONE);
             tvBreakWinsOpponent.setVisibility(View.GONE);
 
+            title.setText(view.getContext().getString(R.string.title_breaks));
             setVisibilities(view, detail);
         }
 
@@ -460,7 +460,6 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         }
 
         @Override public void bind(T player, T opponent) {
-            title.setText("Breaks");
             // Average balls / break
             tvBreakBallsPlayer.setText(player.getAvgBallsBreak());
             tvBreakBallsOpponent.setText(opponent.getAvgBallsBreak());
@@ -469,8 +468,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
             highlightBetterPlayerStats(tvBreakBallsPlayer, tvBreakBallsOpponent, Double.parseDouble(player.getAvgBallsBreak()), Double.parseDouble(opponent.getAvgBallsBreak()));
 
             // Successful breaks / breaks attempted
-            tvBreakTotalPlayer.setText(player.getBreakSuccesses() + "/" + player.getBreakAttempts());
-            tvBreakTotalOpponent.setText(opponent.getBreakSuccesses() + "/" + opponent.getBreakAttempts());
+            tvBreakTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getBreakSuccesses() , player.getBreakAttempts()));
+            tvBreakTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getBreakSuccesses() , opponent.getBreakAttempts()));
 
             // Number of breakContinuations()
             tvBreakContinuationsPlayer.setText(String.valueOf(player.getBreakContinuations()));
@@ -496,8 +495,8 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         @Override public void bind(T player, T opponent) {
             super.bind(player, opponent);
 
-            tvBreakWinsPlayer.setText(Integer.toString(player.getWinsOnBreak()));
-            tvBreakWinsOpponent.setText(Integer.toString(opponent.getWinsOnBreak()));
+            tvBreakWinsPlayer.setText(String.format("%d", player.getWinsOnBreak()));
+            tvBreakWinsOpponent.setText(String.format("%d", opponent.getWinsOnBreak()));
             // highlighting of the player who's doing better in this stat
             highlightBetterPlayerStats(tvBreakWinsPlayer, tvBreakWinsOpponent, player.getWinsOnBreak(), opponent.getWinsOnBreak());
         }
@@ -513,7 +512,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
 
         public ApaPlayer(View view, Match.StatsDetail detail, View.OnClickListener listener) {
             super(view, detail, listener);
-            title.setText("APA Stats");
+            title.setText(view.getContext().getString(R.string.title_apa_stats));
             tvPointsTitle = (TextView) view.findViewById(R.id.tvPointsTitle);
 
             tvDefensiveShotsPlayer = (TextView) view.findViewById(R.id.tvDefensiveShotsPlayer);
@@ -538,18 +537,21 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
 
         @Override public void bind(T player, T opponent) {
             if (player instanceof ApaEightBallPlayer) {
-                tvPointsTitle.setText("Games / games needed");
+                tvPointsTitle.setText(itemView.getContext().getString(R.string.title_games_needed));
             }
 
+            tvPointsPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getPoints(), player.getPointsNeeded(opponent.getRank())));
+            tvPointsOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getPoints(), opponent.getPointsNeeded(player.getRank())));
             tvRankPlayer.setText(String.format("%d", player.getRank()));
             tvRankOpponent.setText(String.format("%d", opponent.getRank()));
 
-            tvMatchPointsPlayer.setText(player.getMatchPoints(opponent.getPoints(), opponent.getRank()) + "");
-            tvMatchPointsOpponent.setText(opponent.getMatchPoints(opponent.getPoints(), opponent.getRank()) + "");
+            tvMatchPointsPlayer.setText(String.format("%d", player.getMatchPoints(opponent.getPoints(), opponent.getRank())));
 
-            tvInningsOpponent.setText(opponent.getTurns() + "");
-            tvDefensiveShotsOpponent.setText(Integer.toString(opponent.getSafetyAttempts()));
-            tvDefensiveShotsPlayer.setText(Integer.toString(player.getSafetyAttempts()));
+            tvMatchPointsOpponent.setText(String.format("%d", opponent.getMatchPoints(opponent.getPoints(), opponent.getRank())));
+
+            tvInningsOpponent.setText(String.format("%d", opponent.getTurns()));
+            tvDefensiveShotsOpponent.setText(String.format("%d", opponent.getSafetyAttempts()));
+            tvDefensiveShotsPlayer.setText(String.format("%d", player.getSafetyAttempts()));
         }
     }
 }

@@ -79,7 +79,7 @@ public class AdvShootingStatsFragment extends Fragment implements MultiSelection
         StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getContext(), stats), leftOfAim, rightOfAim);
         StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getContext(), stats), overCut, underCut);
 
-        title.setText("Shooting errors (" + stats.size() + ")");
+        title.setText(getString(R.string.title_shooting_errors, stats.size()));
 
         StatsUtils.updateGridOfMissReasons(view, StatsUtils.getFourMostCommonItems(stats));
     }

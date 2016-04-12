@@ -23,7 +23,13 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 3/12/2016.
  */
 public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
-    private static final String[] choices = {"Too hard", "Too soft", "Too thick", "Too thin"};
+    private static final int FULL_HOOK = 0,
+            PARTIAL_HOOK = 1,
+            LONG_T = 2,
+            SHORT_T = 3,
+            NO_DIRECT_SHOT = 4,
+            OPEN = 5;
+
     @Bind(R.id.successfulSafetiesTitle) TextView safetyResults;
     @Bind(R.id.safetyErrorsTitle) TextView safetyErrorsTitle;
     @Bind(R.id.spinner) MultiSelectionSpinner spinner1;
@@ -72,21 +78,21 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
     private void updateSafetyGrid(View view) {
         List<StatsUtils.StatLineItem> statLineItems = StatsUtils.getSafetyStats(getContext(), stats);
 
-        ((TextView) view.findViewById(R.id.tvFullHookCount)).setText(statLineItems.get(0).getCount());
-        ((TextView) view.findViewById(R.id.tvFullHookPct)).setText(statLineItems.get(0).getPercentage());
-        ((TextView) view.findViewById(R.id.tvPartialHookCount)).setText(statLineItems.get(1).getCount());
-        ((TextView) view.findViewById(R.id.tvPartialHookPct)).setText(statLineItems.get(1).getPercentage());
-        ((TextView) view.findViewById(R.id.tvLongTCount)).setText(statLineItems.get(2).getCount());
-        ((TextView) view.findViewById(R.id.tvLongTPct)).setText(statLineItems.get(2).getPercentage());
-        ((TextView) view.findViewById(R.id.tvShortTCount)).setText(statLineItems.get(3).getCount());
-        ((TextView) view.findViewById(R.id.tvShortTPct)).setText(statLineItems.get(3).getPercentage());
-        ((TextView) view.findViewById(R.id.tvDirectShotCount)).setText(statLineItems.get(4).getCount());
-        ((TextView) view.findViewById(R.id.tvDirectShotPct)).setText(statLineItems.get(4).getPercentage());
-        ((TextView) view.findViewById(R.id.tvOpenCount)).setText(statLineItems.get(5).getCount());
-        ((TextView) view.findViewById(R.id.tvOpenPct)).setText(statLineItems.get(5).getPercentage());
+        ((TextView) view.findViewById(R.id.tvFullHookCount)).setText(statLineItems.get(FULL_HOOK).getCount());
+        ((TextView) view.findViewById(R.id.tvFullHookPct)).setText(statLineItems.get(FULL_HOOK).getPercentage());
+        ((TextView) view.findViewById(R.id.tvPartialHookCount)).setText(statLineItems.get(PARTIAL_HOOK).getCount());
+        ((TextView) view.findViewById(R.id.tvPartialHookPct)).setText(statLineItems.get(PARTIAL_HOOK).getPercentage());
+        ((TextView) view.findViewById(R.id.tvLongTCount)).setText(statLineItems.get(LONG_T).getCount());
+        ((TextView) view.findViewById(R.id.tvLongTPct)).setText(statLineItems.get(LONG_T).getPercentage());
+        ((TextView) view.findViewById(R.id.tvShortTCount)).setText(statLineItems.get(SHORT_T).getCount());
+        ((TextView) view.findViewById(R.id.tvShortTPct)).setText(statLineItems.get(SHORT_T).getPercentage());
+        ((TextView) view.findViewById(R.id.tvDirectShotCount)).setText(statLineItems.get(NO_DIRECT_SHOT).getCount());
+        ((TextView) view.findViewById(R.id.tvDirectShotPct)).setText(statLineItems.get(NO_DIRECT_SHOT).getPercentage());
+        ((TextView) view.findViewById(R.id.tvOpenCount)).setText(statLineItems.get(OPEN).getCount());
+        ((TextView) view.findViewById(R.id.tvOpenPct)).setText(statLineItems.get(OPEN).getPercentage());
 
-        safetyErrorsTitle.setText("Safety errors (" + ((TextView) view.findViewById(R.id.tvOpenCount)).getText() + ")");
-        safetyResults.setText("Safety results (" + stats.size() + ")");
+        safetyErrorsTitle.setText(getString(R.string.title_safety_errors, statLineItems.get(OPEN).getCount()));
+        safetyResults.setText(getString(R.string.title_safety_results, stats.size()));
     }
 
     @Override public void selectedIndices(List<Integer> indices) {

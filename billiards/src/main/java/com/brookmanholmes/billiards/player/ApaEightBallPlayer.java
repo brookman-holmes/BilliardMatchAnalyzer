@@ -37,6 +37,11 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
         return gameWins;
     }
 
+    @Override public int getPointsNeeded(int opponentRank) {
+        RaceTo raceTo = ApaRaceToHelper.apa8BallRaceTo(rank, opponentRank);
+        return raceTo.getPlayerRaceTo();
+    }
+
     @Override public void addEarlyWin() {
         winsOnBreak.addEarlyWin();
     }

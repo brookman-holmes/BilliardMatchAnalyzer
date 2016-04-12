@@ -67,7 +67,7 @@ public class AdvStatsDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_adv_stats, container, false);
         ButterKnife.bind(this, view);
 
-        toolbar.setTitle("Advanced Stats for " + getArguments().getString(ARG_PLAYER_NAME, "ERROR NO NAME PRESENT IN ARGUMENTS"));
+        toolbar.setTitle(getString(R.string.title_advanced_stats, getArguments().getString(ARG_PLAYER_NAME, "ERROR NO NAME PRESENT IN ARGUMENTS")));
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         Drawable backArrow = getResources().getDrawable(R.drawable.ic_arrow_back_24dp);
         backArrow.setTint(getResources().getColor(android.R.color.white));
@@ -108,11 +108,11 @@ public class AdvStatsDialog extends DialogFragment {
         @Override public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Shooting";
+                    return getString(R.string.title_shooting);
                 case 1:
-                    return "Safeties";
+                    return getString(R.string.title_safeties);
                 default:
-                    return "Breaks";
+                    return getString(R.string.title_breaks);
             }
         }
     }

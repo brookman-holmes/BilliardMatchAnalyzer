@@ -51,7 +51,7 @@ public class AdvBreakingStatsFragment extends Fragment {
         StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getContext(), stats), leftOfAim, rightOfAim);
         StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(getContext(), stats), slow, fast);
 
-        title.setText("Break errors (" + stats.size() + ")");
+        title.setText(getString(R.string.title_break_errors, stats.size()));
 
         StatsUtils.updateGridOfMissReasons(view, StatsUtils.getFourMostCommonItems(stats));
     }

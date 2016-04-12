@@ -48,13 +48,16 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
         this.points += points;
     }
 
-
     @Override public int getTurns() {
         return turns;
     }
 
     @Override public int getPoints() {
         return points;
+    }
+
+    @Override public int getPointsNeeded(int opponentRank) {
+        return ApaRaceToHelper.apa9BallRaceTo(rank);
     }
 
     @Override public void addEarlyWin() {

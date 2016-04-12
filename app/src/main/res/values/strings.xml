@@ -21,7 +21,7 @@
     <string name="title_successful_break">Ball on break / breaks</string>
     <string name="title_early_wins">Early wins</string>
     <string name="title_table_runs">Table runs</string>
-    <string name="title_five_ball_outs">Five (or less) ball outs</string>
+    <string name="title_five_ball_outs">Five (or fewer) ball outs</string>
     <string name="title_break_runs">Break and runs</string>
     <string name="title_safeties_made">Safeties made / safeties</string>
     <string name="title_safety_pct">Safety Percentage</string>
@@ -65,4 +65,27 @@
     <string name="hint_opponent_name">Player 2 Name</string>
     <string name="hint_location">Location (optional)</string>
     <string name="hint_notes">Notes (optional)</string>
+    <string name="title_break_errors">Break errors (%1$s)</string>
+    <string name="title_safety_errors">Safety errors (%1$s)</string>
+    <string name="title_safety_results">Safety results (%1$s)</string>
+    <string name="title_shooting_errors">Shooting errors (%1$s)</string>
+    <string name="title_aim">Aim</string>
+    <string name="title_aim_right">right</string>
+    <string name="title_aim_left">left</string>
+    <string name="title_cut">Cut</string>
+    <string name="title_cut_under">under</string>
+    <string name="title_cut_over">over</string>
+    <string name="title_speed">Speed</string>
+    <string name="title_speed_fast">fast</string>
+    <string name="title_speed_slow">slow</string>
+    <string name="title_advanced_stats">Advanced stats for %1$s</string>
+    <string name="title_shooting">Shooting</string>
+    <string name="title_safeties">Safeties</string>
+    <string name="title_breaks">Breaks</string>
+    <string name="title_match_overview">Match overview</string>
+    <string name="title_apa_stats">APA stats</string>
+    <string name="title_game_won_on_break">%1$d on the break</string>
+    <string name="out_of">%1$d / %2$d</string>
+    <string name="title_run_outs">Run outs</string>
+    <string name="title_games_needed">Games won / games needed</string>
 </resources>
