@@ -82,6 +82,7 @@ public class MatchInfoFragment extends Fragment implements MatchInterface{
 
     @Override public void onDestroyView() {
         super.onDestroyView();
+        recyclerView.setAdapter(null);
         ButterKnife.unbind(this);
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);

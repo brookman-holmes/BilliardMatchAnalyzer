@@ -1,6 +1,9 @@
 package com.brookmanholmes.billiardmatchanalyzer.adapters;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +13,8 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
+import com.brookmanholmes.billiardmatchanalyzer.ui.BaseActivity;
+import com.brookmanholmes.billiardmatchanalyzer.ui.MatchInfoActivity;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 
@@ -25,16 +30,12 @@ import butterknife.OnLongClick;
  * Created by Brookman Holmes on 1/13/2016.
  */
 public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRecyclerAdapter.ListItemHolder> {
-    private ListItemClickListener listener;
-
-    public MatchListRecyclerAdapter(ListItemClickListener listener) {
-        super(null);
+    public MatchListRecyclerAdapter(Cursor cursor) {
+        super(cursor);
         setHasStableIds(true);
-        this.listener = listener;
     }
 
     @Override public void onBindViewHolderCursor(ListItemHolder holder, Cursor cursor) {
-        holder.container.setTag(getColumnId(cursor));
         holder.location.setText(getLocation(cursor));
         holder.date.setText(getDate(cursor));
         holder.playerNames.setText(getPlayerNames(cursor));
@@ -44,8 +45,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     }
 
     @Override public ListItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ListItemHolder(LayoutInflater
-                .from(parent.getContext())
+        return new ListItemHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_match_row, parent, false));
     }
 
@@ -138,10 +138,6 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         return cursor.getString(cursor.getColumnIndex("opp_name"));
     }
 
-    private long getColumnId(Cursor cursor) {
-        return cursor.getLong(cursor.getColumnIndex(DatabaseAdapter.COLUMN_ID));
-    }
-
     public class ListItemHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.players) TextView playerNames;
         @Bind(R.id.breakType) TextView breakType;
@@ -157,16 +153,30 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         }
 
         @OnClick(R.id.container) public void onClick() {
-            listener.onSelectMatch(getMatchId());
+            Intent intent = new Intent(itemView.getContext(), MatchInfoActivity.class);
+            intent.putExtra(BaseActivity.ARG_MATCH_ID, getItemId());
+            itemView.getContext().startActivity(intent);
         }
 
         @OnLongClick(R.id.container) public boolean onLongClick() {
-            listener.onLongSelectMatch(getMatchId());
-            return true;
-        }
+            final DatabaseAdapter database = new DatabaseAdapter(itemView.getContext());
+            database.open();
 
-        private long getMatchId() {
-            return (long) container.getTag();
+            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext(), R.style.AlertDialogTheme);
+            builder.setMessage("Would you like to delete this match?")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override public void onClick(DialogInterface dialog, int which) {
+                            database.deleteMatch(getItemId());
+                            swapCursor(database.getMatches());
+                            notifyItemRemoved((int) getItemId());
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+            return true;
         }
     }
 
