@@ -3,6 +3,9 @@ package com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo;
 import android.view.View;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.ApaPlayer;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.BreaksHolderWithBreakWins;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.RunOutsWithEarlyWinsHolder;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.interfaces.Apa;
@@ -12,22 +15,22 @@ import com.brookmanholmes.billiards.player.interfaces.Apa;
  */
 class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchInfoRecyclerAdapter<T> {
 
-    ApaMatchInfoRecyclerAdapter(Match<T> match, View.OnClickListener listener) {
-        super(match, match.getGameStatus().GAME_BALL, listener);
+    ApaMatchInfoRecyclerAdapter(Match<T> match) {
+        super(match, match.getGameStatus().GAME_BALL);
     }
 
-    ApaMatchInfoRecyclerAdapter(Match<T> match, ViewType viewType, View.OnClickListener listener) {
-        super(match, match.getGameStatus().GAME_BALL, viewType, listener);
+    ApaMatchInfoRecyclerAdapter(Match<T> match, ViewType viewType) {
+        super(match, match.getGameStatus().GAME_BALL, viewType);
     }
 
     @Override BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_APA_STATS:
-                return new MatchInfoHolder.ApaPlayer<>(view, detail, listener);
+                return new ApaPlayer<>(view, detail);
             case ITEM_BREAKS:
-                return new MatchInfoHolder.BreaksHolderWithBreakWins<>(view, gameBall, detail, listener);
+                return new BreaksHolderWithBreakWins<>(view, gameBall, detail);
             case ITEM_RUN_OUTS:
-                return new MatchInfoHolder.RunOutsWithEarlyWinsHolder<>(view, detail, listener);
+                return new RunOutsWithEarlyWinsHolder<>(view, detail);
             default:
                 return super.getMatchInfoHolderByViewType(view, viewType);
         }

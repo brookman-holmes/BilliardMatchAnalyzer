@@ -2,7 +2,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,7 +22,7 @@ import com.squareup.leakcanary.RefWatcher;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MatchInfoFragment extends Fragment implements MatchInterface, View.OnClickListener {
+public class MatchInfoFragment extends Fragment implements MatchInterface{
     @Bind(R.id.scrollView) RecyclerView recyclerView;
     MatchInfoRecyclerAdapter<?> adapter;
     DatabaseAdapter db;
@@ -47,6 +46,23 @@ public class MatchInfoFragment extends Fragment implements MatchInterface, View.
         return fragment;
     }
 
+
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
+
+        db = new DatabaseAdapter(getContext());
+        db.open();
+
+        if (getArguments().getLong(BaseActivity.ARG_MATCH_ID, -1) != -1) {
+            matchId = getArguments().getLong(BaseActivity.ARG_MATCH_ID);
+        } else {
+            throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
+        }
+
+        adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
+    }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
@@ -117,47 +133,5 @@ public class MatchInfoFragment extends Fragment implements MatchInterface, View.
 
     @Override public long getMatchId() {
         return adapter.getMatchId();
-    }
-
-    @Override public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setRetainInstance(true);
-
-        db = new DatabaseAdapter(getContext());
-        db.open();
-
-        if (getArguments().getLong(BaseActivity.ARG_MATCH_ID, -1) != -1) {
-            matchId = getArguments().getLong(BaseActivity.ARG_MATCH_ID);
-        } else {
-            throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
-        }
-
-        adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId), this);
-    }
-
-    @Override public void onClick(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-        builder.setView(createHelpView((int) v.getTag()))
-                .setPositiveButton(android.R.string.ok, null).create().show();
-    }
-
-    private View createHelpView(int viewId) {
-        switch (viewId) {
-            case MatchInfoRecyclerAdapter.ITEM_MATCH_OVERVIEW:
-                return getActivity().getLayoutInflater().inflate(R.layout.dialog_help_match_overview, null);
-            case MatchInfoRecyclerAdapter.ITEM_SHOOTING_PCT:
-                return getActivity().getLayoutInflater().inflate(R.layout.dialog_help_shooting, null);
-            case MatchInfoRecyclerAdapter.ITEM_SAFETIES:
-                return getActivity().getLayoutInflater().inflate(R.layout.dialog_help_safeties, null);
-            case MatchInfoRecyclerAdapter.ITEM_RUN_OUTS:
-                return getActivity().getLayoutInflater().inflate(R.layout.dialog_help_runs, null);
-            case MatchInfoRecyclerAdapter.ITEM_APA_STATS:
-                return getActivity().getLayoutInflater().inflate(R.layout.dialog_help_safeties, null);
-            case MatchInfoRecyclerAdapter.ITEM_BREAKS:
-                return getActivity().getLayoutInflater().inflate(R.layout.dialog_help_breaks, null);
-            default:
-                throw new IllegalArgumentException("No such help dialog for view id: " + viewId);
-        }
     }
 }

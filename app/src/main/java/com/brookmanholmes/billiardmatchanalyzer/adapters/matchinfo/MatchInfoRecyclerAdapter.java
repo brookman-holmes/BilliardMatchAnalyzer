@@ -7,6 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.BreaksHolder;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.MatchOverviewHolder;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.RunOutsHolder;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.SafetiesHolder;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.ShootingPctHolder;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.match.Match;
@@ -36,51 +41,49 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     Match.StatsDetail detail;
     ViewType viewTypeToggle = ViewType.CARDS;
     Match<T> match;
-    View.OnClickListener listener;
 
-    MatchInfoRecyclerAdapter(Match<T> match, int gameBall, View.OnClickListener listener) {
+    MatchInfoRecyclerAdapter(Match<T> match, int gameBall) {
         this.match = match;
-        this.listener = listener;
         detail = match.getStatsLevel();
         this.gameBall = gameBall;
     }
 
-    MatchInfoRecyclerAdapter(Match<T> match, int gameBall, ViewType viewType, View.OnClickListener listener) {
-        this(match, gameBall, listener);
+    MatchInfoRecyclerAdapter(Match<T> match, int gameBall, ViewType viewType) {
+        this(match, gameBall);
         viewTypeToggle = viewType;
     }
 
-    public static <T extends AbstractPlayer> MatchInfoRecyclerAdapter<?> createMatchAdapter(Match<T> match, View.OnClickListener listener) {
+    public static <T extends AbstractPlayer> MatchInfoRecyclerAdapter<?> createMatchAdapter(Match<T> match) {
         // this is probably fucking retarded?
         switch (match.getGameStatus().gameType) {
             case BCA_NINE_BALL:
-                return new BcaNineBallMatchInfoRecyclerAdapter((Match<NineBallPlayer>) match, listener);
+                return new BcaNineBallMatchInfoRecyclerAdapter((Match<NineBallPlayer>) match);
             case BCA_EIGHT_BALL:
-                return new BcaEightBallMatchInfoRecyclerAdapter((Match<EightBallPlayer>) match, listener);
+                return new BcaEightBallMatchInfoRecyclerAdapter((Match<EightBallPlayer>) match);
             case BCA_TEN_BALL:
-                return new BcaTenBallMatchInfoRecyclerAdapter((Match<TenBallPlayer>) match, listener);
+                return new BcaTenBallMatchInfoRecyclerAdapter((Match<TenBallPlayer>) match);
             case APA_NINE_BALL:
-                return new ApaMatchInfoRecyclerAdapter<>((Match<ApaNineBallPlayer>) match, listener);
+                return new ApaMatchInfoRecyclerAdapter<>((Match<ApaNineBallPlayer>) match);
             case APA_EIGHT_BALL:
-                return new ApaMatchInfoRecyclerAdapter<>((Match<ApaEightBallPlayer>) match, listener);
+                return new ApaMatchInfoRecyclerAdapter<>((Match<ApaEightBallPlayer>) match);
             default:
                 throw new InvalidGameTypeException(match.getGameStatus().gameType.toString());
         }
     }
 
-    public static <T extends AbstractPlayer> MatchInfoRecyclerAdapter<?> createMatchAdapterWithCardViews(Match<T> match, View.OnClickListener listener) {
+    public static <T extends AbstractPlayer> MatchInfoRecyclerAdapter<?> createMatchAdapterWithCardViews(Match<T> match) {
         // this is probably fucking retarded?
         switch (match.getGameStatus().gameType) {
             case BCA_NINE_BALL:
-                return new BcaNineBallMatchInfoRecyclerAdapter((Match<NineBallPlayer>) match, ViewType.CARDS, listener);
+                return new BcaNineBallMatchInfoRecyclerAdapter((Match<NineBallPlayer>) match, ViewType.CARDS);
             case BCA_EIGHT_BALL:
-                return new BcaEightBallMatchInfoRecyclerAdapter((Match<EightBallPlayer>) match, ViewType.CARDS, listener);
+                return new BcaEightBallMatchInfoRecyclerAdapter((Match<EightBallPlayer>) match, ViewType.CARDS);
             case BCA_TEN_BALL:
-                return new BcaTenBallMatchInfoRecyclerAdapter((Match<TenBallPlayer>) match, ViewType.CARDS, listener);
+                return new BcaTenBallMatchInfoRecyclerAdapter((Match<TenBallPlayer>) match, ViewType.CARDS);
             case APA_NINE_BALL:
-                return new ApaMatchInfoRecyclerAdapter<>((Match<ApaNineBallPlayer>) match, ViewType.CARDS, listener);
+                return new ApaMatchInfoRecyclerAdapter<>((Match<ApaNineBallPlayer>) match, ViewType.CARDS);
             case APA_EIGHT_BALL:
-                return new ApaMatchInfoRecyclerAdapter<>((Match<ApaEightBallPlayer>) match, ViewType.CARDS, listener);
+                return new ApaMatchInfoRecyclerAdapter<>((Match<ApaEightBallPlayer>) match, ViewType.CARDS);
             default:
                 throw new InvalidGameTypeException(match.getGameStatus().gameType.toString());
         }
@@ -201,15 +204,15 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_MATCH_OVERVIEW:
-                return new MatchInfoHolder.MatchOverviewHolder<>(view, detail, listener);
+                return new MatchOverviewHolder<>(view, detail);
             case ITEM_SHOOTING_PCT:
-                return new MatchInfoHolder.ShootingPctHolder<>(view, detail, listener);
+                return new ShootingPctHolder<>(view, detail);
             case ITEM_BREAKS:
-                return new MatchInfoHolder.BreaksHolder<>(view, match.getGameStatus().GAME_BALL, detail, listener);
+                return new BreaksHolder<>(view, match.getGameStatus().GAME_BALL, detail);
             case ITEM_RUN_OUTS:
-                return new MatchInfoHolder.RunOutsHolder<>(view, detail, listener);
+                return new RunOutsHolder<>(view, detail);
             case ITEM_SAFETIES:
-                return new MatchInfoHolder.SafetiesHolder<>(view, detail, listener);
+                return new SafetiesHolder<>(view, detail);
             case ITEM_FOOTER:
                 return new FooterViewHolder<>(view);
             default:
