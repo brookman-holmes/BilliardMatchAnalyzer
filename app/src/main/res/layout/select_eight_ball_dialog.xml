@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/addNewInningDialogBox"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<RelativeLayout android:id="@+id/addNewInningDialogBox"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="0dp">
 
     <TextView
         android:id="@+id/title"
@@ -110,13 +111,24 @@
     </GridLayout>
 
     <TextView
+        android:id="@+id/playerColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Player color is Open"
-        android:id="@+id/playerColor"
-        android:paddingTop="16dp"
-        android:visibility="gone"
         android:layout_alignLeft="@+id/ballGrid"
+        android:layout_below="@+id/ballGrid"
+        android:padding="16dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/buttonRunOut"
+        style="?android:borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingBottom="16dp" />
+        android:layout_centerHorizontal="true"
+        android:padding="16dp"
+        android:text="Select all stripes"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"/>
 </RelativeLayout>

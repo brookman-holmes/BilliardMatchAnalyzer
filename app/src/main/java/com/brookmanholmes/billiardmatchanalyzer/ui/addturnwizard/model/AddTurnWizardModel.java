@@ -31,7 +31,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)),
                 matchData.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY));
 
-        turnBuilder.scratch = false;
+        turnBuilder.foul = false;
         turnBuilder.lostGame = false;
         turnBuilder.advStats.name(matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY));
 
@@ -102,7 +102,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         // this is a band aid to the real problem of pages updating the whole sequence (even themselves) when
         // data on that page has been changed
         if (!getFoulPossible(turnBuilder.turnEnd)) {
-            turnBuilder.scratch = false;
+            turnBuilder.foul = false;
             turnBuilder.lostGame = false;
         }
     }
@@ -115,7 +115,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     void setFoul(String foul) {
-        turnBuilder.scratch = (context.getString(R.string.yes).equals(foul) || context.getString(R.string.foul_lost_game).equals(foul));
+        turnBuilder.foul = (context.getString(R.string.yes).equals(foul) || context.getString(R.string.foul_lost_game).equals(foul));
         turnBuilder.lostGame = context.getString(R.string.foul_lost_game).equals(foul);
     }
 

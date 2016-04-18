@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +25,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
 import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.convertBallToId;
 import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.convertIdToBall;
 import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.getLayoutByGameType;
@@ -36,14 +36,15 @@ import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUt
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
-public class ShotFragment extends Fragment {
-    private static final String ARG_KEY = "key";
+public abstract class ShotFragment extends Fragment {
+    static final String ARG_KEY = "key";
     @Bind(R.id.title) TextView title;
-    @Nullable @Bind(R.id.playerColor) TextView playerColor;
 
+    @Bind(R.id.buttonRunOut) Button btnRunOut;
+    ShotPage page;
+    GameType gameType;
     private PageFragmentCallbacks callbacks;
     private String key;
-    private ShotPage page;
 
     public ShotFragment() {
     }
@@ -53,7 +54,12 @@ public class ShotFragment extends Fragment {
         args.putAll(matchData);
         args.putString(ARG_KEY, key);
 
-        ShotFragment fragment = new ShotFragment();
+        ShotFragment fragment;
+
+        GameType gameType = GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY));
+        if (gameType == GameType.APA_EIGHT_BALL || gameType == GameType.BCA_EIGHT_BALL)
+            fragment = new EightBallShotFragment();
+        else fragment = new RotationShotFragment();
 
         fragment.setArguments(args);
         return fragment;
@@ -75,6 +81,7 @@ public class ShotFragment extends Fragment {
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
         page = (ShotPage) callbacks.onGetPage(key);
+        gameType = GameType.valueOf(getArguments().getString(MatchDialogHelperUtils.GAME_TYPE_KEY));
     }
 
     @Override public void onResume() {
@@ -83,11 +90,9 @@ public class ShotFragment extends Fragment {
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutByGameType(getGameType()), container, false);
+        View view = inflater.inflate(getLayoutByGameType(gameType), container, false);
         ButterKnife.bind(this, view);
         title.setText(page.getTitle());
-        if (playerColor != null)
-            playerColor.setVisibility(View.VISIBLE);
 
         return view;
     }
@@ -100,10 +105,6 @@ public class ShotFragment extends Fragment {
     @Override public void onDetach() {
         super.onDetach();
         callbacks = null;
-    }
-
-    private GameType getGameType() {
-        return GameType.valueOf(getArguments().getString(GAME_TYPE_KEY));
     }
 
     @Nullable @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
@@ -122,20 +123,8 @@ public class ShotFragment extends Fragment {
         if (view != null) {
             for (int i = 0; i < ballStatuses.size(); i++) {
                 ImageView ballImage = (ImageView) view.findViewById(convertBallToId(i + 1));
-
                 setBallView(ballStatuses.get(i), ballImage);
             }
-
-            if (this.playerColor != null) {
-                if (playerColor == PlayerColor.OPEN)
-                    this.playerColor.setText(R.string.open_table);
-                else if (playerColor == PlayerColor.SOLIDS)
-                    this.playerColor.setText(getString(R.string.solids_table, getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY, "NO PLAYER NAME IN ARGUMENTS")));
-                else if (playerColor == PlayerColor.STRIPES) {
-                    this.playerColor.setText(getString(R.string.stripes_table, getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY, "NO PLAYER NAME IN ARGUMENTS")));
-                }
-            }
-
         }
     }
 
@@ -162,4 +151,6 @@ public class ShotFragment extends Fragment {
     private boolean ballIsMade(BallStatus status) {
         return status == BallStatus.MADE || status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
     }
+
+    abstract void runOut();
 }

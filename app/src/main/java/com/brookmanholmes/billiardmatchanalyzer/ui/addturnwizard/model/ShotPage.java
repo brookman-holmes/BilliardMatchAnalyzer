@@ -15,6 +15,7 @@ import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TableUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
@@ -52,6 +53,10 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
             tableStatus.setBallTo(model.getTableStatus().getBallStatus(ball), ball);
         }
         updateFragment();
+    }
+
+    public List<BallStatus> getBallStatuses() {
+        return tableStatus.getBallStatuses();
     }
 
     public BallStatus updateBallStatus(int ball) {

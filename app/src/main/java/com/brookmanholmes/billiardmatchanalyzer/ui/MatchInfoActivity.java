@@ -156,14 +156,14 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             addTurn(infoFragment.createAndAddTurnToMatch(
                     turnBuilder.tableStatus,
                     turnBuilder.turnEnd,
-                    turnBuilder.scratch,
+                    turnBuilder.foul,
                     turnBuilder.lostGame),
                     turnBuilder.advStats.build());
         else
             addTurn(infoFragment.createAndAddTurnToMatch(
                     turnBuilder.tableStatus,
                     turnBuilder.turnEnd,
-                    turnBuilder.scratch,
+                    turnBuilder.foul,
                     turnBuilder.lostGame));
     }
 

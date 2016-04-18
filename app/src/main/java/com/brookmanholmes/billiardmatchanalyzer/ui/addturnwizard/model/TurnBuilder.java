@@ -13,7 +13,7 @@ import java.util.List;
 public class TurnBuilder {
     public TableStatus tableStatus;
     public TurnEnd turnEnd;
-    public boolean scratch;
+    public boolean foul;
     public boolean lostGame;
     public AdvStats.Builder advStats = new AdvStats.Builder();
 
@@ -34,7 +34,7 @@ public class TurnBuilder {
                 "tableStatus=" + tableStatus.toString() +
                 ", turnEnd=" + (turnEnd == null ? "null" : turnEnd) +
                 ", lostGame=" + lostGame +
-                ", foul=" + scratch +
+                ", foul=" + foul +
                 '}';
     }
 }
