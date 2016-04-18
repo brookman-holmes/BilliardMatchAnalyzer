@@ -39,9 +39,9 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
     }
 
-    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void updateTurnInfo(AddTurnWizardModel model) {
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
-            turnBuilder.tableStatus.setBallTo(tableStatus.getBallStatus(ball), ball);
+            model.getTableStatus().setBallTo(tableStatus.getBallStatus(ball), ball);
         }
     }
 

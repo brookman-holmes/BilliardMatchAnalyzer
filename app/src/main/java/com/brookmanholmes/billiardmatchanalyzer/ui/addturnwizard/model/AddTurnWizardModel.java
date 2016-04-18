@@ -2,7 +2,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -12,6 +11,9 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PageList;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.STATS_LEVEL_KEY;
 
@@ -29,8 +31,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)),
                 matchData.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY));
 
-        turnBuilder.scratch = context.getString(R.string.no);
-        turnBuilder.lostGame = context.getString(R.string.no);
+        turnBuilder.scratch = false;
+        turnBuilder.lostGame = false;
         turnBuilder.advStats.name(matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY));
 
         turnBuilder.advStats.use(currentPlayerTurnAndAdvancedStats());
@@ -53,7 +55,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         super.onPageDataChanged(page);
 
         if (page instanceof UpdatesTurnInfo) {
-            ((UpdatesTurnInfo) page).updateTurnInfo(turnBuilder);
+            ((UpdatesTurnInfo) page).updateTurnInfo(this);
         }
 
         updatePagesWithTurnInfo();
@@ -68,7 +70,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     public void updatePagesWithTurnInfo() {
         for (Page page : getCurrentPageSequence()) {
             if (page instanceof RequiresUpdatedTurnInfo) {
-                ((RequiresUpdatedTurnInfo) page).getNewTurnInfo(turnBuilder);
+                ((RequiresUpdatedTurnInfo) page).getNewTurnInfo(this);
             }
         }
     }
@@ -88,6 +90,64 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                     getShotPage(),
                     getTurnEndPage()
             );
+    }
+
+    TableStatus getTableStatus() {
+        return turnBuilder.tableStatus;
+    }
+
+    void setTurnEnd(String turnEnd) {
+        turnBuilder.turnEnd = convertStringToTurnEnd(turnEnd);
+
+        // this is a band aid to the real problem of pages updating the whole sequence (even themselves) when
+        // data on that page has been changed
+        if (!getFoulPossible(turnBuilder.turnEnd)) {
+            turnBuilder.scratch = false;
+            turnBuilder.lostGame = false;
+        }
+    }
+
+    boolean getFoulPossible(TurnEnd turn) {
+        return turn == TurnEnd.MISS
+                || turn == TurnEnd.SAFETY_ERROR
+                || turn == TurnEnd.BREAK_MISS
+                || turn == TurnEnd.ILLEGAL_BREAK;
+    }
+
+    void setFoul(String foul) {
+        turnBuilder.scratch = (context.getString(R.string.yes).equals(foul) || context.getString(R.string.foul_lost_game).equals(foul));
+        turnBuilder.lostGame = context.getString(R.string.foul_lost_game).equals(foul);
+    }
+
+    AdvStats.Builder getAdvStats() {
+        return turnBuilder.advStats;
+    }
+
+    private TurnEnd convertStringToTurnEnd(String turnEnd) {
+        if (turnEnd.equals(context.getString(R.string.turn_safety)))
+            return TurnEnd.SAFETY;
+        else if (turnEnd.equals(context.getString(R.string.turn_safety_error)))
+            return TurnEnd.SAFETY_ERROR;
+        else if (turnEnd.equals(context.getString(R.string.turn_break_miss)))
+            return TurnEnd.BREAK_MISS;
+        else if (turnEnd.equals(context.getString(R.string.turn_miss)))
+            return TurnEnd.MISS;
+        else if (turnEnd.equals(context.getString(R.string.turn_push)))
+            return TurnEnd.PUSH_SHOT;
+        else if (turnEnd.equals(context.getString(R.string.turn_skip)))
+            return TurnEnd.SKIP_TURN;
+        else if (turnEnd.equals(context.getString(R.string.turn_illegal_break)))
+            return TurnEnd.ILLEGAL_BREAK;
+        else if (turnEnd.equals(context.getString(R.string.turn_won_game)))
+            return TurnEnd.GAME_WON;
+        else if (turnEnd.equals(context.getString(R.string.turn_current_player_breaks, matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY))))
+            return TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN;
+        else if (turnEnd.equals(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY))))
+            return TurnEnd.OPPONENT_BREAKS_AGAIN;
+        else if (turnEnd.equals(context.getString(R.string.turn_continue_game)))
+            return TurnEnd.CONTINUE_WITH_GAME;
+        else
+            throw new IllegalArgumentException("No such conversion between string and StringRes: " + turnEnd);
     }
 
     private Page getBreakPage() {
@@ -248,7 +308,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         // make sure data is current
         for (Page page : getCurrentPageSequence())
             if (page instanceof UpdatesTurnInfo)
-                ((UpdatesTurnInfo) page).updateTurnInfo(turnBuilder);
+                ((UpdatesTurnInfo) page).updateTurnInfo(this);
 
         turnBuilder.advStats.startingPosition(matchData.getBoolean(MatchDialogHelperUtils.SUCCESSFUL_SAFE_KEY) ? "Safe" : "Open");
         return turnBuilder;

@@ -24,20 +24,19 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
         data.putAll(matchData);
     }
 
-    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.scratch = data.getString(SIMPLE_DATA_KEY, "");
-        turnBuilder.lostGame = data.getString(SIMPLE_DATA_KEY, "");
+    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+        model.setFoul(data.getString(SIMPLE_DATA_KEY, ""));
     }
 
     @Override public Fragment createFragment() {
         return FoulFragment.create(getKey());
     }
 
-    @Override public void getNewTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void getNewTurnInfo(AddTurnWizardModel model) {
         TurnEndHelper helper = TurnEndHelper.newTurnEndHelper(GameType.valueOf(data.getString(GAME_TYPE_KEY)));
 
         TurnEndOptions options = helper.create(
-                MatchDialogHelperUtils.createGameStatusFromBundle(data), turnBuilder.tableStatus);
+                MatchDialogHelperUtils.createGameStatusFromBundle(data), model.getTableStatus());
 
         updateFragment(options);
     }

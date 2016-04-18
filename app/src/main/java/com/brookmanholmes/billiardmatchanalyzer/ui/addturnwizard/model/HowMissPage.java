@@ -17,10 +17,10 @@ public class HowMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
         data.putStringArrayList(SIMPLE_DATA_KEY, new ArrayList<String>());
     }
 
-    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.advStats.clearHowTypes();
+    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+        model.getAdvStats().clearHowTypes();
         if (data.getStringArrayList(SIMPLE_DATA_KEY) != null)
-            turnBuilder.advStats.howTypes(data.getStringArrayList(SIMPLE_DATA_KEY));
+            model.getAdvStats().howTypes(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
     @Override public Fragment createFragment() {

@@ -84,7 +84,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
 
     public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
         Turn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost);
-
+        undoneTurns.clear();
         addTurn(turn);
 
         return turn;
@@ -93,7 +93,6 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     public void addTurn(Turn turn) {
         updatePlayerStats(turn);
         updateGameState(turn);
-
         turns.push(turn);
     }
 
@@ -140,7 +139,7 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         }
     }
 
-    public StatsDetail getStatsLevel() {
+    public StatsDetail getAdvStats() {
         return detail;
     }
 

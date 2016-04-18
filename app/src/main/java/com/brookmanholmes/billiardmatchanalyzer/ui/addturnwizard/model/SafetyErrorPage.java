@@ -10,12 +10,12 @@ public class SafetyErrorPage extends HowMissPage {
         super(callbacks, title);
     }
 
-    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.advStats.shotType("Safety error");
-        turnBuilder.advStats.clearAngle();
-        turnBuilder.advStats.clearSubType();
-        turnBuilder.advStats.clearWhyTypes();
+    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+        model.getAdvStats().shotType("Safety error");
+        model.getAdvStats().clearAngle();
+        model.getAdvStats().clearSubType();
+        model.getAdvStats().clearWhyTypes();
 
-        super.updateTurnInfo(turnBuilder);
+        super.updateTurnInfo(model);
     }
 }

@@ -1,9 +1,9 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +25,6 @@ import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,7 +36,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.playerName) TextView playerName;
     @Bind(R.id.opponentName) TextView opponentName;
-    @Bind(R.id.buttonAddTurn) FloatingActionButton buttonAddTurn;
     @Bind(R.id.coordinatorLayout) CoordinatorLayout layout;
 
     DatabaseAdapter db;
@@ -89,15 +87,50 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     @OnClick(R.id.playerName) public void showTestLayout() {
-        DialogFragment dialogFragment =
-                AdvStatsDialog.create(getMatchId(), playerName.getText().toString(), PlayerTurn.PLAYER);
-        dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme);
-        dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
+        displayChoiceDialog(playerName.getText().toString(), PlayerTurn.PLAYER);
     }
 
     @OnClick(R.id.opponentName) public void showTestLayout2() {
+        displayChoiceDialog(opponentName.getText().toString(), PlayerTurn.OPPONENT);
+    }
+
+    private void displayChoiceDialog(final String name, final PlayerTurn turn) {
+        final String[] items;
+
+        if (playerHasAdvancedStats(turn, db.getMatch(getMatchId()).getAdvStats())) {
+            items = new String[]{"View profile", "View advanced stats for this match", "Change name"};
+        } else {
+            items = new String[]{"View profile", "Change name"};
+        }
+
+        new AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                .setTitle(name)
+                .setItems(items,
+                        new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialog, int which) {
+                                if (items[which].equals("View advanced stats for this match"))
+                                    displayAdvancedStatsDialog(name, turn);
+                                else if (items[which].equals("View profile")) {
+                                    Intent intent = new Intent(MatchInfoActivity.this, PlayerProfileActivity.class);
+                                    startActivity(intent);
+                                } else if (items[which].equals("Change name")) {
+                                    Snackbar.make(layout, "Change name selected - not yet implemented", Snackbar.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).create().show();
+    }
+
+    private boolean playerHasAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
+        if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
+            return true;
+        else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
+            return true;
+        else return detail == Match.StatsDetail.ADVANCED;
+    }
+
+    private void displayAdvancedStatsDialog(String name, PlayerTurn turn) {
         DialogFragment dialogFragment =
-                AdvStatsDialog.create(getMatchId(), opponentName.getText().toString(), PlayerTurn.OPPONENT);
+                AdvStatsDialog.create(getMatchId(), name, turn);
         dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme);
         dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
     }
@@ -122,70 +155,21 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         if (turnBuilder.advStats.build().use())
             addTurn(infoFragment.createAndAddTurnToMatch(
                     turnBuilder.tableStatus,
-                    convertStringToTurnEnd(turnBuilder.turnEnd),
-                    convertStringToScratch(turnBuilder.scratch),
-                    convertStringToLostGame(turnBuilder.lostGame)), turnBuilder.advStats.build());
+                    turnBuilder.turnEnd,
+                    turnBuilder.scratch,
+                    turnBuilder.lostGame),
+                    turnBuilder.advStats.build());
         else
             addTurn(infoFragment.createAndAddTurnToMatch(
                     turnBuilder.tableStatus,
-                    convertStringToTurnEnd(turnBuilder.turnEnd),
-                    convertStringToScratch(turnBuilder.scratch),
-                    convertStringToLostGame(turnBuilder.lostGame)));
-    }
-
-    private TurnEnd convertStringToTurnEnd(String turnEnd) {
-        if (turnEnd.equals(getString(R.string.turn_safety)))
-            return TurnEnd.SAFETY;
-        else if (turnEnd.equals(getString(R.string.turn_safety_error)))
-            return TurnEnd.SAFETY_ERROR;
-        else if (turnEnd.equals(getString(R.string.turn_break_miss)))
-            return TurnEnd.BREAK_MISS;
-        else if (turnEnd.equals(getString(R.string.turn_miss)))
-            return TurnEnd.MISS;
-        else if (turnEnd.equals(getString(R.string.turn_push)))
-            return TurnEnd.PUSH_SHOT;
-        else if (turnEnd.equals(getString(R.string.turn_skip)))
-            return TurnEnd.SKIP_TURN;
-        else if (turnEnd.equals(getString(R.string.turn_illegal_break)))
-            return TurnEnd.ILLEGAL_BREAK;
-        else if (turnEnd.equals(getString(R.string.turn_won_game)))
-            return TurnEnd.GAME_WON;
-        else if (turnEnd.equals(getString(R.string.turn_current_player_breaks, infoFragment.getCurrentPlayersName())))
-            return TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN;
-        else if (turnEnd.equals(getString(R.string.turn_non_current_player_breaks, infoFragment.getNonCurrentPlayersName())))
-            return TurnEnd.OPPONENT_BREAKS_AGAIN;
-        else if (turnEnd.equals(getString(R.string.turn_continue_game)))
-            return TurnEnd.CONTINUE_WITH_GAME;
-        else
-            throw new IllegalArgumentException("No such conversion between string and StringRes: " + turnEnd);
-    }
-
-    private boolean convertStringToScratch(String scratch) {
-        if (scratch.equals(getString(R.string.foul_lost_game)))
-            return true;
-        else if (scratch.equals(getString(R.string.yes)))
-            return true;
-        else if (scratch.equals(getString(R.string.no)))
-            return false;
-        else throw new IllegalArgumentException("No such conversion between string " + scratch
-                    + " and StringRes: " + getString(R.string.yes) + " or "
-                    + getString(R.string.no));
-    }
-
-    private boolean convertStringToLostGame(String scratch) {
-        if (scratch.equals(getString(R.string.foul_lost_game)))
-            return true;
-        else if (scratch.equals(getString(R.string.yes)))
-            return false;
-        else if (scratch.equals(getString(R.string.no)))
-            return false;
-        else throw new IllegalArgumentException("No such conversion between string " + scratch
-                    + " and StringRes: " + getString(R.string.yes) + " or "
-                    + getString(R.string.no));
+                    turnBuilder.turnEnd,
+                    turnBuilder.scratch,
+                    turnBuilder.lostGame));
     }
 
     private void addTurn(Turn turn, AdvStats advStats) {
         db.insertTurn(turn, advStats, getMatchId(), infoFragment.getTurnCount());
+        updateViews();
     }
 
     private void addTurn(Turn turn) {

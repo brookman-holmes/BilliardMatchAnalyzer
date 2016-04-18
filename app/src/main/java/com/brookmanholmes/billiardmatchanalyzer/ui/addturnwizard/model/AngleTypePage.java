@@ -15,9 +15,9 @@ public class AngleTypePage extends SingleFixedChoicePage implements UpdatesTurnI
         super(callbacks, title);
     }
 
-    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.advStats.clearAngle();
-        turnBuilder.advStats.angle(data.getString(SIMPLE_DATA_KEY));
+    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+        model.getAdvStats().clearAngle();
+        model.getAdvStats().angle(data.getString(SIMPLE_DATA_KEY));
     }
 
     @Override public Fragment createFragment() {

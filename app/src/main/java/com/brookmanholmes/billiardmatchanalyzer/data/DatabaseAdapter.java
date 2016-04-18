@@ -26,7 +26,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -265,7 +264,7 @@ public class DatabaseAdapter {
             matchValues.put(COLUMN_CREATED_ON, getCurrentDate());
             matchValues.put(COLUMN_BREAK_TYPE, status.breakType.name());
             matchValues.put(COLUMN_LOCATION, match.getLocation());
-            matchValues.put(COLUMN_STATS_DETAIL, match.getStatsLevel().name());
+            matchValues.put(COLUMN_STATS_DETAIL, match.getAdvStats().name());
             matchValues.put(COLUMN_NOTES, match.getNotes());
 
             if (match.getPlayer() instanceof Apa && match.getOpponent() instanceof Apa) {

@@ -2,7 +2,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.ShotFragment;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -42,9 +41,15 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
     @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
     }
 
-    @Override public void getNewTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void updateTurnInfo(AddTurnWizardModel model) {
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
-            tableStatus.setBallTo(turnBuilder.tableStatus.getBallStatus(ball), ball);
+            model.getTableStatus().setBallTo(tableStatus.getBallStatus(ball), ball);
+        }
+    }
+
+    @Override public void getNewTurnInfo(AddTurnWizardModel model) {
+        for (int ball = 1; ball <= tableStatus.size(); ball++) {
+            tableStatus.setBallTo(model.getTableStatus().getBallStatus(ball), ball);
         }
         updateFragment();
     }
@@ -125,12 +130,6 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
                 return BallStatus.GAME_BALL_MADE_ON_BREAK;
             default:
                 return ballStatus;
-        }
-    }
-
-    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
-        for (int ball = 1; ball <= tableStatus.size(); ball++) {
-            turnBuilder.tableStatus.setBallTo(tableStatus.getBallStatus(ball), ball);
         }
     }
 

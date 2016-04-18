@@ -62,7 +62,7 @@ public class MatchDialogHelperUtils {
         args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.name());
         args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
         args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
-        args.putString(STATS_LEVEL_KEY, match.getStatsLevel().name());
+        args.putString(STATS_LEVEL_KEY, match.getAdvStats().name());
         args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
         args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
         return args;

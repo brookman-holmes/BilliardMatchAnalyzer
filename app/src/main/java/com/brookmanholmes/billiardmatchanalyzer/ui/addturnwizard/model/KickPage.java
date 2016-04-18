@@ -14,9 +14,9 @@ public class KickPage extends SingleFixedChoicePage implements UpdatesTurnInfo{
         super(callbacks, title);
     }
 
-    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.advStats.clearAngle();
-        turnBuilder.advStats.angle(data.getString(SIMPLE_DATA_KEY));
+    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+        model.getAdvStats().clearAngle();
+        model.getAdvStats().angle(data.getString(SIMPLE_DATA_KEY));
     }
 
     @Override public Fragment createFragment() {

@@ -118,8 +118,10 @@ public class GameTurn implements Turn {
         if (scratch != gameTurn.scratch) return false;
         if (matchId != gameTurn.matchId) return false;
         if (inningNumber != gameTurn.inningNumber) return false;
+        if (gameLost != gameTurn.gameLost) return false;
         if (!tableStatus.equals(gameTurn.tableStatus)) return false;
-        return turnEnd == gameTurn.turnEnd;
+        if (turnEnd != gameTurn.turnEnd) return false;
+        return advStats.equals(gameTurn.advStats);
 
     }
 
@@ -129,6 +131,8 @@ public class GameTurn implements Turn {
         result = 31 * result + (scratch ? 1 : 0);
         result = 31 * result + (int) (matchId ^ (matchId >>> 32));
         result = 31 * result + inningNumber;
+        result = 31 * result + (gameLost ? 1 : 0);
+        result = 31 * result + advStats.hashCode();
         return result;
     }
 

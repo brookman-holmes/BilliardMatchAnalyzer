@@ -14,18 +14,18 @@ public class WhyMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
         super(callbacks, title);
     }
 
-    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
+    @Override public void updateTurnInfo(AddTurnWizardModel model) {
         if (parentKey.equals("break miss why") || parentKey.equals("illegal break why")) {
-            turnBuilder.advStats.shotType("Break shot");
-            turnBuilder.advStats.clearHowTypes();
-            turnBuilder.advStats.clearWhyTypes();
-            turnBuilder.advStats.clearAngle();
-            turnBuilder.advStats.clearSubType();
+            model.getAdvStats().shotType("Break shot");
+            model.getAdvStats().clearHowTypes();
+            model.getAdvStats().clearWhyTypes();
+            model.getAdvStats().clearAngle();
+            model.getAdvStats().clearSubType();
         }
 
-        turnBuilder.advStats.clearWhyTypes();
+        model.getAdvStats().clearWhyTypes();
         if (data.getStringArrayList(SIMPLE_DATA_KEY) != null)
-            turnBuilder.advStats.whyTypes(data.getStringArrayList(SIMPLE_DATA_KEY));
+            model.getAdvStats().whyTypes(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
 

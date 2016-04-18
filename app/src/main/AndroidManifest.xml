@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.brookmanholmes.billiardmatchanalyzer">
+<manifest package="com.brookmanholmes.billiardmatchanalyzer"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:name=".MyApplication"
@@ -28,6 +28,9 @@
         <activity
             android:name=".ui.MatchInfoActivity"
             android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name=".ui.PlayerProfileActivity"
+            android:label="Player Profile"/>
 
     </application>
 

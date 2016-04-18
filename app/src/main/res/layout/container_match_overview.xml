@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/title"
-    android:columnCount="3"
-    android:columnOrderPreserved="true"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:rowCount="5"
-    android:useDefaultMargins="true"
-    tools:showIn="@layout/card_match_overview">
+<GridLayout android:id="@+id/container"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:columnCount="3"
+            android:columnOrderPreserved="true"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:rowCount="5"
+            android:useDefaultMargins="true"
+            tools:showIn="@layout/card_match_overview">
 
     <TextView
         android:id="@+id/tvWinPercentPlayer"
@@ -82,7 +82,7 @@
         android:textColor="@color/secondary_text" />
 
     <TextView
-        android:id="@+id/tvAggressivenessRatingOpponent"
+        android:id="@+id/tvAggressivenessRatingPlayer"
         android:layout_gravity="center"
         android:textColor="@color/primary_text" />
 
@@ -91,10 +91,10 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:text="@string/title_ar"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"/>
 
     <TextView
-        android:id="@+id/tvAggressivenessRatingPlayer"
+        android:id="@+id/tvAggressivenessRatingOpponent"
         android:layout_gravity="center"
         android:textColor="@color/primary_text" />
 

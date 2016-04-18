@@ -36,6 +36,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     }
 
     @Override public void onBindViewHolderCursor(ListItemHolder holder, Cursor cursor) {
+        // TODO: modify these set texts to grab string resources
         holder.location.setText(getLocation(cursor));
         holder.date.setText(getDate(cursor));
         holder.playerNames.setText(getPlayerNames(cursor));
@@ -142,7 +143,6 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         @Bind(R.id.players) TextView playerNames;
         @Bind(R.id.breakType) TextView breakType;
         @Bind(R.id.imgGameType) ImageView gameType;
-        @Bind(R.id.container) View container;
         @Bind(R.id.dateLoc) TextView location;
         @Bind(R.id.date) TextView date;
         @Bind(R.id.ruleSet) TextView ruleSet;

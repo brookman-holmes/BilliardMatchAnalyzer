@@ -10,12 +10,12 @@ public class BreakErrorPage extends HowMissPage {
         super(callbacks, title);
     }
 
-    @Override public void updateTurnInfo(TurnBuilder turnBuilder) {
-        turnBuilder.advStats.shotType("Break shot");
-        turnBuilder.advStats.clearAngle();
-        turnBuilder.advStats.clearSubType();
-        turnBuilder.advStats.clearWhyTypes();
+    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+        model.getAdvStats().shotType("Break shot");
+        model.getAdvStats().clearAngle();
+        model.getAdvStats().clearSubType();
+        model.getAdvStats().clearWhyTypes();
 
-        super.updateTurnInfo(turnBuilder);
+        super.updateTurnInfo(model);
     }
 }

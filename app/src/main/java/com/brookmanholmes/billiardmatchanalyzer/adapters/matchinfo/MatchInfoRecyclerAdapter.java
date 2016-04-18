@@ -44,7 +44,7 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
 
     MatchInfoRecyclerAdapter(Match<T> match, int gameBall) {
         this.match = match;
-        detail = match.getStatsLevel();
+        detail = match.getAdvStats();
         this.gameBall = gameBall;
     }
 
