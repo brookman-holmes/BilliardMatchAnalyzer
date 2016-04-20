@@ -2,28 +2,36 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model;
 
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePage;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
 /**
  * Created by helios on 2/20/2016.
  */
-public abstract class RankPage extends SingleFixedChoicePage implements RequiresPlayerNames{
-    protected int playerNumber;
+public abstract class RankPage extends SingleFixedChoicePage implements RequiresPlayerNames, UpdatesMatchBuilder {
+    PlayerTurn playerTurn;
+    private String titleFormat;
 
-    public RankPage(ModelCallbacks callbacks, int playerNumber) {
-        super(callbacks, "Player " + playerNumber + "-'s Rank");
-        this.playerNumber = playerNumber;
+    public RankPage(ModelCallbacks callbacks, String title, PlayerTurn playerTurn) {
+        super(callbacks, String.format(title, playerTurn.toString()));
+
+        titleFormat = title;
+        this.playerTurn = playerTurn;
+
         setChoices();
-        setRequired(true);
         setValue("5");
     }
 
     protected abstract void setChoices();
 
     @Override public void setPlayerNames(String playerName, String opponentName) {
-        if (playerNumber == 1) {
-            title = playerName + "'s Rank";
+        if (playerTurn == PlayerTurn.PLAYER) {
+            title = String.format(titleFormat, playerName);
         } else {
-            title = opponentName + "'s Rank";
+            title = String.format(titleFormat, opponentName);
         }
+    }
+
+    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+        model.setPlayerRank(playerTurn, data.getString(SIMPLE_DATA_KEY, "5"));
     }
 }

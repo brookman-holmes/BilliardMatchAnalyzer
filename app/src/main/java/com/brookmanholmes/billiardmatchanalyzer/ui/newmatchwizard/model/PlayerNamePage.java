@@ -20,20 +20,28 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.fragments.PlayerNameFragment;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
 
-public class PlayerNamePage extends Page {
+public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder {
     public static final String PLAYER_NAME_KEY = "player name";
     public static final String OPPONENT_NAME_KEY = "opponent name";
     public static final String LOCATION_KEY = "location";
     public static final String EXTRA_INFO_KEY = "extras";
+    public static final String PLAY_THE_GHOST_KEY = "ghost";
 
-    public PlayerNamePage(ModelCallbacks callbacks) {
-        super(callbacks, "Enter player names");
+    String reviewPlayer;
+    String reviewLocation;
+
+    public PlayerNamePage(ModelCallbacks callbacks, String title, String reviewPlayer, String reviewLocation) {
+        super(callbacks, title);
+
+        this.reviewLocation = reviewLocation;
+        this.reviewPlayer = reviewPlayer;
+
         setRequired(true);
     }
 
@@ -42,15 +50,23 @@ public class PlayerNamePage extends Page {
     }
 
     @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
-        dest.add(new ReviewItem("Player 1", data.getString(PLAYER_NAME_KEY), getKey()));
-        dest.add(new ReviewItem("Player 2", data.getString(OPPONENT_NAME_KEY), getKey()));
+        dest.add(new ReviewItem(String.format(reviewPlayer, 1), getPlayerName(), getKey()));
+        dest.add(new ReviewItem(String.format(reviewPlayer, 2), getOpponentName(), getKey()));
         if (!data.getString(LOCATION_KEY, "").equals(""))
-            dest.add(new ReviewItem("Location", data.getString(LOCATION_KEY), getKey()));
+            dest.add(new ReviewItem(reviewLocation, data.getString(LOCATION_KEY), getKey()));
     }
 
     @Override public boolean isCompleted() {
-        return !TextUtils.isEmpty(data.getString(PLAYER_NAME_KEY)) && !TextUtils.isEmpty(data.getString(OPPONENT_NAME_KEY))
-                && !TextUtils.equals(data.getString(PLAYER_NAME_KEY), data.getString(OPPONENT_NAME_KEY));
+        return !TextUtils.isEmpty(getPlayerName()) && !TextUtils.isEmpty(getOpponentName())
+                && !TextUtils.equals(getPlayerName(), getOpponentName());
+    }
+
+    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+        model.setPlayerName(getPlayerName(),
+                getOpponentName(),
+                data.getString(LOCATION_KEY, ""),
+                data.getString(EXTRA_INFO_KEY, ""),
+                data.getBoolean(PLAY_THE_GHOST_KEY, false));
     }
 
     public String getPlayerName() {
@@ -58,6 +74,6 @@ public class PlayerNamePage extends Page {
     }
 
     public String getOpponentName() {
-        return data.getString(OPPONENT_NAME_KEY, "error no opp name");
+        return data.getString(OPPONENT_NAME_KEY, "error no opponent name");
     }
 }

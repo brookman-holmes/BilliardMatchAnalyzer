@@ -4,6 +4,7 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
 import java.util.ArrayList;
 
@@ -11,8 +12,8 @@ import java.util.ArrayList;
  * Created by Brookman Holmes on 1/7/2016.
  */
 public class Apa9BallRankPage extends RankPage {
-    public Apa9BallRankPage(ModelCallbacks callbacks, int playerNumber) {
-        super(callbacks, playerNumber);
+    public Apa9BallRankPage(ModelCallbacks callbacks, String title, PlayerTurn playerNumber) {
+        super(callbacks, title, playerNumber);
     }
 
     @Override public void getReviewItems(ArrayList<ReviewItem> dest) {

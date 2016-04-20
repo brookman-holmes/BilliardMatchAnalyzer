@@ -32,14 +32,9 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model.CreateNe
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.ReviewFragment;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.StepPagerStrip;
-import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 
 import java.util.List;
@@ -61,13 +56,15 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
     private MyPagerAdapter pagerAdapter;
     private boolean editingAfterReview;
-    private AbstractWizardModel wizardModel = new CreateNewMatchWizardModel(this);
+    private CreateNewMatchWizardModel wizardModel;
     private boolean consumePageSelectedEvent;
     private List<Page> currentPageSequence;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_match);
+
+        wizardModel = new CreateNewMatchWizardModel(this);
 
         ButterKnife.bind(this);
         if (savedInstanceState != null) {
@@ -105,7 +102,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
     }
 
     private void createMatchAndLaunchMatchInfoActivity() {
-        Match match = MatchCreationHelper.createMatch(((ReviewFragment) pagerAdapter.getPrimaryItem()).getCurrentReviewItems());
+        Match match = wizardModel.createMatch();
+
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
         databaseAdapter.open();
 
@@ -214,174 +212,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
 
         return false;
-    }
-
-    private static class MatchCreationHelper {
-        private MatchCreationHelper() {
-
-        }
-
-        public static Match createMatch(List<ReviewItem> reviewItems) {
-            GameType gameType = getGameType(reviewItems);
-            PlayerTurn playerTurn = getPlayerTurn(reviewItems);
-            BreakType breakType = getBreakType(reviewItems);
-            String opponentName = getOpponentName(reviewItems);
-            String playerName = getPlayerName(reviewItems);
-            int playerRank = getPlayerRank(reviewItems);
-            int opponentRank = getOpponentRank(reviewItems);
-            String location = getLocation(reviewItems);
-            String notes = getNotes(reviewItems);
-            Match.StatsDetail detail = getStatDetailLevel(reviewItems);
-
-            return new Match.Builder(playerName, opponentName)
-                    .setBreakType(breakType)
-                    .setStatsDetail(detail)
-                    .setPlayerTurn(playerTurn)
-                    .setPlayerRanks(playerRank, opponentRank)
-                    .setLocation(location)
-                    .setNotes(notes)
-                    .build(gameType);
-        }
-
-        private static GameType getGameType(List<ReviewItem> reviewItems) {
-            for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("Select a game")) {
-                    switch (item.getDisplayValue()) {
-                        case "APA 8 ball":
-                            return GameType.APA_EIGHT_BALL;
-                        case "APA 9 ball":
-                            return GameType.APA_NINE_BALL;
-                        case "BCA 8 ball":
-                            return GameType.BCA_EIGHT_BALL;
-                        case "BCA 9 ball":
-                            return GameType.BCA_NINE_BALL;
-                        case "BCA 10 ball":
-                            return GameType.BCA_TEN_BALL;
-                        case "Straight pool":
-                            return GameType.STRAIGHT_POOL;
-                        case "American Rotation":
-                            return GameType.AMERICAN_ROTATION;
-                        default:
-                            throw new InvalidGameTypeException(item.getDisplayValue());
-                    }
-                }
-            }
-
-            throw new InvalidGameTypeException("No review item with the title 'Game'");
-        }
-
-        private static PlayerTurn getPlayerTurn(List<ReviewItem> reviewItems) {
-            String playerName = getPlayerName(reviewItems);
-            String opponentName = getOpponentName(reviewItems);
-
-            for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("Who breaks first?")) {
-                    if (item.getDisplayValue().equals(playerName))
-                        return PlayerTurn.PLAYER;
-                    else if (item.getDisplayValue().equals(opponentName))
-                        return PlayerTurn.OPPONENT;
-                    else
-                        throw new IllegalArgumentException("Incorrect player name, was: " + item.getDisplayValue() + " but should be: " + playerName + " or " + opponentName);
-                }
-            }
-
-            throw new IllegalArgumentException("No review item with the title 'Who breaks first?");
-        }
-
-        private static String getPlayerName(List<ReviewItem> reviewItems) {
-            for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("Player 1")) {
-                    return item.getDisplayValue();
-                }
-            }
-
-            throw new IllegalArgumentException("No review item with the title 'Player 1'");
-        }
-
-        private static String getOpponentName(List<ReviewItem> reviewItems) {
-            for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("Player 2")) {
-                    return item.getDisplayValue();
-                }
-            }
-
-            throw new IllegalArgumentException("No review item with the title 'Player 2'");
-        }
-
-        private static BreakType getBreakType(List<ReviewItem> reviewItems) {
-            for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("The break")) {
-                    switch (item.getDisplayValue()) {
-                        case "Winner":
-                            return BreakType.WINNER;
-                        case "Alternate":
-                            return BreakType.ALTERNATE;
-                        case "Loser":
-                            return BreakType.LOSER;
-                        default:
-                            if (item.getDisplayValue().startsWith(getPlayerName(reviewItems)))
-                                return BreakType.PLAYER;
-                            else if (item.getDisplayValue().startsWith(getOpponentName(reviewItems)))
-                                return BreakType.OPPONENT;
-                    }
-                }
-            }
-
-            throw new IllegalArgumentException("No review item with the title 'The break', or the player name does not exist");
-        }
-
-        private static int getPlayerRank(List<ReviewItem> reviewItems) {
-            for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals(getPlayerName(reviewItems) + "'s Rank"))
-                    return Integer.valueOf(item.getDisplayValue().substring(0, 1));
-            }
-
-            return 0;
-        }
-
-        private static int getOpponentRank(List<ReviewItem> reviewItems) {
-            for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals(getOpponentName(reviewItems) + "'s Rank"))
-                    return Integer.valueOf(item.getDisplayValue().substring(0, 1));
-            }
-
-            return 0;
-        }
-
-        private static Match.StatsDetail getStatDetailLevel(List<ReviewItem> reviewItems) {
-            for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("Select detail level for stats")) {
-                    if (item.getDisplayValue().equals("Simple"))
-                        return Match.StatsDetail.SIMPLE;
-                    else if (item.getDisplayValue().equals("Advanced"))
-                        return Match.StatsDetail.ADVANCED;
-                    else if (item.getDisplayValue().equals("Advanced stats for " + getPlayerName(reviewItems)))
-                        return Match.StatsDetail.ADVANCED_PLAYER;
-                    else if (item.getDisplayValue().equals("Advanced stats for " + getOpponentName(reviewItems)))
-                        return Match.StatsDetail.ADVANCED_OPPONENT;
-                }
-            }
-
-            return Match.StatsDetail.NORMAL;
-        }
-
-        private static String getLocation(List<ReviewItem> reviewItems) {
-            for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("Location"))
-                    return item.getDisplayValue();
-            }
-
-            return "";
-        }
-
-        private static String getNotes(List<ReviewItem> reviewItems) {
-            for (ReviewItem item : reviewItems) {
-                if (item.getTitle().equals("Match notes"))
-                    return item.getDisplayValue();
-            }
-
-            return "";
-        }
     }
 
     public class MyPagerAdapter extends FragmentStatePagerAdapter {

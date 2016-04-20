@@ -1,13 +1,14 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model;
 
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
 /**
  * Created by Brookman Holmes on 1/7/2016.
  */
 public class Apa8BallRankPage extends RankPage {
-    public Apa8BallRankPage(ModelCallbacks callbacks, int playerNumber) {
-        super(callbacks, playerNumber);
+    public Apa8BallRankPage(ModelCallbacks callbacks, String title, PlayerTurn playerNumber) {
+        super(callbacks, title, playerNumber);
     }
 
     @Override protected void setChoices() {

@@ -1,5 +1,8 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model;
 
+import android.content.Context;
+
+import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
@@ -10,29 +13,24 @@ import java.util.ArrayList;
 /**
  * Created by Brookman Holmes on 1/7/2016.
  */
-public class BreakTypePage extends BranchPage implements RequiresPlayerNames {
-    String playerName = "Player 1-", opponentName = "Player 2-";
-    String valueEnding = " always breaks";
+public class BreakTypePage extends BranchPage implements RequiresPlayerNames, UpdatesMatchBuilder {
+    String playerName = "Player 1", opponentName = "Player 2";
+    String valueEnding;
+    String firstBreak;
 
-    public BreakTypePage(ModelCallbacks callbacks, String parentPage) {
-        super(callbacks, "The break");
-
-        addBranch("Winner", new FirstBreakPage(callbacks, parentPage));
-        addBranch("Alternate", new FirstBreakPage(callbacks, parentPage));
-        addBranch("Loser", new FirstBreakPage(callbacks, parentPage));
-        addBranch(playerName + valueEnding);
-        addBranch(opponentName + valueEnding);
-        setValue("Alternate");
-        setRequired(true);
+    public BreakTypePage(ModelCallbacks callbacks, String title, Context context) {
+        super(callbacks, title);
+        valueEnding = context.getString(R.string.break_player);
+        firstBreak = context.getString(R.string.title_page_first_break);
     }
 
     @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
         super.getReviewItems(dest);
 
-        if (data.getString(SIMPLE_DATA_KEY, "").equals(playerName + valueEnding)) {
-            dest.add(new ReviewItem("Who breaks first?", playerName, getKey()));
-        } else if (data.getString(SIMPLE_DATA_KEY, "").equals(opponentName + valueEnding)) {
-            dest.add(new ReviewItem("Who breaks first?", opponentName, getKey()));
+        if (data.getString(SIMPLE_DATA_KEY, "").equals(String.format(valueEnding, playerName))) {
+            dest.add(new ReviewItem(firstBreak, playerName, getKey()));
+        } else if (data.getString(SIMPLE_DATA_KEY, "").equals(String.format(valueEnding, opponentName))) {
+            dest.add(new ReviewItem(firstBreak, opponentName, getKey()));
         }
     }
 
@@ -45,15 +43,19 @@ public class BreakTypePage extends BranchPage implements RequiresPlayerNames {
             }
         }
 
-        if (data.getString(SIMPLE_DATA_KEY, "").equals(this.playerName + valueEnding))
-            data.putString(SIMPLE_DATA_KEY, playerName + valueEnding);
-        else if (data.getString(SIMPLE_DATA_KEY, "").equals(this.opponentName + valueEnding))
-            data.putString(SIMPLE_DATA_KEY, opponentName + valueEnding);
+        if (data.getString(SIMPLE_DATA_KEY, "").equals(String.format(valueEnding, this.playerName)))
+            data.putString(SIMPLE_DATA_KEY, String.format(valueEnding, playerName));
+        else if (data.getString(SIMPLE_DATA_KEY, "").equals(String.format(valueEnding, this.opponentName)))
+            data.putString(SIMPLE_DATA_KEY, String.format(valueEnding, opponentName));
 
         this.playerName = playerName;
         this.opponentName = opponentName;
 
-        branches.get(3).choice = playerName + valueEnding;
-        branches.get(4).choice = opponentName + valueEnding;
+        branches.get(3).choice = String.format(valueEnding, playerName);
+        branches.get(4).choice = String.format(valueEnding, opponentName);
+    }
+
+    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+        model.setBreakType(data.getString(SIMPLE_DATA_KEY));
     }
 }

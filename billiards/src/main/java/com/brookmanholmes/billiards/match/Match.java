@@ -3,6 +3,7 @@ package com.brookmanholmes.billiards.match;
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.Turn;
+import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
@@ -94,6 +95,20 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         updatePlayerStats(turn);
         updateGameState(turn);
         turns.push(turn);
+
+        if (game.getGameStatus().breakType == BreakType.GHOST && turn.getTurnEnd() != TurnEnd.GAME_WON) {
+            insertGameWonForGhost();
+        }
+    }
+
+    private void insertGameWonForGhost() {
+        TableStatus tableStatus = game.getCurrentTableStatus();
+        tableStatus.setBallTo(BallStatus.MADE, game.getGhostBallsToWinGame());
+
+        Turn turn = new GameTurn(turns.size(), matchId, false, TurnEnd.GAME_WON, tableStatus, false);
+
+
+        addTurn(turn);
     }
 
     void updatePlayerStats(Turn turn) {
@@ -173,8 +188,32 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
             this.opponentName = opponentName;
         }
 
+        public Builder() {
+
+        }
+
+        public Builder setPlayerName(String name) {
+            playerName = name;
+            return this;
+        }
+
+        public Builder setOpponentName(String name) {
+            opponentName = name;
+            return this;
+        }
+
         public Builder setPlayerRanks(int playerRank, int opponentRank) {
             this.playerRank = playerRank;
+            this.opponentRank = opponentRank;
+            return this;
+        }
+
+        public Builder setPlayerRank(int playerRank) {
+            this.playerRank = playerRank;
+            return this;
+        }
+
+        public Builder setOpponentRank(int opponentRank) {
             this.opponentRank = opponentRank;
             return this;
         }
@@ -212,6 +251,22 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         public Builder setStatsDetail(StatsDetail detail) {
             statsDetail = detail;
             return this;
+        }
+
+        @Override public String toString() {
+            return "Builder{" +
+                    "playerName='" + playerName + '\'' +
+                    ", opponentName='" + opponentName + '\'' +
+                    ", playerRank=" + playerRank +
+                    ", opponentRank=" + opponentRank +
+                    ", breakType=" + breakType +
+                    ", playerTurn=" + playerTurn +
+                    ", gameType=" + gameType +
+                    ", location='" + location + '\'' +
+                    ", notes='" + notes + '\'' +
+                    ", id=" + id +
+                    ", statsDetail=" + statsDetail +
+                    '}';
         }
     }
 }

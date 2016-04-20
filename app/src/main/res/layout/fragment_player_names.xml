@@ -12,9 +12,9 @@
   limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/WizardPageContainer"
-    android:orientation="vertical">
+<LinearLayout style="@style/WizardPageContainer"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical">
 
     <TextView style="@style/WizardPageTitle" />
 
@@ -39,7 +39,6 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/playerName"
-                    style="@android:style/Widget.Material.EditText"
                     android:layout_width="fill_parent"
                     android:layout_height="48dp"
                     android:completionThreshold="1"
@@ -56,12 +55,11 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/opponentName"
-                    style="@android:style/Widget.Material.EditText"
                     android:layout_width="fill_parent"
                     android:layout_height="48dp"
                     android:completionThreshold="1"
                     android:inputType="textCapWords"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -72,7 +70,6 @@
 
                 <EditText
                     android:id="@+id/location"
-                    style="@android:style/Widget.Material.EditText"
                     android:layout_width="fill_parent"
                     android:layout_height="48dp"
                     android:inputType="textCapWords"
@@ -87,13 +84,21 @@
 
                 <EditText
                     android:id="@+id/extra"
-                    style="@android:style/Widget.Material.EditText"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:inputType="textMultiLine"
-                    android:textSize="16sp" />
+                    android:minLines="4"
+                    android:textSize="16sp"/>
 
             </android.support.design.widget.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/cbGhost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Play the ghost?"/>
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>

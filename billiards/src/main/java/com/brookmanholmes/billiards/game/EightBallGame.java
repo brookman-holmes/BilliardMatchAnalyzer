@@ -7,6 +7,8 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.turn.TableUtils;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
+import java.util.Arrays;
+
 import static com.brookmanholmes.billiards.game.util.PlayerColor.OPEN;
 import static com.brookmanholmes.billiards.game.util.PlayerColor.SOLIDS;
 import static com.brookmanholmes.billiards.game.util.PlayerColor.STRIPES;
@@ -68,5 +70,21 @@ class EightBallGame extends Game {
                 return STRIPES;
             else return SOLIDS;
         }
+    }
+
+    @Override public int[] getGhostBallsToWinGame() {
+        if (playerColor == SOLIDS) {
+            ballsOnTable.removeAll(Arrays.asList(1,2,3,4,5,6,7));
+        } else if (playerColor == STRIPES) {
+            ballsOnTable.removeAll(Arrays.asList(9,10,11,12,13,14,15));
+        }
+
+        int[] ballsToWin = new int[ballsOnTable.size()];
+
+        for (int i = 0; i < ballsOnTable.size(); i++) {
+            ballsToWin[i] = ballsOnTable.get(i);
+        }
+
+        return ballsToWin;
     }
 }

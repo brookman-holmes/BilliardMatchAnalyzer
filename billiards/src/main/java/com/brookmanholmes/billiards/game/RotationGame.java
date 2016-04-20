@@ -35,4 +35,14 @@ abstract class RotationGame extends Game {
     @Override boolean setAllowPush(Turn turn) {
         return (turn.getBreakBallsMade() == 0 && !turn.isScratch() && turn.getTurnEnd() == TurnEnd.BREAK_MISS);
     }
+
+    @Override public int[] getGhostBallsToWinGame() {
+        int[] ballsToWin = new int[ballsOnTable.size()];
+
+        for (int i = 0; i < ballsOnTable.size(); i++) {
+            ballsToWin[i] = ballsOnTable.get(i);
+        }
+
+        return ballsToWin;
+    }
 }

@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -38,13 +40,19 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 
 import java.util.List;
 
-public class PlayerNameFragment extends Fragment {
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class PlayerNameFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
     private static final String ARG_KEY = "key";
+    @Bind(R.id.playerName) AutoCompleteTextView playerName;
+    @Bind(R.id.opponentName) AutoCompleteTextView opponentName;
+    @Bind(R.id.location) EditText location;
+    @Bind(R.id.extra) EditText extra;
+    @Bind(R.id.cbGhost) CheckBox playTheGhost;
     private PageFragmentCallbacks callbacks;
     private String key;
     private PlayerNamePage page;
-    private AutoCompleteTextView playerName, opponentName;
-    private EditText location, extra;
     private List<String> names;
 
     public PlayerNameFragment() {
@@ -72,25 +80,37 @@ public class PlayerNameFragment extends Fragment {
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                                       Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_player_names, container, false);
+        ButterKnife.bind(this, rootView);
+
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
 
         ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.select_dialog_item, names);
 
-        playerName = ((AutoCompleteTextView) rootView.findViewById(R.id.playerName));
         playerName.setAdapter(autoCompleteAdapter);
         playerName.setText(page.getData().getString(PlayerNamePage.PLAYER_NAME_KEY));
 
-        opponentName = ((AutoCompleteTextView) rootView.findViewById(R.id.opponentName));
         opponentName.setAdapter(autoCompleteAdapter);
         opponentName.setText(page.getData().getString(PlayerNamePage.OPPONENT_NAME_KEY));
 
-        location = (EditText) rootView.findViewById(R.id.location);
-        extra = (EditText) rootView.findViewById(R.id.extra);
+        playTheGhost.setOnCheckedChangeListener(this);
+
+        playTheGhost.setChecked(page.getData().getBoolean(PlayerNamePage.PLAY_THE_GHOST_KEY));
 
         return rootView;
+    }
+
+    @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        page.getData().putBoolean(PlayerNamePage.PLAY_THE_GHOST_KEY, isChecked);
+        opponentName.setEnabled(!isChecked);
+
+        if (opponentName.isEnabled()) {
+            opponentName.setText("");
+        } else {
+            opponentName.setText(R.string.ghost_name);
+        }
     }
 
     @Override public void onAttach(Context context) {
@@ -129,11 +149,11 @@ public class PlayerNameFragment extends Fragment {
             @Override public void afterTextChanged(final Editable editable) {
                 if (key.equals(PlayerNamePage.PLAYER_NAME_KEY)) {
                     if (TextUtils.equals(editable.toString(), opponentName.getText().toString())) {
-                        playerName.setError("Players cannot have the same name");
+                        playerName.setError(getString(R.string.error_same_name));
                     }
                 } else if (key.equals(PlayerNamePage.OPPONENT_NAME_KEY)) {
                     if (TextUtils.equals(editable.toString(), playerName.getText().toString())) {
-                        opponentName.setError("Players cannot have the same name");
+                        opponentName.setError(getString(R.string.error_same_name));
                     }
                 }
 

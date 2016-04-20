@@ -6,28 +6,33 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePa
 /**
  * Created by Brookman Holmes on 3/9/2016.
  */
-public class StatDetailPage extends SingleFixedChoicePage implements RequiresPlayerNames {
+public class StatDetailPage extends SingleFixedChoicePage implements RequiresPlayerNames, UpdatesMatchBuilder {
     String playerName = "Player 1-", opponentName = "Player 2-";
-    String startValue = "Advanced stats for ";
+    String startValue;
 
-    public StatDetailPage(ModelCallbacks callbacks) {
-        super(callbacks, "Select detail level for stats");
-
-        setChoices("Simple", "Normal", "Advanced", startValue + playerName, startValue + opponentName);
-        setValue("Normal");
-        setRequired(true);
+    public StatDetailPage(ModelCallbacks callbacks, String title) {
+        super(callbacks, title);
     }
 
     @Override public void setPlayerNames(String playerName, String opponentName) {
-        if (data.getString(SIMPLE_DATA_KEY, "|!_)(@%!)*(!@%$!@").equals(startValue + this.playerName))
-            data.putString(SIMPLE_DATA_KEY, startValue + playerName);
-        else if (data.getString(SIMPLE_DATA_KEY, "|!_)(@%!)*(!@%$!@").equals(startValue + this.opponentName))
-            data.putString(SIMPLE_DATA_KEY, startValue + opponentName);
+        if (data.getString(SIMPLE_DATA_KEY, "").equals(String.format(startValue, this.playerName)))
+            data.putString(SIMPLE_DATA_KEY, String.format(startValue, playerName));
+        else if (data.getString(SIMPLE_DATA_KEY, "").equals(String.format(startValue, this.opponentName)))
+            data.putString(SIMPLE_DATA_KEY, String.format(startValue, opponentName));
 
         this.playerName = playerName;
         this.opponentName = opponentName;
 
-        choices.set(3, startValue + playerName);
-        choices.set(4, startValue + opponentName);
+        choices.set(3, String.format(startValue, playerName));
+        choices.set(4, String.format(startValue, opponentName));
+    }
+
+    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+        model.setStatDetail(data.getString(SIMPLE_DATA_KEY));
+    }
+
+    @Override public SingleFixedChoicePage setChoices(String... choices) {
+        startValue = choices[3];
+        return super.setChoices(choices);
     }
 }

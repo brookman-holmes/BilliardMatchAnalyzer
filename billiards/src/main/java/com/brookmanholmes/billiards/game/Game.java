@@ -145,8 +145,10 @@ public abstract class Game {
                 return PlayerTurn.OPPONENT;
             case ALTERNATE:
                 return changeTurn(breaker);
-            default:
+            case GHOST:
                 return PlayerTurn.PLAYER;
+            default:
+                throw new IllegalStateException("breakType: " + breakType + " is not supported");
         }
     }
 
@@ -245,6 +247,8 @@ public abstract class Game {
 
         }
     }
+
+    public abstract int[] getGhostBallsToWinGame();
 
     @Override public String toString() {
         return "Game{" +
