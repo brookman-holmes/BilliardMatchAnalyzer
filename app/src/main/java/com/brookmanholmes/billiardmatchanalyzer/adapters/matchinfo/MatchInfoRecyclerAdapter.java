@@ -102,7 +102,7 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
 
     @Override public int getItemCount() {
         if (match.getGameStatus().breakType == BreakType.GHOST)
-            return 3;
+            return 4;
         else
             return 6;
     }
@@ -115,12 +115,12 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
                 return ITEM_SHOOTING_PCT;
             else if (position == 2)
                 return ITEM_BREAKS;
+            else return ITEM_FOOTER;
         }
 
-
-        if (position != getItemCount() - 1)
-            return position;
-        else return ITEM_FOOTER;
+        if (position == getItemCount())
+            return ITEM_FOOTER;
+        else return position;
     }
 
     @Override public T getPlayer() {
