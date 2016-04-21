@@ -118,4 +118,8 @@
     <string name="ghost_name">The Ghost</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="bca_rules">BCA</string>
+    <string name="apa_rules">APA</string>
+    <string name="and">%1$s &amp; %2$s</string>
+    <string name="delete_match">Would you like to delete this match?</string>
 </resources>

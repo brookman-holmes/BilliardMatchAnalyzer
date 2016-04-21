@@ -46,7 +46,6 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     }
 
     @Override public void onBindViewHolderCursor(ListItemHolder holder, Cursor cursor) {
-        // TODO: modify these set texts to grab string resources
         holder.location.setText(getLocation(cursor));
         holder.date.setText(getDate(cursor));
         holder.playerNames.setText(getPlayerNames(cursor));
@@ -130,26 +129,22 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     private String getRuleSet(Cursor cursor) {
         switch (GameType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE)))) {
             case BCA_EIGHT_BALL:
-                return "BCA";
+                return getString(R.string.bca_rules);
             case BCA_NINE_BALL:
-                return "BCA";
+                return getString(R.string.bca_rules);
             case BCA_TEN_BALL:
-                return "BCA";
+                return getString(R.string.bca_rules);
             case APA_EIGHT_BALL:
-                return "APA";
+                return getString(R.string.apa_rules);
             case APA_NINE_BALL:
-                return "APA";
-            case STRAIGHT_POOL:
-                return "";
-            case AMERICAN_ROTATION:
-                return "";
+                return getString(R.string.apa_rules);
             default:
                 return "";
         }
     }
 
     private String getPlayerNames(Cursor cursor) {
-        return getPlayerName(cursor) + " & " + getOpponentName(cursor);
+        return getString(R.string.and, getPlayerName(cursor), getOpponentName(cursor));
     }
 
     private String getPlayerName(Cursor cursor) {
@@ -182,17 +177,17 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         }
 
         @OnClick(R.id.container) public void onClick() {
-            Intent intent = new Intent(itemView.getContext(), MatchInfoActivity.class);
+            Intent intent = new Intent(context, MatchInfoActivity.class);
             intent.putExtra(BaseActivity.ARG_MATCH_ID, getItemId());
-            itemView.getContext().startActivity(intent);
+            context.startActivity(intent);
         }
 
         @OnLongClick(R.id.container) public boolean onLongClick() {
-            final DatabaseAdapter database = new DatabaseAdapter(itemView.getContext());
+            final DatabaseAdapter database = new DatabaseAdapter(context);
             database.open();
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext(), R.style.AlertDialogTheme);
-            builder.setMessage("Would you like to delete this match?")
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+            builder.setMessage(getString(R.string.delete_match))
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override public void onClick(DialogInterface dialog, int which) {
                             database.deleteMatch(getItemId());
