@@ -116,4 +116,6 @@
     <string name="title_page_first_break">Who breaks first?</string>
     <string name="title_page_rank">Select %1$s\'s rank</string>
     <string name="ghost_name">The Ghost</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
 </resources>

@@ -37,7 +37,7 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
         View view = inflater.inflate(R.layout.fragment_list_view2, null);
         ButterKnife.bind(this, view);
 
-        adapter = new MatchListRecyclerAdapter(null);
+        adapter = new MatchListRecyclerAdapter(getContext(), null);
 
         DatabaseAdapter database = new DatabaseAdapter(getActivity());
         database.open();

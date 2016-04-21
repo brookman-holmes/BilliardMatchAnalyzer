@@ -1,8 +1,10 @@
 package com.brookmanholmes.billiardmatchanalyzer.adapters;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +20,11 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.MatchInfoActivity;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 
-import java.text.SimpleDateFormat;
+import org.apache.commons.lang3.time.DateUtils;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.Bind;
@@ -30,8 +36,12 @@ import butterknife.OnLongClick;
  * Created by Brookman Holmes on 1/13/2016.
  */
 public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRecyclerAdapter.ListItemHolder> {
-    public MatchListRecyclerAdapter(Cursor cursor) {
+    Context context;
+
+    public MatchListRecyclerAdapter(Context context, Cursor cursor) {
         super(cursor);
+
+        this.context = context;
         setHasStableIds(true);
     }
 
@@ -53,34 +63,43 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     private String getBreakType(Cursor cursor) {
         switch (BreakType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_BREAK_TYPE)))) {
             case WINNER:
-                return "Winner breaks";
+                return getString(R.string.break_winner);
             case LOSER:
-                return "Loser breaks";
+                return getString(R.string.break_loser);
             case ALTERNATE:
-                return "Alternating breaks";
+                return getString(R.string.break_alternate);
             case PLAYER:
-                return getPlayerName(cursor) + " breaks";
+                return getString(R.string.break_player, getPlayerName(cursor));
             case OPPONENT:
-                return getOpponentName(cursor) + " breaks";
+                return getString(R.string.break_player, getOpponentName(cursor));
             case GHOST:
-                return getPlayerName(cursor) + " breaks";
+                return getString(R.string.break_player, getPlayerName(cursor));
             default:
                 throw new IllegalArgumentException();
         }
     }
 
     private String getDate(Cursor cursor) {
-        SimpleDateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat newFormat = new SimpleDateFormat("EEE, MMM d");
+        String dateString = cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_CREATED_ON));
+
+        DateFormat format = DateFormat.getDateInstance();
         Date date;
         try {
-            date = oldFormat.parse(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_CREATED_ON)));
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
+            date = format.parse(dateString);
+        } catch (ParseException exception) {
+            exception.printStackTrace();
             date = new Date();
         }
 
-        return newFormat.format(date);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE, -1);
+
+        if (DateUtils.isSameDay(date, new Date()))
+            return getString(R.string.today);
+        else if (DateUtils.isSameDay(date, cal.getTime()))
+            return getString(R.string.yesterday);
+
+        return dateString;
     }
 
     private String getLocation(Cursor cursor) {
@@ -139,6 +158,14 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
 
     private String getOpponentName(Cursor cursor) {
         return cursor.getString(cursor.getColumnIndex("opp_name"));
+    }
+
+    private String getString(@StringRes int resId) {
+        return context.getString(resId);
+    }
+
+    private String getString(@StringRes int resId, Object... formatArgs) {
+        return context.getString(resId, formatArgs);
     }
 
     public class ListItemHolder extends RecyclerView.ViewHolder {

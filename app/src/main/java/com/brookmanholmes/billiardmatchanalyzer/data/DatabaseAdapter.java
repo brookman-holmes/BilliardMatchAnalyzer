@@ -24,7 +24,7 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -296,10 +296,9 @@ public class DatabaseAdapter {
         database.update(TABLE_MATCHES, values, COLUMN_ID + " = ?", new String[]{String.valueOf(matchId)});
     }
 
-
     private String getCurrentDate() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(new Date());
+        DateFormat dateFormat = DateFormat.getDateInstance();
+        return dateFormat.format(new Date());
     }
 
     public long insertTurn(Turn turn, long matchId, int turnCount) {

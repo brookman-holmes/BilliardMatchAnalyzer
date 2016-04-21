@@ -42,7 +42,7 @@ import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.TABL
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
     private static DatabaseHelper sInstance;
 
     /**
