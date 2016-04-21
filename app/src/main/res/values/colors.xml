@@ -7,6 +7,7 @@
     <color name="colorAccentLight">#FF9E80</color>
     <color name="primary_text">#D9000000</color>
     <color name="primary_text_dark">#FFFFFF</color>
+    <color name="non_current_players_turn">#78ffffff</color>
     <color name="secondary_text">#8C000000</color>
     <color name="disabled_text_light">#59000000</color>
     <color name="disabled_text_dark">#80FFFFFF</color>

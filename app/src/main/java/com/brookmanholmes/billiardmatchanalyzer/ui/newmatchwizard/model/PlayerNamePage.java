@@ -20,13 +20,13 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.fragments.PlayerNameFragment;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
 
-public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder {
+public class PlayerNamePage extends Page implements UpdatesMatchBuilder, UpdatesPlayerNames {
     public static final String PLAYER_NAME_KEY = "player name";
     public static final String OPPONENT_NAME_KEY = "opponent name";
     public static final String LOCATION_KEY = "location";
@@ -41,8 +41,7 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder {
 
         this.reviewLocation = reviewLocation;
         this.reviewPlayer = reviewPlayer;
-
-        setRequired(true);
+        data.putString(PLAY_THE_GHOST_KEY, Boolean.FALSE.toString());
     }
 
     @Override public Fragment createFragment() {
@@ -66,14 +65,23 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder {
                 getOpponentName(),
                 data.getString(LOCATION_KEY, ""),
                 data.getString(EXTRA_INFO_KEY, ""),
-                data.getBoolean(PLAY_THE_GHOST_KEY, false));
+                Boolean.parseBoolean(data.getString(PLAY_THE_GHOST_KEY, "false")));
     }
 
-    public String getPlayerName() {
-        return data.getString(PLAYER_NAME_KEY, "error no player name");
+    @Override public String getPlayerName() {
+        return data.getString(PLAYER_NAME_KEY, "");
     }
 
-    public String getOpponentName() {
-        return data.getString(OPPONENT_NAME_KEY, "error no opponent name");
+    @Override public String getOpponentName() {
+        return data.getString(OPPONENT_NAME_KEY, "");
+    }
+
+    public void setPlayTheGhost(boolean value) {
+        if (value)
+            data.putString(PLAY_THE_GHOST_KEY, Boolean.TRUE.toString());
+        else
+            data.putString(PLAY_THE_GHOST_KEY, Boolean.FALSE.toString());
+
+        notifyDataChanged();
     }
 }

@@ -4,6 +4,7 @@ import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.Turn;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.EightBallPlayer;
@@ -164,11 +165,16 @@ public abstract class PlayerController<T extends AbstractPlayer> {
     }
 
     void addBreakingStats(T player) {
-        player.addBreakShot(
-                turn.getBreakBallsMade(), // how many balls the player made on the break
-                turn.getShootingBallsMade() > 0, // determine if there was continuation or not
-                turn.getTurnEnd() == BREAK_MISS && turn.isScratch() // determine if the player scratched on the break
-        );
+        if (gameStatus.breakType == BreakType.GHOST) {
+            player.addBreakShot(turn.getBreakBallsMade(),
+                    turn.getShootingBallsMade() > 0,
+                    turn.getDeadBallsOnBreak() > 0);
+        } else
+            player.addBreakShot(
+                    turn.getBreakBallsMade(), // how many balls the player made on the break
+                    turn.getShootingBallsMade() > 0, // determine if there was continuation or not
+                    turn.getTurnEnd() == BREAK_MISS && turn.isScratch()  // determine if the player scratched on the break
+            );
     }
 
     void addRunOutStats(T player) {

@@ -9,6 +9,7 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 import com.brookmanholmes.billiards.game.util.BallStatus;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.TableStatus;
 
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class BreakPage extends BranchPage implements UpdatesTurnInfo {
-    private static final String showShotPage = "show shot page";
+    static final String showShotPage = "show shot page";
     TableStatus tableStatus;
     GameType gameType;
 
@@ -82,8 +83,8 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
         }
     }
 
-    private String showShotPage() {
-        if (tableStatus.getBreakBallsMade() > 0 && gameNotWonOnBreak()) {
+    String showShotPage() {
+        if ((tableStatus.getBreakBallsMade() > 0 && gameNotWonOnBreak()) || BreakType.valueOf(data.getString(MatchDialogHelperUtils.BREAK_TYPE_KEY)) == BreakType.GHOST) {
             return showShotPage;
         } else return "";
     }

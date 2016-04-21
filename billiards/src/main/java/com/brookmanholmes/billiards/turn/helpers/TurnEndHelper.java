@@ -2,6 +2,7 @@ package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.TableStatusInterface;
 import com.brookmanholmes.billiards.turn.TurnEnd;
@@ -50,21 +51,21 @@ abstract public class TurnEndHelper {
     boolean showPush() {
         return ((game.allowPush && !game.newGame)
                 || (game.newGame && nextInning.getBreakBallsMade() > 0))
-                && nextInning.getShootingBallsMade() == 0;
+                && nextInning.getShootingBallsMade() == 0 && !isAgainstGhost();
     }
 
     boolean showTurnSkip() {
         return game.allowTurnSkip
                 && nextInning.getShootingBallsMade() == 0
-                && nextInning.getDeadBalls() == 0;
+                && nextInning.getDeadBalls() == 0 && !isAgainstGhost();
     }
 
     boolean showSafety() {
-        return !showWin() && !showBreakMiss();
+        return !showWin() && !showBreakMiss() && !isAgainstGhost();
     }
 
     boolean showSafetyMiss() {
-        return !showWin() && !showBreakMiss();
+        return !showWin() && !showBreakMiss() && !isAgainstGhost();
     }
 
     boolean showMiss() {
@@ -72,11 +73,15 @@ abstract public class TurnEndHelper {
     }
 
     boolean checkFoul() {
-        return nextInning.getDeadBallsOnBreak() > 0;
+        return nextInning.getDeadBallsOnBreak() > 0 && !isAgainstGhost();
     }
 
     boolean showBreakMiss() {
-        return game.newGame && nextInning.getBreakBallsMade() == 0;
+        return game.newGame && nextInning.getBreakBallsMade() == 0 && !isAgainstGhost();
+    }
+
+    boolean isAgainstGhost() {
+        return game.breakType == BreakType.GHOST;
     }
 
     TurnEndOptions.Builder createTurnEndOptionsBuilder() {

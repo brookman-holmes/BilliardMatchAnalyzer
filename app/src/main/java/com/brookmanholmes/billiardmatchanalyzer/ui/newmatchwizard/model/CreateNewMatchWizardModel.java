@@ -17,6 +17,7 @@ import com.brookmanholmes.billiards.match.Match;
 public class CreateNewMatchWizardModel extends AbstractWizardModel {
     String playerName = "Player 1", opponentName = "Player 2";
     GameType gameType;
+    boolean playTheGhost;
 
     private Match.Builder builder = new Match.Builder();
 
@@ -28,13 +29,14 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     @Override public void onPageDataChanged(Page page) {
         super.onPageDataChanged(page);
 
-        if (page instanceof PlayerNamePage) {
+        if (page instanceof UpdatesPlayerNames) {
             playerName = ((PlayerNamePage) page).getPlayerName();
             opponentName = ((PlayerNamePage) page).getOpponentName();
-            updatePlayerNames();
         }
 
-        updateBuilder();
+        updatePlayerNames();
+        if (page instanceof UpdatesMatchBuilder)
+            ((UpdatesMatchBuilder) page).updateMatchBuilder(this);
     }
 
     @Override public void onPageTreeChanged() {
@@ -66,12 +68,19 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         );
     }
 
-
     private Page getPlayerNamePage() {
-        return new PlayerNamePage(this,
-                context.getString(R.string.title_page_players),
-                context.getString(R.string.player_number),
-                context.getString(R.string.location));
+        return new PlayerNamePage(this, context.getString(R.string.title_page_players),
+                context.getString(R.string.player_number), context.getString(R.string.location))
+                .setRequired(true);
+    }
+
+    private Page getGhostGameChoicePage() {
+        return new GameChoicePage(this, context.getString(R.string.title_page_games), context)
+                .addBranch(context.getString(R.string.game_bca_eight))
+                .addBranch(context.getString(R.string.game_bca_nine))
+                .addBranch(context.getString(R.string.game_bca_ten))
+                .setValue(context.getString(R.string.game_bca_nine))
+                .setRequired(true);
     }
 
     private Page getGameChoicePage() {
@@ -140,14 +149,15 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
                 .setLocation(location)
                 .setNotes(notes);
 
-        if (playGhost)
-            builder.setBreakType(BreakType.GHOST);
+        playTheGhost = playGhost;
     }
 
     void setBreakType(String value) {
         BreakType breakType;
 
-        if (value.equals(context.getString(R.string.break_winner)))
+        if (playTheGhost)
+            breakType = BreakType.GHOST;
+        else if (value.equals(context.getString(R.string.break_winner)))
             breakType = BreakType.WINNER;
         else if (value.equals(context.getString(R.string.break_alternate)))
             breakType = BreakType.ALTERNATE;
@@ -175,12 +185,8 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         else throw new IllegalArgumentException("No such PlayerTurn: " + playerTurn);
     }
 
-    void setFirstBreaker(String playerName) {
-        if (playerName.equals(this.playerName))
-            builder.setPlayerTurn(PlayerTurn.PLAYER);
-        else if (playerName.equals(this.opponentName))
-            builder.setPlayerTurn(PlayerTurn.OPPONENT);
-        else throw new IllegalArgumentException("No such player: " + playerName);
+    void setFirstBreaker(PlayerTurn turn) {
+        builder.setPlayerTurn(turn);
     }
 
     void setGameType(String value) {
@@ -220,6 +226,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     }
 
     public Match createMatch() {
+        updateBuilder();
         return builder.build(gameType);
     }
 }

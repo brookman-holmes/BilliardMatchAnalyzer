@@ -62,6 +62,8 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
                 return getPlayerName(cursor) + " breaks";
             case OPPONENT:
                 return getOpponentName(cursor) + " breaks";
+            case GHOST:
+                return getPlayerName(cursor) + " breaks";
             default:
                 throw new IllegalArgumentException();
         }

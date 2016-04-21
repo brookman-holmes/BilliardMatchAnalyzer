@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model;
 
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.SingleFixedChoicePage;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
 /**
  * Created by Brookman Holmes on 1/7/2016.
@@ -38,6 +39,11 @@ public class FirstBreakPage extends SingleFixedChoicePage implements RequiresPla
     }
 
     @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
-        model.setFirstBreaker(data.getString(SIMPLE_DATA_KEY));
+        if (playerName.equals(data.getString(SIMPLE_DATA_KEY)))
+            model.setFirstBreaker(PlayerTurn.PLAYER);
+        else if (opponentName.equals(data.getString(SIMPLE_DATA_KEY)))
+            model.setFirstBreaker(PlayerTurn.OPPONENT);
+        else
+            throw new IllegalStateException("playerName/opponentName not synced with data: " + data.getString(SIMPLE_DATA_KEY));
     }
 }

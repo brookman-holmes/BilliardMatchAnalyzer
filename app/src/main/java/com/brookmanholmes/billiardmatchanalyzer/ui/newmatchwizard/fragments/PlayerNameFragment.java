@@ -97,20 +97,19 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
 
         playTheGhost.setOnCheckedChangeListener(this);
 
-        playTheGhost.setChecked(page.getData().getBoolean(PlayerNamePage.PLAY_THE_GHOST_KEY));
+        playTheGhost.setChecked(Boolean.parseBoolean(page.getData().getString(PlayerNamePage.PLAY_THE_GHOST_KEY)));
 
         return rootView;
     }
 
     @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        page.getData().putBoolean(PlayerNamePage.PLAY_THE_GHOST_KEY, isChecked);
+        page.setPlayTheGhost(isChecked);
         opponentName.setEnabled(!isChecked);
 
-        if (opponentName.isEnabled()) {
-            opponentName.setText("");
-        } else {
+        if (isChecked)
             opponentName.setText(R.string.ghost_name);
-        }
+        else
+            opponentName.setText("");
     }
 
     @Override public void onAttach(Context context) {

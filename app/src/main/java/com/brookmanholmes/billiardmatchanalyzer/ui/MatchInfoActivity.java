@@ -142,13 +142,21 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     public void updateViews() {
         if (menu != null)
             updateMenuItems();
+
+        if (infoFragment.getCurrentPlayersName().equals(playerName.getText().toString())) {
+            playerName.setTextColor(getResources().getColor(android.R.color.white));
+            opponentName.setTextColor(getResources().getColor(R.color.non_current_players_turn));
+        } else {
+            playerName.setTextColor(getResources().getColor(R.color.non_current_players_turn));
+            opponentName.setTextColor(getResources().getColor(android.R.color.white));
+        }
     }
 
     private void updateMenuItems() {
         menu.findItem(R.id.action_undo).setEnabled(infoFragment.isUndoTurn());
         menu.findItem(R.id.action_redo).setEnabled(infoFragment.isRedoTurn());
-        this.menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 64);
-        this.menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 64);
+        this.menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 120);
+        this.menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 120);
     }
 
     @Override public void addTurn(TurnBuilder turnBuilder) {

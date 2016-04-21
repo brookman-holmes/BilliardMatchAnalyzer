@@ -8,6 +8,7 @@ import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.PageList;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
@@ -38,7 +39,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         turnBuilder.advStats.use(currentPlayerTurnAndAdvancedStats());
 
         rootPageList = onNewRootPageList();
-
     }
 
     private boolean currentPlayerTurnAndAdvancedStats() {
@@ -76,20 +76,14 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     @Override protected PageList onNewRootPageList() {
-        if (matchData.getBoolean(MatchDialogHelperUtils.ALLOW_BREAK_AGAIN_KEY)) {
+        if (matchData.getBoolean(MatchDialogHelperUtils.ALLOW_BREAK_AGAIN_KEY))
             return new PageList(getTurnEndPage());
-        }
-
-        if (matchData.getBoolean(MatchDialogHelperUtils.NEW_GAME_KEY))
-            return new PageList(
-                    getBreakPage(),
-                    getTurnEndPage()
-            );
+        else if (BreakType.valueOf(matchData.getString(MatchDialogHelperUtils.BREAK_TYPE_KEY)).equals(BreakType.GHOST))
+            return new PageList(getGhostBreakPage(), getShotPage(), getTurnEndPage());
+        else if (matchData.getBoolean(MatchDialogHelperUtils.NEW_GAME_KEY))
+            return new PageList(getBreakPage(), getTurnEndPage());
         else
-            return new PageList(
-                    getShotPage(),
-                    getTurnEndPage()
-            );
+            return new PageList(getShotPage(), getTurnEndPage());
     }
 
     TableStatus getTableStatus() {
@@ -148,6 +142,10 @@ public class AddTurnWizardModel extends AbstractWizardModel {
             return TurnEnd.CONTINUE_WITH_GAME;
         else
             throw new IllegalArgumentException("No such conversion between string and StringRes: " + turnEnd);
+    }
+
+    private Page getGhostBreakPage() {
+        return new GhostBreakPage(this, context.getString(R.string.title_break), context.getString(R.string.title_shot), matchData);
     }
 
     private Page getBreakPage() {
