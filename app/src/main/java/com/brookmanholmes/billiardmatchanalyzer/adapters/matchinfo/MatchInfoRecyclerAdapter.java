@@ -14,6 +14,7 @@ import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.SafetiesHo
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.ShootingPctHolder;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.Turn;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.match.MatchInterface;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
@@ -100,10 +101,23 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     }
 
     @Override public int getItemCount() {
-        return 6;
+        if (match.getGameStatus().breakType == BreakType.GHOST)
+            return 3;
+        else
+            return 6;
     }
 
     @Override public int getItemViewType(int position) {
+        if (match.getGameStatus().breakType == BreakType.GHOST) {
+            if (position == 0)
+                return ITEM_MATCH_OVERVIEW;
+            else if (position == 1)
+                return ITEM_SHOOTING_PCT;
+            else if (position == 2)
+                return ITEM_BREAKS;
+        }
+
+
         if (position != getItemCount() - 1)
             return position;
         else return ITEM_FOOTER;
