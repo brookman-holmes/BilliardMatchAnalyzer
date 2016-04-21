@@ -118,7 +118,7 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
             else return ITEM_FOOTER;
         }
 
-        if (position == getItemCount())
+        if (position == getItemCount() - 1)
             return ITEM_FOOTER;
         else return position;
     }
@@ -193,7 +193,7 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
                 case ITEM_FOOTER:
                     return R.layout.footer;
                 default:
-                    throw new IllegalArgumentException("No such view type");
+                    throw new IllegalArgumentException("No such view type: " + viewType);
             }
         } else {
             switch (viewType) {
