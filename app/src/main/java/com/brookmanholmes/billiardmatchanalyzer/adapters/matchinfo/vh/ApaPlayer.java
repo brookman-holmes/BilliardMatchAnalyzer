@@ -1,7 +1,6 @@
 package com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -53,9 +52,12 @@ public class ApaPlayer<T extends AbstractPlayer & Apa> extends MatchInfoHolder<T
 
         tvMatchPointsOpponent.setText(String.format("%d", opponent.getMatchPoints(opponent.getPoints(), opponent.getRank())));
 
-        tvInningsOpponent.setText(String.format("%d", opponent.getTurns()));
         tvDefensiveShotsOpponent.setText(String.format("%d", opponent.getSafetyAttempts()));
         tvDefensiveShotsPlayer.setText(String.format("%d", player.getSafetyAttempts()));
+    }
+
+    public void setTvInningsOpponent(int innings) {
+        tvInningsOpponent.setText(String.format("%d", innings));
     }
 
     @Override int getLayoutRes() {

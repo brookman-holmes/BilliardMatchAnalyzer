@@ -30,6 +30,7 @@ public final class GameStatus {
     public final boolean winOnBreak;
     public final List<Integer> ballsOnTable;
     public final BreakType breakType;
+    public final int innings;
 
     GameStatus(Game game) {
         playerAllowedToBreakAgain = game.playerAllowedToBreakAgain;
@@ -47,6 +48,7 @@ public final class GameStatus {
         winOnBreak = game.winOnBreak();
         ballsOnTable = new ArrayList<>(game.ballsOnTable);
         breakType = game.breakType;
+        innings = game.innings;
 
         playerColor = game.playerColor;
         consecutiveOpponentFouls = game.consecutiveOpponentFouls;
@@ -69,6 +71,7 @@ public final class GameStatus {
         GAME_BALL = builder.GAME_BALL;
         ballsOnTable = builder.ballsOnTable;
         breakType = builder.breakType;
+        innings = builder.innings;
 
         playerColor = builder.playerColor;
         consecutiveOpponentFouls = builder.consecutiveOpponentFouls;
@@ -165,6 +168,7 @@ public final class GameStatus {
         private boolean winOnBreak;
         private List<Integer> ballsOnTable;
         private BreakType breakType;
+        private int innings;
 
         private int consecutivePlayerFouls;
         private int consecutiveOpponentFouls;
@@ -288,6 +292,11 @@ public final class GameStatus {
             ballsOnTable.clear();
             ballsOnTable.addAll(balls);
 
+            return this;
+        }
+
+        public Builder setInnings(int innings) {
+            this.innings = innings;
             return this;
         }
 

@@ -231,7 +231,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
 
         @Override public int getItemPosition(Object object) {
-            // TODO: be smarter about this
             if (object == mPrimaryItem) {
                 // Re-use the current fragment (its position never changes)
                 return POSITION_UNCHANGED;

@@ -12,7 +12,6 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
     WinsOnBreak winsOnBreak;
     int rank;
     int points = 0;
-    int turns = 0;
 
     public ApaNineBallPlayer(String name, int rank) {
         super(name);
@@ -46,10 +45,6 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
 
     public void addPoints(int points) {
         this.points += points;
-    }
-
-    @Override public int getTurns() {
-        return turns;
     }
 
     @Override public int getPoints() {

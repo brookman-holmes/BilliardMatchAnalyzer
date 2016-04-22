@@ -14,7 +14,6 @@ class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
         this.playerRank = playerRank;
         this.opponentRank = opponentRank;
     }
-    // TODO: 3/18/2016 add in turn information here
 
     @Override void addBreakingStats(ApaEightBallPlayer player) {
         super.addBreakingStats(player);

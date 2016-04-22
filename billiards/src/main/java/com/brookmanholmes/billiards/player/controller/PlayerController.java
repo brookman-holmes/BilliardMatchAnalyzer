@@ -126,7 +126,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
         if (turn.getTurnEnd() == GAME_WON)
             return gameStatus.turn;
         else if (turn.isGameLost())
-            return Game.changeTurn(gameStatus.turn);
+            return gameStatus.turn.nextPlayer();
         else throw new IllegalStateException("Should not be called if the game is not over");
     }
 

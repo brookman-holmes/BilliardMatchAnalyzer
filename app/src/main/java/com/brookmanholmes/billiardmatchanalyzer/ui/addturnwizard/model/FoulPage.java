@@ -49,7 +49,6 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
         fragment = null;
     }
 
-    // TODO: 3/9/2016 make sure that I'm not checking foul when it's possible to have not scratched
     public void updateFragment(TurnEndOptions options) {
         if (fragment != null) {
             fragment.updateOptions(options);

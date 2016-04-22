@@ -224,12 +224,9 @@ public class StepPagerStrip extends View {
         this.currentPage = currentPage;
         invalidate();
         scrollCurrentPageIntoView();
-
-        // TODO: Set content description appropriately
     }
 
     private void scrollCurrentPageIntoView() {
-        // TODO: only works with left gravity for now
 //
 //        float widthToActive = getPaddingLeft() + (currentPage + 1) * (tabWidth + indicatorSpacing)
 //                - indicatorSpacing;
@@ -250,8 +247,6 @@ public class StepPagerStrip extends View {
     public void setPageCount(int count) {
         pageCount = count;
         invalidate();
-
-        // TODO: Set content description appropriately
     }
 
     public interface OnPageSelectedListener {

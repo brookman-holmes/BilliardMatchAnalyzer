@@ -23,6 +23,13 @@ class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchI
         super(match, match.getGameStatus().GAME_BALL, viewType);
     }
 
+    @Override public void onBindViewHolder(BaseViewHolder<T> holder, int position) {
+        super.onBindViewHolder(holder, position);
+
+        if (holder instanceof ApaPlayer)
+            ((ApaPlayer) holder).setTvInningsOpponent(match.getGameStatus().innings);
+    }
+
     @Override BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_APA_STATS:

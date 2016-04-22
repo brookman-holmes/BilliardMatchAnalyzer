@@ -23,8 +23,10 @@ public abstract class Game {
     final int MAX_BALLS;
     final BreakType breakType;
     final GameType gameType;
+    final PlayerTurn firstPlayerToShoot;
     PlayerColor playerColor = OPEN;
     PlayerTurn turn, breaker;
+
     boolean playerAllowedToBreakAgain = false;
     boolean newGame = true;
     boolean allowTurnSkip = false;
@@ -33,6 +35,8 @@ public abstract class Game {
 
     int consecutivePlayerFouls = 0;
     int consecutiveOpponentFouls = 0;
+    int innings = 0;
+
     List<Integer> ballsOnTable;
 
     Game(GameType gameType, PlayerTurn turn, BreakType breakType, int MAX_BALLS, int GAME_BALL) {
@@ -44,6 +48,7 @@ public abstract class Game {
 
         this.turn = turn;
         this.breaker = turn;
+        firstPlayerToShoot = turn;
 
         ballsOnTable = newTable();
     }
@@ -66,7 +71,10 @@ public abstract class Game {
         }
     }
 
-    public static PlayerTurn changeTurn(PlayerTurn turn) {
+    public PlayerTurn changeTurn(PlayerTurn turn) {
+        if (turn.nextPlayer() == firstPlayerToShoot)
+            innings++;
+
         return turn.nextPlayer();
     }
 
@@ -81,6 +89,7 @@ public abstract class Game {
         this.consecutiveOpponentFouls = gameStatus.consecutiveOpponentFouls;
         this.consecutivePlayerFouls = gameStatus.consecutivePlayerFouls;
         this.playerColor = gameStatus.playerColor;
+        this.innings = gameStatus.innings;
 
         ballsOnTable = new ArrayList<>(gameStatus.ballsOnTable);
     }
