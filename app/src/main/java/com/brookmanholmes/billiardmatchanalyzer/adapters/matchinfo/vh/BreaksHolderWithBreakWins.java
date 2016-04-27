@@ -6,6 +6,8 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.interfaces.WinsOnBreak;
 
+import java.util.Locale;
+
 /**
  * Created by helios on 4/12/2016.
  */
@@ -22,8 +24,8 @@ public class BreaksHolderWithBreakWins<T extends AbstractPlayer & WinsOnBreak> e
     public void bind(T player, T opponent) {
         super.bind(player, opponent);
 
-        tvBreakWinsPlayer.setText(String.format("%d", player.getWinsOnBreak()));
-        tvBreakWinsOpponent.setText(String.format("%d", opponent.getWinsOnBreak()));
+        tvBreakWinsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getWinsOnBreak()));
+        tvBreakWinsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getWinsOnBreak()));
         // highlighting of the player who's doing better in this stat
         highlightBetterPlayerStats(tvBreakWinsPlayer, tvBreakWinsOpponent, player.getWinsOnBreak(), opponent.getWinsOnBreak());
     }

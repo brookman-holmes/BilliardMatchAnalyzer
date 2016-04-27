@@ -59,8 +59,8 @@
     <string name="add_turn">Add turn</string>
     <string name="add_turn_for">Add turn for %1$s</string>
     <string name="create_match">Create match</string>
-    <string name="undo_turn">Undid last turn</string>
-    <string name="redo_turn">Redid last turn</string>
+    <string name="undid_turn">Undid last turn</string>
+    <string name="redid_turn">Redid last turn</string>
     <string name="hint_player_name">Player 1 Name</string>
     <string name="hint_opponent_name">Player 2 Name</string>
     <string name="hint_location">Location (optional)</string>
@@ -122,4 +122,12 @@
     <string name="apa_rules">APA</string>
     <string name="and">%1$s &amp; %2$s</string>
     <string name="delete_match">Would you like to delete this match?</string>
+    <string name="match_location">Match Location</string>
+    <string name="match_notes">Match Notes</string>
+    <string name="undo_turn">Undo turn</string>
+    <string name="redo_turn">Redo turn</string>
+    <string name="view_game_status">View game status</string>
+    <string name="view_profile">View profile</string>
+    <string name="edit_name">Edit name</string>
+    <string name="view_adv_stats">View advanced stats for this match</string>
 </resources>

@@ -7,6 +7,8 @@ import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 
+import java.util.Locale;
+
 import butterknife.Bind;
 
 /**
@@ -39,22 +41,22 @@ public class RunOutsHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> 
 
     @Override public void bind(T player, T opponent) {
         // Break and runs
-        tvBreakAndRunPlayer.setText(String.format("%d", player.getRunOuts()));
-        tvBreakAndRunOpponent.setText(String.format("%d", opponent.getRunOuts()));
+        tvBreakAndRunPlayer.setText(String.format(Locale.getDefault(), "%d", player.getRunOuts()));
+        tvBreakAndRunOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getRunOuts()));
 
         // highlighting of the player who's doing better in this stat
         highlightBetterPlayerStats(tvBreakAndRunPlayer, tvBreakAndRunOpponent, player.getRunOuts(), opponent.getRunOuts());
 
         // table runs
-        tvMaxRunPlayer.setText(String.format("%d", player.getRunTierOne()));
-        tvMaxRunOpponent.setText(String.format("%d", opponent.getRunTierOne()));
+        tvMaxRunPlayer.setText(String.format(Locale.getDefault(), "%d", player.getRunTierOne()));
+        tvMaxRunOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getRunTierOne()));
 
         // highlighting of the player who's doing better in this stat
         highlightBetterPlayerStats(tvMaxRunPlayer, tvMaxRunOpponent, player.getRunTierOne(), opponent.getRunTierOne());
 
         // 5+ ball runs
-        tvFiveBallRunsPlayer.setText(String.format("%d", player.getRunTierTwo()));
-        tvFiveBallRunsOpponent.setText(String.format("%d", opponent.getRunTierTwo()));
+        tvFiveBallRunsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getRunTierTwo()));
+        tvFiveBallRunsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getRunTierTwo()));
 
         // highlighting of the player who's doing better in this stat
         highlightBetterPlayerStats(tvFiveBallRunsPlayer, tvFiveBallRunsOpponent, player.getRunTierTwo(), opponent.getRunTierTwo());

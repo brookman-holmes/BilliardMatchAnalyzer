@@ -98,22 +98,21 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         final String[] items;
 
         if (playerHasAdvancedStats(turn, db.getMatch(getMatchId()).getAdvStats())) {
-            items = new String[]{"View profile", "View advanced stats for this match", "Change name"};
+            items = new String[]{getString(R.string.view_profile), getString(R.string.view_adv_stats), getString(R.string.edit_name)};
         } else {
-            items = new String[]{"View profile", "Change name"};
+            items = new String[]{getString(R.string.view_profile), getString(R.string.edit_name)};
         }
 
         new AlertDialog.Builder(this, R.style.AlertDialogTheme)
                 .setTitle(name)
-                .setItems(items,
-                        new DialogInterface.OnClickListener() {
+                .setItems(items, new DialogInterface.OnClickListener() {
                             @Override public void onClick(DialogInterface dialog, int which) {
-                                if (items[which].equals("View advanced stats for this match"))
+                                if (items[which].equals(getString(R.string.view_adv_stats)))
                                     displayAdvancedStatsDialog(name, turn);
-                                else if (items[which].equals("View profile")) {
+                                else if (items[which].equals(getString(R.string.view_profile))) {
                                     Intent intent = new Intent(MatchInfoActivity.this, PlayerProfileActivity.class);
                                     startActivity(intent);
-                                } else if (items[which].equals("Change name")) {
+                                } else if (items[which].equals(getString(R.string.edit_name))) {
                                     Snackbar.make(layout, "Change name selected - not yet implemented", Snackbar.LENGTH_SHORT).show();
                                 }
                             }
@@ -225,12 +224,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         if (id == R.id.action_undo) {
-            Snackbar.make(layout, R.string.undo_turn, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(layout, R.string.undid_turn, Snackbar.LENGTH_SHORT).show();
             undoTurn();
         }
 
         if (id == R.id.action_redo) {
-            Snackbar.make(layout, R.string.redo_turn, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(layout, R.string.redid_turn, Snackbar.LENGTH_SHORT).show();
             addTurn(infoFragment.redoTurn());
         }
 
@@ -242,7 +241,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         View view = getLayoutInflater().inflate(R.layout.edit_text, null);
         final EditText input = (EditText) view.findViewById(R.id.editText);
         input.setText(db.getMatch(getMatchId()).getNotes());
-        builder.setTitle("Match Notes")
+        builder.setTitle(getString(R.string.match_notes))
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
@@ -263,7 +262,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         final EditText input = (EditText) view.findViewById(R.id.editText);
         input.setText(db.getMatch(getMatchId()).getLocation());
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        builder.setTitle("Match Location")
+        builder.setTitle(getString(R.string.match_location))
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {

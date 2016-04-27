@@ -1,6 +1,9 @@
 package com.brookmanholmes.billiards.player.controller;
 
+import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
+import com.brookmanholmes.billiards.player.Pair;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
@@ -22,11 +25,29 @@ class ApaNineBallController extends PlayerController<ApaNineBallPlayer> {
         }
     }
 
+    @Override public Pair<ApaNineBallPlayer> updatePlayerStats(GameStatus gameStatus, Turn turn) {
+        Pair<ApaNineBallPlayer> players = super.updatePlayerStats(gameStatus, turn);
+
+        // keep track of dead balls this turn
+        players.getPlayer().addDeadBalls(turn.getDeadBalls() + turn.getDeadBallsOnBreak());
+        players.getOpponent().addDeadBalls(turn.getDeadBalls() + turn.getDeadBallsOnBreak());
+
+        return players;
+    }
+
     @Override void addRunOutStats(ApaNineBallPlayer player) {
         super.addRunOutStats(player);
 
         if (turn.getBallsRemaining() > 0)
             ControllerHelperMethods.addEarlyWin(player);
+    }
+
+    @Override void addGamesToPlayers(ApaNineBallPlayer player1, ApaNineBallPlayer player2) {
+        super.addGamesToPlayers(player1, player2);
+
+        // keep track of balls that are remaining in the game after a win
+        player1.addDeadBalls(turn.getBallsRemaining());
+        player2.addDeadBalls(turn.getBallsRemaining());
     }
 
     @Override public ApaNineBallPlayer newPlayer() {

@@ -12,6 +12,7 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
     WinsOnBreak winsOnBreak;
     int rank;
     int points = 0;
+    int deadBalls;
 
     public ApaNineBallPlayer(String name, int rank) {
         super(name);
@@ -53,6 +54,14 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
 
     @Override public int getPointsNeeded(int opponentRank) {
         return ApaRaceToHelper.apa9BallRaceTo(rank);
+    }
+
+    public int getDeadBalls() {
+        return deadBalls;
+    }
+
+    public void addDeadBalls(int deadBalls) {
+        this.deadBalls += deadBalls;
     }
 
     @Override public void addEarlyWin() {

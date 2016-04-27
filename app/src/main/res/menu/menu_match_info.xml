@@ -6,32 +6,32 @@
     <item
         android:id="@+id/action_notes"
         android:orderInCategory="100"
-        android:title="Match notes"
+        android:title="@string/match_notes"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_location"
         android:orderInCategory="101"
-        android:title="Match location"
+        android:title="@string/match_location"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_game_status"
         android:orderInCategory="102"
-        android:title="View game status"
+        android:title="@string/view_game_status"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_undo"
         android:icon="@drawable/ic_undo_24dp"
         android:orderInCategory="1"
-        android:title="Undo turn"
+        android:title="@string/undo_turn"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_redo"
         android:icon="@drawable/ic_redo_24dp"
         android:orderInCategory="2"
-        android:title="Redo turn"
+        android:title="@string/redo_turn"
         app:showAsAction="ifRoom" />
 </menu>

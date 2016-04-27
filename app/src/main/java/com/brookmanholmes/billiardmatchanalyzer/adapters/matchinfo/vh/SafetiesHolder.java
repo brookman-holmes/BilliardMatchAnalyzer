@@ -7,6 +7,8 @@ import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 
+import java.util.Locale;
+
 import butterknife.Bind;
 
 /**
@@ -59,22 +61,22 @@ public class SafetiesHolder<T extends AbstractPlayer> extends MatchInfoHolder<T>
         tvSafetiesAttemptedPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getSafetySuccesses(), player.getSafetyAttempts()));
         tvSafetiesAttemptedOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getSafetySuccesses(), opponent.getSafetyAttempts()));
 
-        tvSafetyScratchesOpponent.setText(String.format("%d", opponent.getSafetyScratches()));
-        tvSafetyScratchesPlayer.setText(String.format("%d", player.getSafetyScratches()));
+        tvSafetyScratchesOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getSafetyScratches()));
+        tvSafetyScratchesPlayer.setText(String.format(Locale.getDefault(), "%d", player.getSafetyScratches()));
 
         highlightPlayerStat(tvSafetyScratchesPlayer, tvSafetyScratchesOpponent, player.getSafetyScratches(), opponent.getSafetyScratches());
 
-        tvSafetyReturnsPlayer.setText(String.format("%d", player.getSafetyReturns()));
-        tvSafetyReturnsOpponent.setText(String.format("%d", opponent.getSafetyReturns()));
+        tvSafetyReturnsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getSafetyReturns()));
+        tvSafetyReturnsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getSafetyReturns()));
 
         highlightBetterPlayerStats(tvSafetyReturnsPlayer, tvSafetyReturnsOpponent, player.getSafetyReturns(), opponent.getSafetyReturns());
 
-        tvSafetyEscapesPlayer.setText(String.format("%d", player.getSafetyEscapes()));
-        tvSafetyEscapesOpponent.setText(String.format("%d", opponent.getSafetyEscapes()));
+        tvSafetyEscapesPlayer.setText(String.format(Locale.getDefault(), "%d", player.getSafetyEscapes()));
+        tvSafetyEscapesOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getSafetyEscapes()));
         highlightBetterPlayerStats(tvSafetyEscapesPlayer, tvSafetyEscapesOpponent, player.getSafetyEscapes(), opponent.getSafetyEscapes());
 
-        tvForcedErrorsOpponent.setText(String.format("%d", opponent.getSafetyForcedErrors()));
-        tvForcedErrorsPlayer.setText(String.format("%d", player.getSafetyForcedErrors()));
+        tvForcedErrorsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getSafetyForcedErrors()));
+        tvForcedErrorsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getSafetyForcedErrors()));
         highlightPlayerStat(tvForcedErrorsPlayer, tvForcedErrorsOpponent, player.getSafetyForcedErrors(), opponent.getSafetyForcedErrors());
     }
 
