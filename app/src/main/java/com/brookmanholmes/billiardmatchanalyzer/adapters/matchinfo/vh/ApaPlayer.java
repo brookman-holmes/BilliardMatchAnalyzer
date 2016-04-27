@@ -37,13 +37,11 @@ public class ApaPlayer<T extends AbstractPlayer & Apa> extends MatchInfoHolder<T
         setVisibilities(view, detail);
     }
 
-    @Override
-    protected void setVisibilities(View view, Match.StatsDetail detail) {
+    @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
 
     }
 
-    @Override
-    public void bind(T player, T opponent) {
+    @Override public void bind(T player, T opponent) {
         if (player instanceof ApaEightBallPlayer) {
             tvPointsTitle.setText(itemView.getContext().getString(R.string.title_games_needed));
         } else if (player instanceof ApaNineBallPlayer) {

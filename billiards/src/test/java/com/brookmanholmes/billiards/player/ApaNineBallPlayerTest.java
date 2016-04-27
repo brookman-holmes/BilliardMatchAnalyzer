@@ -79,4 +79,14 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
         expected.points += 8;
         super.addShootingBallsMadeAdds8BallsMadeWithScratch();
     }
+
+
+    @Test
+    public void addDeadBallsEquals3() {
+        ApaNineBallPlayer player = new ApaNineBallPlayer(testName, 5);
+
+        player.addDeadBalls(3);
+
+        assertThat(player.getDeadBalls(), is(3));
+    }
 }

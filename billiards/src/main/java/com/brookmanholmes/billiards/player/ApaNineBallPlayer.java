@@ -12,7 +12,7 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
     WinsOnBreak winsOnBreak;
     int rank;
     int points = 0;
-    int deadBalls;
+    int deadBalls = 0;
 
     public ApaNineBallPlayer(String name, int rank) {
         super(name);
@@ -28,8 +28,10 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
             winsOnBreak.addEarlyWins(((Apa) player).getEarlyWins());
         }
 
-        if (player instanceof ApaNineBallPlayer)
+        if (player instanceof ApaNineBallPlayer) {
             points += ((ApaNineBallPlayer) player).points;
+            deadBalls += ((ApaNineBallPlayer) player).getDeadBalls();
+        }
     }
 
     @Override public void addBreakShot(int ballsMade, boolean continuation, boolean scratch) {
@@ -113,6 +115,7 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
 
         if (rank != that.rank) return false;
         if (points != that.points) return false;
+        if (deadBalls != that.deadBalls) return false;
         return winsOnBreak.equals(that.winsOnBreak);
 
     }
@@ -122,6 +125,8 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
         result = 31 * result + winsOnBreak.hashCode();
         result = 31 * result + rank;
         result = 31 * result + points;
+        result = 31 * result + deadBalls;
+
         return result;
     }
 
@@ -130,6 +135,7 @@ public class ApaNineBallPlayer extends AbstractPlayer implements Apa {
                 "winsOnBreak=" + winsOnBreak +
                 ", rank=" + rank +
                 ", points=" + points +
+                ", deadBalls=" + deadBalls +
                 "} " + super.toString();
     }
 }
