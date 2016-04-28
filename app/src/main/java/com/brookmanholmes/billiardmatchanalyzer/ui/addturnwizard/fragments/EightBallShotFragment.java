@@ -68,7 +68,7 @@ public class EightBallShotFragment extends ShotFragment {
     void selectAllStripes() {
         List<BallStatus> ballStatusList = page.getBallStatuses();
         for (int i = 7; i < 15; i++) {
-            if (ballStatusList.get(i) == BallStatus.ON_TABLE) {
+            if (ballStatusList.get(i) == BallStatus.ON_TABLE || ballStatusList.get(i) == BallStatus.GAME_BALL_DEAD_ON_BREAK) {
                 page.updateBallStatus(i + 1);
             }
         }
@@ -77,7 +77,7 @@ public class EightBallShotFragment extends ShotFragment {
     void selectAllSolids() {
         List<BallStatus> ballStatusList = page.getBallStatuses();
         for (int i = 0; i < 8; i++) {
-            if (ballStatusList.get(i) == BallStatus.ON_TABLE) {
+            if (ballStatusList.get(i) == BallStatus.ON_TABLE || ballStatusList.get(i) == BallStatus.GAME_BALL_DEAD_ON_BREAK) {
                 page.updateBallStatus(i + 1);
             }
         }
@@ -89,9 +89,9 @@ public class EightBallShotFragment extends ShotFragment {
         else btnRunOut.setVisibility(View.VISIBLE);
 
         if (playerColor == PlayerColor.SOLIDS) {
-            btnRunOut.setText("Select all remaining solids");
+            btnRunOut.setText(R.string.select_solids);
         } else if (playerColor == PlayerColor.STRIPES) {
-            btnRunOut.setText("Select all remaining stripes");
+            btnRunOut.setText(R.string.select_stripes);
         }
     }
 }

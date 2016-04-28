@@ -51,6 +51,7 @@ public class MatchDialogHelperUtils {
 
         args.putBoolean(ALLOW_TURN_SKIP_KEY, match.getGameStatus().allowTurnSkip);
         args.putBoolean(NEW_GAME_KEY, match.getGameStatus().newGame);
+        args.putBoolean(ALLOW_PUSH_KEY, match.getGameStatus().allowPush);
         args.putString(CURRENT_PLAYER_NAME_KEY, getCurrentPlayersName(match));
         args.putString(OPPOSING_PLAYER_NAME_KEY, getOpposingPlayersName(match));
         args.putString(GAME_TYPE_KEY, match.getGameStatus().gameType.name());
@@ -109,8 +110,7 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    @LayoutRes
-    public static int getLayoutByGameType(GameType gameType) {
+    @LayoutRes public static int getLayoutByGameType(GameType gameType) {
         switch (gameType) {
             case APA_EIGHT_BALL:
                 return R.layout.select_eight_ball_dialog;
@@ -147,7 +147,7 @@ public class MatchDialogHelperUtils {
         return gameStatus.build();
     }
 
-    public static int convertIdToBall(int id) {
+    public static int convertIdToBall(@IdRes int id) {
         switch (id) {
             case R.id.one_ball:
                 return 1;
@@ -184,8 +184,7 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    @IdRes
-    public static int convertBallToId(int ball) {
+    @IdRes public static int convertBallToId(int ball) {
         switch (ball) {
             case 1:
                 return R.id.one_ball;
@@ -243,8 +242,7 @@ public class MatchDialogHelperUtils {
             view.setImageLevel(0);
     }
 
-    @StringRes
-    public static int convertTurnEndToStringRes(TurnEnd end) {
+    @StringRes public static int convertTurnEndToStringRes(TurnEnd end) {
         switch (end) {
             case SAFETY:
                 return R.string.turn_safety;

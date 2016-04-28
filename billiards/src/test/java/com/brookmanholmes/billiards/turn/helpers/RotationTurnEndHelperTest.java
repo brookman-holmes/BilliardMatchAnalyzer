@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
     @Override public void setUp() {
-        helper = TurnEndHelper.newTurnEndHelper(GameType.BCA_NINE_BALL);
+        helper = TurnEndHelper.create(GameType.BCA_NINE_BALL);
         tableStatus = TableStatus.newTable(GameType.BCA_NINE_BALL);
         gameType = GameType.BCA_NINE_BALL;
         GAME_BALL = 9;

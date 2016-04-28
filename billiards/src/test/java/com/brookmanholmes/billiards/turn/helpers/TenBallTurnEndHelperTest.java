@@ -8,7 +8,7 @@ import com.brookmanholmes.billiards.game.util.GameType;
  */
 public class TenBallTurnEndHelperTest extends RotationTurnEndHelperTest {
     @Override public void setUp() {
-        helper = TurnEndHelper.newTurnEndHelper(GameType.BCA_TEN_BALL);
+        helper = TurnEndHelper.create(GameType.BCA_TEN_BALL);
         tableStatus = com.brookmanholmes.billiards.turn.TableStatus.newTable(GameType.BCA_TEN_BALL);
         gameType = GameType.BCA_TEN_BALL;
         GAME_BALL = 10;

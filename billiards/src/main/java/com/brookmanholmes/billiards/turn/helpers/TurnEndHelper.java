@@ -2,7 +2,6 @@ package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.TableStatusInterface;
 import com.brookmanholmes.billiards.turn.TurnEnd;
@@ -19,7 +18,11 @@ abstract public class TurnEndHelper {
     TurnEndHelper() {
     }
 
-    public static TurnEndHelper newTurnEndHelper(GameType gameType) throws InvalidGameTypeException {
+    public static TurnEndHelper createGhostHelper() {
+        return new GhostTurnEndHelper();
+    }
+
+    public static TurnEndHelper create(GameType gameType) throws InvalidGameTypeException {
         switch (gameType) {
             case APA_EIGHT_BALL:
                 return new ApaEightBallTurnEndHelper();
@@ -51,21 +54,21 @@ abstract public class TurnEndHelper {
     boolean showPush() {
         return ((game.allowPush && !game.newGame)
                 || (game.newGame && nextInning.getBreakBallsMade() > 0))
-                && nextInning.getShootingBallsMade() == 0 && !isAgainstGhost();
+                && nextInning.getShootingBallsMade() == 0;
     }
 
     boolean showTurnSkip() {
         return game.allowTurnSkip
                 && nextInning.getShootingBallsMade() == 0
-                && nextInning.getDeadBalls() == 0 && !isAgainstGhost();
+                && nextInning.getDeadBalls() == 0;
     }
 
     boolean showSafety() {
-        return !showWin() && !showBreakMiss() && !isAgainstGhost();
+        return !showWin() && !showBreakMiss();
     }
 
     boolean showSafetyMiss() {
-        return !showWin() && !showBreakMiss() && !isAgainstGhost();
+        return !showWin() && !showBreakMiss();
     }
 
     boolean showMiss() {
@@ -73,17 +76,12 @@ abstract public class TurnEndHelper {
     }
 
     boolean checkFoul() {
-        return nextInning.getDeadBallsOnBreak() > 0 && !isAgainstGhost();
+        return nextInning.getDeadBallsOnBreak() > 0;
     }
 
     boolean showBreakMiss() {
-        return game.newGame && nextInning.getBreakBallsMade() == 0 && !isAgainstGhost();
+        return game.newGame && nextInning.getBreakBallsMade() == 0;
     }
-
-    boolean isAgainstGhost() {
-        return game.breakType == BreakType.GHOST;
-    }
-
     TurnEndOptions.Builder createTurnEndOptionsBuilder() {
         if (game.playerAllowedToBreakAgain) {
             return new TurnEndOptions.Builder().allowPlayerToChooseWhoBreaks().defaultOption(TurnEnd.CONTINUE_WITH_GAME);

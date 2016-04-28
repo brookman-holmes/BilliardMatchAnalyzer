@@ -16,6 +16,7 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.ShotPage;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.billiards.game.util.BallStatus;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 
@@ -25,6 +26,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.BREAK_TYPE_KEY;
 import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.convertBallToId;
 import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.convertIdToBall;
 import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.getLayoutByGameType;
@@ -129,14 +131,24 @@ public abstract class ShotFragment extends Fragment {
     }
 
     private void setBallView(BallStatus status, ImageView ballImage) {
-        if (ballIsOnTable(status)) {
-            setViewToBallOnTable(ballImage);
-        } else if (ballIsMade(status)) {
-            setViewToBallMade(ballImage);
-        } else if (ballIsDead(status)) {
-            setViewToBallDead(ballImage);
+        if (BreakType.valueOf(getArguments().getString(BREAK_TYPE_KEY)) == BreakType.GHOST &&
+                convertIdToBall(ballImage.getId()) == MatchDialogHelperUtils.createGameStatusFromBundle(getArguments()).GAME_BALL) {
+            if (status == BallStatus.GAME_BALL_DEAD_ON_BREAK || ballIsOnTable(status))
+                setViewToBallOnTable(ballImage);
+            else if (status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE || ballIsMade(status))
+                setViewToBallMade(ballImage);
+            else if (status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD || ballIsDead(status))
+                setViewToBallDead(ballImage);
         } else {
-            setViewToBallOffTable(ballImage);
+            if (ballIsOnTable(status)) {
+                setViewToBallOnTable(ballImage);
+            } else if (ballIsMade(status)) {
+                setViewToBallMade(ballImage);
+            } else if (ballIsDead(status)) {
+                setViewToBallDead(ballImage);
+            } else {
+                setViewToBallOffTable(ballImage);
+            }
         }
     }
 

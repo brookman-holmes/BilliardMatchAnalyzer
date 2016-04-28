@@ -130,4 +130,7 @@
     <string name="view_profile">View profile</string>
     <string name="edit_name">Edit name</string>
     <string name="view_adv_stats">View advanced stats for this match</string>
+    <string name="select_balls">Select remaining balls</string>
+    <string name="select_solids">Select all remaining solids</string>
+    <string name="select_stripes">Select all remaining stripes</string>
 </resources>

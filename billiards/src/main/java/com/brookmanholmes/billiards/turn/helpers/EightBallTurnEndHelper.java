@@ -8,12 +8,12 @@ import com.brookmanholmes.billiards.turn.TableUtils;
  */
 class EightBallTurnEndHelper extends TurnEndHelper {
     @Override boolean showWin() {
-        return !currentPlayerBallsRemaining() && nextInning.getGameBallMade();
+        return !currentPlayerBallsRemaining() && nextInning.isGameBallMade();
     }
 
     @Override boolean lostGame() {
         return nextInning.getGameBallMadeIllegally()
-                || (currentPlayerBallsRemaining() && nextInning.getGameBallMade());
+                || (currentPlayerBallsRemaining() && nextInning.isGameBallMade());
     }
 
     @Override boolean checkFoul() {

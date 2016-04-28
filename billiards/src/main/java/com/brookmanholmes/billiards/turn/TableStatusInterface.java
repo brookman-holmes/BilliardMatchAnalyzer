@@ -19,7 +19,7 @@ public interface TableStatusInterface {
 
     boolean getGameBallMadeOnBreak();
 
-    boolean getGameBallMade();
+    boolean isGameBallMade();
 
     int getBallsRemaining();
 

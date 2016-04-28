@@ -12,6 +12,9 @@ import java.util.Map;
 
 import static com.brookmanholmes.billiards.game.util.BallStatus.DEAD;
 import static com.brookmanholmes.billiards.game.util.BallStatus.DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD;
+import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE;
 import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK;
 import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
 import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
@@ -130,7 +133,10 @@ final public class TableStatus implements TableStatusInterface {
     }
 
     public int getDeadBallsOnBreak() {
-        return Collections.frequency(table.values(), DEAD_ON_BREAK);
+        return Collections.frequency(table.values(), DEAD_ON_BREAK)
+                + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_MADE ? 1 : 0)
+                + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_DEAD ? 1 : 0)
+                + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK ? 1 : 0);
     }
 
     public int getBallsRemaining() {
@@ -142,17 +148,18 @@ final public class TableStatus implements TableStatusInterface {
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_DEAD ? 1 : 0);
-
     }
 
     public int getShootingBallsMade() {
         return Collections.frequency(table.values(), MADE)
-                + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE ? 1 : 0);
+                + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE ? 1 : 0)
+                + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_MADE ? 1 : 0);
     }
 
-    public boolean getGameBallMade() {
+    public boolean isGameBallMade() {
         return table.get(GAME_BALL) == MADE ||
-                table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE;
+                table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE ||
+                table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_MADE;
     }
 
     public boolean getGameBallMadeOnBreak() {

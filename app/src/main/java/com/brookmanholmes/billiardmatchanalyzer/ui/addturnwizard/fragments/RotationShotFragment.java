@@ -33,7 +33,7 @@ public class RotationShotFragment extends ShotFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         btnRunOut.setVisibility(View.VISIBLE);
-        btnRunOut.setText("Select remaining balls");
+        btnRunOut.setText(R.string.select_balls);
         return view;
     }
 
@@ -43,6 +43,9 @@ public class RotationShotFragment extends ShotFragment {
             if (ballStatusList.get(i) == BallStatus.ON_TABLE) {
                 page.updateBallStatus(i + 1);
             }
+
+            if (ballStatusList.get(i) == BallStatus.GAME_BALL_DEAD_ON_BREAK)
+                page.updateBallStatus(i + 1);
         }
     }
 }

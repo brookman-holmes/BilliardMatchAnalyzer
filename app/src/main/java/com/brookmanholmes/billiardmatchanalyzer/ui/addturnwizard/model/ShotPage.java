@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.ShotFragment;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -66,12 +67,12 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
             if (ball >= 1 && ball <= 8)
                 ballStatus = incrementBallStatus(ballStatus);
             else
-                ballStatus = incrementDeadBallStatus(ballStatus);
+                ballStatus = incrementOtherPlayersBallStatus(ballStatus);
         else if (playerColor == PlayerColor.STRIPES)
             if (ball >= 8 && ball <= 15)
                 ballStatus = incrementBallStatus(ballStatus);
             else
-                ballStatus = incrementDeadBallStatus(ballStatus);
+                ballStatus = incrementOtherPlayersBallStatus(ballStatus);
         else
             ballStatus = incrementBallStatus(ballStatus);
 
@@ -80,6 +81,7 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
         notifyDataChanged();
         updateFragment();
 
+        Log.i("BreakPage", "ball: " + ball + " ball status: " + ballStatus.toString());
         return ballStatus;
     }
 
@@ -115,12 +117,18 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
                 return BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
             case GAME_BALL_MADE_ON_BREAK_THEN_DEAD:
                 return BallStatus.GAME_BALL_MADE_ON_BREAK;
+            case GAME_BALL_DEAD_ON_BREAK:
+                return BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE;
+            case GAME_BALL_DEAD_ON_BREAK_THEN_MADE:
+                return BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD;
+            case GAME_BALL_DEAD_ON_BREAK_THEN_DEAD:
+                return BallStatus.GAME_BALL_DEAD_ON_BREAK;
             default:
                 return ballStatus;
         }
     }
 
-    private BallStatus incrementDeadBallStatus(BallStatus ballStatus) {
+    private BallStatus incrementOtherPlayersBallStatus(BallStatus ballStatus) {
         switch (ballStatus) {
             case ON_TABLE:
                 return BallStatus.DEAD;
@@ -133,6 +141,12 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
                 return BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
             case GAME_BALL_MADE_ON_BREAK_THEN_DEAD:
                 return BallStatus.GAME_BALL_MADE_ON_BREAK;
+            case GAME_BALL_DEAD_ON_BREAK:
+                return BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD;
+            case GAME_BALL_DEAD_ON_BREAK_THEN_MADE:
+                return BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD;
+            case GAME_BALL_DEAD_ON_BREAK_THEN_DEAD:
+                return BallStatus.GAME_BALL_DEAD_ON_BREAK;
             default:
                 return ballStatus;
         }

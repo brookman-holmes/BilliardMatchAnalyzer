@@ -7,7 +7,7 @@ import com.brookmanholmes.billiards.game.util.GameType;
  */
 class RotationTurnEndHelper extends TurnEndHelper {
     @Override boolean showWin() {
-        return nextInning.getGameBallMade()
+        return nextInning.isGameBallMade()
                 || nextInning.getGameBallMadeOnBreak();
     }
 

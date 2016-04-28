@@ -129,7 +129,7 @@ public class BreakFragment extends Fragment {
     }
 
     private boolean ballIsDead(BallStatus status) {
-        return status == BallStatus.DEAD_ON_BREAK;
+        return status == BallStatus.DEAD_ON_BREAK || status == BallStatus.GAME_BALL_DEAD_ON_BREAK;
     }
 
     private boolean ballIsMade(BallStatus status) {

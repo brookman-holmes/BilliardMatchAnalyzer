@@ -5,7 +5,7 @@ package com.brookmanholmes.billiards.turn.helpers;
  */
 class TenBallTurnEndHelper extends RotationTurnEndHelper {
     @Override boolean showWin() {
-        return nextInning.getGameBallMade();
+        return nextInning.isGameBallMade();
     }
 
     @Override boolean checkFoul() {

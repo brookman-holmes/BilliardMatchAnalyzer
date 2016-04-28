@@ -71,8 +71,8 @@ public class GameTurn implements Turn {
         return tableStatus.getGameBallMadeOnBreak();
     }
 
-    @Override public boolean getGameBallMade() {
-        return tableStatus.getGameBallMade();
+    @Override public boolean isGameBallMade() {
+        return tableStatus.isGameBallMade();
     }
 
     @Override public int getBallsRemaining() {

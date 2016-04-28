@@ -45,7 +45,7 @@ public abstract class MatchTester {
     @Test
     public void verifyTurnEndOptionsWithList() {
         List<TurnEndOptions> actualTurnEndOptionsList = new ArrayList<>();
-        TurnEndHelper helper = TurnEndHelper.newTurnEndHelper(game.getGameType());
+        TurnEndHelper helper = TurnEndHelper.create(game.getGameType());
 
         for (int i = 0; i < turns.size(); i++) {
             actualTurnEndOptionsList.add(helper.create(expectedGameStatusList.get(i), turns.get(i)));

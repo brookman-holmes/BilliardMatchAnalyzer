@@ -129,10 +129,10 @@ public class TableStatusTest {
     @Test
     public void testGetGameBallMade() {
         tableStatus.setBallTo(MADE, 8);
-        assertThat(tableStatus.getGameBallMade(), is(true));
+        assertThat(tableStatus.isGameBallMade(), is(true));
 
         tableStatus.setBallTo(GAME_BALL_MADE_ON_BREAK_THEN_MADE, 8);
-        assertThat(tableStatus.getGameBallMade(), is(true));
+        assertThat(tableStatus.isGameBallMade(), is(true));
     }
 
     @Test

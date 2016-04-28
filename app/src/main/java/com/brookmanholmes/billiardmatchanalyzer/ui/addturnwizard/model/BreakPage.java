@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.BreakFragment;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -51,7 +52,7 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
 
         BallStatus newBallStatus = incrementBallStatus(ballStatus, ball);
         tableStatus.setBallTo(newBallStatus, ball);
-
+        Log.i("BreakPage", "ball: " + ball + " ball status: " + newBallStatus.toString());
         data.putString(SIMPLE_DATA_KEY, showShotPage());
         notifyDataChanged();
 
@@ -64,6 +65,8 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
             gameBall = 8;
         } else if (gameType == GameType.BCA_TEN_BALL) {
             gameBall = 10;
+        } else if (gameType == GameType.BCA_NINE_BALL) {
+            gameBall = 9;
         }
 
         switch (ballStatus) {
@@ -77,7 +80,12 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
             case DEAD_ON_BREAK:
                 return BallStatus.ON_TABLE;
             case GAME_BALL_MADE_ON_BREAK:
-                return BallStatus.DEAD_ON_BREAK;
+                if (ball == gameBall)
+                    return BallStatus.GAME_BALL_DEAD_ON_BREAK;
+                else
+                    return BallStatus.DEAD_ON_BREAK;
+            case GAME_BALL_DEAD_ON_BREAK:
+                return BallStatus.ON_TABLE;
             default:
                 return ballStatus;
         }

@@ -7,6 +7,7 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.TurnE
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
@@ -27,7 +28,10 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         data.putAll(matchData);
         setRequired(true);
 
-        turnEndHelper = TurnEndHelper.newTurnEndHelper(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)));
+        if (BreakType.valueOf(data.getString(MatchDialogHelperUtils.BREAK_TYPE_KEY)) == BreakType.GHOST)
+            turnEndHelper = TurnEndHelper.createGhostHelper();
+        else
+            turnEndHelper = TurnEndHelper.create(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)));
     }
 
     @Override public Fragment createFragment() {
