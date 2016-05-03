@@ -13,90 +13,51 @@
         android:text="Clicking on a ball will toggle it&apos;s status"
         android:textColor="@color/colorPrimary"/>
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:drawableLeft="@drawable/one_ball"
+        android:drawablePadding="16dp"
+        android:gravity="left"
         android:paddingBottom="4dp"
-        android:paddingTop="4dp">
+        android:paddingTop="4dp"
+        android:text="This ball is currently on the table; tapping it will set it to made"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/one_ball"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:drawablePadding="16dp"
+        android:drawableRight="@drawable/two_ball_selected"
+        android:gravity="right"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="This ball has been selected, which means that it has been legally pocketed"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="16dp"
+            android:drawableLeft="@drawable/three_ball_dead"
+            android:drawablePadding="16dp"
             android:gravity="left"
-            android:text="This ball is currently on the table; tapping it will set it to made"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="16dp"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:text="This ball has been selected, which means that it has been legally pocketed"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/two_ball_selected"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/three_ball_dead"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="16dp"
-            android:gravity="left"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
             android:text="Tapping a ball twice will set it&apos;s status to &apos;dead,&apos; meaning that it does not count as a made ball for the current player"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="16dp"
             android:layout_weight="1"
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/four_ball_off_table"
             android:gravity="right"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
             android:text="This ball is not on the table and is unselectable"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/four_ball_off_table"/>
-    </LinearLayout>
 
 </LinearLayout>

@@ -133,4 +133,5 @@
     <string name="select_balls">Select remaining balls</string>
     <string name="select_solids">Select all remaining solids</string>
     <string name="select_stripes">Select all remaining stripes</string>
+    <string name="row_game">Game %1$d (%2$d - %3$d)</string>
 </resources>

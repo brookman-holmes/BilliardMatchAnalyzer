@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -69,8 +70,8 @@ public class AdvStatsDialog extends DialogFragment {
 
         toolbar.setTitle(getString(R.string.title_advanced_stats, getArguments().getString(ARG_PLAYER_NAME, "ERROR NO NAME PRESENT IN ARGUMENTS")));
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        Drawable backArrow = getResources().getDrawable(R.drawable.ic_arrow_back_24dp);
-        backArrow.setTint(getResources().getColor(android.R.color.white));
+        Drawable backArrow = ActivityCompat.getDrawable(getContext(), R.drawable.ic_arrow_back_24dp);
+        backArrow.setTint(ActivityCompat.getColor(getContext(), android.R.color.white));
         toolbar.setNavigationIcon(backArrow);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {

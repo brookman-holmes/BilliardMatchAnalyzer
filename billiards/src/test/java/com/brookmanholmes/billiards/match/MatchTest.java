@@ -5,9 +5,9 @@ import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.turn.TurnBuilder;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.EightBallPlayer;
+import com.brookmanholmes.billiards.turn.TurnBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -132,10 +132,15 @@ public class MatchTest {
 
         match.addTurn(turnBuilder().breakMiss());
 
-        player2.addBreakShot(0, false, false);
+        addTurnOne();
 
         assertThat(match.getPlayer(), is(player1));
         assertThat(match.getOpponent(), is(player2));
+    }
+
+    private void addTurnOne() {
+        player2.addBreakShot(0, false, false);
+
     }
 
     @Test
@@ -144,11 +149,15 @@ public class MatchTest {
 
         match.addTurn(turnBuilder().miss());
 
-        player1.addShootingMiss();
-        player1.addShootingBallsMade(0, false);
+        addTurnTwo();
 
         assertThat(match.getPlayer(), is(player1));
         assertThat(match.getOpponent(), is(player2));
+    }
+
+    private void addTurnTwo() {
+        player1.addShootingMiss();
+        player1.addShootingBallsMade(0, false);
     }
 
     @Test
@@ -157,11 +166,15 @@ public class MatchTest {
 
         match.addTurn(turnBuilder().madeBalls(3).miss());
 
-        player2.addShootingBallsMade(1, false);
-        player2.addShootingMiss();
+        addTurnThree();
 
         assertThat(match.getPlayer(), is(player1));
         assertThat(match.getOpponent(), is(player2));
+    }
+
+    private void addTurnThree() {
+        player2.addShootingBallsMade(1, false);
+        player2.addShootingMiss();
     }
 
     @Test
@@ -170,16 +183,18 @@ public class MatchTest {
 
         match.addTurn(turnBuilder().madeBalls(9, 10, 11, 12, 13, 14, 15, 8).win());
 
-        player1.addShootingBallsMade(8, false);
-        player1.addTableRun();
-
-        player1.addGameWon();
-
-        player2.addGameLost();
+        addTurnFour();
 
 
         assertThat(match.getPlayer(), is(player1));
         assertThat(match.getOpponent(), is(player2));
+    }
+
+    private void addTurnFour() {
+        player1.addShootingBallsMade(8, false);
+        player1.addTableRun();
+        player1.addGameWon();
+        player2.addGameLost();
     }
 
     @Test
@@ -188,12 +203,56 @@ public class MatchTest {
 
         match.addTurn(turnBuilder().breakBalls(4).miss());
 
+        addTurnFive();
+
+        assertThat(match.getPlayer(), is(player1));
+        assertThat(match.getOpponent(), is(player2));
+    }
+
+    private void addTurnFive() {
         player1.addBreakShot(1, false, false);
 
         player1.addShootingMiss();
         player1.addShootingBallsMade(0, false);
+    }
 
-        assertThat(match.getPlayer(), is(player1));
-        assertThat(match.getOpponent(), is(player2));
+    @Test
+    public void getGameStatusReturnsThirdTurn() {
+        for (Turn turn : turns()) {
+            match.addTurn(turn);
+        }
+
+        assertThat(match.getGameStatus(0).turn, is(PlayerTurn.OPPONENT));
+        assertThat(match.getGameStatus(1).turn, is(PlayerTurn.PLAYER));
+        assertThat(match.getGameStatus(2).turn, is(PlayerTurn.OPPONENT));
+        assertThat(match.getGameStatus(3).turn, is(PlayerTurn.PLAYER));
+        assertThat(match.getGameStatus(4).turn, is(PlayerTurn.PLAYER));
+
+        assertThat(match.getGameStatus(0).breaker, is(PlayerTurn.OPPONENT));
+        assertThat(match.getGameStatus(1).breaker, is(PlayerTurn.OPPONENT));
+        assertThat(match.getGameStatus(2).breaker, is(PlayerTurn.OPPONENT));
+        assertThat(match.getGameStatus(3).breaker, is(PlayerTurn.OPPONENT));
+        assertThat(match.getGameStatus(4).breaker, is(PlayerTurn.PLAYER));
+
+        assertThat(match.getPlayer(match.getTurnCount()), is(match.getPlayer()));
+        assertThat(match.getOpponent(match.getTurnCount()), is(match.getOpponent()));
+    }
+
+    @Test
+    public void getPlayerReturnsFirstTurnPlayer() {
+        match.addTurn(turnBuilder.breakMiss());
+
+        addTurnOne();
+        assertThat(match.getPlayer(match.getTurnCount()), is(player1));
+        assertThat(match.getOpponent(match.getTurnCount()), is(player2));
+
+        match.addTurn(turnBuilder.miss());
+        match.addTurn(turnBuilder().madeBalls(3).miss());
+        match.addTurn(turnBuilder().madeBalls(9, 10, 11, 12, 13, 14, 15, 8).win());
+
+        addTurnTwo();
+
+        assertThat(match.getPlayer(match.getTurnCount() - 2), is(player1));
+        assertThat(match.getOpponent(match.getTurnCount() - 2), is(player2));
     }
 }

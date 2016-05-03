@@ -27,20 +27,23 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-
-        db = new DatabaseAdapter(this);
-        db.open();
     }
 
     @Override protected void onResume() {
         super.onResume();
-        final int animationDelay = 250; // .25 seconds
+        db = new DatabaseAdapter(this);
 
+        final int animationDelay = 250; // .25 seconds
         new Handler().postDelayed(new Runnable() {
             @Override public void run() {
                 fab.show();
             }
         }, animationDelay); // display fab after activity starts
+    }
+
+    @Override protected void onPause() {
+        db = null;
+        super.onPause();
     }
 
     @OnClick(R.id.createMatch) public void createNewMatch() {

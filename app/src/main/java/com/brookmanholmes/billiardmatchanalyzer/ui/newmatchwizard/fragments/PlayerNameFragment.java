@@ -27,16 +27,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model.PlayerNamePage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
+import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.List;
 
@@ -45,11 +45,12 @@ import butterknife.ButterKnife;
 
 public class PlayerNameFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
     private static final String ARG_KEY = "key";
-    @Bind(R.id.playerName) AutoCompleteTextView playerName;
-    @Bind(R.id.opponentName) AutoCompleteTextView opponentName;
-    @Bind(R.id.location) EditText location;
-    @Bind(R.id.extra) EditText extra;
+    @Bind(R.id.playerName) MaterialAutoCompleteTextView playerName;
+    @Bind(R.id.opponentName) MaterialAutoCompleteTextView opponentName;
+    @Bind(R.id.location) MaterialEditText location;
+    @Bind(R.id.extra) MaterialEditText extra;
     @Bind(R.id.cbGhost) CheckBox playTheGhost;
+
     private PageFragmentCallbacks callbacks;
     private String key;
     private PlayerNamePage page;
@@ -74,9 +75,9 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
         key = args.getString(ARG_KEY);
         page = (PlayerNamePage) callbacks.onGetPage(key);
         DatabaseAdapter database = new DatabaseAdapter(getContext());
-        database.open();
 
         names = database.getNames();
+        names.remove(getString(R.string.ghost_name));
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,

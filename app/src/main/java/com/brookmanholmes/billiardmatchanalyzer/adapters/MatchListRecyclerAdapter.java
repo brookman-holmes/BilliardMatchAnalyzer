@@ -163,7 +163,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         return context.getString(resId, formatArgs);
     }
 
-    public class ListItemHolder extends RecyclerView.ViewHolder {
+    class ListItemHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.players) TextView playerNames;
         @Bind(R.id.breakType) TextView breakType;
         @Bind(R.id.imgGameType) ImageView gameType;
@@ -184,7 +184,6 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
 
         @OnLongClick(R.id.container) public boolean onLongClick() {
             final DatabaseAdapter database = new DatabaseAdapter(context);
-            database.open();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
             builder.setMessage(getString(R.string.delete_match))
@@ -203,5 +202,4 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
             return true;
         }
     }
-
 }

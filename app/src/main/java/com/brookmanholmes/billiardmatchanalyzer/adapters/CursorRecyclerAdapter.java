@@ -47,7 +47,7 @@ import android.widget.Filterable;
  * @see android.widget.CursorAdapter
  * @see android.widget.Filterable
  */
-public abstract class CursorRecyclerAdapter<ListItemHolder extends android.support.v7.widget.RecyclerView.ViewHolder> extends RecyclerView.Adapter<ListItemHolder>
+public abstract class CursorRecyclerAdapter<ListItemHolder extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<ListItemHolder>
         implements Filterable, CursorFilter.CursorFilterClient {
     private boolean mDataValid;
     private int mRowIDColumn;

@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.MatchListRecyclerAdapter;
-import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.MatchListLoader;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -27,6 +26,7 @@ import butterknife.ButterKnife;
 public class MatchListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static int LOADER_ID = 100;
     @Bind(R.id.scrollView) RecyclerView recyclerView;
+    LinearLayoutManager layoutManager;
     private MatchListRecyclerAdapter adapter;
 
     public MatchListFragment() {
@@ -38,11 +38,8 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
         ButterKnife.bind(this, view);
 
         adapter = new MatchListRecyclerAdapter(getContext(), null);
-
-        DatabaseAdapter database = new DatabaseAdapter(getActivity());
-        database.open();
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
         getLoaderManager().initLoader(LOADER_ID, getArguments(), this);
@@ -56,11 +53,15 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override public void onDestroyView() {
-        super.onDestroyView();
         recyclerView.setAdapter(null);
+        recyclerView = null;
+        layoutManager = null;
+
         ButterKnife.unbind(this);
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
+
+        super.onDestroyView();
     }
 
     /**

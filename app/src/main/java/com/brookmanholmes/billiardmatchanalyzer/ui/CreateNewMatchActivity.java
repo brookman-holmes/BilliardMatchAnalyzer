@@ -105,7 +105,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
         Match match = wizardModel.createMatch();
 
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
-        databaseAdapter.open();
 
         long matchId = databaseAdapter.insertMatch(match);
 

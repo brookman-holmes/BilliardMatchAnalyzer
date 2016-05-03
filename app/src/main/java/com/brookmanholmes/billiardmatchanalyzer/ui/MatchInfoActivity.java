@@ -21,6 +21,7 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.dialog.GameStatusStringBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
+import com.brookmanholmes.billiardmatchanalyzer.ui.stats.TurnListDialog;
 import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
@@ -50,7 +51,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         setSupportActionBar(toolbar);
 
         db = new DatabaseAdapter(this);
-        db.open();
 
         Match<?> match = db.getMatch(getMatchId());
         playerName.setText(match.getPlayer().getName());
@@ -231,6 +231,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         if (id == R.id.action_redo) {
             Snackbar.make(layout, R.string.redid_turn, Snackbar.LENGTH_SHORT).show();
             addTurn(infoFragment.redoTurn());
+        }
+
+        if (item.getItemId() == R.id.action_adv_stats) {
+            TurnListDialog dialog = TurnListDialog.create(getMatchId());
+            dialog.show(getSupportFragmentManager(), "TurnListDialog");
         }
 
         return super.onOptionsItemSelected(item);

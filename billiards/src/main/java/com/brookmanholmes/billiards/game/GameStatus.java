@@ -126,6 +126,7 @@ public final class GameStatus {
         if (!ballsOnTable.containsAll(that.ballsOnTable)) return false;
         if (!that.ballsOnTable.containsAll(ballsOnTable)) return false;
         if (ballsOnTable.size() != that.ballsOnTable.size()) return false;
+        if (innings != that.innings) return false;
         return breakType == that.breakType;
 
     }
@@ -149,6 +150,7 @@ public final class GameStatus {
         result = 31 * result + (winOnBreak ? 1 : 0);
         result = 31 * result + ballsOnTable.hashCode();
         result = 31 * result + breakType.hashCode();
+        result = 31 * result + innings;
         return result;
     }
 

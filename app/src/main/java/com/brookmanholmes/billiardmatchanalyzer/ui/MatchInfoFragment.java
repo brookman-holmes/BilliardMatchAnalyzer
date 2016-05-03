@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 public class MatchInfoFragment extends Fragment implements MatchInterface{
     @Bind(R.id.scrollView) RecyclerView recyclerView;
     MatchInfoRecyclerAdapter<?> adapter;
+    LinearLayoutManager layoutManager;
     DatabaseAdapter db;
     private long matchId;
 
@@ -49,11 +50,7 @@ public class MatchInfoFragment extends Fragment implements MatchInterface{
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setRetainInstance(true);
-
-        db = new DatabaseAdapter(getContext());
-        db.open();
 
         if (getArguments().getLong(BaseActivity.ARG_MATCH_ID, -1) != -1) {
             matchId = getArguments().getLong(BaseActivity.ARG_MATCH_ID);
@@ -61,6 +58,7 @@ public class MatchInfoFragment extends Fragment implements MatchInterface{
             throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
         }
 
+        db = new DatabaseAdapter(getContext());
         adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
     }
 
@@ -72,8 +70,8 @@ public class MatchInfoFragment extends Fragment implements MatchInterface{
         } else
             view = inflater.inflate(R.layout.fragment_list_view2, container, false);
         ButterKnife.bind(this, view);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
         //recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -81,11 +79,15 @@ public class MatchInfoFragment extends Fragment implements MatchInterface{
     }
 
     @Override public void onDestroyView() {
-        super.onDestroyView();
         recyclerView.setAdapter(null);
+        recyclerView = null;
+        layoutManager = null;
+
         ButterKnife.unbind(this);
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
+
+        super.onDestroyView();
     }
 
     @Override public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {

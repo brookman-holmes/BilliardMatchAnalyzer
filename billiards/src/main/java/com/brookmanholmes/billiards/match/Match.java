@@ -16,18 +16,21 @@ import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
  * Created by Brookman Holmes on 10/27/2015.
  */
 public class Match<T extends AbstractPlayer> implements MatchInterface {
+    public ArrayDeque<T> player1 = new ArrayDeque<>();
     long matchId;
     PlayerController<T> playerController;
     String location;
     String notes;
     Game game;
-    ArrayDeque<T> player1 = new ArrayDeque<>();
     ArrayDeque<T> player2 = new ArrayDeque<>();
     ArrayDeque<Turn> turns = new ArrayDeque<>();
     ArrayDeque<Turn> undoneTurns = new ArrayDeque<>();
@@ -41,6 +44,18 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         detail = builder.statsDetail;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
+    }
+
+    public static <T> List<T> convertArrayDequeToList(ArrayDeque<T> arrayDeque) {
+        List<T> list = new ArrayList<>();
+
+        for (T item : arrayDeque) {
+            list.add(item);
+        }
+
+        Collections.reverse(list);
+
+        return list;
     }
 
     public long getMatchId() {
@@ -63,12 +78,32 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
         return game.getGameStatus();
     }
 
+    public GameStatus getGameStatus(int turn) {
+        return convertArrayDequeToList(games).get(turn);
+    }
+
     public T getPlayer() {
         return ControllerHelperMethods.getPlayerFromList(player1, playerController.newPlayer());
     }
 
     public T getOpponent() {
         return ControllerHelperMethods.getPlayerFromList(player2, playerController.newOpponent());
+    }
+
+    public T getPlayer(int end) {
+        return getPlayer(0, end);
+    }
+
+    public T getOpponent(int end) {
+        return getOpponent(0, end);
+    }
+
+    public T getPlayer(int start, int end) {
+        return ControllerHelperMethods.getPlayerFromList(convertArrayDequeToList(player1).subList(start, end), playerController.newPlayer());
+    }
+
+    public T getOpponent(int start, int end) {
+        return ControllerHelperMethods.getPlayerFromList(convertArrayDequeToList(player2).subList(start, end), playerController.newOpponent());
     }
 
     @Override public String getCurrentPlayersName() {

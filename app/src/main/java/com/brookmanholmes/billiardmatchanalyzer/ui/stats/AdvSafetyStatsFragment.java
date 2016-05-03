@@ -50,7 +50,6 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
         super.onCreate(savedInstanceState);
 
         DatabaseAdapter db = new DatabaseAdapter(getContext());
-        db.open();
 
         long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID);
         String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);

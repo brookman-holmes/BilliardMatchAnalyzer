@@ -243,6 +243,12 @@ public abstract class AbstractPlayer {
         } else return ZERO_PERCENT;
     }
 
+    public String getBreakPct() {
+        if (getBreakAttempts() > 0) {
+            return pctf.format((double) breakSuccesses / (double) breakAttempts);
+        } else return ZERO_PERCENT;
+    }
+
     public int getShotAttemptsOfAllTypes() {
         return getShootingAttempts() + getBreakAttempts() + getSafetyAttempts();
     }

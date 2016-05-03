@@ -23,7 +23,6 @@ import java.util.Set;
  */
 public class StatsUtils {
     private StatsUtils() {
-
     }
 
     static void setLayoutWeights(Pair<Integer, Integer> integerPair, TextView leftView, TextView rightView) {
