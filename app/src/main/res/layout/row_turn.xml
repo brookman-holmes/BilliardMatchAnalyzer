@@ -34,6 +34,7 @@
             android:text="New Text"
             android:textColor="@color/primary_text"
             android:textSize="16sp"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -69,51 +70,5 @@
     </LinearLayout>
 
     <include layout="@layout/ball_container"/>
-
-    <RelativeLayout android:id="@+id/advStatsContainer"
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone">
-
-        <TextView
-            android:id="@+id/shotType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/angel"
-            android:padding="8dp"
-            android:text="Shot Type"/>
-
-        <TextView
-            android:id="@+id/shotSubType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/shotType"
-            android:padding="8dp"
-            android:text="Subtype"/>
-
-        <TextView
-            android:id="@+id/angel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Angel(s)"/>
-
-        <TextView
-            android:id="@+id/howMiss"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/shotType"
-            android:padding="8dp"
-            android:text="How"/>
-
-        <TextView
-            android:id="@+id/whyMiss"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/howMiss"
-            android:padding="8dp"
-            android:text="Why"/>
-    </RelativeLayout>
 
 </LinearLayout>

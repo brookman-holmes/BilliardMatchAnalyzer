@@ -299,7 +299,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private Page getHowMissPage(String parentKey) {
         return new HowMissPage(this, context.getString(R.string.title_how_miss))
                 .setChoices(context.getResources().getStringArray(R.array.how_choices))
-                .setParentKey(parentKey);
+                .setParentKey(parentKey)
+                .setRequired(true);
     }
 
     public TurnBuilder getTurnBuilder() {

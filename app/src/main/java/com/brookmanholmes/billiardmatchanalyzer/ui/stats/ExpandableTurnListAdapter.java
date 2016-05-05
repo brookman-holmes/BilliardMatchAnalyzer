@@ -2,9 +2,9 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +30,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -182,12 +181,6 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
         @Bind(R.id.tvSafetyPct) TextView safetyPct;
         @Bind(R.id.tvBreakPct) TextView breakPct;
         @Bind(R.id.tvShootingPct) TextView shootingPct;
-        @Bind(R.id.shotType) TextView shotType;
-        @Bind(R.id.shotSubType) TextView subType;
-        @Bind(R.id.angel) TextView angels;
-        @Bind(R.id.howMiss) TextView howMiss;
-        @Bind(R.id.whyMiss) TextView whyMiss;
-        @Bind(R.id.advStatsContainer) View container;
         @Bind(R.id.ballContainer) LinearLayout ballContainer;
 
         public TurnViewHolder(View itemView) {
@@ -197,36 +190,65 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
 
         private void bind(Pair<Turn, AdvStats> stats, PlayerTurn playerTurn, AbstractPlayer player) {
             @ColorInt int color = (playerTurn == PlayerTurn.PLAYER ? ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary) : ContextCompat.getColor(itemView.getContext(), R.color.colorAccent));
-            TurnStringAdapter turnStringAdapter = new TurnStringAdapter(stats.getLeft(), player, playerTurn);
+            TurnStringAdapter turnStringAdapter = new TurnStringAdapter(stats, player, playerTurn);
             indicator.setTitleText(player.getName().substring(0, 1));
             indicator.setBackgroundColor(color);
-            turnString.setText(Html.fromHtml(turnStringAdapter.getString()));
 
-            String title = "%1$s <font color='";
-            title += playerTurn == PlayerTurn.PLAYER ? "#2196F3" : "#FF3D00";
-            title += "'>%2$s</font>";
-
-            shootingPct.setText(Html.fromHtml(String.format(Locale.getDefault(), title, "Shooting", player.getShootingPct())));
-            safetyPct.setText(Html.fromHtml(String.format(Locale.getDefault(), title, "Safeties", player.getSafetyPct())));
-            breakPct.setText(Html.fromHtml(String.format(Locale.getDefault(), title, "Breaking", player.getBreakPct())));
-
-            if (stats.getRight() != null) {
-                bind(stats.getRight());
-                container.setVisibility(View.GONE); // setting visibility to gone to help with testing TurnStringAdapter
-            } else
-                container.setVisibility(View.GONE);
+            turnString.setText(turnStringAdapter.getTurnString());
+            shootingPct.setText(turnStringAdapter.getShootingStats());
+            safetyPct.setText(turnStringAdapter.getSafetyStats());
+            breakPct.setText(turnStringAdapter.getBreakingStats());
         }
 
         private void setBalls(TableStatusInterface tableStatus) {
             for (int ball = 1; ball <= tableStatus.size(); ball++) {
+                TextView textView = (TextView) ballContainer.getChildAt(ball - 1);
                 if (ballIsMade(tableStatus.getBallStatus(ball))) {
-                    ballContainer.getChildAt(ball - 1).setVisibility(View.VISIBLE);
+                    textView.setVisibility(View.VISIBLE);
+                    textView.getBackground().setTint(ContextCompat.getColor(itemView.getContext(), getBallColorTint(ball)));
                 } else if (ballIsDead(tableStatus.getBallStatus(ball))) {
-                    TextView textView = (TextView) ballContainer.getChildAt(ball - 1);
-                    textView.getBackground().setTint(ContextCompat.getColor(itemView.getContext(), android.R.color.darker_gray));
+                    textView.setVisibility(View.VISIBLE);
+                    textView.getBackground().setTint(ContextCompat.getColor(itemView.getContext(), R.color.dead_ball));
                 } else {
                     ballContainer.getChildAt(ball - 1).setVisibility(View.GONE);
                 }
+            }
+        }
+
+        @ColorRes private int getBallColorTint(int ball) {
+            switch (ball) {
+                case 1:
+                    return R.color.one_ball;
+                case 2:
+                    return R.color.two_ball;
+                case 3:
+                    return R.color.three_ball;
+                case 4:
+                    return R.color.four_ball;
+                case 5:
+                    return R.color.five_ball;
+                case 6:
+                    return R.color.six_ball;
+                case 7:
+                    return R.color.seven_ball;
+                case 8:
+                    return R.color.eight_ball;
+                case 9:
+                    return R.color.one_ball;
+                case 10:
+                    return R.color.two_ball;
+                case 11:
+                    return R.color.three_ball;
+                case 12:
+                    return R.color.four_ball;
+                case 13:
+                    return R.color.five_ball;
+                case 14:
+                    return R.color.six_ball;
+                case 15:
+                    return R.color.seven_ball;
+                default:
+                    throw new IllegalArgumentException("Ball cannot be outside of 1-15, was: " + ball);
             }
         }
 
@@ -240,16 +262,9 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
         private boolean ballIsDead(BallStatus status) {
             return status == BallStatus.DEAD ||
                     status == BallStatus.DEAD_ON_BREAK ||
+                    status == BallStatus.GAME_BALL_DEAD_ON_BREAK ||
                     status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD ||
                     status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
-        }
-
-        private void bind(AdvStats stats) {
-            shotType.setText(stats.getShotType());
-            subType.setText(stats.getShotSubtype());
-            angels.setText(stats.getAngles().toString());
-            howMiss.setText(stats.getHowTypes().toString());
-            whyMiss.setText(stats.getWhyTypes().toString());
         }
     }
 }

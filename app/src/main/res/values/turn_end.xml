@@ -27,7 +27,7 @@
     <string name="no">No</string>
 
     <string name="cut_back">Back cut</string>
-    <string name="cut_rail">Down the rail</string>
+    <string name="cut_rail">Down the rail cut</string>
     <string name="cut_wing">Wing cut</string>
 
     <string-array name="cut_types">

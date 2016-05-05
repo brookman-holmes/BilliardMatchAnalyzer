@@ -20,4 +20,13 @@
     <color name="step_pager_selected_tab_color">#2979FF</color>
     <color name="step_pager_selected_last_tab_color">#FF5722</color>
     <color name="step_pager_next_tab_color">#F0F0F0</color>
+    <color name="one_ball">#FFFF00</color>
+    <color name="two_ball">#1E88E5</color>
+    <color name="three_ball">#F44336</color>
+    <color name="four_ball">#9C27B0</color>
+    <color name="five_ball">#FF9800</color>
+    <color name="six_ball">#689F38</color>
+    <color name="seven_ball">#B71C1C</color>
+    <color name="eight_ball">#000000</color>
+    <color name="dead_ball">#E0E0E0</color>
 </resources>
