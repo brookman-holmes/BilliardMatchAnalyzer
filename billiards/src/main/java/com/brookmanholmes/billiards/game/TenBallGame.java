@@ -16,7 +16,7 @@ class TenBallGame extends RotationGame {
         super(GameType.BCA_TEN_BALL, playerTurn, breakType, MAX_BALLS, GAME_BALL);
     }
 
-    @Override boolean setAllowTurnSkip(Turn turn) {
+    @Override boolean setAllowTurnSkip(com.brookmanholmes.billiards.turn.Turn turn) {
         return super.setAllowTurnSkip(turn) ||
                 (turn.getTurnEnd() == TurnEnd.MISS || turn.getTurnEnd() == TurnEnd.SAFETY_ERROR) &&
                         turn.getDeadBalls() > 0 && !turn.isScratch();

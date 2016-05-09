@@ -8,21 +8,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.interfaces.Apa;
+import com.brookmanholmes.billiards.player.IApa;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.GameTurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -110,6 +111,36 @@ public class DatabaseAdapter {
         database.close();
 
         return names;
+    }
+
+    public List<Pair<AbstractPlayer, AbstractPlayer>> getPlayer(String playerName) {
+        database = databaseHelper.getReadableDatabase();
+        List<Pair<AbstractPlayer, AbstractPlayer>> players = new ArrayList<>();
+
+        Cursor c = database.query(TABLE_PLAYERS,
+                new String[]{COLUMN_MATCH_ID},
+                COLUMN_NAME + "=?",
+                new String[]{playerName},
+                null,
+                null,
+                null);
+
+        while (c.moveToNext()) {
+            Match<?> match = getMatch(c.getLong(c.getColumnIndex(COLUMN_MATCH_ID)));
+            Pair<AbstractPlayer, AbstractPlayer> pair;
+
+            if (match.getPlayer().getName().equals(playerName)) {
+                pair = new ImmutablePair<>(match.getPlayer(), match.getOpponent());
+            } else {
+                pair = new ImmutablePair<>(match.getOpponent(), match.getPlayer());
+            }
+
+            players.add(pair);
+        }
+
+        c.close();
+
+        return players;
     }
 
     public Match<?> getMatch(long id) {
@@ -275,9 +306,9 @@ public class DatabaseAdapter {
             matchValues.put(COLUMN_STATS_DETAIL, match.getAdvStats().name());
             matchValues.put(COLUMN_NOTES, match.getNotes());
 
-            if (match.getPlayer() instanceof Apa && match.getOpponent() instanceof Apa) {
-                matchValues.put(COLUMN_PLAYER_RANK, ((Apa) match.getPlayer()).getRank());
-                matchValues.put(COLUMN_OPPONENT_RANK, ((Apa) match.getOpponent()).getRank());
+            if (match.getPlayer() instanceof IApa && match.getOpponent() instanceof IApa) {
+                matchValues.put(COLUMN_PLAYER_RANK, ((IApa) match.getPlayer()).getRank());
+                matchValues.put(COLUMN_OPPONENT_RANK, ((IApa) match.getOpponent()).getRank());
             }
 
 

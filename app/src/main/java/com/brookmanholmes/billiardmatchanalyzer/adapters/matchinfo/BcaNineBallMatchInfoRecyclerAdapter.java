@@ -2,7 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo;
 
 import android.view.View;
 
-import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.BreaksHolderWithBreakWins;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.BreaksWithWinsHolder;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.RunOutsWithEarlyWinsHolder;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.NineBallPlayer;
@@ -12,17 +12,17 @@ import com.brookmanholmes.billiards.player.NineBallPlayer;
  */
 class BcaNineBallMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter<NineBallPlayer> {
     BcaNineBallMatchInfoRecyclerAdapter(Match<NineBallPlayer> match) {
-        super(match, 9);
+        super(match);
     }
 
     BcaNineBallMatchInfoRecyclerAdapter(Match<NineBallPlayer> match, ViewType viewType) {
-        super(match, 9);
+        super(match, viewType);
     }
 
     @Override BaseViewHolder<NineBallPlayer> getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_BREAKS:
-                return new BreaksHolderWithBreakWins<>(view, gameBall, detail);
+                return new BreaksWithWinsHolder<>(view, gameBall, detail);
             case ITEM_RUN_OUTS:
                 return new RunOutsWithEarlyWinsHolder<>(view, detail);
             default:

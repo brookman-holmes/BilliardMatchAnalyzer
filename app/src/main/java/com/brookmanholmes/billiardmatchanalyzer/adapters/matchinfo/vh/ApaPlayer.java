@@ -8,7 +8,7 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
-import com.brookmanholmes.billiards.player.interfaces.Apa;
+import com.brookmanholmes.billiards.player.IApa;
 
 import java.util.Locale;
 
@@ -17,7 +17,7 @@ import butterknife.Bind;
 /**
  * Created by helios on 4/12/2016.
  */
-public class ApaPlayer<T extends AbstractPlayer & Apa> extends MatchInfoHolder<T> {
+public class ApaPlayer<T extends AbstractPlayer & IApa> extends MatchInfoHolder<T> {
     @Bind(R.id.tvInningsOpponent) TextView tvInningsOpponent;
     @Bind(R.id.tvDefensiveShotsPlayer) TextView tvDefensiveShotsPlayer;
     @Bind(R.id.tvDefensiveShotsOpponent) TextView tvDefensiveShotsOpponent;

@@ -1,6 +1,5 @@
 package com.brookmanholmes.billiards.turn;
 
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.GameType;
 
 import org.junit.Before;
@@ -21,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/5/2015.
  */
 public class GameTurnTest {
-    com.brookmanholmes.billiards.game.Turn turn;
+    Turn turn;
     TableStatus table;
 
     @Before

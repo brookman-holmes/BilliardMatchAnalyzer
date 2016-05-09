@@ -44,28 +44,28 @@ public class ApaNineBallGameTest extends AbstractGameTest {
     @Test
     public void getPointsFromTurnReturns0() {
         TableStatus table = createTableStatus();
-        Turn turn = createGameTurn(TurnEnd.BREAK_MISS, table);
+        com.brookmanholmes.billiards.turn.Turn turn = createGameTurn(TurnEnd.BREAK_MISS, table);
 
         assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(0));
     }
 
     @Test
     public void getPointsFromTurnWithBreakBallsReturns3() {
-        Turn turn = turn().breakBalls(1, 2, 3).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(1, 2, 3).miss();
 
         assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(3));
     }
 
     @Test
     public void getPointsFromTurnWithGameBallMadeReturns7() {
-        Turn turn = turn().breakBalls(1, 2, 3).madeBalls(4, 5, 9).win();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(1, 2, 3).madeBalls(4, 5, 9).win();
 
         assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(7));
     }
 
     @Test
     public void getPointsFromTurnWithGameBallMadeOnBreakReturns2() {
-        Turn turn = turn().madeBalls(9).win();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().madeBalls(9).win();
 
         assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(2));
     }
@@ -74,7 +74,7 @@ public class ApaNineBallGameTest extends AbstractGameTest {
         return GameType.APA_NINE_BALL;
     }
 
-    Turn createGameTurn(TurnEnd turnEnd, TableStatus tableStatus) {
+    com.brookmanholmes.billiards.turn.Turn createGameTurn(TurnEnd turnEnd, TableStatus tableStatus) {
         return new GameTurn(0, 0L, false, turnEnd, tableStatus, false);
     }
 

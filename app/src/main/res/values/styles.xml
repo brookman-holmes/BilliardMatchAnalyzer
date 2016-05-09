@@ -102,16 +102,10 @@
         <item name="android:paddingRight">24dp</item>
     </style>
 
-    <style name="player_stats_title">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">13sp</item>
-    </style>
-
     <style name="player_stats">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="CustomDialogTransitionTheme" parent="@android:style/Theme.Dialog">
@@ -140,13 +134,13 @@
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="help_dialog_text">
-        <item name="android:paddingStart">8dp</item>
-        <item name="android:paddingEnd">8dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="alert_dialog_padding">
@@ -157,14 +151,12 @@
     </style>
 
     <style name="stroked_text">
-        <item name="android:paddingLeft">4px</item>
-        <item name="android:paddingBottom">4px</item>
         <item name="android:textColor">#ffffffff</item>
         <item name="android:textSize">12sp</item>
         <item name="android:shadowColor">#000000</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">4</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">5</item>
         <item name="android:foreground">@drawable/ring</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_width">24dp</item>

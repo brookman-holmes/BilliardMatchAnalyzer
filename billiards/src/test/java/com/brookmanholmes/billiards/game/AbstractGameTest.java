@@ -59,7 +59,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void getGameWinnerReturnsPlayer() {
-        Turn mockedTurn = mock(Turn.class);
+        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_WON);
 
         game.turn = PlayerTurn.PLAYER;
@@ -69,7 +69,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void getGameWinnerReturnsOpponent() {
-        Turn mockedTurn = mock(Turn.class);
+        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
 
         game.turn = PlayerTurn.PLAYER;
@@ -79,7 +79,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void isGameOverReturnsTrue() {
-        Turn mockedTurn = mock(Turn.class);
+        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_WON);
         assertThat(game.isGameOver(mockedTurn), is(true));
 
@@ -113,7 +113,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void setAllowPlayerToBreakAgainReturnsFalse() {
-        Turn turn = turn().deadOnBreak(1, 7).breakMiss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().deadOnBreak(1, 7).breakMiss();
 
         assertThat(game.setAllowPlayerToBreakAgain(turn), is(false));
 
@@ -124,7 +124,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void setOpponentPlayedSuccessfulSafeReturnsTrue() {
-        Turn turn = turn().safety();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().safety();
 
         assertThat(game.setOpponentPlayedSuccessfulSafe(turn), is(true));
 
@@ -134,7 +134,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void setCurrentPlayerConsecutiveFouls() {
-        Turn turn = turn().scratch().miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().scratch().miss();
 
         game.addTurn(turn().scratch().breakMiss());
         assertThat(game.consecutivePlayerFouls, is(1));

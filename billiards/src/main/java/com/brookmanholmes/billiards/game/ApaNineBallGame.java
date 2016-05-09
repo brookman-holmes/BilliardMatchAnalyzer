@@ -14,17 +14,17 @@ class ApaNineBallGame extends NineBallGame {
         allowPush = false;
     }
 
-    public static int getPointsFromTurn(Turn turn) {
+    public static int getPointsFromTurn(com.brookmanholmes.billiards.turn.Turn turn) {
         return turn.getBreakBallsMade()
                 + turn.getShootingBallsMade()
                 + (turn.getTurnEnd() == TurnEnd.GAME_WON ? 1 : 0);
     }
 
-    @Override boolean setAllowPush(Turn turn) {
+    @Override boolean setAllowPush(com.brookmanholmes.billiards.turn.Turn turn) {
         return false;
     }
 
-    @Override boolean setAllowTurnSkip(Turn turn) {
+    @Override boolean setAllowTurnSkip(com.brookmanholmes.billiards.turn.Turn turn) {
         return false;
     }
 
@@ -32,7 +32,7 @@ class ApaNineBallGame extends NineBallGame {
         return 0;
     }
 
-    @Override void startNewGame(Turn turn) {
+    @Override void startNewGame(com.brookmanholmes.billiards.turn.Turn turn) {
         super.startNewGame(turn);
         allowPush = false;
     }

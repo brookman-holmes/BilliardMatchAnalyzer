@@ -3,15 +3,17 @@ package com.brookmanholmes.billiards.player.controller;
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.EightBallPlayer;
+import com.brookmanholmes.billiards.player.IEarlyWins;
 import com.brookmanholmes.billiards.player.NineBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
-import com.brookmanholmes.billiards.player.interfaces.EarlyWins;
+import com.brookmanholmes.billiards.turn.Turn;
+
+import java.util.Collection;
 
 import static com.brookmanholmes.billiards.turn.TurnEnd.BREAK_MISS;
 import static com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
@@ -61,6 +63,14 @@ public abstract class PlayerController<T extends AbstractPlayer> {
         }
     }
 
+    public static <T extends AbstractPlayer> T getPlayerFromList(Collection<T> players, T newPlayer) {
+        for (T player : players) {
+            newPlayer.addPlayerStats(player);
+        }
+
+        return newPlayer;
+    }
+
     public String getPlayerName() {
         return playerName;
     }
@@ -95,11 +105,11 @@ public abstract class PlayerController<T extends AbstractPlayer> {
         }
 
         if (turn.isGameLost()) {
-            if (player1 instanceof EarlyWins && player2 instanceof EarlyWins) {
+            if (player1 instanceof IEarlyWins && player2 instanceof IEarlyWins) {
                 if (gameStatus.turn == PlayerTurn.PLAYER)
-                    ((EarlyWins) player2).addEarlyWin();
+                    ((IEarlyWins) player2).addEarlyWin();
                 if (gameStatus.turn == PlayerTurn.OPPONENT)
-                    ((EarlyWins) player1).addEarlyWin();
+                    ((IEarlyWins) player1).addEarlyWin();
             }
 
 

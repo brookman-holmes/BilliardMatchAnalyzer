@@ -1,100 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/title"
-    android:columnCount="3"
-    android:columnOrderPreserved="true"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:useDefaultMargins="true"
-    tools:showIn="@layout/card_breaks">
+<GridLayout android:id="@+id/container"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:columnCount="3"
+            android:columnOrderPreserved="true"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:useDefaultMargins="true"
+            tools:showIn="@layout/card_breaks">
 
     <TextView
         android:id="@+id/tvBreakTotalPlayer"
+        style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvBreakTotalTitle"
+        style="@style/player_stats"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:text="@string/title_successful_break"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"
+        />
 
     <TextView
         android:id="@+id/tvBreakTotalOpponent"
+        style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvAvgBreakBallsPlayer"
+        style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text" />
+        android:textColor="@color/secondary_text"/>
 
     <TextView
         android:id="@+id/tvAvgBreakBallsTitle"
+        style="@style/player_stats"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:text="@string/title_avg_break_balls"
-        android:textColor="@color/secondary_text" />
+        android:textColor="@color/secondary_text"/>
 
     <TextView
         android:id="@+id/tvAvgBreakBallsOpponent"
+        style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text" />
+        android:textColor="@color/secondary_text"/>
 
     <TextView
         android:id="@+id/tvBreakContinuationsPlayer"
+        style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvBreakContinuationsTitle"
+        style="@style/player_stats"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:text="@string/title_break_continuations"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvBreakContinuationsOpponent"
+        style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvBreakScratchesPlayer"
+        style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text" />
+        android:textColor="@color/secondary_text"/>
 
     <TextView
         android:id="@+id/tvBreakScratchesTitle"
+        style="@style/player_stats"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:text="@string/title_break_fouls"
-        android:textColor="@color/secondary_text" />
+        android:textColor="@color/secondary_text"/>
 
     <TextView
         android:id="@+id/tvBreakScratchesOpponent"
+        style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text" />
+        android:textColor="@color/secondary_text"/>
 
     <TextView
         android:id="@+id/tvBreakWinsPlayer"
+        style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvBreakWinsTitle"
+        style="@style/player_stats"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:text="@string/title_break_wins"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvBreakWinsOpponent"
+        style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"/>
 
 </GridLayout>

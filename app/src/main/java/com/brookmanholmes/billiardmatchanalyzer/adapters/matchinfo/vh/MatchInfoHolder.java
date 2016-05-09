@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,10 +17,6 @@ import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.BaseViewHolder;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
-import com.brookmanholmes.billiards.player.interfaces.Apa;
-import com.brookmanholmes.billiards.player.interfaces.EarlyWins;
-import com.brookmanholmes.billiards.player.interfaces.WinsOnBreak;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

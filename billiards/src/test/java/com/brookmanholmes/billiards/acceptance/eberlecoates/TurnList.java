@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.acceptance.eberlecoates;
 
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 
 import java.util.Arrays;

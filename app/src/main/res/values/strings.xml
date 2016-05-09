@@ -84,7 +84,7 @@
     <string name="title_breaks">Breaks</string>
     <string name="title_match_overview">Match overview</string>
     <string name="title_apa_stats">APA stats</string>
-    <string name="title_game_won_on_break">%1$d on the break</string>
+    <string name="title_game_won_on_break">%1$s on the break</string>
     <string name="out_of">%1$d/%2$d</string>
     <string name="title_run_outs">Run outs</string>
     <string name="title_games_needed">Games won / games needed</string>
@@ -96,13 +96,13 @@
     <string name="break_alternate">Alternate</string>
     <string name="break_loser">Loser</string>
     <string name="break_player">%1$s always breaks</string>
-    <string name="game_apa_eight">APA 8 ball</string>
-    <string name="game_apa_nine">APA 9 ball</string>
-    <string name="game_bca_eight">BCA 8 ball</string>
-    <string name="game_bca_nine">BCA 9 ball</string>
-    <string name="game_bca_ten">BCA 10 ball</string>
-    <string name="game_straight">Straight pool</string>
-    <string name="game_american_rotation">American rotation</string>
+    <string name="game_apa_eight">APA 8 Ball</string>
+    <string name="game_apa_nine">APA 9 Ball</string>
+    <string name="game_bca_eight">BCA 8 Ball</string>
+    <string name="game_bca_nine">BCA 9 Ball</string>
+    <string name="game_bca_ten">BCA 10 Ball</string>
+    <string name="game_straight">Straight Pool</string>
+    <string name="game_american_rotation">American Rotation</string>
     <string name="detail_simple">Simple</string>
     <string name="detail_normal">Normal</string>
     <string name="detail_advanced">Advanced</string>
@@ -134,4 +134,6 @@
     <string name="select_solids">Select all remaining solids</string>
     <string name="select_stripes">Select all remaining stripes</string>
     <string name="row_game">Game %1$d (%2$d - %3$d)</string>
+    <string name="opponents">Opponents</string>
+    <string name="title_player_profile">%1$s\'s Profile</string>
 </resources>

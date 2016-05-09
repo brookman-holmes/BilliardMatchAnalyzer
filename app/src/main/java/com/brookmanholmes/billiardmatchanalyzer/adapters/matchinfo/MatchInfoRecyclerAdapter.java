@@ -13,10 +13,9 @@ import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.RunOutsHol
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.SafetiesHolder;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.ShootingPctHolder;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BreakType;
+import com.brookmanholmes.billiards.match.IMatch;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.match.MatchInterface;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
@@ -24,13 +23,14 @@ import com.brookmanholmes.billiards.player.EightBallPlayer;
 import com.brookmanholmes.billiards.player.NineBallPlayer;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
 import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 /**
  * Created by Brookman Holmes on 1/13/2016.
  */
 public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends RecyclerView.Adapter<BaseViewHolder<T>>
-        implements MatchInterface<T> {
+        implements IMatch<T> {
     public static final int ITEM_MATCH_OVERVIEW = 0;
     public static final int ITEM_SHOOTING_PCT = 1;
     public static final int ITEM_SAFETIES = 2;
@@ -43,17 +43,18 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
     ViewType viewTypeToggle = ViewType.CARDS;
     Match<T> match;
 
-    MatchInfoRecyclerAdapter(Match<T> match, int gameBall) {
+    MatchInfoRecyclerAdapter(Match<T> match) {
         this.match = match;
         detail = match.getAdvStats();
-        this.gameBall = gameBall;
+        this.gameBall = match.getGameStatus().GAME_BALL;
     }
 
-    MatchInfoRecyclerAdapter(Match<T> match, int gameBall, ViewType viewType) {
-        this(match, gameBall);
+    MatchInfoRecyclerAdapter(Match<T> match, ViewType viewType) {
+        this(match);
         viewTypeToggle = viewType;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends AbstractPlayer> MatchInfoRecyclerAdapter<?> createMatchAdapter(Match<T> match) {
         // this is probably fucking retarded?
         switch (match.getGameStatus().gameType) {
@@ -72,6 +73,7 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends AbstractPlayer> MatchInfoRecyclerAdapter<?> createMatchAdapterWithCardViews(Match<T> match) {
         // this is probably fucking retarded?
         switch (match.getGameStatus().gameType) {
@@ -109,13 +111,16 @@ public class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends Recycler
 
     @Override public int getItemViewType(int position) {
         if (match.getGameStatus().breakType == BreakType.GHOST) {
-            if (position == 0)
-                return ITEM_MATCH_OVERVIEW;
-            else if (position == 1)
-                return ITEM_SHOOTING_PCT;
-            else if (position == 2)
-                return ITEM_BREAKS;
-            else return ITEM_FOOTER;
+            switch (position) {
+                case 0:
+                    return ITEM_MATCH_OVERVIEW;
+                case 1:
+                    return ITEM_SHOOTING_PCT;
+                case 2:
+                    return ITEM_BREAKS;
+                default:
+                    return ITEM_FOOTER;
+            }
         }
 
         if (position == getItemCount() - 1)

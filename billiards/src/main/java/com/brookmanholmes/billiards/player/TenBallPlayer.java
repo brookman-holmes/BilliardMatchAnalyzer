@@ -1,37 +1,32 @@
 package com.brookmanholmes.billiards.player;
 
-import com.brookmanholmes.billiards.player.interfaces.EarlyWins;
-import com.brookmanholmes.billiards.player.interfaces.EarlyWinsImp;
-
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
-public class TenBallPlayer extends AbstractPlayer implements EarlyWins {
-    EarlyWins earlyWins;
-
+public class TenBallPlayer extends AbstractPlayer implements IEarlyWins {
+    int earlyWins = 0;
     public TenBallPlayer(String name) {
         super(name);
-        earlyWins = new EarlyWinsImp();
     }
 
     @Override public void addPlayerStats(AbstractPlayer player) {
         super.addPlayerStats(player);
 
-        if (player instanceof EarlyWins) {
-            earlyWins.addEarlyWins(((EarlyWins) player).getEarlyWins());
+        if (player instanceof IEarlyWins) {
+            earlyWins += ((IEarlyWins) player).getEarlyWins();
         }
     }
 
     @Override public void addEarlyWin() {
-        earlyWins.addEarlyWin();
+        earlyWins++;
     }
 
     @Override public int getEarlyWins() {
-        return earlyWins.getEarlyWins();
+        return earlyWins;
     }
 
     @Override public void addEarlyWins(int wins) {
-        earlyWins.addEarlyWins(wins);
+        earlyWins += wins;
     }
 
     @Override public boolean equals(Object o) {
@@ -39,15 +34,15 @@ public class TenBallPlayer extends AbstractPlayer implements EarlyWins {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        TenBallPlayer player = (TenBallPlayer) o;
+        TenBallPlayer that = (TenBallPlayer) o;
 
-        return earlyWins.equals(player.earlyWins);
+        return earlyWins == that.earlyWins;
 
     }
 
     @Override public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + earlyWins.hashCode();
+        result = 31 * result + earlyWins;
         return result;
     }
 

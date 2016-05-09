@@ -12,22 +12,20 @@ import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiards.game.Turn;
-import com.brookmanholmes.billiards.match.MatchInterface;
+import com.brookmanholmes.billiards.match.IMatch;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MatchInfoFragment extends Fragment implements MatchInterface{
+public class MatchInfoFragment extends Fragment implements IMatch {
     @Bind(R.id.scrollView) RecyclerView recyclerView;
-    MatchInfoRecyclerAdapter<?> adapter;
-    LinearLayoutManager layoutManager;
-    DatabaseAdapter db;
-    private long matchId;
+    private MatchInfoRecyclerAdapter<?> adapter;
+    private LinearLayoutManager layoutManager;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -35,6 +33,7 @@ public class MatchInfoFragment extends Fragment implements MatchInterface{
      */
     public MatchInfoFragment() {
     }
+
 
     public static MatchInfoFragment createMatchInfoFragment(long matchId) {
         MatchInfoFragment fragment = new MatchInfoFragment();
@@ -47,29 +46,26 @@ public class MatchInfoFragment extends Fragment implements MatchInterface{
         return fragment;
     }
 
-
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        if (getArguments().getLong(BaseActivity.ARG_MATCH_ID, -1) != -1) {
+        long matchId;
+        if (getArguments().getLong(BaseActivity.ARG_MATCH_ID) != 0L) {
             matchId = getArguments().getLong(BaseActivity.ARG_MATCH_ID);
         } else {
             throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
         }
-
-        db = new DatabaseAdapter(getContext());
+        DatabaseAdapter db = new DatabaseAdapter(getContext());
         adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
+        db = null;
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
-        View view;
-        if (getArguments().getBoolean("Card View", false)) {
-            view = inflater.inflate(R.layout.fragment_list_view, container, false);
-        } else
-            view = inflater.inflate(R.layout.fragment_list_view2, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
+
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         //recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
@@ -82,8 +78,8 @@ public class MatchInfoFragment extends Fragment implements MatchInterface{
         recyclerView.setAdapter(null);
         recyclerView = null;
         layoutManager = null;
-
         ButterKnife.unbind(this);
+
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
 

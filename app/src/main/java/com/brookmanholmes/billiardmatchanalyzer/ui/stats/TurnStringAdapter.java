@@ -2,12 +2,11 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -130,6 +129,8 @@ public class TurnStringAdapter {
                     turnBuilder.append(" failed their safety attempt");
                 else if (turn.getTurnEnd() == TurnEnd.SKIP_TURN)
                     turnBuilder.append(" gave the shot back");
+                else if (turn.getTurnEnd() == TurnEnd.PUSH_SHOT)
+                    turnBuilder.append(" pushed");
             }
 
             if (turn.isScratch()) {
@@ -141,7 +142,7 @@ public class TurnStringAdapter {
     Spanned getTurnString() {
         buildTurn();
 
-        if (advStats != null) {
+        if (advStats != null && !advStats.getShotType().equals("")) {
             buildAdvStats();
         }
 
@@ -149,7 +150,6 @@ public class TurnStringAdapter {
     }
 
     void buildAdvStats() {
-        Log.i("TurnStringAdapter", advStats.toString());
         if (advStats.getShotType().equals("Break shot")) {
             for (String item : advStats.getWhyTypes()) {
                 turnBuilder.append(" (")

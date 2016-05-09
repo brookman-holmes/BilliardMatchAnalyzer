@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white">
+<RelativeLayout android:id="@+id/card_layout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white">
 
     <include
         android:id="@+id/title"
@@ -47,30 +47,33 @@
 
         <TextView
             android:id="@+id/tvRankPlayer"
+            style="@style/player_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_row="0"
             android:text="0"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"/>
 
         <TextView
             android:id="@+id/tvRankTitle"
+            style="@style/player_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_row="0"
             android:text="Rank"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"/>
 
         <TextView
             android:id="@+id/tvRankOpponent"
+            style="@style/player_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_row="0"
             android:text="0"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"/>
 
         <TextView
             android:id="@+id/tvDefensiveShotsOpponent"
@@ -92,8 +95,7 @@
 
         <TextView
             android:id="@+id/tvDefensiveShotsTitle"
-            style="@style/player_stats_title"
-            android:layout_below="@+id/tvAggressivenessRating"
+            style="@style/player_stats"
             android:layout_column="1"
             android:layout_gravity="center"
             android:layout_row="3"
@@ -102,16 +104,18 @@
 
         <TextView
             android:id="@+id/tvPlayerPoints"
+            style="@style/player_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_gravity="center"
             android:layout_row="1"
             android:text="0/0"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"/>
 
         <TextView
             android:id="@+id/tvPointsTitle"
+            style="@style/player_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
@@ -119,46 +123,50 @@
             android:layout_gravity="center"
             android:layout_row="1"
             android:text="Points / points needed"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"/>
 
         <TextView
             android:id="@+id/tvOpponentPoints"
+            style="@style/player_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
             android:layout_gravity="center"
             android:layout_row="1"
             android:text="0/0"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"/>
 
         <TextView
             android:id="@+id/tvMatchPointsPlayer"
+            style="@style/player_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_gravity="center"
             android:layout_row="2"
             android:text="0"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"/>
 
         <TextView
             android:id="@+id/tvMatchPointsTitle"
+            style="@style/player_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_gravity="center"
             android:layout_row="2"
             android:text="Match points earned"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"/>
 
         <TextView
             android:id="@+id/tvMatchPointsOpponent"
+            style="@style/player_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_row="2"
             android:text="0"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"/>
 
     </GridLayout>
 
@@ -175,7 +183,7 @@
 
         <TextView
             android:id="@+id/tvInningsTitle"
-            style="@style/player_stats_title"
+            style="@style/player_stats"
             android:layout_column="0"
             android:layout_row="1"
             android:text="Innings"
@@ -190,13 +198,14 @@
 
         <TextView
             android:id="@+id/tvDeadBallsTitle"
+            style="@style/player_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="2"
             android:text="Dead balls"
             android:textColor="@color/secondary_text"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tvDeadBallsOpponent"

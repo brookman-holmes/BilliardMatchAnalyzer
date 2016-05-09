@@ -1,8 +1,8 @@
 package com.brookmanholmes.billiards.player.controller;
 
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.interfaces.WinsOnBreak;
+import com.brookmanholmes.billiards.player.IWinsOnBreak;
+import com.brookmanholmes.billiards.turn.Turn;
 
 import org.junit.Test;
 
@@ -12,10 +12,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 1/31/2016.
  */
-public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPlayer & WinsOnBreak> extends AbstractPlayerControllerTest<T> {
+public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPlayer & IWinsOnBreak> extends AbstractPlayerControllerTest<T> {
     @Test
     public void gameBallOnBreakGivesWinOnBreakAndEarlyWin() {
         playerController.turn = turnBuilder.breakBalls(game.getGameStatus().GAME_BALL).win();
+        playerController.gameStatus = game.getGameStatus();
         playerController.addBreakingStats(actualPlayer);
 
         expectedPlayer.addWinOnBreak();

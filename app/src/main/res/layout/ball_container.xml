@@ -1,118 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<GridLayout
     android:id="@+id/ballContainer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:paddingBottom="4dp"
     android:paddingTop="4dp"
+    android:useDefaultMargins="true"
     tools:showIn="@layout/row_turn">
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/circle"
         android:backgroundTint="@color/one_ball"
+        android:gravity="center"
         android:text="1"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/circle"
         android:backgroundTint="@color/two_ball"
+        android:gravity="center"
         android:text="2"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/circle"
         android:backgroundTint="@color/three_ball"
+        android:gravity="center"
         android:text="3"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/circle"
         android:backgroundTint="@color/four_ball"
+        android:gravity="center"
         android:text="4"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/circle"
         android:backgroundTint="@color/five_ball"
+        android:gravity="center"
         android:text="5"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/circle"
         android:backgroundTint="@color/six_ball"
+        android:gravity="center"
         android:text="6"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/circle"
         android:backgroundTint="@color/seven_ball"
+        android:gravity="center"
         android:text="7"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/circle"
         android:backgroundTint="@color/eight_ball"
+        android:gravity="center"
         android:text="8"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/stripe_circle"
         android:backgroundTint="@color/one_ball"
+        android:gravity="center"
         android:text="9"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/stripe_circle"
         android:backgroundTint="@color/two_ball"
+        android:gravity="center"
         android:text="10"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/stripe_circle"
         android:backgroundTint="@color/three_ball"
+        android:gravity="center"
         android:text="11"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/stripe_circle"
         android:backgroundTint="@color/four_ball"
+        android:gravity="center"
         android:text="12"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/stripe_circle"
         android:backgroundTint="@color/five_ball"
+        android:gravity="center"
         android:text="13"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/stripe_circle"
         android:backgroundTint="@color/six_ball"
+        android:gravity="center"
         android:text="14"/>
 
     <TextView
         style="@style/stroked_text"
-        android:layout_marginLeft="1dp"
+        android:layout_gravity="center"
         android:background="@drawable/stripe_circle"
         android:backgroundTint="@color/seven_ball"
+        android:gravity="center"
         android:text="15"/>
 
-</LinearLayout>
+</GridLayout>

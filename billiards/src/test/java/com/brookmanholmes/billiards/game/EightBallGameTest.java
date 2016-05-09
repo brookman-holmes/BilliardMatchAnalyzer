@@ -38,7 +38,7 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
         TableStatus tableStatus = TableStatus.newTable(game.gameType);
         tableStatus.setBallTo(BallStatus.DEAD_ON_BREAK, 1, 8);
 
-        Turn turn = new GameTurn(0, 0L, true, TurnEnd.BREAK_MISS, tableStatus, false);
+        com.brookmanholmes.billiards.turn.Turn turn = new GameTurn(0, 0L, true, TurnEnd.BREAK_MISS, tableStatus, false);
         assertThat(game.setAllowPlayerToBreakAgain(turn), is(true));
 
         game.addTurn(turn);
@@ -48,28 +48,28 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
 
     @Test
     public void tableStatusShouldContain15Balls() {
-        Turn turn = turn().win();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().win();
 
         assertThat(turn.getBallsRemaining(), is(15));
     }
 
     @Test
     public void dryBreakShouldReturnOpenTable() {
-        Turn turn = turn().breakMiss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakMiss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.OPEN));
     }
 
     @Test
     public void noBallMadeAfterBreakShouldReturnOpenTable() {
-        Turn turn = turn().breakBalls(1, 9).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(1, 9).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.OPEN));
     }
 
     @Test
     public void solidMadeAfterBreakShouldReturnSolids() {
-        Turn turn = turn().breakBalls(1, 9).madeBalls(2).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(1, 9).madeBalls(2).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.SOLIDS));
 
@@ -80,18 +80,18 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
 
     @Test
     public void stripeMadeAfterBreakShouldReturnStripes() {
-        Turn turn = turn().breakBalls(1, 9).madeBalls(10).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(1, 9).madeBalls(10).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.STRIPES));
     }
 
     @Test
     public void afterColorIsChosenSetPlayerColorShouldReturnCurrentPlayerColor() {
-        Turn turn = turn().breakBalls(1, 9).madeBalls(10).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(1, 9).madeBalls(10).miss();
 
         game.addTurn(turn);
 
-        Turn turn2 = turn().miss();
+        com.brookmanholmes.billiards.turn.Turn turn2 = turn().miss();
         assertThat(game.setPlayerColor(turn2), is(PlayerColor.STRIPES));
     }
 
@@ -103,7 +103,7 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
 
     @Test
     public void ifReBreakAndPlayerChoosesToBreakAgain() {
-        Turn turn = turn().deadOnBreak(8).scratch().breakMiss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().deadOnBreak(8).scratch().breakMiss();
 
         game.addTurn(turn);
 
@@ -111,7 +111,7 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
         assertThat(game.turn, is(PlayerTurn.OPPONENT));
         assertThat(game.breaker, is(PlayerTurn.PLAYER));
 
-        Turn turn2 = turn().currentPlayerBreaks();
+        com.brookmanholmes.billiards.turn.Turn turn2 = turn().currentPlayerBreaks();
 
         game.addTurn(turn2);
 

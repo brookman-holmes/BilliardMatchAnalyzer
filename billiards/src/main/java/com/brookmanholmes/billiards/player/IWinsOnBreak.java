@@ -1,9 +1,9 @@
-package com.brookmanholmes.billiards.player.interfaces;
+package com.brookmanholmes.billiards.player;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
-public interface WinsOnBreak extends EarlyWins {
+public interface IWinsOnBreak extends IEarlyWins {
     void addWinOnBreak();
 
     int getWinsOnBreak();

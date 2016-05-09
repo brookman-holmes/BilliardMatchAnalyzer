@@ -31,15 +31,15 @@ class EightBallGame extends Game {
             throw new InvalidGameTypeException(gameType.name());
     }
 
-    @Override boolean setAllowPush(Turn turn) {
+    @Override boolean setAllowPush(com.brookmanholmes.billiards.turn.Turn turn) {
         return false;
     }
 
-    @Override boolean setAllowTurnSkip(Turn turn) {
+    @Override boolean setAllowTurnSkip(com.brookmanholmes.billiards.turn.Turn turn) {
         return false;
     }
 
-    @Override boolean setAllowPlayerToBreakAgain(Turn turn) {
+    @Override boolean setAllowPlayerToBreakAgain(com.brookmanholmes.billiards.turn.Turn turn) {
         return turn.getTurnEnd() == TurnEnd.BREAK_MISS && turn.isScratch() && turn.getBallsToRemoveFromTable().contains(GAME_BALL);
     }
 
@@ -47,7 +47,7 @@ class EightBallGame extends Game {
         return 0;
     }
 
-    @Override PlayerColor setPlayerColor(Turn turn) {
+    @Override PlayerColor setPlayerColor(com.brookmanholmes.billiards.turn.Turn turn) {
         if (playerColor == OPEN) {
             if (TableUtils.getSolidsMade(turn.getBallStatuses()) > 0) {
                 return convertCurrentPlayerColorToPlayerColor(SOLIDS);

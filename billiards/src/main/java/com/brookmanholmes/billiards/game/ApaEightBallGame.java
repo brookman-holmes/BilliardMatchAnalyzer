@@ -18,7 +18,7 @@ class ApaEightBallGame extends EightBallGame {
         return GameType.APA_EIGHT_BALL;
     }
 
-    @Override PlayerColor setPlayerColor(Turn turn) {
+    @Override PlayerColor setPlayerColor(com.brookmanholmes.billiards.turn.Turn turn) {
         if (newGame && turn.getBreakBallsMade() > 0) {
             if (TableUtils.getSolidsMadeOnBreak(turn.getBallStatuses()) == TableUtils.getStripesMadeOnBreak(turn.getBallStatuses())) {
                 return super.setPlayerColor(turn);

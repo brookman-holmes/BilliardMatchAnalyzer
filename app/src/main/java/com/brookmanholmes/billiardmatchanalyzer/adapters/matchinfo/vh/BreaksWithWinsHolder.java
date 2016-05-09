@@ -4,15 +4,15 @@ import android.view.View;
 
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.interfaces.WinsOnBreak;
+import com.brookmanholmes.billiards.player.IWinsOnBreak;
 
 import java.util.Locale;
 
 /**
  * Created by helios on 4/12/2016.
  */
-public class BreaksHolderWithBreakWins<T extends AbstractPlayer & WinsOnBreak> extends BreaksHolder<T> {
-    public BreaksHolderWithBreakWins(View view, int gameBall, Match.StatsDetail detail) {
+public class BreaksWithWinsHolder<T extends AbstractPlayer & IWinsOnBreak> extends BreaksHolder<T> {
+    public BreaksWithWinsHolder(View view, int gameBall, Match.StatsDetail detail) {
         super(view, gameBall, detail);
 
         breakWinsTitle.setVisibility(View.VISIBLE);

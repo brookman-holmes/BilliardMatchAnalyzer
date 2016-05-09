@@ -1,12 +1,12 @@
 package com.brookmanholmes.billiards.match;
 
 import com.brookmanholmes.billiards.game.Game;
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.EightBallPlayer;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 
 import org.junit.Before;

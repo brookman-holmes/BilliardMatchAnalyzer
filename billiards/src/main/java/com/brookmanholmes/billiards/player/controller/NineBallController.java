@@ -15,14 +15,14 @@ class NineBallController extends PlayerController<NineBallPlayer> {
 
 
         if (turn.getGameBallMadeOnBreak())
-            ControllerHelperMethods.addWinOnBreak(player);
+            player.addWinOnBreak();
     }
 
     @Override void addRunOutStats(NineBallPlayer player) {
         super.addRunOutStats(player);
 
         if (turn.getBallsRemaining() > 0)
-            ControllerHelperMethods.addEarlyWin(player);
+            player.addEarlyWin();
     }
 
     @Override public NineBallPlayer newOpponent() {

@@ -2,11 +2,11 @@ package com.brookmanholmes.billiards.player.controller;
 
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
@@ -37,6 +37,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     @Test
     public void noBallsMadeOnBreak() {
         playerController.turn = turnBuilder.breakMiss();
+        playerController.gameStatus = game.getGameStatus();
         playerController.addBreakingStats(actualPlayer);
 
         expectedPlayer.addBreakShot(0, false, false);
@@ -48,6 +49,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     @Test
     public void ballsMadeOnBreakWithNoContinuation() {
         playerController.turn = turnBuilder.breakBalls(1, 2, 3).miss();
+        playerController.gameStatus = game.getGameStatus();
         playerController.addBreakingStats(actualPlayer);
 
         expectedPlayer.addBreakShot(3, false, false);
@@ -58,6 +60,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     @Test
     public void ballsMadeOnBreakWithContinuation() {
         playerController.turn = turnBuilder.breakBalls(1, 2, 3).madeBalls(4, 5).miss();
+        playerController.gameStatus = game.getGameStatus();
         playerController.addBreakingStats(actualPlayer);
 
         expectedPlayer.addBreakShot(3, true, false);
@@ -68,6 +71,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     @Test
     public void scratchOnBreak() {
         playerController.turn = turnBuilder.scratch().breakMiss();
+        playerController.gameStatus = game.getGameStatus();
         playerController.addBreakingStats(actualPlayer);
 
         expectedPlayer.addBreakShot(0, false, true);

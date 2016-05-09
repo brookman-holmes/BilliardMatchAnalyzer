@@ -94,15 +94,15 @@ public abstract class Game {
         ballsOnTable = new ArrayList<>(gameStatus.ballsOnTable);
     }
 
-    abstract boolean setAllowPush(Turn turn);
+    abstract boolean setAllowPush(com.brookmanholmes.billiards.turn.Turn turn);
 
-    abstract boolean setAllowTurnSkip(Turn turn);
+    abstract boolean setAllowTurnSkip(com.brookmanholmes.billiards.turn.Turn turn);
 
-    abstract PlayerColor setPlayerColor(Turn turn);
+    abstract PlayerColor setPlayerColor(com.brookmanholmes.billiards.turn.Turn turn);
 
-    abstract boolean setAllowPlayerToBreakAgain(Turn turn);
+    abstract boolean setAllowPlayerToBreakAgain(com.brookmanholmes.billiards.turn.Turn turn);
 
-    final public GameStatus addTurn(Turn turn) {
+    final public GameStatus addTurn(com.brookmanholmes.billiards.turn.Turn turn) {
         if (isGameOver(turn))
             startNewGame(turn);
         else if (turn.getTurnEnd() == TurnEnd.CONTINUE_WITH_GAME) {
@@ -117,11 +117,11 @@ public abstract class Game {
         return new GameStatus(this);
     }
 
-    boolean isGameOver(Turn turn) {
+    boolean isGameOver(com.brookmanholmes.billiards.turn.Turn turn) {
         return turn.getTurnEnd() == TurnEnd.GAME_WON || turn.isGameLost();
     }
 
-    void startNewGame(Turn turn) {
+    void startNewGame(com.brookmanholmes.billiards.turn.Turn turn) {
         this.breaker = setBreaker(getGameWinner(turn));
         startNewGame(breaker);
     }
@@ -161,7 +161,7 @@ public abstract class Game {
         }
     }
 
-    PlayerTurn getGameWinner(Turn turn) {
+    PlayerTurn getGameWinner(com.brookmanholmes.billiards.turn.Turn turn) {
         if (turn.getTurnEnd() == TurnEnd.GAME_WON)
             return this.turn;
         else return changeTurn(this.turn);
@@ -175,7 +175,7 @@ public abstract class Game {
         return table;
     }
 
-    void setConsecutiveFouls(Turn turn) {
+    void setConsecutiveFouls(com.brookmanholmes.billiards.turn.Turn turn) {
         if (turn.isScratch()) {
             if (this.turn == PlayerTurn.PLAYER)
                 consecutivePlayerFouls++;
@@ -189,7 +189,7 @@ public abstract class Game {
         }
     }
 
-    boolean setOpponentPlayedSuccessfulSafe(Turn turn) {
+    boolean setOpponentPlayedSuccessfulSafe(com.brookmanholmes.billiards.turn.Turn turn) {
         return turn.getTurnEnd() == TurnEnd.SAFETY;
     }
 
@@ -218,7 +218,7 @@ public abstract class Game {
         return new GameStatus(this);
     }
 
-    void setGameStatus(Turn turn) {
+    void setGameStatus(com.brookmanholmes.billiards.turn.Turn turn) {
         setConsecutiveFouls(turn);
 
         removeBallsFromTable(turn.getBallsToRemoveFromTable());
@@ -265,6 +265,7 @@ public abstract class Game {
                 "\n MAX_BALLS=" + MAX_BALLS +
                 "\n breakType=" + breakType +
                 "\n gameType=" + gameType +
+                "\n firstPlayerToShoot=" + firstPlayerToShoot +
                 "\n playerColor=" + playerColor +
                 "\n turn=" + turn +
                 "\n breaker=" + breaker +
@@ -275,6 +276,7 @@ public abstract class Game {
                 "\n opponentPlayedSuccessfulSafe=" + opponentPlayedSuccessfulSafe +
                 "\n consecutivePlayerFouls=" + consecutivePlayerFouls +
                 "\n consecutiveOpponentFouls=" + consecutiveOpponentFouls +
+                "\n innings=" + innings +
                 "\n ballsOnTable=" + ballsOnTable +
                 '}';
     }

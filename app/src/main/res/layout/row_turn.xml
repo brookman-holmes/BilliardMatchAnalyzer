@@ -69,6 +69,10 @@
 
     </LinearLayout>
 
-    <include layout="@layout/ball_container"/>
+    <include
+        layout="@layout/ball_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

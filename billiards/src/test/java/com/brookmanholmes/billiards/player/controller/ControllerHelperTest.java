@@ -54,7 +54,7 @@ public class ControllerHelperTest {
         playerList.get(5).addShootingMiss();
         playerList.get(6).addShootingBallsMade(0, true);
 
-        assertThat(ControllerHelperMethods.getPlayerFromList(playerList, createPlayer()), is(expectedPlayer));
+        assertThat(PlayerController.getPlayerFromList(playerList, createPlayer()), is(expectedPlayer));
     }
 
     @Test

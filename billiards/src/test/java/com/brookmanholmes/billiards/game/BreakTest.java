@@ -108,26 +108,26 @@ public class BreakTest {
         game = new NineBallGame(PlayerTurn.PLAYER, BreakType.ALTERNATE);
     }
 
-    private Turn createMockTurnWithWin() {
-        Turn mockedTurn = mock(Turn.class);
+    private com.brookmanholmes.billiards.turn.Turn createMockTurnWithWin() {
+        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_WON);
         return mockedTurn;
     }
 
-    private Turn createMockTurnWithLoss() {
-        Turn mockedTurn = mock(Turn.class);
+    private com.brookmanholmes.billiards.turn.Turn createMockTurnWithLoss() {
+        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
         when(mockedTurn.isGameLost()).thenReturn(true);
         return mockedTurn;
     }
 
-    private Turn createMockTurnWithTheseBallsMade(boolean scratch, int... balls) {
+    private com.brookmanholmes.billiards.turn.Turn createMockTurnWithTheseBallsMade(boolean scratch, int... balls) {
         List<Integer> ballsMade = new ArrayList<>();
         for (int ball : balls) {
             ballsMade.add(ball);
         }
 
-        Turn mockedTurn = mock(Turn.class);
+        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
         when(mockedTurn.isScratch()).thenReturn(scratch);
         when(mockedTurn.getBallsToRemoveFromTable()).thenReturn(ballsMade);

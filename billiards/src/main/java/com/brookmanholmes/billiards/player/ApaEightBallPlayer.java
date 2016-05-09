@@ -2,29 +2,26 @@ package com.brookmanholmes.billiards.player;
 
 import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
 import com.brookmanholmes.billiards.game.util.RaceTo;
-import com.brookmanholmes.billiards.player.interfaces.Apa;
-import com.brookmanholmes.billiards.player.interfaces.WinsOnBreak;
-import com.brookmanholmes.billiards.player.interfaces.WinsOnBreakImp;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
-public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
-    WinsOnBreak winsOnBreak;
+public class ApaEightBallPlayer extends AbstractPlayer implements IApa {
+    int winsOnBreak = 0;
+    int earlyWins = 0;
     int rank;
 
     public ApaEightBallPlayer(String name, int rank) {
         super(name);
-        winsOnBreak = new WinsOnBreakImp();
         this.rank = rank;
     }
 
     @Override public void addPlayerStats(AbstractPlayer player) {
         super.addPlayerStats(player);
 
-        if (player instanceof Apa) {
-            winsOnBreak.addWinsOnBreak(((Apa) player).getWinsOnBreak());
-            winsOnBreak.addEarlyWins(((Apa) player).getEarlyWins());
+        if (player instanceof IApa) {
+            winsOnBreak += ((IApa) player).getWinsOnBreak();
+            earlyWins += ((IApa) player).getEarlyWins();
         }
     }
 
@@ -38,27 +35,27 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
     }
 
     @Override public void addEarlyWin() {
-        winsOnBreak.addEarlyWin();
+        earlyWins++;
     }
 
     @Override public int getEarlyWins() {
-        return winsOnBreak.getEarlyWins();
+        return earlyWins;
     }
 
     @Override public void addWinOnBreak() {
-        winsOnBreak.addWinOnBreak();
+        winsOnBreak++;
     }
 
     @Override public int getWinsOnBreak() {
-        return winsOnBreak.getWinsOnBreak();
+        return winsOnBreak;
     }
 
     @Override public void addWinsOnBreak(int wins) {
-        winsOnBreak.addWinsOnBreak(wins);
+        winsOnBreak += wins;
     }
 
     @Override public void addEarlyWins(int wins) {
-        winsOnBreak.addEarlyWins(wins);
+        earlyWins += wins;
     }
 
     @Override public int getMatchPoints(int opponentScore, int opponentRank) {
@@ -84,14 +81,16 @@ public class ApaEightBallPlayer extends AbstractPlayer implements Apa {
 
         ApaEightBallPlayer that = (ApaEightBallPlayer) o;
 
-        if (rank != that.rank) return false;
-        return winsOnBreak.equals(that.winsOnBreak);
+        if (winsOnBreak != that.winsOnBreak) return false;
+        if (earlyWins != that.earlyWins) return false;
+        return rank == that.rank;
 
     }
 
     @Override public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + winsOnBreak.hashCode();
+        result = 31 * result + winsOnBreak;
+        result = 31 * result + earlyWins;
         result = 31 * result + rank;
         return result;
     }

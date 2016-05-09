@@ -17,35 +17,35 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ApaEightBallGameTest extends AbstractEightBallGameTest {
     @Test
     public void stripesMadeOnBreakShouldReturnStripes() {
-        Turn turn = turn().breakBalls(9).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(9).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.STRIPES));
     }
 
     @Test
     public void solidsMadeOnBreakShouldReturnSolids() {
-        Turn turn = turn().breakBalls(7).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(7).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.SOLIDS));
     }
 
     @Test
     public void bothMadeOnBreakShouldReturnOpen() {
-        Turn turn = turn().breakBalls(7, 9).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(7, 9).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.OPEN));
     }
 
     @Test
     public void bothMadeOnBreakAndSolidsMadeShouldReturnSolids() {
-        Turn turn = turn().breakBalls(7, 9).madeBalls(6).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(7, 9).madeBalls(6).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.SOLIDS));
     }
 
     @Test
     public void bothMadeOnBreakAndStripesMadeShouldReturnStripes() {
-        Turn turn = turn().breakBalls(7, 9).madeBalls(15).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(7, 9).madeBalls(15).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.STRIPES));
     }

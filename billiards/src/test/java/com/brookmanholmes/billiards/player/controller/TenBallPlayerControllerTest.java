@@ -1,11 +1,11 @@
 package com.brookmanholmes.billiards.player.controller;
 
 import com.brookmanholmes.billiards.game.Game;
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 
 /**

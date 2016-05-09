@@ -1,6 +1,5 @@
 package com.brookmanholmes.billiards.turn;
 
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
 

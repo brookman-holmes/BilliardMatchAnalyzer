@@ -18,7 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class TenBallGameTest extends AbstractRotationGameTest {
     @Test
     public void playerMakingDeadBallAllowsForTurnSkip() {
-        Turn turn = turn().breakBalls(3, 4).deadBalls(1).miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(3, 4).deadBalls(1).miss();
 
         assertThat(game.setAllowTurnSkip(turn), is(true));
 
@@ -28,7 +28,7 @@ public class TenBallGameTest extends AbstractRotationGameTest {
 
     @Test
     public void playerMakingDeadBallAndScratchingDoesntAllowTurnSkip() {
-        Turn turn = turn().breakBalls(3, 4).deadBalls(1).scratch().miss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(3, 4).deadBalls(1).scratch().miss();
 
         assertThat(game.setAllowTurnSkip(turn), is(false));
 

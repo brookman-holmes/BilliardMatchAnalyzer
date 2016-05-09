@@ -37,6 +37,18 @@ public class BreaksHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
         setVisibilities(view, detail);
     }
 
+    public BreaksHolder(View view, Match.StatsDetail detail) {
+        super(view);
+        breakWinsTitle.setText(view.getContext().getString(R.string.title_game_won_on_break, "8/9/10"));
+
+        breakWinsTitle.setVisibility(View.GONE);
+        tvBreakWinsPlayer.setVisibility(View.GONE);
+        tvBreakWinsOpponent.setVisibility(View.GONE);
+
+        title.setText(view.getContext().getString(R.string.title_breaks));
+        setVisibilities(view, detail);
+    }
+
     @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
         if (detail == Match.StatsDetail.SIMPLE) {
             tvBreakContinuationsOpponent.setVisibility(View.GONE);

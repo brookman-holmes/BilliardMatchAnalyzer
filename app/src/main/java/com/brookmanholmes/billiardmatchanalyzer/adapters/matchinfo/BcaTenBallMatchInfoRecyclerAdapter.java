@@ -11,11 +11,11 @@ import com.brookmanholmes.billiards.player.TenBallPlayer;
  */
 class BcaTenBallMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter<TenBallPlayer> {
     BcaTenBallMatchInfoRecyclerAdapter(Match<TenBallPlayer> match) {
-        super(match, 10);
+        super(match);
     }
 
     BcaTenBallMatchInfoRecyclerAdapter(Match<TenBallPlayer> match, ViewType viewType) {
-        super(match, 10, viewType);
+        super(match, viewType);
     }
 
     @Override BaseViewHolder<TenBallPlayer> getMatchInfoHolderByViewType(View view, int viewType) {

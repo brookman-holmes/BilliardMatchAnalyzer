@@ -1,9 +1,9 @@
 package com.brookmanholmes.billiards.player.controller;
 
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
+import com.brookmanholmes.billiards.turn.Turn;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
@@ -20,9 +20,8 @@ class ApaNineBallController extends PlayerController<ApaNineBallPlayer> {
     @Override void addBreakingStats(ApaNineBallPlayer player) {
         super.addBreakingStats(player);
 
-        if (turn.getGameBallMadeOnBreak()) {
-            ControllerHelperMethods.addWinOnBreak(player);
-        }
+        if (turn.getGameBallMadeOnBreak())
+            player.addWinOnBreak();
     }
 
     @Override public Pair<ApaNineBallPlayer> updatePlayerStats(GameStatus gameStatus, Turn turn) {
@@ -39,7 +38,7 @@ class ApaNineBallController extends PlayerController<ApaNineBallPlayer> {
         super.addRunOutStats(player);
 
         if (turn.getBallsRemaining() > 0)
-            ControllerHelperMethods.addEarlyWin(player);
+            player.addEarlyWin();
     }
 
     @Override void addGamesToPlayers(ApaNineBallPlayer player1, ApaNineBallPlayer player2) {

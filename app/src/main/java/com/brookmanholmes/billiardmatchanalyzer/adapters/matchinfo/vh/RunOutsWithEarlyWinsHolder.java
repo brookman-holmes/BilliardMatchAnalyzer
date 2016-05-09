@@ -4,14 +4,14 @@ import android.view.View;
 
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.interfaces.EarlyWins;
+import com.brookmanholmes.billiards.player.IEarlyWins;
 
 import java.util.Locale;
 
 /**
  * Created by helios on 4/12/2016.
  */
-public class RunOutsWithEarlyWinsHolder<T extends AbstractPlayer & EarlyWins> extends RunOutsHolder<T> {
+public class RunOutsWithEarlyWinsHolder<T extends AbstractPlayer & IEarlyWins> extends RunOutsHolder<T> {
     public RunOutsWithEarlyWinsHolder(View view, Match.StatsDetail detail) {
         super(view, detail);
 

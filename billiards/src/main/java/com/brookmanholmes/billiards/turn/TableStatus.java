@@ -26,7 +26,7 @@ import static com.brookmanholmes.billiards.game.util.BallStatus.ON_TABLE;
 /**
  * Created by Brookman Holmes on 10/25/2015.
  */
-final public class TableStatus implements TableStatusInterface {
+final public class TableStatus implements ITableStatus {
     final int GAME_BALL;
     final GameType gameType;
     final private Map<Integer, BallStatus> table;

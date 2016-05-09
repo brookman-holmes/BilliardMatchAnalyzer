@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
-import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,8 +18,6 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.createMatch) FloatingActionButton fab;
 
-    DatabaseAdapter db;
-
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -31,7 +28,6 @@ public class MainActivity extends BaseActivity {
 
     @Override protected void onResume() {
         super.onResume();
-        db = new DatabaseAdapter(this);
 
         final int animationDelay = 250; // .25 seconds
         new Handler().postDelayed(new Runnable() {
@@ -42,7 +38,6 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override protected void onPause() {
-        db = null;
         super.onPause();
     }
 

@@ -112,6 +112,11 @@ public class TurnListDialog extends DialogFragment implements
     }
 
     @Override public void onGroupExpand(int groupPosition, boolean fromUser) {
+        for (int groupToCollapse = 0; groupToCollapse < itemManager.getGroupCount(); groupToCollapse++)
+            if (groupToCollapse != groupPosition) {
+                itemManager.collapseGroup(groupToCollapse);
+            }
+
         if (fromUser) {
             adjustScrollPositionOnGroupExpanded(groupPosition);
         }

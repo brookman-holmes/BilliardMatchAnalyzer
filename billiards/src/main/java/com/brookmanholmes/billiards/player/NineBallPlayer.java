@@ -1,51 +1,48 @@
 package com.brookmanholmes.billiards.player;
 
-import com.brookmanholmes.billiards.player.interfaces.WinsOnBreak;
-import com.brookmanholmes.billiards.player.interfaces.WinsOnBreakImp;
-
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
-public class NineBallPlayer extends AbstractPlayer implements WinsOnBreak {
-    WinsOnBreak winsOnBreak;
+public class NineBallPlayer extends AbstractPlayer implements IWinsOnBreak {
+    int earlyWins = 0;
+    int winsOnBreak = 0;
 
     public NineBallPlayer(String name) {
         super(name);
-        winsOnBreak = new WinsOnBreakImp();
     }
 
     @Override public void addPlayerStats(AbstractPlayer player) {
         super.addPlayerStats(player);
 
-        if (player instanceof WinsOnBreak) {
-            winsOnBreak.addWinsOnBreak(((WinsOnBreak) player).getWinsOnBreak());
-            winsOnBreak.addEarlyWins(((WinsOnBreak) player).getEarlyWins());
+        if (player instanceof IWinsOnBreak) {
+            winsOnBreak += ((IWinsOnBreak) player).getWinsOnBreak();
+            earlyWins += ((IWinsOnBreak) player).getEarlyWins();
         }
 
     }
 
     @Override public void addEarlyWin() {
-        winsOnBreak.addEarlyWin();
+        earlyWins++;
     }
 
     @Override public int getEarlyWins() {
-        return winsOnBreak.getEarlyWins();
+        return earlyWins;
     }
 
     @Override public void addWinOnBreak() {
-        winsOnBreak.addWinOnBreak();
+        winsOnBreak++;
     }
 
     @Override public int getWinsOnBreak() {
-        return winsOnBreak.getWinsOnBreak();
+        return winsOnBreak;
     }
 
     @Override public void addWinsOnBreak(int wins) {
-        winsOnBreak.addWinsOnBreak(wins);
+        winsOnBreak += wins;
     }
 
     @Override public void addEarlyWins(int wins) {
-        winsOnBreak.addEarlyWins(wins);
+        earlyWins += wins;
     }
 
     @Override public boolean equals(Object o) {
@@ -53,21 +50,24 @@ public class NineBallPlayer extends AbstractPlayer implements WinsOnBreak {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        NineBallPlayer player = (NineBallPlayer) o;
+        NineBallPlayer that = (NineBallPlayer) o;
 
-        return winsOnBreak.equals(player.winsOnBreak);
+        if (earlyWins != that.earlyWins) return false;
+        return winsOnBreak == that.winsOnBreak;
 
     }
 
     @Override public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + winsOnBreak.hashCode();
+        result = 31 * result + earlyWins;
+        result = 31 * result + winsOnBreak;
         return result;
     }
 
     @Override public String toString() {
         return "NineBallPlayer{" +
                 "winsOnBreak=" + winsOnBreak +
+                "earlyWins=" + earlyWins +
                 "} " + super.toString();
     }
 }

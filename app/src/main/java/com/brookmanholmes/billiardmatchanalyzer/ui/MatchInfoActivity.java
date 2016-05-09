@@ -22,10 +22,12 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuild
 import com.brookmanholmes.billiardmatchanalyzer.ui.dialog.GameStatusStringBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.TurnListDialog;
-import com.brookmanholmes.billiards.game.Turn;
+import com.brookmanholmes.billiards.game.InvalidGameTypeException;
+import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.billiards.turn.Turn;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,6 +36,7 @@ import butterknife.OnClick;
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
     public static final String INFO_FRAGMENT_TAG = "infoFragment";
     private static final String TAG = "MatchInfoActivity";
+    private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.playerName) TextView playerName;
     @Bind(R.id.opponentName) TextView opponentName;
@@ -56,7 +59,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
 
-        setToolbarTitle(match.getGameStatus().gameType.toString());
+        setToolbarTitle(match.getGameStatus().gameType);
 
         infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag(INFO_FRAGMENT_TAG);
 
@@ -66,9 +69,30 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
     }
 
-    private void setToolbarTitle(String gameType) {
+    private void setToolbarTitle(GameType gameType) {
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(getResources().getString(R.string.title_match_info, gameType));
+            getSupportActionBar().setTitle(getString(R.string.title_match_info, getGameTypeString(gameType)));
+    }
+
+    private String getGameTypeString(GameType gameType) {
+        switch (gameType) {
+            case APA_EIGHT_BALL:
+                return getString(R.string.game_apa_eight);
+            case APA_NINE_BALL:
+                return getString(R.string.game_apa_nine);
+            case BCA_EIGHT_BALL:
+                return getString(R.string.game_bca_eight);
+            case BCA_NINE_BALL:
+                return getString(R.string.game_bca_nine);
+            case BCA_TEN_BALL:
+                return getString(R.string.game_bca_ten);
+            case AMERICAN_ROTATION:
+                return getString(R.string.game_american_rotation);
+            case STRAIGHT_POOL:
+                return getString(R.string.game_straight);
+            default:
+                throw new InvalidGameTypeException("No such GameType: " + gameType);
+        }
     }
 
     @Override protected void onResume() {
@@ -111,6 +135,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                                     displayAdvancedStatsDialog(name, turn);
                                 else if (items[which].equals(getString(R.string.view_profile))) {
                                     Intent intent = new Intent(MatchInfoActivity.this, PlayerProfileActivity.class);
+                                    intent.putExtra(ARG_PLAYER_NAME, name);
                                     startActivity(intent);
                                 } else if (items[which].equals(getString(R.string.edit_name))) {
                                     Snackbar.make(layout, "Change name selected - not yet implemented", Snackbar.LENGTH_SHORT).show();

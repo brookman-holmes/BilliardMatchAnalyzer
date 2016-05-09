@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/title"
-    android:columnCount="3"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:rowCount="4"
-    android:useDefaultMargins="true"
-    tools:showIn="@layout/card_run_outs">
+<GridLayout android:id="@+id/container"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:columnCount="3"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:rowCount="4"
+            android:useDefaultMargins="true"
+            tools:showIn="@layout/card_run_outs">
 
     <TextView
         android:id="@+id/tvEarlyWinsOpponent"
@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/tvEarlyWinsTitle"
-        style="@style/player_stats_title"
+        style="@style/player_stats"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -40,7 +40,7 @@
 
     <TextView
         android:id="@+id/tvTierOneRunsTitle"
-        style="@style/player_stats_title"
+        style="@style/player_stats"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -82,7 +82,7 @@
 
     <TextView
         android:id="@+id/tvMaxBallRunsTitle"
-        style="@style/player_stats_title"
+        style="@style/player_stats"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
@@ -92,7 +92,7 @@
 
     <TextView
         android:id="@+id/tvFiveBallRunsTitle"
-        style="@style/player_stats_title"
+        style="@style/player_stats"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="center"

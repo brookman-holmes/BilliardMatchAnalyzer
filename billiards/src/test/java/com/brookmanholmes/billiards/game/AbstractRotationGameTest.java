@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public abstract class AbstractRotationGameTest extends AbstractGameTest {
     @Test
     public void setAllowTurnSkipReturnsTrueAfterPushShot() {
-        Turn turn = turn().push();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().push();
 
         assertThat(game.setAllowTurnSkip(turn), is(true));
 
@@ -29,7 +29,7 @@ public abstract class AbstractRotationGameTest extends AbstractGameTest {
 
     @Test
     public void allowPushIsTrueAfterDryBreak() {
-        Turn turn = turn().breakMiss();
+        com.brookmanholmes.billiards.turn.Turn turn = turn().breakMiss();
 
         game.addTurn(turn);
 

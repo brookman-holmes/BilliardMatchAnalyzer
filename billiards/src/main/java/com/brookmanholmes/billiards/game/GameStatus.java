@@ -30,7 +30,7 @@ public final class GameStatus {
     public final boolean winOnBreak;
     public final List<Integer> ballsOnTable;
     public final BreakType breakType;
-    public final int innings;
+    public final int innings; // not put into equals and hashcode because it's only used for APA and is meaningless in alternating break format
 
     GameStatus(Game game) {
         playerAllowedToBreakAgain = game.playerAllowedToBreakAgain;
@@ -98,6 +98,7 @@ public final class GameStatus {
                 "\n winOnBreak=" + winOnBreak +
                 "\n ballsOnTable=" + ballsOnTable +
                 "\n breakType=" + breakType +
+                "\n innings=" + innings +
                 '}';
     }
 
@@ -126,7 +127,6 @@ public final class GameStatus {
         if (!ballsOnTable.containsAll(that.ballsOnTable)) return false;
         if (!that.ballsOnTable.containsAll(ballsOnTable)) return false;
         if (ballsOnTable.size() != that.ballsOnTable.size()) return false;
-        if (innings != that.innings) return false;
         return breakType == that.breakType;
 
     }
@@ -150,7 +150,6 @@ public final class GameStatus {
         result = 31 * result + (winOnBreak ? 1 : 0);
         result = 31 * result + ballsOnTable.hashCode();
         result = 31 * result + breakType.hashCode();
-        result = 31 * result + innings;
         return result;
     }
 

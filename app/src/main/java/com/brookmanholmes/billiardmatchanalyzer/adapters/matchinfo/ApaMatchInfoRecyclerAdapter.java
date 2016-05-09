@@ -4,23 +4,23 @@ import android.view.View;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.ApaPlayer;
-import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.BreaksHolderWithBreakWins;
+import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.BreaksWithWinsHolder;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh.RunOutsWithEarlyWinsHolder;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.interfaces.Apa;
+import com.brookmanholmes.billiards.player.IApa;
 
 /**
  * Created by Brookman Holmes on 1/17/2016.
  */
-class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchInfoRecyclerAdapter<T> {
+class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & IApa> extends MatchInfoRecyclerAdapter<T> {
 
     ApaMatchInfoRecyclerAdapter(Match<T> match) {
-        super(match, match.getGameStatus().GAME_BALL);
+        super(match);
     }
 
     ApaMatchInfoRecyclerAdapter(Match<T> match, ViewType viewType) {
-        super(match, match.getGameStatus().GAME_BALL, viewType);
+        super(match, viewType);
     }
 
     @Override public void onBindViewHolder(BaseViewHolder<T> holder, int position) {
@@ -35,7 +35,7 @@ class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & Apa> extends MatchI
             case ITEM_APA_STATS:
                 return new ApaPlayer<>(view, detail);
             case ITEM_BREAKS:
-                return new BreaksHolderWithBreakWins<>(view, gameBall, detail);
+                return new BreaksWithWinsHolder<>(view, gameBall, detail);
             case ITEM_RUN_OUTS:
                 return new RunOutsWithEarlyWinsHolder<>(view, detail);
             default:

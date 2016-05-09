@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 public class MatchListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static int LOADER_ID = 100;
     @Bind(R.id.scrollView) RecyclerView recyclerView;
-    LinearLayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private MatchListRecyclerAdapter adapter;
 
     public MatchListFragment() {
@@ -34,11 +34,11 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_view2, null);
+        View view = inflater.inflate(R.layout.fragment_list_view, null);
         ButterKnife.bind(this, view);
 
         adapter = new MatchListRecyclerAdapter(getContext(), null);
-        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 

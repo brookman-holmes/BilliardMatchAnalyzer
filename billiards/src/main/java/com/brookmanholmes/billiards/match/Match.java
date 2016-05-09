@@ -2,17 +2,16 @@ package com.brookmanholmes.billiards.match;
 
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
-import com.brookmanholmes.billiards.player.controller.ControllerHelperMethods;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 import com.brookmanholmes.billiards.turn.GameTurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.ArrayDeque;
@@ -24,7 +23,7 @@ import java.util.List;
 /**
  * Created by Brookman Holmes on 10/27/2015.
  */
-public class Match<T extends AbstractPlayer> implements MatchInterface {
+public class Match<T extends AbstractPlayer> implements IMatch {
     public ArrayDeque<T> player1 = new ArrayDeque<>();
     long matchId;
     PlayerController<T> playerController;
@@ -83,11 +82,11 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     }
 
     public T getPlayer() {
-        return ControllerHelperMethods.getPlayerFromList(player1, playerController.newPlayer());
+        return PlayerController.getPlayerFromList(player1, playerController.newPlayer());
     }
 
     public T getOpponent() {
-        return ControllerHelperMethods.getPlayerFromList(player2, playerController.newOpponent());
+        return PlayerController.getPlayerFromList(player2, playerController.newOpponent());
     }
 
     public T getPlayer(int end) {
@@ -99,11 +98,11 @@ public class Match<T extends AbstractPlayer> implements MatchInterface {
     }
 
     public T getPlayer(int start, int end) {
-        return ControllerHelperMethods.getPlayerFromList(convertArrayDequeToList(player1).subList(start, end), playerController.newPlayer());
+        return PlayerController.getPlayerFromList(convertArrayDequeToList(player1).subList(start, end), playerController.newPlayer());
     }
 
     public T getOpponent(int start, int end) {
-        return ControllerHelperMethods.getPlayerFromList(convertArrayDequeToList(player2).subList(start, end), playerController.newOpponent());
+        return PlayerController.getPlayerFromList(convertArrayDequeToList(player2).subList(start, end), playerController.newOpponent());
     }
 
     @Override public String getCurrentPlayersName() {

@@ -9,18 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.RoundedLetterView;
-import com.brookmanholmes.billiards.game.Turn;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.TableStatusInterface;
+import com.brookmanholmes.billiards.turn.ITableStatus;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
@@ -117,6 +116,7 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
         holder.bind(data.get(groupPosition).get(childPosition),
                 viewType == 1 ? PlayerTurn.PLAYER : PlayerTurn.OPPONENT,
                 viewType == 1 ? match.getPlayer(turn + 1) : match.getOpponent(turn + 1));
+
         holder.setBalls(data.get(groupPosition).get(childPosition).getLeft());
     }
 
@@ -181,7 +181,7 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
         @Bind(R.id.tvSafetyPct) TextView safetyPct;
         @Bind(R.id.tvBreakPct) TextView breakPct;
         @Bind(R.id.tvShootingPct) TextView shootingPct;
-        @Bind(R.id.ballContainer) LinearLayout ballContainer;
+        @Bind(R.id.ballContainer) ViewGroup ballContainer;
 
         public TurnViewHolder(View itemView) {
             super(itemView);
@@ -195,12 +195,13 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
             indicator.setBackgroundColor(color);
 
             turnString.setText(turnStringAdapter.getTurnString());
+
             shootingPct.setText(turnStringAdapter.getShootingStats());
             safetyPct.setText(turnStringAdapter.getSafetyStats());
             breakPct.setText(turnStringAdapter.getBreakingStats());
         }
 
-        private void setBalls(TableStatusInterface tableStatus) {
+        private void setBalls(ITableStatus tableStatus) {
             for (int ball = 1; ball <= tableStatus.size(); ball++) {
                 TextView textView = (TextView) ballContainer.getChildAt(ball - 1);
                 if (ballIsMade(tableStatus.getBallStatus(ball))) {
