@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -175,8 +176,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     private Page getAdvTurnEndPage() {
         return new TurnEndPage(this, context.getString(R.string.title_turn_end), matchData)
-                .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"), getSafetyErrorBranch())
-                .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"), getMissBranchPage(), getHowMissPage("miss2"), getWhyMissPage("miss3"))
+                .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"), getHowMissPage("safety error1", R.array.how_choices_safety))
+                .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"), getMissBranchPage(), getWhyMissPage("miss3"))
                 .addBranch(context.getString(R.string.turn_break_miss), getFoulPage("break"), getBreakErrorHow(), getBreakErrorWhy())
                 .addBranch(context.getString(R.string.turn_illegal_break), getFoulPage("illegal break"), getIllegalBreakHow(), getIllegalBreakWhy())
                 .addBranch(context.getString(R.string.turn_safety), getSafetyPage())
@@ -205,22 +206,32 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         return new MissBranchPage(this, context.getString(R.string.title_miss))
                 .addBranch(context.getString(R.string.miss_cut),
                         getCutTypePage("cut miss1"),
-                        getAnglePage("cut miss2"))
+                        getAnglePage("cut miss2"),
+                        getHowMissPage("cut miss3", R.array.how_choices))
 
-                .addBranch(context.getString(R.string.miss_long))
+                .addBranch(context.getString(R.string.miss_long),
+                        getHowMissPage("straight miss1", R.array.how_choices))
 
                 .addBranch(context.getString(R.string.miss_bank),
-                        getBankPage("bank miss1"))
+                        getBankPage("bank miss1"),
+                        getHowMissPage("bank miss2", R.array.how_choices_bank))
 
                 .addBranch(context.getString(R.string.miss_kick),
-                        getKickPage("kick miss1"))
+                        getKickPage("kick miss1"),
+                        getHowMissPage("kick miss2", R.array.how_choices_kick))
 
-                .addBranch(context.getString(R.string.miss_combo))
+                .addBranch(context.getString(R.string.miss_combo),
+                        getHowMissPage("combo miss1", R.array.how_choices))
 
-                .addBranch(context.getString(R.string.miss_carom))
+                .addBranch(context.getString(R.string.miss_carom),
+                        getHowMissPage("carom miss1", R.array.how_choices))
 
-                .addBranch(context.getString(R.string.miss_jump))
-                .addBranch(context.getString(R.string.miss_masse)) // TODO: 4/10/2016 change values of this branch to be things like curve too soon/late etc.
+                .addBranch(context.getString(R.string.miss_jump),
+                        getHowMissPage("jump miss1", R.array.how_choices))
+
+                .addBranch(context.getString(R.string.miss_masse),
+                        getHowMissPage("masse miss1", R.array.how_choices_masse))
+
                 .setValue(context.getString(R.string.miss_cut))
                 .setParentKey("Miss");
     }
@@ -296,9 +307,9 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 .setParentKey("safety what");
     }
 
-    private Page getHowMissPage(String parentKey) {
+    private Page getHowMissPage(String parentKey, @ArrayRes int choices) {
         return new HowMissPage(this, context.getString(R.string.title_how_miss))
-                .setChoices(context.getResources().getStringArray(R.array.how_choices))
+                .setChoices(context.getResources().getStringArray(choices))
                 .setParentKey(parentKey)
                 .setRequired(true);
     }

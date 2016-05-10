@@ -13,6 +13,7 @@ import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.MatchInfoRecyclerAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.match.IMatch;
+import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
@@ -50,14 +51,10 @@ public class MatchInfoFragment extends Fragment implements IMatch {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        long matchId;
-        if (getArguments().getLong(BaseActivity.ARG_MATCH_ID) != 0L) {
-            matchId = getArguments().getLong(BaseActivity.ARG_MATCH_ID);
-        } else {
-            throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
-        }
+        long matchId = setMatchId();
         DatabaseAdapter db = new DatabaseAdapter(getContext());
-        adapter = MatchInfoRecyclerAdapter.createMatchAdapter(db.getMatch(matchId));
+        Match<?> match = db.getMatch(matchId);
+        adapter = MatchInfoRecyclerAdapter.createMatchAdapter(match);
         db = null;
     }
 
@@ -84,6 +81,14 @@ public class MatchInfoFragment extends Fragment implements IMatch {
         refWatcher.watch(this);
 
         super.onDestroyView();
+    }
+
+    private long setMatchId() {
+        if (getArguments().getLong(BaseActivity.ARG_MATCH_ID) != 0L) {
+            return getArguments().getLong(BaseActivity.ARG_MATCH_ID);
+        } else {
+            throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
+        }
     }
 
     @Override public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {

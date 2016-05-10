@@ -13,6 +13,8 @@
         <item>@string/too_soft</item>
         <item>@string/thick_hit</item>
         <item>@string/thin_hit</item>
+        <item>@string/kick_short</item>
+        <item>@string/kick_long</item>
     </string-array>
 
     <string-array name="how_choices">
@@ -22,6 +24,32 @@
         <item>@string/aim_to_right</item>
     </string-array>
 
+    <string-array name="how_choices_bank">
+        <item>@string/thick_hit</item>
+        <item>@string/thin_hit</item>
+        <item>@string/aim_to_left</item>
+        <item>@string/aim_to_right</item>
+        <item>@string/bank_short</item>
+        <item>@string/bank_long</item>
+    </string-array>
+
+    <string-array name="how_choices_kick">
+        <item>@string/thick_hit</item>
+        <item>@string/thin_hit</item>
+        <item>@string/aim_to_left</item>
+        <item>@string/aim_to_right</item>
+        <item>@string/kick_short</item>
+        <item>@string/kick_long</item>
+    </string-array>
+
+    <string-array name="how_choices_masse">
+        <item>@string/thick_hit</item>
+        <item>@string/thin_hit</item>
+        <item>@string/aim_to_left</item>
+        <item>@string/aim_to_right</item>
+        <item>@string/curve_early</item>
+        <item>@string/curve_late</item>
+    </string-array>
 
     <string name="too_hard">Too hard</string>
     <string name="too_soft">Too soft</string>
@@ -30,4 +58,10 @@
     <string name="kicked_in">Kicked into pocket (foul)</string>
     <string name="thick_hit">Too thick on OB</string>
     <string name="thin_hit">Too thin on OB</string>
+    <string name="kick_short">CB went short (kick)</string>
+    <string name="kick_long">CB went long (kick)</string>
+    <string name="bank_short">OB went short (bank)</string>
+    <string name="bank_long">OB went long (bank)</string>
+    <string name="curve_early">CB curved too soon</string>
+    <string name="curve_late">CB curved too late</string>
 </resources>
