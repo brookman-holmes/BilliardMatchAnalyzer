@@ -17,6 +17,7 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,6 +30,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     PlayerController<T> playerController;
     String location;
     String notes;
+    Date createdOn;
     Game game;
     ArrayDeque<T> player2 = new ArrayDeque<>();
     ArrayDeque<Turn> turns = new ArrayDeque<>();
@@ -43,6 +45,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         detail = builder.statsDetail;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
+        createdOn = builder.date;
     }
 
     public static <T> List<T> convertArrayDequeToList(ArrayDeque<T> arrayDeque) {
@@ -192,6 +195,10 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         return detail;
     }
 
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
     @Override public String toString() {
         return "Match{" +
                 "game=" + game +
@@ -216,6 +223,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         private String notes = "";
         private long id;
         private StatsDetail statsDetail = StatsDetail.NORMAL;
+        private Date date;
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;
@@ -284,6 +292,11 @@ public class Match<T extends AbstractPlayer> implements IMatch {
 
         public Builder setStatsDetail(StatsDetail detail) {
             statsDetail = detail;
+            return this;
+        }
+
+        public Builder setDate(Date date) {
+            this.date = date;
             return this;
         }
 

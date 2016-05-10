@@ -20,12 +20,10 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.MatchInfoActivity;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 
-import org.apache.commons.lang3.time.DateUtils;
-
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -81,24 +79,16 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     private String getDate(Cursor cursor) {
         String dateString = cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_CREATED_ON));
 
-        DateFormat format = DateFormat.getDateInstance();
+        DateFormat format = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
         Date date;
         try {
             date = format.parse(dateString);
-        } catch (ParseException exception) {
-            exception.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
             date = new Date();
         }
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DATE, -1);
-
-        if (DateUtils.isSameDay(date, new Date()))
-            return getString(R.string.today);
-        else if (DateUtils.isSameDay(date, cal.getTime()))
-            return getString(R.string.yesterday);
-
-        return dateString;
+        return DateFormat.getDateInstance().format(date);
     }
 
     private String getLocation(Cursor cursor) {

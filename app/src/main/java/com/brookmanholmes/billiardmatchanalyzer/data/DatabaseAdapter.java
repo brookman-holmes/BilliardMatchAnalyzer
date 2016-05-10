@@ -28,9 +28,11 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
@@ -135,10 +137,16 @@ public class DatabaseAdapter {
                 pair = new ImmutablePair<>(match.getOpponent(), match.getPlayer());
             }
 
+            pair.getLeft().setMatchDate(match.getCreatedOn());
+            pair.getRight().setMatchDate(match.getCreatedOn());
+
             players.add(pair);
         }
 
+        Log.i(TAG, DatabaseUtils.dumpCursorToString(c));
+
         c.close();
+        database.close();
 
         return players;
     }
@@ -189,12 +197,27 @@ public class DatabaseAdapter {
                 c.getString(c.getColumnIndex("opp_name")))
                 .setPlayerTurn(getPlayerTurn(c))
                 .setBreakType(getBreakType(c))
+                .setDate(getDate(c))
                 .setPlayerRanks(c.getInt(c.getColumnIndex(COLUMN_PLAYER_RANK)), c.getInt(c.getColumnIndex(COLUMN_OPPONENT_RANK)))
                 .setLocation(c.getString(c.getColumnIndex(COLUMN_LOCATION)))
                 .setMatchId(c.getLong(c.getColumnIndex("_id")))
                 .setNotes(c.getString(c.getColumnIndex(COLUMN_NOTES)))
                 .setStatsDetail(getStatDetail(c))
                 .build(getGameType(c));
+    }
+
+    private Date getDate(Cursor c) {
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+
+        Date date;
+        try {
+            date = dateFormat.parse(c.getString(c.getColumnIndex(COLUMN_CREATED_ON)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            date = new Date();
+        }
+
+        return date;
     }
 
     private PlayerTurn getPlayerTurn(Cursor c) {
@@ -317,6 +340,7 @@ public class DatabaseAdapter {
             insertPlayer(match.getPlayer(), matchId);
             insertPlayer(match.getOpponent(), matchId);
         }
+
         database.close();
         return match.getMatchId();
     }
@@ -340,7 +364,7 @@ public class DatabaseAdapter {
     }
 
     private String getCurrentDate() {
-        DateFormat dateFormat = DateFormat.getDateInstance();
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
         return dateFormat.format(new Date());
     }
 

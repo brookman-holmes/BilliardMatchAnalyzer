@@ -1,6 +1,7 @@
 package com.brookmanholmes.billiards.player;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 
 /**
  * Created by Brookman Holmes on 10/28/2015.
@@ -14,6 +15,7 @@ public abstract class AbstractPlayer {
     final static String ZERO = "0";
 
     String name = "";
+    Date date;
     int safetyAttempts = 0;
     int safetySuccesses = 0;
     int safetyScratches = 0;
@@ -72,6 +74,14 @@ public abstract class AbstractPlayer {
 
     public String getName() {
         return name;
+    }
+
+    public Date getMatchDate() {
+        return date == null ? new Date() : date;
+    }
+
+    public void setMatchDate(Date date) {
+        this.date = date;
     }
 
     public void addSafetyAttempt(boolean scratch) {
