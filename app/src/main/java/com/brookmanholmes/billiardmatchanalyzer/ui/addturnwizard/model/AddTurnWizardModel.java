@@ -176,7 +176,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     private Page getAdvTurnEndPage() {
         return new TurnEndPage(this, context.getString(R.string.title_turn_end), matchData)
-                .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"), getHowMissPage("safety error1", R.array.how_choices_safety))
+                .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"), getSafetyErrorBranch())
                 .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"), getMissBranchPage(), getWhyMissPage("miss3"))
                 .addBranch(context.getString(R.string.turn_break_miss), getFoulPage("break"), getBreakErrorHow(), getBreakErrorWhy())
                 .addBranch(context.getString(R.string.turn_illegal_break), getFoulPage("illegal break"), getIllegalBreakHow(), getIllegalBreakWhy())

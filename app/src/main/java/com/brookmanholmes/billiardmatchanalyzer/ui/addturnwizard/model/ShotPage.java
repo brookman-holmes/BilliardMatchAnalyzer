@@ -81,7 +81,6 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
         notifyDataChanged();
         updateFragment();
 
-        Log.i("BreakPage", "ball: " + ball + " ball status: " + ballStatus.toString());
         return ballStatus;
     }
 

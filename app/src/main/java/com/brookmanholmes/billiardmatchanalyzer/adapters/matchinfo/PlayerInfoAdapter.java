@@ -42,6 +42,7 @@ public class PlayerInfoAdapter extends RecyclerView.Adapter<BaseViewHolder<CompP
     public static final int ITEM_BREAKS = 4;
     public static final int ITEM_RUN_OUTS = 5;
     public static final int ITEM_GRAPH = 0;
+    public static final int ITEM_FOOTER = 6;
 
     List<AbstractPlayer> players = new ArrayList<>(), opponents = new ArrayList<>();
     String playerName, opponentName;
@@ -109,6 +110,8 @@ public class PlayerInfoAdapter extends RecyclerView.Adapter<BaseViewHolder<CompP
                 return R.layout.card_shooting_pct;
             case ITEM_GRAPH:
                 return R.layout.card_graph;
+            case ITEM_FOOTER:
+                return R.layout.footer;
             default:
                 throw new IllegalArgumentException("No such view type: " + viewType);
         }
@@ -128,13 +131,15 @@ public class PlayerInfoAdapter extends RecyclerView.Adapter<BaseViewHolder<CompP
                 return new SafetiesHolder<>(view, detail);
             case ITEM_GRAPH:
                 return new GraphViewHolder(view);
+            case ITEM_FOOTER:
+                return new FooterViewHolder<>(view);
             default:
                 throw new IllegalArgumentException("No such view type");
         }
     }
 
     @Override public int getItemCount() {
-        return 6;
+        return 7;
     }
 
     @Override public int getItemViewType(int position) {

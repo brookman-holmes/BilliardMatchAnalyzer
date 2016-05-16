@@ -52,7 +52,6 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
 
         BallStatus newBallStatus = incrementBallStatus(ballStatus, ball);
         tableStatus.setBallTo(newBallStatus, ball);
-        Log.i("BreakPage", "ball: " + ball + " ball status: " + newBallStatus.toString());
         data.putString(SIMPLE_DATA_KEY, showShotPage());
         notifyDataChanged();
 

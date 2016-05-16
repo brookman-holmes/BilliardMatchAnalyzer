@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameStatus;
@@ -143,8 +144,6 @@ public class DatabaseAdapter {
             players.add(pair);
         }
 
-        Log.i(TAG, DatabaseUtils.dumpCursorToString(c));
-
         c.close();
         database.close();
 
@@ -236,27 +235,8 @@ public class DatabaseAdapter {
         return GameType.valueOf(c.getString(c.getColumnIndex(COLUMN_GAME_TYPE)));
     }
 
-    public Cursor getMatches() {
+    public Cursor getMatches(@Nullable String player, @Nullable String opponent) {
         database = databaseHelper.getReadableDatabase(); 
-        String opponent = "%", player = "%";
-
-        String opp_search;
-        String player_search;
-        switch (opponent) {
-            case "%":
-                opp_search = " (player_name like ? or opp_name like ?) ";
-                break;
-            default:
-                opp_search = " (player_name = ? or opp_name = ?) ";
-        }
-
-        switch (player) {
-            case "%":
-                player_search = " (player_name like ? or opp_name like ?) ";
-                break;
-            default:
-                player_search = " (player_name = ? or opp_name = ?) ";
-        }
 
         final String selection = "m." + COLUMN_ID + " as _id, "
                 + "p." + COLUMN_NAME + " as player_name, "
@@ -271,16 +251,39 @@ public class DatabaseAdapter {
                 + COLUMN_OPPONENT_RANK + ", "
                 + COLUMN_LOCATION + "\n";
 
-        final String query = "SELECT " + selection + "from " + TABLE_MATCHES + " m\n"
+        String query = "SELECT " + selection + "from " + TABLE_MATCHES + " m\n"
                 + "left join (select " + COLUMN_NAME + ", " + COLUMN_MATCH_ID + ", " + COLUMN_ID + " from "
                 + TABLE_PLAYERS + " where " + COLUMN_ID + " % 2 = 1) p\n"
                 + "on p.match_id = m._id\n"
                 + "left join (select " + COLUMN_NAME + ", " + COLUMN_MATCH_ID + ", " + COLUMN_ID + " from "
                 + TABLE_PLAYERS + " where " + COLUMN_ID + " % 2 = 0) opp\n"
-                + "on p." + COLUMN_MATCH_ID + "=" + "opp." + COLUMN_MATCH_ID + "\n"
-                + "where " + opp_search + " and " + player_search;
+                + "on p." + COLUMN_MATCH_ID + "=" + "opp." + COLUMN_MATCH_ID;
 
-        return database.rawQuery(query, new String[]{opponent, opponent, player, player});
+        if (player != null && opponent != null)
+            query += " where (player_name = ? or opp_name = ?) AND (player_name = ? or opp_name =?)";
+        else if (opponent != null || player != null)
+            query += " where (player_name = ? or opp_name = ?)";
+
+        String[] queryArgs;
+        if (player == null && opponent == null)
+            queryArgs = new String[0];
+        else {
+            queryArgs = new String[(player != null && opponent != null ? 4 : 2)]; // set it to 4 or 2
+
+            if (player != null) {
+                queryArgs[0] = player;
+                queryArgs[1] = player;
+                if (opponent != null) {
+                    queryArgs[2] = opponent;
+                    queryArgs[3] = opponent;
+                }
+            } else {
+                queryArgs[0] = opponent;
+                queryArgs[1] = opponent;
+            }
+        }
+
+        return database.rawQuery(query, queryArgs);
     }
 
     public long insertPlayer(AbstractPlayer player, long id) {
@@ -445,6 +448,7 @@ public class DatabaseAdapter {
                 null,
                 null,
                 null);
+
         if (c.moveToFirst()) {
             return buildAdvStatsFromCursor(c);
         } else
@@ -487,6 +491,39 @@ public class DatabaseAdapter {
                 stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS))),
                 cursor.getInt(cursor.getColumnIndex(COLUMN_IS_GAME_LOST)) == 1
         );
+    }
+
+    public List<AdvStats> getAdvStats(String playerName, String[] shotTypes) {
+        database = databaseHelper.getReadableDatabase();
+        List<AdvStats> list = new ArrayList<>();
+
+        String query = COLUMN_NAME + "=?";
+
+        String shotTypesQuery = " AND (";
+        for (int i = 0; i < shotTypes.length; i++) {
+            shotTypesQuery += COLUMN_SHOT_TYPE + "=?";
+
+            if (i != shotTypes.length - 1)
+                shotTypesQuery += " OR ";
+        }
+        shotTypesQuery += ")";
+
+        Cursor c = database.query(TABLE_ADV_STATS,
+                null,
+                query + shotTypesQuery,
+                ArrayUtils.addAll(new String[]{playerName}, shotTypes),
+                null,
+                null,
+                null);
+
+        while (c.moveToNext()) {
+            list.add(buildAdvStatsFromCursor(c));
+        }
+
+        c.close();
+        database.close();
+
+        return list;
     }
 
     public List<AdvStats> getAdvStats(long matchId, String playerName, String[] shotTypes) {

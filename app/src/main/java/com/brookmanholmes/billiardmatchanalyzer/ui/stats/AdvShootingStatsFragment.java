@@ -22,16 +22,8 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
-public class AdvShootingStatsFragment extends Fragment implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
-    String[] shotTypes = new String[]{"Cut", "Long straight shot", "Bank", "Kick", "Combo", "Carom", "Jump"};
-    String[] angleList = new String[]{"0°", "15°", "30°", "45°", "60°", "75°", "90°"};
-    String[] howList = new String[]{"Too thin", "Too thick", "Left of aim point", "Right of aim point"};
-    String[] whyList = new String[]{"Bad position", "Jacked up", "Lack of focus", "Over spin", "Unintentional english", "Too slow", "Too fast", "CB curved", "On the rail", "Forcing position"};
+public class AdvShootingStatsFragment extends Fragment {
     List<AdvStats> stats = new ArrayList<>();
-    @Bind(R.id.spinner) MultiSelectionSpinner spinner1;
-    @Bind(R.id.spinner2) MultiSelectionSpinner spinner2;
-    @Bind(R.id.spinner3) MultiSelectionSpinner spinner3;
-    @Bind(R.id.spinner4) MultiSelectionSpinner spinner4;
     @Bind(R.id.over) TextView overCut;
     @Bind(R.id.under) TextView underCut;
     @Bind(R.id.left) TextView leftOfAim;
@@ -45,15 +37,24 @@ public class AdvShootingStatsFragment extends Fragment implements MultiSelection
         return frag;
     }
 
+    public static AdvShootingStatsFragment create(String name) {
+        AdvShootingStatsFragment frag = new AdvShootingStatsFragment();
+        Bundle args = new Bundle();
+        args.putString(AdvStatsDialog.ARG_PLAYER_NAME, name);
+        frag.setArguments(args);
+
+        return frag;
+    }
+
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         DatabaseAdapter db = new DatabaseAdapter(getContext());
 
-        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID);
+        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID, -1L);
         String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
         String[] shotTypes = getContext().getResources().getStringArray(R.array.shot_types);
-        stats = db.getAdvStats(matchId, playerName, shotTypes);
+        stats = matchId == -1L ? db.getAdvStats(playerName, shotTypes): db.getAdvStats(matchId, playerName, shotTypes); // get the stats by name or name and match id
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,16 +62,6 @@ public class AdvShootingStatsFragment extends Fragment implements MultiSelection
         ButterKnife.bind(this, view);
 
         updateView(view);
-
-        spinner1.setItems(shotTypes);
-        spinner2.setItems(angleList);
-        spinner3.setItems(howList);
-        spinner4.setItems(whyList);
-        spinner1.setListener(this);
-        spinner2.setListener(this);
-        spinner3.setListener(this);
-        spinner4.setListener(this);
-
         return view;
     }
 
@@ -81,14 +72,5 @@ public class AdvShootingStatsFragment extends Fragment implements MultiSelection
         title.setText(getString(R.string.title_shooting_errors, stats.size()));
 
         StatsUtils.updateGridOfMissReasons(view, StatsUtils.getFourMostCommonItems(stats));
-    }
-
-
-    @Override public void selectedIndices(List<Integer> indices) {
-
-    }
-
-    @Override public void selectedStrings(List<String> strings) {
-
     }
 }

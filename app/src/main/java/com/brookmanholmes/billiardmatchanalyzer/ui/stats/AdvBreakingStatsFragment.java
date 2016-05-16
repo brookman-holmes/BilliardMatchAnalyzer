@@ -37,13 +37,22 @@ public class AdvBreakingStatsFragment extends Fragment {
         return frag;
     }
 
+    public static AdvBreakingStatsFragment create(String name) {
+        AdvBreakingStatsFragment frag = new AdvBreakingStatsFragment();
+        Bundle args = new Bundle();
+        args.putString(AdvStatsDialog.ARG_PLAYER_NAME, name);
+        frag.setArguments(args);
+
+        return frag;
+    }
+
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DatabaseAdapter db = new DatabaseAdapter(getContext());
 
-        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID);
+        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID, -1L);
         String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
-        stats = db.getAdvStats(matchId, playerName, new String[]{"Break shot"});
+        stats = matchId == -1L ? db.getAdvStats(playerName, new String[] {"Break shot"}) : db.getAdvStats(matchId, playerName, new String[]{"Break shot"});
     }
 
     public void updateView(View view) {

@@ -42,7 +42,7 @@ import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.TABL
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
     private static DatabaseHelper sInstance;
 
     /**
@@ -145,13 +145,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TURNS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADV_STATS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOWS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WHYS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANGLES);
-        onCreate(db);
+        if (oldVersion == 13 && newVersion == 14) {
+            db.execSQL("UPDATE " + TABLE_ADV_STATS + " SET " + COLUMN_SHOT_TYPE + "='Safety error'" +
+                    "WHERE " + COLUMN_SHOT_TYPE + "=''");
+        } else {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_TURNS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADV_STATS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOWS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_WHYS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANGLES);
+            onCreate(db);
+        }
     }
 }

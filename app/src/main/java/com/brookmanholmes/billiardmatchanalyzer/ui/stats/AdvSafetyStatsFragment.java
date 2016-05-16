@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
-public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
+public class AdvSafetyStatsFragment extends Fragment {
     private static final int FULL_HOOK = 0,
             PARTIAL_HOOK = 1,
             LONG_T = 2,
@@ -32,7 +32,6 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
 
     @Bind(R.id.successfulSafetiesTitle) TextView safetyResults;
     @Bind(R.id.safetyErrorsTitle) TextView safetyErrorsTitle;
-    @Bind(R.id.spinner) MultiSelectionSpinner spinner1;
     @Bind(R.id.over) TextView overCut;
     @Bind(R.id.under) TextView underCut;
     @Bind(R.id.fast) TextView fast;
@@ -46,6 +45,15 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
         return frag;
     }
 
+    public static AdvSafetyStatsFragment create(String name) {
+        AdvSafetyStatsFragment frag = new AdvSafetyStatsFragment();
+        Bundle args = new Bundle();
+        args.putString(AdvStatsDialog.ARG_PLAYER_NAME, name);
+        frag.setArguments(args);
+
+        return frag;
+    }
+
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -53,7 +61,8 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
 
         long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID);
         String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
-        stats = db.getAdvStats(matchId, playerName, new String[]{"Safety", "Safety error"});
+
+        stats = matchId == -1L ? db.getAdvStats(playerName, new String[] {"Safety", "Safety error"}) : db.getAdvStats(matchId, playerName, new String[]{"Safety", "Safety error"});
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,8 +71,6 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
 
         updateView(view);
 
-        spinner1.setListener(this);
-        spinner1.setItems(new String[]{"Safe", "Open"});
         return view;
     }
 
@@ -92,13 +99,5 @@ public class AdvSafetyStatsFragment extends Fragment implements MultiSelectionSp
 
         safetyErrorsTitle.setText(getString(R.string.title_safety_errors, statLineItems.get(OPEN).getCount()));
         safetyResults.setText(getString(R.string.title_safety_results, stats.size()));
-    }
-
-    @Override public void selectedIndices(List<Integer> indices) {
-
-    }
-
-    @Override public void selectedStrings(List<String> strings) {
-
     }
 }

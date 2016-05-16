@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,15 @@ import butterknife.OnLongClick;
  */
 public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRecyclerAdapter.ListItemHolder> {
     Context context;
+    private String player, opponent;
+
+
+    public MatchListRecyclerAdapter(Context context, Cursor cursor, @Nullable String player, @Nullable String opponent) {
+        this(context, cursor);
+
+        this.player = player;
+        this.opponent = opponent;
+    }
 
     public MatchListRecyclerAdapter(Context context, Cursor cursor) {
         super(cursor);
@@ -44,7 +54,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
     }
 
     @Override public void onBindViewHolderCursor(ListItemHolder holder, Cursor cursor) {
-        holder.location.setText(getLocation(cursor));
+        holder.setLocation(getLocation(cursor));
         holder.date.setText(getDate(cursor));
         holder.playerNames.setText(getPlayerNames(cursor));
         holder.breakType.setText(getBreakType(cursor));
@@ -157,13 +167,22 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
         @Bind(R.id.players) TextView playerNames;
         @Bind(R.id.breakType) TextView breakType;
         @Bind(R.id.imgGameType) ImageView gameType;
-        @Bind(R.id.dateLoc) TextView location;
+        @Bind(R.id.location) TextView location;
         @Bind(R.id.date) TextView date;
         @Bind(R.id.ruleSet) TextView ruleSet;
 
         public ListItemHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        void setLocation(String location) {
+            if (location.isEmpty())
+                this.location.setVisibility(View.GONE);
+            else {
+                this.location.setVisibility(View.VISIBLE);
+                this.location.setText(location);
+            }
         }
 
         @OnClick(R.id.container) public void onClick() {
@@ -180,7 +199,7 @@ public class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRec
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override public void onClick(DialogInterface dialog, int which) {
                             database.deleteMatch(getItemId());
-                            swapCursor(database.getMatches());
+                            swapCursor(database.getMatches(player, opponent));
                             notifyItemRemoved((int) getItemId());
                         }
                     })
