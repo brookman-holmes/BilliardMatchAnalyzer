@@ -40,9 +40,7 @@ public class TurnStringAdapter {
 
         playerName = "<font color='" + mainColor + "'>" + player.getName() + "</font>";
 
-        title = "%1$s <font color='";
-        title += playerTurn == PlayerTurn.PLAYER ? "#2196F3" : "#FF3D00";
-        title += "'>%2$s</font>";
+        title = "%1$s <font color='%3$s'>%2$s</font>";
     }
 
     boolean isBreakShot() {
@@ -223,14 +221,28 @@ public class TurnStringAdapter {
     }
 
     Spanned getShootingStats() {
-        return Html.fromHtml(String.format(Locale.getDefault(), title, "Shooting", player.getShootingPct()));
+        return Html.fromHtml(String.format(Locale.getDefault(), title, "Shooting", player.getShootingPct(), getStatColor(player.getShootingPct())));
     }
 
     Spanned getBreakingStats() {
-        return Html.fromHtml(String.format(Locale.getDefault(), title, "Breaking", player.getBreakPct()));
+        return Html.fromHtml(String.format(Locale.getDefault(), title, "Breaking", player.getBreakPct(), getStatColor(player.getBreakPct())));
     }
 
     Spanned getSafetyStats() {
-        return Html.fromHtml(String.format(Locale.getDefault(), title, "Safeties", player.getSafetyPct()));
+        return Html.fromHtml(String.format(Locale.getDefault(), title, "Safeties", player.getSafetyPct(), getStatColor(player.getSafetyPct())));
+    }
+
+    String getStatColor(String pctString) {
+        float pct = Float.valueOf(pctString);
+
+        if (pct > .85) {
+            return "#00ff40";
+        } else if (pct > .66) {
+            return "#0080ff";
+        } else if (pct > .5) {
+            return "#ff8000";
+        } else {
+            return "#ff0000";
+        }
     }
 }
