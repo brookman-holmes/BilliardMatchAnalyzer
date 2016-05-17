@@ -104,6 +104,8 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
 
         holder.setIconState((expandState & ExpandableItemConstants.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
 
+        holder.setBgColor();
+
         if (data.get(groupPosition).size() == 0) {
             holder.itemView.setClickable(false);
         }
@@ -172,6 +174,18 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
             if (animateIndicator) {
                 expandIndicator.animate().rotationXBy(180f);
             }
+        }
+
+
+        private void setBgColor() {
+            @ColorRes int color;
+            if ((getExpandStateFlags() & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0)
+                color = R.color.grey;
+            else
+                color = android.R.color.white;
+
+
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), color));
         }
     }
 

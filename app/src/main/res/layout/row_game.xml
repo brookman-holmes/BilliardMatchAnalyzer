@@ -5,7 +5,8 @@
               android:clickable="true"
               android:foreground="?android:attr/selectableItemBackground"
               android:minHeight="48dp"
-              android:orientation="horizontal">
+              android:orientation="horizontal"
+    >
 
     <TextView
         android:id="@+id/row_game"
