@@ -236,7 +236,7 @@ public class TurnStringAdapter {
         float pct = Float.valueOf(pctString);
 
         if (pct > .85) {
-            return "#00ff40";
+            return "#00cc33";
         } else if (pct > .66) {
             return "#0080ff";
         } else if (pct > .5) {
