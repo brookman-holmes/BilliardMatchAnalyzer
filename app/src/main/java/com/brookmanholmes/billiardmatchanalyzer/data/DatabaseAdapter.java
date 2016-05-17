@@ -515,7 +515,7 @@ public class DatabaseAdapter {
                 null,
                 null,
                 null);
-
+        
         while (c.moveToNext()) {
             list.add(buildAdvStatsFromCursor(c));
         }

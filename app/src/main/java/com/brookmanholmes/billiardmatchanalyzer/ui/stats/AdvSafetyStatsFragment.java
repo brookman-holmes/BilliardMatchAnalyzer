@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiardmatchanalyzer.utils.MultiSelectionSpinner;
 import com.brookmanholmes.billiards.turn.AdvStats;
 
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class AdvSafetyStatsFragment extends Fragment {
 
         DatabaseAdapter db = new DatabaseAdapter(getContext());
 
-        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID);
+        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID, -1L);
         String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
 
         stats = matchId == -1L ? db.getAdvStats(playerName, new String[] {"Safety", "Safety error"}) : db.getAdvStats(matchId, playerName, new String[]{"Safety", "Safety error"});
