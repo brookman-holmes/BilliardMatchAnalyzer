@@ -389,6 +389,7 @@ public class DatabaseAdapter {
         turnValues.put(COLUMN_IS_GAME_LOST, turn.isGameLost());
 
         long turnId = database.insert(TABLE_TURNS, null, turnValues);
+
         database.close();
         return turnId;
     }

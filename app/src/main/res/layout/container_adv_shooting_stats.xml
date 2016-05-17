@@ -24,12 +24,4 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp" />
 
-    <include layout="@layout/divider" />
-
-    <include
-        layout="@layout/container_filter_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
-
 </LinearLayout>

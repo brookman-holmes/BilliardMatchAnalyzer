@@ -42,7 +42,7 @@ import static com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter.TABL
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
     private static DatabaseHelper sInstance;
 
     /**
@@ -103,7 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return "CREATE TABLE " + TABLE_TURNS + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_MATCH_ID + " INTEGER NOT NULL, "
-                + COLUMN_TURN_END + " INTEGER NOT NULL, "
+                + COLUMN_TURN_END + " TEXT COLLATE NOCASE NOT NULL, "
                 + COLUMN_TABLE_STATUS + " TEXT COLLATE NOCASE DEFAULT NULL, "
                 + COLUMN_SCRATCH + " INTEGER DEFAULT NULL, "
                 + COLUMN_IS_GAME_LOST + " INTEGER DEFAULT NULL, "
@@ -145,18 +145,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion == 13 && newVersion == 14) {
-            db.execSQL("UPDATE " + TABLE_ADV_STATS + " SET " + COLUMN_SHOT_TYPE + "='Safety error'" +
-                    "WHERE " + COLUMN_SHOT_TYPE + "=''");
-        } else {
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_TURNS);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADV_STATS);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOWS);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_WHYS);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANGLES);
-            onCreate(db);
-        }
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TURNS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADV_STATS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOWS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WHYS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANGLES);
+        onCreate(db);
     }
 }
