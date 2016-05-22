@@ -81,6 +81,11 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         listener = (AddTurnListener) getActivity();
     }
 
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBundle("model", wizardModel.save());
+    }
+
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_turn, container, false);
         ButterKnife.bind(this, view);

@@ -18,6 +18,7 @@ package com.brookmanholmes.billiardmatchanalyzer.wizard.model;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,8 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     }
 
     public void load(Bundle savedValues) {
+        Log.i("AWM", "savedValues == " + (savedValues == null ? "null" : "not null"));
+
         for (String key : savedValues.keySet()) {
             rootPageList.findByKey(key).resetData(savedValues.getBundle(key));
         }

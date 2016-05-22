@@ -5,6 +5,9 @@
     <string name="prompt_angle_type">Angle/rails</string>
     <string name="prompt_how">How?</string>
     <string name="prompt_why">Why?</string>
+    <string name="prompt_game">Game</string>
+    <string name="prompt_opponent">Opponent</string>
+    <string name="prompt_date">Date</string>
     <string name="title_shooting_pct">Shooting percentage</string>
     <string name="title_avg_balls_turn">Average balls / turn</string>
     <string name="title_shots_made">Shots made / shots</string>
@@ -136,4 +139,5 @@
     <string name="row_game">Game %1$d (%2$d - %3$d)</string>
     <string name="opponents">Opponents</string>
     <string name="title_player_profile">%1$s\'s Profile</string>
+    <string name="action_filter">Filter</string>
 </resources>

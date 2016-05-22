@@ -1,5 +1,6 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -7,20 +8,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
-import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.PlayerInfoAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerInfoFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvBreakingStatsFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvSafetyStatsFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvShootingStatsFragment;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,6 +69,64 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(this);
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_player_profile, menu);
+        return true;
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.action_filter) {
+            displayFilterDialog();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void displayFilterDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_filter, null);
+
+        Spinner gameSpinner = (Spinner) view.findViewById(R.id.gameTypeSpinner);
+        Spinner opponentSpinner = (Spinner) view.findViewById(R.id.opponentSpinner);
+        Spinner dateSpinner = (Spinner) view.findViewById(R.id.dateSpinner);
+
+        gameSpinner.setAdapter(createAdapter(getGames()));
+        opponentSpinner.setAdapter(createAdapter(getOpponents()));
+        dateSpinner.setAdapter(createAdapter(Arrays.asList("All time", "Today", "Last week", "Last month", "Last 3 months", "Last 6 months")));
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+        dialog.setTitle("Filter by")
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .create().show();
+    }
+
+    private List<String> getGames() {
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.games)));
+        list.add(0, "All games");
+
+        return list;
+    }
+
+    private List<String> getOpponents() {
+        ArrayList<String> list = new ArrayList<>(new DatabaseAdapter(this).getNames());
+        list.add(0, "All opponents");
+
+        return list;
+    }
+
+    private SpinnerAdapter createAdapter(List<String> data) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        return adapter;
     }
 
     @Override

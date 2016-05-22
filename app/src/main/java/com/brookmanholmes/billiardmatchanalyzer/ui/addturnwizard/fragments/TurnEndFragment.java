@@ -3,6 +3,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,7 @@ public class TurnEndFragment extends ListFragment {
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
-        page = (TurnEndPage) callbacks.onGetPage(key);
+
         adapter = new CustomAdapter(getContext(),
                 android.R.layout.simple_list_item_single_choice,
                 android.R.id.text1,
@@ -97,8 +98,10 @@ public class TurnEndFragment extends ListFragment {
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_add_turn_page, container, false);
-        ((TextView) rootView.findViewById(R.id.title)).setText(page.getTitle());
+        page = (TurnEndPage) callbacks.onGetPage(key);
+        View rootView = inflater.inflate(R.layout.fragment_page, container, false);
+        ((TextView) rootView.findViewById(android.R.id.title)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
         listView = (ListView) rootView.findViewById(android.R.id.list);
 
         setListAdapter(adapter);

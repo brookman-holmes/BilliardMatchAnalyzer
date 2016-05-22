@@ -56,8 +56,14 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         reviewAdapter = new ReviewAdapter();
     }
 
+
+    // // TODO: 5/21/2016 Use Context to setup this page
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        wizardModel = callbacks.onGetModel();
+        wizardModel.registerListener(this);
+        onPageTreeChanged();
+
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
 
         TextView titleView = (TextView) rootView.findViewById(android.R.id.title);
@@ -80,10 +86,6 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         }
 
         callbacks = (Callbacks) getActivity();
-
-        wizardModel = callbacks.onGetModel();
-        wizardModel.registerListener(this);
-        onPageTreeChanged();
     }
 
     @Override public void onPageTreeChanged() {

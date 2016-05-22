@@ -43,7 +43,5 @@ public class FirstBreakPage extends SingleFixedChoicePage implements RequiresPla
             model.setFirstBreaker(PlayerTurn.PLAYER);
         else if (opponentName.equals(data.getString(SIMPLE_DATA_KEY)))
             model.setFirstBreaker(PlayerTurn.OPPONENT);
-        else
-            throw new IllegalStateException("playerName/opponentName not synced with data: " + data.getString(SIMPLE_DATA_KEY));
     }
 }

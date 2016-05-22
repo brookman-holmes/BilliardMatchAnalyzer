@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.ShotPage;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
@@ -37,6 +38,8 @@ public class EightBallShotFragment extends ShotFragment {
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        page = (ShotPage) callbacks.onGetPage(key);
+
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         tvPlayerColor.setVisibility(View.VISIBLE);

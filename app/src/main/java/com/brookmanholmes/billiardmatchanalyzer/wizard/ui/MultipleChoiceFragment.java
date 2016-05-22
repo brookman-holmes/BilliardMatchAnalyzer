@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.util.SparseBooleanArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,16 @@ public class MultipleChoiceFragment extends ListFragment {
     public MultipleChoiceFragment() {
     }
 
+    public static MultipleChoiceFragment create(String key, int titleSize) {
+        Bundle args = new Bundle();
+        args.putString(ARG_KEY, key);
+        args.putInt(SingleChoiceFragment.ARG_TITLE_SIZE, titleSize);
+
+        MultipleChoiceFragment fragment = new MultipleChoiceFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public static MultipleChoiceFragment create(String key) {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
@@ -62,6 +73,10 @@ public class MultipleChoiceFragment extends ListFragment {
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
+    }
+
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                       Bundle savedInstanceState) {
         page = callbacks.onGetPage(key);
 
         MultipleFixedChoicePage fixedChoicePage = (MultipleFixedChoicePage) page;
@@ -69,12 +84,12 @@ public class MultipleChoiceFragment extends ListFragment {
         for (int i = 0; i < fixedChoicePage.getOptionCount(); i++) {
             choices.add(fixedChoicePage.getOptionAt(i));
         }
-    }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
+
+        if (getArguments().getInt(SingleChoiceFragment.ARG_TITLE_SIZE, -1) != -1)
+            ((TextView) rootView.findViewById(android.R.id.title)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
 
         final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
         setListAdapter(new ArrayAdapter<String>(getActivity(),
@@ -104,6 +119,27 @@ public class MultipleChoiceFragment extends ListFragment {
         });
 
         return rootView;
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        // retarded work around for weird bug where items get selected randomly?
+        // Pre-select currently selected items.
+        ArrayList<String> selectedItems = page.getData().getStringArrayList(
+                Page.SIMPLE_DATA_KEY);
+        if (selectedItems == null || selectedItems.size() == 0) {
+            for (int i = 0; i < choices.size(); i++) {
+                getListView().setItemChecked(i, false);
+            }
+
+            return;
+        }
+
+        Set<String> selectedSet = new HashSet<String>(selectedItems);
+
+        for (int i = 0; i < choices.size(); i++) {
+            getListView().setItemChecked(i, selectedSet.contains(choices.get(i)));
+        }
     }
 
     @Override public void onAttach(Context context) {

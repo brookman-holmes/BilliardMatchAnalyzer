@@ -171,7 +171,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                     .addBranch(context.getString(R.string.turn_push))
                     .addBranch(context.getString(R.string.turn_skip))
                     .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)))
-                    .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)));
+                    .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)))
+                    .setValue(context.getString(R.string.turn_miss));
     }
 
     private Page getAdvTurnEndPage() {
@@ -185,7 +186,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 .addBranch(context.getString(R.string.turn_push))
                 .addBranch(context.getString(R.string.turn_skip))
                 .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)))
-                .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)));
+                .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)))
+                .setValue(context.getString(R.string.turn_miss));
     }
 
     private Page getFoulPage(String parentKey) {

@@ -45,8 +45,8 @@ public abstract class ShotFragment extends Fragment {
     @Bind(R.id.buttonRunOut) Button btnRunOut;
     ShotPage page;
     GameType gameType;
-    private PageFragmentCallbacks callbacks;
-    private String key;
+    PageFragmentCallbacks callbacks;
+    String key;
 
     public ShotFragment() {
     }
@@ -82,7 +82,6 @@ public abstract class ShotFragment extends Fragment {
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
-        page = (ShotPage) callbacks.onGetPage(key);
         gameType = GameType.valueOf(getArguments().getString(MatchDialogHelperUtils.GAME_TYPE_KEY));
     }
 
@@ -92,6 +91,8 @@ public abstract class ShotFragment extends Fragment {
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        page = (ShotPage) callbacks.onGetPage(key);
+
         View view = inflater.inflate(getLayoutByGameType(gameType), container, false);
         ButterKnife.bind(this, view);
         title.setText(page.getTitle());

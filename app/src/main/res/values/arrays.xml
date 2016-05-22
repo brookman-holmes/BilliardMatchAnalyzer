@@ -7,4 +7,12 @@
         <item>@string/detail_player</item>
         <item>@string/detail_player</item>
     </string-array>
+
+    <string-array name="games">
+        <item>@string/game_apa_eight</item>
+        <item>@string/game_apa_nine</item>
+        <item>@string/game_bca_eight</item>
+        <item>@string/game_bca_nine</item>
+        <item>@string/game_bca_ten</item>
+    </string-array>
 </resources>

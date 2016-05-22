@@ -2,9 +2,9 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.support.v4.app.Fragment;
 
-import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.AddTurnMultipleChoiceFragment;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.MultipleFixedChoicePage;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.MultipleChoiceFragment;
 
 import java.util.ArrayList;
 
@@ -24,6 +24,6 @@ public class HowMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
     }
 
     @Override public Fragment createFragment() {
-        return AddTurnMultipleChoiceFragment.create(getKey());
+        return MultipleChoiceFragment.create(getKey(), 1);
     }
 }

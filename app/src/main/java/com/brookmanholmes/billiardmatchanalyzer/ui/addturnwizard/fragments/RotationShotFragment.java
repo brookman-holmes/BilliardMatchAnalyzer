@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.ShotPage;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 
 import java.util.List;
@@ -30,6 +31,8 @@ public class RotationShotFragment extends ShotFragment {
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        page = (ShotPage) callbacks.onGetPage(key);
+
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         btnRunOut.setVisibility(View.VISIBLE);

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,14 +36,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SingleChoiceFragment extends ListFragment {
+    static final String ARG_TITLE_SIZE = "title size";
     private static final String ARG_KEY = "key";
-
     protected PageFragmentCallbacks callbacks;
     protected List<String> choices;
     protected String key;
     protected Page page;
 
     public SingleChoiceFragment() {
+    }
+
+    public static SingleChoiceFragment create(String key, int titleSize) {
+        Bundle args = new Bundle();
+        args.putString(ARG_KEY, key);
+        args.putInt(ARG_TITLE_SIZE, titleSize);
+
+        SingleChoiceFragment fragment = new SingleChoiceFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     public static SingleChoiceFragment create(String key) {
@@ -59,6 +70,11 @@ public class SingleChoiceFragment extends ListFragment {
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
+
+    }
+
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                       Bundle savedInstanceState) {
         page = callbacks.onGetPage(key);
 
         SingleFixedChoicePage fixedChoicePage = (SingleFixedChoicePage) page;
@@ -66,12 +82,12 @@ public class SingleChoiceFragment extends ListFragment {
         for (int i = 0; i < fixedChoicePage.getOptionCount(); i++) {
             choices.add(fixedChoicePage.getOptionAt(i));
         }
-    }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
+
+        if (getArguments().getInt(SingleChoiceFragment.ARG_TITLE_SIZE, -1) != -1)
+            ((TextView) rootView.findViewById(android.R.id.title)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
 
         final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
         setListAdapter(new ArrayAdapter<>(getActivity(),

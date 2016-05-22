@@ -2,9 +2,9 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model;
 
 import android.support.v4.app.Fragment;
 
-import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments.AddTurnSingleChoiceFragment;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.BranchPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.SingleChoiceFragment;
 
 /**
  * Created by Brookman Holmes on 3/7/2016.
@@ -21,6 +21,6 @@ public class MissBranchPage extends BranchPage implements UpdatesTurnInfo{
     }
 
     @Override public Fragment createFragment() {
-        return AddTurnSingleChoiceFragment.create(getKey());
+        return SingleChoiceFragment.create(getKey(), 1);
     }
 }

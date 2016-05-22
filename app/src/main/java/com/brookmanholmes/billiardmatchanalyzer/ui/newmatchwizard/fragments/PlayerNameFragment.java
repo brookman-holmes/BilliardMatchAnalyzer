@@ -73,7 +73,7 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
-        page = (PlayerNamePage) callbacks.onGetPage(key);
+
         DatabaseAdapter database = new DatabaseAdapter(getContext());
 
         names = database.getNames();
@@ -82,6 +82,7 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
+        page = (PlayerNamePage) callbacks.onGetPage(key);
         View rootView = inflater.inflate(R.layout.fragment_player_names, container, false);
         ButterKnife.bind(this, rootView);
 

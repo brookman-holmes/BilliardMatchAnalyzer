@@ -46,6 +46,7 @@ public class StatsUtils {
         rightView.setText(Integer.toString(integerPair.second));
     }
 
+    // todo: dynamically create each line in the list and put it in a gridview that's inside a scrolling container?
     public static void updateGridOfMissReasons(View view, List<StatLineItem> items) {
         if (view != null) {
             if (items.size() > 0) {

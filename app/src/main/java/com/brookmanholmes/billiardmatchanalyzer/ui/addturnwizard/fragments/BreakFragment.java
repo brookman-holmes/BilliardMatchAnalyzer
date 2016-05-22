@@ -71,15 +71,15 @@ public class BreakFragment extends Fragment {
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
-        page = (BreakPage) callbacks.onGetPage(key);
     }
 
     @Nullable
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        page = (BreakPage) callbacks.onGetPage(key);
+
         View view = inflater.inflate(getLayoutByGameType(getGameType()), container, false);
         ButterKnife.bind(this, view);
         title.setText(page.getTitle());
-
 
         for (int i = 1; i <= ballIds.length; i++) {
             ImageView ballImage = (ImageView) view.findViewById(convertBallToId(i));
