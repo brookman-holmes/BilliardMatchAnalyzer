@@ -41,8 +41,8 @@ import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUt
 public abstract class ShotFragment extends Fragment {
     static final String ARG_KEY = "key";
     @Bind(R.id.title) TextView title;
-
     @Bind(R.id.buttonRunOut) Button btnRunOut;
+
     ShotPage page;
     GameType gameType;
     PageFragmentCallbacks callbacks;

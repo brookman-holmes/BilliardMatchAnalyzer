@@ -1,6 +1,7 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
@@ -120,6 +121,8 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
                 viewType == 1 ? match.getPlayer(turn + 1) : match.getOpponent(turn + 1));
 
         holder.setBalls(data.get(groupPosition).get(childPosition).getLeft());
+
+
     }
 
     @Override public int getChildItemViewType(int groupPosition, int childPosition) {
@@ -210,9 +213,36 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
 
             turnString.setText(turnStringAdapter.getTurnString());
 
-            shootingPct.setText(turnStringAdapter.getShootingStats());
-            safetyPct.setText(turnStringAdapter.getSafetyStats());
-            breakPct.setText(turnStringAdapter.getBreakingStats());
+            shootingPct.setText(player.getShootingPct());
+            safetyPct.setText(player.getSafetyPct());
+            breakPct.setText(player.getBreakPct());
+
+
+            //shootingPct.setTextColor(getPctColor(player.getShootingPct()));
+            //safetyPct.setTextColor(getPctColor(player.getSafetyPct()));
+            //breakPct.setTextColor(getPctColor(player.getBreakPct()));
+
+            shootingPct.setBackgroundTintList(getPctColor(player.getShootingPct()));
+            safetyPct.setBackgroundTintList(getPctColor(player.getSafetyPct()));
+            breakPct.setBackgroundTintList(getPctColor(player.getBreakPct()));
+        }
+
+        private ColorStateList getPctColor(String pctString) {
+            float pct = Float.valueOf(pctString);
+            @ColorRes int color;
+            if (pct > .85)
+                color = R.color.good_bg_color;
+            else if (pct > .66)
+                color = R.color.almost_good_bg_color;
+            else if (pct > .5)
+                color = R.color.okay_bg_color;
+            else color = R.color.bad_bg_color;
+
+            return getColorStateList(color);
+        }
+
+        private ColorStateList getColorStateList(@ColorRes int color) {
+            return ContextCompat.getColorStateList(itemView.getContext(), color);
         }
 
         private void setBalls(ITableStatus tableStatus) {

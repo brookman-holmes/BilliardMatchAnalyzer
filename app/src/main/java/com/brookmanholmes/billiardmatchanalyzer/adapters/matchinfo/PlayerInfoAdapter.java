@@ -36,17 +36,16 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 5/7/2016.
  */
 public class PlayerInfoAdapter extends RecyclerView.Adapter<BaseViewHolder<CompPlayer>> {
-    public static final int ITEM_MATCH_OVERVIEW = 1;
-    public static final int ITEM_SHOOTING_PCT = 2;
-    public static final int ITEM_SAFETIES = 3;
-    public static final int ITEM_BREAKS = 4;
-    public static final int ITEM_RUN_OUTS = 5;
-    public static final int ITEM_GRAPH = 0;
-    public static final int ITEM_FOOTER = 6;
+    public static final int ITEM_MATCH_OVERVIEW = 0;
+    public static final int ITEM_SHOOTING_PCT = 1;
+    public static final int ITEM_SAFETIES = 2;
+    public static final int ITEM_BREAKS = 3;
+    public static final int ITEM_RUN_OUTS = 4;
+    public static final int ITEM_FOOTER = 5;
 
     List<AbstractPlayer> players = new ArrayList<>(), opponents = new ArrayList<>();
     String playerName, opponentName;
-    Match.StatsDetail detail;
+    Match.StatsDetail detail = Match.StatsDetail.NORMAL;
 
     public PlayerInfoAdapter(List<Pair<AbstractPlayer, AbstractPlayer>> pairs, String playerName, String opponentName) {
         splitPlayers(pairs);
@@ -69,10 +68,6 @@ public class PlayerInfoAdapter extends RecyclerView.Adapter<BaseViewHolder<CompP
 
     @Override public void onBindViewHolder(BaseViewHolder<CompPlayer> holder, int position) {
         holder.bind(getPlayer(), getOpponent());
-
-        if (holder instanceof GraphViewHolder) {
-            ((GraphViewHolder) holder).bind(players, opponents);
-        }
     }
 
     public void updatePlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
@@ -108,8 +103,6 @@ public class PlayerInfoAdapter extends RecyclerView.Adapter<BaseViewHolder<CompP
                 return R.layout.card_safeties;
             case ITEM_SHOOTING_PCT:
                 return R.layout.card_shooting_pct;
-            case ITEM_GRAPH:
-                return R.layout.card_graph;
             case ITEM_FOOTER:
                 return R.layout.footer;
             default:
@@ -129,8 +122,6 @@ public class PlayerInfoAdapter extends RecyclerView.Adapter<BaseViewHolder<CompP
                 return new RunOutsWithEarlyWinsHolder<>(view, detail);
             case ITEM_SAFETIES:
                 return new SafetiesHolder<>(view, detail);
-            case ITEM_GRAPH:
-                return new GraphViewHolder(view);
             case ITEM_FOOTER:
                 return new FooterViewHolder<>(view);
             default:
@@ -139,116 +130,10 @@ public class PlayerInfoAdapter extends RecyclerView.Adapter<BaseViewHolder<CompP
     }
 
     @Override public int getItemCount() {
-        return 7;
+        return 6;
     }
 
     @Override public int getItemViewType(int position) {
         return position;
-    }
-
-    static class GraphViewHolder extends BaseViewHolder<CompPlayer> {
-        @Bind(R.id.graph) LineChart chart;
-
-        public GraphViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-
-            chart.setDescription("");
-            chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-            chart.getXAxis().setDrawLabels(true);
-            chart.getXAxis().setDrawGridLines(false);
-            chart.getAxisRight().setAxisMinValue(0f);
-            chart.getAxisRight().setAxisMaxValue(1.1f);
-            chart.getAxisLeft().setAxisMinValue(0f);
-            chart.getAxisLeft().setAxisMaxValue(1.1f);
-            chart.getAxisLeft().setGranularity(.1f);
-            chart.getAxisRight().setDrawLabels(false);
-
-
-            chart.setDrawGridBackground(false);
-        }
-
-        @Override public void bind(CompPlayer player, CompPlayer opponent) {
-
-        }
-
-        public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
-            List<String> xVals = new ArrayList<>();
-            for (AbstractPlayer player : players) {
-                xVals.add(DateFormat.getDateInstance(DateFormat.SHORT).format(player.getMatchDate()));
-            }
-            LineData data = new LineData(xVals);
-            LineDataSet tsp = getDataSet(getTspDataSet(players), "True Shooting %", getColor(R.color.chart));
-            LineDataSet shootingP = getDataSet(getShootingDataSet(players), "Shooting %", getColor(R.color.chart1));
-            LineDataSet breakingP = getDataSet(getBreakingDataSet(players), "Breaking %", getColor(R.color.chart2));
-            LineDataSet safetyP = getDataSet(getSafetyDataSet(players), "Safeties %", getColor(R.color.chart3));
-
-            data.addDataSet(tsp);
-            data.addDataSet(shootingP);
-            data.addDataSet(breakingP);
-            data.addDataSet(safetyP);
-
-
-            chart.setData(data);
-            chart.invalidate();
-            chart.animateX(750);
-        }
-
-        private List<Entry> getTspDataSet(List<AbstractPlayer> players) {
-            List<Entry> list = new ArrayList<>();
-
-            for (int i = 0; i < players.size(); i++) {
-                list.add(new Entry(Float.valueOf(players.get(i).getTrueShootingPct()), i));
-            }
-
-            return list;
-        }
-
-        private List<Entry> getShootingDataSet(List<AbstractPlayer> players) {
-            List<Entry> list = new ArrayList<>();
-
-            for (int i = 0; i < players.size(); i++) {
-                list.add(new Entry(Float.valueOf(players.get(i).getShootingPct()), i));
-            }
-
-            return list;
-        }
-
-        private List<Entry> getSafetyDataSet(List<AbstractPlayer> players) {
-            List<Entry> list = new ArrayList<>();
-
-            for (int i = 0; i < players.size(); i++) {
-                list.add(new Entry(Float.valueOf(players.get(i).getSafetyPct()), i));
-            }
-
-            return list;
-        }
-
-        private List<Entry> getBreakingDataSet(List<AbstractPlayer> players) {
-            List<Entry> list = new ArrayList<>();
-
-            for (int i = 0; i < players.size(); i++) {
-                list.add(new Entry(Float.valueOf(players.get(i).getBreakPct()), i));
-            }
-
-            return list;
-        }
-
-        private LineDataSet getDataSet(List<Entry> entries, String label, int color) {
-            LineDataSet dataSet = new LineDataSet(entries, label);
-
-            dataSet.setLineWidth(1.75f);
-            dataSet.setCircleRadius(5f);
-            dataSet.setDrawValues(false);
-            dataSet.setDrawCircles(true);
-            dataSet.setDrawCircleHole(true);
-            dataSet.setCircleColor(color);
-            dataSet.setColor(color);
-            return dataSet;
-        }
-
-        private int getColor(@ColorRes int color) {
-            return ContextCompat.getColor(itemView.getContext(), color);
-        }
     }
 }

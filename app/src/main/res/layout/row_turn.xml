@@ -41,38 +41,100 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
-        android:paddingTop="4dp">
+        android:paddingTop="4dp"
+        android:baselineAligned="false">
 
-        <TextView
-            android:id="@+id/tvShootingPct"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="New Text"
-            />
+            android:gravity="center">
 
-        <TextView
-            android:id="@+id/tvSafetyPct"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="New Text"
-            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shooting "
+                android:id="@+id/textView" />
 
-        <TextView
-            android:id="@+id/tvBreakPct"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/tvShootingPct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=".750"
+                android:background="@drawable/chip_background"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="New Text"
-            />
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Safeties "
+                android:id="@+id/textView2" />
+
+            <TextView
+                android:id="@+id/tvSafetyPct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/chip_background"
+                android:text=".750"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Breaking "
+                android:id="@+id/textView7" />
+
+            <TextView
+                android:id="@+id/tvBreakPct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/chip_background"
+                android:text=".750"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <include
         layout="@layout/ball_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
