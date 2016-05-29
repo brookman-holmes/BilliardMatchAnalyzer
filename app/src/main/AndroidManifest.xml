@@ -8,28 +8,32 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/MyAppTheme">
+
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/MyAppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.CreateNewMatchActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/MyAppTheme.NoActionBar"/>
+
         <activity
             android:name=".ui.MatchInfoActivity"
             android:parentActivityName=".ui.MainActivity"/>
+
         <activity
             android:name=".ui.PlayerProfileActivity"
             android:label="Player Profile"/>
-        <activity android:name=".ui.IntroActivity">
-        </activity>
+
+        <activity android:name=".ui.IntroActivity"/>
+
     </application>
 
 </manifest>

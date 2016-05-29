@@ -33,7 +33,7 @@ abstract class RotationGame extends Game {
     }
 
     @Override boolean setAllowPush(com.brookmanholmes.billiards.turn.Turn turn) {
-        return (turn.getBreakBallsMade() == 0 && !turn.isScratch() && turn.getTurnEnd() == TurnEnd.BREAK_MISS);
+        return (turn.getBreakBallsMade() == 0 && !turn.isFoul() && turn.getTurnEnd() == TurnEnd.BREAK_MISS);
     }
 
     @Override public int[] getGhostBallsToWinGame() {

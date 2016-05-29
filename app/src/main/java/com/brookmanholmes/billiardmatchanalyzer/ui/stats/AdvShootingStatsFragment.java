@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiardmatchanalyzer.utils.MultiSelectionSpinner;
 import com.brookmanholmes.billiards.turn.AdvStats;
 
 import java.util.ArrayList;

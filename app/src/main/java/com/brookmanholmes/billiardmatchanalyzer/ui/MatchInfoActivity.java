@@ -9,7 +9,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,7 +106,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     private void showAddTurnDialog() {
         AddTurnDialog addTurnDialog = AddTurnDialog.create(db.getMatch(getMatchId()));
-        addTurnDialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppTheme);
+        addTurnDialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.MyAppTheme);
         addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
@@ -156,7 +155,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private void displayAdvancedStatsDialog(String name, PlayerTurn turn) {
         DialogFragment dialogFragment =
                 AdvStatsDialog.create(getMatchId(), name, turn);
-        dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme);
+        dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
         dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
     }
 
@@ -180,8 +179,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private void updateMenuItems() {
         menu.findItem(R.id.action_undo).setEnabled(infoFragment.isUndoTurn());
         menu.findItem(R.id.action_redo).setEnabled(infoFragment.isRedoTurn());
-        this.menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 120);
-        this.menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 120);
+        this.menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 127);
+        this.menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 127);
     }
 
     @Override public void addTurn(TurnBuilder turnBuilder) {

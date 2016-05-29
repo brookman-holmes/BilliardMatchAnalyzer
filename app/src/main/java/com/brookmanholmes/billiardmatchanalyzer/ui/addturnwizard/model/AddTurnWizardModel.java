@@ -25,17 +25,20 @@ import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUt
 public class AddTurnWizardModel extends AbstractWizardModel {
     Bundle matchData;
     TurnBuilder turnBuilder;
+    String playerName;
 
     public AddTurnWizardModel(Context context, Bundle matchData) {
         super(context);
         this.matchData = matchData;
+
+        playerName = matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY);
 
         turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)),
                 matchData.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY));
 
         turnBuilder.foul = false;
         turnBuilder.lostGame = false;
-        turnBuilder.advStats.name(matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY));
+        turnBuilder.advStats.name(playerName);
 
         turnBuilder.advStats.use(currentPlayerTurnAndAdvancedStats());
 
@@ -146,22 +149,22 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getGhostBreakPage() {
-        return new GhostBreakPage(this, context.getString(R.string.title_break), context.getString(R.string.title_shot), matchData);
+        return new GhostBreakPage(this, context.getString(R.string.title_break, playerName), context.getString(R.string.title_shot, playerName), matchData);
     }
 
     private Page getBreakPage() {
-        return new BreakPage(this, context.getString(R.string.title_break), context.getString(R.string.title_shot), matchData);
+        return new BreakPage(this, context.getString(R.string.title_break, playerName), context.getString(R.string.title_shot, playerName), matchData);
     }
 
     private Page getShotPage() {
-        return new ShotPage(this, context.getString(R.string.title_shot), matchData);
+        return new ShotPage(this, context.getString(R.string.title_shot, playerName), matchData);
     }
 
     private Page getTurnEndPage() {
         if (currentPlayerTurnAndAdvancedStats()) {
             return getAdvTurnEndPage();
         } else
-            return new TurnEndPage(this, context.getString(R.string.title_turn_end), matchData)
+            return new TurnEndPage(this, context.getString(R.string.title_turn_end, playerName), matchData)
                     .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"))
                     .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"))
                     .addBranch(context.getString(R.string.turn_break_miss), getFoulPage("break"))
@@ -176,7 +179,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getAdvTurnEndPage() {
-        return new TurnEndPage(this, context.getString(R.string.title_turn_end), matchData)
+        return new TurnEndPage(this, context.getString(R.string.title_turn_end, playerName), matchData)
                 .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"), getSafetyErrorBranch())
                 .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"), getMissBranchPage(), getWhyMissPage("miss3"))
                 .addBranch(context.getString(R.string.turn_break_miss), getFoulPage("break"), getBreakErrorHow(), getBreakErrorWhy())
@@ -191,7 +194,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getFoulPage(String parentKey) {
-        return new FoulPage(this, context.getString(R.string.title_foul), matchData)
+        return new FoulPage(this, context.getString(R.string.title_foul, playerName), matchData)
                 .setChoices(context.getResources().getStringArray(R.array.foul_types))
                 .setValue(context.getString(R.string.no))
                 .setParentKey(parentKey)
@@ -199,13 +202,13 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getSafetyErrorBranch() {
-        return new SafetyErrorPage(this, context.getString(R.string.title_how_miss))
+        return new SafetyErrorPage(this, context.getString(R.string.title_how_miss, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.how_choices_safety))
                 .setRequired(true);
     }
 
     private Page getMissBranchPage() {
-        return new MissBranchPage(this, context.getString(R.string.title_miss))
+        return new MissBranchPage(this, context.getString(R.string.title_miss, playerName))
                 .addBranch(context.getString(R.string.miss_cut),
                         getCutTypePage("cut miss1"),
                         getAnglePage("cut miss2"),
@@ -239,14 +242,14 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getWhyMissPage(String parentKey) {
-        return new WhyMissPage(this, context.getString(R.string.title_why_miss))
+        return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.why_choices))
                 .setRequired(true)
                 .setParentKey(parentKey);
     }
 
     private Page getCutTypePage(String parentKey) {
-        return new CutTypePage(this, context.getString(R.string.title_cut_type))
+        return new CutTypePage(this, context.getString(R.string.title_cut_type, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.cut_types))
                 .setValue(context.getResources().getString(R.string.cut_rail))
                 .setRequired(true)
@@ -254,7 +257,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getAnglePage(String parentKey) {
-        return new AngleTypePage(this, context.getString(R.string.title_angle))
+        return new AngleTypePage(this, context.getString(R.string.title_angle, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.angles))
                 .setValue(context.getResources().getStringArray(R.array.angles)[0])
                 .setRequired(true)
@@ -262,13 +265,13 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getBankPage(String parentKey) {
-        return new BankPage(this, context.getString(R.string.title_bank))
+        return new BankPage(this, context.getString(R.string.title_bank, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.banks))
                 .setParentKey(parentKey);
     }
 
     private Page getKickPage(String parentKey) {
-        return new KickPage(this, context.getString(R.string.title_kick_type))
+        return new KickPage(this, context.getString(R.string.title_kick_type, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.kicks))
                 .setValue(context.getString(R.string.one_rail))
                 .setRequired(true)
@@ -276,33 +279,33 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getBreakErrorHow() {
-        return new BreakErrorPage(this, context.getString(R.string.title_how_miss))
+        return new BreakErrorPage(this, context.getString(R.string.title_how_miss, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.how_choices_break))
                 .setRequired(true);
     }
 
     private Page getBreakErrorWhy() {
-        return new WhyMissPage(this, context.getString(R.string.title_why_miss))
+        return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.why_choices_break))
                 .setRequired(true)
                 .setParentKey("break miss why");
     }
 
     private Page getIllegalBreakHow() {
-        return new BreakErrorPage(this, context.getString(R.string.title_how_miss))
+        return new BreakErrorPage(this, context.getString(R.string.title_how_miss, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.how_choices_break))
                 .setRequired(true);
     }
 
     private Page getIllegalBreakWhy() {
-        return new WhyMissPage(this, context.getString(R.string.title_why_miss))
+        return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.why_choices_illegal_break))
                 .setRequired(true)
                 .setParentKey("illegal break why");
     }
 
     private Page getSafetyPage() {
-        return new SafetyPage(this, context.getString(R.string.title_safety))
+        return new SafetyPage(this, context.getString(R.string.title_safety, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.safety_types))
                 .setValue(context.getString(R.string.safety_full_hook))
                 .setRequired(true)
@@ -310,7 +313,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getHowMissPage(String parentKey, @ArrayRes int choices) {
-        return new HowMissPage(this, context.getString(R.string.title_how_miss))
+        return new HowMissPage(this, context.getString(R.string.title_how_miss, playerName))
                 .setChoices(context.getResources().getStringArray(choices))
                 .setParentKey(parentKey)
                 .setRequired(true);

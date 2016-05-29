@@ -129,7 +129,7 @@ public class BreakTest {
 
         com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
-        when(mockedTurn.isScratch()).thenReturn(scratch);
+        when(mockedTurn.isFoul()).thenReturn(scratch);
         when(mockedTurn.getBallsToRemoveFromTable()).thenReturn(ballsMade);
         return mockedTurn;
     }

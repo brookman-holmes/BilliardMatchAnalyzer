@@ -155,10 +155,14 @@ public abstract class PlayerController<T extends AbstractPlayer> {
         if (turn.getTurnEnd() == SAFETY)
             player.addSafety(gameStatus.opponentPlayedSuccessfulSafe);
         else if (turn.getTurnEnd() == SAFETY_ERROR)
-            player.addSafetyAttempt(turn.isScratch());
+            player.addSafetyAttempt(turn.isFoul());
 
         if (gameStatus.opponentPlayedSuccessfulSafe && turn.getShootingBallsMade() > 0)
             player.addSafetyEscape();
+
+        if (gameStatus.opponentPlayedSuccessfulSafe && turn.isFoul()) {
+            player.addSafetyForcedError();
+        }
     }
 
     void addShootingStats(T player) {
@@ -166,7 +170,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
             player.addShootingMiss();
 
         if (setAddTurnToPlayer())
-            player.addShootingBallsMade(turn.getShootingBallsMade(), turn.isScratch());
+            player.addShootingBallsMade(turn.getShootingBallsMade(), turn.isFoul());
     }
 
     boolean setAddTurnToPlayer() {
@@ -183,7 +187,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
             player.addBreakShot(
                     turn.getBreakBallsMade(), // how many balls the player made on the break
                     turn.getShootingBallsMade() > 0, // determine if there was continuation or not
-                    turn.getTurnEnd() == BREAK_MISS && turn.isScratch()  // determine if the player scratched on the break
+                    turn.getTurnEnd() == BREAK_MISS && turn.isFoul()  // determine if the player scratched on the break
             );
     }
 

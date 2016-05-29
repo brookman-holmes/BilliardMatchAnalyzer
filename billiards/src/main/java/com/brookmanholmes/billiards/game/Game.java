@@ -176,7 +176,7 @@ public abstract class Game {
     }
 
     void setConsecutiveFouls(com.brookmanholmes.billiards.turn.Turn turn) {
-        if (turn.isScratch()) {
+        if (turn.isFoul()) {
             if (this.turn == PlayerTurn.PLAYER)
                 consecutivePlayerFouls++;
             else

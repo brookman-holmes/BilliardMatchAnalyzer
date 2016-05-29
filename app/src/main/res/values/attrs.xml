@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="MultiSelectionSpinner">
-        <attr name="dialogTitle" format="string" />
-    </declare-styleable>
-
     <declare-styleable name="InkPageIndicator">
         <attr name="dotDiameter" format="dimension" />
         <attr name="dotGap" format="dimension" />

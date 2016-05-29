@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -40,7 +39,6 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     @Bind(R.id.strip) StepPagerStrip pagerStrip;
     @Bind(R.id.next_button) Button nextButton;
     @Bind(R.id.prev_button) Button prevButton;
-    @Bind(R.id.title) TextView title;
 
     private MyPagerAdapter pagerAdapter;
     private AddTurnWizardModel wizardModel;
@@ -89,8 +87,6 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_turn, container, false);
         ButterKnife.bind(this, view);
-
-        title.setText(getResources().getString(R.string.add_turn_for, getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY, "null")));
 
         pager.setAdapter(pagerAdapter);
         pagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {

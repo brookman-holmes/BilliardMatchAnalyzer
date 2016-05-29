@@ -1,8 +1,10 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
 import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -12,6 +14,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
@@ -23,6 +27,11 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import es.dmoral.coloromatic.ColorOMaticDialog;
+import es.dmoral.coloromatic.IndicatorMode;
+import es.dmoral.coloromatic.OnColorSelectedListener;
+import es.dmoral.coloromatic.colormode.ColorMode;
 
 /**
  * Created by Brookman Holmes on 4/28/2016.
@@ -33,6 +42,11 @@ public class TurnListDialog extends DialogFragment implements
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
 
     @Bind(R.id.scrollView) RecyclerView recyclerView;
+    @Bind(R.id.good) ViewGroup good;
+    @Bind(R.id.almost_good) ViewGroup almostGood;
+    @Bind(R.id.okay) ViewGroup okay;
+    @Bind(R.id.bad) ViewGroup bad;
+
     private ExpandableTurnListAdapter adapter;
     private RecyclerView.Adapter wrappedAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -61,8 +75,10 @@ public class TurnListDialog extends DialogFragment implements
     }
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_adv_stats_list, null, false);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_expandable_list, null, false);
         ButterKnife.bind(this, view);
+
+        updateColors();
 
         layoutManager = new LinearLayoutManager(getContext());
         final Parcelable eimSavedState = (savedInstanceState != null) ?
@@ -109,6 +125,30 @@ public class TurnListDialog extends DialogFragment implements
         layoutManager = null;
 
         super.onDestroyView();
+    }
+
+    @OnClick({R.id.good, R.id.almost_good, R.id.okay, R.id.bad})
+    void displayColorPicker(final LinearLayout view) {
+        new ColorOMaticDialog.Builder()
+                .initialColor(((ColorDrawable) view.getBackground()).getColor())
+                .colorMode(ColorMode.ARGB)
+                .indicatorMode(IndicatorMode.HEX)
+                .onColorSelected(new OnColorSelectedListener() {
+                    @Override public void onColorSelected(@ColorInt int i) {
+                        view.setBackgroundColor(i);
+                        updateColors();
+                    }
+                })
+                .showColorIndicator(true)
+                .create().show(getChildFragmentManager(), "ColorOMaticDialog");
+    }
+
+    private void updateColors() {
+        adapter.setColors(getColor(good), getColor(almostGood), getColor(okay), getColor(bad));
+    }
+
+    private int getColor(ViewGroup viewGroup) {
+        return ((ColorDrawable) viewGroup.getBackground()).getColor();
     }
 
     @Override public void onGroupExpand(int groupPosition, boolean fromUser) {

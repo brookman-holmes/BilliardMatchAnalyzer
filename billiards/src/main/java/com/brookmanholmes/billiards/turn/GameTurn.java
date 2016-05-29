@@ -54,7 +54,7 @@ public class GameTurn implements Turn {
         return tableStatus.getBreakBallsMade();
     }
 
-    @Override public boolean isScratch() {
+    @Override public boolean isFoul() {
         return scratch;
     }
 

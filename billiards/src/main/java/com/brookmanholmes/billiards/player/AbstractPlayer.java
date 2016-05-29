@@ -202,7 +202,7 @@ public abstract class AbstractPlayer {
         return breakContinuations;
     }
 
-    public int getBreakScratches() {
+    public int getBreakFouls() {
         return breakScratches;
     }
 
@@ -224,6 +224,10 @@ public abstract class AbstractPlayer {
 
     public void addSafetyEscape() {
         safetyEscapes++;
+    }
+
+    public void addSafetyForcedError() {
+        safetyForcedErrors++;
     }
 
     /**

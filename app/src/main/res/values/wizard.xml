@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_miss">What did you miss?</string>
+    <string name="title_miss">What did %1$s miss?</string>
     <string name="miss_cut">Cut shot</string>
     <string name="miss_long">Long straight shot</string>
     <string name="miss_bank">Bank shot</string>
@@ -20,7 +20,7 @@
         <item>@string/miss_jump</item>
     </string-array>
 
-    <string name="title_kick_type">What type of kick?</string>
+    <string name="title_kick_type">What type of kick did %1$s attempt?</string>
     <string name="one_rail">1 rail</string>
     <string name="two_rail">2 rail</string>
     <string name="three_rail">3 rail</string>
@@ -62,15 +62,15 @@
     </string-array>
 
 
-    <string name="title_how_miss">How did you miss?</string>
-    <string name="title_why_miss">Why did you miss?</string>
-    <string name="title_turn_end">How did your turn end?</string>
-    <string name="title_foul">Did you foul?</string>
-    <string name="title_safety">What type of safety did you make?</string>
-    <string name="title_angle">What was your angle of cut?</string>
-    <string name="title_kick">How many rails was your kick shot?</string>
-    <string name="title_bank">What kind of bank did you shoot?</string>
-    <string name="title_cut_type">What kind of cut shot was it?</string>
-    <string name="title_break">Input balls you made on the break</string>
-    <string name="title_shot">Input balls you made this turn</string>
+    <string name="title_how_miss">How did %1$s miss?</string>
+    <string name="title_why_miss">Why did %1$s miss?</string>
+    <string name="title_turn_end">How did %1$s\'s turn end?</string>
+    <string name="title_foul">Did %1$s foul?</string>
+    <string name="title_safety">What type of safety did %1$s make?</string>
+    <string name="title_angle">What was %1$s\'s angle of cut?</string>
+    <string name="title_kick">How many rails was %1$s\'s kick shot?</string>
+    <string name="title_bank">What kind of bank did %1$s shoot?</string>
+    <string name="title_cut_type">What kind of cut shot did %1$s attempt?</string>
+    <string name="title_break">Input balls %1$s made on the break</string>
+    <string name="title_shot">Input balls %1$s made this turn</string>
 </resources>

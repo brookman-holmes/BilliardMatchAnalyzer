@@ -40,7 +40,7 @@ class EightBallGame extends Game {
     }
 
     @Override boolean setAllowPlayerToBreakAgain(com.brookmanholmes.billiards.turn.Turn turn) {
-        return turn.getTurnEnd() == TurnEnd.BREAK_MISS && turn.isScratch() && turn.getBallsToRemoveFromTable().contains(GAME_BALL);
+        return turn.getTurnEnd() == TurnEnd.BREAK_MISS && turn.isFoul() && turn.getBallsToRemoveFromTable().contains(GAME_BALL);
     }
 
     @Override int getCurrentPlayersConsecutiveFouls() {

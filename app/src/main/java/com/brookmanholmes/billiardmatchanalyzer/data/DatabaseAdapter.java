@@ -383,7 +383,7 @@ public class DatabaseAdapter {
 
         turnValues.put(COLUMN_TABLE_STATUS, tableStatusToString(turn));
         turnValues.put(COLUMN_MATCH_ID, matchId);
-        turnValues.put(COLUMN_SCRATCH, turn.isScratch());
+        turnValues.put(COLUMN_SCRATCH, turn.isFoul());
         turnValues.put(COLUMN_TURN_END, turn.getTurnEnd().name());
         turnValues.put(COLUMN_TURN_NUMBER, turnCount);
         turnValues.put(COLUMN_IS_GAME_LOST, turn.isGameLost());

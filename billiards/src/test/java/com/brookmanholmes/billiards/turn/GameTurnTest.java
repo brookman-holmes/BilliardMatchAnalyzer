@@ -71,7 +71,7 @@ public class GameTurnTest {
 
         turn = createGameTurn(table, true, MISS, true);
 
-        assertThat(turn.isScratch(), is(true));
+        assertThat(turn.isFoul(), is(true));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class GameTurnTest {
 
         turn = createGameTurn(table, false, MISS, true);
 
-        assertThat(turn.isScratch(), is(false));
+        assertThat(turn.isFoul(), is(false));
     }
 
     @Test

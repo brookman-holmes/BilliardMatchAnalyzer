@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerInfoFragment;
+import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerInfoGraphicFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvBreakingStatsFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvSafetyStatsFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvShootingStatsFragment;
@@ -152,33 +153,37 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         @Override public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return MatchListFragment.create(player, null);
+                    return PlayerInfoGraphicFragment.create(player);
                 case 1:
                     return PlayerInfoFragment.create(player);
                 case 2:
-                    return AdvShootingStatsFragment.create(player);
+                    return MatchListFragment.create(player, null);
                 case 3:
-                    return AdvSafetyStatsFragment.create(player);
+                    return AdvShootingStatsFragment.create(player);
                 case 4:
+                    return AdvSafetyStatsFragment.create(player);
+                case 5:
                     return AdvBreakingStatsFragment.create(player);
                 default:
-                    throw new IllegalStateException("View pager out of position (0 - 4): " + position);
+                    throw new IllegalStateException("View pager out of position (0 - 5): " + position);
             }
         }
 
         @Override public int getCount() {
-            return 5;
+            return 6;
         }
 
         @Override public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Matches";
+                    return playerName.getText().toString();
                 case 1:
                     return "Stats";
                 case 2:
-                    return "Shooting";
+                    return "Matches";
                 case 3:
+                    return "Shooting";
+                case 4:
                     return "Safeties";
                 default:
                     return "Breaking";

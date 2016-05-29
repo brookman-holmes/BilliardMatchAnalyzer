@@ -30,6 +30,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,6 +42,7 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
     List<List<Pair<Turn, AdvStats>>> data = new ArrayList<>(); // list of lists of turns, where each list is a group of turns that corresponds to that game
     LayoutInflater inflater;
     Match<?> match;
+    int[] colors = new int[]{R.color.good, R.color.almost_good, R.color.okay, R.color.bad};
 
     public ExpandableTurnListAdapter(Context context, Match<?> match, List<Pair<Turn, AdvStats>> data) {
         inflater = LayoutInflater.from(context);
@@ -68,6 +70,14 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
         }
     }
 
+    public void setColors(int color1, int color2, int color3, int color4) {
+        colors[0] = color1;
+        colors[1] = color2;
+        colors[2] = color3;
+        colors[3] = color4;
+        notifyDataSetChanged();
+    }
+
     @Override public int getGroupCount() {
         return data.size();
     }
@@ -91,7 +101,7 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
 
     @Override
     public TurnViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
-        return new TurnViewHolder(inflater.inflate(R.layout.row_turn, parent, false));
+        return new TurnViewHolder(inflater.inflate(R.layout.row_turn, parent, false), colors);
     }
 
     @Override
@@ -199,10 +209,12 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
         @Bind(R.id.tvBreakPct) TextView breakPct;
         @Bind(R.id.tvShootingPct) TextView shootingPct;
         @Bind(R.id.ballContainer) ViewGroup ballContainer;
+        int[] colors;
 
-        public TurnViewHolder(View itemView) {
+        public TurnViewHolder(View itemView, int[] colors) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.colors = colors;
         }
 
         private void bind(Pair<Turn, AdvStats> stats, PlayerTurn playerTurn, AbstractPlayer player) {
@@ -213,9 +225,9 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
 
             turnString.setText(turnStringAdapter.getTurnString());
 
-            shootingPct.setText(player.getShootingPct());
-            safetyPct.setText(player.getSafetyPct());
-            breakPct.setText(player.getBreakPct());
+            shootingPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Shooting", player.getShootingPct()));
+            safetyPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Safeties", player.getSafetyPct()));
+            breakPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Breaking", player.getBreakPct()));
 
 
             //shootingPct.setTextColor(getPctColor(player.getShootingPct()));
@@ -231,14 +243,15 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
             float pct = Float.valueOf(pctString);
             @ColorRes int color;
             if (pct > .85)
-                color = R.color.good_bg_color;
+                color = colors[0];
             else if (pct > .66)
-                color = R.color.almost_good_bg_color;
+                color = colors[1];
             else if (pct > .5)
-                color = R.color.okay_bg_color;
-            else color = R.color.bad_bg_color;
+                color = colors[2];
+            else
+                color = colors[3];
 
-            return getColorStateList(color);
+            return new ColorStateList(new int[][]{new int[0]}, new int[]{color});
         }
 
         private ColorStateList getColorStateList(@ColorRes int color) {
@@ -247,13 +260,13 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
 
         private void setBalls(ITableStatus tableStatus) {
             for (int ball = 1; ball <= tableStatus.size(); ball++) {
-                TextView textView = (TextView) ballContainer.getChildAt(ball - 1);
+                ImageView childAt = (ImageView) ballContainer.getChildAt(ball - 1);
                 if (ballIsMade(tableStatus.getBallStatus(ball))) {
-                    textView.setVisibility(View.VISIBLE);
-                    textView.getBackground().setTint(ContextCompat.getColor(itemView.getContext(), getBallColorTint(ball)));
+                    childAt.setVisibility(View.VISIBLE);
+                    childAt.getDrawable().setTint(ContextCompat.getColor(itemView.getContext(), getBallColorTint(ball)));
                 } else if (ballIsDead(tableStatus.getBallStatus(ball))) {
-                    textView.setVisibility(View.VISIBLE);
-                    textView.getBackground().setTint(ContextCompat.getColor(itemView.getContext(), R.color.dead_ball));
+                    childAt.setVisibility(View.VISIBLE);
+                    childAt.getDrawable().setTint(ContextCompat.getColor(itemView.getContext(), R.color.dead_ball));
                 } else {
                     ballContainer.getChildAt(ball - 1).setVisibility(View.GONE);
                 }

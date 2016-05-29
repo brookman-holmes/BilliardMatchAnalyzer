@@ -74,10 +74,10 @@ public class BreaksHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
         tvBreakContinuationsOpponent.setText(String.valueOf(opponent.getBreakContinuations()));
         highlightBetterPlayerStats(tvBreakContinuationsPlayer, tvBreakContinuationsOpponent, player.getBreakContinuations(), opponent.getBreakContinuations());
 
-        tvBreakScratchesOpponent.setText(String.valueOf(opponent.getBreakScratches()));
-        tvBreakScratchesPlayer.setText(String.valueOf(player.getBreakScratches()));
+        tvBreakScratchesOpponent.setText(String.valueOf(opponent.getBreakFouls()));
+        tvBreakScratchesPlayer.setText(String.valueOf(player.getBreakFouls()));
         // highlighting of the player who's doing better in this stat
-        highlightPlayerStat(tvBreakScratchesPlayer, tvBreakScratchesOpponent, player.getBreakScratches(), opponent.getBreakScratches());
+        highlightPlayerStat(tvBreakScratchesPlayer, tvBreakScratchesOpponent, player.getBreakFouls(), opponent.getBreakFouls());
     }
 
     @Override int getLayoutRes() {

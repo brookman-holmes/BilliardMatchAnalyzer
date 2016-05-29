@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Brookman Holmes on 11/4/2015.
  */
 public interface Turn extends ITableStatus {
-    boolean isScratch();
+    boolean isFoul();
 
     boolean isGameLost();
 

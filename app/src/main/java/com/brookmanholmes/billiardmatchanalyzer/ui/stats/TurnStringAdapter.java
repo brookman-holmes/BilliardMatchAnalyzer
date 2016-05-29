@@ -11,8 +11,6 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Locale;
-
 /**
  * Created by Brookman Holmes on 4/30/2016.
  */
@@ -30,13 +28,8 @@ public class TurnStringAdapter {
         this.advStats = data.getRight();
         this.player = player;
 
-        if (playerTurn == PlayerTurn.PLAYER) {
-            mainColor = "#2196F3";
-            accentColor = "<font color='#2196F3'>";
-        } else {
-            mainColor = "#FF3D00";
-            accentColor = "<font color='#FF3D00'>";
-        }
+        mainColor = "#57000000";
+        accentColor = "<font color='#57000000'>";
 
         playerName = "<font color='" + mainColor + "'>" + player.getName() + "</font>";
 
@@ -88,11 +81,11 @@ public class TurnStringAdapter {
                     turnBuilder.append(" and then pushed");
                 }
 
-                if (turn.isScratch()) {
+                if (turn.isFoul()) {
                     turnBuilder.append(" and fouled");
                 }
             } else {
-                if (turn.isScratch()) {
+                if (turn.isFoul()) {
                     turnBuilder.append(" fouled on the break");
                 } else {
                     turnBuilder.append(" broke dry");
@@ -131,7 +124,7 @@ public class TurnStringAdapter {
                     turnBuilder.append(" pushed");
             }
 
-            if (turn.isScratch()) {
+            if (turn.isFoul()) {
                 turnBuilder.append(" and fouled");
             }
         }
