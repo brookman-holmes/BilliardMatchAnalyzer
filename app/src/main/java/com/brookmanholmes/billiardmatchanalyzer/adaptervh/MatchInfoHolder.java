@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.vh;
+package com.brookmanholmes.billiardmatchanalyzer.adaptervh;
 
 import android.animation.ValueAnimator;
 import android.content.res.Resources;
@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
-import com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo.BaseViewHolder;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 

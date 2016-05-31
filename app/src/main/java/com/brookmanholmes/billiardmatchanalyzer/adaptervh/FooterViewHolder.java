@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer.adapters.matchinfo;
+package com.brookmanholmes.billiardmatchanalyzer.adaptervh;
 
 import android.view.View;
 

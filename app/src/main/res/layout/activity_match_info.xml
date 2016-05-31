@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context=".ui.MatchInfoActivity">
+    tools:context=".ui.matchinfo.MatchInfoActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container"

@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer.adapters;
+package com.brookmanholmes.billiardmatchanalyzer.utils;
 
 import android.content.Context;
 import android.graphics.Canvas;

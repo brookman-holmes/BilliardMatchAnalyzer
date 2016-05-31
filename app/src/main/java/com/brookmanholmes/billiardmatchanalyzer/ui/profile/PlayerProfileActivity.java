@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer.ui;
+package com.brookmanholmes.billiardmatchanalyzer.ui.profile;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerInfoFragment;
-import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerInfoGraphicFragment;
+import com.brookmanholmes.billiardmatchanalyzer.ui.BaseActivity;
+import com.brookmanholmes.billiardmatchanalyzer.ui.MatchListFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvBreakingStatsFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvSafetyStatsFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvShootingStatsFragment;

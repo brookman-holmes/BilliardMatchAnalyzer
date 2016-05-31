@@ -20,12 +20,12 @@
         </activity>
 
         <activity
-            android:name=".ui.CreateNewMatchActivity"
+            android:name=".ui.newmatchwizard.CreateNewMatchActivity"
             android:theme="@style/MyAppTheme.NoActionBar"/>
-        <activity android:name=".ui.MatchInfoActivity"/>
+        <activity android:name=".ui.matchinfo.MatchInfoActivity"/>
 
         <activity
-            android:name=".ui.PlayerProfileActivity"
+            android:name=".ui.profile.PlayerProfileActivity"
             android:label="Player Profile"/>
     </application>
 

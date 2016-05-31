@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer.adapters;
+package com.brookmanholmes.billiardmatchanalyzer.utils;
 
 /*
  * The MIT License (MIT)

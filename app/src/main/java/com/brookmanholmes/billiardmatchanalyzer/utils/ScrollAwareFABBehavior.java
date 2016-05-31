@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer.ui;
+package com.brookmanholmes.billiardmatchanalyzer.utils;
 
 /*
  * Copyright 2015 The Android Open Source Project

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context=".ui.MatchInfoActivity">
+    tools:context=".ui.matchinfo.MatchInfoActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -45,10 +45,10 @@
     <LinearLayout
         android:id="@+id/playerNameLayout"
         android:layout_width="match_parent"
-        android:layout_gravity="bottom"
         android:layout_height="48dp"
-        android:elevation="8dp"
+        android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
+        android:elevation="8dp"
         android:orientation="horizontal">
 
         <TextView

@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
+import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.CreateNewMatchActivity;
+import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerProfileActivity;
+import com.brookmanholmes.billiardmatchanalyzer.utils.RoundedLetterView;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 
 import java.util.List;
@@ -43,8 +46,7 @@ public class IntroActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,
-                getIntroFragment(), INTRO_FRAGMENT).commit();
+        replaceFragment(getIntroFragment(), INTRO_FRAGMENT);
     }
 
     @Override protected void onResume() {
@@ -75,6 +77,7 @@ public class IntroActivity extends BaseActivity {
     private void replaceFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
+        transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         transaction.addToBackStack(null);
         transaction.commit();
     }

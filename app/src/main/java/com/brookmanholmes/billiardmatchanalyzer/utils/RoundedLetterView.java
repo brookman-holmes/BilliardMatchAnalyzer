@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer.ui;
+package com.brookmanholmes.billiardmatchanalyzer.utils;
 
 /**
  * Created by Brookman Holmes on 5/2/2016.
