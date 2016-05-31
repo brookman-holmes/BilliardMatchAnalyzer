@@ -116,6 +116,34 @@ public class DatabaseAdapter {
         return names;
     }
 
+    public List<AbstractPlayer> getPlayers() {
+        database = databaseHelper.getReadableDatabase();
+        List<AbstractPlayer> players = new ArrayList<>();
+
+        for (Match<?> match : getMatches()) {
+            combinePlayerInList(players, match.getPlayer());
+            combinePlayerInList(players, match.getOpponent());
+        }
+
+        return players;
+    }
+
+    private void combinePlayerInList(List<AbstractPlayer> players, AbstractPlayer playerToAdd) {
+        boolean addPlayer = true;
+
+        for (AbstractPlayer player : players) {
+            if (player.getName().equals(playerToAdd.getName())) {
+                addPlayer = false;
+                player.addPlayerStats(playerToAdd);
+                break;
+            }
+        }
+
+        if (addPlayer)
+            players.add(playerToAdd);
+    }
+
+
     public List<Pair<AbstractPlayer, AbstractPlayer>> getPlayer(String playerName) {
         database = databaseHelper.getReadableDatabase();
         List<Pair<AbstractPlayer, AbstractPlayer>> players = new ArrayList<>();
@@ -148,6 +176,41 @@ public class DatabaseAdapter {
         database.close();
 
         return players;
+    }
+
+    private List<Match<?>> getMatches() {
+        List<Match<?>> matches = new ArrayList<>();
+        database = databaseHelper.getReadableDatabase();
+        final String selection = "m." + COLUMN_ID + " as _id, "
+                + "p." + COLUMN_NAME + " as player_name, "
+                + "opp." + COLUMN_NAME + " as opp_name, "
+                + "p." + COLUMN_ID + " as player_id, "
+                + "opp." + COLUMN_ID + " as opp_id, "
+                + COLUMN_PLAYER_TURN + ", "
+                + COLUMN_GAME_TYPE + ", "
+                + COLUMN_BREAK_TYPE + ", "
+                + COLUMN_CREATED_ON + ", "
+                + COLUMN_PLAYER_RANK + ", "
+                + COLUMN_OPPONENT_RANK + ", "
+                + COLUMN_NOTES + ", "
+                + COLUMN_STATS_DETAIL + ", "
+                + COLUMN_LOCATION + "\n";
+
+        final String query = "SELECT " + selection + "from " + TABLE_MATCHES + " m\n"
+                + "left join (select " + COLUMN_NAME + ", " + COLUMN_MATCH_ID + ", " + COLUMN_ID + " from "
+                + TABLE_PLAYERS + " where " + COLUMN_ID + " % 2 = 1) p\n"
+                + "on p." + COLUMN_MATCH_ID + "= m._id\n"
+                + "left join (select " + COLUMN_NAME + ", " + COLUMN_MATCH_ID + ", " + COLUMN_ID + " from "
+                + TABLE_PLAYERS + " where " + COLUMN_ID + " % 2 = 0) opp\n"
+                + "on p." + COLUMN_MATCH_ID + "=" + "opp." + COLUMN_MATCH_ID;
+
+        Cursor c = database.rawQuery(query, null);
+
+        while (c.moveToNext()) {
+            matches.add(createMatchFromCursor(c));
+        }
+
+        return matches;
     }
 
     public Match<?> getMatch(long id) {

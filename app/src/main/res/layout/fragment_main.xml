@@ -1,10 +1,10 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<fragment android:id="@+id/fragment"
+    android:name="com.brookmanholmes.billiardmatchanalyzer.ui.MatchListFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment"
-    android:name="com.brookmanholmes.billiardmatchanalyzer.ui.MatchListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:layout="@layout/fragment_list_view"
-    tools:showIn="@layout/activity_main" />
+    tools:showIn="@layout/activity_match_list" />

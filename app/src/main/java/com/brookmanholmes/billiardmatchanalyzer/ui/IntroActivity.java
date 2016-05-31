@@ -1,15 +1,211 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.support.annotation.ColorInt;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
+import com.brookmanholmes.billiards.player.AbstractPlayer;
 
-public class IntroActivity extends AppCompatActivity {
+import java.util.List;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class IntroActivity extends BaseActivity {
+    public static final String TAG = "IntroActivity";
+    private static final String MATCH_LIST_FRAGMENT = "match list fragment";
+    private static final String INTRO_FRAGMENT = "intro fragment";
+    private static final String PLAYER_LIST_FRAGMENT = "player list fragment";
+
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.createMatch) FloatingActionButton fab;
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_intro);
+        setContentView(R.layout.activity_match_list);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,
+                getIntroFragment(), INTRO_FRAGMENT).commit();
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+
+        final int animationDelay = 250; // .25 seconds
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                fab.show();
+            }
+        }, animationDelay); // display fab after activity starts
+    }
+
+    @Override protected void onPause() {
+        super.onPause();
+    }
+
+    @OnClick(R.id.createMatch) public void createNewMatch() {
+        fab.hide(new FloatingActionButton.OnVisibilityChangedListener() {
+            @Override public void onHidden(FloatingActionButton fab) {
+                super.onHidden(fab);
+                Intent intent = new Intent(IntroActivity.this, CreateNewMatchActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void replaceFragment(Fragment fragment, String tag) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, tag);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private Fragment getIntroFragment() {
+        return getSupportFragmentManager().findFragmentByTag(INTRO_FRAGMENT) == null ?
+                new IntroFragment() :
+                getSupportFragmentManager().findFragmentByTag(INTRO_FRAGMENT);
+    }
+
+    private Fragment getPlayerListFragment() {
+        return getSupportFragmentManager().findFragmentByTag(PLAYER_LIST_FRAGMENT) == null ?
+                new PlayerListFragment() :
+                getSupportFragmentManager().findFragmentByTag(PLAYER_LIST_FRAGMENT);
+    }
+
+    private Fragment getMatchListFragment() {
+        return getSupportFragmentManager().findFragmentByTag(MATCH_LIST_FRAGMENT) == null ?
+                MatchListFragment.create(null, null) :
+                getSupportFragmentManager().findFragmentByTag(MATCH_LIST_FRAGMENT);
+    }
+
+    public static class IntroFragment extends Fragment {
+        public IntroFragment() {
+
+        }
+
+        @Nullable @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_intro, container, false);
+            ButterKnife.bind(this, view);
+
+            return view;
+        }
+
+        @OnClick(R.id.img_matches) void launchMatchListFragment() {
+            getIntroActivity().replaceFragment(getIntroActivity().getMatchListFragment(), MATCH_LIST_FRAGMENT);
+        }
+
+        @OnClick(R.id.img_players) void launchPlayerListFragment() {
+            getIntroActivity().replaceFragment(getIntroActivity().getPlayerListFragment(), PLAYER_LIST_FRAGMENT);
+        }
+
+        @OnClick(R.id.img_new_match) void launchCreateNewMatchActivity() {
+            Intent intent = new Intent(getContext(), CreateNewMatchActivity.class);
+            startActivity(intent);
+        }
+
+        private IntroActivity getIntroActivity() {
+            return (IntroActivity) getActivity();
+        }
+    }
+
+    public static class PlayerListFragment extends Fragment {
+        @Bind(R.id.scrollView) RecyclerView recyclerView;
+        private RecyclerAdapter adapter;
+        private RecyclerView.LayoutManager layoutManager;
+
+        public PlayerListFragment() {
+
+        }
+
+        @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+        }
+
+        @Nullable @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_list_view, null);
+            ButterKnife.bind(this, view);
+
+            adapter = new RecyclerAdapter(new DatabaseAdapter(getContext()).getPlayers());
+            layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+
+            return view;
+        }
+
+        private static class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
+            List<AbstractPlayer> players;
+            int[] colors = new int[]{Color.parseColor("#f44336"), Color.parseColor("#9C27B0"),
+                    Color.parseColor("#3F51B5"), Color.parseColor("#2196F3"), Color.parseColor("#00BCD4"),
+                    Color.parseColor("#4CAF50"), Color.parseColor("#CDDC39"), Color.parseColor("#FF9800"),
+                    Color.parseColor("#FF5722"), Color.parseColor("#795548"), Color.parseColor("#9E9E9E"),
+                    Color.parseColor("#607D8B")};
+
+            public RecyclerAdapter(List<AbstractPlayer> players) {
+                this.players = players;
+            }
+
+            @Override
+            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_player, parent, false);
+                return new ViewHolder(view);
+            }
+
+            @Override public void onBindViewHolder(ViewHolder holder, int position) {
+                holder.bind(players.get(position), getColor(position));
+            }
+
+            @Override public int getItemCount() {
+                return players.size();
+            }
+
+            private int getColor(int position) {
+                return colors[position % colors.length];
+            }
+        }
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            @Bind(R.id.playerIndicator) RoundedLetterView playerIcon;
+            @Bind(R.id.playerName) TextView playerName;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                ButterKnife.bind(this, itemView);
+            }
+
+            private void bind(AbstractPlayer player, @ColorInt int color) {
+                playerName.setText(player.getName());
+                playerIcon.setBackgroundColor(color);
+                playerIcon.setTitleText(player.getName().substring(0, 1));
+            }
+
+            @OnClick(R.id.container) void launchPlayerProfileActivity() {
+                Intent intent = new Intent(itemView.getContext(), PlayerProfileActivity.class);
+                intent.putExtra(PlayerProfileActivity.ARG_PLAYER_NAME, playerName.getText().toString());
+                itemView.getContext().startActivity(intent);
+            }
+        }
     }
 }

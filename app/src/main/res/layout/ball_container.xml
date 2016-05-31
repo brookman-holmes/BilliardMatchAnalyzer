@@ -17,7 +17,7 @@
         android:foreground="@drawable/ball"
         android:src="@drawable/ball_background"
         android:tint="@color/one_ball"
-        android:visibility="visible"/>
+        />
 
     <ImageView
         style="@style/stroked_text"

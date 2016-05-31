@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.brookmanholmes.billiardmatchanalyzer.ui.IntroActivity">
+
+    <LinearLayout
+        android:id="@+id/img_matches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Matches"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/img_players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Players"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/img_new_match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Create Match"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+    </LinearLayout>
+</LinearLayout>
