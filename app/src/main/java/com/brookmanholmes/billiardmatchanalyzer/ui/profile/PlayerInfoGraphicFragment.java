@@ -21,15 +21,10 @@ import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.CompPlayer;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 
@@ -185,7 +180,7 @@ public class PlayerInfoGraphicFragment extends Fragment {
                 case ITEM_BREAK_INFO:
                     return R.layout.card_two_item_holder;
                 case ITEM_SAFETY_GRAPH:
-                    return R.layout.card_pie_graph;
+                    return R.layout.card_deco_view;
                 default:
                     throw new IllegalArgumentException("No such view type: " + viewType);
             }
@@ -328,7 +323,10 @@ public class PlayerInfoGraphicFragment extends Fragment {
             abstract void setItemDesc();
 
             String convertFloatToPercent(float val) {
-                return String.format(Locale.getDefault(), "%.0f%%", val * 100);
+                if (Float.isNaN(val))
+                    return String.format(Locale.getDefault(), "%.0f%%", 0f);
+                else
+                    return String.format(Locale.getDefault(), "%.0f%%", val * 100);
             }
         }
 
@@ -382,10 +380,10 @@ public class PlayerInfoGraphicFragment extends Fragment {
 
         static class BreaksGraphViewHolder extends RecyclerView.ViewHolder {
             @Bind(R.id.decoView) DecoView decoView;
-            @Bind(R.id.successful_breaks) TextView successfulBreak;
-            @Bind(R.id.continuation_break) TextView continuationBreak;
-            @Bind(R.id.foul_break) TextView foulBreak;
-            @Bind(R.id.win_break) TextView winBreak;
+            @Bind(R.id.title1) TextView successfulBreak;
+            @Bind(R.id.title2) TextView continuationBreak;
+            @Bind(R.id.title3) TextView foulBreak;
+            @Bind(R.id.title4) TextView winBreak;
 
             int color1, color2, color3, color4;
 
@@ -470,18 +468,23 @@ public class PlayerInfoGraphicFragment extends Fragment {
         }
 
         static class SafetyGraphViewHolder extends RecyclerView.ViewHolder {
-            @Bind(R.id.pieChart) PieChart chart;
+            @Bind(R.id.decoView) DecoView decoView;
             @Bind(R.id.title) TextView title;
-            PieData data = new PieData(new String[]{"Made a ball", "Played safe back", "Missed"});
-            PieDataSet dataSet;
+            @Bind(R.id.title1) TextView safetyReturns;
+            @Bind(R.id.title2) TextView safetyEscapes;
+            @Bind(R.id.title3) TextView misses;
+            @Bind(R.id.toDisappear) ViewGroup notValid;
 
+            int color1, color2, color3, color4;
             public SafetyGraphViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
-                chart.setDescriptionPosition(0, 0);
-                chart.getLegend().setEnabled(false);
-                title.setText("Shots after being safetied");
 
+                title.setText("After your opponent safeties you:");
+                notValid.setVisibility(View.GONE);
+                color1 = ContextCompat.getColor(itemView.getContext(), R.color.chart3);
+                color2 = ContextCompat.getColor(itemView.getContext(), R.color.chart2);
+                color3 = ContextCompat.getColor(itemView.getContext(), R.color.chart1);
             }
 
             public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
@@ -489,40 +492,43 @@ public class PlayerInfoGraphicFragment extends Fragment {
                 CompPlayer opponent = getPlayerFromList(opponents);
                 float total = (float) opponent.getSafetySuccesses();
 
-                List<Entry> entries = new ArrayList<>();
-                entries.add(new Entry(player.getSafetyEscapes() / total, 1));
-                entries.add(new Entry(player.getSafetyReturns() / total, 2));
-                entries.add(new Entry((total - player.getSafetyEscapes() - player.getSafetyReturns()) / total, 3));
+                if (opponent.getSafetySuccesses() > 0) {
+                    float returns = (float) player.getSafetyReturns() / total * 100;
+                    float escapes = (float) player.getSafetyEscapes() / total * 100;
 
-                dataSet = new PieDataSet(entries, "Result after being safetied");
-                dataSet.setColors(getColor(R.color.chart, R.color.chart1, R.color.chart2, R.color.chart3));
-
-                dataSet.setValueTextSize(12);
-                dataSet.setSliceSpace(3);
-                dataSet.setValueFormatter(new MyValueFormatter());
-                data.setDataSet(dataSet);
-                chart.setData(data);
-                chart.invalidate();
-            }
-
-            private int[] getColor(@ColorRes int... color) {
-                int[] array = new int[color.length];
-
-                for (int i = 0; i < color.length; i++) {
-                    array[i] = ContextCompat.getColor(itemView.getContext(), color[i]);
+                    decoView.addSeries(new SeriesItem.Builder(color3)
+                            .setRange(0, 100, 100)
+                            .setCapRounded(false)
+                            .setLineWidth(128f)
+                            .build()
+                    );
+                    decoView.addSeries(new SeriesItem.Builder(color1)
+                            .setRange(0, 100, returns + escapes)
+                            .setCapRounded(false)
+                            .setLineWidth(128f)
+                            .build()
+                    );
+                    decoView.addSeries(new SeriesItem.Builder(color2)
+                            .setRange(0, 100, escapes)
+                            .setCapRounded(false)
+                            .setLineWidth(128f)
+                            .build()
+                    );
+                } else {
+                    decoView.addSeries(new SeriesItem.Builder(Color.parseColor("#F5F5F5"))
+                            .setRange(0, 100, 100)
+                            .setCapRounded(false)
+                            .setLineWidth(128f)
+                            .build()
+                    );
                 }
-                return array;
-            }
-        }
 
-        private static class MyValueFormatter implements ValueFormatter {
-            public MyValueFormatter() {
+                int missed = opponent.getSafetySuccesses() - player.getSafetyEscapes() - player.getSafetyReturns();
+                misses.setText(String.format(Locale.getDefault(), "You missed (%1$d/%2$d)", missed, opponent.getSafetySuccesses()));
+                safetyReturns.setText(String.format(Locale.getDefault(), "You got safe (%1$d/%2$d)", player.getSafetyReturns(), opponent.getSafetySuccesses()));
+                safetyEscapes.setText(String.format(Locale.getDefault(), "You made a ball (%1$d/%2$d)", player.getSafetyEscapes(), opponent.getSafetySuccesses()));
             }
 
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                return String.format(Locale.getDefault(), "%.0f%%", value * 100);
-            }
         }
     }
 }

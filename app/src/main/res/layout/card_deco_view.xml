@@ -13,6 +13,7 @@
         android:padding="8dp">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Breaks"
@@ -38,7 +39,7 @@
                 android:tint="@color/chart3"/>
 
             <TextView
-                android:id="@+id/successful_breaks"
+                android:id="@+id/title1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -60,7 +61,7 @@
                 android:tint="@color/chart2"/>
 
             <TextView
-                android:id="@+id/continuation_break"
+                android:id="@+id/title2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -70,6 +71,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/toDisappear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -82,7 +84,7 @@
                 android:tint="@color/chart"/>
 
             <TextView
-                android:id="@+id/win_break"
+                android:id="@+id/title4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -104,7 +106,7 @@
                 android:tint="@color/chart1"/>
 
             <TextView
-                android:id="@+id/foul_break"
+                android:id="@+id/title3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
