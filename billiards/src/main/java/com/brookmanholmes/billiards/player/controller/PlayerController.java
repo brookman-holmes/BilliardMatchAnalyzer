@@ -75,8 +75,16 @@ public abstract class PlayerController<T extends AbstractPlayer> {
         return playerName;
     }
 
+    public void setPlayerName(String newName) {
+        playerName = newName;
+    }
+
     public String getOpponentName() {
         return opponentName;
+    }
+
+    public void setOpponentName(String newName) {
+        opponentName = newName;
     }
 
     public Pair<T> updatePlayerStats(GameStatus gameStatus, Turn turn) {

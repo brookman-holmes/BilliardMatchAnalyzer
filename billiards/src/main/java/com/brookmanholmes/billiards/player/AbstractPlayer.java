@@ -76,6 +76,10 @@ public abstract class AbstractPlayer {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Date getMatchDate() {
         return date == null ? new Date() : date;
     }

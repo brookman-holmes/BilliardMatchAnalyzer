@@ -433,6 +433,17 @@ public class DatabaseAdapter {
         return dateFormat.format(new Date());
     }
 
+    public void editPlayerName(long matchId, String name, String newName) {
+        database = databaseHelper.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, newName);
+        int num = database.update(TABLE_PLAYERS,
+                values,
+                COLUMN_NAME + "=? AND " + COLUMN_MATCH_ID + "=?",
+                new String[]{name, Long.toString(matchId)});
+        database.close();
+    }
+
     public long insertTurn(Turn turn, long matchId, int turnCount) {
         database = databaseHelper.getReadableDatabase();
         database.delete(TABLE_TURNS,

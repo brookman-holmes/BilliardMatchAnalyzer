@@ -26,13 +26,13 @@ import java.util.List;
  * Created by Brookman Holmes on 10/27/2015.
  */
 public class Match<T extends AbstractPlayer> implements IMatch {
-    public ArrayDeque<T> player1 = new ArrayDeque<>();
     long matchId;
     PlayerController<T> playerController;
     String location;
     String notes;
     Date createdOn;
     Game game;
+    ArrayDeque<T> player1 = new ArrayDeque<>();
     ArrayDeque<T> player2 = new ArrayDeque<>();
     ArrayDeque<Turn> turns = new ArrayDeque<>();
     ArrayDeque<Turn> undoneTurns = new ArrayDeque<>();
@@ -119,6 +119,18 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         if (game.getTurn() == PlayerTurn.OPPONENT)
             return playerController.getPlayerName();
         else return playerController.getOpponentName();
+    }
+
+    @Override public void setPlayerName(String newName) {
+        playerController.setPlayerName(newName);
+        for (T player : player1)
+            player.setName(newName);
+    }
+
+    @Override public void setOpponentName(String newName) {
+        playerController.setOpponentName(newName);
+        for (T player : player2)
+            player.setName(newName);
     }
 
     public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {

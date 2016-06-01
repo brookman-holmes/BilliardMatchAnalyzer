@@ -33,4 +33,8 @@ public interface IMatch<T extends AbstractPlayer> {
     void undoTurn();
 
     long getMatchId();
+
+    void setPlayerName(String newName);
+
+    void setOpponentName(String newName);
 }

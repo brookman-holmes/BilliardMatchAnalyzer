@@ -145,12 +145,9 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
-    @OnClick(R.id.playerName) public void showTestLayout() {
-        displayChoiceDialog(playerName.getText().toString(), PlayerTurn.PLAYER);
-    }
-
-    @OnClick(R.id.opponentName) public void showTestLayout2() {
-        displayChoiceDialog(opponentName.getText().toString(), PlayerTurn.OPPONENT);
+    @OnClick({R.id.opponentName, R.id.playerName})
+    public void showPlayerOptionsMenu(TextView view) {
+        displayChoiceDialog(view.getText().toString(), PlayerTurn.PLAYER);
     }
 
     private void displayChoiceDialog(final String name, final PlayerTurn turn) {
@@ -173,10 +170,39 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                             intent.putExtra(ARG_PLAYER_NAME, name);
                             startActivity(intent);
                         } else if (items[which].equals(getString(R.string.edit_name))) {
-                            Snackbar.make(layout, "Change name selected - not yet implemented", Snackbar.LENGTH_SHORT).show();
+                            displayEditPlayerNameDialog(name);
                         }
                     }
                 }).create().show();
+    }
+
+    private void displayEditPlayerNameDialog(final String name) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+        View view = getLayoutInflater().inflate(R.layout.edit_text, null);
+        final EditText input = (EditText) view.findViewById(R.id.editText);
+        input.setText(db.getMatch(getMatchId()).getLocation());
+        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        builder.setTitle("Change " + name + "'s name")
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        String newName = input.getText().toString();
+                        if (opponentName.getText().toString().equals(name)) {
+                            opponentName.setText(newName);
+                            infoFragment.setOpponentName(newName);
+                        } else if (playerName.getText().toString().equals(name)) {
+                            playerName.setText(newName);
+                            infoFragment.setPlayerName(newName);
+                        }
+                        db.editPlayerName(getMatchId(), name, newName);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create().show();
     }
 
     private boolean playerHasAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
@@ -410,6 +436,14 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             return adapter.getNonCurrentPlayersName();
         }
 
+        @Override public void setPlayerName(String newName) {
+            adapter.setPlayerName(newName);
+        }
+
+        @Override public void setOpponentName(String newName) {
+            adapter.setOpponentName(newName);
+        }
+
         @Override public void undoTurn() {
             adapter.undoTurn();
         }
@@ -527,6 +561,14 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                     return 4;
                 else
                     return 6;
+            }
+
+            @Override public void setPlayerName(String newName) {
+                match.setPlayerName(newName);
+            }
+
+            @Override public void setOpponentName(String newName) {
+                match.setOpponentName(newName);
             }
 
             @Override public int getItemViewType(int position) {
