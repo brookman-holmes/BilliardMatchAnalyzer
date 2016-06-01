@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by Brookman Holmes on 10/28/2015.
  */
-public abstract class AbstractPlayer {
+public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     // formatter for percentages (e.g. .875)
     final static DecimalFormat pctf = new DecimalFormat("#.000");
     // formatter for average number of balls made per turn (e.g. 5.33)
@@ -292,6 +292,10 @@ public abstract class AbstractPlayer {
         if (getShotAttemptsOfAllTypes() > 0) {
             return pctf.format((double) getShotsSucceededOfAllTypes() / (double) getShotAttemptsOfAllTypes());
         } else return ZERO_PERCENT;
+    }
+
+    @Override public int compareTo(AbstractPlayer o) {
+        return this.name.compareTo(o.name);
     }
 
     @Override public boolean equals(Object o) {

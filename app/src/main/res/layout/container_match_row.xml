@@ -82,6 +82,6 @@
             android:text="Rule set"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="12sp"
-            android:textStyle="bold"/>
+            />
     </LinearLayout>
 </RelativeLayout>

@@ -138,8 +138,9 @@ public class DatabaseAdapter {
             }
         }
 
-        if (addPlayer)
+        if (addPlayer) {
             players.add(playerToAdd);
+        }
     }
 
 
@@ -206,7 +207,11 @@ public class DatabaseAdapter {
         Cursor c = database.rawQuery(query, null);
 
         while (c.moveToNext()) {
-            matches.add(createMatchFromCursor(c));
+            Match<?> match = createMatchFromCursor(c);
+            for (Turn turn : getMatchTurns(match.getMatchId())) {
+                match.addTurn(turn);
+            }
+            matches.add(match);
         }
 
         return matches;

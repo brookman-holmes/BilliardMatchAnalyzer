@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -24,7 +24,9 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerProfileActivity
 import com.brookmanholmes.billiardmatchanalyzer.utils.RoundedLetterView;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -151,7 +153,7 @@ public class IntroActivity extends BaseActivity {
             ButterKnife.bind(this, view);
 
             adapter = new RecyclerAdapter(new DatabaseAdapter(getContext()).getPlayers());
-            layoutManager = new LinearLayoutManager(getContext());
+            layoutManager = new GridLayoutManager(getContext(), 2);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
 
@@ -167,6 +169,7 @@ public class IntroActivity extends BaseActivity {
                     Color.parseColor("#607D8B")};
 
             public RecyclerAdapter(List<AbstractPlayer> players) {
+                Collections.sort(players);
                 this.players = players;
             }
 
@@ -192,6 +195,8 @@ public class IntroActivity extends BaseActivity {
         static class ViewHolder extends RecyclerView.ViewHolder {
             @Bind(R.id.playerIndicator) RoundedLetterView playerIcon;
             @Bind(R.id.playerName) TextView playerName;
+            @Bind(R.id.gamesPlayed) TextView gamesPlayed;
+            @Bind(R.id.shootingPct) TextView shootingPct;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -202,6 +207,8 @@ public class IntroActivity extends BaseActivity {
                 playerName.setText(player.getName());
                 playerIcon.setBackgroundColor(color);
                 playerIcon.setTitleText(player.getName().substring(0, 1));
+                gamesPlayed.setText(String.format(Locale.getDefault(), "%1$d games", player.getGamesPlayed()));
+                shootingPct.setText(String.format(Locale.getDefault(), "Shooting %1$s", player.getShootingPct()));
             }
 
             @OnClick(R.id.container) void launchPlayerProfileActivity() {
