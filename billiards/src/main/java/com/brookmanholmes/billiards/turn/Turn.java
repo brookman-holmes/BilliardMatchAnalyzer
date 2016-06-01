@@ -13,4 +13,6 @@ public interface Turn extends ITableStatus {
     List<Integer> getBallsToRemoveFromTable();
 
     TurnEnd getTurnEnd();
+
+    AdvStats getAdvStats();
 }

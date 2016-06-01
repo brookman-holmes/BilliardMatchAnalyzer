@@ -3,29 +3,23 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 import android.text.Html;
 import android.text.Spanned;
 
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Created by Brookman Holmes on 4/30/2016.
  */
 public class TurnStringAdapter {
     Turn turn;
-    AdvStats advStats;
     String playerName;
     AbstractPlayer player;
     StringBuilder turnBuilder = new StringBuilder();
     String mainColor, accentColor;
     String title;
 
-    public TurnStringAdapter(Pair<Turn, AdvStats> data, AbstractPlayer player, PlayerTurn playerTurn) {
-        this.turn = data.getLeft();
-        this.advStats = data.getRight();
+    public TurnStringAdapter(Turn turn, AbstractPlayer player) {
+        this.turn = turn;
         this.player = player;
 
         mainColor = "#57000000";
@@ -133,7 +127,7 @@ public class TurnStringAdapter {
     Spanned getTurnString() {
         buildTurn();
 
-        if (advStats != null && !advStats.getShotType().equals("")) {
+        if (turn.getAdvStats() != null && !turn.getAdvStats().getShotType().equals("")) {
             buildAdvStats();
         }
 
@@ -141,45 +135,45 @@ public class TurnStringAdapter {
     }
 
     void buildAdvStats() {
-        if (advStats.getShotType().equals("Break shot")) {
-            for (String item : advStats.getWhyTypes()) {
+        if (turn.getAdvStats().getShotType().equals("Break shot")) {
+            for (String item : turn.getAdvStats().getWhyTypes()) {
                 turnBuilder.append(" (")
                         .append(accentColor)
                         .append(item.toLowerCase())
                         .append("</font>")
                         .append(")");
             }
-        } else if (advStats.getShotType().equals("Safety error")) {
+        } else if (turn.getAdvStats().getShotType().equals("Safety error")) {
             appendHowAndWhy();
-        } else if (advStats.getShotType().equals("Safety")) {
+        } else if (turn.getAdvStats().getShotType().equals("Safety")) {
             turnBuilder.append(" (")
                     .append(accentColor)
-                    .append(advStats.getShotSubtype().toLowerCase())
+                    .append(turn.getAdvStats().getShotSubtype().toLowerCase())
                     .append("</font>")
                     .append(")");
         } else { // this should be misses
             if (turn.getTurnEnd() != TurnEnd.GAME_WON)
                 turnBuilder.append(" on a ");
 
-            if (advStats.getAngles().size() > 0) {
-                turnBuilder.append(advStats.getAngles().get(0));
+            if (turn.getAdvStats().getAngles().size() > 0) {
+                turnBuilder.append(turn.getAdvStats().getAngles().get(0));
 
-                for (int i = 1; i < advStats.getAngles().size(); i++) {
+                for (int i = 1; i < turn.getAdvStats().getAngles().size(); i++) {
                     turnBuilder.append(", ");
-                    turnBuilder.append(advStats.getAngles().get(i));
+                    turnBuilder.append(turn.getAdvStats().getAngles().get(i));
                 }
                 turnBuilder.append(" ");
             }
 
             turnBuilder.append(" ");
 
-            if (!advStats.getShotSubtype().equals("")) {
+            if (!turn.getAdvStats().getShotSubtype().equals("")) {
                 turnBuilder.append(accentColor)
-                        .append(advStats.getShotSubtype().toLowerCase())
+                        .append(turn.getAdvStats().getShotSubtype().toLowerCase())
                         .append("</font>");
             } else {
                 turnBuilder.append(accentColor)
-                        .append(advStats.getShotType().toLowerCase())
+                        .append(turn.getAdvStats().getShotType().toLowerCase())
                         .append("</font> ");
             }
 
@@ -189,26 +183,26 @@ public class TurnStringAdapter {
 
     void appendHowAndWhy() {
         // format hows
-        if (advStats.getHowTypes().size() > 0) {
+        if (turn.getAdvStats().getHowTypes().size() > 0) {
             turnBuilder.append("<br><br>How: ");
         }
 
-        for (int i = 0; i < advStats.getHowTypes().size(); i++) {
-            turnBuilder.append(advStats.getHowTypes().get(i));
+        for (int i = 0; i < turn.getAdvStats().getHowTypes().size(); i++) {
+            turnBuilder.append(turn.getAdvStats().getHowTypes().get(i));
 
-            if (i != advStats.getHowTypes().size() - 1)
+            if (i != turn.getAdvStats().getHowTypes().size() - 1)
                 turnBuilder.append(", ");
         }
 
         // format whys
-        if (advStats.getWhyTypes().size() > 0) {
+        if (turn.getAdvStats().getWhyTypes().size() > 0) {
             turnBuilder.append("<br><br>Why: ");
         }
 
-        for (int i = 0; i < advStats.getWhyTypes().size(); i++) {
-            turnBuilder.append(advStats.getWhyTypes().get(i));
+        for (int i = 0; i < turn.getAdvStats().getWhyTypes().size(); i++) {
+            turnBuilder.append(turn.getAdvStats().getWhyTypes().get(i));
 
-            if (i != advStats.getWhyTypes().size() - 1)
+            if (i != turn.getAdvStats().getWhyTypes().size() - 1)
                 turnBuilder.append(", ");
         }
     }

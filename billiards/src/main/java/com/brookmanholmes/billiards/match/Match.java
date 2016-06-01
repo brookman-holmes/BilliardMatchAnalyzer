@@ -9,6 +9,7 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.GameTurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
@@ -120,8 +121,8 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         else return playerController.getOpponentName();
     }
 
-    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
-        Turn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost);
+    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
+        Turn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost, advStats);
         undoneTurns.clear();
         addTurn(turn);
 
@@ -138,11 +139,12 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         }
     }
 
+    // todo: this needs to be made public somehow so that it can go into the database
     private void insertGameWonForGhost() {
         TableStatus tableStatus = game.getCurrentTableStatus();
         tableStatus.setBallTo(BallStatus.MADE, game.getGhostBallsToWinGame());
 
-        Turn turn = new GameTurn(turns.size(), matchId, false, TurnEnd.GAME_WON, tableStatus, false);
+        Turn turn = new GameTurn(turns.size(), matchId, false, TurnEnd.GAME_WON, tableStatus, false, null);
 
 
         addTurn(turn);

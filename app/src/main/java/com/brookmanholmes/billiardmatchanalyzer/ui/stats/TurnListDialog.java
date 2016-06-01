@@ -71,7 +71,7 @@ public class TurnListDialog extends DialogFragment implements
 
         long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID);
 
-        adapter = new ExpandableTurnListAdapter(getContext(), db.getMatch(matchId), db.getAdvMatchTurns(matchId));
+        adapter = new ExpandableTurnListAdapter(getContext(), db.getMatch(matchId), db.getMatchTurns(matchId));
     }
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {

@@ -25,7 +25,6 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.text.DateFormat;
@@ -299,7 +298,7 @@ public class DatabaseAdapter {
     }
 
     public Cursor getMatches(@Nullable String player, @Nullable String opponent) {
-        database = databaseHelper.getReadableDatabase(); 
+        database = databaseHelper.getReadableDatabase();
 
         final String selection = "m." + COLUMN_ID + " as _id, "
                 + "p." + COLUMN_NAME + " as player_name, "
@@ -350,7 +349,7 @@ public class DatabaseAdapter {
     }
 
     public long insertPlayer(AbstractPlayer player, long id) {
-        database = databaseHelper.getReadableDatabase(); 
+        database = databaseHelper.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, player.getName());
         contentValues.put(COLUMN_MATCH_ID, id);
@@ -361,7 +360,7 @@ public class DatabaseAdapter {
     }
 
     public void undoTurn(long id, int turnNumber) {
-        database = databaseHelper.getReadableDatabase(); 
+        database = databaseHelper.getReadableDatabase();
         String selection = COLUMN_MATCH_ID + "=? and " + COLUMN_TURN_NUMBER + "=?";
         String[] selectionArgs = new String[]{String.valueOf(id), String.valueOf(turnNumber)};
 
@@ -381,7 +380,7 @@ public class DatabaseAdapter {
     }
 
     public long insertMatch(Match match) {
-        database = databaseHelper.getReadableDatabase(); 
+        database = databaseHelper.getReadableDatabase();
         if (match.getMatchId() == 0) {
             ContentValues matchValues = new ContentValues();
 
@@ -412,7 +411,7 @@ public class DatabaseAdapter {
     }
 
     public void updateMatchNotes(String matchNotes, long matchId) {
-        database = databaseHelper.getReadableDatabase(); 
+        database = databaseHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOTES, matchNotes);
 
@@ -421,7 +420,7 @@ public class DatabaseAdapter {
     }
 
     public void updateMatchLocation(String location, long matchId) {
-        database = databaseHelper.getReadableDatabase(); 
+        database = databaseHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOCATION, location);
 
@@ -435,7 +434,7 @@ public class DatabaseAdapter {
     }
 
     public long insertTurn(Turn turn, long matchId, int turnCount) {
-        database = databaseHelper.getReadableDatabase(); 
+        database = databaseHelper.getReadableDatabase();
         database.delete(TABLE_TURNS,
                 COLUMN_MATCH_ID + "=? AND "
                         + COLUMN_TURN_NUMBER + " >= ?",
@@ -453,28 +452,21 @@ public class DatabaseAdapter {
 
         long turnId = database.insert(TABLE_TURNS, null, turnValues);
 
-        database.close();
-        return turnId;
-    }
+        if (turn.getAdvStats().use()) {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_SHOT_TYPE, turn.getAdvStats().getShotType());
+            values.put(COLUMN_SHOT_SUB_TYPE, turn.getAdvStats().getShotSubtype());
+            values.put(COLUMN_NAME, turn.getAdvStats().getPlayer());
+            values.put(COLUMN_TURN_NUMBER, turnCount);
+            values.put(COLUMN_MATCH_ID, matchId);
+            values.put(COLUMN_STARTING_POSITION, turn.getAdvStats().getStartingPosition());
 
-    public long insertTurn(Turn turn, AdvStats advStats, long matchId, int turnCount) {
-        database = databaseHelper.getReadableDatabase(); 
-        long turnId = insertTurn(turn, matchId, turnCount);
+            long advStatsId = database.insert(TABLE_ADV_STATS, null, values);
 
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_SHOT_TYPE, advStats.getShotType());
-        values.put(COLUMN_SHOT_SUB_TYPE, advStats.getShotSubtype());
-        values.put(COLUMN_NAME, advStats.getPlayer());
-        values.put(COLUMN_TURN_NUMBER, turnCount);
-        values.put(COLUMN_MATCH_ID, matchId);
-        values.put(COLUMN_STARTING_POSITION, advStats.getStartingPosition());
-
-        database = databaseHelper.getReadableDatabase();
-        long advStatsId = database.insert(TABLE_ADV_STATS, null, values);
-
-        insertAdvStatsList(TABLE_HOWS, advStats.getHowTypes(), advStatsId);
-        insertAdvStatsList(TABLE_WHYS, advStats.getWhyTypes(), advStatsId);
-        insertAdvStatsList(TABLE_ANGLES, advStats.getAngles(), advStatsId);
+            insertAdvStatsList(TABLE_HOWS, turn.getAdvStats().getHowTypes(), advStatsId);
+            insertAdvStatsList(TABLE_WHYS, turn.getAdvStats().getWhyTypes(), advStatsId);
+            insertAdvStatsList(TABLE_ANGLES, turn.getAdvStats().getAngles(), advStatsId);
+        }
 
         database.close();
         return turnId;
@@ -489,26 +481,11 @@ public class DatabaseAdapter {
         }
     }
 
-    public List<Pair<Turn, AdvStats>> getAdvMatchTurns(long id) {
-        List<Pair<Turn, AdvStats>> list = new ArrayList<>();
-        Cursor c = getMatchTurnsCursor(id);
-        while (c.moveToNext()) {
-            MutablePair<Turn, AdvStats> stats = new MutablePair<>();
-            stats.setLeft(buildTurnFromCursor(c));
-            stats.setRight(getAdvStat(id, c.getLong(c.getColumnIndex(COLUMN_TURN_NUMBER))));
-            list.add(stats);
-        }
-
-        c.close();
-        database.close();
-        return list;
-    }
-
-    private AdvStats getAdvStat(long matchId, long turnId) {
+    private AdvStats getAdvStat(long matchId, long turnNumber) {
         Cursor c = database.query(TABLE_ADV_STATS,
                 null,
                 COLUMN_MATCH_ID + "=? AND " + COLUMN_TURN_NUMBER + "=?",
-                new String[]{String.valueOf(matchId), String.valueOf(turnId)},
+                new String[]{String.valueOf(matchId), String.valueOf(turnNumber)},
                 null,
                 null,
                 null);
@@ -524,7 +501,7 @@ public class DatabaseAdapter {
         Cursor c = getMatchTurnsCursor(id);
 
         while (c.moveToNext()) {
-            turns.add(buildTurnFromCursor(c));
+            turns.add(buildTurnFromCursor(c, getAdvStat(id, c.getLong(c.getColumnIndex(COLUMN_TURN_NUMBER)))));
         }
 
         c.close();
@@ -546,14 +523,15 @@ public class DatabaseAdapter {
                 COLUMN_TURN_NUMBER + " ASC");
     }
 
-    public Turn buildTurnFromCursor(Cursor cursor) {
+    public Turn buildTurnFromCursor(Cursor cursor, AdvStats advStats) {
         return new GameTurn(
                 cursor.getInt(cursor.getColumnIndex(COLUMN_TURN_NUMBER)),
                 cursor.getLong(cursor.getColumnIndex(COLUMN_MATCH_ID)),
                 cursor.getInt(cursor.getColumnIndex(COLUMN_SCRATCH)) == 1,
                 TurnEnd.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TURN_END))),
                 stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS))),
-                cursor.getInt(cursor.getColumnIndex(COLUMN_IS_GAME_LOST)) == 1
+                cursor.getInt(cursor.getColumnIndex(COLUMN_IS_GAME_LOST)) == 1,
+                advStats
         );
     }
 
@@ -579,7 +557,7 @@ public class DatabaseAdapter {
                 null,
                 null,
                 null);
-        
+
         while (c.moveToNext()) {
             list.add(buildAdvStatsFromCursor(c));
         }
@@ -591,7 +569,7 @@ public class DatabaseAdapter {
     }
 
     public List<AdvStats> getAdvStats(long matchId, String playerName, String[] shotTypes) {
-        database = databaseHelper.getReadableDatabase(); 
+        database = databaseHelper.getReadableDatabase();
         List<AdvStats> list = new ArrayList<>();
 
         String query = COLUMN_MATCH_ID + "=? AND " + COLUMN_NAME + "=?";
@@ -619,7 +597,7 @@ public class DatabaseAdapter {
 
         c.close();
         database.close();
-        
+
         return list;
     }
 
@@ -656,7 +634,7 @@ public class DatabaseAdapter {
     }
 
     public void deleteMatch(long id) {
-        database = databaseHelper.getReadableDatabase(); 
+        database = databaseHelper.getReadableDatabase();
         database.delete(TABLE_PLAYERS, COLUMN_MATCH_ID + "=" + id, null);
         database.delete(TABLE_TURNS, COLUMN_MATCH_ID + "=" + id, null);
         database.delete(TABLE_MATCHES, COLUMN_ID + "=" + id, null);

@@ -18,15 +18,12 @@ import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +36,12 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 5/1/2016.
  */
 public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<ExpandableTurnListAdapter.GameViewHolder, ExpandableTurnListAdapter.TurnViewHolder> {
-    List<List<Pair<Turn, AdvStats>>> data = new ArrayList<>(); // list of lists of turns, where each list is a group of turns that corresponds to that game
+    List<List<Turn>> data = new ArrayList<>(); // list of lists of turns, where each list is a group of turns that corresponds to that game
     LayoutInflater inflater;
     Match<?> match;
     int[] colors = new int[]{R.color.good, R.color.almost_good, R.color.okay, R.color.bad};
 
-    public ExpandableTurnListAdapter(Context context, Match<?> match, List<Pair<Turn, AdvStats>> data) {
+    public ExpandableTurnListAdapter(Context context, Match<?> match, List<Turn> data) {
         inflater = LayoutInflater.from(context);
         this.match = match;
         setHasStableIds(true);
@@ -52,12 +49,12 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
         buildDataSource(data);
     }
 
-    private void buildDataSource(List<Pair<Turn, AdvStats>> data) {
-        ArrayList<Pair<Turn, AdvStats>> turnsInGame = new ArrayList<>();
+    private void buildDataSource(List<Turn> data) {
+        ArrayList<Turn> turnsInGame = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
-            Pair<Turn, AdvStats> turn = data.get(i);
+            Turn turn = data.get(i);
 
-            if ((!turn.getLeft().isGameLost() && turn.getLeft().getTurnEnd() != TurnEnd.GAME_WON)) {
+            if ((!turn.isGameLost() && turn.getTurnEnd() != TurnEnd.GAME_WON)) {
                 turnsInGame.add(turn); // add any turn that doesn't end the game
             } else {
                 turnsInGame.add(turn); // add the turn that won the game
@@ -130,7 +127,7 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
                 viewType == 1 ? PlayerTurn.PLAYER : PlayerTurn.OPPONENT,
                 viewType == 1 ? match.getPlayer(turn + 1) : match.getOpponent(turn + 1));
 
-        holder.setBalls(data.get(groupPosition).get(childPosition).getLeft());
+        holder.setBalls(data.get(groupPosition).get(childPosition));
 
 
     }
@@ -217,9 +214,9 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
             this.colors = colors;
         }
 
-        private void bind(Pair<Turn, AdvStats> stats, PlayerTurn playerTurn, AbstractPlayer player) {
+        private void bind(Turn turn, PlayerTurn playerTurn, AbstractPlayer player) {
             @ColorInt int color = (playerTurn == PlayerTurn.PLAYER ? ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary) : ContextCompat.getColor(itemView.getContext(), R.color.colorAccent));
-            TurnStringAdapter turnStringAdapter = new TurnStringAdapter(stats, player, playerTurn);
+            TurnStringAdapter turnStringAdapter = new TurnStringAdapter(turn, player);
             indicator.setTitleText(player.getName().substring(0, 1));
             indicator.setBackgroundColor(color);
 

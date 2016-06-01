@@ -90,6 +90,10 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
 
+        // no reason to click on The Ghost
+        if (match.getGameStatus().breakType == BreakType.GHOST)
+            opponentName.setEnabled(false);
+
         setToolbarTitle(match.getGameStatus().gameType);
 
         infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag(INFO_FRAGMENT_TAG);
@@ -161,18 +165,18 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         new AlertDialog.Builder(this, R.style.AlertDialogTheme)
                 .setTitle(name)
                 .setItems(items, new DialogInterface.OnClickListener() {
-                            @Override public void onClick(DialogInterface dialog, int which) {
-                                if (items[which].equals(getString(R.string.view_adv_stats)))
-                                    displayAdvancedStatsDialog(name, turn);
-                                else if (items[which].equals(getString(R.string.view_profile))) {
-                                    Intent intent = new Intent(MatchInfoActivity.this, PlayerProfileActivity.class);
-                                    intent.putExtra(ARG_PLAYER_NAME, name);
-                                    startActivity(intent);
-                                } else if (items[which].equals(getString(R.string.edit_name))) {
-                                    Snackbar.make(layout, "Change name selected - not yet implemented", Snackbar.LENGTH_SHORT).show();
-                                }
-                            }
-                        }).create().show();
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        if (items[which].equals(getString(R.string.view_adv_stats)))
+                            displayAdvancedStatsDialog(name, turn);
+                        else if (items[which].equals(getString(R.string.view_profile))) {
+                            Intent intent = new Intent(MatchInfoActivity.this, PlayerProfileActivity.class);
+                            intent.putExtra(ARG_PLAYER_NAME, name);
+                            startActivity(intent);
+                        } else if (items[which].equals(getString(R.string.edit_name))) {
+                            Snackbar.make(layout, "Change name selected - not yet implemented", Snackbar.LENGTH_SHORT).show();
+                        }
+                    }
+                }).create().show();
     }
 
     private boolean playerHasAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
@@ -215,26 +219,13 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     @Override public void addTurn(TurnBuilder turnBuilder) {
-        if (turnBuilder.advStats.build().use())
-            addTurn(infoFragment.createAndAddTurnToMatch(
-                    turnBuilder.tableStatus,
-                    turnBuilder.turnEnd,
-                    turnBuilder.foul,
-                    turnBuilder.lostGame),
-                    turnBuilder.advStats.build());
-        else
-            addTurn(infoFragment.createAndAddTurnToMatch(
-                    turnBuilder.tableStatus,
-                    turnBuilder.turnEnd,
-                    turnBuilder.foul,
-                    turnBuilder.lostGame));
+        addTurn(infoFragment.createAndAddTurnToMatch(
+                turnBuilder.tableStatus,
+                turnBuilder.turnEnd,
+                turnBuilder.foul,
+                turnBuilder.lostGame,
+                turnBuilder.advStats.build()));
     }
-
-    private void addTurn(Turn turn, AdvStats advStats) {
-        db.insertTurn(turn, advStats, getMatchId(), infoFragment.getTurnCount());
-        updateViews();
-    }
-
     private void addTurn(Turn turn) {
         db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
         updateViews();
@@ -407,8 +398,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         @Override
-        public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
-            return adapter.createAndAddTurnToMatch(tableStatus, turnEnd, scratch, isGameLost);
+        public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
+            return adapter.createAndAddTurnToMatch(tableStatus, turnEnd, scratch, isGameLost, advStats);
         }
 
         @Override public String getCurrentPlayersName() {
@@ -566,8 +557,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             }
 
             @Override
-            public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
-                Turn turn = match.createAndAddTurnToMatch(tableStatus, turnEnd, scratch, isGameLost);
+            public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
+                Turn turn = match.createAndAddTurnToMatch(tableStatus, turnEnd, scratch, isGameLost, advStats);
                 notifyDataSetChanged();
                 return turn;
             }

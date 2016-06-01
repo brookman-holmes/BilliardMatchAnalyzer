@@ -18,16 +18,6 @@ public class GameTurn implements Turn {
     final boolean gameLost;
     final AdvStats advStats;
 
-    public GameTurn(int inningNumber, long matchId, boolean scratch, TurnEnd turnEnd, TableStatus tableStatus, boolean isGameLost) {
-        this.inningNumber = inningNumber;
-        this.matchId = matchId;
-        this.scratch = scratch;
-        this.turnEnd = turnEnd;
-        this.tableStatus = tableStatus;
-        this.gameLost = isGameLost;
-        advStats = null;
-    }
-
     public GameTurn(int inningNumber, long matchId, boolean scratch, TurnEnd turnEnd, TableStatus tableStatus, boolean isGameLost, AdvStats advStats) {
         this.inningNumber = inningNumber;
         this.matchId = matchId;
@@ -98,6 +88,10 @@ public class GameTurn implements Turn {
         }
 
         return ballStatuses;
+    }
+
+    @Override public AdvStats getAdvStats() {
+        return advStats;
     }
 
     @Override public int size() {
