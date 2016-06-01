@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container2"
-    android:layout_width="match_parent"
-    android:layout_height="96dp"
-    android:paddingBottom="8dp"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp"
-    android:paddingTop="8dp"
-    tools:showIn="@layout/card_match_row">
+<RelativeLayout android:id="@+id/container2"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:paddingBottom="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                tools:showIn="@layout/card_match_row">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="72dp">
+        android:layout_marginLeft="72dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:text="Date"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="12sp"
-            android:layout_gravity="right" />
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/players"
@@ -57,18 +57,18 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/imgLL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:id="@+id/imgLL">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imgGameType"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/one_ball"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:src="@drawable/one_ball"/>
 
         <TextView
             android:id="@+id/ruleSet"
@@ -77,10 +77,11 @@
             android:layout_alignLeft="@+id/imgGameType"
             android:layout_alignRight="@+id/imgGameType"
             android:layout_below="@+id/imgGameType"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="Rule set"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 </RelativeLayout>
