@@ -34,6 +34,7 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.MultipleFixedChoice
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -84,12 +85,12 @@ public class MultipleChoiceFragment extends ListFragment {
         for (int i = 0; i < fixedChoicePage.getOptionCount(); i++) {
             choices.add(fixedChoicePage.getOptionAt(i));
         }
-
+        Collections.sort(choices);
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
 
         if (getArguments().getInt(SingleChoiceFragment.ARG_TITLE_SIZE, -1) != -1)
-            ((TextView) rootView.findViewById(android.R.id.title)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+            ((TextView) rootView.findViewById(android.R.id.title)).setTextAppearance(getContext(), R.style.WizardPageTitle2);
 
         final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
         setListAdapter(new ArrayAdapter<String>(getActivity(),

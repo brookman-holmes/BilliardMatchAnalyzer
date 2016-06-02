@@ -19,6 +19,7 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -100,7 +101,7 @@ public class TurnEndFragment extends ListFragment {
                              Bundle savedInstanceState) {
         page = (TurnEndPage) callbacks.onGetPage(key);
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
-        ((TextView) rootView.findViewById(android.R.id.title)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        ((TextView) rootView.findViewById(android.R.id.title)).setTextAppearance(getContext(), R.style.WizardPageTitle2);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
         listView = (ListView) rootView.findViewById(android.R.id.list);
 
@@ -148,6 +149,7 @@ public class TurnEndFragment extends ListFragment {
             else
                 adapter.add(getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending)));
         }
+        adapter.sort();
         adapter.notifyDataSetChanged();
     }
 
@@ -186,6 +188,10 @@ public class TurnEndFragment extends ListFragment {
 
         private int indexOf(String item) {
             return objects.indexOf(item);
+        }
+
+        private void sort() {
+            Collections.sort(objects);
         }
     }
 }

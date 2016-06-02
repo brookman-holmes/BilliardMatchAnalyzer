@@ -3,7 +3,6 @@
     <string name="why_position">Bad position</string>
     <string name="why_focus">Lack of focus</string>
     <string name="why_jacked_up">Jacked up</string>
-    <string name="why_spin">Too much spin</string>
     <string name="why_english">Unintentional english</string>
     <string name="why_slow">Hit the ball too soft</string>
     <string name="why_fast">Hit the ball too hard</string>
@@ -13,6 +12,11 @@
     <string name="why_aim">Poor aim</string>
     <string name="why_follow">Applied too much top spin</string>
     <string name="why_draw">Applied too much draw</string>
+    <string name="why_too_much_inside">Too much inside english</string>
+    <string name="why_too_much_outside">Too much outside english</string>
+    <string name="why_too_little_outside">Too little outside english</string>
+    <string name="why_too_little_inside">Too little inside english</string>
+    <string name="why_tried_too_hard">Forced the hit / tried too hard</string>
 
     <string-array name="why_choices">
         <item>@string/why_position</item>
@@ -23,8 +27,11 @@
         <item>@string/why_slow</item>
         <item>@string/why_rail</item>
         <item>@string/why_forcing</item>
-        <item>@string/why_spin</item>
         <item>@string/why_jacked_up</item>
+        <item>@string/why_too_much_inside</item>
+        <item>@string/why_too_much_outside</item>
+        <item>@string/why_too_little_inside</item>
+        <item>@string/why_too_little_outside</item>
     </string-array>
 
     <string-array name="why_choices_break">
@@ -32,6 +39,7 @@
         <item>@string/why_aim</item>
         <item>@string/why_follow</item>
         <item>@string/why_draw</item>
+        <item>@string/why_tried_too_hard</item>
     </string-array>
 
     <string-array name="why_choices_illegal_break">

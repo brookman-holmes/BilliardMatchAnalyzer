@@ -72,7 +72,7 @@ public class FoulFragment extends ListFragment {
 
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
-        ((TextView) rootView.findViewById(android.R.id.title)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        ((TextView) rootView.findViewById(android.R.id.title)).setTextAppearance(getContext(), R.style.WizardPageTitle2);
         listView = (ListView) rootView.findViewById(android.R.id.list);
         adapter = new CustomAdapter(getActivity(),
                 android.R.layout.simple_list_item_single_choice,
