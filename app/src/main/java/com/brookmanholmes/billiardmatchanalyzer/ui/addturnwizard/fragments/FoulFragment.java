@@ -15,6 +15,7 @@ import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.FoulPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
+import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.SingleChoiceFragment;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
 
@@ -67,12 +68,14 @@ public class FoulFragment extends ListFragment {
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                                       Bundle savedInstanceState) {
         page = (FoulPage) callbacks.onGetPage(key);
 
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
-        ((TextView) rootView.findViewById(android.R.id.title)).setTextAppearance(getContext(), R.style.WizardPageTitle2);
+        TextView title = (TextView) rootView.findViewById(android.R.id.title);
+        title.setTextAppearance(getContext(), R.style.WizardPageTitle2);
+        title.setPadding(0, 0, 0, 0);
         listView = (ListView) rootView.findViewById(android.R.id.list);
         adapter = new CustomAdapter(getActivity(),
                 android.R.layout.simple_list_item_single_choice,

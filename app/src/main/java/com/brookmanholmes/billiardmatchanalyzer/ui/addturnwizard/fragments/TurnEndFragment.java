@@ -98,10 +98,13 @@ public class TurnEndFragment extends ListFragment {
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                                       Bundle savedInstanceState) {
         page = (TurnEndPage) callbacks.onGetPage(key);
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
-        ((TextView) rootView.findViewById(android.R.id.title)).setTextAppearance(getContext(), R.style.WizardPageTitle2);
+        TextView title = (TextView) rootView.findViewById(android.R.id.title);
+        title.setTextAppearance(getContext(), R.style.WizardPageTitle2);
+        title.setPadding(0, 0, 0, 0);
+
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
         listView = (ListView) rootView.findViewById(android.R.id.list);
 

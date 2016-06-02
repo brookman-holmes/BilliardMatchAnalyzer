@@ -88,7 +88,9 @@ public class SingleChoiceFragment extends ListFragment {
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
 
         if (getArguments().getInt(SingleChoiceFragment.ARG_TITLE_SIZE, -1) != -1) {
-            ((TextView) rootView.findViewById(android.R.id.title)).setTextAppearance(getContext(), R.style.WizardPageTitle2);
+            TextView title = (TextView) rootView.findViewById(android.R.id.title);
+            title.setTextAppearance(getContext(), R.style.WizardPageTitle2);
+            title.setPadding(0, 0, 0, 0);
         }
 
         final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
