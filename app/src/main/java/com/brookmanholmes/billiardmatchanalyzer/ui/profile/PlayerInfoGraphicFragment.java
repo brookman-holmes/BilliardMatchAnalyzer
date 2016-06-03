@@ -460,10 +460,10 @@ public class PlayerInfoGraphicFragment extends Fragment {
                         .build());
 
 
-                successfulBreak.setText(getString(R.string.successful_breaks, player.getBreakSuccesses(), player.getBreakAttempts()));
-                continuationBreak.setText(getString(R.string.continuation_after_the_break, player.getBreakContinuations(), player.getBreakAttempts()));
-                winBreak.setText(getString(R.string._8_9_on_the_break, player.getWinsOnBreak(), player.getBreakAttempts()));
-                foulBreak.setText(getString(R.string.fouls_on_the_break, player.getBreakFouls(), player.getBreakAttempts()));
+                successfulBreak.setText(getString(R.string.successful_breaks, player.getBreakSuccesses(), player.getBreakAttempts(), convertFloatToPercent((float) player.getBreakSuccesses() / (float) player.getBreakAttempts())));
+                continuationBreak.setText(getString(R.string.continuation_after_the_break, player.getBreakContinuations(), player.getBreakAttempts(), convertFloatToPercent((float) player.getBreakContinuations() / (float) player.getBreakAttempts())));
+                winBreak.setText(getString(R.string._8_9_on_the_break, player.getWinsOnBreak(), player.getBreakAttempts(), convertFloatToPercent((float) player.getWinsOnBreak() / (float) player.getBreakAttempts())));
+                foulBreak.setText(getString(R.string.fouls_on_the_break, player.getBreakFouls(), player.getBreakAttempts(), convertFloatToPercent((float) player.getBreakFouls() / (float) player.getBreakAttempts())));
             }
 
             private String getString(@StringRes int res, Object... formatArgs) {
@@ -528,9 +528,9 @@ public class PlayerInfoGraphicFragment extends Fragment {
                 }
 
                 int missed = opponent.getSafetySuccesses() - player.getSafetyEscapes() - player.getSafetyReturns();
-                misses.setText(String.format(Locale.getDefault(), "You missed (%1$d/%2$d)", missed, opponent.getSafetySuccesses()));
-                safetyReturns.setText(String.format(Locale.getDefault(), "You got safe (%1$d/%2$d)", player.getSafetyReturns(), opponent.getSafetySuccesses()));
-                safetyEscapes.setText(String.format(Locale.getDefault(), "You made a ball (%1$d/%2$d)", player.getSafetyEscapes(), opponent.getSafetySuccesses()));
+                misses.setText(String.format(Locale.getDefault(), "%3$s You missed, %1$d/%2$d", missed, opponent.getSafetySuccesses(), convertFloatToPercent((float) missed / (float) opponent.getSafetySuccesses())));
+                safetyReturns.setText(String.format(Locale.getDefault(), "%3$s You got safe, %1$d/%2$d", player.getSafetyReturns(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyReturns() / (float) opponent.getSafetySuccesses())));
+                safetyEscapes.setText(String.format(Locale.getDefault(), "%3$s You made a ball, %1$d/%2$d", player.getSafetyEscapes(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyEscapes() / (float) opponent.getSafetySuccesses())));
             }
 
         }
