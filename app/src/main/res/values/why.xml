@@ -17,6 +17,13 @@
     <string name="why_too_little_outside">Too little outside english</string>
     <string name="why_too_little_inside">Too little inside english</string>
     <string name="why_tried_too_hard">Forced the hit / tried too hard</string>
+    <string name="why_too_much_draw">Too much draw</string>
+    <string name="why_too_little_draw">Too little draw</string>
+    <string name="why_too_much_follow">Too much follow</string>
+    <string name="why_too_little_follow">Too little follow</string>
+    <string name="why_table_issues">Table roll off/cling/bad pocket</string>
+    <string name="why_bad_pattern">Bad pattern</string>
+
 
     <string-array name="why_choices">
         <item>@string/why_position</item>
@@ -32,6 +39,12 @@
         <item>@string/why_too_much_outside</item>
         <item>@string/why_too_little_inside</item>
         <item>@string/why_too_little_outside</item>
+        <item>@string/why_too_little_draw</item>
+        <item>@string/why_too_much_draw</item>
+        <item>@string/why_too_little_follow</item>
+        <item>@string/why_too_much_follow</item>
+        <item>@string/why_table_issues</item>
+        <item>@string/why_bad_pattern</item>
     </string-array>
 
     <string-array name="why_choices_break">
