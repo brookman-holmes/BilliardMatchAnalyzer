@@ -48,7 +48,8 @@ public class IntroActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
 
-        replaceFragment(getIntroFragment(), INTRO_FRAGMENT);
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null)
+            replaceFragment(getIntroFragment(), INTRO_FRAGMENT);
     }
 
     @Override protected void onResume() {
@@ -79,7 +80,7 @@ public class IntroActivity extends BaseActivity {
     private void replaceFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
-        transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);
         transaction.commit();
     }
