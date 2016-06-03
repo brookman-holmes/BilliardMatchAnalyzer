@@ -8,6 +8,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,8 +49,18 @@ public class IntroActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
 
-        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null)
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             replaceFragment(getIntroFragment(), INTRO_FRAGMENT);
+        }
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override public void onBackStackChanged() {
+                if (!getSupportFragmentManager().findFragmentById(R.id.fragment_container).getTag().equals(INTRO_FRAGMENT))
+                    fab.show();
+                else
+                    fab.hide();
+            }
+        });
     }
 
     @Override protected void onResume() {
@@ -58,7 +69,8 @@ public class IntroActivity extends BaseActivity {
         final int animationDelay = 250; // .25 seconds
         new Handler().postDelayed(new Runnable() {
             @Override public void run() {
-                fab.show();
+                if (!getSupportFragmentManager().findFragmentById(R.id.fragment_container).getTag().equals(INTRO_FRAGMENT))
+                    fab.show();
             }
         }, animationDelay); // display fab after activity starts
     }
@@ -86,18 +98,21 @@ public class IntroActivity extends BaseActivity {
     }
 
     private Fragment getIntroFragment() {
+        fab.hide();
         return getSupportFragmentManager().findFragmentByTag(INTRO_FRAGMENT) == null ?
                 new IntroFragment() :
                 getSupportFragmentManager().findFragmentByTag(INTRO_FRAGMENT);
     }
 
     private Fragment getPlayerListFragment() {
+        fab.show();
         return getSupportFragmentManager().findFragmentByTag(PLAYER_LIST_FRAGMENT) == null ?
                 new PlayerListFragment() :
                 getSupportFragmentManager().findFragmentByTag(PLAYER_LIST_FRAGMENT);
     }
 
     private Fragment getMatchListFragment() {
+        fab.show();
         return getSupportFragmentManager().findFragmentByTag(MATCH_LIST_FRAGMENT) == null ?
                 MatchListFragment.create(null, null) :
                 getSupportFragmentManager().findFragmentByTag(MATCH_LIST_FRAGMENT);
