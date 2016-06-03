@@ -468,7 +468,7 @@ public class DatabaseAdapter {
 
         long turnId = database.insert(TABLE_TURNS, null, turnValues);
 
-        if (turn.getAdvStats().use()) {
+        if (turn.getAdvStats() != null && turn.getAdvStats().use()) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_SHOT_TYPE, turn.getAdvStats().getShotType());
             values.put(COLUMN_SHOT_SUB_TYPE, turn.getAdvStats().getShotSubtype());

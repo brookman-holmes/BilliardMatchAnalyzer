@@ -60,6 +60,13 @@ public class PlayerInfoGraphicFragment extends Fragment {
         return fragment;
     }
 
+    static String convertFloatToPercent(float val) {
+        if (Float.isNaN(val))
+            return String.format(Locale.getDefault(), "%.0f%%", 0f);
+        else
+            return String.format(Locale.getDefault(), "%.0f%%", val * 100);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -322,12 +329,6 @@ public class PlayerInfoGraphicFragment extends Fragment {
 
             abstract void setItemDesc();
 
-            String convertFloatToPercent(float val) {
-                if (Float.isNaN(val))
-                    return String.format(Locale.getDefault(), "%.0f%%", 0f);
-                else
-                    return String.format(Locale.getDefault(), "%.0f%%", val * 100);
-            }
         }
 
         static class SafetyTwoItemHolder extends TwoItemHolder {
@@ -337,16 +338,19 @@ public class PlayerInfoGraphicFragment extends Fragment {
 
             @Override void setItemDesc() {
                 item1Desc.setText("Forced opponent\nto foul");
-                item2Desc.setText("Safety success rate");
+                item2Desc.setText("Effective safety success rate");
             }
 
             @Override
             public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
-                float safetyPct = (float) getPlayerFromList(players).getSafetySuccesses() / (float) getPlayerFromList(players).getSafetyAttempts();
+                AbstractPlayer player = getPlayerFromList(players);
+                AbstractPlayer opponent = getPlayerFromList(opponents);
+
+                float safetyPct = (float) (player.getSafetySuccesses() - opponent.getSafetyEscapes() - opponent.getSafetyReturns()) / (float) player.getSafetyAttempts();
                 int ballInHands = getForcedErrors(opponents);
 
-                item2.setText(String.format(Locale.getDefault(), "%1$s", convertFloatToPercent(safetyPct)));
                 item1.setText(String.format(Locale.getDefault(), "%1$d", ballInHands));
+                item2.setText(String.format(Locale.getDefault(), "%1$s", convertFloatToPercent(safetyPct)));
             }
 
             int getForcedErrors(List<AbstractPlayer> opponents) {
@@ -458,7 +462,7 @@ public class PlayerInfoGraphicFragment extends Fragment {
 
                 successfulBreak.setText(getString(R.string.successful_breaks, player.getBreakSuccesses(), player.getBreakAttempts()));
                 continuationBreak.setText(getString(R.string.continuation_after_the_break, player.getBreakContinuations(), player.getBreakAttempts()));
-                winBreak.setText(getString(R.string._9_10_on_the_break, player.getWinsOnBreak(), player.getBreakAttempts()));
+                winBreak.setText(getString(R.string._8_9_on_the_break, player.getWinsOnBreak(), player.getBreakAttempts()));
                 foulBreak.setText(getString(R.string.fouls_on_the_break, player.getBreakFouls(), player.getBreakAttempts()));
             }
 

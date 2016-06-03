@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
-                android:text="@string/_9_10_on_the_break"
+                android:text="@string/_8_9_on_the_break"
                 android:textSize="12sp"/>
         </LinearLayout>
 
