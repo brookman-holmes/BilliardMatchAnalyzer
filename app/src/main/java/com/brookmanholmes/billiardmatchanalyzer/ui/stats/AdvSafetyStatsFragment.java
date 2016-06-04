@@ -1,27 +1,20 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
-import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
-import com.brookmanholmes.billiards.turn.AdvStats;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
-public class AdvSafetyStatsFragment extends Fragment {
+public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
+    final static String[] array = new String[]{"Safety", "Safety error"};
     private static final int FULL_HOOK = 0,
             PARTIAL_HOOK = 1,
             LONG_T = 2,
@@ -35,7 +28,7 @@ public class AdvSafetyStatsFragment extends Fragment {
     @Bind(R.id.under) TextView underCut;
     @Bind(R.id.fast) TextView fast;
     @Bind(R.id.slow) TextView slow;
-    List<AdvStats> stats = new ArrayList<>();
+
 
     public static AdvSafetyStatsFragment create(Bundle args) {
         AdvSafetyStatsFragment frag = new AdvSafetyStatsFragment();
@@ -53,32 +46,21 @@ public class AdvSafetyStatsFragment extends Fragment {
         return frag;
     }
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        DatabaseAdapter db = new DatabaseAdapter(getContext());
-
-        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID, -1L);
-        String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
-
-        stats = matchId == -1L ? db.getAdvStats(playerName, new String[] {"Safety", "Safety error"}) : db.getAdvStats(matchId, playerName, new String[]{"Safety", "Safety error"});
-    }
-
-    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.container_adv_safety_stats, container, false);
-        ButterKnife.bind(this, view);
-
-        updateView(view);
-
-        return view;
-    }
-
-    public void updateView(View view) {
+    @Override void updateView(View view) {
         StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getContext(), stats), overCut, underCut);
         StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(getContext(), stats), slow, fast);
 
         updateSafetyGrid(view);
     }
+
+    @Override String[] getShotTypes() {
+        return array;
+    }
+
+    @Override int getLayoutId() {
+        return R.layout.container_adv_safety_stats;
+    }
+
 
     private void updateSafetyGrid(View view) {
         List<StatsUtils.StatLineItem> statLineItems = StatsUtils.getSafetyStats(getContext(), stats);

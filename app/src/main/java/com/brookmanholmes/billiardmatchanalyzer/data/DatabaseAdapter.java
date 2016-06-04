@@ -620,7 +620,11 @@ public class DatabaseAdapter {
     private AdvStats buildAdvStatsFromCursor(Cursor c) {
         long advStatsId = c.getLong(c.getColumnIndex(COLUMN_ADV_STATS_ID));
 
-        AdvStats.Builder builder = new AdvStats.Builder(c.getString(c.getColumnIndex(COLUMN_NAME)));
+        int columnName = c.getColumnIndex(COLUMN_NAME) == -1 ?
+                c.getColumnIndex("player_name") :
+                c.getColumnIndex(COLUMN_NAME);
+
+        AdvStats.Builder builder = new AdvStats.Builder(c.getString(columnName));
         builder.startingPosition(c.getString(c.getColumnIndex(COLUMN_STARTING_POSITION)))
                 .shotType(c.getString(c.getColumnIndex(COLUMN_SHOT_TYPE)))
                 .subType(c.getString(c.getColumnIndex(COLUMN_SHOT_SUB_TYPE)))

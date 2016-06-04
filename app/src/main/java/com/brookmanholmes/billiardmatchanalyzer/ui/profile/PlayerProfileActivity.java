@@ -27,9 +27,12 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.MatchListFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvBreakingStatsFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvSafetyStatsFragment;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvShootingStatsFragment;
+import com.brookmanholmes.billiardmatchanalyzer.ui.stats.Filterable;
+import com.brookmanholmes.billiardmatchanalyzer.ui.stats.StatFilter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -48,9 +51,8 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     @Bind(R.id.pager) ViewPager pager;
     @Bind(R.id.tabs) TabLayout tabLayout;
     ViewPagerAdapter adapter;
-
+    StatFilter filter = new StatFilter("All opponents");
     String player;
-
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +67,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
         playerNameLayout.setVisibility(View.GONE);
         playerName.setText(player);
-        opponentName.setText(R.string.opponents);
+        opponentName.setText(filter.getOpponent());
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
@@ -89,21 +91,27 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
     private void displayFilterDialog() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_filter, null);
+        final String opponent = filter.getOpponent();
 
-        Spinner gameSpinner = (Spinner) view.findViewById(R.id.gameTypeSpinner);
-        Spinner opponentSpinner = (Spinner) view.findViewById(R.id.opponentSpinner);
-        Spinner dateSpinner = (Spinner) view.findViewById(R.id.dateSpinner);
+        final Spinner gameSpinner = (Spinner) view.findViewById(R.id.gameTypeSpinner);
+        final Spinner opponentSpinner = (Spinner) view.findViewById(R.id.opponentSpinner);
+        final Spinner dateSpinner = (Spinner) view.findViewById(R.id.dateSpinner);
 
         gameSpinner.setAdapter(createAdapter(getGames()));
         opponentSpinner.setAdapter(createAdapter(getOpponents()));
         dateSpinner.setAdapter(createAdapter(Arrays.asList("All time", "Today", "Last week", "Last month", "Last 3 months", "Last 6 months")));
+
+        //gameSpinner.setSelection(((ArrayAdapter<String>)gameSpinner.getAdapter()).getPosition(game));
+        opponentSpinner.setSelection(((ArrayAdapter<String>) opponentSpinner.getAdapter()).getPosition(opponent));
+        //dateSpinner.setSelection(((ArrayAdapter<String>)dateSpinner.getAdapter()).getPosition(date));
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
         dialog.setTitle("Filter by")
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
-
+                        filter.setOpponent((String) opponentSpinner.getSelectedItem());
+                        opponentName.setText(filter.getOpponent());
                     }
                 })
                 .create().show();
@@ -111,6 +119,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
     private List<String> getGames() {
         ArrayList<String> list = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.games)));
+        Collections.sort(list);
         list.add(0, "All games");
 
         return list;
@@ -118,6 +127,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
     private List<String> getOpponents() {
         ArrayList<String> list = new ArrayList<>(new DatabaseAdapter(this).getNames());
+        Collections.sort(list);
         list.add(0, "All opponents");
 
         return list;
@@ -126,7 +136,6 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     private SpinnerAdapter createAdapter(List<String> data) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         return adapter;
     }
 
@@ -138,6 +147,12 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     @Override
     public void onPageSelected(int position) {
         playerNameLayout.setVisibility((position == 1 ? View.VISIBLE : View.GONE));
+
+        Fragment fragment = adapter.getItem(pager.getCurrentItem());
+
+        if (fragment instanceof Filterable) {
+            ((Filterable) fragment).setFilter(filter);
+        }
     }
 
     @Override
