@@ -93,20 +93,12 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         return PlayerController.getPlayerFromList(player2, playerController.newOpponent());
     }
 
-    public T getPlayer(int end) {
-        return getPlayer(0, end);
+    @Override public T getPlayer(int from, int to) {
+        return PlayerController.getPlayerFromList(convertArrayDequeToList(player1).subList(from, to), playerController.newPlayer());
     }
 
-    public T getOpponent(int end) {
-        return getOpponent(0, end);
-    }
-
-    public T getPlayer(int start, int end) {
-        return PlayerController.getPlayerFromList(convertArrayDequeToList(player1).subList(start, end), playerController.newPlayer());
-    }
-
-    public T getOpponent(int start, int end) {
-        return PlayerController.getPlayerFromList(convertArrayDequeToList(player2).subList(start, end), playerController.newOpponent());
+    @Override public T getOpponent(int from, int to) {
+        return PlayerController.getPlayerFromList(convertArrayDequeToList(player2).subList(from, to), playerController.newOpponent());
     }
 
     @Override public String getCurrentPlayersName() {
@@ -151,7 +143,6 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         }
     }
 
-    // todo: this needs to be made public somehow so that it can go into the database
     private void insertGameWonForGhost() {
         TableStatus tableStatus = game.getCurrentTableStatus();
         tableStatus.setBallTo(BallStatus.MADE, game.getGhostBallsToWinGame());
@@ -171,6 +162,14 @@ public class Match<T extends AbstractPlayer> implements IMatch {
 
     public int getTurnCount() {
         return turns.size();
+    }
+
+    @Override public List<Turn> getTurns() {
+        return convertArrayDequeToList(turns);
+    }
+
+    @Override public List<Turn> getTurns(int from, int to) {
+        return convertArrayDequeToList(turns).subList(from, to);
     }
 
     void updateGameState(Turn turn) {

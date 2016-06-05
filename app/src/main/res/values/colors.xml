@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryLight">#64B5F6</color>
+    <color name="colorPrimaryLight">#BBDEFB</color>
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#FF3D00</color>
@@ -17,7 +17,7 @@
     <color name="background_light">#80FAFAFA</color>
     <color name="icon_dark">#59FFFFFF</color>
     <color name="pager_indicator_color">#33000000</color>
-    <color name="step_pager_previous_tab_color">#82B1FF</color>
+    <color name="step_pager_previous_tab_color">#BBDEFB</color>
     <color name="step_pager_selected_tab_color">#2979FF</color>
     <color name="step_pager_selected_last_tab_color">#FF5722</color>
     <color name="step_pager_next_tab_color">#F0F0F0</color>
@@ -33,11 +33,11 @@
     <color name="grey">#E0E0E0</color>
 
 
-    <color name="good">#C8E6C9</color>
-    <color name="almost_good">#F0F4C3</color>
-    <color name="okay">#FFF9C4</color>
-    <color name="just_above_bad">#FFE0B2</color>
-    <color name="bad">#FFCDD2</color>
+    <color name="good">#E8F5E9</color>
+    <color name="almost_good">#F9FBE7</color>
+    <color name="okay">#FFFDE7</color>
+    <color name="just_above_bad">#FFF3E0</color>
+    <color name="bad">#ffebee</color>
 
     <color name="chart">#FFD740</color>
     <color name="chart1">#ff5252</color>

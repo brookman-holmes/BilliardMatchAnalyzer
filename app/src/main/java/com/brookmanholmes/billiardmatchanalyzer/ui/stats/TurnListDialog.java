@@ -71,7 +71,7 @@ public class TurnListDialog extends DialogFragment implements
 
         long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID);
 
-        adapter = new ExpandableTurnListAdapter(getContext(), db.getMatch(matchId), db.getMatchTurns(matchId));
+        adapter = new ExpandableTurnListAdapter(getContext(), db.getMatch(matchId));
     }
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class TurnListDialog extends DialogFragment implements
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new SimpleListDividerDecorator(
-                ContextCompat.getDrawable(getContext(), R.drawable.line_divider), false));
+                ContextCompat.getDrawable(getContext(), R.drawable.line_divider), true));
         itemManager.attachRecyclerView(recyclerView);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);

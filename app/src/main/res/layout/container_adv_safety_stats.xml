@@ -32,7 +32,6 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:alignmentMode="alignBounds"
         android:columnCount="3"
@@ -40,175 +39,109 @@
 
         <TextView
             android:id="@+id/tvFullHook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".6"
-            android:layout_gravity="start"
+            style="@style/grid_item_description"
             android:text="@string/safety_full_hook"
             android:textColor="@color/primary_text"
-            android:textSize="16sp"/>
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvFullHookCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center|end"
-            android:gravity="center"
+            style="@style/grid_item_count"
             android:textColor="@color/primary_text"
-            android:textSize="16sp" />
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvFullHookPct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center"
-            android:gravity="center"
+            style="@style/grid_item_count"
             android:textColor="@color/primary_text"
-            android:textSize="16sp"
-            />
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvPartialHook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".6"
-            android:layout_gravity="start"
+            style="@style/grid_item_description"
             android:text="@string/safety_partial_hook"
-            android:textSize="16sp"/>
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvPartialHookCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center|end"
-            android:gravity="center"
-            android:textSize="16sp" />
+            style="@style/grid_item_count"
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvPartialHookPct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center"
+            style="@style/grid_item_count"
             android:gravity="center"
-            android:textSize="16sp" />
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvLongT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".6"
-            android:layout_gravity="start"
+            style="@style/grid_item_description"
             android:text="@string/safety_long_t"
             android:textColor="@color/primary_text"
-            android:textSize="16sp"/>
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvLongTCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center|end"
-            android:gravity="center"
+            style="@style/grid_item_count"
             android:textColor="@color/primary_text"
-            android:textSize="16sp" />
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvLongTPct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center"
-            android:gravity="center"
+            style="@style/grid_item_count"
             android:textColor="@color/primary_text"
-            android:textSize="16sp" />
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvShortT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".6"
-            android:layout_gravity="start"
+            style="@style/grid_item_description"
             android:text="@string/safety_short_t"
-            android:textSize="16sp"/>
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvShortTCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center|end"
-            android:gravity="center"
-            android:textSize="16sp" />
+            style="@style/grid_item_count"
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvShortTPct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="16sp" />
+            style="@style/grid_item_count"
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvDirectShot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".6"
-            android:layout_gravity="start"
+            style="@style/grid_item_description"
             android:text="@string/safety_no_shot"
             android:textColor="@color/primary_text"
-            android:textSize="16sp"/>
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvDirectShotCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center|end"
-            android:gravity="center"
+            style="@style/grid_item_count"
             android:textColor="@color/primary_text"
-            android:textSize="16sp" />
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvDirectShotPct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center"
-            android:gravity="center"
+            style="@style/grid_item_count"
             android:textColor="@color/primary_text"
-            android:textSize="16sp" />
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvOpen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".6"
-            android:layout_gravity="start"
+            style="@style/grid_item_description"
             android:text="@string/safety_open"
-            android:textSize="16sp"/>
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvOpenCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center|end"
-            android:gravity="center"
-            android:textSize="16sp" />
+            style="@style/grid_item_count"
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvOpenPct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight=".2"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="16sp" />
+            style="@style/grid_item_count"
+            android:visibility="visible"/>
     </GridLayout>
 
 </LinearLayout>

@@ -7,4 +7,7 @@
         <attr name="pageIndicatorColor" format="color" />
         <attr name="currentPageIndicatorColor" format="color" />
     </declare-styleable>
+
+    <attr name="grid_item_description" format="reference"/>
+    <attr name="grid_item_count" format="reference"/>
 </resources>

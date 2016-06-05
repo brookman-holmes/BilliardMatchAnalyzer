@@ -234,8 +234,8 @@ public class MatchTest {
         assertThat(match.getGameStatus(3).breaker, is(PlayerTurn.OPPONENT));
         assertThat(match.getGameStatus(4).breaker, is(PlayerTurn.PLAYER));
 
-        assertThat(match.getPlayer(match.getTurnCount()), is(match.getPlayer()));
-        assertThat(match.getOpponent(match.getTurnCount()), is(match.getOpponent()));
+        assertThat(match.getPlayer(0, match.getTurnCount()), is(match.getPlayer()));
+        assertThat(match.getOpponent(0, match.getTurnCount()), is(match.getOpponent()));
     }
 
     @Test
@@ -243,8 +243,8 @@ public class MatchTest {
         match.addTurn(turnBuilder.breakMiss());
 
         addTurnOne();
-        assertThat(match.getPlayer(match.getTurnCount()), is(player1));
-        assertThat(match.getOpponent(match.getTurnCount()), is(player2));
+        assertThat(match.getPlayer(0, match.getTurnCount()), is(player1));
+        assertThat(match.getOpponent(0, match.getTurnCount()), is(player2));
 
         match.addTurn(turnBuilder.miss());
         match.addTurn(turnBuilder().madeBalls(3).miss());
@@ -252,7 +252,7 @@ public class MatchTest {
 
         addTurnTwo();
 
-        assertThat(match.getPlayer(match.getTurnCount() - 2), is(player1));
-        assertThat(match.getOpponent(match.getTurnCount() - 2), is(player2));
+        assertThat(match.getPlayer(0, match.getTurnCount() - 2), is(player1));
+        assertThat(match.getOpponent(0, match.getTurnCount() - 2), is(player2));
     }
 }

@@ -3,7 +3,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
-import android.util.TypedValue;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
@@ -50,54 +50,20 @@ public class StatsUtils {
     // todo: dynamically create each line in the list and put it in a gridview that's inside a scrolling container?
     public static void updateGridOfMissReasons(GridLayout grid, List<StatLineItem> items) {
         if (grid != null) {
-            Context context = grid.getContext();
+            for (int i = 0, c = 0; i < items.size(); i++, c += 3) {
+                TextView description = (TextView) grid.getChildAt(c);
+                TextView count = (TextView) grid.getChildAt(c + 1);
+                TextView percent = (TextView) grid.getChildAt(c + 2);
 
-            TextView reason = getTextView(context);
-            reason.setLayoutParams(getParams(0, 0));
-            reason.setText("Reason for missing");
+                description.setVisibility(View.VISIBLE);
+                count.setVisibility(View.VISIBLE);
+                percent.setVisibility(View.VISIBLE);
 
-            TextView number = getTextView(context);
-            number.setLayoutParams(getParams(1, 0));
-            number.setText("#");
-
-            TextView pct = getTextView(context);
-            pct.setLayoutParams(getParams(2, 0));
-            pct.setText("%");
-
-            for (int i = 0, r = 0; i < items.size(); i++, r++) {
-                TextView description = getTextView(context);
-                TextView count = getTextView(context);
-                TextView percent = getTextView(context);
-
-                description.setLayoutParams(getParams(0, i + 1));
-                count.setLayoutParams(getParams(1, i + 1));
-                percent.setLayoutParams(getParams(2, i + 1));
                 description.setText(items.get(i).description);
                 count.setText(String.valueOf(items.get(i).count));
                 percent.setText(items.get(i).getPercentage());
-
-                grid.addView(description);
-                grid.addView(count);
-                grid.addView(percent);
             }
         }
-    }
-
-    private static TextView getTextView(Context context) {
-        TextView textView = new TextView(context);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimensionPixelSize(R.dimen.medium_text));
-
-        return textView;
-    }
-
-    private static GridLayout.LayoutParams getParams(int column, int row) {
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        params.columnSpec = GridLayout.spec(column);
-        params.rowSpec = GridLayout.spec(row);
-        return params;
     }
 
     public static Pair<Integer, Integer> getHowCutErrors(Context context, List<AdvStats> stats) {

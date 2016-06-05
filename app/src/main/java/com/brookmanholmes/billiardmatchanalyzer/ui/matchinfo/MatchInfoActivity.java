@@ -60,6 +60,8 @@ import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -468,12 +470,28 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             return adapter.getOpponent();
         }
 
+        @Override public AbstractPlayer getPlayer(int from, int to) {
+            return adapter.getPlayer(from, to);
+        }
+
+        @Override public AbstractPlayer getOpponent(int from, int to) {
+            return adapter.getOpponent(from, to);
+        }
+
         @Override public String getLocation() {
             return adapter.getLocation();
         }
 
         @Override public int getTurnCount() {
             return adapter.getTurnCount();
+        }
+
+        @Override public List<Turn> getTurns() {
+            return adapter.getTurns();
+        }
+
+        @Override public List<Turn> getTurns(int from, int to) {
+            return adapter.getTurns(from, to);
         }
 
         @Override public long getMatchId() {
@@ -596,6 +614,22 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
             @Override public T getOpponent() {
                 return match.getOpponent();
+            }
+
+            @Override public T getPlayer(int from, int to) {
+                return match.getPlayer(from, to);
+            }
+
+            @Override public T getOpponent(int from, int to) {
+                return match.getOpponent(from, to);
+            }
+
+            @Override public List<Turn> getTurns() {
+                return match.getTurns();
+            }
+
+            @Override public List<Turn> getTurns(int from, int to) {
+                return match.getTurns(from, to);
             }
 
             @Override

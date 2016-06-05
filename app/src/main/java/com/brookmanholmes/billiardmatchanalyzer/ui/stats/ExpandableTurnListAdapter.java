@@ -41,12 +41,12 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
     Match<?> match;
     int[] colors = new int[]{R.color.good, R.color.almost_good, R.color.okay, R.color.bad};
 
-    public ExpandableTurnListAdapter(Context context, Match<?> match, List<Turn> data) {
+    public ExpandableTurnListAdapter(Context context, Match<?> match) {
         inflater = LayoutInflater.from(context);
         this.match = match;
         setHasStableIds(true);
 
-        buildDataSource(data);
+        buildDataSource(match.getTurns());
     }
 
     private void buildDataSource(List<Turn> data) {
@@ -104,8 +104,8 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
     @Override
     public void onBindGroupViewHolder(GameViewHolder holder, int groupPosition, int viewType) {
         holder.bind(groupPosition + 1,
-                match.getPlayer(getTurnNumber(groupPosition)).getWins(),
-                match.getOpponent(getTurnNumber(groupPosition)).getWins(),
+                match.getPlayer(0, getTurnNumber(groupPosition)).getWins(),
+                match.getOpponent(0, getTurnNumber(groupPosition)).getWins(),
                 data.get(groupPosition).size() > 0);
 
         final int expandState = holder.getExpandStateFlags();
@@ -125,11 +125,9 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
 
         holder.bind(data.get(groupPosition).get(childPosition),
                 viewType == 1 ? PlayerTurn.PLAYER : PlayerTurn.OPPONENT,
-                viewType == 1 ? match.getPlayer(turn + 1) : match.getOpponent(turn + 1));
+                viewType == 1 ? match.getPlayer(0, turn + 1) : match.getOpponent(0, turn + 1));
 
         holder.setBalls(data.get(groupPosition).get(childPosition));
-
-
     }
 
     @Override public int getChildItemViewType(int groupPosition, int childPosition) {
@@ -190,7 +188,7 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
         private void setBgColor() {
             @ColorRes int color;
             if ((getExpandStateFlags() & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0)
-                color = R.color.grey;
+                color = R.color.colorPrimaryLight;
             else
                 color = android.R.color.white;
 

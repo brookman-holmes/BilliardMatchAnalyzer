@@ -6,6 +6,8 @@ import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
+import java.util.List;
+
 /**
  * Created by Brookman Holmes on 1/31/2016.
  */
@@ -15,6 +17,14 @@ public interface IMatch<T extends AbstractPlayer> {
     T getPlayer();
 
     T getOpponent();
+
+    T getPlayer(int from, int to);
+
+    T getOpponent(int from, int to);
+
+    List<Turn> getTurns();
+
+    List<Turn> getTurns(int from, int to);
 
     String getLocation();
 

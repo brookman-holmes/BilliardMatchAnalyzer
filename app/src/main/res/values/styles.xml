@@ -15,6 +15,9 @@
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
         <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+
+        <item name="@attr/grid_item_description">@style/grid_item_description</item>
+        <item name="@attr/grid_item_count">@style/grid_item_count</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="MyAppTheme">
@@ -138,14 +141,17 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_column">0</item>
-        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:layout_columnWeight">.6</item>
+        <item name="android:visibility">gone</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="grid_item_count">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:layout_columnWeight">.2</item>
+        <item name="android:gravity">center</item>
+        <item name="android:visibility">gone</item>
         <item name="android:textSize">16sp</item>
     </style>
 </resources>

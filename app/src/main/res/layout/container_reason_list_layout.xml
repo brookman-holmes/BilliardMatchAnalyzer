@@ -4,8 +4,6 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_gravity="center_horizontal"
             android:alignmentMode="alignBounds"
             android:columnCount="3"
             android:useDefaultMargins="true"
@@ -13,23 +11,121 @@
 
     <TextView
         style="@style/grid_item_description"
-        android:layout_marginRight="40dp"
-        android:layout_row="0"
-        android:text="Reason for missing"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_description"/>
+
+    <TextView
+        style="@style/grid_item_count"/>
+
+    <TextView
+        style="@style/grid_item_count"/>
+
+    <TextView
+        style="@style/grid_item_description"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_description"
         />
 
     <TextView
         style="@style/grid_item_count"
-        android:layout_column="1"
-        android:layout_marginRight="20dp"
-        android:layout_row="0"
-        android:text="#"
         />
 
     <TextView
         style="@style/grid_item_count"
-        android:layout_column="2"
-        android:layout_marginLeft="20dp"
-        android:layout_row="0"
-        android:text="%"/>
+        />
+
+    <TextView
+        style="@style/grid_item_description"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_description"/>
+
+    <TextView
+        style="@style/grid_item_count"/>
+
+    <TextView
+        style="@style/grid_item_count"/>
+
+    <TextView
+        style="@style/grid_item_description"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_description"/>
+
+    <TextView
+        style="@style/grid_item_count"/>
+
+    <TextView
+        style="@style/grid_item_count"/>
+
+    <TextView
+        style="@style/grid_item_description"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_description"/>
+
+    <TextView
+        style="@style/grid_item_count"/>
+
+    <TextView
+        style="@style/grid_item_count"/>
+
+    <TextView
+        style="@style/grid_item_description"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/grid_item_count"
+        android:textColor="@color/primary_text"/>
 </GridLayout>
