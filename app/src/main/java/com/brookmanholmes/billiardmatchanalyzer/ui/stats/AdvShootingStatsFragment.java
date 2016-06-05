@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -44,7 +45,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         title.setText(getString(R.string.title_shooting_errors, stats.size()));
 
-        StatsUtils.updateGridOfMissReasons(view, StatsUtils.getFourMostCommonItems(stats));
+        StatsUtils.updateGridOfMissReasons((GridLayout) view.findViewById(R.id.grid), StatsUtils.getStats(stats));
     }
 
     @Override int getLayoutId() {

@@ -3,8 +3,9 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
-import android.view.View;
+import android.util.TypedValue;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,60 +48,56 @@ public class StatsUtils {
     }
 
     // todo: dynamically create each line in the list and put it in a gridview that's inside a scrolling container?
-    public static void updateGridOfMissReasons(View view, List<StatLineItem> items) {
-        if (view != null) {
-            if (items.size() > 0) {
-                view.findViewById(R.id.line0Desc).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.line0Count).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.line0Pct).setVisibility(View.VISIBLE);
-                ((TextView) view.findViewById(R.id.line0Desc)).setText(items.get(0).getDescription());
-                ((TextView) view.findViewById(R.id.line0Count)).setText(items.get(0).getCount());
-                ((TextView) view.findViewById(R.id.line0Pct)).setText(items.get(0).getPercentage());
-            } else {
-                view.findViewById(R.id.line0Desc).setVisibility(View.GONE);
-                view.findViewById(R.id.line0Count).setVisibility(View.GONE);
-                view.findViewById(R.id.line0Pct).setVisibility(View.GONE);
-            }
+    public static void updateGridOfMissReasons(GridLayout grid, List<StatLineItem> items) {
+        if (grid != null) {
+            Context context = grid.getContext();
 
-            if (items.size() > 1) {
-                view.findViewById(R.id.line1Desc).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.line1Count).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.line1Pct).setVisibility(View.VISIBLE);
-                ((TextView) view.findViewById(R.id.line1Desc)).setText(items.get(1).getDescription());
-                ((TextView) view.findViewById(R.id.line1Count)).setText(items.get(1).getCount());
-                ((TextView) view.findViewById(R.id.line1Pct)).setText(items.get(1).getPercentage());
-            } else {
-                view.findViewById(R.id.line1Desc).setVisibility(View.GONE);
-                view.findViewById(R.id.line1Count).setVisibility(View.GONE);
-                view.findViewById(R.id.line1Pct).setVisibility(View.GONE);
-            }
+            TextView reason = getTextView(context);
+            reason.setLayoutParams(getParams(0, 0));
+            reason.setText("Reason for missing");
 
-            if (items.size() > 2) {
-                view.findViewById(R.id.line2Desc).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.line2Count).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.line2Pct).setVisibility(View.VISIBLE);
-                ((TextView) view.findViewById(R.id.line2Desc)).setText(items.get(2).getDescription());
-                ((TextView) view.findViewById(R.id.line2Count)).setText(items.get(2).getCount());
-                ((TextView) view.findViewById(R.id.line2Pct)).setText(items.get(2).getPercentage());
-            } else {
-                view.findViewById(R.id.line2Desc).setVisibility(View.GONE);
-                view.findViewById(R.id.line2Count).setVisibility(View.GONE);
-                view.findViewById(R.id.line2Pct).setVisibility(View.GONE);
-            }
+            TextView number = getTextView(context);
+            number.setLayoutParams(getParams(1, 0));
+            number.setText("#");
 
-            if (items.size() > 3) {
-                view.findViewById(R.id.line3Desc).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.line3Count).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.line3Pct).setVisibility(View.VISIBLE);
-                ((TextView) view.findViewById(R.id.line3Desc)).setText(items.get(3).getDescription());
-                ((TextView) view.findViewById(R.id.line3Count)).setText(items.get(3).getCount());
-                ((TextView) view.findViewById(R.id.line3Pct)).setText(items.get(3).getPercentage());
-            } else {
-                view.findViewById(R.id.line3Desc).setVisibility(View.GONE);
-                view.findViewById(R.id.line3Count).setVisibility(View.GONE);
-                view.findViewById(R.id.line3Pct).setVisibility(View.GONE);
+            TextView pct = getTextView(context);
+            pct.setLayoutParams(getParams(2, 0));
+            pct.setText("%");
+
+            for (int i = 0, r = 0; i < items.size(); i++, r++) {
+                TextView description = getTextView(context);
+                TextView count = getTextView(context);
+                TextView percent = getTextView(context);
+
+                description.setLayoutParams(getParams(0, i + 1));
+                count.setLayoutParams(getParams(1, i + 1));
+                percent.setLayoutParams(getParams(2, i + 1));
+                description.setText(items.get(i).description);
+                count.setText(String.valueOf(items.get(i).count));
+                percent.setText(items.get(i).getPercentage());
+
+                grid.addView(description);
+                grid.addView(count);
+                grid.addView(percent);
             }
         }
+    }
+
+    private static TextView getTextView(Context context) {
+        TextView textView = new TextView(context);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimensionPixelSize(R.dimen.medium_text));
+
+        return textView;
+    }
+
+    private static GridLayout.LayoutParams getParams(int column, int row) {
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        params.columnSpec = GridLayout.spec(column);
+        params.rowSpec = GridLayout.spec(row);
+        return params;
     }
 
     public static Pair<Integer, Integer> getHowCutErrors(Context context, List<AdvStats> stats) {
@@ -248,9 +245,9 @@ public class StatsUtils {
 
         public String getPercentage() {
             if (total == 0)
-                return "(" + pctf.format(0) + ")";
+                return pctf.format(0);
             else
-                return "(" + pctf.format((double) count / (double) total) + ")";
+                return pctf.format((double) count / (double) total);
         }
 
         @Override public int compareTo(@NonNull StatLineItem another) {

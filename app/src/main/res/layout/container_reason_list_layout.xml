@@ -1,161 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:alignmentMode="alignBounds"
-    android:columnCount="3"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:rowCount="4"
-    android:useDefaultMargins="true"
-    tools:showIn="@layout/container_adv_shooting_stats">
+<GridLayout android:id="@+id/grid"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center_horizontal"
+            android:alignmentMode="alignBounds"
+            android:columnCount="3"
+            android:useDefaultMargins="true"
+            tools:showIn="@layout/container_adv_shooting_stats">
 
     <TextView
-        android:id="@+id/line0Desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_columnWeight=".6"
-        android:layout_gravity="center_vertical|left"
+        style="@style/grid_item_description"
+        android:layout_marginRight="40dp"
         android:layout_row="0"
-        android:gravity="center"
-        android:textColor="@color/primary_text"
-        android:textSize="16sp"
-        android:visibility="gone" />
+        android:text="Reason for missing"
+        />
 
     <TextView
-        android:id="@+id/line0Count"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        style="@style/grid_item_count"
         android:layout_column="1"
-        android:layout_columnWeight=".2"
-        android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="20dp"
         android:layout_row="0"
-        android:gravity="center"
-        android:textColor="@color/primary_text"
-        android:textSize="16sp"
-        android:visibility="gone" />
+        android:text="#"
+        />
 
     <TextView
-        android:id="@+id/line0Pct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight=".2"
-        android:layout_gravity="center_vertical|left"
-        android:layout_marginLeft="-2dp"
-        android:gravity="center"
-        android:textColor="@color/primary_text"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/line1Desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_columnWeight=".6"
-        android:layout_gravity="center_vertical|left"
-        android:layout_row="1"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/line1Count"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_column="1"
-        android:layout_columnWeight=".2"
-        android:layout_gravity="center_vertical|right"
-        android:layout_row="1"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/line1Pct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight=".2"
-        android:layout_gravity="center_vertical|left"
-        android:layout_marginLeft="-2dp"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/line2Desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_columnWeight=".6"
-        android:layout_gravity="center_vertical|left"
-        android:layout_row="2"
-        android:gravity="center"
-        android:textColor="@color/primary_text"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/line2Count"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_column="1"
-        android:layout_columnWeight=".2"
-        android:layout_gravity="center_vertical|right"
-        android:layout_row="2"
-        android:gravity="center"
-        android:textColor="@color/primary_text"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/line2Pct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight=".2"
-        android:layout_gravity="center_vertical|left"
-        android:layout_marginLeft="-2dp"
-        android:gravity="center"
-        android:textColor="@color/primary_text"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/line3Desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_columnWeight=".6"
-        android:layout_gravity="center_vertical|left"
-        android:layout_row="3"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/line3Count"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_column="1"
-        android:layout_columnWeight=".2"
-        android:layout_gravity="center_vertical|right"
-        android:layout_row="3"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/line3Pct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight=".2"
-        android:layout_gravity="center_vertical|left"
-        android:layout_marginLeft="-2dp"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
+        style="@style/grid_item_count"
+        android:layout_column="2"
+        android:layout_marginLeft="20dp"
+        android:layout_row="0"
+        android:text="%"/>
 </GridLayout>
