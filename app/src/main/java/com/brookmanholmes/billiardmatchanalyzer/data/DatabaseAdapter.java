@@ -100,17 +100,34 @@ public class DatabaseAdapter {
         return table;
     }
 
-    public List<String> getNames() {
-        database = databaseHelper.getReadableDatabase();
-        ArrayList<String> names = new ArrayList<>();
-        Cursor c = database.query(TABLE_PLAYERS, new String[]{COLUMN_NAME}, null, null, COLUMN_NAME, null, null);
+    public List<String> getOpponentsOf(String playerName) {
+        List<String> names = new ArrayList<>();
+        Cursor c = getMatches(playerName, null);
 
         while (c.moveToNext()) {
-            names.add(c.getString(c.getColumnIndex(COLUMN_NAME)));
-        }
+            String player = c.getString(c.getColumnIndex("player_name"));
+            String opponent = c.getString(c.getColumnIndex("opp_name"));
 
+            if (!playerName.equals(player) && !names.contains(player))
+                names.add(player);
+            if (!playerName.equals(opponent) && !names.contains(opponent))
+                names.add(opponent);
+        }
         c.close();
-        database.close();
+
+        return names;
+    }
+
+    public List<String> getPlayerNames() {
+        List<String> names = new ArrayList<>();
+        List<Match<?>> matches = getMatches();
+
+        for (Match<?> match : matches) {
+            if (!names.contains(match.getPlayer().getName()))
+                names.add(match.getPlayer().getName());
+            if (match.getGameStatus().breakType != BreakType.GHOST && !names.contains(match.getOpponent().getName()))
+                names.add(match.getOpponent().getName());
+        }
 
         return names;
     }
@@ -121,7 +138,8 @@ public class DatabaseAdapter {
 
         for (Match<?> match : getMatches()) {
             combinePlayerInList(players, match.getPlayer());
-            combinePlayerInList(players, match.getOpponent());
+            if (match.getGameStatus().breakType != BreakType.GHOST)
+                combinePlayerInList(players, match.getOpponent());
         }
 
         return players;

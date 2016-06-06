@@ -7,4 +7,9 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/spinner"
+        app:actionViewClass="android.widget.Spinner"
+        app:showAsAction="always"/>
 </menu>
