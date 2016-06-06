@@ -126,7 +126,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     }
 
     private List<String> getOpponents() {
-        ArrayList<String> list = new ArrayList<>(new DatabaseAdapter(this).getNames());
+        ArrayList<String> list = new ArrayList<>(new DatabaseAdapter(this).getOpponentsOf(player));
         Collections.sort(list);
         list.add(0, "All opponents");
 

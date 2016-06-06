@@ -7,4 +7,4 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:layout="@layout/fragment_list_view"
-    tools:showIn="@layout/activity_match_list" />
+    tools:showIn="@layout/activity_intro" />

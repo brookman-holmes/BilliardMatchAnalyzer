@@ -38,7 +38,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
     }
 
     @OnClick(R.id.infoButton) public void onClickInfoButton() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext(), R.style.AlertDialogTheme);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext(), R.style.AlertDialogTheme);
         builder.setView(LayoutInflater.from(itemView.getContext()).inflate(getLayoutRes(), null))
                 .setPositiveButton(android.R.string.ok, null).create().show();
     }

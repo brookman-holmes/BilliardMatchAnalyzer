@@ -1,6 +1,7 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,14 +9,21 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -36,7 +44,6 @@ import butterknife.OnClick;
 public class IntroActivity extends BaseActivity {
     public static final String TAG = "IntroActivity";
     private static final String MATCH_LIST_FRAGMENT = "match list fragment";
-    private static final String INTRO_FRAGMENT = "intro fragment";
     private static final String PLAYER_LIST_FRAGMENT = "player list fragment";
 
     @Bind(R.id.toolbar) Toolbar toolbar;
@@ -44,23 +51,10 @@ public class IntroActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_match_list);
+        setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-
-        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
-            replaceFragment(getIntroFragment(), INTRO_FRAGMENT);
-        }
-
-        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override public void onBackStackChanged() {
-                if (!getSupportFragmentManager().findFragmentById(R.id.fragment_container).getTag().equals(INTRO_FRAGMENT))
-                    fab.show();
-                else
-                    fab.hide();
-            }
-        });
     }
 
     @Override protected void onResume() {
@@ -69,10 +63,40 @@ public class IntroActivity extends BaseActivity {
         final int animationDelay = 250; // .25 seconds
         new Handler().postDelayed(new Runnable() {
             @Override public void run() {
-                if (!getSupportFragmentManager().findFragmentById(R.id.fragment_container).getTag().equals(INTRO_FRAGMENT))
-                    fab.show();
+                fab.show();
             }
         }, animationDelay); // display fab after activity starts
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_intro, menu);
+
+        MenuItem item = menu.findItem(R.id.spinner);
+        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+        spinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.rounded_rectangle));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getSupportActionBar().getThemedContext(),
+                android.R.layout.simple_spinner_item,
+                new String[]{"Players", "Matches"});
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0)
+                    replaceFragment(getPlayerListFragment(), PLAYER_LIST_FRAGMENT);
+                else
+                    replaceFragment(getMatchListFragment(), MATCH_LIST_FRAGMENT);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        return true;
     }
 
     @Override protected void onPause() {
@@ -97,13 +121,6 @@ public class IntroActivity extends BaseActivity {
         transaction.commit();
     }
 
-    private Fragment getIntroFragment() {
-        fab.hide();
-        return getSupportFragmentManager().findFragmentByTag(INTRO_FRAGMENT) == null ?
-                new IntroFragment() :
-                getSupportFragmentManager().findFragmentByTag(INTRO_FRAGMENT);
-    }
-
     private Fragment getPlayerListFragment() {
         fab.show();
         return getSupportFragmentManager().findFragmentByTag(PLAYER_LIST_FRAGMENT) == null ?
@@ -118,37 +135,6 @@ public class IntroActivity extends BaseActivity {
                 getSupportFragmentManager().findFragmentByTag(MATCH_LIST_FRAGMENT);
     }
 
-    public static class IntroFragment extends Fragment {
-        public IntroFragment() {
-
-        }
-
-        @Nullable @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_intro, container, false);
-            ButterKnife.bind(this, view);
-
-            return view;
-        }
-
-        @OnClick(R.id.img_matches) void launchMatchListFragment() {
-            getIntroActivity().replaceFragment(getIntroActivity().getMatchListFragment(), MATCH_LIST_FRAGMENT);
-        }
-
-        @OnClick(R.id.img_players) void launchPlayerListFragment() {
-            getIntroActivity().replaceFragment(getIntroActivity().getPlayerListFragment(), PLAYER_LIST_FRAGMENT);
-        }
-
-        @OnClick(R.id.img_new_match) void launchCreateNewMatchActivity() {
-            Intent intent = new Intent(getContext(), CreateNewMatchActivity.class);
-            startActivity(intent);
-        }
-
-        private IntroActivity getIntroActivity() {
-            return (IntroActivity) getActivity();
-        }
-    }
-
     public static class PlayerListFragment extends Fragment {
         @Bind(R.id.scrollView) RecyclerView recyclerView;
         private RecyclerAdapter adapter;
@@ -158,18 +144,18 @@ public class IntroActivity extends BaseActivity {
 
         }
 
-        @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-        }
-
         @Nullable @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_list_view, null);
             ButterKnife.bind(this, view);
 
             adapter = new RecyclerAdapter(new DatabaseAdapter(getContext()).getPlayers());
-            layoutManager = new GridLayoutManager(getContext(), 2);
+
+            if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                layoutManager = new GridLayoutManager(getContext(), 2);
+            else {
+                layoutManager = new LinearLayoutManager(getContext());
+            }
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
 

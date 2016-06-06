@@ -142,7 +142,7 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
      * Created by Brookman Holmes on 1/13/2016.
      */
     static class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRecyclerAdapter.ListItemHolder> {
-        Context context;
+        final Context context;
         private String player, opponent;
 
 
@@ -293,15 +293,15 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
             }
 
             @OnClick(R.id.container) public void onClick() {
-                Intent intent = new Intent(context, MatchInfoActivity.class);
+                final Intent intent = new Intent(getContext(), MatchInfoActivity.class);
                 intent.putExtra(BaseActivity.ARG_MATCH_ID, getItemId());
-                context.startActivity(intent);
+                getContext().startActivity(intent);
             }
 
             @OnLongClick(R.id.container) public boolean onLongClick() {
-                final DatabaseAdapter database = new DatabaseAdapter(context);
+                final DatabaseAdapter database = new DatabaseAdapter(getContext());
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
                 builder.setMessage(getString(R.string.delete_match))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override public void onClick(DialogInterface dialog, int which) {
@@ -316,6 +316,10 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
                             }
                         }).create().show();
                 return true;
+            }
+
+            private Context getContext() {
+                return itemView.getContext();
             }
         }
     }

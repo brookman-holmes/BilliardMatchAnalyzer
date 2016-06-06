@@ -76,8 +76,7 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
 
         DatabaseAdapter database = new DatabaseAdapter(getContext());
 
-        names = database.getNames();
-        names.remove(getString(R.string.ghost_name));
+        names = database.getPlayerNames();
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
