@@ -140,9 +140,9 @@
     <string name="opponents">Opponents</string>
     <string name="title_player_profile">%1$s\'s Profile</string>
     <string name="action_filter">Filter</string>
-    <string name="successful_breaks">%3$s Made a ball, %1$d/%2$d</string>
-    <string name="continuation_after_the_break">%3$s Continuation, %1$d/%2$d</string>
-    <string name="fouls_on_the_break">%3$s Fouls, %1$d/%2$d</string>
-    <string name="_8_9_on_the_break">%3$s 8/9 on the break, %1$d/%2$d</string>
+    <string name="successful_breaks">Made a ball %3$s (%1$d/%2$d)</string>
+    <string name="continuation_after_the_break">Continuation %3$s (%1$d/%2$d)</string>
+    <string name="fouls_on_the_break">Fouls %3$s (%1$d/%2$d)</string>
+    <string name="_8_9_on_the_break">8/9 on the break %3$s (%1$d/%2$d)</string>
     <string name="matches">Matches</string>
 </resources>

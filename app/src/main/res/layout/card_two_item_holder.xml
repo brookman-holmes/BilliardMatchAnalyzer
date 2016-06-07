@@ -39,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="12sp"/>
+                android:textSize="14sp"/>
         </LinearLayout>
     </view>
 
@@ -78,8 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="12sp"/>
+                android:textSize="14sp"/>
 
         </LinearLayout>
     </view>

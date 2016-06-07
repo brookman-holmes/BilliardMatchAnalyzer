@@ -228,7 +228,7 @@ public class PlayerInfoGraphicFragment extends Fragment {
                 chart.getAxisLeft().setAxisMaxValue(1.1f);
                 chart.getAxisLeft().setGranularity(.1f);
                 chart.getAxisRight().setDrawLabels(false);
-
+                chart.getLegend().setEnabled(false);
 
                 chart.setDrawGridBackground(false);
             }
@@ -239,10 +239,10 @@ public class PlayerInfoGraphicFragment extends Fragment {
                     xVals.add(DateFormat.getDateInstance(DateFormat.SHORT).format(player.getMatchDate()));
                 }
                 LineData data = new LineData(xVals);
-                LineDataSet tsp = getDataSet(getTspDataSet(players), "True Shooting %", getColor(R.color.chart));
-                LineDataSet shootingP = getDataSet(getShootingDataSet(players), "Shooting %", getColor(R.color.chart1));
-                LineDataSet breakingP = getDataSet(getBreakingDataSet(players), "Breaking %", getColor(R.color.chart2));
-                LineDataSet safetyP = getDataSet(getSafetyDataSet(players), "Safeties %", getColor(R.color.chart3));
+                LineDataSet tsp = getDataSet(getTspDataSet(players), "True Shooting pct", getColor(R.color.chart));
+                LineDataSet shootingP = getDataSet(getShootingDataSet(players), "Shooting pct", getColor(R.color.chart1));
+                LineDataSet breakingP = getDataSet(getBreakingDataSet(players), "Breaking pct", getColor(R.color.chart2));
+                LineDataSet safetyP = getDataSet(getSafetyDataSet(players), "Safeties pct", getColor(R.color.chart3));
 
                 data.addDataSet(tsp);
                 data.addDataSet(shootingP);
@@ -528,9 +528,9 @@ public class PlayerInfoGraphicFragment extends Fragment {
                 }
 
                 int missed = opponent.getSafetySuccesses() - player.getSafetyEscapes() - player.getSafetyReturns();
-                misses.setText(String.format(Locale.getDefault(), "%3$s You missed, %1$d/%2$d", missed, opponent.getSafetySuccesses(), convertFloatToPercent((float) missed / (float) opponent.getSafetySuccesses())));
-                safetyReturns.setText(String.format(Locale.getDefault(), "%3$s You got safe, %1$d/%2$d", player.getSafetyReturns(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyReturns() / (float) opponent.getSafetySuccesses())));
-                safetyEscapes.setText(String.format(Locale.getDefault(), "%3$s You made a ball, %1$d/%2$d", player.getSafetyEscapes(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyEscapes() / (float) opponent.getSafetySuccesses())));
+                misses.setText(String.format(Locale.getDefault(), "Missed shot %3$s (%1$d/%2$d)", missed, opponent.getSafetySuccesses(), convertFloatToPercent((float) missed / (float) opponent.getSafetySuccesses())));
+                safetyReturns.setText(String.format(Locale.getDefault(), "Got safe %3$s (%1$d/%2$d)", player.getSafetyReturns(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyReturns() / (float) opponent.getSafetySuccesses())));
+                safetyEscapes.setText(String.format(Locale.getDefault(), "Made a ball %3$s (%1$d/%2$d)", player.getSafetyEscapes(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyEscapes() / (float) opponent.getSafetySuccesses())));
             }
 
         }
