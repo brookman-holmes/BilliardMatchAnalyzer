@@ -161,7 +161,6 @@ public class DatabaseAdapter {
         }
     }
 
-
     public List<Pair<AbstractPlayer, AbstractPlayer>> getPlayer(String playerName) {
         database = databaseHelper.getReadableDatabase();
         List<Pair<AbstractPlayer, AbstractPlayer>> players = new ArrayList<>();

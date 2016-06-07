@@ -125,7 +125,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
             player.setName(newName);
     }
 
-    public Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
+    public Turn createAndAddTurn(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
         Turn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost, advStats);
         undoneTurns.clear();
         addTurn(turn);

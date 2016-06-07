@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Brookman Holmes on 1/31/2016.
  */
 public interface IMatch<T extends AbstractPlayer> {
-    Turn createAndAddTurnToMatch(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats);
+    Turn createAndAddTurn(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats);
 
     T getPlayer();
 
