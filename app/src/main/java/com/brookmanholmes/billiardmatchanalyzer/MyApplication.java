@@ -22,4 +22,9 @@ public class MyApplication extends Application {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
     }
+
+    public void mustDie(Object obj) {
+        if (refWatcher != null)
+            refWatcher.watch(obj);
+    }
 }

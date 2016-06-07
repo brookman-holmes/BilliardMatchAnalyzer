@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.ShotPage;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
@@ -19,6 +20,7 @@ import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
@@ -108,6 +110,17 @@ public abstract class ShotFragment extends Fragment {
     @Override public void onDetach() {
         super.onDetach();
         callbacks = null;
+    }
+
+    @Override public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
+    }
+
+    @Override public void onDestroy() {
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
+        super.onDestroy();
     }
 
     @Nullable @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,

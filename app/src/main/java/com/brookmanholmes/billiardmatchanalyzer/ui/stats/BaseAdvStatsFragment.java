@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.turn.AdvStats;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +60,17 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
         super.onViewCreated(view, savedInstanceState);
         updateView(view);
         updateView = false;
+    }
+
+    @Override public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
+    }
+
+    @Override public void onDestroy() {
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
+        super.onDestroy();
     }
 
     @Override public void setFilter(StatFilter filter) {

@@ -101,12 +101,18 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
         recyclerView.setAdapter(null);
         recyclerView = null;
         layoutManager = null;
+        getLoaderManager().destroyLoader(LOADER_ID);
 
         ButterKnife.unbind(this);
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
+
 
         super.onDestroyView();
+    }
+
+    @Override public void onDestroy() {
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
+        super.onDestroy();
     }
 
     /**

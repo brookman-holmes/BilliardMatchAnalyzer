@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.BreakPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -95,6 +97,17 @@ public class BreakFragment extends Fragment {
     @Override public void onDetach() {
         super.onDetach();
         callbacks = null;
+    }
+
+    @Override public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
+    }
+
+    @Override public void onDestroy() {
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
+        super.onDestroy();
     }
 
     @Nullable

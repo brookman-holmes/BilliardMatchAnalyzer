@@ -31,12 +31,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model.PlayerNamePage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
@@ -135,6 +137,17 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
         opponentName.addTextChangedListener(textWatcher(PlayerNamePage.OPPONENT_NAME_KEY));
         location.addTextChangedListener(textWatcher(PlayerNamePage.LOCATION_KEY));
         extra.addTextChangedListener(textWatcher(PlayerNamePage.EXTRA_INFO_KEY));
+    }
+
+    @Override public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
+    }
+
+    @Override public void onDestroy() {
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
+        super.onDestroy();
     }
 
     private TextWatcher textWatcher(final String key) {

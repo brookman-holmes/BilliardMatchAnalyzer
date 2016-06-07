@@ -121,10 +121,14 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     }
 
     @Override public void onDestroyView() {
-        super.onDestroyView();
         ButterKnife.unbind(this);
+        super.onDestroyView();
+    }
+
+    @Override public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
+        super.onDestroy();
     }
 
     @Override public void onPageDataChanged(Page page) {

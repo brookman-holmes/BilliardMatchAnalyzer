@@ -410,11 +410,13 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             recyclerView = null;
             layoutManager = null;
             ButterKnife.unbind(this);
+            super.onDestroyView();
+        }
 
+        @Override public void onDestroy() {
             RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
             refWatcher.watch(this);
-
-            super.onDestroyView();
+            super.onDestroy();
         }
 
         private long setMatchId() {

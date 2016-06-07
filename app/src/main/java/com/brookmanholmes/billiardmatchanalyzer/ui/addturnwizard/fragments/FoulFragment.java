@@ -3,7 +3,6 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +10,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.FoulPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
-import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.SingleChoiceFragment;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by Brookman Holmes on 3/9/2016.
@@ -96,6 +98,17 @@ public class FoulFragment extends ListFragment {
     @Override public void onDetach() {
         super.onDetach();
         callbacks = null;
+    }
+
+    @Override public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
+    }
+
+    @Override public void onDestroy() {
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
+        super.onDestroy();
     }
 
     @Override public void onListItemClick(ListView l, View v, int position, long id) {

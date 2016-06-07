@@ -27,6 +27,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model.PlayerNamePage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.AbstractWizardModel;
@@ -35,6 +36,7 @@ import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ReviewItem;
 import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
 import com.brookmanholmes.billiards.game.util.RaceTo;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,6 +99,12 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         callbacks = null;
 
         wizardModel.unregisterListener(this);
+    }
+
+    @Override public void onDestroy() {
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
+        super.onDestroy();
     }
 
     @Override public void onPageDataChanged(Page changedPage) {

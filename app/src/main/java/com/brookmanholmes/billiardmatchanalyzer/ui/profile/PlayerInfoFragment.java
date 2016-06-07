@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.adaptervh.BaseViewHolder;
 import com.brookmanholmes.billiardmatchanalyzer.adaptervh.BreaksWithWinsHolder;
@@ -22,6 +23,7 @@ import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.CompPlayer;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -72,6 +74,23 @@ public class PlayerInfoFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override public void onDestroyView() {
+        recyclerView.setAdapter(null);
+        recyclerView = null;
+        layoutManager = null;
+
+        ButterKnife.unbind(this);
+
+
+        super.onDestroyView();
+    }
+
+    @Override public void onDestroy() {
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
+        super.onDestroy();
     }
 
     /**

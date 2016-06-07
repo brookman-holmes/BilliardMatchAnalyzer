@@ -146,7 +146,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         prevButton.setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
     }
 
-    @Override protected void onDestroy() {
+    @Override public void onDestroy() {
         super.onDestroy();
         wizardModel.unregisterListener(this);
     }

@@ -68,7 +68,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         playerNameLayout.setVisibility(View.GONE);
         playerName.setText(player);
         opponentName.setText(filter.getOpponent());
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), player);
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(this);
@@ -160,9 +160,12 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        public ViewPagerAdapter(FragmentManager fm) {
+    static class ViewPagerAdapter extends FragmentPagerAdapter {
+        String player;
+
+        public ViewPagerAdapter(FragmentManager fm, String player) {
             super(fm);
+            this.player = player;
         }
 
         @Override public Fragment getItem(int position) {
@@ -191,7 +194,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         @Override public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return playerName.getText().toString();
+                    return player;
                 case 1:
                     return "Stats";
                 case 2:
