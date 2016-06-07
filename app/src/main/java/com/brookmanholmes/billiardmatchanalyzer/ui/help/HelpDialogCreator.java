@@ -60,6 +60,7 @@ public class HelpDialogCreator {
             throw new IllegalArgumentException("Invalid page title: " + pageTitle);
     }
 
+    // TODO: 6/7/2016 fix these titles
     private String getBreakPageTitle() {
         return context.getString(R.string.title_break);
     }
