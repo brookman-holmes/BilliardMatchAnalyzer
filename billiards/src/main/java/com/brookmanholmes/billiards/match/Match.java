@@ -73,8 +73,16 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         return location;
     }
 
+    @Override public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getNotes() {
         return notes;
+    }
+
+    @Override public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public GameStatus getGameStatus() {

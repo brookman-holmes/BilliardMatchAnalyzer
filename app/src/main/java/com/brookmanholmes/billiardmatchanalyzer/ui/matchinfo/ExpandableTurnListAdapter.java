@@ -247,7 +247,6 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             safetyPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Safeties", player.getSafetyPct()));
             breakPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Breaking", player.getBreakPct()));
 
-
             //shootingPct.setTextColor(getPctColor(player.getShootingPct()));
             //safetyPct.setTextColor(getPctColor(player.getSafetyPct()));
             //breakPct.setTextColor(getPctColor(player.getBreakPct()));

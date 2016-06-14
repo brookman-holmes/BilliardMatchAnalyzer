@@ -28,9 +28,13 @@ public interface IMatch<T extends AbstractPlayer> {
 
     String getLocation();
 
+    void setLocation(String location);
+
     String getCurrentPlayersName();
 
     String getNonCurrentPlayersName();
+
+    void setNotes(String notes);
 
     int getTurnCount();
 

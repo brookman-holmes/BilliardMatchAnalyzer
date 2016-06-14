@@ -20,11 +20,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -364,7 +366,9 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         String preText;
         EditText input;
         DatabaseAdapter db;
+        Match<?> match;
         long matchId;
+        private InputMethodManager inputMethodManager;
 
         @Override public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -373,23 +377,38 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             preText = getArguments().getString(ARG_PRETEXT);
             matchId = getArguments().getLong(ARG_MATCH_ID);
             db = new DatabaseAdapter(getContext());
+            match = ((MatchInfoActivity) getActivity()).match;
         }
 
         @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.edit_text, null, false);
+            final View view = LayoutInflater.from(getContext()).inflate(R.layout.edit_text, null, false);
             input = (EditText) view.findViewById(R.id.editText);
             input.setText(preText);
+            inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             input.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            showKeyboard();
+            input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (EditorInfo.IME_ACTION_DONE == actionId) {
+                        onPositiveButton();
+                        hideKeyboard();
+                        dismiss();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
             setupInput(input);
+            input.setSelection(preText.length(), preText.length());
 
             return builder.setTitle(title)
                     .setView(view)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override public void onClick(DialogInterface dialog, int which) {
                             onPositiveButton();
+                            hideKeyboard();
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -398,6 +417,23 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                         }
                     })
                     .create();
+        }
+
+        @Override public void dismiss() {
+            super.dismiss();
+        }
+
+        @Override public void onCancel(DialogInterface dialog) {
+            hideKeyboard();
+            super.onCancel(dialog);
+        }
+
+        private void hideKeyboard() {
+            inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        }
+
+        private void showKeyboard() {
+            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
 
         abstract void setupInput(EditText input);
@@ -444,6 +480,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         @Override void onPositiveButton() {
+            match.setLocation(input.getText().toString());
             db.updateMatchLocation(input.getText().toString(), matchId);
         }
     }
@@ -464,6 +501,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         @Override void onPositiveButton() {
+            match.setNotes(input.getText().toString());
             db.updateMatchNotes(input.getText().toString(), matchId);
         }
     }
