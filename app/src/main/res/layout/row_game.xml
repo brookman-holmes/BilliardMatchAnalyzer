@@ -1,40 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<view style="@style/card_view_style"
-      class="android.support.v7.widget.CardView"
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      android:layout_height="wrap_content"
-      android:elevation="4dp"
-      app:cardUseCompatPadding="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:clickable="true"
-                  android:foreground="?android:attr/selectableItemBackground"
-                  android:minHeight="48dp"
-                  android:orientation="horizontal">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:clickable="true"
+              android:foreground="?android:attr/selectableItemBackground"
+              android:minHeight="72dp"
+              android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/row_game"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginRight="-40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="8dp"
-            android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/row_game"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:textSize="16sp"/>
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:src="@drawable/ic_action_collapse"/>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:padding="8dp"
+        android:src="@drawable/ic_action_collapse"/>
 
-    </LinearLayout>
-</view>
+</LinearLayout>

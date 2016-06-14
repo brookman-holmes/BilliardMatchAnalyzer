@@ -21,7 +21,8 @@
 
         <activity
             android:name=".ui.newmatchwizard.CreateNewMatchActivity"
-            android:theme="@style/MyAppTheme.NoActionBar"/>
+            android:theme="@style/MyAppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".ui.matchinfo.MatchInfoActivity"/>
 
         <activity

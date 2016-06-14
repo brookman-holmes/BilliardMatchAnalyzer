@@ -46,37 +46,39 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         this.itemManager = itemManager;
         setHasStableIds(true);
         buildDataSource(match.getTurns());
+        data.add(new ArrayList<Turn>());
         // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
     }
 
     public void updateMatch(Match<?> match) {
-        int oldGroupCount = getGroupCount();
+        int oldGroupCount = getGroupCount() - 1;
         int oldChildCount = oldGroupCount > 0 ? getChildCount(getGroupCount() - 1) : 0;
 
         this.match = match;
         buildDataSource(match.getTurns());
 
+        int newGroupCount = getGroupCount() - 1;
 
-        if (oldGroupCount > getGroupCount()) {
-            itemManager.notifyGroupItemRangeRemoved(oldGroupCount - 1, oldGroupCount - getGroupCount());
-        } else if (oldGroupCount < getGroupCount()) {
-            itemManager.notifyGroupItemRangeInserted(getGroupCount() - 1, getGroupCount() - oldGroupCount);
-            itemManager.notifyChildItemRangeInserted(getGroupCount() - 1, 0, getChildCount(getGroupCount() - 1) - 1);
+        if (oldGroupCount > newGroupCount) {
+            itemManager.notifyGroupItemRangeRemoved(oldGroupCount - 1, oldGroupCount - newGroupCount);
+        } else if (oldGroupCount < newGroupCount) {
+            itemManager.notifyGroupItemRangeInserted(newGroupCount - 1, newGroupCount - oldGroupCount);
+            itemManager.notifyChildItemRangeInserted(newGroupCount - 1, 0, getChildCount(newGroupCount - 1) - 1);
         } else {
-            int childCount = getChildCount(getGroupCount() - 1);
+            int childCount = getChildCount(newGroupCount - 1);
             if (oldChildCount > childCount) {
-                itemManager.notifyChildItemRangeRemoved(getGroupCount() - 1, childCount - 1, oldChildCount - childCount);
+                itemManager.notifyChildItemRangeRemoved(newGroupCount - 1, childCount - 1, oldChildCount - childCount);
             } else if (oldChildCount < childCount) {
-                itemManager.notifyChildItemRangeInserted(getGroupCount() - 1, oldChildCount, childCount - oldChildCount);
+                itemManager.notifyChildItemRangeInserted(newGroupCount - 1, oldChildCount, childCount - oldChildCount);
             }
         }
         scrollToLastItem();
     }
 
     private void scrollToLastItem() {
-        if (getGroupCount() > 0) {
-            itemManager.expandGroup(getGroupCount() - 1);
-            itemManager.scrollToGroup(getGroupCount() - 1, 10000); // not sure what value I'm supposed to put for childItemHeight?
+        if (getGroupCount() > 1) {
+            itemManager.expandGroup(getGroupCount() - 2);
+            itemManager.scrollToGroup(getGroupCount() - 2, 10000); // not sure what value I'm supposed to put for childItemHeight?
         }
     }
 
@@ -131,20 +133,30 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
 
     @Override
     public void onBindGroupViewHolder(GameViewHolder holder, int groupPosition, int viewType) {
-        holder.bind(groupPosition + 1,
-                match.getPlayer(0, getTurnNumber(groupPosition)).getWins(),
-                match.getOpponent(0, getTurnNumber(groupPosition)).getWins());
+        if (groupPosition == getGroupCount() - 1) {
+            holder.expandIndicator.setVisibility(View.GONE);
+            holder.game.setVisibility(View.GONE);
+            holder.itemView.setClickable(false);
+        } else {
+            holder.expandIndicator.setVisibility(View.VISIBLE);
+            holder.game.setVisibility(View.VISIBLE);
+            holder.itemView.setClickable(true);
 
-        // set background resource (target view ID: container)
-        final int expandState = holder.getExpandStateFlags();
+            holder.bind(groupPosition + 1,
+                    match.getPlayer(0, getTurnNumber(groupPosition)).getWins(),
+                    match.getOpponent(0, getTurnNumber(groupPosition)).getWins());
 
-        if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
-            boolean isExpanded;
-            boolean animateIndicator = ((expandState & ExpandableItemConstants.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
+            // set background resource (target view ID: container)
+            final int expandState = holder.getExpandStateFlags();
 
-            isExpanded = (expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0;
+            if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
+                boolean isExpanded;
+                boolean animateIndicator = ((expandState & ExpandableItemConstants.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
 
-            holder.setIconState(isExpanded, animateIndicator);
+                isExpanded = (expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0;
+
+                holder.setIconState(isExpanded, animateIndicator);
+            }
         }
     }
 
