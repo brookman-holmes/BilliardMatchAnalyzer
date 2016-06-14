@@ -24,7 +24,7 @@ import butterknife.OnClick;
 /**
  * Created by Brookman Holmes on 1/13/2016.
  */
-public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseViewHolder<T> {
+public abstract class MatchInfoHolder extends BaseViewHolder {
     int collapsedHeight = (int) Math.floor(48 * Resources.getSystem().getDisplayMetrics().density);
     @Bind(R.id.container) GridLayout container;
     @Bind(R.id.collapseExpandButton) ImageView collapseExpandButton;
@@ -120,7 +120,7 @@ public abstract class MatchInfoHolder<T extends AbstractPlayer> extends BaseView
         }
     }
 
-    public abstract void bind(T player, T opponent);
+    public abstract void bind(AbstractPlayer player, AbstractPlayer opponent);
 
     protected abstract void setVisibilities(View view, Match.StatsDetail detail);
 }

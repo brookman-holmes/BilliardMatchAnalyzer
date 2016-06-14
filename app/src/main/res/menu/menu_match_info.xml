@@ -36,7 +36,9 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_adv_stats"
-        android:title="View turns"
-        app:showAsAction="never"/>
+        android:id="@+id/action_match_view"
+        android:icon="@drawable/ic_view_list"
+        android:orderInCategory="0"
+        android:title="Toggle view"
+        app:showAsAction="ifRoom"/>
 </menu>

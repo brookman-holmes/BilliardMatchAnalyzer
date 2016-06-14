@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.IEarlyWins;
 
 import java.util.Locale;
 
@@ -14,7 +15,7 @@ import butterknife.Bind;
 /**
  * Created by helios on 4/12/2016.
  */
-public class RunOutsHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
+public class RunOutsHolder extends MatchInfoHolder {
     @Bind(R.id.tvMaxBallRunsPlayer) TextView tvBreakAndRunPlayer;
     @Bind(R.id.tvMaxBallRunsOpponent) TextView tvBreakAndRunOpponent;
     @Bind(R.id.tvTierOneRunsPlayer) TextView tvMaxRunPlayer;
@@ -27,11 +28,7 @@ public class RunOutsHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> 
 
     public RunOutsHolder(View view, Match.StatsDetail detail) {
         super(view);
-        tvEarlyWins.setVisibility(View.GONE);
-        tvEarlyWinsPlayer.setVisibility(View.GONE);
-        tvEarlyWinsOpponent.setVisibility(View.GONE);
         title.setText(view.getContext().getString(R.string.title_run_outs));
-
         setVisibilities(view, detail);
     }
 
@@ -39,7 +36,7 @@ public class RunOutsHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> 
 
     }
 
-    @Override public void bind(T player, T opponent) {
+    @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {
         // Break and runs
         tvBreakAndRunPlayer.setText(String.format(Locale.getDefault(), "%d", player.getRunOuts()));
         tvBreakAndRunOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getRunOuts()));
@@ -60,6 +57,22 @@ public class RunOutsHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> 
 
         // highlighting of the player who's doing better in this stat
         highlightBetterPlayerStats(tvFiveBallRunsPlayer, tvFiveBallRunsOpponent, player.getRunTierTwo(), opponent.getRunTierTwo());
+
+        if (player instanceof IEarlyWins && opponent instanceof IEarlyWins) {
+            tvEarlyWins.setVisibility(View.VISIBLE);
+            tvEarlyWinsPlayer.setVisibility(View.VISIBLE);
+            tvEarlyWinsOpponent.setVisibility(View.VISIBLE);
+
+            tvEarlyWinsPlayer.setText(String.format(Locale.getDefault(), "%d", ((IEarlyWins) player).getEarlyWins()));
+            tvEarlyWinsOpponent.setText(String.format(Locale.getDefault(), "%d", ((IEarlyWins) opponent).getEarlyWins()));
+
+            // highlighting of the player who's doing better in this stat
+            highlightBetterPlayerStats(tvEarlyWinsPlayer, tvEarlyWinsOpponent, ((IEarlyWins) player).getEarlyWins(), ((IEarlyWins) opponent).getEarlyWins());
+        } else {
+            tvEarlyWins.setVisibility(View.GONE);
+            tvEarlyWinsPlayer.setVisibility(View.GONE);
+            tvEarlyWinsOpponent.setVisibility(View.GONE);
+        }
     }
 
     @Override int getLayoutRes() {

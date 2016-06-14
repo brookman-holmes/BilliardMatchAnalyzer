@@ -185,7 +185,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         return wizardModel.findByKey(key);
     }
 
-    @OnClick(R.id.next_button) public void nextPage(View v) {
+    @OnClick(R.id.next_button) public void nextPage() {
         if (pager.getCurrentItem() == currentPageSequence.size()) {
             if (pagerAdapter.getPrimaryItem() instanceof ReviewFragment) {
                 createMatchAndLaunchMatchInfoActivity();
@@ -199,7 +199,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
     }
 
-    @OnClick(R.id.prev_button) public void prevPage(View v) {
+    @OnClick(R.id.prev_button) public void prevPage() {
         pager.setCurrentItem(pager.getCurrentItem() - 1);
     }
 

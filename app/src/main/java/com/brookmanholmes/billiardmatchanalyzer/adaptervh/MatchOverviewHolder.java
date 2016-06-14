@@ -1,5 +1,6 @@
 package com.brookmanholmes.billiardmatchanalyzer.adaptervh;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,7 +13,7 @@ import butterknife.Bind;
 /**
  * Created by helios on 4/12/2016.
  */
-public class MatchOverviewHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
+public class MatchOverviewHolder extends MatchInfoHolder {
     @Bind(R.id.tvWinPercentPlayer) TextView tvWinPctPlayer;
     @Bind(R.id.tvWinPercentOpponent) TextView tvWinPctOpponent;
     @Bind(R.id.tvWinTotalsPlayer) TextView tvWinTotalPlayer;
@@ -38,10 +39,17 @@ public class MatchOverviewHolder<T extends AbstractPlayer> extends MatchInfoHold
             view.findViewById(R.id.tvTotalShotsTitle).setVisibility(View.GONE);
             tvTotalShotsOpponent.setVisibility(View.GONE);
             tvTotalShotsPlayer.setVisibility(View.GONE);
+        } else {
+            tvAggressivenessRatingOpponent.setVisibility(View.VISIBLE);
+            tvAggressivenessRatingPlayer.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.tvAggressivenessRating).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.tvTotalShotsTitle).setVisibility(View.VISIBLE);
+            tvTotalShotsOpponent.setVisibility(View.VISIBLE);
+            tvTotalShotsPlayer.setVisibility(View.VISIBLE);
         }
     }
 
-    @Override public void bind(T player, T opponent) {
+    @Override public void bind(@NonNull AbstractPlayer player, @NonNull AbstractPlayer opponent) {
         // Games Won Percentage
         tvWinPctPlayer.setText(player.getWinPct());
         tvWinPctOpponent.setText(opponent.getWinPct());

@@ -1,13 +1,20 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.matchinfo;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,21 +25,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.ApaPlayer;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.BaseViewHolder;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.BreaksHolder;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.BreaksWithWinsHolder;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.FooterViewHolder;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.MatchOverviewHolder;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.RunOutsHolder;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.RunOutsWithEarlyWinsHolder;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.SafetiesHolder;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.ShootingPctHolder;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.ui.BaseActivity;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.AddTurnDialog;
@@ -40,26 +38,15 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuild
 import com.brookmanholmes.billiardmatchanalyzer.ui.dialog.GameStatusStringBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
-import com.brookmanholmes.billiardmatchanalyzer.ui.stats.TurnListDialog;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.match.IMatch;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
-import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
-import com.brookmanholmes.billiards.player.EightBallPlayer;
-import com.brookmanholmes.billiards.player.IApa;
-import com.brookmanholmes.billiards.player.NineBallPlayer;
-import com.brookmanholmes.billiards.player.TenBallPlayer;
-import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -67,17 +54,21 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
-    public static final String INFO_FRAGMENT_TAG = "infoFragment";
+    public static final String TAG_INFO_FRAGMENT = "infoFragment";
+    public static final String TAG_TURNS_FRAGMENT = "turnsFragment";
     private static final String TAG = "MatchInfoActivity";
     private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.playerName) TextView playerName;
     @Bind(R.id.opponentName) TextView opponentName;
+    @Bind(R.id.pager) ViewPager pager;
     @Bind(R.id.coordinatorLayout) CoordinatorLayout layout;
 
     DatabaseAdapter db;
-    MatchInfoFragment infoFragment;
+    Match<?> match;
     Menu menu;
+    PagerAdapter adapter;
+    List<UpdateMatchInfo> listeners = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +79,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         db = new DatabaseAdapter(this);
 
-        Match<?> match = db.getMatch(getMatchId());
+        match = db.getMatch(getMatchId());
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
 
@@ -97,13 +88,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             opponentName.setEnabled(false);
 
         setToolbarTitle(match.getGameStatus().gameType);
-
-        infoFragment = (MatchInfoFragment) getSupportFragmentManager().findFragmentByTag(INFO_FRAGMENT_TAG);
-
-        if (infoFragment == null) {
-            infoFragment = MatchInfoFragment.createMatchInfoFragment(getMatchId());
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, infoFragment, INFO_FRAGMENT_TAG).commit();
-        }
+        adapter = new PagerAdapter(getSupportFragmentManager(), getMatchId());
+        pager.setAdapter(adapter);
     }
 
     private void setToolbarTitle(GameType gameType) {
@@ -141,85 +127,21 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         showAddTurnDialog();
     }
 
-    private void showAddTurnDialog() {
-        AddTurnDialog addTurnDialog = AddTurnDialog.create(db.getMatch(getMatchId()));
-        addTurnDialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.MyAppTheme);
-        addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
-    }
-
     @OnClick({R.id.opponentName, R.id.playerName})
     public void showPlayerOptionsMenu(TextView view) {
-        displayChoiceDialog(view.getText().toString(), PlayerTurn.PLAYER);
+        String name = view.getText().toString();
+        PlayerTurn turn = match.getPlayer().getName().equals(name) ? PlayerTurn.PLAYER : PlayerTurn.OPPONENT;
+        showChoiceDialog(name, turn);
     }
 
-    private void displayChoiceDialog(final String name, final PlayerTurn turn) {
-        final String[] items;
-
-        if (playerHasAdvancedStats(turn, db.getMatch(getMatchId()).getAdvStats())) {
-            items = new String[]{getString(R.string.view_profile), getString(R.string.view_adv_stats), getString(R.string.edit_name)};
-        } else {
-            items = new String[]{getString(R.string.view_profile), getString(R.string.edit_name)};
+    private void updatePlayerNames(String name, String newName) {
+        if (opponentName.getText().toString().equals(name)) {
+            opponentName.setText(newName);
+            match.setOpponentName(newName);
+        } else if (playerName.getText().toString().equals(name)) {
+            playerName.setText(newName);
+            match.setPlayerName(newName);
         }
-
-        new AlertDialog.Builder(this, R.style.AlertDialogTheme)
-                .setTitle(name)
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        if (items[which].equals(getString(R.string.view_adv_stats)))
-                            displayAdvancedStatsDialog(name, turn);
-                        else if (items[which].equals(getString(R.string.view_profile))) {
-                            Intent intent = new Intent(MatchInfoActivity.this, PlayerProfileActivity.class);
-                            intent.putExtra(ARG_PLAYER_NAME, name);
-                            startActivity(intent);
-                        } else if (items[which].equals(getString(R.string.edit_name))) {
-                            displayEditPlayerNameDialog(name);
-                        }
-                    }
-                }).create().show();
-    }
-
-    private void displayEditPlayerNameDialog(final String name) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-        View view = getLayoutInflater().inflate(R.layout.edit_text, null);
-        final EditText input = (EditText) view.findViewById(R.id.editText);
-        input.setText(db.getMatch(getMatchId()).getLocation());
-        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        builder.setTitle("Change " + name + "'s name")
-                .setView(view)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        String newName = input.getText().toString();
-                        if (opponentName.getText().toString().equals(name)) {
-                            opponentName.setText(newName);
-                            infoFragment.setOpponentName(newName);
-                        } else if (playerName.getText().toString().equals(name)) {
-                            playerName.setText(newName);
-                            infoFragment.setPlayerName(newName);
-                        }
-                        db.editPlayerName(getMatchId(), name, newName);
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .create().show();
-    }
-
-    private boolean playerHasAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
-        if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
-            return true;
-        else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
-            return true;
-        else return detail == Match.StatsDetail.ADVANCED;
-    }
-
-    private void displayAdvancedStatsDialog(String name, PlayerTurn turn) {
-        DialogFragment dialogFragment =
-                AdvStatsDialog.create(getMatchId(), name, turn);
-        dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
-        dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
     }
 
     private long getMatchId() {
@@ -230,38 +152,43 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         if (menu != null)
             updateMenuItems();
 
-        if (infoFragment.getCurrentPlayersName().equals(playerName.getText().toString())) {
-            playerName.setTextColor(getResources().getColor(android.R.color.white));
-            opponentName.setTextColor(getResources().getColor(R.color.non_current_players_turn));
+        if (match.getCurrentPlayersName().equals(playerName.getText().toString())) {
+            playerName.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            opponentName.setTextColor(ContextCompat.getColor(this, R.color.non_current_players_turn));
         } else {
-            playerName.setTextColor(getResources().getColor(R.color.non_current_players_turn));
-            opponentName.setTextColor(getResources().getColor(android.R.color.white));
+            playerName.setTextColor(ContextCompat.getColor(this, R.color.non_current_players_turn));
+            opponentName.setTextColor(ContextCompat.getColor(this, android.R.color.white));
         }
+
+        updateFragments();
     }
 
     private void updateMenuItems() {
-        menu.findItem(R.id.action_undo).setEnabled(infoFragment.isUndoTurn());
-        menu.findItem(R.id.action_redo).setEnabled(infoFragment.isRedoTurn());
-        this.menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 127);
-        this.menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 127);
+        menu.findItem(R.id.action_undo).setEnabled(match.isUndoTurn());
+        menu.findItem(R.id.action_redo).setEnabled(match.isRedoTurn());
+        menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 127);
+        menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 127);
     }
 
     @Override public void addTurn(TurnBuilder turnBuilder) {
-        addTurn(infoFragment.createAndAddTurn(
+        addTurn(match.createAndAddTurn(
                 turnBuilder.tableStatus,
                 turnBuilder.turnEnd,
                 turnBuilder.foul,
                 turnBuilder.lostGame,
                 turnBuilder.advStats.build()));
     }
+
     private void addTurn(Turn turn) {
-        db.insertTurn(turn, getMatchId(), infoFragment.getTurnCount());
+        db.insertTurn(turn, getMatchId(), match.getTurnCount());
+        //turnListFragment.updateMatch(match);
         updateViews();
     }
 
     private void undoTurn() {
-        infoFragment.undoTurn();
-        db.undoTurn(getMatchId(), infoFragment.getTurnCount() + 1);
+        match.undoTurn();
+        db.undoTurn(getMatchId(), match.getTurnCount() + 1);
+        //turnListFragment.updateMatch(match);
         updateViews();
     }
 
@@ -280,16 +207,16 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         int id = item.getItemId();
 
         if (id == R.id.action_notes) {
-            displayEditMatchNotesDialog();
+            showEditMatchNotesDialog();
         }
 
         if (id == R.id.action_location) {
-            displayEditMatchLocationDialog();
+            showEditMatchLocationDialog();
         }
 
         if (id == R.id.action_game_status) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-            builder.setMessage(GameStatusStringBuilder.getMatchStatusString(db.getMatch(getMatchId())))
+            builder.setMessage(GameStatusStringBuilder.getMatchStatusString(match))
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override public void onClick(DialogInterface dialog, int which) {
 
@@ -305,62 +232,247 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         if (id == R.id.action_redo) {
             Snackbar.make(layout, R.string.redid_turn, Snackbar.LENGTH_SHORT).show();
-            addTurn(infoFragment.redoTurn());
+            addTurn(match.redoTurn());
         }
 
-        if (item.getItemId() == R.id.action_adv_stats) {
-            TurnListDialog dialog = TurnListDialog.create(getMatchId());
-            dialog.show(getSupportFragmentManager(), "TurnListDialog");
+        if (item.getItemId() == R.id.action_match_view) {
+            if (pager.getCurrentItem() == 0) {
+                pager.setCurrentItem(1);
+                item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_stream));
+            } else {
+                pager.setCurrentItem(0);
+                item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_list));
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void displayEditMatchNotesDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-        View view = getLayoutInflater().inflate(R.layout.edit_text, null);
-        final EditText input = (EditText) view.findViewById(R.id.editText);
-        input.setText(db.getMatch(getMatchId()).getNotes());
-        builder.setTitle(getString(R.string.match_notes))
-                .setView(view)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        db.updateMatchNotes(input.getText().toString(), getMatchId());
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .create().show();
+    private void showAddTurnDialog() {
+        AddTurnDialog addTurnDialog = AddTurnDialog.create(match);
+        addTurnDialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.MyAppTheme);
+        addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
-    private void displayEditMatchLocationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-        View view = getLayoutInflater().inflate(R.layout.edit_text, null);
-        final EditText input = (EditText) view.findViewById(R.id.editText);
-        input.setText(db.getMatch(getMatchId()).getLocation());
-        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        builder.setTitle(getString(R.string.match_location))
-                .setView(view)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        db.updateMatchLocation(input.getText().toString(), getMatchId());
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .create().show();
+    private void showEditPlayerNameDialog(final String name) {
+        EditTextDialog dialog = EditPlayerNameDialog.create(getString(R.string.edit_player_name, name), name, getMatchId());
+        dialog.show(getSupportFragmentManager(), "EditPlayerName");
     }
 
-    public static class MatchInfoFragment extends Fragment implements IMatch {
+    private void showAdvancedStatsDialog(String name, PlayerTurn turn) {
+        DialogFragment dialogFragment =
+                AdvStatsDialog.create(getMatchId(), name, turn);
+        dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
+        dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
+    }
+
+    private void showEditMatchNotesDialog() {
+        EditTextDialog dialog = EditMatchNotesDialog.create(getString(R.string.match_notes), match.getNotes(), getMatchId());
+        dialog.show(getSupportFragmentManager(), "EditMatchNotes");
+    }
+
+    private void showEditMatchLocationDialog() {
+        EditTextDialog dialog = EditMatchLocationDialog.create(getString(R.string.match_location), match.getLocation(), getMatchId());
+        dialog.show(getSupportFragmentManager(), "EditMatchLocation");
+    }
+
+    private void showChoiceDialog(final String name, final PlayerTurn turn) {
+        ChoiceDialog dialog = ChoiceDialog.create(getMatchId(), turn, name);
+        dialog.show(getSupportFragmentManager(), "ChoiceDialog");
+    }
+
+    void registerFragment(UpdateMatchInfo info) {
+        listeners.add(info);
+    }
+
+    void removeFragment(UpdateMatchInfo info) {
+        listeners.remove(info);
+    }
+
+    void updateFragments() {
+        for (UpdateMatchInfo listener : listeners) {
+            listener.update(match);
+        }
+    }
+
+    interface UpdateMatchInfo {
+        void update(Match<?> match);
+    }
+
+    public static class ChoiceDialog extends DialogFragment {
+        private static final String ARG_PLAYER_TURN = "arg player turn";
+        String[] items;
+        long matchId;
+        String name;
+        PlayerTurn turn;
+
+        static ChoiceDialog create(long matchId, PlayerTurn turn, String name) {
+            ChoiceDialog dialog = new ChoiceDialog();
+            Bundle args = new Bundle();
+            args.putLong(ARG_MATCH_ID, matchId);
+            args.putString(ARG_PLAYER_TURN, turn.name());
+            args.putString(ARG_PLAYER_NAME, name);
+
+            dialog.setArguments(args);
+            return dialog;
+        }
+
+        @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            DatabaseAdapter db = new DatabaseAdapter(getContext());
+            turn = PlayerTurn.valueOf(getArguments().getString(ARG_PLAYER_TURN));
+            name = getArguments().getString(ARG_PLAYER_NAME);
+            matchId = getArguments().getLong(ARG_MATCH_ID);
+            if (playerHasAdvancedStats(turn, db.getMatch(matchId).getAdvStats())) {
+                items = new String[]{getString(R.string.view_profile), getString(R.string.view_adv_stats), getString(R.string.edit_name)};
+            } else {
+                items = new String[]{getString(R.string.view_profile), getString(R.string.edit_name)};
+            }
+        }
+
+        @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme)
+                    .setTitle(name)
+                    .setItems(items, new DialogInterface.OnClickListener() {
+                        @Override public void onClick(DialogInterface dialog, int which) {
+                            if (items[which].equals(getString(R.string.view_adv_stats)))
+                                ((MatchInfoActivity) getActivity()).showAdvancedStatsDialog(name, turn);
+                            else if (items[which].equals(getString(R.string.view_profile))) {
+                                Intent intent = new Intent(getContext(), PlayerProfileActivity.class);
+                                intent.putExtra(ARG_PLAYER_NAME, name);
+                                startActivity(intent);
+                            } else if (items[which].equals(getString(R.string.edit_name))) {
+                                ((MatchInfoActivity) getActivity()).showEditPlayerNameDialog(name);
+                            }
+                        }
+                    }).create();
+        }
+
+        private boolean playerHasAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
+            if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
+                return true;
+            else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
+                return true;
+            else return detail == Match.StatsDetail.ADVANCED;
+        }
+    }
+
+    public static abstract class EditTextDialog extends DialogFragment {
+        static final String ARG_TITLE = "arg title";
+        static final String ARG_PRETEXT = "arg pretext";
+        String title;
+        String preText;
+        EditText input;
+        DatabaseAdapter db;
+        long matchId;
+
+        @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            title = getArguments().getString(ARG_TITLE);
+            preText = getArguments().getString(ARG_PRETEXT);
+            matchId = getArguments().getLong(ARG_MATCH_ID);
+            db = new DatabaseAdapter(getContext());
+        }
+
+        @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.edit_text, null, false);
+            input = (EditText) view.findViewById(R.id.editText);
+            input.setText(preText);
+            input.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            setupInput(input);
+
+            return builder.setTitle(title)
+                    .setView(view)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override public void onClick(DialogInterface dialog, int which) {
+                            onPositiveButton();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .create();
+        }
+
+        abstract void setupInput(EditText input);
+        abstract void onPositiveButton();
+    }
+
+    public static class EditPlayerNameDialog extends EditTextDialog {
+
+        public static EditTextDialog create(String title, String preText, long matchId) {
+            EditTextDialog dialog = new EditPlayerNameDialog();
+            Bundle args = new Bundle();
+            args.putString(ARG_PRETEXT, preText);
+            args.putString(ARG_TITLE, title);
+            args.putLong(ARG_MATCH_ID, matchId);
+
+            dialog.setArguments(args);
+            return dialog;
+        }
+
+        @Override void setupInput(EditText input) {
+            input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        }
+        @Override void onPositiveButton() {
+            ((MatchInfoActivity)getActivity()).updatePlayerNames(preText, input.getText().toString());
+            db.editPlayerName(matchId, preText, input.getText().toString());
+        }
+
+    }
+
+    public static class EditMatchLocationDialog extends EditTextDialog {
+        public static EditTextDialog create(String title, String preText, long matchId) {
+            EditTextDialog dialog = new EditMatchLocationDialog();
+            Bundle args = new Bundle();
+            args.putString(ARG_PRETEXT, preText);
+            args.putString(ARG_TITLE, title);
+            args.putLong(ARG_MATCH_ID, matchId);
+
+            dialog.setArguments(args);
+            return dialog;
+        }
+
+        @Override void setupInput(EditText input) {
+            input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        }
+
+        @Override void onPositiveButton() {
+            db.updateMatchLocation(input.getText().toString(), matchId);
+        }
+    }
+
+    public static class EditMatchNotesDialog extends EditTextDialog {
+        public static EditTextDialog create(String title, String preText, long matchId) {
+            EditTextDialog dialog = new EditMatchNotesDialog();
+            Bundle args = new Bundle();
+            args.putString(ARG_PRETEXT, preText);
+            args.putString(ARG_TITLE, title);
+            args.putLong(ARG_MATCH_ID, matchId);
+
+            dialog.setArguments(args);
+            return dialog;
+        }
+        @Override void setupInput(EditText input) {
+
+        }
+
+        @Override void onPositiveButton() {
+            db.updateMatchNotes(input.getText().toString(), matchId);
+        }
+    }
+
+    public static class MatchInfoFragment extends Fragment implements UpdateMatchInfo {
+        private static final String TAG = "MatchInfoFragment";
         @Bind(R.id.scrollView) RecyclerView recyclerView;
-        private MatchInfoRecyclerAdapter<?> adapter;
         private LinearLayoutManager layoutManager;
+        private MatchInfoRecyclerAdapter adapter;
 
         /**
          * Mandatory empty constructor for the fragment manager to instantiate the
@@ -370,7 +482,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
 
-        public static MatchInfoFragment createMatchInfoFragment(long matchId) {
+        public static MatchInfoFragment create(long matchId) {
             MatchInfoFragment fragment = new MatchInfoFragment();
 
             Bundle args = new Bundle();
@@ -381,15 +493,33 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             return fragment;
         }
 
+        @Override public void onAttach(Context context) {
+            super.onAttach(context);
+            ((MatchInfoActivity)getActivity()).registerFragment(this);
+        }
+
+        @Override public void onDetach() {
+            ((MatchInfoActivity)getActivity()).removeFragment(this);
+            super.onDetach();
+        }
+
+        @Override public void update(Match<?> match) {
+            adapter.updatePlayers(match);
+        }
+
         @Override public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setRetainInstance(true);
+            long matchId;
 
-            long matchId = setMatchId();
+            if (getArguments().getLong(ARG_MATCH_ID, -1L) != -1L) {
+                 matchId = getArguments().getLong(ARG_MATCH_ID);
+            } else {
+                throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
+            }
+
             DatabaseAdapter db = new DatabaseAdapter(getContext());
             Match<?> match = db.getMatch(matchId);
             adapter = MatchInfoRecyclerAdapter.createMatchAdapter(match);
-            db = null;
         }
 
         @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -399,7 +529,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
             layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
-            //recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
             recyclerView.setAdapter(adapter);
 
             return view;
@@ -418,467 +547,27 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             refWatcher.watch(this);
             super.onDestroy();
         }
+    }
 
-        private long setMatchId() {
-            if (getArguments().getLong(ARG_MATCH_ID) != 0L) {
-                return getArguments().getLong(ARG_MATCH_ID);
-            } else {
-                throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
+    private static class PagerAdapter extends FragmentPagerAdapter {
+        private long matchId;
+
+        public PagerAdapter(FragmentManager fm, long matchId) {
+            super(fm);
+            this.matchId = matchId;
+        }
+
+        @Override public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return MatchInfoFragment.create(matchId);
+                default:
+                    return TurnListFragment.create(matchId);
             }
         }
 
-        @Override
-        public Turn createAndAddTurn(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
-            return adapter.createAndAddTurn(tableStatus, turnEnd, scratch, isGameLost, advStats);
-        }
-
-        @Override public String getCurrentPlayersName() {
-            return adapter.getCurrentPlayersName();
-        }
-
-        @Override public String getNonCurrentPlayersName() {
-            return adapter.getNonCurrentPlayersName();
-        }
-
-        @Override public void setPlayerName(String newName) {
-            adapter.setPlayerName(newName);
-        }
-
-        @Override public void setOpponentName(String newName) {
-            adapter.setOpponentName(newName);
-        }
-
-        @Override public void undoTurn() {
-            adapter.undoTurn();
-        }
-
-        @Override public boolean isRedoTurn() {
-            return adapter.isRedoTurn();
-        }
-
-        @Override public boolean isUndoTurn() {
-            return adapter.isUndoTurn();
-        }
-
-        @Override public Turn redoTurn() {
-            return adapter.redoTurn();
-        }
-
-        @Override public AbstractPlayer getPlayer() {
-            return adapter.getPlayer();
-        }
-
-        @Override public AbstractPlayer getOpponent() {
-            return adapter.getOpponent();
-        }
-
-        @Override public AbstractPlayer getPlayer(int from, int to) {
-            return adapter.getPlayer(from, to);
-        }
-
-        @Override public AbstractPlayer getOpponent(int from, int to) {
-            return adapter.getOpponent(from, to);
-        }
-
-        @Override public String getLocation() {
-            return adapter.getLocation();
-        }
-
-        @Override public int getTurnCount() {
-            return adapter.getTurnCount();
-        }
-
-        @Override public List<Turn> getTurns() {
-            return adapter.getTurns();
-        }
-
-        @Override public List<Turn> getTurns(int from, int to) {
-            return adapter.getTurns(from, to);
-        }
-
-        @Override public long getMatchId() {
-            return adapter.getMatchId();
-        }
-
-        /**
-         * Created by Brookman Holmes on 1/13/2016.
-         */
-        static class MatchInfoRecyclerAdapter<T extends AbstractPlayer> extends RecyclerView.Adapter<BaseViewHolder<T>>
-                implements IMatch<T> {
-            public static final int ITEM_MATCH_OVERVIEW = 0;
-            public static final int ITEM_SHOOTING_PCT = 1;
-            public static final int ITEM_SAFETIES = 2;
-            public static final int ITEM_BREAKS = 3;
-            public static final int ITEM_RUN_OUTS = 4;
-            public static final int ITEM_FOOTER = 10;
-            public static final int ITEM_APA_STATS = 5;
-            final int gameBall;
-            Match.StatsDetail detail;
-            ViewType viewTypeToggle = ViewType.CARDS;
-            Match<T> match;
-
-            MatchInfoRecyclerAdapter(Match<T> match) {
-                this.match = match;
-                detail = match.getAdvStats();
-                this.gameBall = match.getGameStatus().GAME_BALL;
-            }
-
-            MatchInfoRecyclerAdapter(Match<T> match, ViewType viewType) {
-                this(match);
-                viewTypeToggle = viewType;
-            }
-
-            @SuppressWarnings("unchecked")
-            public static <T extends AbstractPlayer> MatchInfoRecyclerAdapter<?> createMatchAdapter(Match<T> match) {
-                // this is probably fucking retarded?
-                switch (match.getGameStatus().gameType) {
-                    case BCA_NINE_BALL:
-                        return new BcaNineBallMatchInfoRecyclerAdapter((Match<NineBallPlayer>) match);
-                    case BCA_EIGHT_BALL:
-                        return new BcaEightBallMatchInfoRecyclerAdapter((Match<EightBallPlayer>) match);
-                    case BCA_TEN_BALL:
-                        return new BcaTenBallMatchInfoRecyclerAdapter((Match<TenBallPlayer>) match);
-                    case APA_NINE_BALL:
-                        return new ApaMatchInfoRecyclerAdapter<>((Match<ApaNineBallPlayer>) match);
-                    case APA_EIGHT_BALL:
-                        return new ApaMatchInfoRecyclerAdapter<>((Match<ApaEightBallPlayer>) match);
-                    default:
-                        throw new InvalidGameTypeException(match.getGameStatus().gameType.toString());
-                }
-            }
-
-            @SuppressWarnings("unchecked")
-            public static <T extends AbstractPlayer> MatchInfoRecyclerAdapter<?> createMatchAdapterWithCardViews(Match<T> match) {
-                // this is probably fucking retarded?
-                switch (match.getGameStatus().gameType) {
-                    case BCA_NINE_BALL:
-                        return new BcaNineBallMatchInfoRecyclerAdapter((Match<NineBallPlayer>) match, MatchInfoFragment.MatchInfoRecyclerAdapter.ViewType.CARDS);
-                    case BCA_EIGHT_BALL:
-                        return new BcaEightBallMatchInfoRecyclerAdapter((Match<EightBallPlayer>) match, MatchInfoFragment.MatchInfoRecyclerAdapter.ViewType.CARDS);
-                    case BCA_TEN_BALL:
-                        return new BcaTenBallMatchInfoRecyclerAdapter((Match<TenBallPlayer>) match, MatchInfoFragment.MatchInfoRecyclerAdapter.ViewType.CARDS);
-                    case APA_NINE_BALL:
-                        return new ApaMatchInfoRecyclerAdapter<>((Match<ApaNineBallPlayer>) match, MatchInfoFragment.MatchInfoRecyclerAdapter.ViewType.CARDS);
-                    case APA_EIGHT_BALL:
-                        return new ApaMatchInfoRecyclerAdapter<>((Match<ApaEightBallPlayer>) match, MatchInfoFragment.MatchInfoRecyclerAdapter.ViewType.CARDS);
-                    default:
-                        throw new InvalidGameTypeException(match.getGameStatus().gameType.toString());
-                }
-            }
-
-            @Override public BaseViewHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(getLayoutResource(viewType), parent, false);
-                view.setTag(viewType);
-                return getMatchInfoHolderByViewType(view, viewType);
-            }
-
-            @Override public void onBindViewHolder(BaseViewHolder<T> holder, int position) {
-                holder.bind(getPlayer(), getOpponent());
-            }
-
-            @Override public int getItemCount() {
-                if (match.getGameStatus().breakType == BreakType.GHOST)
-                    return 4;
-                else
-                    return 6;
-            }
-
-            @Override public void setPlayerName(String newName) {
-                match.setPlayerName(newName);
-            }
-
-            @Override public void setOpponentName(String newName) {
-                match.setOpponentName(newName);
-            }
-
-            @Override public int getItemViewType(int position) {
-                if (match.getGameStatus().breakType == BreakType.GHOST) {
-                    switch (position) {
-                        case 0:
-                            return ITEM_MATCH_OVERVIEW;
-                        case 1:
-                            return ITEM_SHOOTING_PCT;
-                        case 2:
-                            return ITEM_BREAKS;
-                        default:
-                            return ITEM_FOOTER;
-                    }
-                }
-
-                if (position == getItemCount() - 1)
-                    return ITEM_FOOTER;
-                else return position;
-            }
-
-            @Override public T getPlayer() {
-                return match.getPlayer();
-            }
-
-            @Override public T getOpponent() {
-                return match.getOpponent();
-            }
-
-            @Override public T getPlayer(int from, int to) {
-                return match.getPlayer(from, to);
-            }
-
-            @Override public T getOpponent(int from, int to) {
-                return match.getOpponent(from, to);
-            }
-
-            @Override public List<Turn> getTurns() {
-                return match.getTurns();
-            }
-
-            @Override public List<Turn> getTurns(int from, int to) {
-                return match.getTurns(from, to);
-            }
-
-            @Override
-            public Turn createAndAddTurn(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
-                Turn turn = match.createAndAddTurn(tableStatus, turnEnd, scratch, isGameLost, advStats);
-                notifyDataSetChanged();
-                return turn;
-            }
-
-            @Override public void undoTurn() {
-                match.undoTurn();
-                notifyDataSetChanged();
-            }
-
-            @Override public boolean isRedoTurn() {
-                return match.isRedoTurn();
-            }
-
-            @Override public boolean isUndoTurn() {
-                return match.isUndoTurn();
-            }
-
-            @Override public Turn redoTurn() {
-                Turn turn = match.redoTurn();
-                notifyDataSetChanged();
-                return turn;
-            }
-
-            @Override public long getMatchId() {
-                return match.getMatchId();
-            }
-
-            @Override public String getLocation() {
-                return match.getLocation();
-            }
-
-            @Override public String getCurrentPlayersName() {
-                return match.getCurrentPlayersName();
-            }
-
-            @Override public String getNonCurrentPlayersName() {
-                return match.getNonCurrentPlayersName();
-            }
-
-            @Override public int getTurnCount() {
-                return match.getTurnCount();
-            }
-
-            @LayoutRes int getLayoutResource(int viewType) {
-                if (viewTypeToggle == ViewType.CARDS) {
-                    switch (viewType) {
-                        case ITEM_RUN_OUTS:
-                            return R.layout.card_run_outs;
-                        case ITEM_BREAKS:
-                            return R.layout.card_breaks;
-                        case ITEM_MATCH_OVERVIEW:
-                            return R.layout.card_match_overview;
-                        case ITEM_SAFETIES:
-                            return R.layout.card_safeties;
-                        case ITEM_SHOOTING_PCT:
-                            return R.layout.card_shooting_pct;
-                        case ITEM_FOOTER:
-                            return R.layout.footer;
-                        default:
-                            throw new IllegalArgumentException("No such view type: " + viewType);
-                    }
-                } else {
-                    switch (viewType) {
-                        case ITEM_RUN_OUTS:
-                            return R.layout.plain_runs;
-                        case ITEM_BREAKS:
-                            return R.layout.plain_breaks;
-                        case ITEM_MATCH_OVERVIEW:
-                            return R.layout.plain_match_overview;
-                        case ITEM_SAFETIES:
-                            return R.layout.plain_safeties;
-                        case ITEM_SHOOTING_PCT:
-                            return R.layout.plain_shooting;
-                        case ITEM_FOOTER:
-                            return R.layout.footer;
-                        default:
-                            throw new IllegalArgumentException("No such view type: " + viewType);
-                    }
-                }
-            }
-
-            BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
-                switch (viewType) {
-                    case ITEM_MATCH_OVERVIEW:
-                        return new MatchOverviewHolder<>(view, detail);
-                    case ITEM_SHOOTING_PCT:
-                        return new ShootingPctHolder<>(view, detail);
-                    case ITEM_BREAKS:
-                        return new BreaksHolder<>(view, match.getGameStatus().GAME_BALL, detail);
-                    case ITEM_RUN_OUTS:
-                        return new RunOutsHolder<>(view, detail);
-                    case ITEM_SAFETIES:
-                        return new SafetiesHolder<>(view, detail);
-                    case ITEM_FOOTER:
-                        return new FooterViewHolder<>(view);
-                    default:
-                        throw new IllegalArgumentException("No such view type");
-                }
-            }
-
-            public enum ViewType {
-                CARDS,
-                LIST
-            }
-
-            /**
-             * Created by Brookman Holmes on 1/17/2016.
-             */
-            static class BcaTenBallMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter<TenBallPlayer> {
-                BcaTenBallMatchInfoRecyclerAdapter(Match<TenBallPlayer> match) {
-                    super(match);
-                }
-
-                BcaTenBallMatchInfoRecyclerAdapter(Match<TenBallPlayer> match, ViewType viewType) {
-                    super(match, viewType);
-                }
-
-                @Override
-                BaseViewHolder<TenBallPlayer> getMatchInfoHolderByViewType(View view, int viewType) {
-                    switch (viewType) {
-                        case ITEM_RUN_OUTS:
-                            return new RunOutsWithEarlyWinsHolder<>(view, detail);
-                        default:
-                            return super.getMatchInfoHolderByViewType(view, viewType);
-                    }
-                }
-            }
-
-            /**
-             * Created by Brookman Holmes on 1/17/2016.
-             */
-            static class BcaNineBallMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter<NineBallPlayer> {
-                BcaNineBallMatchInfoRecyclerAdapter(Match<NineBallPlayer> match) {
-                    super(match);
-                }
-
-                BcaNineBallMatchInfoRecyclerAdapter(Match<NineBallPlayer> match, ViewType viewType) {
-                    super(match, viewType);
-                }
-
-                @Override
-                BaseViewHolder<NineBallPlayer> getMatchInfoHolderByViewType(View view, int viewType) {
-                    switch (viewType) {
-                        case ITEM_BREAKS:
-                            return new BreaksWithWinsHolder<>(view, gameBall, detail);
-                        case ITEM_RUN_OUTS:
-                            return new RunOutsWithEarlyWinsHolder<>(view, detail);
-                        default:
-                            return super.getMatchInfoHolderByViewType(view, viewType);
-                    }
-                }
-            }
-
-            /**
-             * Created by Brookman Holmes on 1/17/2016.
-             */
-            static class BcaEightBallMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter<EightBallPlayer> {
-                BcaEightBallMatchInfoRecyclerAdapter(Match<EightBallPlayer> match) {
-                    super(match);
-                }
-
-                BcaEightBallMatchInfoRecyclerAdapter(Match<EightBallPlayer> match, ViewType viewType) {
-                    super(match, viewType);
-                }
-            }
-
-            /**
-             * Created by Brookman Holmes on 1/17/2016.
-             */
-            static class ApaMatchInfoRecyclerAdapter<T extends AbstractPlayer & IApa> extends MatchInfoRecyclerAdapter<T> {
-
-                ApaMatchInfoRecyclerAdapter(Match<T> match) {
-                    super(match);
-                }
-
-                ApaMatchInfoRecyclerAdapter(Match<T> match, ViewType viewType) {
-                    super(match, viewType);
-                }
-
-                @Override public void onBindViewHolder(BaseViewHolder<T> holder, int position) {
-                    super.onBindViewHolder(holder, position);
-
-                    if (holder instanceof ApaPlayer)
-                        ((ApaPlayer) holder).setTvInningsOpponent(match.getGameStatus().innings);
-                }
-
-                @Override BaseViewHolder<T> getMatchInfoHolderByViewType(View view, int viewType) {
-                    switch (viewType) {
-                        case ITEM_APA_STATS:
-                            return new ApaPlayer<>(view, detail);
-                        case ITEM_BREAKS:
-                            return new BreaksWithWinsHolder<>(view, gameBall, detail);
-                        case ITEM_RUN_OUTS:
-                            return new RunOutsWithEarlyWinsHolder<>(view, detail);
-                        default:
-                            return super.getMatchInfoHolderByViewType(view, viewType);
-                    }
-                }
-
-                @Override int getLayoutResource(int viewType) {
-                    if (viewTypeToggle == ViewType.CARDS) {
-                        switch (viewType) {
-                            case ITEM_APA_STATS:
-                                return R.layout.card_apa_stats;
-                            default:
-                                return super.getLayoutResource(viewType);
-                        }
-                    } else {
-                        switch (viewType) {
-                            case ITEM_APA_STATS:
-                                return R.layout.plain_apa_stats;
-                            default:
-                                return super.getLayoutResource(viewType);
-                        }
-                    }
-                }
-
-                @Override public int getItemCount() {
-                    return super.getItemCount() + 1;
-                }
-
-                @Override public int getItemViewType(int position) {
-                    switch (position) {
-                        case 0:
-                            return ITEM_APA_STATS;
-                        case 1:
-                            return ITEM_SHOOTING_PCT;
-                        case 2:
-                            return ITEM_SAFETIES;
-                        case 3:
-                            return ITEM_BREAKS;
-                        case 4:
-                            return ITEM_RUN_OUTS;
-                        case 5:
-                            return ITEM_MATCH_OVERVIEW;
-                        case 6:
-                            return ITEM_FOOTER;
-                        default:
-                            throw new IllegalArgumentException("Cannot have position: " + position);
-                    }
-                }
-            }
+        @Override public int getCount() {
+            return 2;
         }
     }
 }

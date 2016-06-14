@@ -6,13 +6,16 @@ import android.widget.TextView;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.IWinsOnBreak;
+
+import java.util.Locale;
 
 import butterknife.Bind;
 
 /**
  * Created by helios on 4/12/2016.
  */
-public class BreaksHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
+public class BreaksHolder extends MatchInfoHolder {
     @Bind(R.id.tvAvgBreakBallsPlayer) TextView tvBreakBallsPlayer;
     @Bind(R.id.tvAvgBreakBallsOpponent) TextView tvBreakBallsOpponent;
     @Bind(R.id.tvBreakWinsPlayer) TextView tvBreakWinsPlayer;
@@ -39,12 +42,8 @@ public class BreaksHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
 
     public BreaksHolder(View view, Match.StatsDetail detail) {
         super(view);
-        breakWinsTitle.setText(view.getContext().getString(R.string.title_game_won_on_break, "8/9/10"));
 
-        breakWinsTitle.setVisibility(View.GONE);
-        tvBreakWinsPlayer.setVisibility(View.GONE);
-        tvBreakWinsOpponent.setVisibility(View.GONE);
-
+        breakWinsTitle.setText(view.getContext().getString(R.string.title_game_won_on_break, "8/9"));
         title.setText(view.getContext().getString(R.string.title_breaks));
         setVisibilities(view, detail);
     }
@@ -57,7 +56,7 @@ public class BreaksHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
         }
     }
 
-    @Override public void bind(T player, T opponent) {
+    @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {
         // Average balls / break
         tvBreakBallsPlayer.setText(player.getAvgBallsBreak());
         tvBreakBallsOpponent.setText(opponent.getAvgBallsBreak());
@@ -78,6 +77,20 @@ public class BreaksHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
         tvBreakScratchesPlayer.setText(String.valueOf(player.getBreakFouls()));
         // highlighting of the player who's doing better in this stat
         highlightPlayerStat(tvBreakScratchesPlayer, tvBreakScratchesOpponent, player.getBreakFouls(), opponent.getBreakFouls());
+
+        if (player instanceof IWinsOnBreak && opponent instanceof IWinsOnBreak) {
+            breakWinsTitle.setVisibility(View.VISIBLE);
+            tvBreakWinsPlayer.setVisibility(View.VISIBLE);
+            tvBreakWinsOpponent.setVisibility(View.VISIBLE);
+            tvBreakWinsPlayer.setText(String.format(Locale.getDefault(), "%d", ((IWinsOnBreak) player).getWinsOnBreak()));
+            tvBreakWinsOpponent.setText(String.format(Locale.getDefault(), "%d", ((IWinsOnBreak) opponent).getWinsOnBreak()));
+            // highlighting of the player who's doing better in this stat
+            highlightBetterPlayerStats(tvBreakWinsPlayer, tvBreakWinsOpponent, ((IWinsOnBreak) player).getWinsOnBreak(), ((IWinsOnBreak) opponent).getWinsOnBreak());
+        } else {
+            breakWinsTitle.setVisibility(View.GONE);
+            tvBreakWinsPlayer.setVisibility(View.GONE);
+            tvBreakWinsOpponent.setVisibility(View.GONE);
+        }
     }
 
     @Override int getLayoutRes() {

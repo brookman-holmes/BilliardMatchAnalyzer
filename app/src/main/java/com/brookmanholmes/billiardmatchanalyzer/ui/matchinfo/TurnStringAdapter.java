@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
+package com.brookmanholmes.billiardmatchanalyzer.ui.matchinfo;
 
 import android.text.Html;
 import android.text.Spanned;
@@ -10,7 +10,7 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 /**
  * Created by Brookman Holmes on 4/30/2016.
  */
-public class TurnStringAdapter {
+class TurnStringAdapter {
     Turn turn;
     String playerName;
     AbstractPlayer player;

@@ -145,4 +145,5 @@
     <string name="fouls_on_the_break">Fouls %3$s (%1$d/%2$d)</string>
     <string name="_8_9_on_the_break">8/9 on the break %3$s (%1$d/%2$d)</string>
     <string name="matches">Matches</string>
+    <string name="edit_player_name">Change %1$s\'s name</string>
 </resources>

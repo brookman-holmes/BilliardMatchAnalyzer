@@ -12,7 +12,7 @@ import butterknife.Bind;
 /**
  * Created by helios on 4/12/2016.
  */
-public class ShootingPctHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
+public class ShootingPctHolder extends MatchInfoHolder {
     @Bind(R.id.tvShootingPctPlayer) TextView tvShootingPctPlayer;
     @Bind(R.id.tvShootingPctOpponent) TextView tvShootingPctOpponent;
     @Bind(R.id.tvBallTotalPlayer) TextView tvBallTotalPlayer;
@@ -33,7 +33,7 @@ public class ShootingPctHolder<T extends AbstractPlayer> extends MatchInfoHolder
 
     }
 
-    @Override public void bind(T player, T opponent) {
+    @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {
         // Shooting Percentage
         tvShootingPctPlayer.setText(player.getShootingPct());
         tvShootingPctOpponent.setText(opponent.getShootingPct());

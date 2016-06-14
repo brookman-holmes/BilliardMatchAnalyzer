@@ -30,6 +30,9 @@
         android:completionThreshold="1"
         android:hint="@string/hint_player_name"
         android:inputType="textCapWords"
+        android:nextFocusDown="@+id/opponentName"
+        android:nextFocusForward="@+id/opponentName"
+        android:nextFocusRight="@+id/opponentName"
         android:textSize="16sp"
         app:met_floatingLabel="normal"
         app:met_floatingLabelText="@string/hint_player_name"/>
@@ -43,6 +46,9 @@
         android:completionThreshold="1"
         android:hint="@string/hint_opponent_name"
         android:inputType="textCapWords"
+        android:nextFocusDown="@+id/location"
+        android:nextFocusForward="@+id/location"
+        android:nextFocusRight="@+id/location"
         android:textSize="16sp"
         app:met_floatingLabel="normal"
         app:met_floatingLabelText="@string/hint_opponent_name"/>
@@ -53,10 +59,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
-        android:hint="@string/hint_location"
         android:inputType="textCapWords"
+        android:nextFocusDown="@+id/extra"
+        android:nextFocusForward="@+id/extra"
+        android:nextFocusRight="@+id/extra"
         android:textSize="16sp"
         app:met_floatingLabel="normal"
+        app:met_floatingLabelAlwaysShown="true"
         app:met_floatingLabelText="@string/hint_notes"/>
 
     <com.rengwuxian.materialedittext.MaterialEditText

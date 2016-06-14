@@ -1,6 +1,5 @@
-package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
+package com.brookmanholmes.billiardmatchanalyzer.ui.matchinfo;
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -22,6 +21,7 @@ import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
+import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
@@ -35,44 +35,71 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 5/1/2016.
  */
-public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<ExpandableTurnListAdapter.GameViewHolder, ExpandableTurnListAdapter.TurnViewHolder> {
-    List<List<Turn>> data = new ArrayList<>(); // list of lists of turns, where each list is a group of turns that corresponds to that game
-    LayoutInflater inflater;
+class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<ExpandableTurnListAdapter.GameViewHolder, ExpandableTurnListAdapter.TurnViewHolder> {
+    List<List<Turn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
     Match<?> match;
-    int[] colors = new int[]{R.color.good, R.color.almost_good, R.color.okay, R.color.bad};
+    RecyclerViewExpandableItemManager itemManager;
 
-    public ExpandableTurnListAdapter(Context context, Match<?> match) {
-        inflater = LayoutInflater.from(context);
+    public ExpandableTurnListAdapter(Match<?> match, RecyclerViewExpandableItemManager itemManager) {
         this.match = match;
+        this.itemManager = itemManager;
         setHasStableIds(true);
-
         buildDataSource(match.getTurns());
+        // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
     }
 
-    private void buildDataSource(List<Turn> data) {
+    public void updateMatch(Match<?> match) {
+        int oldGroupCount = getGroupCount();
+        int oldChildCount = oldGroupCount > 0 ? getChildCount(getGroupCount() - 1) : 0;
+
+        this.match = match;
+        buildDataSource(match.getTurns());
+
+
+        if (oldGroupCount > getGroupCount()) {
+            itemManager.notifyGroupItemRangeRemoved(oldGroupCount - 1, oldGroupCount - getGroupCount());
+        } else if (oldGroupCount < getGroupCount()) {
+            itemManager.notifyGroupItemRangeInserted(getGroupCount() - 1, getGroupCount() - oldGroupCount);
+            itemManager.notifyChildItemRangeInserted(getGroupCount() - 1, 0, getChildCount(getGroupCount() - 1) - 1);
+        } else {
+            int childCount = getChildCount(getGroupCount() - 1);
+            if (oldChildCount > childCount) {
+                itemManager.notifyChildItemRangeRemoved(getGroupCount() - 1, childCount - 1, oldChildCount - childCount);
+            } else if (oldChildCount < childCount) {
+                itemManager.notifyChildItemRangeInserted(getGroupCount() - 1, oldChildCount, childCount - oldChildCount);
+            }
+        }
+        scrollToLastItem();
+    }
+
+    private void scrollToLastItem() {
+        if (getGroupCount() > 0) {
+            itemManager.expandGroup(getGroupCount() - 1);
+            itemManager.scrollToGroup(getGroupCount() - 1, 10000); // not sure what value I'm supposed to put for childItemHeight?
+        }
+    }
+
+    private void buildDataSource(List<Turn> turns) {
         ArrayList<Turn> turnsInGame = new ArrayList<>();
-        for (int i = 0; i < data.size(); i++) {
-            Turn turn = data.get(i);
+        data.clear();
+        for (int i = 0; i < turns.size(); i++) {
+            Turn turn = turns.get(i);
 
             if ((!turn.isGameLost() && turn.getTurnEnd() != TurnEnd.GAME_WON)) {
                 turnsInGame.add(turn); // add any turn that doesn't end the game
             } else {
                 turnsInGame.add(turn); // add the turn that won the game
-                this.data.add(turnsInGame); // add the game to the list of lists of turn
+                data.add(turnsInGame); // add the game to the list of lists of turn
                 turnsInGame = new ArrayList<>();
             }
 
-            if (i + 1 == data.size())
-                this.data.add(turnsInGame);
+            if (i + 1 == turns.size())
+                data.add(turnsInGame);
         }
-    }
 
-    public void setColors(int color1, int color2, int color3, int color4) {
-        colors[0] = color1;
-        colors[1] = color2;
-        colors[2] = color3;
-        colors[3] = color4;
-        notifyDataSetChanged();
+        if (data.size() > 0 && data.get(data.size() - 1).size() == 0) {
+            data.remove(data.size() - 1);
+        }
     }
 
     @Override public int getGroupCount() {
@@ -93,20 +120,19 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
 
     @Override
     public GameViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
-        return new GameViewHolder(inflater.inflate(R.layout.row_game, parent, false));
+        return new GameViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_game, parent, false));
     }
 
     @Override
     public TurnViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
-        return new TurnViewHolder(inflater.inflate(R.layout.row_turn, parent, false), colors);
+        return new TurnViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_turn, parent, false));
     }
 
     @Override
     public void onBindGroupViewHolder(GameViewHolder holder, int groupPosition, int viewType) {
         holder.bind(groupPosition + 1,
                 match.getPlayer(0, getTurnNumber(groupPosition)).getWins(),
-                match.getOpponent(0, getTurnNumber(groupPosition)).getWins(),
-                data.get(groupPosition).size() > 0);
+                match.getOpponent(0, getTurnNumber(groupPosition)).getWins());
 
         final int expandState = holder.getExpandStateFlags();
 
@@ -167,11 +193,8 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
             ButterKnife.bind(this, itemView);
         }
 
-        private void bind(int gameTotal, int playerScore, int opponentScore, boolean gameStarted) {
+        private void bind(int gameTotal, int playerScore, int opponentScore) {
             setText(gameTotal, playerScore, opponentScore);
-            if (!gameStarted) {
-                game.setText(game.getText().toString() + "\nNot yet started");
-            }
         }
 
         private void setText(int games, int playerGamesWon, int oppGamesWon) {
@@ -204,12 +227,13 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
         @Bind(R.id.tvBreakPct) TextView breakPct;
         @Bind(R.id.tvShootingPct) TextView shootingPct;
         @Bind(R.id.ballContainer) ViewGroup ballContainer;
-        int[] colors;
+        @Bind(R.id.shootingLine) ImageView shootingLine;
+        @Bind(R.id.safetyLine) ImageView safetyLine;
+        @Bind(R.id.breakingLine) ImageView breakingLine;
 
-        public TurnViewHolder(View itemView, int[] colors) {
+        public TurnViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            this.colors = colors;
         }
 
         private void bind(Turn turn, PlayerTurn playerTurn, AbstractPlayer player) {
@@ -229,28 +253,26 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
             //safetyPct.setTextColor(getPctColor(player.getSafetyPct()));
             //breakPct.setTextColor(getPctColor(player.getBreakPct()));
 
-            shootingPct.setBackgroundTintList(getPctColor(player.getShootingPct()));
-            safetyPct.setBackgroundTintList(getPctColor(player.getSafetyPct()));
-            breakPct.setBackgroundTintList(getPctColor(player.getBreakPct()));
+            shootingLine.setImageTintList(getPctColor(player.getShootingPct()));
+            safetyLine.setImageTintList(getPctColor(player.getSafetyPct()));
+            breakingLine.setImageTintList(getPctColor(player.getBreakPct()));
         }
 
         private ColorStateList getPctColor(String pctString) {
             float pct = Float.valueOf(pctString);
             @ColorRes int color;
-            if (pct > .85)
-                color = colors[0];
+            if (pct > .9)
+                color = R.color.good;
+            else if (pct > .75)
+                color = R.color.almost_good;
             else if (pct > .66)
-                color = colors[1];
+                color = R.color.okay;
             else if (pct > .5)
-                color = colors[2];
+                color = R.color.just_above_bad;
             else
-                color = colors[3];
+                color = R.color.bad;
 
-            return new ColorStateList(new int[][]{new int[0]}, new int[]{color});
-        }
-
-        private ColorStateList getColorStateList(@ColorRes int color) {
-            return ContextCompat.getColorStateList(itemView.getContext(), color);
+            return new ColorStateList(new int[][]{new int[0]}, new int[]{ContextCompat.getColor(itemView.getContext(), color)});
         }
 
         private void setBalls(ITableStatus tableStatus) {
@@ -308,6 +330,7 @@ public class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Exp
         private boolean ballIsMade(BallStatus status) {
             return status == BallStatus.MADE ||
                     status == BallStatus.MADE_ON_BREAK ||
+                    status == BallStatus.GAME_BALL_MADE_ON_BREAK ||
                     status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE ||
                     status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
         }

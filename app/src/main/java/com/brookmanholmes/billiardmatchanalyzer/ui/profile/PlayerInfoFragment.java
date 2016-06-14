@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.adaptervh.BaseViewHolder;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.BreaksWithWinsHolder;
+import com.brookmanholmes.billiardmatchanalyzer.adaptervh.BreaksHolder;
 import com.brookmanholmes.billiardmatchanalyzer.adaptervh.FooterViewHolder;
 import com.brookmanholmes.billiardmatchanalyzer.adaptervh.MatchOverviewHolder;
-import com.brookmanholmes.billiardmatchanalyzer.adaptervh.RunOutsWithEarlyWinsHolder;
+import com.brookmanholmes.billiardmatchanalyzer.adaptervh.RunOutsHolder;
 import com.brookmanholmes.billiardmatchanalyzer.adaptervh.SafetiesHolder;
 import com.brookmanholmes.billiardmatchanalyzer.adaptervh.ShootingPctHolder;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
@@ -96,7 +96,7 @@ public class PlayerInfoFragment extends Fragment {
     /**
      * Created by Brookman Holmes on 5/7/2016.
      */
-    static class PlayerInfoAdapter extends RecyclerView.Adapter<BaseViewHolder<CompPlayer>> {
+    static class PlayerInfoAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public static final int ITEM_MATCH_OVERVIEW = 0;
         public static final int ITEM_SHOOTING_PCT = 1;
         public static final int ITEM_SAFETIES = 2;
@@ -122,13 +122,13 @@ public class PlayerInfoFragment extends Fragment {
         }
 
         @Override
-        public BaseViewHolder<CompPlayer> onCreateViewHolder(ViewGroup parent, int viewType) {
+        public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(getLayoutResource(viewType), parent, false);
             view.setTag(viewType);
             return getMatchInfoHolderByViewType(view, viewType);
         }
 
-        @Override public void onBindViewHolder(BaseViewHolder<CompPlayer> holder, int position) {
+        @Override public void onBindViewHolder(BaseViewHolder holder, int position) {
             holder.bind(getPlayer(), getOpponent());
         }
 
@@ -172,20 +172,20 @@ public class PlayerInfoFragment extends Fragment {
             }
         }
 
-        BaseViewHolder<CompPlayer> getMatchInfoHolderByViewType(View view, int viewType) {
+        BaseViewHolder getMatchInfoHolderByViewType(View view, int viewType) {
             switch (viewType) {
                 case ITEM_MATCH_OVERVIEW:
-                    return new MatchOverviewHolder<>(view, detail);
+                    return new MatchOverviewHolder(view, detail);
                 case ITEM_SHOOTING_PCT:
-                    return new ShootingPctHolder<>(view, detail);
+                    return new ShootingPctHolder(view, detail);
                 case ITEM_BREAKS:
-                    return new BreaksWithWinsHolder<>(view, 10, detail);
+                    return new BreaksHolder(view, 10, detail);
                 case ITEM_RUN_OUTS:
-                    return new RunOutsWithEarlyWinsHolder<>(view, detail);
+                    return new RunOutsHolder(view, detail);
                 case ITEM_SAFETIES:
-                    return new SafetiesHolder<>(view, detail);
+                    return new SafetiesHolder(view, detail);
                 case ITEM_FOOTER:
-                    return new FooterViewHolder<>(view);
+                    return new FooterViewHolder(view);
                 default:
                     throw new IllegalArgumentException("No such view type");
             }

@@ -33,11 +33,11 @@
     <color name="grey">#E0E0E0</color>
 
 
-    <color name="good">#E8F5E9</color>
-    <color name="almost_good">#F9FBE7</color>
-    <color name="okay">#FFFDE7</color>
-    <color name="just_above_bad">#FFF3E0</color>
-    <color name="bad">#ffebee</color>
+    <color name="good">#00E676</color>
+    <color name="almost_good">#C6FF00</color>
+    <color name="okay">#FFEA00</color>
+    <color name="just_above_bad">#FF9100</color>
+    <color name="bad">#ff1744</color>
 
     <color name="chart">#FFD740</color>
     <color name="chart1">#ff5252</color>

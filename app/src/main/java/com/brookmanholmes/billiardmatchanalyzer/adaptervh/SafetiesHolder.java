@@ -14,7 +14,7 @@ import butterknife.Bind;
 /**
  * Created by helios on 4/12/2016.
  */
-public class SafetiesHolder<T extends AbstractPlayer> extends MatchInfoHolder<T> {
+public class SafetiesHolder extends MatchInfoHolder {
     @Bind(R.id.tvSafetiesAttemptedPlayer) TextView tvSafetiesAttemptedPlayer;
     @Bind(R.id.tvSafetiesAttemptedOpponent) TextView tvSafetiesAttemptedOpponent;
     @Bind(R.id.tvSafetyPctPlayer) TextView tvSafetyPctPlayer;
@@ -49,7 +49,7 @@ public class SafetiesHolder<T extends AbstractPlayer> extends MatchInfoHolder<T>
         }
     }
 
-    @Override public void bind(T player, T opponent) {
+    @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {
         // Safety Percentage
         tvSafetyPctPlayer.setText(player.getSafetyPct());
         tvSafetyPctOpponent.setText(opponent.getSafetyPct());

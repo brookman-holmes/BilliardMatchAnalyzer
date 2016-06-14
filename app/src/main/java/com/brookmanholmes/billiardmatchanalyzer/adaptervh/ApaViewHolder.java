@@ -17,7 +17,7 @@ import butterknife.Bind;
 /**
  * Created by helios on 4/12/2016.
  */
-public class ApaPlayer<T extends AbstractPlayer & IApa> extends MatchInfoHolder<T> {
+public class ApaViewHolder extends MatchInfoHolder{
     @Bind(R.id.tvInningsOpponent) TextView tvInningsOpponent;
     @Bind(R.id.tvDefensiveShotsPlayer) TextView tvDefensiveShotsPlayer;
     @Bind(R.id.tvDefensiveShotsOpponent) TextView tvDefensiveShotsOpponent;
@@ -31,7 +31,7 @@ public class ApaPlayer<T extends AbstractPlayer & IApa> extends MatchInfoHolder<
     @Bind(R.id.tvDeadBallsOpponent) TextView tvDeadBalls;
     @Bind(R.id.tvDeadBallsTitle) TextView tvDeadBallsTitle;
 
-    public ApaPlayer(View view, Match.StatsDetail detail) {
+    public ApaViewHolder(View view, Match.StatsDetail detail) {
         super(view);
         title.setText(view.getContext().getString(R.string.title_apa_stats));
         setVisibilities(view, detail);
@@ -41,7 +41,7 @@ public class ApaPlayer<T extends AbstractPlayer & IApa> extends MatchInfoHolder<
 
     }
 
-    @Override public void bind(T player, T opponent) {
+    @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {
         if (player instanceof ApaEightBallPlayer) {
             tvPointsTitle.setText(itemView.getContext().getString(R.string.title_games_needed));
         } else if (player instanceof ApaNineBallPlayer) {
@@ -50,17 +50,19 @@ public class ApaPlayer<T extends AbstractPlayer & IApa> extends MatchInfoHolder<
             tvDeadBalls.setText(String.format(Locale.getDefault(), "%d", ((ApaNineBallPlayer) player).getDeadBalls()));
         }
 
-        tvPointsPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getPoints(), player.getPointsNeeded(opponent.getRank())));
-        tvPointsOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getPoints(), opponent.getPointsNeeded(player.getRank())));
-        tvRankPlayer.setText(String.format(Locale.getDefault(), "%d", player.getRank()));
-        tvRankOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getRank()));
+        if (player instanceof IApa && opponent instanceof IApa) {
+            tvPointsPlayer.setText(itemView.getContext().getString(R.string.out_of, ((IApa) player).getPoints(), ((IApa) player).getPointsNeeded(((IApa) opponent).getRank())));
+            tvPointsOpponent.setText(itemView.getContext().getString(R.string.out_of, ((IApa) opponent).getPoints(), ((IApa) opponent).getPointsNeeded(((IApa) player).getRank())));
+            tvRankPlayer.setText(String.format(Locale.getDefault(), "%d", ((IApa) player).getRank()));
+            tvRankOpponent.setText(String.format(Locale.getDefault(), "%d", ((IApa) opponent).getRank()));
 
-        tvMatchPointsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getMatchPoints(opponent.getPoints(), opponent.getRank())));
+            tvMatchPointsPlayer.setText(String.format(Locale.getDefault(), "%d", ((IApa) player).getMatchPoints(((IApa) opponent).getPoints(), ((IApa) opponent).getRank())));
 
-        tvMatchPointsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getMatchPoints(opponent.getPoints(), opponent.getRank())));
+            tvMatchPointsOpponent.setText(String.format(Locale.getDefault(), "%d", ((IApa) opponent).getMatchPoints(((IApa) opponent).getPoints(), ((IApa) opponent).getRank())));
 
-        tvDefensiveShotsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getSafetyAttempts()));
-        tvDefensiveShotsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getSafetyAttempts()));
+            tvDefensiveShotsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getSafetyAttempts()));
+            tvDefensiveShotsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getSafetyAttempts()));
+        }
     }
 
     public void setTvInningsOpponent(int innings) {

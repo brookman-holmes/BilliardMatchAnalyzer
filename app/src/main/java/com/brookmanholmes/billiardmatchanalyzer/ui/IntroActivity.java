@@ -68,8 +68,7 @@ public class IntroActivity extends BaseActivity {
         }, animationDelay); // display fab after activity starts
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_intro, menu);
 
         MenuItem item = menu.findItem(R.id.spinner);
@@ -77,21 +76,20 @@ public class IntroActivity extends BaseActivity {
         spinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.rounded_rectangle));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getSupportActionBar().getThemedContext(),
                 android.R.layout.simple_spinner_item,
-                new String[]{"Players", "Matches"});
+                new String[]{"Matches", "Players"});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0)
+                if (position == 1)
                     replaceFragment(getPlayerListFragment(), PLAYER_LIST_FRAGMENT);
                 else
                     replaceFragment(getMatchListFragment(), MATCH_LIST_FRAGMENT);
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            @Override public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -114,22 +112,21 @@ public class IntroActivity extends BaseActivity {
     }
 
     private void replaceFragment(Fragment fragment, String tag) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment, tag);
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment, tag)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .disallowAddToBackStack()
+                .commitAllowingStateLoss();
     }
 
     private Fragment getPlayerListFragment() {
-        fab.show();
         return getSupportFragmentManager().findFragmentByTag(PLAYER_LIST_FRAGMENT) == null ?
                 new PlayerListFragment() :
                 getSupportFragmentManager().findFragmentByTag(PLAYER_LIST_FRAGMENT);
     }
 
     private Fragment getMatchListFragment() {
-        fab.show();
         return getSupportFragmentManager().findFragmentByTag(MATCH_LIST_FRAGMENT) == null ?
                 MatchListFragment.create(null, null) :
                 getSupportFragmentManager().findFragmentByTag(MATCH_LIST_FRAGMENT);
