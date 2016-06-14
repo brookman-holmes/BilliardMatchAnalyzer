@@ -3,6 +3,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.matchinfo;
 import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -134,14 +135,16 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 match.getPlayer(0, getTurnNumber(groupPosition)).getWins(),
                 match.getOpponent(0, getTurnNumber(groupPosition)).getWins());
 
+        // set background resource (target view ID: container)
         final int expandState = holder.getExpandStateFlags();
 
-        holder.setIconState((expandState & ExpandableItemConstants.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
+        if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
+            boolean isExpanded;
+            boolean animateIndicator = ((expandState & ExpandableItemConstants.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
 
-        holder.setBgColor();
+            isExpanded = (expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0;
 
-        if (data.get(groupPosition).size() == 0) {
-            holder.itemView.setClickable(false);
+            holder.setIconState(isExpanded, animateIndicator);
         }
     }
 
@@ -201,21 +204,17 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             game.setText(itemView.getContext().getString(R.string.row_game, games, playerGamesWon, oppGamesWon));
         }
 
-        private void setIconState(boolean animateIndicator) {
-            if (animateIndicator) {
+        private void setIconState(boolean isExpanded, boolean animate) {
+            if (animate) {
                 expandIndicator.animate().rotationXBy(180f);
+            } else {
+                @DrawableRes int resId = isExpanded ? R.drawable.ic_action_collapse : R.drawable.ic_action_expand;
+                expandIndicator.setImageResource(resId);
             }
         }
 
 
-        private void setBgColor() {
-            @ColorRes int color;
-            if ((getExpandStateFlags() & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0)
-                color = R.color.colorPrimaryLight;
-            else
-                color = android.R.color.white;
-
-
+        private void setBgColor(@ColorInt int color) {
             itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), color));
         }
     }

@@ -137,6 +137,9 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
         opponentName.addTextChangedListener(textWatcher(PlayerNamePage.OPPONENT_NAME_KEY));
         location.addTextChangedListener(textWatcher(PlayerNamePage.LOCATION_KEY));
         extra.addTextChangedListener(textWatcher(PlayerNamePage.EXTRA_INFO_KEY));
+
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     @Override public void onDestroyView() {
