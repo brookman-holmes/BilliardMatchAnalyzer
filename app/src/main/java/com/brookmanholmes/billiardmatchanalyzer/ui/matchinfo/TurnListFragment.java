@@ -85,6 +85,7 @@ public class TurnListFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_list_view, null, false);
         ButterKnife.bind(this, view);
+        recyclerView.setPadding(0, 0, 0, 0);
 
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
         animator.setSupportsChangeAnimations(false);
@@ -92,9 +93,9 @@ public class TurnListFragment extends Fragment implements
         recyclerView.setItemAnimator(animator);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(getContext(), R.drawable.line_divider), true));
         itemManager.attachRecyclerView(recyclerView);
 
+        itemManager.expandGroup(adapter.getGroupCount() >= 2 ? adapter.getGroupCount() - 2 : 0);
         return view;
     }
 

@@ -1,6 +1,7 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.matchinfo;
 
 import android.content.res.ColorStateList;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -22,7 +23,6 @@ import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
-import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
@@ -45,6 +45,30 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         setHasStableIds(true);
         data = buildDataSource(match.getTurns());
         // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
+    }
+
+    private static GradientDrawable getTopBackground(@ColorInt int color) {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setCornerRadii(new float[]{2, 2, 2, 2, 0, 0, 0, 0});
+        shape.setColor(color);
+        return shape;
+    }
+
+    private static GradientDrawable getBottomBackground(@ColorInt int color) {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setCornerRadii(new float[]{0, 0, 0, 0, 2, 2, 2, 2});
+        shape.setColor(color);
+        return shape;
+    }
+
+    private static GradientDrawable getCompleteBackground(@ColorInt int color) {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setCornerRadii(new float[]{2, 2, 2, 2, 2, 2, 2, 2});
+        shape.setColor(color);
+        return shape;
     }
 
     public void updateMatch(Match<?> match) {
@@ -110,9 +134,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     @Override
     public void onBindGroupViewHolder(GameViewHolder holder, int groupPosition, int viewType) {
         if (groupPosition == getGroupCount() - 1) {
-            holder.expandIndicator.setVisibility(View.GONE);
-            holder.game.setVisibility(View.GONE);
-            holder.itemView.setClickable(false);
+            holder.itemView.setVisibility(View.INVISIBLE);
         } else {
             holder.expandIndicator.setVisibility(View.VISIBLE);
             holder.game.setVisibility(View.VISIBLE);
@@ -138,6 +160,9 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
 
     @Override
     public void onBindChildViewHolder(TurnViewHolder holder, int groupPosition, int childPosition, int viewType) {
+        // set background for top/bottom position
+        setBackground(holder.itemView, groupPosition, childPosition);
+
         int turn = getTurnNumber(groupPosition, childPosition);
 
         holder.bind(data.get(groupPosition).get(childPosition),
@@ -145,6 +170,23 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 viewType == 1 ? match.getPlayer(0, turn + 1) : match.getOpponent(0, turn + 1));
 
         holder.setBalls(data.get(groupPosition).get(childPosition));
+    }
+
+    private void setBackground(View view, int groupPosition, int childPosition) {
+        // set background for top/bottom position
+        if (childPosition == 0 && getChildCount(groupPosition) == 1) {
+            view.setBackground(getCompleteBackground(
+                    ContextCompat.getColor(view.getContext(), R.color.cardview_light_background))
+            );
+        } else if (childPosition == 0) {
+            view.setBackground(getTopBackground(
+                    ContextCompat.getColor(view.getContext(), R.color.cardview_light_background))
+            );
+        } else if (childPosition == getChildCount(groupPosition) - 1) {
+            view.setBackground(getBottomBackground(
+                    ContextCompat.getColor(view.getContext(), R.color.cardview_light_background))
+            );
+        }
     }
 
     @Override public int getChildItemViewType(int groupPosition, int childPosition) {
