@@ -39,52 +39,23 @@ import butterknife.ButterKnife;
 class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<ExpandableTurnListAdapter.GameViewHolder, ExpandableTurnListAdapter.TurnViewHolder> {
     List<List<Turn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
     Match<?> match;
-    RecyclerViewExpandableItemManager itemManager;
 
-    public ExpandableTurnListAdapter(Match<?> match, RecyclerViewExpandableItemManager itemManager) {
+    public ExpandableTurnListAdapter(Match<?> match) {
         this.match = match;
-        this.itemManager = itemManager;
         setHasStableIds(true);
-        buildDataSource(match.getTurns());
-        data.add(new ArrayList<Turn>());
+        data = buildDataSource(match.getTurns());
         // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
     }
 
     public void updateMatch(Match<?> match) {
-        int oldGroupCount = getGroupCount() - 1;
-        int oldChildCount = oldGroupCount > 0 ? getChildCount(getGroupCount() - 1) : 0;
-
         this.match = match;
-        buildDataSource(match.getTurns());
-
-        int newGroupCount = getGroupCount() - 1;
-
-        if (oldGroupCount > newGroupCount) {
-            itemManager.notifyGroupItemRangeRemoved(oldGroupCount - 1, oldGroupCount - newGroupCount);
-        } else if (oldGroupCount < newGroupCount) {
-            itemManager.notifyGroupItemRangeInserted(newGroupCount - 1, newGroupCount - oldGroupCount);
-            itemManager.notifyChildItemRangeInserted(newGroupCount - 1, 0, getChildCount(newGroupCount - 1) - 1);
-        } else {
-            int childCount = getChildCount(newGroupCount - 1);
-            if (oldChildCount > childCount) {
-                itemManager.notifyChildItemRangeRemoved(newGroupCount - 1, childCount - 1, oldChildCount - childCount);
-            } else if (oldChildCount < childCount) {
-                itemManager.notifyChildItemRangeInserted(newGroupCount - 1, oldChildCount, childCount - oldChildCount);
-            }
-        }
-        scrollToLastItem();
+        data = buildDataSource(match.getTurns());
+        notifyDataSetChanged();
     }
 
-    private void scrollToLastItem() {
-        if (getGroupCount() > 1) {
-            itemManager.expandGroup(getGroupCount() - 2);
-            itemManager.scrollToGroup(getGroupCount() - 2, 10000); // not sure what value I'm supposed to put for childItemHeight?
-        }
-    }
-
-    private void buildDataSource(List<Turn> turns) {
+    private List<List<Turn>> buildDataSource(List<Turn> turns) {
+        List<List<Turn>> data = new ArrayList<>();
         ArrayList<Turn> turnsInGame = new ArrayList<>();
-        data.clear();
         for (int i = 0; i < turns.size(); i++) {
             Turn turn = turns.get(i);
 
@@ -100,9 +71,14 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 data.add(turnsInGame);
         }
 
-        if (data.size() > 0 && data.get(data.size() - 1).size() == 0) {
-            data.remove(data.size() - 1);
+        // add group at the end of the list to simulate a footer
+        if (data.size() > 0 && data.get(data.size() - 1).size() > 0) {
+            // if the last item is empty then it becomes the footer
+            // otherwise we create a new one
+            data.add(new ArrayList<Turn>());
         }
+
+        return data;
     }
 
     @Override public int getGroupCount() {

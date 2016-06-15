@@ -39,7 +39,7 @@ public class TurnListFragment extends Fragment implements
 
     private ExpandableTurnListAdapter adapter;
     private RecyclerView.Adapter wrappedAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private RecyclerViewExpandableItemManager itemManager;
 
     public TurnListFragment() {
@@ -67,7 +67,7 @@ public class TurnListFragment extends Fragment implements
         final Parcelable eimSavedState = (savedInstanceState != null) ?
                 savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         itemManager = new RecyclerViewExpandableItemManager(eimSavedState);
-        adapter = new ExpandableTurnListAdapter(db.getMatch(matchId), itemManager);
+        adapter = new ExpandableTurnListAdapter(db.getMatch(matchId));
         layoutManager = new LinearLayoutManager(getContext());
 
         itemManager.setOnGroupCollapseListener(this);
@@ -77,6 +77,8 @@ public class TurnListFragment extends Fragment implements
 
     @Override public void update(Match<?> match) {
         adapter.updateMatch(match);
+        // after update scroll to the end of the data
+        itemManager.expandGroup(adapter.getGroupCount() >= 2 ? adapter.getGroupCount() - 2 : 0);
     }
 
     @Nullable @Override
