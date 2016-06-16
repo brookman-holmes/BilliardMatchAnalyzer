@@ -16,6 +16,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +46,7 @@ public class IntroActivity extends BaseActivity {
     public static final String TAG = "IntroActivity";
     private static final String MATCH_LIST_FRAGMENT = "match list fragment";
     private static final String PLAYER_LIST_FRAGMENT = "player list fragment";
+    private static final String ARG_SELECTED_FRAGMENT = "selected fragment";
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.createMatch) FloatingActionButton fab;
@@ -55,6 +57,10 @@ public class IntroActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+
+        if (findFragmentById(R.id.fragment_container) == null) {
+            replaceFragment(getMatchListFragment(), MATCH_LIST_FRAGMENT);
+        }
     }
 
     @Override protected void onResume() {
@@ -70,7 +76,6 @@ public class IntroActivity extends BaseActivity {
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_intro, menu);
-
         MenuItem item = menu.findItem(R.id.spinner);
         Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
         spinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.rounded_rectangle));
@@ -80,6 +85,15 @@ public class IntroActivity extends BaseActivity {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
+
+        // select the item in the spinner that is the currently shown fragment so that rotation doesn't change it to item 0
+        final String selectedFragment = findFragmentById(R.id.fragment_container) == null ?
+                null : findFragmentById(R.id.fragment_container).getTag();
+        if (PLAYER_LIST_FRAGMENT.equals(selectedFragment))
+            spinner.setSelection(1);
+        else if (MATCH_LIST_FRAGMENT.equals(selectedFragment))
+            spinner.setSelection(0);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -121,15 +135,23 @@ public class IntroActivity extends BaseActivity {
     }
 
     private Fragment getPlayerListFragment() {
-        return getSupportFragmentManager().findFragmentByTag(PLAYER_LIST_FRAGMENT) == null ?
+        return findFragmentByTag(PLAYER_LIST_FRAGMENT) == null ?
                 new PlayerListFragment() :
-                getSupportFragmentManager().findFragmentByTag(PLAYER_LIST_FRAGMENT);
+                findFragmentByTag(PLAYER_LIST_FRAGMENT);
     }
 
     private Fragment getMatchListFragment() {
-        return getSupportFragmentManager().findFragmentByTag(MATCH_LIST_FRAGMENT) == null ?
+        return findFragmentByTag(MATCH_LIST_FRAGMENT) == null ?
                 MatchListFragment.create(null, null) :
-                getSupportFragmentManager().findFragmentByTag(MATCH_LIST_FRAGMENT);
+                findFragmentByTag(MATCH_LIST_FRAGMENT);
+    }
+
+    private Fragment findFragmentByTag(String tag) {
+        return getSupportFragmentManager().findFragmentByTag(tag);
+    }
+
+    private Fragment findFragmentById(int id) {
+        return getSupportFragmentManager().findFragmentById(id);
     }
 
     public static class PlayerListFragment extends Fragment {

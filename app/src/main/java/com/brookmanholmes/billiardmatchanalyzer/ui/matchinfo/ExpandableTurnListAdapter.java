@@ -7,6 +7,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,9 +137,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         if (groupPosition == getGroupCount() - 1) {
             holder.itemView.setVisibility(View.INVISIBLE);
         } else {
-            holder.expandIndicator.setVisibility(View.VISIBLE);
-            holder.game.setVisibility(View.VISIBLE);
-            holder.itemView.setClickable(true);
+            holder.itemView.setVisibility(View.VISIBLE);
 
             holder.bind(groupPosition + 1,
                     match.getPlayer(0, getTurnNumber(groupPosition)).getWins(),
@@ -242,11 +241,6 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 expandIndicator.setImageResource(resId);
             }
         }
-
-
-        private void setBgColor(@ColorInt int color) {
-            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), color));
-        }
     }
 
     static class TurnViewHolder extends RecyclerView.ViewHolder {
@@ -276,10 +270,6 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             shootingPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Shooting", player.getShootingPct()));
             safetyPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Safeties", player.getSafetyPct()));
             breakPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Breaking", player.getBreakPct()));
-
-            //shootingPct.setTextColor(getPctColor(player.getShootingPct()));
-            //safetyPct.setTextColor(getPctColor(player.getSafetyPct()));
-            //breakPct.setTextColor(getPctColor(player.getBreakPct()));
 
             shootingLine.setImageTintList(getPctColor(player.getShootingPct()));
             safetyLine.setImageTintList(getPctColor(player.getSafetyPct()));

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,8 @@ public class TurnListFragment extends Fragment implements
         adapter.updateMatch(match);
         // after update scroll to the end of the data
         itemManager.expandGroup(adapter.getGroupCount() >= 2 ? adapter.getGroupCount() - 2 : 0);
+
+        layoutManager.scrollToPositionWithOffset(adapter.getGroupCount() + 2, 0);
     }
 
     @Nullable @Override
@@ -96,6 +99,7 @@ public class TurnListFragment extends Fragment implements
         itemManager.attachRecyclerView(recyclerView);
 
         itemManager.expandGroup(adapter.getGroupCount() >= 2 ? adapter.getGroupCount() - 2 : 0);
+        layoutManager.scrollToPositionWithOffset(adapter.getGroupCount(), 0);
         return view;
     }
 
