@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
+import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.model.PlayerNamePage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
@@ -138,8 +139,7 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
         location.addTextChangedListener(textWatcher(PlayerNamePage.LOCATION_KEY));
         extra.addTextChangedListener(textWatcher(PlayerNamePage.EXTRA_INFO_KEY));
 
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        ((CreateNewMatchActivity)getActivity()).showKeyboard();
     }
 
     @Override public void onDestroyView() {

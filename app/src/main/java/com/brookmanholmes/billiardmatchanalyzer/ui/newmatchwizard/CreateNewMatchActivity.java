@@ -16,6 +16,7 @@
 
 package com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -25,6 +26,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
@@ -201,6 +203,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
     @OnClick(R.id.prev_button) public void prevPage() {
         pager.setCurrentItem(pager.getCurrentItem() - 1);
+        showKeyboard();
     }
 
     private boolean recalculateCutOffPage() {
@@ -220,6 +223,13 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
 
         return false;
+    }
+
+    public void showKeyboard() {
+        if (pager.getCurrentItem() == 0) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
     }
 
     public class MyPagerAdapter extends FragmentStatePagerAdapter {
