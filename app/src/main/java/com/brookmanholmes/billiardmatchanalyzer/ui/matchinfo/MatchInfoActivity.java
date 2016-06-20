@@ -40,6 +40,7 @@ import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuild
 import com.brookmanholmes.billiardmatchanalyzer.ui.dialog.GameStatusStringBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
+import com.brookmanholmes.billiardmatchanalyzer.utils.CustomViewPager;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
@@ -63,7 +64,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.playerName) TextView playerName;
     @Bind(R.id.opponentName) TextView opponentName;
-    @Bind(R.id.pager) ViewPager pager;
+    @Bind(R.id.pager) CustomViewPager pager;
     @Bind(R.id.coordinatorLayout) CoordinatorLayout layout;
 
     DatabaseAdapter db;
@@ -76,6 +77,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_info);
         ButterKnife.bind(this);
+        pager.setPagingEnabled(false);
 
         setSupportActionBar(toolbar);
 

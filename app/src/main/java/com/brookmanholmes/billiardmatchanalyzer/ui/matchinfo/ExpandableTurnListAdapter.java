@@ -48,30 +48,6 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
     }
 
-    private static GradientDrawable getTopBackground(@ColorInt int color) {
-        GradientDrawable shape = new GradientDrawable();
-        shape.setShape(GradientDrawable.RECTANGLE);
-        shape.setCornerRadii(new float[]{2, 2, 2, 2, 0, 0, 0, 0});
-        shape.setColor(color);
-        return shape;
-    }
-
-    private static GradientDrawable getBottomBackground(@ColorInt int color) {
-        GradientDrawable shape = new GradientDrawable();
-        shape.setShape(GradientDrawable.RECTANGLE);
-        shape.setCornerRadii(new float[]{0, 0, 0, 0, 2, 2, 2, 2});
-        shape.setColor(color);
-        return shape;
-    }
-
-    private static GradientDrawable getCompleteBackground(@ColorInt int color) {
-        GradientDrawable shape = new GradientDrawable();
-        shape.setShape(GradientDrawable.RECTANGLE);
-        shape.setCornerRadii(new float[]{2, 2, 2, 2, 2, 2, 2, 2});
-        shape.setColor(color);
-        return shape;
-    }
-
     public void updateMatch(Match<?> match) {
         this.match = match;
         data = buildDataSource(match.getTurns());
@@ -136,9 +112,10 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     public void onBindGroupViewHolder(GameViewHolder holder, int groupPosition, int viewType) {
         if (groupPosition == getGroupCount() - 1) {
             holder.itemView.setVisibility(View.INVISIBLE);
+            holder.itemView.setEnabled(false);
         } else {
             holder.itemView.setVisibility(View.VISIBLE);
-
+            holder.itemView.setEnabled(true);
             holder.bind(groupPosition + 1,
                     match.getPlayer(0, getTurnNumber(groupPosition)).getWins(),
                     match.getOpponent(0, getTurnNumber(groupPosition)).getWins());
@@ -160,8 +137,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     @Override
     public void onBindChildViewHolder(TurnViewHolder holder, int groupPosition, int childPosition, int viewType) {
         // set background for top/bottom position
-        setBackground(holder.itemView, groupPosition, childPosition);
-
+        setBackground(holder.itemView, childPosition);
         int turn = getTurnNumber(groupPosition, childPosition);
 
         holder.bind(data.get(groupPosition).get(childPosition),
@@ -171,21 +147,9 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         holder.setBalls(data.get(groupPosition).get(childPosition));
     }
 
-    private void setBackground(View view, int groupPosition, int childPosition) {
-        // set background for top/bottom position
-        if (childPosition == 0 && getChildCount(groupPosition) == 1) {
-            view.setBackground(getCompleteBackground(
-                    ContextCompat.getColor(view.getContext(), R.color.cardview_light_background))
-            );
-        } else if (childPosition == 0) {
-            view.setBackground(getTopBackground(
-                    ContextCompat.getColor(view.getContext(), R.color.cardview_light_background))
-            );
-        } else if (childPosition == getChildCount(groupPosition) - 1) {
-            view.setBackground(getBottomBackground(
-                    ContextCompat.getColor(view.getContext(), R.color.cardview_light_background))
-            );
-        }
+    private void setBackground(View view, int childPosition) {
+        int color = childPosition % 2 == 0 ? android.R.color.white : R.color.light_grey;
+        view.setBackgroundColor(ContextCompat.getColor(view.getContext(), color));
     }
 
     @Override public int getChildItemViewType(int groupPosition, int childPosition) {
