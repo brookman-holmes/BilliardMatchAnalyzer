@@ -14,10 +14,11 @@ import com.brookmanholmes.billiardmatchanalyzer.R;
 public class HelpDialogCreator {
     Context context;
     AlertDialog.Builder builder;
+    String playerName;
 
-    public HelpDialogCreator(Context context, String pageTitle) {
+    public HelpDialogCreator(Context context, String pageTitle, String playerName) {
         this.context = context;
-
+        this.playerName = playerName;
         builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
         builder.setView(LayoutInflater.from(context).inflate(getRes(pageTitle), null))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -51,7 +52,7 @@ public class HelpDialogCreator {
         else if (pageTitle.equals(getShotPageTitle()))
             return R.layout.dialog_help_shot;
         else if (pageTitle.equals(getTurnEndPageTitle()))
-            return R.layout.dialog_help_turn;
+            return R.layout.dialog_help_turn_end;
         else if (pageTitle.equals(getWhatMissPageTitle()))
             return R.layout.dialog_help_what_miss;
         else if (pageTitle.equals(getWhyMissPageTitle()))
@@ -60,52 +61,51 @@ public class HelpDialogCreator {
             throw new IllegalArgumentException("Invalid page title: " + pageTitle);
     }
 
-    // TODO: 6/7/2016 fix these titles
     private String getBreakPageTitle() {
-        return context.getString(R.string.title_break);
+        return context.getString(R.string.title_break, playerName);
     }
 
     private String getShotPageTitle() {
-        return context.getString(R.string.title_shot);
+        return context.getString(R.string.title_shot, playerName);
     }
 
     private String getTurnEndPageTitle() {
-        return context.getString(R.string.title_turn_end);
+        return context.getString(R.string.title_turn_end, playerName);
     }
 
     private String getFoulPageTitle() {
-        return context.getString(R.string.title_foul);
+        return context.getString(R.string.title_foul, playerName);
     }
 
     private String getHowMissPageTitle() {
-        return context.getString(R.string.title_how_miss);
+        return context.getString(R.string.title_how_miss, playerName);
     }
 
     private String getWhatMissPageTitle() {
-        return context.getString(R.string.title_miss);
+        return context.getString(R.string.title_miss, playerName);
     }
 
     private String getWhyMissPageTitle() {
-        return context.getString(R.string.title_why_miss);
+        return context.getString(R.string.title_why_miss, playerName);
     }
 
     private String getCutTypePageTitle() {
-        return context.getString(R.string.title_cut_type);
+        return context.getString(R.string.title_cut_type, playerName);
     }
 
     private String getAnglePageTitle() {
-        return context.getString(R.string.title_angle);
+        return context.getString(R.string.title_angle, playerName);
     }
 
     private String getBankPageTitle() {
-        return context.getString(R.string.title_bank);
+        return context.getString(R.string.title_bank, playerName);
     }
 
     private String getKickPageTitle() {
-        return context.getString(R.string.title_kick);
+        return context.getString(R.string.title_kick, playerName);
     }
 
     private String getSafetyPageTitle() {
-        return context.getString(R.string.title_safety);
+        return context.getString(R.string.title_safety, playerName);
     }
 }

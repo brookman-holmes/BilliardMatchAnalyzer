@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:text="Clicking on a ball will toggle it&apos;s status"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/colorPrimary"
+        style="@style/TextAppearance.AppCompat.Title"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -22,7 +23,8 @@
         android:gravity="left"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="This ball is currently on the table; tapping it will set it to made"/>
+        android:text="This ball is currently on the table; tapping it will set it to made"
+        android:textSize="16sp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -34,7 +36,8 @@
         android:gravity="right"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="This ball has been selected, which means that it has been legally pocketed"/>
+        android:text="This ball has been selected, which means that it has been legally pocketed"
+        android:textSize="16sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -45,7 +48,8 @@
             android:gravity="left"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:text="Tapping a ball twice will set it&apos;s status to &apos;dead,&apos; meaning that it does not count as a made ball for the current player"/>
+            android:text="Tapping a ball twice will set it&apos;s status to &apos;dead,&apos; meaning that it does not count as a made ball for the current player"
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -57,7 +61,8 @@
             android:gravity="right"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:text="This ball is not on the table and is unselectable"/>
+            android:text="This ball is not on the table and is unselectable"
+            android:textSize="16sp"/>
 
 
 </LinearLayout>

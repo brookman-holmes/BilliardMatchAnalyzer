@@ -10,7 +10,7 @@
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="What type of cut shot did you attempt?"
+        android:text="Types of cut shots"
         android:textColor="@color/colorPrimary"/>
 
     <TextView
@@ -18,20 +18,23 @@
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="A back cut is..."/>
+        android:text="A back cut is when you&apos;re looking at the cue ball and cannot see the pocket"
+        android:textSize="16sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="A wing cut is..."/>
+        android:text="A wing cut is a cut shot that you can see the pocket while you are shooting"
+        android:textSize="16sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="A down the rail shot is..."/>
+        android:text="A down the rail shot is when the cue ball is on or very close to the rail and going into one of the corner pockets"
+        android:textSize="16sp"/>
 
 </LinearLayout>

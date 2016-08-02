@@ -13,139 +13,114 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="How you missed options"
+            android:text="@string/title_how_turn_end"
             style="@style/TextAppearance.AppCompat.Title"
             android:textColor="@color/colorPrimary"/>
 
         <TextView
             style="@style/help_dialog_title"
-            android:text="@string/curve_late"
+            android:text="@string/turn_safety"
             android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="On a masse shot if the ball curves later than you inteded"
+            android:text="@string/description_safety"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_title"
             android:textColor="@color/primary_text"
-            android:text="@string/curve_early"
+            android:text="@string/turn_safety_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="On a masse shot if the ball curves earlier than you inteded"
+            android:text="@string/description_safety_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_title"
             android:textColor="@color/primary_text"
-            android:text="@string/aim_to_left"
+            android:text="@string/turn_break_miss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="The cue ball hit to the left of where you were aiming"
+            android:text="@string/description_break_miss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_title"
             android:textColor="@color/primary_text"
-            android:text="@string/aim_to_right"
+            android:text="@string/turn_miss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="The cue ball hit to the right of where you were aiming"
+            android:text="@string/description_miss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_title"
             android:textColor="@color/primary_text"
-            android:text="@string/thick_hit"
+            android:text="@string/turn_illegal_break"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="The cue ball hit the object ball too thick"
+            android:text="@string/description_illegal_break"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_title"
             android:textColor="@color/primary_text"
-            android:text="@string/thin_hit"
+            android:text="@string/turn_won_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="The cue ball hit the object ball too thin"
+            android:text="@string/description_won_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_title"
             android:textColor="@color/primary_text"
-            android:text="@string/bank_short"
+            android:text="@string/turn_continue_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="The object ball banked shorter than you intended"
+            android:text="@string/description_continue_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_title"
             android:textColor="@color/primary_text"
-            android:text="@string/bank_long"
+            android:text="@string/turn_have_player_break"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="The object ball banked longer than you intended"
+            android:text="@string/description_have_player_break"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <TextView
-            style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/kick_long"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            style="@style/help_dialog_text"
-            android:text="The cue ball kicked longer than you intended"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/kick_short"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            style="@style/help_dialog_text"
-            android:text="The cue ball kicked shorter than you intended"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

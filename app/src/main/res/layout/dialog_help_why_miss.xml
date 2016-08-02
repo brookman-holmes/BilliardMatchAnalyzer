@@ -1,7 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        style="@style/alert_dialog_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Why you missed options"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/why_bad_pattern"
+            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="Your pattern play forced you into too hard of a shot to continue your run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="Your bad position forced you to take too hard of a shot to continue your run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_curved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="The cue ball curved off it&apos;s natural line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_forcing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You tried too hard to get position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_fast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="The ball was hit too hard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_slow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="The ball was hit too soft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_jacked_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You miss-hit the cue ball because you had to shoot from a jacked up position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_focus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="Your focus wavered causing you to miss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_rail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You had to shoot from the rail causing you to miss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_table_issues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="The table rolls off, the pocket rejected a ball that should have gone in, etc."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_too_little_draw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You didn&apos;t apply as much draw as you intended and/or needed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_too_little_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You didn&apos;t apply as much follow as you intended and/or needed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_too_little_inside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You didn&apos;t apply as much inside english as you intended and/or needed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_too_little_outside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You didn&apos;t apply as much outside english as you intended and/or needed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_too_much_draw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You applied more draw than you intended and/or needed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_too_much_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You applied more follow than you intended and/or needed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_too_much_inside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You applied more inside english than you intended and/or needed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_too_much_outside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You applied more outside english than you intended and/or needed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_title"
+            android:textColor="@color/primary_text"
+            android:text="@string/why_english"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="You applied english to a shot that either didn't need it or you didn't mean to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

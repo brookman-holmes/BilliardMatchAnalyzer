@@ -200,7 +200,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
 
     @OnClick(R.id.imgHelp) public void help() {
         new HelpDialogCreator(getContext(),
-                wizardModel.getCurrentPageSequence().get(pager.getCurrentItem()).getTitle())
+                wizardModel.getCurrentPageSequence().get(pager.getCurrentItem()).getTitle(), getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY))
                 .create()
                 .show();
     }

@@ -15,6 +15,7 @@ import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.FoulPage;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.ui.PageFragmentCallbacks;
+import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
 import com.squareup.leakcanary.RefWatcher;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+
+import static com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
 
 /**
  * Created by Brookman Holmes on 3/9/2016.
@@ -119,9 +122,14 @@ public class FoulFragment extends ListFragment {
         String defaultChecked;
         adapter.clear();
         if (turnEndOptions.lostGame) {
-            adapter.add(getString(R.string.foul_lost_game));
-            adapter.add(getString(R.string.yes));
-            defaultChecked = getString(R.string.yes);
+            if (GameType.valueOf(page.getData().getString(GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL) {
+                adapter.add(getString(R.string.foul_lost_game));
+                defaultChecked = getString(R.string.foul_lost_game);
+            } else {
+                adapter.add(getString(R.string.foul_lost_game));
+                adapter.add(getString(R.string.yes));
+                defaultChecked = getString(R.string.yes);
+            }
 
             if (turnEndOptions.possibleEndings.contains(TurnEnd.SAFETY))
                 adapter.add(getString(R.string.no));

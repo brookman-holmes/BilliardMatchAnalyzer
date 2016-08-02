@@ -15,17 +15,16 @@ class TurnStringAdapter {
     String playerName;
     AbstractPlayer player;
     StringBuilder turnBuilder = new StringBuilder();
-    String mainColor, accentColor;
+    String mainColor;
     String title;
 
-    public TurnStringAdapter(Turn turn, AbstractPlayer player) {
+    public TurnStringAdapter(Turn turn, AbstractPlayer player, String color) {
         this.turn = turn;
         this.player = player;
 
-        mainColor = "#57000000";
-        accentColor = "<font color='#57000000'>";
+        mainColor = color;
 
-        playerName = "<font color='" + mainColor + "'>" + player.getName() + "</font>";
+        playerName = "<b><font color='" + mainColor + "'>" + player.getName() + "</font></b>";
 
         title = "%1$s %2$s";
     }
@@ -43,22 +42,26 @@ class TurnStringAdapter {
         return turn.getShootingBallsMade() > 0;
     }
 
+    String formatVal(int val) {
+        return "<b><font color='#57000000'>" + val + "</font></b>";
+    }
+
+    String formatVal(String val) {
+        return "<b><font color='#57000000'>" + val + "</font></b>";
+    }
+
     void buildTurn() {
         if (isBreakShot()) {
             turnBuilder.append(playerName);
             if (isBallMadeOnBreak()) {
                 turnBuilder.append(" made ")
-                        .append(accentColor)
-                        .append(String.valueOf(turn.getBreakBallsMade()))
-                        .append("</font>")
+                        .append(formatVal(turn.getBreakBallsMade()))
                         .append(turn.getBreakBallsMade() > 1 ? " balls" : " ball")
                         .append(" on the break");
 
                 if (isBallMade()) {
                     turnBuilder.append(" and pocketed ")
-                            .append(accentColor)
-                            .append(String.valueOf(turn.getShootingBallsMade()))
-                            .append("</font>")
+                            .append(formatVal(turn.getShootingBallsMade()))
                             .append(" more")
                             .append(turn.getShootingBallsMade() > 1 ? " balls" : " ball");
                 }
@@ -89,9 +92,7 @@ class TurnStringAdapter {
             if (isBallMade()) {
                 turnBuilder.append(playerName)
                         .append(" pocketed ")
-                        .append(accentColor)
-                        .append(String.valueOf(turn.getShootingBallsMade()))
-                        .append("</font>")
+                        .append(formatVal(turn.getShootingBallsMade()))
                         .append(turn.getShootingBallsMade() > 1 ? " balls" : " ball");
 
                 if (turn.getTurnEnd() == TurnEnd.GAME_WON) {
@@ -138,18 +139,14 @@ class TurnStringAdapter {
         if (turn.getAdvStats().getShotType().equals("Break shot")) {
             for (String item : turn.getAdvStats().getWhyTypes()) {
                 turnBuilder.append(" (")
-                        .append(accentColor)
-                        .append(item.toLowerCase())
-                        .append("</font>")
+                        .append(formatVal(item.toLowerCase()))
                         .append(")");
             }
         } else if (turn.getAdvStats().getShotType().equals("Safety error")) {
             appendHowAndWhy();
         } else if (turn.getAdvStats().getShotType().equals("Safety")) {
             turnBuilder.append(" (")
-                    .append(accentColor)
-                    .append(turn.getAdvStats().getShotSubtype().toLowerCase())
-                    .append("</font>")
+                    .append(formatVal(turn.getAdvStats().getShotSubtype().toLowerCase()))
                     .append(")");
         } else { // this should be misses
             if (turn.getTurnEnd() != TurnEnd.GAME_WON)
@@ -168,13 +165,9 @@ class TurnStringAdapter {
             turnBuilder.append(" ");
 
             if (!turn.getAdvStats().getShotSubtype().equals("")) {
-                turnBuilder.append(accentColor)
-                        .append(turn.getAdvStats().getShotSubtype().toLowerCase())
-                        .append("</font>");
+                turnBuilder.append(formatVal(turn.getAdvStats().getShotSubtype().toLowerCase()));
             } else {
-                turnBuilder.append(accentColor)
-                        .append(turn.getAdvStats().getShotType().toLowerCase())
-                        .append("</font> ");
+                turnBuilder.append(formatVal(turn.getAdvStats().getShotType().toLowerCase()));
             }
 
             appendHowAndWhy();

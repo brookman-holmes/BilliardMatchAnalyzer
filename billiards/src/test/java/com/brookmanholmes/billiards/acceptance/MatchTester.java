@@ -48,7 +48,7 @@ public abstract class MatchTester {
         TurnEndHelper helper = TurnEndHelper.create(game.getGameType());
 
         for (int i = 0; i < turns.size(); i++) {
-            actualTurnEndOptionsList.add(helper.create(expectedGameStatusList.get(i), turns.get(i)));
+            actualTurnEndOptionsList.add(helper.getTurnEndOptions(expectedGameStatusList.get(i), turns.get(i)));
         }
 
         for (int i = 0; i < turns.size(); i++) {

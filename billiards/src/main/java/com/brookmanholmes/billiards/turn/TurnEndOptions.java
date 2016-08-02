@@ -139,7 +139,9 @@ public class TurnEndOptions {
 
         public Builder allowPlayerToChooseToContinueGame() {
             turnEnds.add(TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN);
-            turnEnds.add(TurnEnd.CONTINUE_WITH_GAME);
+            turnEnds.add(TurnEnd.MISS);
+            turnEnds.add(TurnEnd.SAFETY);
+            turnEnds.add(TurnEnd.SAFETY_ERROR);
 
             return this;
         }

@@ -68,7 +68,7 @@ public class TurnListFragment extends Fragment implements
         final Parcelable eimSavedState = (savedInstanceState != null) ?
                 savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         itemManager = new RecyclerViewExpandableItemManager(eimSavedState);
-        adapter = new ExpandableTurnListAdapter(db.getMatch(matchId));
+        adapter = new ExpandableTurnListAdapter(db.getMatch(matchId), itemManager);
         layoutManager = new LinearLayoutManager(getContext());
 
         itemManager.setOnGroupCollapseListener(this);
@@ -147,6 +147,7 @@ public class TurnListFragment extends Fragment implements
     }
 
     @Override public void onGroupCollapse(int groupPosition, boolean fromUser) {
+
     }
 
     private void adjustScrollPositionOnGroupExpanded(int groupPosition) {

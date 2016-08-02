@@ -82,6 +82,7 @@ abstract public class TurnEndHelper {
     boolean showBreakMiss() {
         return game.newGame && nextInning.getBreakBallsMade() == 0;
     }
+
     TurnEndOptions.Builder createTurnEndOptionsBuilder() {
         if (game.playerAllowedToBreakAgain) {
             return new TurnEndOptions.Builder().allowPlayerToChooseWhoBreaks().defaultOption(TurnEnd.CONTINUE_WITH_GAME);
@@ -102,7 +103,7 @@ abstract public class TurnEndHelper {
         }
     }
 
-    public TurnEndOptions create(GameStatus game, ITableStatus nextInning) {
+    public TurnEndOptions getTurnEndOptions(GameStatus game, ITableStatus nextInning) {
         this.game = game;
         this.nextInning = nextInning;
 

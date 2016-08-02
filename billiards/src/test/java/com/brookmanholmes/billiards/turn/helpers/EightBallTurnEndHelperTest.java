@@ -7,6 +7,7 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
 
 import org.junit.Test;
 
@@ -37,7 +38,7 @@ public class EightBallTurnEndHelperTest extends AbstractTurnEndHelperTest {
         tableStatus.setBallTo(BallStatus.MADE_ON_BREAK, 1);
         GameStatus status = Game.newGame(gameType, PlayerTurn.PLAYER, BreakType.WINNER).getGameStatus();
 
-        com.brookmanholmes.billiards.turn.TurnEndOptions options = helper.create(status, tableStatus);
+        TurnEndOptions options = helper.getTurnEndOptions(status, tableStatus);
 
         assertThat(options.possibleEndings.contains(com.brookmanholmes.billiards.turn.TurnEnd.PUSH_SHOT), is(false));
     }

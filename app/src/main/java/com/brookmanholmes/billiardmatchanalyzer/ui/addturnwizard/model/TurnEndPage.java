@@ -35,7 +35,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     }
 
     @Override public Fragment createFragment() {
-        TurnEndOptions options = turnEndHelper.create(MatchDialogHelperUtils.createGameStatusFromBundle(data),
+        TurnEndOptions options = turnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.createGameStatusFromBundle(data),
                 TableStatus.newTable(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)), data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY)));
         ArrayList<String> stringList = new ArrayList<>();
         for (TurnEnd ending : options.possibleEndings) {
@@ -46,7 +46,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     }
 
     @Override public void getNewTurnInfo(AddTurnWizardModel model) {
-        TurnEndOptions options = turnEndHelper.create(MatchDialogHelperUtils.createGameStatusFromBundle(data),
+        TurnEndOptions options = turnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.createGameStatusFromBundle(data),
                 model.getTableStatus());
         updateFragment(options);
     }

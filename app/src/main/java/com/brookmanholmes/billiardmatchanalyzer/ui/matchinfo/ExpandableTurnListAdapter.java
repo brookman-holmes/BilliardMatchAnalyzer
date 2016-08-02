@@ -1,7 +1,6 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.matchinfo;
 
 import android.content.res.ColorStateList;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -15,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
-import com.brookmanholmes.billiardmatchanalyzer.utils.RoundedLetterView;
+import com.brookmanholmes.billiardmatchanalyzer.utils.ConversionUtils;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
@@ -24,12 +23,12 @@ import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
+import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,9 +39,11 @@ import butterknife.ButterKnife;
 class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<ExpandableTurnListAdapter.GameViewHolder, ExpandableTurnListAdapter.TurnViewHolder> {
     List<List<Turn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
     Match<?> match;
+    RecyclerViewExpandableItemManager itemManager;
 
-    public ExpandableTurnListAdapter(Match<?> match) {
+    public ExpandableTurnListAdapter(Match<?> match, RecyclerViewExpandableItemManager itemManager) {
         this.match = match;
+        this.itemManager = itemManager;
         setHasStableIds(true);
         data = buildDataSource(match.getTurns());
         // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
@@ -51,7 +52,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     public void updateMatch(Match<?> match) {
         this.match = match;
         data = buildDataSource(match.getTurns());
-        notifyDataSetChanged();
+        notifyDataSetChanged(); // there is a bug thrown by the library this is based on so neat
     }
 
     private List<List<Turn>> buildDataSource(List<Turn> turns) {
@@ -137,7 +138,6 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     @Override
     public void onBindChildViewHolder(TurnViewHolder holder, int groupPosition, int childPosition, int viewType) {
         // set background for top/bottom position
-        setBackground(holder.itemView, childPosition);
         int turn = getTurnNumber(groupPosition, childPosition);
 
         holder.bind(data.get(groupPosition).get(childPosition),
@@ -145,11 +145,12 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 viewType == 1 ? match.getPlayer(0, turn + 1) : match.getOpponent(0, turn + 1));
 
         holder.setBalls(data.get(groupPosition).get(childPosition));
-    }
 
-    private void setBackground(View view, int childPosition) {
-        int color = childPosition % 2 == 0 ? android.R.color.white : R.color.light_grey;
-        view.setBackgroundColor(ContextCompat.getColor(view.getContext(), color));
+        // set margin of bottom view holder to get a cool spacing
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
+        if (childPosition == getChildCount(groupPosition) - 1)
+            params.bottomMargin = (int) ConversionUtils.convertDpToPx(holder.itemView.getContext(), 8);
+        else params.bottomMargin = 0;
     }
 
     @Override public int getChildItemViewType(int groupPosition, int childPosition) {
@@ -204,12 +205,13 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 @DrawableRes int resId = isExpanded ? R.drawable.ic_action_collapse : R.drawable.ic_action_expand;
                 expandIndicator.setImageResource(resId);
             }
+
+            itemView.setElevation((isExpanded ? ConversionUtils.convertDpToPx(itemView.getContext(), 2) : 0));
         }
     }
 
     static class TurnViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.turn) TextView turnString;
-        @Bind(R.id.playerIndicator) RoundedLetterView indicator;
         @Bind(R.id.tvSafetyPct) TextView safetyPct;
         @Bind(R.id.tvBreakPct) TextView breakPct;
         @Bind(R.id.tvShootingPct) TextView shootingPct;
@@ -224,16 +226,14 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         }
 
         private void bind(Turn turn, PlayerTurn playerTurn, AbstractPlayer player) {
-            @ColorInt int color = (playerTurn == PlayerTurn.PLAYER ? ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary) : ContextCompat.getColor(itemView.getContext(), R.color.colorAccent));
-            TurnStringAdapter turnStringAdapter = new TurnStringAdapter(turn, player);
-            indicator.setTitleText(player.getName().substring(0, 1));
-            indicator.setBackgroundColor(color);
+            String color = (playerTurn == PlayerTurn.PLAYER ? "#2196F3" : "#FF3D00");
+            TurnStringAdapter turnStringAdapter = new TurnStringAdapter(turn, player, color);
 
             turnString.setText(turnStringAdapter.getTurnString());
 
-            shootingPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Shooting", player.getShootingPct()));
-            safetyPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Safeties", player.getSafetyPct()));
-            breakPct.setText(String.format(Locale.getDefault(), "%1$s %2$s", "Breaking", player.getBreakPct()));
+            shootingPct.setText(String.format("Shooting %1$s", player.getShootingPct()));
+            safetyPct.setText(String.format("Safeties %1$s", player.getSafetyPct()));
+            breakPct.setText(String.format("Breaking %1$s", player.getBreakPct()));
 
             shootingLine.setImageTintList(getPctColor(player.getShootingPct()));
             safetyLine.setImageTintList(getPctColor(player.getSafetyPct()));

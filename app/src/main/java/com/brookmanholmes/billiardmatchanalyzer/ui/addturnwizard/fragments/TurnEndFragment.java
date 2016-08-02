@@ -64,20 +64,12 @@ public class TurnEndFragment extends ListFragment {
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle args = getArguments();
-        key = args.getString(ARG_KEY);
+        key = getArguments().getString(ARG_KEY);
 
         adapter = new CustomAdapter(getContext(),
                 android.R.layout.simple_list_item_single_choice,
                 android.R.id.text1,
                 new ArrayList<String>());
-
-        List<String> options = args.getStringArrayList(ARG_OPTIONS_KEY);
-        if (options == null)
-            throw new IllegalArgumentException("Must pass in a string of options");
-        else {
-            populateChoicesList(options);
-        }
     }
 
     private void populateChoicesList(List<String> options) {
@@ -92,6 +84,7 @@ public class TurnEndFragment extends ListFragment {
                 adapter.add(getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending)));
         }
 
+        adapter.sort();
         adapter.notifyDataSetChanged();
     }
 
@@ -103,6 +96,12 @@ public class TurnEndFragment extends ListFragment {
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
         page = (TurnEndPage) callbacks.onGetPage(key);
+        List<String> options = getArguments().getStringArrayList(ARG_OPTIONS_KEY);
+        if (options == null)
+            throw new IllegalArgumentException("Must pass in a string of options");
+        else {
+            populateChoicesList(options);
+        }
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         TextView title = (TextView) rootView.findViewById(android.R.id.title);
         title.setTextAppearance(getContext(), R.style.WizardPageTitle2);

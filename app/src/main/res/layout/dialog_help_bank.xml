@@ -1,7 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/alert_dialog_padding"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <TextView
+        style="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/colorPrimary"
+        android:text="Types of bank shots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:textColor="@color/primary_text"
+        android:text="@string/bank_natural" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="The cue ball and object ball are in line or close to in line with a straight on hit to bank the ball" />
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:textColor="@color/primary_text"
+        android:text="@string/bank_crossover" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="You have to cross over the object ball to get the correct hit to bank the ball" />
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:textColor="@color/primary_text"
+        android:text="@string/bank_long_rail" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="You are banking across the length of the table (long side)" />
+
+    <TextView
+        style="@style/help_dialog_title"
+        android:textColor="@color/primary_text"
+        android:text="@string/bank_short_rail" />
+
+    <TextView
+        style="@style/help_dialog_text"
+        android:text="You are banking across the width of the table (short side)" />
 </LinearLayout>

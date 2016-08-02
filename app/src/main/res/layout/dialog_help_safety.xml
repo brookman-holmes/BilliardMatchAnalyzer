@@ -10,7 +10,7 @@
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="What type of safety did you play?"
+        android:text="@string/title_safety_type"
         android:textColor="@color/colorPrimary"/>
 
     <TextView
@@ -18,26 +18,33 @@
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Full hooks are when the incoming player cannot see any edge of their object ball(s)"/>
+        android:text="@string/description_full_hook"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Partial hooks are when the incoming player can only see a part of their object ball(s) and it is not able to be cut into a pocket"/>
+        android:text="@string/description_partial_hook"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Long Ts are when the incoming player&apos;s object ball is on one of the short rails and the cue ball is half a table or more away and the angle to cut the ball in is greater than 70 degrees"/>
+        android:text="@string/description_long_t"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Short Ts are the same as long Ts except the balls are on the long rails"/>
+        android:text="@string/description_short_t"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="@string/description_no_direct_shot"/>
 </LinearLayout>
