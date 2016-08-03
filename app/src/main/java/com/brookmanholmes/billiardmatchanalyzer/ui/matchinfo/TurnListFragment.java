@@ -98,8 +98,11 @@ public class TurnListFragment extends Fragment implements
         recyclerView.setLayoutManager(layoutManager);
         itemManager.attachRecyclerView(recyclerView);
 
-        itemManager.expandGroup(adapter.getGroupCount() >= 2 ? adapter.getGroupCount() - 2 : 0);
-        layoutManager.scrollToPositionWithOffset(adapter.getGroupCount(), 0);
+        // fix this here
+        if (adapter.getGroupCount() > 1) {
+            itemManager.expandGroup(adapter.getGroupCount() - 2);
+            itemManager.scrollToGroup(adapter.getGroupCount() - 2, 0);
+        }
         return view;
     }
 
