@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiardmatchanalyzer.ui.help;
+package com.brookmanholmes.billiardmatchanalyzer.ui.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;

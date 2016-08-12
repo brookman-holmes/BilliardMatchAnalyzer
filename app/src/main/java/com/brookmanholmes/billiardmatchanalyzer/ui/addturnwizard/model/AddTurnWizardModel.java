@@ -244,7 +244,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private Page getWhyMissPage(String parentKey) {
         return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.why_choices))
-                .setRequired(true)
                 .setParentKey(parentKey);
     }
 
@@ -293,14 +292,12 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     private Page getIllegalBreakHow() {
         return new BreakErrorPage(this, context.getString(R.string.title_how_miss, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.how_choices_break))
-                .setRequired(true);
+                .setChoices(context.getResources().getStringArray(R.array.how_choices_break));
     }
 
     private Page getIllegalBreakWhy() {
         return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.why_choices_illegal_break))
-                .setRequired(true)
                 .setParentKey("illegal break why");
     }
 
@@ -315,8 +312,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private Page getHowMissPage(String parentKey, @ArrayRes int choices) {
         return new HowMissPage(this, context.getString(R.string.title_how_miss, playerName))
                 .setChoices(context.getResources().getStringArray(choices))
-                .setParentKey(parentKey)
-                .setRequired(true);
+                .setParentKey(parentKey);
     }
 
     public TurnBuilder getTurnBuilder() {

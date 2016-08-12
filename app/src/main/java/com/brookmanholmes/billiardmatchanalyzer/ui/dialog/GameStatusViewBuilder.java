@@ -31,6 +31,7 @@ public class GameStatusViewBuilder {
     @Bind(R.id.opponentFoulInfo) TextView opponentFoulInfo;
     @Bind(R.id.colorInfo) TextView colorInfo;
     @Bind(R.id.ballContainer) GridLayout ballContainer;
+    @Bind(R.id.pushStatus) TextView pushStatus;
 
     GameStatusViewBuilder(Match<?> match, View view) {
         ButterKnife.bind(this, view);
@@ -50,7 +51,9 @@ public class GameStatusViewBuilder {
             playerFoulInfo.setVisibility(View.GONE);
             opponentFoulInfo.setVisibility(View.GONE);
             colorInfo.setText(getColorInfo(context, match));
+            pushStatus.setVisibility(View.GONE);
         } else {
+            pushStatus.setText(getPushStatusString(context, match));
             colorInfo.setVisibility(View.GONE);
             playerFoulInfo.setText(
                     getPlayerFoulsString(playerName, match.getGameStatus().consecutivePlayerFouls));
@@ -110,21 +113,23 @@ public class GameStatusViewBuilder {
         else return context.getString(R.string.solids_table, match.getOpponent().getName());
     }
 
-    private static void setBallsOnTable(Match<?> match, GridLayout ballContainer) {
-        Log.i("GameStatusViewBuilder", "child count: " + ballContainer.getChildCount());
-        Log.i("GameStatusViewBuilder", "balls on table " + match.getGameStatus().ballsOnTable);
+    private static String getPushStatusString(Context context, Match<?> match) {
+        if (match.getGameStatus().allowPush && !match.getGameStatus().newGame)
+            return String.format(Locale.getDefault(), "%1$s can push", getPlayerName(match, match.getGameStatus().turn));
+        else if (match.getGameStatus().allowTurnSkip)
+            return String.format(Locale.getDefault(), "%1$s has the option to skip their turn", getPlayerName(match, match.getGameStatus().turn));
+        else
+            return String.format(Locale.getDefault(), "No push shot or option to skip turn is allowed", getPlayerName(match, match.getGameStatus().turn));
+    }
 
+    private static void setBallsOnTable(Match<?> match, GridLayout ballContainer) {
         //reverse loop because you want to remove the last fucking ball and not change the count of the children by removing from the front
         for (int ball = ballContainer.getChildCount() - 1; ball >= 0; ball--) {
-            Log.i("GameStatusViewBuilder", "checking for ball " + (ball + 1));
             if (match.getGameStatus().ballsOnTable.contains(ball + 1)) {
-                Log.i("GameStatusViewBuilder", "this ball is on the table: " + (ball + 1));
             } else {
-                Log.i("GameStatusViewBuilder", "this ball is NOT on the table: " + (ball + 1));
                 ballContainer.removeViewAt(ball);
             }
         }
-        Log.i("GameStatusViewBuilder", "child count: " + ballContainer.getChildCount());
     }
 
     public static void bindView(Match<?> match, View view) {

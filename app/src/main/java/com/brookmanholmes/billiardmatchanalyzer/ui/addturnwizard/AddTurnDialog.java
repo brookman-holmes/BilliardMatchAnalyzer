@@ -16,7 +16,7 @@ import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
 import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.AddTurnWizardModel;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
-import com.brookmanholmes.billiardmatchanalyzer.ui.help.HelpDialogCreator;
+import com.brookmanholmes.billiardmatchanalyzer.ui.dialog.HelpDialogCreator;
 import com.brookmanholmes.billiardmatchanalyzer.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiardmatchanalyzer.wizard.model.Page;
