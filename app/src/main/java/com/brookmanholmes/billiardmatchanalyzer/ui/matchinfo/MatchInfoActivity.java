@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,11 +36,11 @@ import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.ui.BaseActivity;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.billiardmatchanalyzer.ui.addturnwizard.model.TurnBuilder;
-import com.brookmanholmes.billiardmatchanalyzer.ui.dialog.GameStatusStringBuilder;
+import com.brookmanholmes.billiardmatchanalyzer.ui.dialog.GameStatusViewBuilder;
 import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.billiardmatchanalyzer.ui.stats.AdvStatsDialog;
+import com.brookmanholmes.billiardmatchanalyzer.utils.ConversionUtils;
 import com.brookmanholmes.billiardmatchanalyzer.utils.CustomViewPager;
-import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
@@ -98,28 +97,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     private void setToolbarTitle(GameType gameType) {
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(getString(R.string.title_match_info, getGameTypeString(gameType)));
-    }
-
-    private String getGameTypeString(GameType gameType) {
-        switch (gameType) {
-            case APA_EIGHT_BALL:
-                return getString(R.string.game_apa_eight);
-            case APA_NINE_BALL:
-                return getString(R.string.game_apa_nine);
-            case BCA_EIGHT_BALL:
-                return getString(R.string.game_bca_eight);
-            case BCA_NINE_BALL:
-                return getString(R.string.game_bca_nine);
-            case BCA_TEN_BALL:
-                return getString(R.string.game_bca_ten);
-            case AMERICAN_ROTATION:
-                return getString(R.string.game_american_rotation);
-            case STRAIGHT_POOL:
-                return getString(R.string.game_straight);
-            default:
-                throw new InvalidGameTypeException("No such GameType: " + gameType);
-        }
+            getSupportActionBar().setTitle(getString(R.string.title_match_info, ConversionUtils.getGameTypeString(this, gameType)));
     }
 
     @Override protected void onResume() {
@@ -220,7 +198,9 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         if (id == R.id.action_game_status) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-            builder.setMessage(GameStatusStringBuilder.getMatchStatusString(match))
+            View view = getLayoutInflater().inflate(R.layout.dialog_game_status, null);
+            GameStatusViewBuilder.bindView(match, view);
+            builder.setView(view)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override public void onClick(DialogInterface dialog, int which) {
 

@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              tools:showIn="@layout/container_adv_shooting_stats">
+              tools:showIn="@layout/fragment_adv_shooting_stats">
 
     <TextView
         android:layout_width="wrap_content"

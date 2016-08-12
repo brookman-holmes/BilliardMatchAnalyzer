@@ -27,7 +27,7 @@
     <string name="title_five_ball_outs">Five (or fewer) ball outs</string>
     <string name="title_break_runs">Break and runs</string>
     <string name="title_safeties_made">Safeties made / safeties</string>
-    <string name="title_safety_pct">Safety Percentage</string>
+    <string name="title_safety_pct">Safety percentage</string>
     <string name="title_safety_fouls">Safety fouls</string>
     <string name="title_safety_escapes">Safeties escaped</string>
     <string name="title_match_info">%1$s Match</string>
@@ -95,9 +95,9 @@
     <string name="solids_table">%1$s is solids</string>
     <string name="stripes_table">%1$s is stripes</string>
     <string name="error_same_name">Players cannot have the same name</string>
-    <string name="break_winner">Winner</string>
-    <string name="break_alternate">Alternate</string>
-    <string name="break_loser">Loser</string>
+    <string name="break_winner">Winner breaks</string>
+    <string name="break_alternate">Alternate breaks</string>
+    <string name="break_loser">Loser breaks</string>
     <string name="break_player">%1$s always breaks</string>
     <string name="game_apa_eight">APA 8 Ball</string>
     <string name="game_apa_nine">APA 9 Ball</string>
@@ -181,4 +181,5 @@
     <string name="description_long">A shot in which the cue ball and object ball are lined up and in line with the intended pocket</string>
     <string name="description_masse">Imparting downward spin on the cue ball to get it to swerve and avoid impeding balls</string>
     <string name="title_how_turn_end">Turn end options</string>
+    <string name="title_break_pct">Breaking percentage</string>
 </resources>

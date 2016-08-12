@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.brookmanholmes.billiardmatchanalyzer.MyApplication;
+import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.squareup.leakcanary.RefWatcher;
@@ -16,6 +18,7 @@ import com.squareup.leakcanary.RefWatcher;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -25,9 +28,9 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
     List<AdvStats> stats = new ArrayList<>();
     DatabaseAdapter db;
     String playerName;
-    String[] shotTypes;
+    @Bind(R.id.parentView) LinearLayout statsLayout;
+    List<String> shotTypes;
     long matchId;
-    View view;
     boolean updateView = true;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,19 +41,19 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
 
         db = new DatabaseAdapter(getContext());
         stats = matchId == -1L ?
-                db.getAdvStats(playerName, shotTypes) :
-                db.getAdvStats(matchId, playerName, shotTypes);
+                db.getAdvStats(playerName, shotTypes.toArray(new String[shotTypes.size()])) :
+                db.getAdvStats(matchId, playerName, shotTypes.toArray(new String[shotTypes.size()]));
     }
 
-    abstract void updateView(View view);
+    abstract void updateView();
 
-    abstract String[] getShotTypes();
+    abstract List<String> getShotTypes();
 
     @LayoutRes abstract int getLayoutId();
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(getLayoutId(), container, false);
+        View view = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, view);
 
         return view;
@@ -58,7 +61,7 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        updateView(view);
+        updateView();
         updateView = false;
     }
 

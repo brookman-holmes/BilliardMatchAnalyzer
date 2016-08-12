@@ -8,4 +8,4 @@
     android:layout_marginTop="8dp"
     android:background="@drawable/line_divider"
     android:orientation="horizontal"
-    tools:showIn="@layout/container_adv_shooting_stats" />
+    tools:showIn="@layout/fragment_adv_shooting_stats" />

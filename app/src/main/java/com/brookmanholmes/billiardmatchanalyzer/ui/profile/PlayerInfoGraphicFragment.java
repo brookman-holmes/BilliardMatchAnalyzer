@@ -1,5 +1,6 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.profile;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -234,15 +235,16 @@ public class PlayerInfoGraphicFragment extends Fragment {
             }
 
             public void bind(List<AbstractPlayer> players) {
+                Context context = itemView.getContext();
                 List<String> xVals = new ArrayList<>();
                 for (AbstractPlayer player : players) {
                     xVals.add(DateFormat.getDateInstance(DateFormat.SHORT).format(player.getMatchDate()));
                 }
                 LineData data = new LineData(xVals);
-                LineDataSet tsp = getDataSet(getTspDataSet(players), "True Shooting pct", getColor(R.color.chart));
-                LineDataSet shootingP = getDataSet(getShootingDataSet(players), "Shooting pct", getColor(R.color.chart1));
-                LineDataSet breakingP = getDataSet(getBreakingDataSet(players), "Breaking pct", getColor(R.color.chart2));
-                LineDataSet safetyP = getDataSet(getSafetyDataSet(players), "Safeties pct", getColor(R.color.chart3));
+                LineDataSet tsp = getDataSet(getTspDataSet(players), context.getString(R.string.title_tsp), getColor(R.color.chart));
+                LineDataSet shootingP = getDataSet(getShootingDataSet(players), context.getString(R.string.title_shooting_pct), getColor(R.color.chart1));
+                LineDataSet breakingP = getDataSet(getBreakingDataSet(players), context.getString(R.string.title_break_pct), getColor(R.color.chart2));
+                LineDataSet safetyP = getDataSet(getSafetyDataSet(players), context.getString(R.string.title_safety_pct), getColor(R.color.chart3));
 
                 data.addDataSet(tsp);
                 data.addDataSet(shootingP);
@@ -259,7 +261,10 @@ public class PlayerInfoGraphicFragment extends Fragment {
                 List<Entry> list = new ArrayList<>();
 
                 for (int i = 0; i < players.size(); i++) {
-                    list.add(new Entry(Float.valueOf(players.get(i).getTrueShootingPct()), i));
+                    if (players.get(i).getShootingAttempts() +
+                            players.get(i).getBreakAttempts() +
+                            players.get(i).getSafetyAttempts() > 0)
+                        list.add(new Entry(Float.valueOf(players.get(i).getTrueShootingPct()), i));
                 }
 
                 return list;
@@ -269,7 +274,8 @@ public class PlayerInfoGraphicFragment extends Fragment {
                 List<Entry> list = new ArrayList<>();
 
                 for (int i = 0; i < players.size(); i++) {
-                    list.add(new Entry(Float.valueOf(players.get(i).getShootingPct()), i));
+                    if (players.get(i).getShootingAttempts() > 0)
+                        list.add(new Entry(Float.valueOf(players.get(i).getShootingPct()), i));
                 }
 
                 return list;
@@ -279,7 +285,8 @@ public class PlayerInfoGraphicFragment extends Fragment {
                 List<Entry> list = new ArrayList<>();
 
                 for (int i = 0; i < players.size(); i++) {
-                    list.add(new Entry(Float.valueOf(players.get(i).getSafetyPct()), i));
+                    if (players.get(i).getSafetyAttempts() > 0)
+                        list.add(new Entry(Float.valueOf(players.get(i).getSafetyPct()), i));
                 }
 
                 return list;
@@ -289,7 +296,8 @@ public class PlayerInfoGraphicFragment extends Fragment {
                 List<Entry> list = new ArrayList<>();
 
                 for (int i = 0; i < players.size(); i++) {
-                    list.add(new Entry(Float.valueOf(players.get(i).getBreakPct()), i));
+                    if (players.get(i).getBreakAttempts() > 0)
+                        list.add(new Entry(Float.valueOf(players.get(i).getBreakPct()), i));
                 }
 
                 return list;
@@ -297,9 +305,8 @@ public class PlayerInfoGraphicFragment extends Fragment {
 
             private LineDataSet getDataSet(List<Entry> entries, String label, int color) {
                 LineDataSet dataSet = new LineDataSet(entries, label);
-
                 dataSet.setLineWidth(1.75f);
-                dataSet.setCircleRadius(5f);
+                dataSet.setCircleRadius(4f);
                 dataSet.setDrawValues(false);
                 dataSet.setDrawCircles(true);
                 dataSet.setDrawCircleHole(true);

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:animateLayoutChanges="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        >
+
+        <TextView
+            android:id="@+id/shootingErrorTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_shooting_errors"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/primary_text"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="16dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shot type"
+                    android:textColor="@color/primary_text"
+                    android:minWidth="160dp"
+                    />
+
+                <Spinner
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/shotTypeSpinner"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/shotSubTypeLayout"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cut type"
+                    android:textColor="@color/primary_text"
+                    android:minWidth="160dp"/>
+
+                <Spinner
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/shotSubTypeSpinner"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Angle/Bank/Kick"
+                    android:textColor="@color/primary_text"
+                    android:minWidth="160dp"/>
+
+                <Spinner
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/angleSpinner"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <include layout="@layout/graph_cut"/>
+
+        <include layout="@layout/graph_aim"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/parentView"
+            android:layout_marginTop="8dp">
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

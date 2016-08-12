@@ -1,11 +1,12 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiardmatchanalyzer.R;
+
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -13,7 +14,7 @@ import butterknife.Bind;
  * Created by Brookman Holmes on 3/12/2016.
  */
 public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
-    final static String[] array = new String[]{"Break shot"};
+    final static List<String> array = Arrays.asList(new String[]{"Break shot"});
     @Bind(R.id.tvBreakErrorsTitle) TextView title;
     @Bind(R.id.left) TextView leftOfAim;
     @Bind(R.id.right) TextView rightOfAim;
@@ -37,20 +38,20 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
         return frag;
     }
 
-    @Override void updateView(View view) {
+    @Override void updateView() {
         StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getContext(), stats), leftOfAim, rightOfAim);
         StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(getContext(), stats), slow, fast);
 
         title.setText(getString(R.string.title_break_errors, stats.size()));
 
-        StatsUtils.updateGridOfMissReasons((GridLayout) view.findViewById(R.id.grid), StatsUtils.getFourMostCommonItems(stats));
+        StatsUtils.setListOfMissReasons(this.statsLayout, stats);
     }
 
-    @Override String[] getShotTypes() {
+    @Override List<String> getShotTypes() {
         return array;
     }
 
     @Override int getLayoutId() {
-        return R.layout.container_adv_break_stats;
+        return R.layout.fragment_adv_break_stats;
     }
 }

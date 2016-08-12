@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:showIn="@layout/container_adv_break_stats">
+    tools:showIn="@layout/fragment_adv_break_stats">
 
     <TextView
         android:layout_width="wrap_content"

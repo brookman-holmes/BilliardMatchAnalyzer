@@ -2,7 +2,9 @@ package com.brookmanholmes.billiardmatchanalyzer.ui.stats;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -17,12 +19,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
  * Created by Brookman Holmes on 3/20/2016.
  */
 public class StatsUtils {
+    private static final int FULL_HOOK = 0,
+            PARTIAL_HOOK = 1,
+            LONG_T = 2,
+            SHORT_T = 3,
+            NO_DIRECT_SHOT = 4,
+            OPEN = 5;
     private StatsUtils() {
     }
 
@@ -47,23 +56,40 @@ public class StatsUtils {
         rightView.setText(Integer.toString(integerPair.second));
     }
 
-    // todo: dynamically create each line in the list and put it in a gridview that's inside a scrolling container?
-    public static void updateGridOfMissReasons(GridLayout grid, List<StatLineItem> items) {
-        if (grid != null) {
-            for (int i = 0, c = 0; i < items.size(); i++, c += 3) {
-                TextView description = (TextView) grid.getChildAt(c);
-                TextView count = (TextView) grid.getChildAt(c + 1);
-                TextView percent = (TextView) grid.getChildAt(c + 2);
+    public static void setListOfMissReasons(LinearLayout parent, List<AdvStats> stats) {
+        List<StatLineItem> items = getStats(stats);
+        addRows(parent, items);
+    }
 
-                description.setVisibility(View.VISIBLE);
-                count.setVisibility(View.VISIBLE);
-                percent.setVisibility(View.VISIBLE);
+    private static void addRows(LinearLayout parent, List<StatLineItem> items) {
+        parent.removeAllViews();
+        for (int i = 0; i < items.size(); i++) {
+            LinearLayout row = inflateRow(parent.getContext());
+            setTextOfRow(row, items.get(i));
+            row.setLayoutParams(parent.getLayoutParams());
+            if (i % 2 == 0)
+                setTextColorOfRow(row); // highlight every other row
 
-                description.setText(items.get(i).description);
-                count.setText(String.valueOf(items.get(i).count));
-                percent.setText(items.get(i).getPercentage());
-            }
+            parent.addView(row);
         }
+    }
+
+    private static void setTextColorOfRow(LinearLayout row) {
+        for (int i = 0; i < row.getChildCount(); i++) {
+            if (row.getChildAt(i) instanceof TextView)
+                ((TextView) row.getChildAt(i))
+                        .setTextColor(ContextCompat.getColor(row.getContext(), R.color.primary_text));
+        }
+    }
+
+    private static LinearLayout inflateRow(Context context) {
+        return (LinearLayout) LinearLayout.inflate(context, R.layout.container_adv_stat_row, null);
+    }
+
+    private static void setTextOfRow(LinearLayout row, StatLineItem item) {
+        ((TextView) row.getChildAt(0)).setText(item.getDescription());
+        ((TextView) row.getChildAt(1)).setText(item.getCount());
+        ((TextView) row.getChildAt(2)).setText(item.getPercentage());
     }
 
     public static Pair<Integer, Integer> getHowCutErrors(Context context, List<AdvStats> stats) {
@@ -105,14 +131,6 @@ public class StatsUtils {
         return new Pair<>(slow, fast);
     }
 
-    public static List<StatLineItem> getFourMostCommonItems(List<AdvStats> stats) {
-        List<StatLineItem> list = getStats(stats);
-
-        if (list.size() > 4)
-            return list.subList(0, 4);
-        else return list;
-    }
-
     public static List<StatLineItem> getStats(List<AdvStats> stats) {
         List<StatLineItem> list = new ArrayList<>();
         Set<String> whyTypes = new HashSet<>();
@@ -136,7 +154,13 @@ public class StatsUtils {
         return list;
     }
 
-    public static List<StatLineItem> getSafetyStats(Context context, List<AdvStats> stats) {
+    public static void setListOfSafetyStats(LinearLayout parent, List<AdvStats> stats) {
+        List<StatLineItem> items = getSafetyStats(parent.getContext(), stats);
+
+        addRows(parent, items);
+    }
+
+    private static List<StatLineItem> getSafetyStats(Context context, List<AdvStats> stats) {
         int total = stats.size();
 
         List<StatLineItem> list = new ArrayList<>();
@@ -152,6 +176,12 @@ public class StatsUtils {
         }
 
         return list;
+    }
+
+    public static int getFailedSafeties(Context context, List<AdvStats> stats) {
+        List<StatLineItem> safeties = getSafetyStats(context, stats);
+
+        return safeties.get(OPEN).count;
     }
 
     private static int getCountOfSubTypesInList(Context context, List<AdvStats> stats, String item) {
@@ -181,7 +211,7 @@ public class StatsUtils {
         return count;
     }
 
-    public static class StatLineItem implements Comparable<StatLineItem> {
+    private static class StatLineItem implements Comparable<StatLineItem> {
         final NumberFormat pctf = NumberFormat.getPercentInstance();
 
         private String description;

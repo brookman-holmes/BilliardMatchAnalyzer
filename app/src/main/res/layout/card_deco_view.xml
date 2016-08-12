@@ -48,7 +48,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
                 android:text="@string/successful_breaks"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 />
         </LinearLayout>
 
@@ -71,7 +71,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
                 android:text="@string/continuation_after_the_break"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -94,7 +94,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
                 android:text="@string/_8_9_on_the_break"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -116,7 +116,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
                 android:text="@string/fouls_on_the_break"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
     </LinearLayout>

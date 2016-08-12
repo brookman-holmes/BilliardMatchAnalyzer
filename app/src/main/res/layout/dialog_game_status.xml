@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              style="@style/alert_dialog_padding">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game Status"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/title"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game: BCA 9 ball"
+        android:id="@+id/gameStatus"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alternating breaks / Brookman broke last"
+        android:id="@+id/breakInfo"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cliff&apos;s turn"
+        android:id="@+id/turnInfo"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Brookman is on 0 fouls"
+        android:id="@+id/playerFoulInfo"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cliff is on 0 fouls"
+        android:id="@+id/opponentFoulInfo"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Table is open"
+        android:id="@+id/colorInfo"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"/>
+
+    <GridLayout
+        android:id="@+id/ballContainer"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:columnCount="5"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:useDefaultMargins="false"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/ball_background"
+            android:tint="@color/one_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/ball_background"
+            android:tint="@color/two_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/ball_background"
+            android:tint="@color/three_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/ball_background"
+            android:tint="@color/four_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/ball_background"
+            android:tint="@color/five_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/ball_background"
+            android:tint="@color/six_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/ball_background"
+            android:tint="@color/seven_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/ball_background"
+            android:tint="@color/eight_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:background="@drawable/ball_background"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/stripe_overlay"
+            android:tint="@color/one_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:background="@drawable/ball_background"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/stripe_overlay"
+            android:tint="@color/two_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:background="@drawable/ball_background"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/stripe_overlay"
+            android:tint="@color/three_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:background="@drawable/ball_background"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/stripe_overlay"
+            android:tint="@color/four_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:background="@drawable/ball_background"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/stripe_overlay"
+            android:tint="@color/five_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:background="@drawable/ball_background"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/stripe_overlay"
+            android:tint="@color/six_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+        <ImageView
+            style="@style/stroked_text"
+            android:layout_gravity="center"
+            android:background="@drawable/ball_background"
+            android:foreground="@drawable/ball"
+            android:src="@drawable/stripe_overlay"
+            android:tint="@color/seven_ball"
+            android:visibility="visible"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"/>
+
+    </GridLayout>
+
+</LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,25 +11,39 @@
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="16dp"
+        >
 
         <TextView
-            android:id="@+id/shootingErrorTitle"
+            android:id="@+id/safetyErrorsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_shooting_errors"
+            android:text="@string/title_safety_errors"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/primary_text"/>
 
         <include layout="@layout/graph_cut"/>
 
-        <include layout="@layout/graph_aim"/>
+        <include layout="@layout/graph_speed"/>
 
-        <include
-            layout="@layout/container_reason_list_layout"
+        <include layout="@layout/divider"/>
+
+        <TextView
+            android:id="@+id/successfulSafetiesTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="@string/title_safety_results"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/primary_text"/>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"/>
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/parentView"
+            android:layout_marginTop="8dp"/>
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

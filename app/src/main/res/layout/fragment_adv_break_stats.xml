@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,7 +11,8 @@
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="16dp"
+        >
 
         <TextView
             android:id="@+id/tvBreakErrorsTitle"
@@ -24,11 +26,13 @@
 
         <include layout="@layout/graph_speed"/>
 
-        <include
-            layout="@layout/container_reason_list_layout"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"/>
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/parentView"
+            android:layout_marginTop="8dp"/>
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
