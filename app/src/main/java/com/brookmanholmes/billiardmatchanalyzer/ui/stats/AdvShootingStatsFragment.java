@@ -30,6 +30,12 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.under) TextView underCut;
     @Bind(R.id.left) TextView leftOfAim;
     @Bind(R.id.right) TextView rightOfAim;
+    @Bind(R.id.bankLong) TextView bankLong;
+    @Bind(R.id.bankShort) TextView bankShort;
+    @Bind(R.id.kickLong) TextView kickLong;
+    @Bind(R.id.kickShort) TextView kickShort;
+    @Bind(R.id.kickGraph) View kickGraph;
+    @Bind(R.id.bankGraph) View bankGraph;
     @Bind(R.id.shootingErrorTitle) TextView title;
     @Bind(R.id.shotTypeSpinner) Spinner shotTypeSpinner;
     @Bind(R.id.shotSubTypeSpinner) Spinner shotSubTypeSpinner;
@@ -84,6 +90,14 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return stat.getAngles().contains(angle) || angle.equals("All");
     }
 
+    private boolean isKickShot() {
+        return shotType.equals(getString(R.string.miss_kick)) || shotType.equals("All");
+    }
+
+    private boolean isBankShot() {
+        return shotType.equals(getString(R.string.miss_bank)) || shotType.equals("All");
+    }
+
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
@@ -97,14 +111,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 shotType = getAdapter(shotTypeSpinner).getItem(position);
-
-                if (shotType.equals(getString(R.string.miss_cut))) {
-                    shotSubTypeLayout.setVisibility(View.VISIBLE);
-                } else {
-                    shotSubTypeSpinner.setSelection(0);
-                    shotSubTypeLayout.setVisibility(View.GONE);
-                    subType = "All";
-                }
                 updateView();
             }
 
@@ -137,7 +143,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return view;
     }
 
-
     private List<String> getPossibleShotTypes() {
         SortedSet<String> shotTypes = new TreeSet<>();
         for (AdvStats stat : stats) {
@@ -147,6 +152,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         return new ArrayList<>(shotTypes);
     }
+
 
     private List<String> getPossibleShotSubTypes() {
         SortedSet<String> shotSubTypes = new TreeSet<>();
@@ -191,19 +197,50 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     @Override void updateView() {
-        List<AdvStats> stats = getFilteredStats();
         setItems(shotTypeSpinner, getPossibleShotTypes());
         setItems(shotSubTypeSpinner, getPossibleShotSubTypes());
         setItems(angleSpinner, getPossibleAngles());
 
-        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getContext(), stats), leftOfAim, rightOfAim);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getContext(), stats), overCut, underCut);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getContext(), getFilteredStats()), leftOfAim, rightOfAim);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getContext(), getFilteredStats()), overCut, underCut);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowBankErrors(getContext(), getFilteredStats()), bankShort, bankLong);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(getContext(), getFilteredStats()), kickShort, kickLong);
 
-        title.setText(getString(R.string.title_shooting_errors, stats.size()));
+        setVisibilities();
+
+        title.setText(getString(R.string.title_shooting_errors, getFilteredStats().size()));
 
         if (statsLayout != null)
-            StatsUtils.setListOfMissReasons(statsLayout, stats);
+            StatsUtils.setListOfMissReasons(statsLayout, getFilteredStats());
         else Log.i("ASSF", "View is null");
+    }
+
+    private void setVisibilities() {
+        showKickGraph();
+        showBankGraph();
+        showShotSubTypeSpinner();
+    }
+
+    private void showKickGraph() {
+        if (isKickShot())
+            kickGraph.setVisibility(View.VISIBLE);
+        else kickGraph.setVisibility(View.GONE);
+    }
+
+    private void showBankGraph() {
+        if (isBankShot())
+            bankGraph.setVisibility(View.VISIBLE);
+        else bankGraph.setVisibility(View.GONE);
+    }
+
+    private void showShotSubTypeSpinner() {
+        if (shotType.equals(getString(R.string.miss_cut))) {
+            shotSubTypeLayout.setVisibility(View.VISIBLE);
+        } else {
+            shotSubTypeSpinner.setSelection(0);
+            shotSubTypeLayout.setVisibility(View.GONE);
+            subType = "All";
+        }
     }
 
     @Override int getLayoutId() {

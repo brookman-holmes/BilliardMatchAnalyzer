@@ -26,6 +26,8 @@
 
         <include layout="@layout/graph_speed"/>
 
+        <include layout="@layout/graph_kick"/>
+
         <include layout="@layout/divider"/>
 
         <TextView

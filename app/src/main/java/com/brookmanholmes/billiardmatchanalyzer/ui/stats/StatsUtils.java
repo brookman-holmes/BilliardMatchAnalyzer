@@ -118,6 +118,32 @@ public class StatsUtils {
         return new Pair<>(left, right);
     }
 
+    public static Pair<Integer, Integer> getHowBankErrors(Context context, List<AdvStats> stats) {
+        int left = 0, right = 0;
+
+        for (AdvStats stat : stats) {
+            if (stat.getHowTypes().contains(context.getString(R.string.bank_long)))
+                right++;
+            else if (stat.getHowTypes().contains(context.getString(R.string.bank_short)))
+                left++;
+        }
+
+        return new Pair<>(left, right);
+    }
+
+    public static Pair<Integer, Integer> getHowKickErrors(Context context, List<AdvStats> stats) {
+        int left = 0, right = 0;
+
+        for (AdvStats stat : stats) {
+            if (stat.getHowTypes().contains(context.getString(R.string.kick_long)))
+                right++;
+            else if (stat.getHowTypes().contains(context.getString(R.string.kick_short)))
+                left++;
+        }
+
+        return new Pair<>(left, right);
+    }
+
     public static Pair<Integer, Integer> getHowSpeedErrors(Context context, List<AdvStats> stats) {
         int fast = 0, slow = 0;
 

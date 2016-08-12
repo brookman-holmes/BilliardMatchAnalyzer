@@ -107,6 +107,12 @@
 
         <include layout="@layout/graph_aim"/>
 
+        <include layout="@layout/graph_bank"
+            android:id="@+id/bankGraph" />
+
+        <include layout="@layout/graph_kick"
+            android:id="@+id/kickGraph" />
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"

@@ -22,6 +22,8 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.under) TextView underCut;
     @Bind(R.id.fast) TextView fast;
     @Bind(R.id.slow) TextView slow;
+    @Bind(R.id.kickLong) TextView kickLong;
+    @Bind(R.id.kickShort) TextView kickShort;
 
 
     public static AdvSafetyStatsFragment create(Bundle args) {
@@ -43,6 +45,7 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
     @Override void updateView() {
         StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getContext(), stats), overCut, underCut);
         StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(getContext(), stats), slow, fast);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(getContext(), stats), kickShort, kickLong);
 
         if (statsLayout != null) {
             StatsUtils.setListOfSafetyStats(statsLayout, stats);
