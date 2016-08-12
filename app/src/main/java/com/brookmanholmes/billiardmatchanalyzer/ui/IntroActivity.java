@@ -2,6 +2,7 @@ package com.brookmanholmes.billiardmatchanalyzer.ui;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,6 +35,7 @@ import com.brookmanholmes.billiardmatchanalyzer.R;
 import com.brookmanholmes.billiardmatchanalyzer.data.DatabaseAdapter;
 import com.brookmanholmes.billiardmatchanalyzer.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.billiardmatchanalyzer.ui.profile.PlayerProfileActivity;
+import com.brookmanholmes.billiardmatchanalyzer.utils.ConversionUtils;
 import com.brookmanholmes.billiardmatchanalyzer.utils.RoundedLetterView;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 
@@ -217,7 +222,14 @@ public class IntroActivity extends BaseActivity {
             @Bind(R.id.playerIndicator) RoundedLetterView playerIcon;
             @Bind(R.id.playerName) TextView playerName;
             @Bind(R.id.gamesPlayed) TextView gamesPlayed;
-            @Bind(R.id.shootingPct) TextView shootingPct;
+            @Bind(R.id.shootingPctGrid) GridLayout gridLayout;
+            @Bind(R.id.shootingLine) ImageView shootingLine;
+            @Bind(R.id.safetyLine) ImageView safetyLine;
+            @Bind(R.id.breakingLine) ImageView breakingLine;
+            @Bind(R.id.tvSafetyPct) TextView safetyPct;
+            @Bind(R.id.tvBreakPct) TextView breakPct;
+            @Bind(R.id.tvShootingPct) TextView shootingPct;
+            @Bind(R.id.matchesPlayed) TextView matchesPlayed;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -228,8 +240,21 @@ public class IntroActivity extends BaseActivity {
                 playerName.setText(player.getName());
                 playerIcon.setBackgroundColor(color);
                 playerIcon.setTitleText(player.getName().substring(0, 1));
+                gridLayout.setColumnCount(2);
+                gridLayout.setRowCount(3);
                 gamesPlayed.setText(String.format(Locale.getDefault(), "%1$d games", player.getGamesPlayed()));
-                shootingPct.setText(String.format(Locale.getDefault(), "Shooting %1$s", player.getShootingPct()));
+                DatabaseAdapter db = new DatabaseAdapter(itemView.getContext());
+                Cursor cursor = db.getMatches(player.getName(), null);
+                int count = cursor.getCount();
+                cursor.close();
+                matchesPlayed.setText(String.format(Locale.getDefault(), "%1$d matches", count));
+                shootingPct.setText(String.format("Shooting %1$s", player.getShootingPct()));
+                safetyPct.setText(String.format("Safeties %1$s", player.getSafetyPct()));
+                breakPct.setText(String.format("Breaking %1$s", player.getBreakPct()));
+
+                shootingLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
+                safetyLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
+                breakingLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
             }
 
             @OnClick(R.id.container) void launchPlayerProfileActivity() {

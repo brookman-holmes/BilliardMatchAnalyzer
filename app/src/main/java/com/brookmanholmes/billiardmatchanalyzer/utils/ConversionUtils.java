@@ -1,7 +1,10 @@
 package com.brookmanholmes.billiardmatchanalyzer.utils;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.support.annotation.ColorRes;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
@@ -62,5 +65,22 @@ public class ConversionUtils {
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    public static ColorStateList getPctColor(Context context, String pctString) {
+        float pct = Float.valueOf(pctString);
+        @ColorRes int color;
+        if (pct > .9)
+            color = R.color.good;
+        else if (pct > .75)
+            color = R.color.almost_good;
+        else if (pct > .66)
+            color = R.color.okay;
+        else if (pct > .5)
+            color = R.color.just_above_bad;
+        else
+            color = R.color.bad;
+
+        return new ColorStateList(new int[][]{new int[0]}, new int[]{ContextCompat.getColor(context, color)});
     }
 }

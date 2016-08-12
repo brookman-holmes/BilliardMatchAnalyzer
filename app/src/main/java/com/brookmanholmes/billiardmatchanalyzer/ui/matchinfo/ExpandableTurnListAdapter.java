@@ -1,12 +1,9 @@
 package com.brookmanholmes.billiardmatchanalyzer.ui.matchinfo;
 
-import android.content.res.ColorStateList;
-import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -235,26 +232,9 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             safetyPct.setText(String.format("Safeties %1$s", player.getSafetyPct()));
             breakPct.setText(String.format("Breaking %1$s", player.getBreakPct()));
 
-            shootingLine.setImageTintList(getPctColor(player.getShootingPct()));
-            safetyLine.setImageTintList(getPctColor(player.getSafetyPct()));
-            breakingLine.setImageTintList(getPctColor(player.getBreakPct()));
-        }
-
-        private ColorStateList getPctColor(String pctString) {
-            float pct = Float.valueOf(pctString);
-            @ColorRes int color;
-            if (pct > .9)
-                color = R.color.good;
-            else if (pct > .75)
-                color = R.color.almost_good;
-            else if (pct > .66)
-                color = R.color.okay;
-            else if (pct > .5)
-                color = R.color.just_above_bad;
-            else
-                color = R.color.bad;
-
-            return new ColorStateList(new int[][]{new int[0]}, new int[]{ContextCompat.getColor(itemView.getContext(), color)});
+            shootingLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
+            safetyLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
+            breakingLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
         }
 
         private void setBalls(ITableStatus tableStatus) {

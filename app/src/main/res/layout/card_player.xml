@@ -1,62 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <view style="@style/card_view_style"
-      class="android.support.v7.widget.CardView"
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      app:cardElevation="2dp"
-      app:cardUseCompatPadding="true">
+    class="android.support.v7.widget.CardView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="96dp"
+        android:layout_height="wrap_content"
+        android:minHeight="96dp"
         android:background="?android:attr/selectableItemBackground"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="8dp">
-            <com.brookmanholmes.billiardmatchanalyzer.utils.RoundedLetterView
-                android:id="@+id/playerIndicator"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:paddingTop="28dp"
+        android:paddingBottom="28dp">
+        <com.brookmanholmes.billiardmatchanalyzer.utils.RoundedLetterView
+            android:id="@+id/playerIndicator"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:backgroundColorValue="@color/colorPrimary"
+            app:titleSize="28dp"
+            app:titleText=""/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/playerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="16dp"
-                app:backgroundColorValue="@color/colorPrimary"
-                app:titleSize="28dp"
-                app:titleText=""/>
+                android:gravity="left"
+                android:text="Brookman"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/playerName"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/matchesPlayed" />
+
+            <TextView
+                android:id="@+id/gamesPlayed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 games played"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/container_shooting_pcts"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="56dp"
-            android:layout_marginTop="16dp"
-            android:gravity="left"
-            android:text="Brookman"
-            android:textColor="@color/primary_text"
-            android:textSize="16sp"/>
+            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/shootingPct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/gamesPlayed"
-            android:layout_marginLeft="56dp"
-            android:text="Shooting .780"
-            android:textColor="@color/secondary_text"
-            android:textSize="14sp"/>
-
-        <TextView
-            android:id="@+id/gamesPlayed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/playerName"
-            android:layout_marginLeft="56dp"
-            android:text="10 games"
-            android:textColor="@color/secondary_text"
-            android:textSize="14sp"/>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </view>

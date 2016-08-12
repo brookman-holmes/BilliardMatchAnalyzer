@@ -31,66 +31,7 @@
 
     </LinearLayout>
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:useDefaultMargins="false">
-
-        <ImageView
-            android:id="@+id/shootingLine"
-            android:layout_width="10sp"
-            android:layout_height="10sp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ball_background"
-            android:tint="@color/almost_good"
-            android:layout_gravity="center"
-            android:layout_columnWeight="1"/>
-
-        <TextView
-            android:id="@+id/tvShootingPct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=".750"
-            android:textColor="@color/primary_text"
-            android:layout_columnWeight="1"/>
-
-        <ImageView
-            android:id="@+id/safetyLine"
-            android:layout_width="10sp"
-            android:layout_height="10sp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ball_background"
-            android:tint="@color/almost_good"
-            android:layout_gravity="center"
-            android:layout_columnWeight="1"/>
-
-        <TextView
-            android:id="@+id/tvSafetyPct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=".750"
-            android:textColor="@color/primary_text"
-            android:layout_columnWeight="1"/>
-
-        <ImageView
-            android:id="@+id/breakingLine"
-            android:layout_width="10sp"
-            android:layout_height="10sp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ball_background"
-            android:tint="@color/almost_good"
-            android:layout_gravity="center"
-            android:layout_columnWeight="1"/>
-
-        <TextView
-            android:id="@+id/tvBreakPct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=".750"
-            android:textColor="@color/primary_text"
-            android:layout_columnWeight="1"/>
-
-    </GridLayout>
+    <include layout="@layout/container_shooting_pcts" />
 
     <include
         layout="@layout/ball_container"
