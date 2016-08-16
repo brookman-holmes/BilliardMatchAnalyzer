@@ -29,8 +29,8 @@
 
     <string name="bank_natural">Natural</string>
     <string name="bank_crossover">Crossover</string>
-    <string name="bank_long_rail">Long rail</string>
-    <string name="bank_short_rail">Short rail</string>
+    <string name="bank_long_rail">Long bank</string>
+    <string name="bank_short_rail">Short bank</string>
 
     <string-array name="kicks">
         <item>@string/one_rail</item>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,103 +23,99 @@
             android:textColor="@color/primary_text"/>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
             android:paddingTop="16dp">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="160dp"
                     android:text="Shot type"
                     android:textColor="@color/primary_text"
-                    android:minWidth="160dp"
                     />
 
                 <Spinner
+                    android:id="@+id/shotTypeSpinner"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/shotTypeSpinner"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"/>
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/shotSubTypeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/shotSubTypeLayout"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="160dp"
                     android:text="Cut type"
-                    android:textColor="@color/primary_text"
-                    android:minWidth="160dp"/>
+                    android:textColor="@color/primary_text"/>
 
                 <Spinner
+                    android:id="@+id/shotSubTypeSpinner"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/shotSubTypeSpinner"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"/>
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"/>
 
             </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="160dp"
                     android:text="Angle/Bank/Kick"
-                    android:textColor="@color/primary_text"
-                    android:minWidth="160dp"/>
+                    android:textColor="@color/primary_text"/>
 
                 <Spinner
+                    android:id="@+id/angleSpinner"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/angleSpinner"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"/>
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"/>
 
             </LinearLayout>
-
-        </LinearLayout>
 
         <include layout="@layout/graph_cut"/>
 
         <include layout="@layout/graph_aim"/>
 
-        <include layout="@layout/graph_bank"
-            android:id="@+id/bankGraph" />
+        <include
+            android:id="@+id/bankGraph"
+            layout="@layout/graph_bank"/>
 
-        <include layout="@layout/graph_kick"
-            android:id="@+id/kickGraph" />
+        <include
+            android:id="@+id/kickGraph"
+            layout="@layout/graph_kick"/>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/parentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/parentView"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
         </LinearLayout>
 
     </LinearLayout>

@@ -7,12 +7,12 @@
     android:orientation="vertical">
 
     <TextView
+        style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
-        android:text="Clicking on a ball will toggle it&apos;s status"
-        android:textColor="@color/colorPrimary"
-        style="@style/TextAppearance.AppCompat.Title"/>
+        android:text="@string/title_break_help_dialog"
+        android:textColor="@color/colorPrimary"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
         android:gravity="left"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="This ball is currently on the table; tapping it will set it to made"
+        android:text="@string/description_ball_on_table"
         android:textSize="16sp"/>
 
     <TextView
@@ -36,7 +36,7 @@
         android:gravity="right"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="This ball has been selected, which means that it has been legally pocketed"
+        android:text="@string/description_ball_selected"
         android:textSize="16sp"/>
 
         <TextView
@@ -48,7 +48,7 @@
             android:gravity="left"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:text="Tapping a ball twice will set it&apos;s status to &apos;dead,&apos; meaning that it does not count as a made ball for the current player"
+            android:text="@string/description_ball_dead"
             android:textSize="16sp"/>
 
         <TextView
@@ -61,7 +61,7 @@
             android:gravity="right"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:text="This ball is not on the table and is unselectable"
+            android:text="@string/description_ball_off_table"
             android:textSize="16sp"/>
 
 

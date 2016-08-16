@@ -9,7 +9,7 @@ import com.brookmanholmes.billiards.player.AbstractPlayer;
  * Created by Brookman Holmes on 3/2/2016.
  */
 public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
-    public BaseViewHolder(View itemView) {
+    BaseViewHolder(View itemView) {
         super(itemView);
     }
 

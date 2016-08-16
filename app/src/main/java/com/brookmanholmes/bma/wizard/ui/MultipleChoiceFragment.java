@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.TextViewCompat;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,12 +93,12 @@ public class MultipleChoiceFragment extends ListFragment {
 
         if (getArguments().getInt(SingleChoiceFragment.ARG_TITLE_SIZE, -1) != -1) {
             TextView title = (TextView) rootView.findViewById(android.R.id.title);
-            title.setTextAppearance(getContext(), R.style.WizardPageTitle2);
+            TextViewCompat.setTextAppearance(title, R.style.WizardPageTitle2);
             title.setPadding(0, 0, 0, 0);
         }
 
         final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
-        setListAdapter(new ArrayAdapter<String>(getActivity(),
+        setListAdapter(new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_multiple_choice,
                 android.R.id.text1,
                 choices));
@@ -113,7 +114,7 @@ public class MultipleChoiceFragment extends ListFragment {
                     return;
                 }
 
-                Set<String> selectedSet = new HashSet<String>(selectedItems);
+                Set<String> selectedSet = new HashSet<>(selectedItems);
 
                 for (int i = 0; i < choices.size(); i++) {
                     if (selectedSet.contains(choices.get(i))) {
@@ -140,7 +141,7 @@ public class MultipleChoiceFragment extends ListFragment {
             return;
         }
 
-        Set<String> selectedSet = new HashSet<String>(selectedItems);
+        Set<String> selectedSet = new HashSet<>(selectedItems);
 
         for (int i = 0; i < choices.size(); i++) {
             getListView().setItemChecked(i, selectedSet.contains(choices.get(i)));
@@ -174,7 +175,7 @@ public class MultipleChoiceFragment extends ListFragment {
 
     @Override public void onListItemClick(ListView l, View v, int position, long id) {
         SparseBooleanArray checkedPositions = getListView().getCheckedItemPositions();
-        ArrayList<String> selections = new ArrayList<String>();
+        ArrayList<String> selections = new ArrayList<>();
         for (int i = 0; i < checkedPositions.size(); i++) {
             if (checkedPositions.valueAt(i)) {
                 selections.add(getListAdapter().getItem(checkedPositions.keyAt(i)).toString());

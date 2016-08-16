@@ -15,8 +15,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 1/31/2016.
  */
 public class ApaNineBallPlayerControllerTest extends AbstractNineBallPlayerControllerTest<ApaNineBallPlayer> {
-    int playerRank = 4;
-    int opponentRank = 4;
+    private int playerRank = 4;
+    private int opponentRank = 4;
 
     @Override public void setUp() {
         game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.WINNER);

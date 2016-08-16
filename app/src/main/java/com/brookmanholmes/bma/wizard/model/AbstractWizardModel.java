@@ -18,7 +18,6 @@ package com.brookmanholmes.bma.wizard.model;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +31,9 @@ import java.util.List;
 public abstract class AbstractWizardModel implements ModelCallbacks {
     protected Context context;
     protected PageList rootPageList;
-    private List<ModelCallbacks> listeners = new ArrayList<ModelCallbacks>();
+    private List<ModelCallbacks> listeners = new ArrayList<>();
 
-    public AbstractWizardModel(Context context) {
+    protected AbstractWizardModel(Context context) {
         this.context = context;
     }
 
@@ -64,8 +63,6 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     }
 
     public void load(Bundle savedValues) {
-        Log.i("AWM", "savedValues == " + (savedValues == null ? "null" : "not null"));
-
         for (String key : savedValues.keySet()) {
             rootPageList.findByKey(key).resetData(savedValues.getBundle(key));
         }
@@ -88,7 +85,7 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
      * user's choices.
      */
     public List<Page> getCurrentPageSequence() {
-        ArrayList<Page> flattened = new ArrayList<Page>();
+        ArrayList<Page> flattened = new ArrayList<>();
         rootPageList.flattenCurrentPageSequence(flattened);
         return flattened;
     }

@@ -9,7 +9,8 @@ import com.brookmanholmes.billiards.turn.Turn;
  * Created by Brookman Holmes on 1/12/2016.
  */
 class ApaNineBallController extends PlayerController<ApaNineBallPlayer> {
-    int playerRank, opponentRank;
+    private int playerRank;
+    private int opponentRank;
     ApaNineBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
         super(playerName, opponentName);
 

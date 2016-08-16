@@ -17,10 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.CompPlayer;
+import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -46,8 +46,6 @@ public class PlayerInfoGraphicFragment extends Fragment {
     private static final String ARG_PLAYER = "arg player";
     @Bind(R.id.scrollView) RecyclerView recyclerView;
     private PlayerInfoGraphicAdapter adapter;
-    private GridLayoutManager layoutManager;
-    private DatabaseAdapter database;
 
     public PlayerInfoGraphicFragment() {
     }
@@ -71,7 +69,7 @@ public class PlayerInfoGraphicFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        database = new DatabaseAdapter(getContext());
+        DatabaseAdapter database = new DatabaseAdapter(getContext());
         String player = getArguments().getString(ARG_PLAYER);
 
         adapter = new PlayerInfoGraphicAdapter(database.getPlayer(player), player, "");
@@ -83,7 +81,7 @@ public class PlayerInfoGraphicFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
 
-        layoutManager = new GridLayoutManager(getContext(), 3);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override public int getSpanSize(int position) {
                 switch (adapter.getItemViewType(position)) {

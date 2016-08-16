@@ -90,7 +90,7 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
 
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
 
-        ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<String>(getContext(),
+        ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.select_dialog_item, names);
 
         playerName.setAdapter(autoCompleteAdapter);

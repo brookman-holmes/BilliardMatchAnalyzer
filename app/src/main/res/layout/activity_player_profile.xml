@@ -59,7 +59,6 @@
             android:background="?android:attr/selectableItemBackground"
             android:ellipsize="marquee"
             android:gravity="center"
-            android:text="Brookman"
             android:textColor="@android:color/white"
             android:textSize="23sp"
             android:textStyle="bold"/>
@@ -72,7 +71,6 @@
             android:background="?android:attr/selectableItemBackground"
             android:ellipsize="marquee"
             android:gravity="center"
-            android:text="Cliff"
             android:textColor="@android:color/white"
             android:textSize="23sp"
             android:textStyle="bold"/>

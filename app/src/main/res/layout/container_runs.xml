@@ -4,7 +4,6 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
             android:columnCount="3"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"

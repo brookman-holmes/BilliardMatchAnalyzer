@@ -6,7 +6,8 @@ import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
  * Created by Brookman Holmes on 1/12/2016.
  */
 class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
-    int playerRank, opponentRank;
+    private int playerRank;
+    private int opponentRank;
 
     ApaEightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
         super(playerName, opponentName);

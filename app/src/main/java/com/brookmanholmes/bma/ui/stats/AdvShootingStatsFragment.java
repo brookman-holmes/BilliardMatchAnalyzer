@@ -11,8 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.bma.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +25,7 @@ import butterknife.Bind;
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.over) TextView overCut;
     @Bind(R.id.under) TextView underCut;
@@ -41,7 +42,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.shotSubTypeSpinner) Spinner shotSubTypeSpinner;
     @Bind(R.id.shotSubTypeLayout) View shotSubTypeLayout;
     @Bind(R.id.angleSpinner) Spinner angleSpinner;
-    String shotType = "All", subType = "All", angle = "All";
+    private String shotType = "All", subType = "All", angle = "All";
 
     public static AdvShootingStatsFragment create(Bundle args) {
         AdvShootingStatsFragment frag = new AdvShootingStatsFragment();

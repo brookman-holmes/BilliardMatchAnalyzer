@@ -21,6 +21,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -65,7 +66,7 @@ public class StepPagerStrip extends View {
         gravity = a.getInteger(0, gravity);
         a.recycle();
 
-        final Resources res = getResources();
+        Resources res = getResources();
         tabWidth = res.getDimensionPixelSize(R.dimen.step_pager_tab_width);
         tabHeight = res.getDimensionPixelSize(R.dimen.step_pager_tab_height);
         indicatorSpacing = res.getDimensionPixelSize(R.dimen.step_pager_tab_spacing);
@@ -73,13 +74,13 @@ public class StepPagerStrip extends View {
         nonCurrentRadius = 10;
 
         nextTabPaint = new Paint();
-        nextTabPaint.setColor(res.getColor(R.color.step_pager_next_tab_color));
+        nextTabPaint.setColor(ContextCompat.getColor(getContext(), R.color.step_pager_next_tab_color));
 
         selectedTabPaint = new Paint();
-        selectedTabPaint.setColor(res.getColor(R.color.colorAccent));
+        selectedTabPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
 
         prevTabPaint = new Paint();
-        prevTabPaint.setColor(res.getColor(R.color.colorPrimaryLight));
+        prevTabPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryLight));
     }
 
     public void setOnPageSelectedListener(OnPageSelectedListener onPageSelectedListener) {

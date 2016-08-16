@@ -7,9 +7,9 @@ import com.brookmanholmes.billiards.game.util.RaceTo;
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class ApaEightBallPlayer extends AbstractPlayer implements IApa {
-    int winsOnBreak = 0;
-    int earlyWins = 0;
-    int rank;
+    private int winsOnBreak = 0;
+    private int earlyWins = 0;
+    private int rank;
 
     public ApaEightBallPlayer(String name, int rank) {
         super(name);

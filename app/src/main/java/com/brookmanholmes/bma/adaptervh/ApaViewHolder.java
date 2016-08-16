@@ -3,12 +3,12 @@ package com.brookmanholmes.bma.adaptervh;
 import android.view.View;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
 import com.brookmanholmes.billiards.player.IApa;
+import com.brookmanholmes.bma.R;
 
 import java.util.Locale;
 
@@ -17,6 +17,7 @@ import butterknife.Bind;
 /**
  * Created by helios on 4/12/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class ApaViewHolder extends MatchInfoHolder{
     @Bind(R.id.tvInningsOpponent) TextView tvInningsOpponent;
     @Bind(R.id.tvDefensiveShotsPlayer) TextView tvDefensiveShotsPlayer;

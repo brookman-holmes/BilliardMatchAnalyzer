@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -29,17 +30,16 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.utils.ConversionUtils;
-import com.brookmanholmes.bma.utils.RoundedLetterView;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.github.pavlospt.roundedletterview.RoundedLetterView;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,7 +49,6 @@ public class IntroActivity extends BaseActivity {
     public static final String TAG = "IntroActivity";
     private static final String MATCH_LIST_FRAGMENT = "match list fragment";
     private static final String PLAYER_LIST_FRAGMENT = "player list fragment";
-    private static final String ARG_SELECTED_FRAGMENT = "selected fragment";
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.createMatch) FloatingActionButton fab;
@@ -82,9 +81,9 @@ public class IntroActivity extends BaseActivity {
         MenuItem item = menu.findItem(R.id.spinner);
         Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
         spinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.rounded_rectangle));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getSupportActionBar().getThemedContext(),
+        @SuppressWarnings("ConstantConditions") ArrayAdapter<String> adapter = new ArrayAdapter<>(getSupportActionBar().getThemedContext(),
                 android.R.layout.simple_spinner_item,
-                new String[]{"Matches", "Players"});
+                new String[]{getString(R.string.matches), getString(R.string.players)});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
@@ -168,7 +167,7 @@ public class IntroActivity extends BaseActivity {
 
         @Nullable @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_list_view, null);
+            View view = inflater.inflate(R.layout.fragment_list_view, container, false);
             ButterKnife.bind(this, view);
 
             adapter = new RecyclerAdapter(new DatabaseAdapter(getContext()).getPlayers());
@@ -240,15 +239,16 @@ public class IntroActivity extends BaseActivity {
                 playerIcon.setTitleText(player.getName().substring(0, 1));
                 gridLayout.setColumnCount(2);
                 gridLayout.setRowCount(3);
-                gamesPlayed.setText(String.format(Locale.getDefault(), "%1$d games", player.getGamesPlayed()));
+                Context context = itemView.getContext();
+                gamesPlayed.setText(context.getResources().getQuantityString(R.plurals.num_games, player.getGamesPlayed(), player.getGamesPlayed()));
                 DatabaseAdapter db = new DatabaseAdapter(itemView.getContext());
                 Cursor cursor = db.getMatches(player.getName(), null);
                 int count = cursor.getCount();
                 cursor.close();
-                matchesPlayed.setText(String.format(Locale.getDefault(), "%1$d matches", count));
-                shootingPct.setText(String.format("Shooting %1$s", player.getShootingPct()));
-                safetyPct.setText(String.format("Safeties %1$s", player.getSafetyPct()));
-                breakPct.setText(String.format("Breaking %1$s", player.getBreakPct()));
+                matchesPlayed.setText(context.getResources().getQuantityString(R.plurals.num_matches, count, count));
+                shootingPct.setText(String.format(context.getString(R.string.shooting_pct), player.getShootingPct()));
+                safetyPct.setText(String.format(context.getString(R.string.safety_pct), player.getSafetyPct()));
+                breakPct.setText(String.format(context.getString(R.string.breaking_pct), player.getBreakPct()));
 
                 shootingLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
                 safetyLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));

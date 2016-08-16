@@ -21,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="Date"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="12sp"/>
 
@@ -30,7 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="16dp"
-            android:text="Player vs Player"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
@@ -39,7 +37,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="16dp"
-            android:text="Alternate break"
             android:textColor="@color/secondary_text"
             android:textSize="14sp" />
 
@@ -50,7 +47,6 @@
             android:maxLines="2"
             android:maxWidth="300dp"
             android:paddingEnd="16dp"
-            android:text="Location"
             android:textColor="@color/secondary_text"
             android:textSize="14sp" />
 
@@ -67,21 +63,15 @@
             android:id="@+id/imgGameType"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_centerVertical="true"
             android:src="@drawable/one_ball"/>
 
         <TextView
             android:id="@+id/ruleSet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/imgGameType"
-            android:layout_alignRight="@+id/imgGameType"
-            android:layout_below="@+id/imgGameType"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="Rule set"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp"/>
     </LinearLayout>
 </RelativeLayout>

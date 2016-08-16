@@ -5,19 +5,20 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.bma.R;
 
 import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.brookmanholmes.bma.utils.ConversionUtils.*;
+import static com.brookmanholmes.bma.utils.ConversionUtils.getBreakType;
+import static com.brookmanholmes.bma.utils.ConversionUtils.getGameTypeString;
 
 /**
  * Created by Brookman Holmes on 3/23/2016.
@@ -118,7 +119,7 @@ public class GameStatusViewBuilder {
         else if (match.getGameStatus().allowTurnSkip)
             return String.format(Locale.getDefault(), "%1$s has the option to skip their turn", getPlayerName(match, match.getGameStatus().turn));
         else
-            return String.format(Locale.getDefault(), "No push shot or option to skip turn is allowed", getPlayerName(match, match.getGameStatus().turn));
+            return "No push shot or option to skip turn is allowed";
     }
 
     private static void setBallsOnTable(Match<?> match, GridLayout ballContainer) {

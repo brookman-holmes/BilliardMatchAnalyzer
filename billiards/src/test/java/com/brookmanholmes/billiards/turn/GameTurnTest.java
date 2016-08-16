@@ -91,7 +91,7 @@ public class GameTurnTest {
     }
 
 
-    private Turn createGameTurn(TableStatus table, boolean scratch, com.brookmanholmes.billiards.turn.TurnEnd turnEnd, boolean isGameLost) {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0l, scratch, turnEnd, table, isGameLost);
+    private Turn createGameTurn(TableStatus table, boolean scratch, TurnEnd turnEnd, boolean isGameLost) {
+        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, turnEnd, table, isGameLost, null);
     }
 }

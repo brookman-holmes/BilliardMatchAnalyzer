@@ -19,6 +19,7 @@ package com.brookmanholmes.bma.wizard.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
+import com.brookmanholmes.billiards.game.util.RaceTo;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage;
@@ -34,8 +37,6 @@ import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
-import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
-import com.brookmanholmes.billiards.game.util.RaceTo;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
         TextView titleView = (TextView) rootView.findViewById(android.R.id.title);
         titleView.setText("Review");
-        titleView.setTextColor(getResources().getColor(R.color.colorAccent));
+        titleView.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
 
         ListView listView = (ListView) rootView.findViewById(android.R.id.list);
         setListAdapter(reviewAdapter);
@@ -108,7 +109,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     }
 
     @Override public void onPageDataChanged(Page changedPage) {
-        ArrayList<ReviewItem> reviewItems = new ArrayList<ReviewItem>();
+        ArrayList<ReviewItem> reviewItems = new ArrayList<>();
         for (Page page : wizardModel.getCurrentPageSequence()) {
             page.getReviewItems(reviewItems);
         }

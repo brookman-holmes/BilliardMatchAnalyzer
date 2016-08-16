@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.brookmanholmes.bma.R;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -13,9 +13,8 @@ import butterknife.Bind;
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
-    final static List<String> array = Arrays.asList(new String[]{"Safety", "Safety error"});
-
     @Bind(R.id.successfulSafetiesTitle) TextView safetyResults;
     @Bind(R.id.safetyErrorsTitle) TextView safetyErrorsTitle;
     @Bind(R.id.over) TextView overCut;
@@ -57,7 +56,10 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
     }
 
     @Override List<String> getShotTypes() {
-        return array;
+        List<String> list = new ArrayList<>();
+        list.add("Safety");
+        list.add("Safety error");
+        return list;
     }
 
     @Override int getLayoutId() {

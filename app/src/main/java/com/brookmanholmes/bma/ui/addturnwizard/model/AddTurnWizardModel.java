@@ -4,11 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
 
-import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
-import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
-import com.brookmanholmes.bma.wizard.model.Page;
-import com.brookmanholmes.bma.wizard.model.PageList;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
@@ -16,6 +11,11 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
+import com.brookmanholmes.bma.wizard.model.Page;
+import com.brookmanholmes.bma.wizard.model.PageList;
 
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.STATS_LEVEL_KEY;
 
@@ -23,9 +23,9 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.STATS_LEVEL_KE
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class AddTurnWizardModel extends AbstractWizardModel {
-    Bundle matchData;
-    TurnBuilder turnBuilder;
-    String playerName;
+    private Bundle matchData;
+    private TurnBuilder turnBuilder;
+    private String playerName;
 
     public AddTurnWizardModel(Context context, Bundle matchData) {
         super(context);

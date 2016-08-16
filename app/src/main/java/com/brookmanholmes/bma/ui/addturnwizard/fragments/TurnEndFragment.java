@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui.addturnwizard.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnEndPage;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -104,7 +105,7 @@ public class TurnEndFragment extends ListFragment {
         }
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         TextView title = (TextView) rootView.findViewById(android.R.id.title);
-        title.setTextAppearance(getContext(), R.style.WizardPageTitle2);
+        TextViewCompat.setTextAppearance(title, R.style.WizardPageTitle2);
         title.setPadding(0, 0, 0, 0);
 
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());

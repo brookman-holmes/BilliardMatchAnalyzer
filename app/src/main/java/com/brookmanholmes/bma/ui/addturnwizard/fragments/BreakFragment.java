@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.util.BallStatus;
+import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.BreakPage;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.GameType;
 import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.Bind;
@@ -33,13 +33,14 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class BreakFragment extends Fragment {
     private static final String ARG_KEY = "key";
     private static final int ballIds[] = {R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
             R.id.nine_ball, R.id.ten_ball, R.id.eleven_ball, R.id.twelve_ball,
             R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball};
-    @Bind(R.id.title) TextView title;
+    @SuppressWarnings("WeakerAccess") @Bind(R.id.title) TextView title;
     private PageFragmentCallbacks callbacks;
     private String key;
     private BreakPage page;
@@ -110,8 +111,7 @@ public class BreakFragment extends Fragment {
         super.onDestroy();
     }
 
-    @Nullable
-    @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
+    @Nullable @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
             R.id.nine_ball, R.id.ten_ball, R.id.eleven_ball, R.id.twelve_ball,
             R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball})

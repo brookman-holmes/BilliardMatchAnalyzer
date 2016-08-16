@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.CompPlayer;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.adaptervh.BaseViewHolder;
@@ -20,9 +23,6 @@ import com.brookmanholmes.bma.adaptervh.RunOutsHolder;
 import com.brookmanholmes.bma.adaptervh.SafetiesHolder;
 import com.brookmanholmes.bma.adaptervh.ShootingPctHolder;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
-import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.CompPlayer;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -41,7 +41,7 @@ public class PlayerInfoFragment extends Fragment {
     @Bind(R.id.scrollView) RecyclerView recyclerView;
     private PlayerInfoAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private DatabaseAdapter database;
+
     public PlayerInfoFragment() {
     }
 
@@ -57,7 +57,7 @@ public class PlayerInfoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        database = new DatabaseAdapter(getContext());
+        DatabaseAdapter database = new DatabaseAdapter(getContext());
         String player = getArguments().getString(ARG_PLAYER);
 
         adapter = new PlayerInfoAdapter(database.getPlayer(player), player, getString(R.string.opponents));

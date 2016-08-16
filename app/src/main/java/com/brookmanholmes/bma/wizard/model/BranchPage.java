@@ -29,7 +29,7 @@ import java.util.List;
  * next set of steps in the wizard may change.
  */
 public class BranchPage extends SingleFixedChoicePage {
-    protected List<Branch> branches = new ArrayList<Branch>();
+    protected List<Branch> branches = new ArrayList<>();
 
     public BranchPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);

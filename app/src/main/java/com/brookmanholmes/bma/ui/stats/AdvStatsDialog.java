@@ -17,8 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.bma.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 3/11/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class AdvStatsDialog extends DialogFragment {
     static final String ARG_MATCH_ID = "match id";
     static final String ARG_PLAYER_NAME = "player name";

@@ -20,13 +20,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.util.BreakType;
+import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.utils.CursorRecyclerAdapter;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DateFormat;
@@ -79,7 +79,7 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_view, null);
+        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
 
         adapter = new MatchListRecyclerAdapter(getContext(), null, player, opponent);

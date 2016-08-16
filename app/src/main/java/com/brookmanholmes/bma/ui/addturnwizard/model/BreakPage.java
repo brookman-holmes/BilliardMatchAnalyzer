@@ -3,15 +3,15 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.brookmanholmes.billiards.game.util.BallStatus;
+import com.brookmanholmes.billiards.game.util.BreakType;
+import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.BreakFragment;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.BranchPage;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.turn.TableStatus;
 
 import java.util.ArrayList;
 
@@ -19,9 +19,9 @@ import java.util.ArrayList;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class BreakPage extends BranchPage implements UpdatesTurnInfo {
-    static final String showShotPage = "show shot page";
-    TableStatus tableStatus;
-    GameType gameType;
+    private static final String showShotPage = "show shot page";
+    private TableStatus tableStatus;
+    private GameType gameType;
 
     public BreakPage(ModelCallbacks callbacks, String title, String title2, Bundle matchData) {
         super(callbacks, title);

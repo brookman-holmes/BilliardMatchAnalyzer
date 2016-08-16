@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shooting percentages"
+            android:text="@string/title_shooting_pct"
             android:textColor="@color/primary_text"
             android:textSize="20sp"/>
 
@@ -28,9 +28,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp">
+            android:layout_marginRight="12dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -50,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="3dp"
-                    android:text="True shooting pct"
+                    android:text="@string/title_tsp_short"
                     android:textSize="14sp"/>
             </LinearLayout>
 
@@ -73,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="3dp"
-                    android:text="Shooting pct"
+                    android:text="@string/title_shooting_pct_short"
                     android:textSize="14sp"/>
             </LinearLayout>
         </LinearLayout>
@@ -81,9 +82,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            android:layout_marginLeft="12dp">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -103,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="3dp"
-                    android:text="Safety pct"
+                    android:text="@string/title_safety_pct_short"
                     android:textSize="14sp"/>
             </LinearLayout>
 
@@ -126,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="3dp"
-                    android:text="Breaking pct"
+                    android:text="@string/title_breaking_pct_short"
                     android:textSize="14sp"/>
             </LinearLayout>
         </LinearLayout>

@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.brookmanholmes.bma.R;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -13,8 +13,8 @@ import butterknife.Bind;
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
-    final static List<String> array = Arrays.asList(new String[]{"Break shot"});
     @Bind(R.id.tvBreakErrorsTitle) TextView title;
     @Bind(R.id.left) TextView leftOfAim;
     @Bind(R.id.right) TextView rightOfAim;
@@ -48,7 +48,9 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
     }
 
     @Override List<String> getShotTypes() {
-        return array;
+        List<String> list = new ArrayList<>();
+        list.add("Break shot");
+        return list;
     }
 
     @Override int getLayoutId() {

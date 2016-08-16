@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +91,7 @@ public class SingleChoiceFragment extends ListFragment {
 
         if (getArguments().getInt(SingleChoiceFragment.ARG_TITLE_SIZE, -1) != -1) {
             TextView title = (TextView) rootView.findViewById(android.R.id.title);
-            title.setTextAppearance(getContext(), R.style.WizardPageTitle2);
+            TextViewCompat.setTextAppearance(title, R.style.WizardPageTitle2);
             title.setPadding(0, 0, 0, 0);
         }
 

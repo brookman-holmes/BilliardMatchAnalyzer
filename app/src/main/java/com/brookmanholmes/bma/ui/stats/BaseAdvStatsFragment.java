@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
-import com.brookmanholmes.billiards.turn.AdvStats;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -25,13 +25,13 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 6/3/2016.
  */
 public abstract class BaseAdvStatsFragment extends Fragment implements Filterable {
-    List<AdvStats> stats = new ArrayList<>();
-    DatabaseAdapter db;
-    String playerName;
+    protected List<AdvStats> stats = new ArrayList<>();
     @Bind(R.id.parentView) LinearLayout statsLayout;
-    List<String> shotTypes;
-    long matchId;
-    boolean updateView = true;
+    private DatabaseAdapter db;
+    private String playerName;
+    private List<String> shotTypes;
+    private long matchId;
+    private boolean updateView = true;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

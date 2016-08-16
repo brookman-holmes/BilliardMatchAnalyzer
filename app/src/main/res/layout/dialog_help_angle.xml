@@ -10,7 +10,7 @@
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="How much angle was your cut shot?"
+        android:text="@string/title_cut_shot_angle"
         android:textColor="@color/colorPrimary"/>
 
     <TextView
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="The amount of angle that you needed to cut the object ball to make it into it&apos;s intended pocket"
+        android:text="@string/description_cut_shot_angle"
         android:textSize="14sp"/>
 
 </LinearLayout>

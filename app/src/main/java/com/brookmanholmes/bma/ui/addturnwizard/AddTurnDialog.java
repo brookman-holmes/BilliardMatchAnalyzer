@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.AddTurnWizardModel;
@@ -22,7 +23,6 @@ import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.bma.wizard.ui.StepPagerStrip;
-import com.brookmanholmes.billiards.match.Match;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
@@ -34,6 +34,7 @@ import butterknife.OnClick;
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class AddTurnDialog extends DialogFragment implements PageFragmentCallbacks, ModelCallbacks {
     @Bind(R.id.pager) ViewPager pager;
     @Bind(R.id.strip) StepPagerStrip pagerStrip;
