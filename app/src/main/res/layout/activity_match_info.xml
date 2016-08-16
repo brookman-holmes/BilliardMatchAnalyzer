@@ -9,7 +9,7 @@
     android:animateLayoutChanges="true"
     tools:context=".ui.matchinfo.MatchInfoActivity">
 
-    <com.brookmanholmes.billiardmatchanalyzer.utils.CustomViewPager
+    <com.brookmanholmes.bma.utils.CustomViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

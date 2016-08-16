@@ -5,7 +5,7 @@
     android:elevation="4dp"
     android:orientation="vertical">
 
-    <com.brookmanholmes.billiardmatchanalyzer.wizard.ui.StepPagerStrip
+    <com.brookmanholmes.bma.wizard.ui.StepPagerStrip
         android:id="@+id/strip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

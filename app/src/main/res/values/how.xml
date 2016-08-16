@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="how_choices_break">
+        <item>@string/miscue</item>
         <item>@string/too_hard</item>
         <item>@string/too_soft</item>
         <item>@string/aim_to_left</item>
@@ -9,6 +10,7 @@
     </string-array>
 
     <string-array name="how_choices_safety">
+        <item>@string/miscue</item>
         <item>@string/too_hard</item>
         <item>@string/too_soft</item>
         <item>@string/thick_hit</item>
@@ -18,6 +20,7 @@
     </string-array>
 
     <string-array name="how_choices">
+        <item>@string/miscue</item>
         <item>@string/thick_hit</item>
         <item>@string/thin_hit</item>
         <item>@string/aim_to_left</item>
@@ -25,6 +28,7 @@
     </string-array>
 
     <string-array name="how_choices_bank">
+        <item>@string/miscue</item>
         <item>@string/thick_hit</item>
         <item>@string/thin_hit</item>
         <item>@string/aim_to_left</item>
@@ -34,6 +38,7 @@
     </string-array>
 
     <string-array name="how_choices_kick">
+        <item>@string/miscue</item>
         <item>@string/thick_hit</item>
         <item>@string/thin_hit</item>
         <item>@string/aim_to_left</item>
@@ -43,6 +48,7 @@
     </string-array>
 
     <string-array name="how_choices_masse">
+        <item>@string/miscue</item>
         <item>@string/thick_hit</item>
         <item>@string/thin_hit</item>
         <item>@string/aim_to_left</item>
@@ -51,6 +57,7 @@
         <item>@string/curve_late</item>
     </string-array>
 
+    <string name="miscue">Miscue</string>
     <string name="too_hard">Too hard</string>
     <string name="too_soft">Too soft</string>
     <string name="aim_to_left">To left of aim point</string>

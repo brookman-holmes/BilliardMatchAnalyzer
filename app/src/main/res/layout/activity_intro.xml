@@ -41,7 +41,7 @@
         android:tint="@android:color/white"
         android:visibility="invisible"
         app:borderWidth="0dp"
-        app:layout_behavior="com.brookmanholmes.billiardmatchanalyzer.utils.ScrollAwareFABBehavior"/>
+        app:layout_behavior="com.brookmanholmes.bma.utils.ScrollAwareFABBehavior"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

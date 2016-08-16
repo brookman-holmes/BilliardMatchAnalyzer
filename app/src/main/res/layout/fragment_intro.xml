@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.brookmanholmes.billiardmatchanalyzer.ui.IntroActivity">
+    tools:context="com.brookmanholmes.bma.ui.IntroActivity">
 
     <LinearLayout
         android:id="@+id/img_matches"

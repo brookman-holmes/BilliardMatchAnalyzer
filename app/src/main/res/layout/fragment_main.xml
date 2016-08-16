@@ -1,5 +1,5 @@
 <fragment android:id="@+id/fragment"
-    android:name="com.brookmanholmes.billiardmatchanalyzer.ui.MatchListFragment"
+    android:name="com.brookmanholmes.bma.ui.MatchListFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
