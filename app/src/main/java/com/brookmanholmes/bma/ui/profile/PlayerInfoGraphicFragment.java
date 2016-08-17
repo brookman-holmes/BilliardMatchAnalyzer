@@ -19,8 +19,11 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.CompPlayer;
+import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.ui.stats.Filterable;
+import com.brookmanholmes.bma.ui.stats.StatFilter;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -28,6 +31,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -42,9 +46,12 @@ import butterknife.ButterKnife;
 /**
  * Created by helios on 5/15/2016.
  */
-public class PlayerInfoGraphicFragment extends Fragment {
+public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
     private static final String ARG_PLAYER = "arg player";
     @Bind(R.id.scrollView) RecyclerView recyclerView;
+    GridLayoutManager layoutManager;
+    DatabaseAdapter database;
+    String player;
     private PlayerInfoGraphicAdapter adapter;
 
     public PlayerInfoGraphicFragment() {
@@ -66,22 +73,24 @@ public class PlayerInfoGraphicFragment extends Fragment {
             return String.format(Locale.getDefault(), "%.0f%%", val * 100);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DatabaseAdapter database = new DatabaseAdapter(getContext());
-        String player = getArguments().getString(ARG_PLAYER);
+        database = new DatabaseAdapter(getContext());
+        player = getArguments().getString(ARG_PLAYER);
 
         adapter = new PlayerInfoGraphicAdapter(database.getPlayer(player), player, "");
+
+        if (getActivity() instanceof PlayerProfileActivity) {
+            ((PlayerProfileActivity) getActivity()).addListener(this);
+        }
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
+        layoutManager = new GridLayoutManager(getContext(), 3);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override public int getSpanSize(int position) {
                 switch (adapter.getItemViewType(position)) {
@@ -100,6 +109,37 @@ public class PlayerInfoGraphicFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override public void onDestroyView() {
+        recyclerView.setAdapter(null);
+        recyclerView = null;
+        layoutManager = null;
+        ButterKnife.unbind(this);
+
+        super.onDestroyView();
+    }
+
+    @Override public void onDestroy() {
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
+        refWatcher.watch(this);
+        if (getActivity() instanceof PlayerProfileActivity) {
+            ((PlayerProfileActivity) getActivity()).removeListener(this);
+        }
+        super.onDestroy();
+    }
+
+    @Override public void setFilter(StatFilter filter) {
+        List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
+
+        for (int i = 0; i < players.size(); i++) {
+            if (filter.getOpponent().equals("All opponents")) {
+                // do not filter
+            } else if (!players.get(i).getRight().getName().equals(filter.getOpponent()))
+                players.remove(i);
+        }
+
+        adapter.updatePlayers(players);
     }
 
     /**
@@ -137,6 +177,13 @@ public class PlayerInfoGraphicFragment extends Fragment {
                 players.add(pair.getLeft());
                 opponents.add(pair.getRight());
             }
+        }
+
+        private void updatePlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
+            players.clear();
+            opponents.clear();
+            splitPlayers(pairs);
+            notifyDataSetChanged();
         }
 
         @Override

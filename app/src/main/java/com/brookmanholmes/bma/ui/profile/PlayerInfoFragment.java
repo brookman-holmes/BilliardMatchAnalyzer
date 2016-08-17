@@ -23,6 +23,8 @@ import com.brookmanholmes.bma.adaptervh.RunOutsHolder;
 import com.brookmanholmes.bma.adaptervh.SafetiesHolder;
 import com.brookmanholmes.bma.adaptervh.ShootingPctHolder;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.ui.stats.Filterable;
+import com.brookmanholmes.bma.ui.stats.StatFilter;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -36,11 +38,13 @@ import butterknife.ButterKnife;
 /**
  * Created by helios on 5/15/2016.
  */
-public class PlayerInfoFragment extends Fragment {
+public class PlayerInfoFragment extends Fragment implements Filterable {
     private static final String ARG_PLAYER = "arg player";
     @Bind(R.id.scrollView) RecyclerView recyclerView;
     private PlayerInfoAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private DatabaseAdapter database;
+    private String player;
 
     public PlayerInfoFragment() {
     }
@@ -57,10 +61,14 @@ public class PlayerInfoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DatabaseAdapter database = new DatabaseAdapter(getContext());
-        String player = getArguments().getString(ARG_PLAYER);
+        database = new DatabaseAdapter(getContext());
+        player = getArguments().getString(ARG_PLAYER);
 
         adapter = new PlayerInfoAdapter(database.getPlayer(player), player, getString(R.string.opponents));
+
+        if (getActivity() instanceof PlayerProfileActivity) {
+            ((PlayerProfileActivity) getActivity()).addListener(this);
+        }
     }
 
     @Nullable
@@ -83,14 +91,29 @@ public class PlayerInfoFragment extends Fragment {
 
         ButterKnife.unbind(this);
 
-
         super.onDestroyView();
     }
 
     @Override public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
+        if (getActivity() instanceof PlayerProfileActivity) {
+            ((PlayerProfileActivity) getActivity()).removeListener(this);
+        }
         super.onDestroy();
+    }
+
+    @Override public void setFilter(StatFilter filter) {
+        List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
+
+        for (int i = 0; i < players.size(); i++) {
+            if (filter.getOpponent().equals("All opponents")) {
+                // do not filter
+            } else if (!players.get(i).getRight().getName().equals(filter.getOpponent()))
+                players.remove(i);
+        }
+
+        adapter.updatePlayers(players);
     }
 
     /**
@@ -104,7 +127,8 @@ public class PlayerInfoFragment extends Fragment {
         public static final int ITEM_RUN_OUTS = 4;
         public static final int ITEM_FOOTER = 5;
 
-        List<AbstractPlayer> players = new ArrayList<>(), opponents = new ArrayList<>();
+        List<AbstractPlayer> players = new ArrayList<>(),
+                opponents = new ArrayList<>();
         String playerName, opponentName;
         Match.StatsDetail detail = Match.StatsDetail.NORMAL;
 
@@ -121,6 +145,13 @@ public class PlayerInfoFragment extends Fragment {
             }
         }
 
+        public void updatePlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
+            players.clear();
+            opponents.clear();
+            splitPlayers(pairs);
+            notifyDataSetChanged();
+        }
+
         @Override
         public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(getLayoutResource(viewType), parent, false);
@@ -130,11 +161,6 @@ public class PlayerInfoFragment extends Fragment {
 
         @Override public void onBindViewHolder(BaseViewHolder holder, int position) {
             holder.bind(getPlayer(), getOpponent());
-        }
-
-        public void updatePlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
-            splitPlayers(pairs);
-            notifyDataSetChanged();
         }
 
         private CompPlayer getPlayer() {

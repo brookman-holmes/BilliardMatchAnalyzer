@@ -53,6 +53,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     ViewPagerAdapter adapter;
     StatFilter filter = new StatFilter("All opponents");
     String player;
+    List<Filterable> listeners = new ArrayList<>();
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,9 +113,26 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
                     @Override public void onClick(DialogInterface dialog, int which) {
                         filter.setOpponent((String) opponentSpinner.getSelectedItem());
                         opponentName.setText(filter.getOpponent());
+
+                        updateListeners();
                     }
                 })
                 .create().show();
+    }
+
+    void addListener(Filterable filterable) {
+        listeners.add(filterable);
+        updateListeners();
+    }
+
+    void updateListeners() {
+        for (Filterable filterable : listeners) {
+            filterable.setFilter(filter);
+        }
+    }
+
+    void removeListener(Filterable filterable) {
+        listeners.remove(filterable);
     }
 
     private List<String> getGames() {
@@ -148,11 +166,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     public void onPageSelected(int position) {
         playerNameLayout.setVisibility((position == 1 ? View.VISIBLE : View.GONE));
 
-        Fragment fragment = adapter.getItem(pager.getCurrentItem());
 
-        if (fragment instanceof Filterable) {
-            ((Filterable) fragment).setFilter(filter);
-        }
     }
 
     @Override
