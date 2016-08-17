@@ -26,9 +26,9 @@ public class ApaRaceToHelper {
 
     public static int apa9BallRaceTo(int rank) {
         if (rank > 9 || rank < 1)
-            throw new IllegalArgumentException("Rank can only be between 1-9 inclusive");
-
-        return apa9BallRaces[rank - 1];
+            throw new IllegalArgumentException("Player ranks must be between 1 and 9 inclusive");
+        else
+            return apa9BallRaces[rank - 1];
     }
 
     public static RaceTo apa8BallRaceTo(int playerRank, int opponentRank) {

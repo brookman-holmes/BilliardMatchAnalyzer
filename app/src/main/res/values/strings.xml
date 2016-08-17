@@ -222,4 +222,5 @@
     <string name="description_long_bank">The object ball banked longer than you intended</string>
     <string name="description_long_kick">The cue ball kicked longer than you intended</string>
     <string name="description_short_kick">The cue ball kicked shorter than you intended</string>
+    <string name="title_miscues">Miscues: %1$d</string>
 </resources>

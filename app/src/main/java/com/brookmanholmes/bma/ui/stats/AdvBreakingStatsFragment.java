@@ -20,7 +20,7 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.right) TextView rightOfAim;
     @Bind(R.id.fast) TextView fast;
     @Bind(R.id.slow) TextView slow;
-
+    @Bind(R.id.miscues) TextView miscues;
 
     public static AdvBreakingStatsFragment create(Bundle args) {
         AdvBreakingStatsFragment frag = new AdvBreakingStatsFragment();
@@ -41,6 +41,7 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
     @Override void updateView() {
         StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getContext(), stats), leftOfAim, rightOfAim);
         StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(getContext(), stats), slow, fast);
+        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(getContext(), stats)));
 
         title.setText(getString(R.string.title_break_errors, stats.size()));
 

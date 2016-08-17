@@ -97,6 +97,8 @@
 
             </LinearLayout>
 
+        <include layout="@layout/container_miscues"/>
+
         <include layout="@layout/graph_cut"/>
 
         <include layout="@layout/graph_aim"/>

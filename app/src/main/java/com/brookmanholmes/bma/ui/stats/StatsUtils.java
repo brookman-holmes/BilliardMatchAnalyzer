@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.billiards.turn.AdvStats;
+import com.brookmanholmes.bma.R;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -206,6 +206,17 @@ public class StatsUtils {
         return safeties.get(OPEN).count;
     }
 
+    public static int getMiscues(Context context, List<AdvStats> stats) {
+        int count = 0;
+
+        for (AdvStats stat : stats) {
+            if (stat.getHowTypes().contains(context.getString(R.string.miscue)))
+                count++;
+        }
+
+        return count;
+    }
+
     private static int getCountOfSubTypesInList(Context context, List<AdvStats> stats, String item) {
         int count = 0;
 
@@ -239,13 +250,6 @@ public class StatsUtils {
         private String description;
         private int count;
         private int total;
-
-        public StatLineItem(String description) {
-            this.description = description;
-            count = 0;
-            total = 0;
-            pctf.setMaximumFractionDigits(0);
-        }
 
         public StatLineItem(String description, int total) {
             this.description = description;

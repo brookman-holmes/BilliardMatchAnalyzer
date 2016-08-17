@@ -42,6 +42,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.shotSubTypeSpinner) Spinner shotSubTypeSpinner;
     @Bind(R.id.shotSubTypeLayout) View shotSubTypeLayout;
     @Bind(R.id.angleSpinner) Spinner angleSpinner;
+    @Bind(R.id.miscues) TextView miscues;
     private String shotType = "All", subType = "All", angle = "All";
 
     public static AdvShootingStatsFragment create(Bundle args) {
@@ -206,7 +207,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getContext(), getFilteredStats()), overCut, underCut);
         StatsUtils.setLayoutWeights(StatsUtils.getHowBankErrors(getContext(), getFilteredStats()), bankShort, bankLong);
         StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(getContext(), getFilteredStats()), kickShort, kickLong);
-
+        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(getContext(), getFilteredStats())));
         setVisibilities();
 
         title.setText(getString(R.string.title_shooting_errors, getFilteredStats().size()));
