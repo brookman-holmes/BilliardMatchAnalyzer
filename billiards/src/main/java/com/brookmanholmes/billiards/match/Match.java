@@ -217,7 +217,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     }
 
     public Date getCreatedOn() {
-        return createdOn;
+        return new Date(createdOn.getTime());
     }
 
     @Override public String toString() {

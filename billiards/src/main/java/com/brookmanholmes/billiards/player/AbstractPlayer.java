@@ -81,7 +81,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     }
 
     public Date getMatchDate() {
-        return date == null ? new Date() : date;
+        return date == null ? new Date() : new Date(date.getTime());
     }
 
     public void setMatchDate(Date date) {

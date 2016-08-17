@@ -51,7 +51,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     @Bind(R.id.pager) ViewPager pager;
     @Bind(R.id.tabs) TabLayout tabLayout;
     ViewPagerAdapter adapter;
-    StatFilter filter = new StatFilter("All opponents");
+    StatFilter filter;
     String player;
     List<Filterable> listeners = new ArrayList<>();
 
@@ -66,6 +66,10 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(getString(R.string.title_player_profile, player));
+
+        filter = new StatFilter("All opponents",
+                getGames().toArray(new String[getGames().size()]),
+                new String[]{"All time", "Today", "Last week", "Last month", "Last 3 months", "Last 6 months"});
 
         playerNameLayout.setVisibility(View.GONE);
         playerName.setText(player);
@@ -92,7 +96,6 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
     private void displayFilterDialog() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_filter, null);
-        final String opponent = filter.getOpponent();
 
         final Spinner gameSpinner = (Spinner) view.findViewById(R.id.gameTypeSpinner);
         final Spinner opponentSpinner = (Spinner) view.findViewById(R.id.opponentSpinner);
@@ -102,9 +105,9 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         opponentSpinner.setAdapter(createAdapter(getOpponents()));
         dateSpinner.setAdapter(createAdapter(Arrays.asList("All time", "Today", "Last week", "Last month", "Last 3 months", "Last 6 months")));
 
-        //gameSpinner.setSelection(((ArrayAdapter<String>)gameSpinner.getAdapter()).getPosition(game));
-        opponentSpinner.setSelection(((ArrayAdapter<String>) opponentSpinner.getAdapter()).getPosition(opponent));
-        //dateSpinner.setSelection(((ArrayAdapter<String>)dateSpinner.getAdapter()).getPosition(date));
+        gameSpinner.setSelection(((ArrayAdapter<String>) gameSpinner.getAdapter()).getPosition(filter.getGameType()));
+        opponentSpinner.setSelection(((ArrayAdapter<String>) opponentSpinner.getAdapter()).getPosition(filter.getOpponent()));
+        dateSpinner.setSelection(((ArrayAdapter<String>) dateSpinner.getAdapter()).getPosition(filter.getDate()));
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
         dialog.setTitle("Filter by")
@@ -113,7 +116,8 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
                     @Override public void onClick(DialogInterface dialog, int which) {
                         filter.setOpponent((String) opponentSpinner.getSelectedItem());
                         opponentName.setText(filter.getOpponent());
-
+                        filter.setDate((String) dateSpinner.getSelectedItem());
+                        filter.setGameType((String) gameSpinner.getSelectedItem());
                         updateListeners();
                     }
                 })

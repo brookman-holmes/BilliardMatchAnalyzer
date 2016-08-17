@@ -105,15 +105,14 @@ public class PlayerInfoFragment extends Fragment implements Filterable {
 
     @Override public void setFilter(StatFilter filter) {
         List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
+        List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
 
-        for (int i = 0; i < players.size(); i++) {
-            if (filter.getOpponent().equals("All opponents")) {
-                // do not filter
-            } else if (!players.get(i).getRight().getName().equals(filter.getOpponent()))
-                players.remove(i);
+        for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
+            if (filter.isPlayerQualified(pair.getRight()))
+                filteredPlayers.add(pair);
         }
 
-        adapter.updatePlayers(players);
+        adapter.updatePlayers(filteredPlayers);
     }
 
     /**
