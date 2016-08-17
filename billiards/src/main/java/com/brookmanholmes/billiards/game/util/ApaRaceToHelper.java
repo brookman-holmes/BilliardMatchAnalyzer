@@ -32,11 +32,10 @@ public class ApaRaceToHelper {
     }
 
     public static RaceTo apa8BallRaceTo(int playerRank, int opponentRank) {
-        if ((playerRank > 7 || playerRank < 2) || (opponentRank > 7 || opponentRank < 2))
-            return new RaceTo(0,0);
-        else {
+        if (playerRank > 7 || playerRank < 2 || opponentRank > 7 || opponentRank < 2)
+            throw new IllegalArgumentException("Player ranks must be between 2 and 7 inclusive");
+        else
             return apa8BallRaceTable[playerRank - 2][opponentRank - 2];
-        }
     }
 
     public static int getMinimumMatchPointsEarned(int playerRank, int playerScore) {

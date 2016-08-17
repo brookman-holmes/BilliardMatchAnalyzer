@@ -190,13 +190,24 @@ public class ApaRaceHelperTest {
         assertThat(apa8BallRaceTo(7, 7), is(new RaceTo(5, 5)));
     }
 
-    @Test
-    public void rankOutOfRangeReturns00() {
-        RaceTo expected = new RaceTo(0, 0);
-        assertThat(apa8BallRaceTo(8,2), is(expected));
-        assertThat(apa8BallRaceTo(7,1), is(expected));
-        assertThat(apa8BallRaceTo(1,2), is(expected));
-        assertThat(apa8BallRaceTo(7,8), is(expected));
+    @Test(expected = IllegalArgumentException.class)
+    public void rankOutOfRangeReturnsThrowsException0() {
+        apa8BallRaceTo(8, 2);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void rankOutOfRangeReturnsThrowsException1() {
+        apa8BallRaceTo(7, 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void rankOutOfRangeReturnsThrowsException2() {
+        apa8BallRaceTo(1, 2);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void rankOutOfRangeReturnsThrowsException3() {
+        apa8BallRaceTo(7, 8);
     }
 
     @Test
