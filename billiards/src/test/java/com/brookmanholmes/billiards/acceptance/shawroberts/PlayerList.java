@@ -212,6 +212,7 @@ public class PlayerList {
         TenBallPlayer roberts = roberts();
 
         roberts.addSafetyAttempt(true);
+        roberts.addSafetyForcedError();
 
         return new Pair<>(shaw, roberts);
     }

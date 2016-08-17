@@ -55,46 +55,46 @@ public class TurnBuilder {
     }
 
     public Turn miss() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.MISS, status, false);
+        return new GameTurn(0, 0L, scratch, TurnEnd.MISS, status, false, null);
     }
 
     public Turn win() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.GAME_WON, status, false);
+        return new GameTurn(0, 0L, scratch, TurnEnd.GAME_WON, status, false, null);
     }
 
     public Turn lose() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.MISS, status, true);
+        return new GameTurn(0, 0L, scratch, TurnEnd.MISS, status, true, null);
     }
 
     public Turn safety() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.SAFETY, status, false);
+        return new GameTurn(0, 0L, scratch, TurnEnd.SAFETY, status, false, null);
     }
 
     public Turn safetyMiss() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.SAFETY_ERROR, status, false);
+        return new GameTurn(0, 0L, scratch, TurnEnd.SAFETY_ERROR, status, false, null);
     }
 
     public Turn breakMiss() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.BREAK_MISS, status, false);
+        return new GameTurn(0, 0L, scratch, TurnEnd.BREAK_MISS, status, false, null);
     }
 
     public Turn push() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.PUSH_SHOT, status, false);
+        return new GameTurn(0, 0L, scratch, TurnEnd.PUSH_SHOT, status, false, null);
     }
 
     public Turn skipTurn() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.SKIP_TURN, status, false);
+        return new GameTurn(0, 0L, scratch, TurnEnd.SKIP_TURN, status, false, null);
     }
 
     public Turn continueGame() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.CONTINUE_WITH_GAME, status, false);
+        return new GameTurn(0, 0L, scratch, TurnEnd.CONTINUE_WITH_GAME, status, false, null);
     }
 
     public Turn currentPlayerBreaks() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, false);
+        return new GameTurn(0, 0L, scratch, TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, false, null);
     }
 
     public Turn opposingPlayerBreaks() {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, TurnEnd.OPPONENT_BREAKS_AGAIN, status, false);
+        return new GameTurn(0, 0L, scratch, TurnEnd.OPPONENT_BREAKS_AGAIN, status, false, null);
     }
 }

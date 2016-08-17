@@ -2,6 +2,7 @@ package com.brookmanholmes.bma.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -37,6 +38,7 @@ import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.github.pavlospt.roundedletterview.RoundedLetterView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,10 +55,14 @@ public class IntroActivity extends BaseActivity {
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.createMatch) FloatingActionButton fab;
 
+    private SharedPreferences preferences;
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
+        preferences = getSharedPreferences("com.brookmanholmes.bma", MODE_PRIVATE);
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null);
 
         setSupportActionBar(toolbar);
 

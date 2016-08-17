@@ -304,6 +304,7 @@ public class PlayerList {
 
         max.addShootingMiss();
         max.addShootingBallsMade(0, true);
+        max.addSafetyForcedError();
 
         return new Pair<>(max, jeff);
     }

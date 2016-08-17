@@ -31,7 +31,7 @@ public abstract class AbstractTurnEndHelperTest {
     public abstract void setUp();
 
     void setupTurn() {
-        turn = new GameTurn(0, 0, false, TurnEnd.MISS, tableStatus, false);
+        turn = new GameTurn(0, 0, false, TurnEnd.MISS, tableStatus, false, null);
     }
 
     @Test

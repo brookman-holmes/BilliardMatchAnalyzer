@@ -29,18 +29,19 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
+import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.CreateNewMatchWizardModel;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.bma.wizard.ui.ReviewFragment;
 import com.brookmanholmes.bma.wizard.ui.StepPagerStrip;
-import com.brookmanholmes.billiards.match.Match;
 
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_match);
 
+        firebaseAnalytics.logEvent("create match", null);
         wizardModel = new CreateNewMatchWizardModel(this);
 
         ButterKnife.bind(this);
@@ -123,6 +125,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         intent.putExtra(ARG_MATCH_ID, matchId);
 
         startActivity(intent);
+        firebaseAnalytics.logEvent("match created", MatchDialogHelperUtils.createBundleFromMatch(match));
         finish();
     }
 

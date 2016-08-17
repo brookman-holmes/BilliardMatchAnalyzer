@@ -75,7 +75,7 @@ public class ApaNineBallGameTest extends AbstractGameTest {
     }
 
     com.brookmanholmes.billiards.turn.Turn createGameTurn(TurnEnd turnEnd, TableStatus tableStatus) {
-        return new GameTurn(0, 0L, false, turnEnd, tableStatus, false);
+        return new GameTurn(0, 0L, false, turnEnd, tableStatus, false, null);
     }
 
     TableStatus createTableStatus() {

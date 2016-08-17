@@ -38,7 +38,7 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
         TableStatus tableStatus = TableStatus.newTable(game.gameType);
         tableStatus.setBallTo(BallStatus.DEAD_ON_BREAK, 1, 8);
 
-        com.brookmanholmes.billiards.turn.Turn turn = new GameTurn(0, 0L, true, TurnEnd.BREAK_MISS, tableStatus, false);
+        com.brookmanholmes.billiards.turn.Turn turn = new GameTurn(0, 0L, true, TurnEnd.BREAK_MISS, tableStatus, false, null);
         assertThat(game.setAllowPlayerToBreakAgain(turn), is(true));
 
         game.addTurn(turn);

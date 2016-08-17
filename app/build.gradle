@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.google.gms.google-services'
+
 
 android {
     compileSdkVersion 23
@@ -17,6 +17,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled true
+
         }
     }
     sourceSets {
@@ -35,6 +40,7 @@ dependencies {
     compile project(':billiards')
     compile 'com.github.pavlospt:roundedletterview:1.2'
     compile 'com.google.firebase:firebase-crash:9.4.0'
+    compile 'com.google.firebase:firebase-core:9.4.0'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
     compile 'com.jakewharton:butterknife:7.0.1'
@@ -65,3 +71,5 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
+
+apply plugin: 'com.google.gms.google-services'
