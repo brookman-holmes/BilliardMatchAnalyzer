@@ -15,10 +15,8 @@ import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -32,11 +30,11 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     String notes;
     Date createdOn;
     Game game;
-    ArrayDeque<T> player1 = new ArrayDeque<>();
-    ArrayDeque<T> player2 = new ArrayDeque<>();
-    ArrayDeque<Turn> turns = new ArrayDeque<>();
-    ArrayDeque<Turn> undoneTurns = new ArrayDeque<>();
-    ArrayDeque<GameStatus> games = new ArrayDeque<>();
+    LinkedList<T> player1 = new LinkedList<>();
+    LinkedList<T> player2 = new LinkedList<>();
+    LinkedList<Turn> turns = new LinkedList<>();
+    LinkedList<Turn> undoneTurns = new LinkedList<>();
+    LinkedList<GameStatus> games = new LinkedList<>();
     private StatsDetail detail;
 
     Match(Builder builder, PlayerController<T> playerController) {
@@ -47,18 +45,6 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
         createdOn = builder.date;
-    }
-
-    public static <T> List<T> convertArrayDequeToList(ArrayDeque<T> arrayDeque) {
-        List<T> list = new ArrayList<>();
-
-        for (T item : arrayDeque) {
-            list.add(item);
-        }
-
-        Collections.reverse(list);
-
-        return list;
     }
 
     public long getMatchId() {
@@ -90,7 +76,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     }
 
     public GameStatus getGameStatus(int turn) {
-        return convertArrayDequeToList(games).get(turn);
+        return games.get(turn);
     }
 
     public T getPlayer() {
@@ -102,11 +88,11 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     }
 
     @Override public T getPlayer(int from, int to) {
-        return PlayerController.getPlayerFromList(convertArrayDequeToList(player1).subList(from, to), playerController.newPlayer());
+        return PlayerController.getPlayerFromList(player1.subList(from, to), playerController.newPlayer());
     }
 
     @Override public T getOpponent(int from, int to) {
-        return PlayerController.getPlayerFromList(convertArrayDequeToList(player2).subList(from, to), playerController.newOpponent());
+        return PlayerController.getPlayerFromList(player2.subList(from, to), playerController.newOpponent());
     }
 
     @Override public String getCurrentPlayersName() {
@@ -144,7 +130,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     public void addTurn(Turn turn) {
         updatePlayerStats(turn);
         updateGameState(turn);
-        turns.push(turn);
+        turns.addLast(turn);
 
         if (game.getGameStatus().breakType == BreakType.GHOST && turn.getTurnEnd() != TurnEnd.GAME_WON) {
             insertGameWonForGhost();
@@ -164,8 +150,8 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     void updatePlayerStats(Turn turn) {
         Pair<T> pair = playerController.updatePlayerStats(getGameStatus(), turn);
 
-        player1.push(pair.getPlayer());
-        player2.push(pair.getOpponent());
+        player1.addLast(pair.getPlayer());
+        player2.addLast(pair.getOpponent());
     }
 
     public int getTurnCount() {
@@ -173,15 +159,15 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     }
 
     @Override public List<Turn> getTurns() {
-        return convertArrayDequeToList(turns);
+        return turns;
     }
 
     @Override public List<Turn> getTurns(int from, int to) {
-        return convertArrayDequeToList(turns).subList(from, to);
+        return turns.subList(from, to);
     }
 
     void updateGameState(Turn turn) {
-        games.push(game.getGameStatus());
+        games.addLast(game.getGameStatus());
         game.addTurn(turn);
     }
 
@@ -195,20 +181,20 @@ public class Match<T extends AbstractPlayer> implements IMatch {
 
     @Override public Turn redoTurn() {
         if (isRedoTurn()) {
-            addTurn(undoneTurns.pop());
+            addTurn(undoneTurns.removeLast());
 
-            return turns.peek();
+            return turns.peekLast();
         } else return null;
     }
 
     @Override public void undoTurn() {
         if (isUndoTurn()) {
-            player1.pop();
-            player2.pop();
+            player1.removeLast();
+            player2.removeLast();
 
-            game.setGameStatus(games.pop());
+            game.setGameStatus(games.removeLast());
 
-            undoneTurns.push(turns.pop());
+            undoneTurns.addLast(turns.removeLast());
         }
     }
 
