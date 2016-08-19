@@ -25,21 +25,16 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 6/3/2016.
  */
 public abstract class BaseAdvStatsFragment extends Fragment implements Filterable {
-    protected List<AdvStats> stats = new ArrayList<>();
+    List<AdvStats> stats = new ArrayList<>();
     @Bind(R.id.parentView) LinearLayout statsLayout;
-    private DatabaseAdapter db;
-    private String playerName;
-    private List<String> shotTypes;
-    private long matchId;
-    private boolean updateView = true;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID, -1L);
-        playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
-        shotTypes = getShotTypes();
+        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID, -1L);
+        String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
+        List<String> shotTypes = getShotTypes();
 
-        db = new DatabaseAdapter(getContext());
+        DatabaseAdapter db = new DatabaseAdapter(getContext());
         stats = matchId == -1L ?
                 db.getAdvStats(playerName, shotTypes.toArray(new String[shotTypes.size()])) :
                 db.getAdvStats(matchId, playerName, shotTypes.toArray(new String[shotTypes.size()]));
@@ -62,7 +57,6 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         updateView();
-        updateView = false;
     }
 
     @Override public void onDestroyView() {
@@ -76,7 +70,8 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
         super.onDestroy();
     }
 
-    @Override public void setFilter(StatFilter filter) {
-        updateView = true;
+    @Override
+    public void setFilter(StatFilter filter) {
+
     }
 }

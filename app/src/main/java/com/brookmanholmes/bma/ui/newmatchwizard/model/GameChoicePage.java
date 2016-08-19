@@ -14,10 +14,12 @@ import java.util.ArrayList;
  * Created by Brookman Holmes on 1/8/2016.
  */
 public class GameChoicePage extends BranchPage implements RequiresPlayerNames, UpdatesMatchBuilder {
-    String theBreak;
-    String alternateBreak, winnerBreak;
-    String americanRotation;
-    String apa8Ball, apa9Ball;
+    private final String theBreak;
+    private final String alternateBreak;
+    private final String winnerBreak;
+    private final String americanRotation;
+    private final String apa8Ball;
+    private final String apa9Ball;
 
     public GameChoicePage(ModelCallbacks callbacks, String title, Context context) {
         super(callbacks, title);

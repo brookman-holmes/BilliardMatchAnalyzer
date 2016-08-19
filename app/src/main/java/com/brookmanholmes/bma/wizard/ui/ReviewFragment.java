@@ -70,7 +70,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
 
         TextView titleView = (TextView) rootView.findViewById(android.R.id.title);
-        titleView.setText("Review");
+        titleView.setText(R.string.title_review);
         titleView.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
 
         ListView listView = (ListView) rootView.findViewById(android.R.id.list);
@@ -180,7 +180,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         return rank;
     }
 
-    public String getPlayerName() {
+    private String getPlayerName() {
         return reviewItems.get(0).getDisplayValue();
     }
 

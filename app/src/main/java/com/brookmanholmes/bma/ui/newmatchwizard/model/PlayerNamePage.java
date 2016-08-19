@@ -33,8 +33,8 @@ public class PlayerNamePage extends Page implements UpdatesMatchBuilder, Updates
     public static final String EXTRA_INFO_KEY = "extras";
     public static final String PLAY_THE_GHOST_KEY = "ghost";
 
-    String reviewPlayer;
-    String reviewLocation;
+    private final String reviewPlayer;
+    private final String reviewLocation;
 
     public PlayerNamePage(ModelCallbacks callbacks, String title, String reviewPlayer, String reviewLocation) {
         super(callbacks, title);

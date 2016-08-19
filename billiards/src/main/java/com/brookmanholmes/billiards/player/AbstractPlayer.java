@@ -8,40 +8,35 @@ import java.util.Date;
  */
 public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     // formatter for percentages (e.g. .875)
-    final static DecimalFormat pctf = new DecimalFormat("#.000");
+    private final static DecimalFormat pctf = new DecimalFormat("#.000");
     // formatter for average number of balls made per turn (e.g. 5.33)
-    final static DecimalFormat avgf = new DecimalFormat("##.##");
-    final static String ZERO_PERCENT = ".000";
-    final static String ZERO = "0";
-
-    String name = "";
-    Date date;
+    private final static DecimalFormat avgf = new DecimalFormat("##.##");
+    private final static String ZERO_PERCENT = ".000";
+    private final static String ZERO = "0";
     int safetyAttempts = 0;
     int safetySuccesses = 0;
     int safetyScratches = 0;
     int safetyReturns = 0;
-    int safetyEscapes = 0;
-    int safetyForcedErrors = 0;
-
     int breakSuccesses = 0;
     int breakAttempts = 0;
     int breakContinuations = 0;
     int breakScratches = 0;
     int breakBallsMade = 0;
-
     int shootingBallsMade = 0;
     int shootingTurns = 0;
     int shootingMisses = 0;
     int shootingScratches = 0;
-
-    int runOuts = 0;
-    int runTierOne = 0;
-    int runTierTwo = 0;
-
     int gameTotal = 0;
     int gameWins = 0;
+    private String name = "";
+    private Date date;
+    private int safetyEscapes = 0;
+    private int safetyForcedErrors = 0;
+    private int runOuts = 0;
+    private int runTierOne = 0;
+    private int runTierTwo = 0;
 
-    public AbstractPlayer(String name) {
+    AbstractPlayer(String name) {
         this.name = name;
     }
 

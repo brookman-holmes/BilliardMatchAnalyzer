@@ -22,23 +22,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 1/31/2016.
  */
 public class MatchTest {
-    Match<?> match;
-    String playerName = "Player 1";
-    String opponentName = "Player 2";
-    long matchId = 1001;
-    int playerRank = 4;
-    int opponentRank = 5;
-    String location = "Sam's";
-    BreakType breakType = BreakType.WINNER;
-    GameType gameType = GameType.BCA_EIGHT_BALL;
-    PlayerTurn turn = PlayerTurn.OPPONENT;
-    TurnBuilder turnBuilder;
+    private final long matchId = 1001;
+    private final String location = "Sam's";
+    private final BreakType breakType = BreakType.WINNER;
+    private final GameType gameType = GameType.BCA_EIGHT_BALL;
+    private final PlayerTurn turn = PlayerTurn.OPPONENT;
+    private Match<?> match;
+    private TurnBuilder turnBuilder;
 
-    List<AbstractPlayer> playerList;
-    List<AbstractPlayer> opponentList;
 
-    AbstractPlayer player1;
-    AbstractPlayer player2;
+    private AbstractPlayer player1;
+    private AbstractPlayer player2;
 
     private static List<Turn> turns() {
         TurnBuilder turnBuilder = new TurnBuilder(GameType.BCA_EIGHT_BALL);
@@ -59,6 +53,10 @@ public class MatchTest {
 
     @Before
     public void setUp() {
+        String playerName = "Player 1";
+        String opponentName = "Player 2";
+        int playerRank = 4;
+        int opponentRank = 5;
         match = new Match.Builder(playerName, opponentName)
                 .setMatchId(matchId)
                 .setLocation(location)
@@ -71,9 +69,6 @@ public class MatchTest {
 
         player1 = new EightBallPlayer(playerName);
         player2 = new EightBallPlayer(opponentName);
-
-        playerList = new ArrayList<>();
-        opponentList = new ArrayList<>();
     }
 
     @Test

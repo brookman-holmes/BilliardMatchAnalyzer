@@ -4,8 +4,8 @@ package com.brookmanholmes.billiards.game.util;
  * Created by Brookman Holmes on 1/11/2016.
  */
 public class RaceTo {
-    int playerRaceTo;
-    int opponentRaceTo;
+    private final int playerRaceTo;
+    private final int opponentRaceTo;
 
     public RaceTo(int playerRaceTo, int opponentRaceTo) {
         this.playerRaceTo = playerRaceTo;

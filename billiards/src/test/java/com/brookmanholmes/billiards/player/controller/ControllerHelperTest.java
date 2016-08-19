@@ -16,9 +16,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 2/3/2016.
  */
 public class ControllerHelperTest {
-    List<EightBallPlayer> playerList;
-    EightBallPlayer expectedPlayer;
-    String playerName = "Player 1";
+    private final String playerName = "Player 1";
+    private List<EightBallPlayer> playerList;
+    private EightBallPlayer expectedPlayer;
 
     @Before
     public void setUp() {

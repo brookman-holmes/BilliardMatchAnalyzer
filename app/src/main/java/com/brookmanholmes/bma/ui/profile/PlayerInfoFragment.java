@@ -40,6 +40,7 @@ import butterknife.ButterKnife;
  */
 public class PlayerInfoFragment extends Fragment implements Filterable {
     private static final String ARG_PLAYER = "arg player";
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.scrollView) RecyclerView recyclerView;
     private PlayerInfoAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -126,10 +127,11 @@ public class PlayerInfoFragment extends Fragment implements Filterable {
         public static final int ITEM_RUN_OUTS = 4;
         public static final int ITEM_FOOTER = 5;
 
-        List<AbstractPlayer> players = new ArrayList<>(),
-                opponents = new ArrayList<>();
-        String playerName, opponentName;
-        Match.StatsDetail detail = Match.StatsDetail.NORMAL;
+        final List<AbstractPlayer> players = new ArrayList<>();
+        final List<AbstractPlayer> opponents = new ArrayList<>();
+        final String playerName;
+        final String opponentName;
+        final Match.StatsDetail detail = Match.StatsDetail.NORMAL;
 
         public PlayerInfoAdapter(List<Pair<AbstractPlayer, AbstractPlayer>> pairs, String playerName, String opponentName) {
             splitPlayers(pairs);

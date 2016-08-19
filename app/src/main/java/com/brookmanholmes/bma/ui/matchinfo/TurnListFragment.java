@@ -35,6 +35,7 @@ public class TurnListFragment extends Fragment implements
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
     private static final String ARG_MATCH_ID = "match id";
 
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.scrollView) RecyclerView recyclerView;
 
     private ExpandableTurnListAdapter adapter;
@@ -67,7 +68,7 @@ public class TurnListFragment extends Fragment implements
         final Parcelable eimSavedState = (savedInstanceState != null) ?
                 savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         itemManager = new RecyclerViewExpandableItemManager(eimSavedState);
-        adapter = new ExpandableTurnListAdapter(db.getMatch(matchId), itemManager);
+        adapter = new ExpandableTurnListAdapter(db.getMatch(matchId));
         layoutManager = new LinearLayoutManager(getContext());
 
         itemManager.setOnGroupCollapseListener(this);

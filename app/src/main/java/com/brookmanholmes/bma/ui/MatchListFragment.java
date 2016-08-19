@@ -43,10 +43,11 @@ import butterknife.OnLongClick;
  * A placeholder fragment containing a simple view.
  */
 public class MatchListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static int LOADER_ID = 100;
-    private static String ARG_PLAYER = "arg player";
-    private static String ARG_OPPONENT = "arg opponent";
+    private static final int LOADER_ID = 100;
+    private static final String ARG_PLAYER = "arg player";
+    private static final String ARG_OPPONENT = "arg opponent";
 
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.scrollView) RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private MatchListRecyclerAdapter adapter;
@@ -131,7 +132,8 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     private static class MatchListLoader extends CursorLoader {
-        String player, opponent;
+        final String player;
+        final String opponent;
         public MatchListLoader(Context context, String player, String opponent) {
             super(context);
             this.player = player;

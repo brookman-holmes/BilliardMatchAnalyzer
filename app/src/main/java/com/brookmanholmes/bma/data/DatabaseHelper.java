@@ -63,7 +63,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return sInstance;
     }
 
-    @NonNull public static String getCreateAdvStatsTableQuery() {
+    @NonNull
+    private static String getCreateAdvStatsTableQuery() {
         return "CREATE TABLE " + TABLE_ADV_STATS + "("
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_SHOT_TYPE + " TEXT COLLATE NOCASE DEFAULT NULL, "
@@ -75,7 +76,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull public static String getCreateHowTable() {
+    @NonNull
+    private static String getCreateHowTable() {
         return "CREATE TABLE " + TABLE_HOWS + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
@@ -83,7 +85,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull public static String getCreateWhyTable() {
+    @NonNull
+    private static String getCreateWhyTable() {
         return "CREATE TABLE " + TABLE_WHYS + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
@@ -91,7 +94,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull public static String getCreateAngleTable() {
+    @NonNull
+    private static String getCreateAngleTable() {
         return "CREATE TABLE " + TABLE_ANGLES + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_ADV_STATS_ID + " INTEGER NOT NULL, "
@@ -99,7 +103,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull public static String getCreateTurnsTableQuery() {
+    @NonNull
+    private static String getCreateTurnsTableQuery() {
         return "CREATE TABLE " + TABLE_TURNS + "("
                 + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
                 + COLUMN_MATCH_ID + " INTEGER NOT NULL, "

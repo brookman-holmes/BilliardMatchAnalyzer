@@ -24,16 +24,24 @@ import static com.brookmanholmes.bma.utils.ConversionUtils.getGameTypeString;
  * Created by Brookman Holmes on 3/23/2016.
  */
 public class GameStatusViewBuilder {
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.gameStatus) TextView gameStatus;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.breakInfo) TextView breakInfo;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.turnInfo) TextView turnInfo;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerFoulInfo) TextView playerFoulInfo;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.opponentFoulInfo) TextView opponentFoulInfo;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.colorInfo) TextView colorInfo;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.ballContainer) GridLayout ballContainer;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.pushStatus) TextView pushStatus;
 
-    GameStatusViewBuilder(Match<?> match, View view) {
+    private GameStatusViewBuilder(Match<?> match, View view) {
         ButterKnife.bind(this, view);
         Context context = view.getContext();
         String playerName = match.getPlayer().getName();
@@ -115,20 +123,18 @@ public class GameStatusViewBuilder {
 
     private static String getPushStatusString(Context context, Match<?> match) {
         if (match.getGameStatus().allowPush && !match.getGameStatus().newGame)
-            return String.format(Locale.getDefault(), "%1$s can push", getPlayerName(match, match.getGameStatus().turn));
+            return context.getString(R.string.allow_push, getPlayerName(match, match.getGameStatus().turn));
         else if (match.getGameStatus().allowTurnSkip)
-            return String.format(Locale.getDefault(), "%1$s has the option to skip their turn", getPlayerName(match, match.getGameStatus().turn));
+            return context.getString(R.string.allow_turn_skip, getPlayerName(match, match.getGameStatus().turn));
         else
-            return "No push shot or option to skip turn is allowed";
+            return context.getString(R.string.no_push_no_turn_skip);
     }
 
     private static void setBallsOnTable(Match<?> match, GridLayout ballContainer) {
         //reverse loop because you want to remove the last fucking ball and not change the count of the children by removing from the front
         for (int ball = ballContainer.getChildCount() - 1; ball >= 0; ball--) {
-            if (match.getGameStatus().ballsOnTable.contains(ball + 1)) {
-            } else {
+            if (!match.getGameStatus().ballsOnTable.contains(ball + 1))
                 ballContainer.removeViewAt(ball);
-            }
         }
     }
 

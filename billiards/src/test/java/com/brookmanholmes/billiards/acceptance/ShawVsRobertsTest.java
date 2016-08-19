@@ -23,8 +23,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/9/2015.
  */
 public class ShawVsRobertsTest extends MatchTester {
-    PlayerController<TenBallPlayer> controller;
-    List<Pair<TenBallPlayer>> expectedPairs;
+    private PlayerController<TenBallPlayer> controller;
+    private List<Pair<TenBallPlayer>> expectedPairs;
     @Override public void setUp() {
         expectedGameStatusList = GameStatusList.getGameStatuses();
         expectedTurnEndOptionsList = TurnEndOptionsList.getOptionsList();

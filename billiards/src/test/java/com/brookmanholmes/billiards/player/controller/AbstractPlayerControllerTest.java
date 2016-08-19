@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by Brookman Holmes on 1/30/2016.
  */
+@SuppressWarnings("unused")
 public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     PlayerController<T> playerController;
     Game game;

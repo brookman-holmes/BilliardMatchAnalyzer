@@ -60,10 +60,6 @@ public class AdvStatsDialog extends DialogFragment {
             getDialog().getWindow().setWindowAnimations(R.style.SlideInFromRightDialogTransitionTheme);
     }
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Nullable
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_adv_stats, container, false);
@@ -86,9 +82,11 @@ public class AdvStatsDialog extends DialogFragment {
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
-        private static String ARGS_BUNDLE = "args bundle";
-        String shooting, safeties, breaks;
-        Bundle args = new Bundle();
+        private static final String ARGS_BUNDLE = "args bundle";
+        final String shooting;
+        final String safeties;
+        final String breaks;
+        final Bundle args = new Bundle();
 
         public ViewPagerAdapter(FragmentManager fm, Bundle args, Context context) {
             super(fm);

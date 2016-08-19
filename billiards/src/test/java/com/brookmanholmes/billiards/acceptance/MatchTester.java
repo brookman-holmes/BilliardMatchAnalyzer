@@ -19,10 +19,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/9/2015.
  */
 public abstract class MatchTester {
-    protected Game game;
-    protected List<Turn> turns;
-    protected List<GameStatus> expectedGameStatusList;
-    protected List<TurnEndOptions> expectedTurnEndOptionsList;
+    Game game;
+    List<Turn> turns;
+    List<GameStatus> expectedGameStatusList;
+    List<TurnEndOptions> expectedTurnEndOptionsList;
 
     @Before
     public abstract void setUp();

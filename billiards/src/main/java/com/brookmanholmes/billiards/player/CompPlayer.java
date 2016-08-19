@@ -4,8 +4,8 @@ package com.brookmanholmes.billiards.player;
  * Created by Brookman Holmes on 5/9/2016.
  */
 public class CompPlayer extends AbstractPlayer implements IWinsOnBreak {
-    int earlyWins = 0;
-    int winsOnBreak = 0;
+    private int earlyWins = 0;
+    private int winsOnBreak = 0;
 
     public CompPlayer(String name) {
         super(name);

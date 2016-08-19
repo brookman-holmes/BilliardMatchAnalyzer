@@ -17,27 +17,27 @@ import static com.brookmanholmes.billiards.game.util.PlayerTurn.PLAYER;
  * Created by Brookman Holmes on 11/16/2015.
  */
 public class GameStatusList {
-    static GameStatus startOfMatch = playerBreaking();
-    static GameStatus afterTurn1 = opponentBreaking();
-    static GameStatus afterTurn2 = opponentIsBreaker().turn(PLAYER).removeBalls(4, 9).playerColor(SOLIDS).currentPlayerColor(SOLIDS).build();
-    static GameStatus afterTurn3 = opponentIsBreaker().turn(OPPONENT).removeBalls(1, 2, 3, 4, 5, 5, 6, 7, 9).playerColor(SOLIDS).currentPlayerColor(STRIPES).build();
-    static GameStatus afterTurn4 = playerBreaking();
-    static GameStatus afterTurn5 = playerIsBreaker().turn(OPPONENT).removeBalls(1, 2).playerColor(SOLIDS).currentPlayerColor(STRIPES).build();
-    static GameStatus afterTurn6 = opponentBreaking();
-    static GameStatus afterTurn7 = opponentIsBreaker().turn(PLAYER).consecutiveOpponentFouls(1).reBreak().build();
-    static GameStatus afterTurn8 = opponentIsBreaker().turn(PLAYER).newGame().build();
-    static GameStatus afterTurn9 = opponentIsBreaker().turn(OPPONENT).removeBalls(1, 7, 9, 10, 11).playerColor(STRIPES).currentPlayerColor(SOLIDS).build();
-    static GameStatus afterTurn10 = playerBreaking();
-    static GameStatus afterTurn11 = opponentBreaking();
-    static GameStatus afterTurn12 = opponentIsBreaker().turn(PLAYER).playerColor(STRIPES).currentPlayerColor(STRIPES).removeBalls(10, 1).safetyLastTurn().build();
-    static GameStatus afterTurn13 = opponentIsBreaker().turn(OPPONENT).playerColor(STRIPES).currentPlayerColor(SOLIDS).removeBalls(10, 1).safetyLastTurn().build();
-    static GameStatus afterTurn14 = playerBreaking();
-    static GameStatus afterTurn15 = playerIsBreaker().turn(OPPONENT).consecutivePlayerFouls(1).reBreak().build();
-    static GameStatus afterTurn16 = playerBreaking();
-    static GameStatus afterTurn17 = playerBreaking();
-    static GameStatus afterTurn18 = opponentBreaking();
+    private static final GameStatus startOfMatch = playerBreaking();
+    private static final GameStatus afterTurn1 = opponentBreaking();
+    private static final GameStatus afterTurn2 = opponentIsBreaker().turn(PLAYER).removeBalls(4, 9).playerColor(SOLIDS).currentPlayerColor(SOLIDS).build();
+    private static final GameStatus afterTurn3 = opponentIsBreaker().turn(OPPONENT).removeBalls(1, 2, 3, 4, 5, 5, 6, 7, 9).playerColor(SOLIDS).currentPlayerColor(STRIPES).build();
+    private static final GameStatus afterTurn4 = playerBreaking();
+    private static final GameStatus afterTurn5 = playerIsBreaker().turn(OPPONENT).removeBalls(1, 2).playerColor(SOLIDS).currentPlayerColor(STRIPES).build();
+    private static final GameStatus afterTurn6 = opponentBreaking();
+    private static final GameStatus afterTurn7 = opponentIsBreaker().turn(PLAYER).consecutiveOpponentFouls(1).reBreak().build();
+    private static final GameStatus afterTurn8 = opponentIsBreaker().turn(PLAYER).newGame().build();
+    private static final GameStatus afterTurn9 = opponentIsBreaker().turn(OPPONENT).removeBalls(1, 7, 9, 10, 11).playerColor(STRIPES).currentPlayerColor(SOLIDS).build();
+    private static final GameStatus afterTurn10 = playerBreaking();
+    private static final GameStatus afterTurn11 = opponentBreaking();
+    private static final GameStatus afterTurn12 = opponentIsBreaker().turn(PLAYER).playerColor(STRIPES).currentPlayerColor(STRIPES).removeBalls(10, 1).safetyLastTurn().build();
+    private static final GameStatus afterTurn13 = opponentIsBreaker().turn(OPPONENT).playerColor(STRIPES).currentPlayerColor(SOLIDS).removeBalls(10, 1).safetyLastTurn().build();
+    private static final GameStatus afterTurn14 = playerBreaking();
+    private static final GameStatus afterTurn15 = playerIsBreaker().turn(OPPONENT).consecutivePlayerFouls(1).reBreak().build();
+    private static final GameStatus afterTurn16 = playerBreaking();
+    private static final GameStatus afterTurn17 = playerBreaking();
+    private static final GameStatus afterTurn18 = opponentBreaking();
 
-    static GameStatus.Builder status() {
+    private static GameStatus.Builder status() {
         return new GameStatus.Builder(GameType.BCA_EIGHT_BALL)
                 .breakType(BreakType.ALTERNATE)
                 .playerColor(OPEN);

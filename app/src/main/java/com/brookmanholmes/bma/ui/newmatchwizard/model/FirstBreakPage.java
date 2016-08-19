@@ -1,24 +1,21 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.SingleFixedChoicePage;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
 /**
  * Created by Brookman Holmes on 1/7/2016.
  */
 public class FirstBreakPage extends SingleFixedChoicePage implements RequiresPlayerNames, UpdatesMatchBuilder {
-    String playerName = "Player 1", opponentName = "Player 2";
-    String parentPage;
+    private final String parentPage;
+    private String playerName = "Player 1";
+    private String opponentName = "Player 2";
 
     public FirstBreakPage(ModelCallbacks callbacks, String title, String parentPage) {
         super(callbacks, title);
 
         this.parentPage = parentPage;
-    }
-
-    @Override public boolean isCompleted() {
-        return super.isCompleted();
     }
 
     @Override public String getKey() {

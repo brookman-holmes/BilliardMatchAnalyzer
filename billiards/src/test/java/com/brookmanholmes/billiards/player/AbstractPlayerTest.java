@@ -9,10 +9,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 1/19/2016.
  */
+@SuppressWarnings("unused")
 public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
+    final String testName = "";
     T actual;
     T expected;
-    String testName = "";
 
     @Before
     public abstract void setUp();

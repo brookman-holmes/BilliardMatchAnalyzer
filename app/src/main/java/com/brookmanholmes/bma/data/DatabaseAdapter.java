@@ -370,15 +370,14 @@ public class DatabaseAdapter {
         return database.rawQuery(query, queryArgs);
     }
 
-    public long insertPlayer(AbstractPlayer player, long id) {
+    private void insertPlayer(AbstractPlayer player, long id) {
         database = databaseHelper.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, player.getName());
         contentValues.put(COLUMN_MATCH_ID, id);
 
-        long playerId = database.insert(TABLE_PLAYERS, null, contentValues);
+        database.insert(TABLE_PLAYERS, null, contentValues);
         database.close();
-        return playerId;
     }
 
     public void undoTurn(long id, int turnNumber) {
@@ -459,14 +458,14 @@ public class DatabaseAdapter {
         database = databaseHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, newName);
-        int num = database.update(TABLE_PLAYERS,
+        database.update(TABLE_PLAYERS,
                 values,
                 COLUMN_NAME + "=? AND " + COLUMN_MATCH_ID + "=?",
                 new String[]{name, Long.toString(matchId)});
         database.close();
     }
 
-    public long insertTurn(Turn turn, long matchId, int turnCount) {
+    public void insertTurn(Turn turn, long matchId, int turnCount) {
         database = databaseHelper.getReadableDatabase();
         database.delete(TABLE_TURNS,
                 COLUMN_MATCH_ID + "=? AND "
@@ -483,7 +482,7 @@ public class DatabaseAdapter {
         turnValues.put(COLUMN_TURN_NUMBER, turnCount);
         turnValues.put(COLUMN_IS_GAME_LOST, turn.isGameLost());
 
-        long turnId = database.insert(TABLE_TURNS, null, turnValues);
+        database.insert(TABLE_TURNS, null, turnValues);
 
         if (turn.getAdvStats() != null && turn.getAdvStats().use()) {
             ContentValues values = new ContentValues();
@@ -502,7 +501,6 @@ public class DatabaseAdapter {
         }
 
         database.close();
-        return turnId;
     }
 
     private void insertAdvStatsList(String table, List<String> values, long advStatsId) {
@@ -529,7 +527,7 @@ public class DatabaseAdapter {
             return null;
     }
 
-    public List<Turn> getMatchTurns(long id) {
+    private List<Turn> getMatchTurns(long id) {
         List<Turn> turns = new ArrayList<>();
         Cursor c = getMatchTurnsCursor(id);
 
@@ -556,7 +554,7 @@ public class DatabaseAdapter {
                 COLUMN_TURN_NUMBER + " ASC");
     }
 
-    public Turn buildTurnFromCursor(Cursor cursor, AdvStats advStats) {
+    private Turn buildTurnFromCursor(Cursor cursor, AdvStats advStats) {
         return new GameTurn(
                 cursor.getInt(cursor.getColumnIndex(COLUMN_TURN_NUMBER)),
                 cursor.getLong(cursor.getColumnIndex(COLUMN_MATCH_ID)),

@@ -25,14 +25,6 @@ class EightBallTurnEndHelper extends TurnEndHelper {
         return super.showSafety() && !lostGame();
     }
 
-    @Override boolean showSafetyMiss() {
-        return super.showSafetyMiss();
-    }
-
-    @Override boolean showMiss() {
-        return super.showMiss();
-    }
-
     @Override boolean showPush() {
         return false;
     }
@@ -41,7 +33,7 @@ class EightBallTurnEndHelper extends TurnEndHelper {
         return false;
     }
 
-    boolean currentPlayerBallsRemaining() {
+    private boolean currentPlayerBallsRemaining() {
         if (game.currentPlayerColor == PlayerColor.SOLIDS) {
             return TableUtils.getSolidsRemaining(nextInning.getBallStatuses()) > 0;
         } else if (game.currentPlayerColor == PlayerColor.STRIPES) {

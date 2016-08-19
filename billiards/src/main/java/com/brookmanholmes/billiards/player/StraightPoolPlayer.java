@@ -9,7 +9,4 @@ public class StraightPoolPlayer extends AbstractPlayer {
         super(name);
     }
 
-    @Override public void addPlayerStats(AbstractPlayer player) {
-        super.addPlayerStats(player);
-    }
 }

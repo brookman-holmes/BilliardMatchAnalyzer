@@ -23,7 +23,7 @@ public abstract class Game {
     final int MAX_BALLS;
     final BreakType breakType;
     final GameType gameType;
-    final PlayerTurn firstPlayerToShoot;
+    private final PlayerTurn firstPlayerToShoot;
     PlayerColor playerColor = OPEN;
     PlayerTurn turn, breaker;
 
@@ -71,7 +71,7 @@ public abstract class Game {
         }
     }
 
-    public PlayerTurn changeTurn(PlayerTurn turn) {
+    private PlayerTurn changeTurn(PlayerTurn turn) {
         if (turn.nextPlayer() == firstPlayerToShoot)
             innings++;
 
@@ -126,7 +126,7 @@ public abstract class Game {
         startNewGame(breaker);
     }
 
-    void startNewGame(PlayerTurn nextBreaker) {
+    private void startNewGame(PlayerTurn nextBreaker) {
         // don't set this.breaker because it'll ruin the order of switching breaks
         this.turn = nextBreaker;
         newGame = true;
@@ -167,7 +167,7 @@ public abstract class Game {
         else return changeTurn(this.turn);
     }
 
-    List<Integer> newTable() {
+    private List<Integer> newTable() {
         List<Integer> table = new ArrayList<>(MAX_BALLS);
         for (int i = 1; i <= MAX_BALLS; i++)
             table.add(i);
@@ -175,7 +175,7 @@ public abstract class Game {
         return table;
     }
 
-    void setConsecutiveFouls(com.brookmanholmes.billiards.turn.Turn turn) {
+    private void setConsecutiveFouls(com.brookmanholmes.billiards.turn.Turn turn) {
         if (turn.isFoul()) {
             if (this.turn == PlayerTurn.PLAYER)
                 consecutivePlayerFouls++;
@@ -218,7 +218,7 @@ public abstract class Game {
         return new GameStatus(this);
     }
 
-    void setGameStatus(com.brookmanholmes.billiards.turn.Turn turn) {
+    private void setGameStatus(com.brookmanholmes.billiards.turn.Turn turn) {
         setConsecutiveFouls(turn);
 
         removeBallsFromTable(turn.getBallsToRemoveFromTable());

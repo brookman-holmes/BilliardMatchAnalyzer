@@ -48,10 +48,11 @@ import butterknife.ButterKnife;
  */
 public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
     private static final String ARG_PLAYER = "arg player";
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.scrollView) RecyclerView recyclerView;
-    GridLayoutManager layoutManager;
-    DatabaseAdapter database;
-    String player;
+    private GridLayoutManager layoutManager;
+    private DatabaseAdapter database;
+    private String player;
     private PlayerInfoGraphicAdapter adapter;
 
     public PlayerInfoGraphicFragment() {
@@ -66,7 +67,7 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
         return fragment;
     }
 
-    static String convertFloatToPercent(float val) {
+    private static String convertFloatToPercent(float val) {
         if (Float.isNaN(val))
             return String.format(Locale.getDefault(), "%.0f%%", 0f);
         else
@@ -151,8 +152,10 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
         static final int ITEM_BREAK_GRAPH = 3;
         static final int ITEM_BREAK_INFO = 4;
 
-        List<AbstractPlayer> players = new ArrayList<>(), opponents = new ArrayList<>();
-        String playerName, opponentName;
+        final List<AbstractPlayer> players = new ArrayList<>();
+        final List<AbstractPlayer> opponents = new ArrayList<>();
+        final String playerName;
+        final String opponentName;
 
         public PlayerInfoGraphicAdapter(List<Pair<AbstractPlayer, AbstractPlayer>> pairs, String playerName, String opponentName) {
             splitPlayers(pairs);
@@ -388,8 +391,8 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
             }
 
             @Override void setItemDesc() {
-                item1Desc.setText("Forced opponent\nto foul");
-                item2Desc.setText("Effective safety success rate");
+                item1Desc.setText(R.string.title_forced_opponent_foul);
+                item2Desc.setText(R.string.title_effect_safety_rate);
             }
 
             @Override
@@ -421,8 +424,8 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
             }
 
             @Override void setItemDesc() {
-                item1Desc.setText("Break and runs");
-                item2Desc.setText("Break and run %");
+                item1Desc.setText(R.string.title_break_runs);
+                item2Desc.setText(R.string.title_break_run_pct);
             }
 
             @Override
@@ -434,13 +437,15 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
         }
 
         static class BreaksGraphViewHolder extends RecyclerView.ViewHolder {
+            final int color1;
+            final int color2;
+            final int color3;
+            final int color4;
             @Bind(R.id.decoView) DecoView decoView;
             @Bind(R.id.title1) TextView successfulBreak;
             @Bind(R.id.title2) TextView continuationBreak;
             @Bind(R.id.title3) TextView foulBreak;
             @Bind(R.id.title4) TextView winBreak;
-
-            int color1, color2, color3, color4;
 
             public BreaksGraphViewHolder(View itemView) {
                 super(itemView);
@@ -523,19 +528,20 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
         }
 
         static class SafetyGraphViewHolder extends RecyclerView.ViewHolder {
+            final int color1;
+            final int color2;
+            final int color3;
             @Bind(R.id.decoView) DecoView decoView;
             @Bind(R.id.title) TextView title;
             @Bind(R.id.title1) TextView safetyReturns;
             @Bind(R.id.title2) TextView safetyEscapes;
             @Bind(R.id.title3) TextView misses;
             @Bind(R.id.toDisappear) ViewGroup notValid;
-
-            int color1, color2, color3, color4;
             public SafetyGraphViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
 
-                title.setText("After your opponent safeties you:");
+                title.setText(R.string.title_after_opponent_safety);
                 notValid.setVisibility(View.GONE);
                 color1 = ContextCompat.getColor(itemView.getContext(), R.color.chart3);
                 color2 = ContextCompat.getColor(itemView.getContext(), R.color.chart2);
@@ -579,9 +585,9 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
                 }
 
                 int missed = opponent.getSafetySuccesses() - player.getSafetyEscapes() - player.getSafetyReturns();
-                misses.setText(String.format(Locale.getDefault(), "Missed shot %3$s (%1$d/%2$d)", missed, opponent.getSafetySuccesses(), convertFloatToPercent((float) missed / (float) opponent.getSafetySuccesses())));
-                safetyReturns.setText(String.format(Locale.getDefault(), "Got safe %3$s (%1$d/%2$d)", player.getSafetyReturns(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyReturns() / (float) opponent.getSafetySuccesses())));
-                safetyEscapes.setText(String.format(Locale.getDefault(), "Made a ball %3$s (%1$d/%2$d)", player.getSafetyEscapes(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyEscapes() / (float) opponent.getSafetySuccesses())));
+                misses.setText(itemView.getContext().getString(R.string.legend_missed_shot, missed, opponent.getSafetySuccesses(), convertFloatToPercent((float) missed / (float) opponent.getSafetySuccesses())));
+                safetyReturns.setText(itemView.getContext().getString(R.string.legend_got_safe, player.getSafetyReturns(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyReturns() / (float) opponent.getSafetySuccesses())));
+                safetyEscapes.setText(itemView.getContext().getString(R.string.legend_made_ball, player.getSafetyEscapes(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyEscapes() / (float) opponent.getSafetySuccesses())));
             }
 
         }

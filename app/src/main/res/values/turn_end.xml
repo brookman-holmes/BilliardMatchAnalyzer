@@ -19,9 +19,6 @@
     <string name="safety_no_shot">No direct shot</string>
     <string name="safety_open">Open</string>
 
-    <string name="starting_position_open">Open</string>
-    <string name="starting_position_safe">Safe</string>
-
     <string name="foul_lost_game">Yes, lost game</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -50,16 +47,4 @@
         <item>@string/safety_no_shot</item>
     </string-array>
 
-    <string-array name="turn_endings">
-        <item>@string/turn_safety</item>
-        <item>@string/turn_safety_error</item>
-        <item>@string/turn_break_miss</item>
-        <item>@string/turn_miss</item>
-        <item>@string/turn_push</item>
-        <item>@string/turn_skip</item>
-        <item>@string/turn_illegal_break</item>
-        <item>@string/turn_won_game</item>
-        <item>@string/turn_current_player_breaks</item>
-        <item>@string/turn_non_current_player_breaks</item>
-    </string-array>
 </resources>

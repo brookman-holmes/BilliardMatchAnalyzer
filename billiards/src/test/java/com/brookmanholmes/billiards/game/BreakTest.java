@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
  * Created by Brookman Holmes on 11/6/2015.
  */
 public class BreakTest {
-    Game game;
+    private Game game;
 
     @Test
     public void setBreakerWithWinnerBreakReturnsPlayer() {

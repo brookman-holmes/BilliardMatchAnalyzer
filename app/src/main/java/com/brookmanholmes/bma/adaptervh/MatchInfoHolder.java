@@ -1,7 +1,6 @@
 package com.brookmanholmes.bma.adaptervh;
 
 import android.animation.ValueAnimator;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.annotation.LayoutRes;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -13,9 +12,10 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.utils.ConversionUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,16 +25,20 @@ import butterknife.OnClick;
  * Created by Brookman Holmes on 1/13/2016.
  */
 public abstract class MatchInfoHolder extends BaseViewHolder {
-    int collapsedHeight = (int) Math.floor(48 * Resources.getSystem().getDisplayMetrics().density);
+    private final int collapsedHeight;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.container) GridLayout container;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.collapseExpandButton) ImageView collapseExpandButton;
     @Bind(R.id.card_title) TextView title;
+    @SuppressWarnings("WeakerAccess")
     int expandedHeight = 0;
 
-    public MatchInfoHolder(View view) {
+    MatchInfoHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
         collapseExpandButton.setTag(true);
+        collapsedHeight = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 48);
     }
 
     @OnClick(R.id.infoButton) public void onClickInfoButton() {

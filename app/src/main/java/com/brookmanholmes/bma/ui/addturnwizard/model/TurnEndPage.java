@@ -3,16 +3,16 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.brookmanholmes.bma.ui.addturnwizard.fragments.TurnEndFragment;
-import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
-import com.brookmanholmes.bma.wizard.model.BranchPage;
-import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
 import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
+import com.brookmanholmes.bma.ui.addturnwizard.fragments.TurnEndFragment;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+import com.brookmanholmes.bma.wizard.model.BranchPage;
+import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 
 import java.util.ArrayList;
 
@@ -20,8 +20,8 @@ import java.util.ArrayList;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
-    TurnEndHelper turnEndHelper;
-    TurnEndFragment fragment;
+    private final TurnEndHelper turnEndHelper;
+    private TurnEndFragment fragment;
 
     public TurnEndPage(ModelCallbacks callbacks, String title, Bundle matchData) {
         super(callbacks, title);
@@ -63,7 +63,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         fragment = null;
     }
 
-    public void updateFragment(TurnEndOptions options) {
+    private void updateFragment(TurnEndOptions options) {
         if (fragment != null) {
 
             fragment.updateOptions(options.possibleEndings, options.defaultCheck);

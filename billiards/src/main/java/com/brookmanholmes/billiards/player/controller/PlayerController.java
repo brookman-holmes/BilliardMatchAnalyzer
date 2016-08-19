@@ -148,7 +148,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
         else throw new IllegalStateException("Should not be called if the game is not over");
     }
 
-    void addStatsToPlayer(T player) {
+    private void addStatsToPlayer(T player) {
         addSafetyStats(player);
         addShootingStats(player);
 
@@ -208,7 +208,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
             player.addFourBallRun();
     }
 
-    int getTotalBallsMade() {
+    private int getTotalBallsMade() {
         return turn.getShootingBallsMade() + turn.getBreakBallsMade();
     }
 

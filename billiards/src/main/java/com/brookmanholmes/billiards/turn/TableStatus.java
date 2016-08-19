@@ -28,7 +28,7 @@ import static com.brookmanholmes.billiards.game.util.BallStatus.ON_TABLE;
  */
 final public class TableStatus implements ITableStatus {
     final int GAME_BALL;
-    final GameType gameType;
+    private final GameType gameType;
     final private Map<Integer, BallStatus> table;
 
     TableStatus(int size, int gameBall, GameType gameType) throws InvalidBallException {
@@ -42,7 +42,7 @@ final public class TableStatus implements ITableStatus {
         setupTable(size, ON_TABLE);
     }
 
-    TableStatus(int size, int gameBall, GameType gameType, List<Integer> ballsOnTable) throws InvalidBallException {
+    private TableStatus(int size, int gameBall, GameType gameType, List<Integer> ballsOnTable) throws InvalidBallException {
         if (!ballsOnTable.contains(gameBall))
             throw new InvalidBallException("Game ball (" + gameBall + ") " +
                     "not on table, balls on table:" + ballsOnTable.toString());

@@ -43,7 +43,7 @@ abstract public class TurnEndHelper {
 
     abstract boolean lostGame();
 
-    TurnEnd selection() {
+    private TurnEnd selection() {
         if (showWin())
             return TurnEnd.GAME_WON;
         else if (showBreakMiss())

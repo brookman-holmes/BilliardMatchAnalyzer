@@ -11,11 +11,11 @@ import java.util.List;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class TurnBuilder {
-    public TableStatus tableStatus;
+    public final TableStatus tableStatus;
+    public final AdvStats.Builder advStats = new AdvStats.Builder();
     public TurnEnd turnEnd;
     public boolean foul;
     public boolean lostGame;
-    public AdvStats.Builder advStats = new AdvStats.Builder();
 
     public TurnBuilder(GameType gameType) {
         this.tableStatus = TableStatus.newTable(gameType);

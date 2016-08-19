@@ -18,7 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/14/2015.
  */
 public class GameStatusBuilderTest {
-    GameStatus.Builder builder;
+    private GameStatus.Builder builder;
 
     @Before
     public void setUp() {

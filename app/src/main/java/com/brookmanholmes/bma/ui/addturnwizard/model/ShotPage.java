@@ -3,16 +3,16 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.brookmanholmes.bma.ui.addturnwizard.fragments.ShotFragment;
-import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
-import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
-import com.brookmanholmes.bma.wizard.model.Page;
-import com.brookmanholmes.bma.wizard.model.ReviewItem;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TableUtils;
+import com.brookmanholmes.bma.ui.addturnwizard.fragments.ShotFragment;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
+import com.brookmanholmes.bma.wizard.model.Page;
+import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,9 @@ import java.util.List;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
-    ShotFragment fragment;
-    TableStatus tableStatus;
-    PlayerColor playerColor = PlayerColor.OPEN;
+    private final TableStatus tableStatus;
+    private ShotFragment fragment;
+    private PlayerColor playerColor = PlayerColor.OPEN;
 
     public ShotPage(ModelCallbacks callbacks, String title, Bundle matchData) {
         super(callbacks, title);
@@ -59,7 +59,7 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
         return tableStatus.getBallStatuses();
     }
 
-    public BallStatus updateBallStatus(int ball) {
+    public void updateBallStatus(int ball) {
         BallStatus ballStatus = tableStatus.getBallStatus(ball);
 
         if (playerColor == PlayerColor.SOLIDS)
@@ -79,8 +79,6 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
         notifyDataChanged();
         updateFragment();
-
-        return ballStatus;
     }
 
     private PlayerColor setPlayerColorFromBallsMade() {
@@ -159,7 +157,7 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
         fragment = null;
     }
 
-    public void updateFragment() {
+    private void updateFragment() {
         if (fragment != null) {
             if (GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL) {
 

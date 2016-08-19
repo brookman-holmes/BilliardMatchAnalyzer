@@ -3,10 +3,10 @@ package com.brookmanholmes.bma.adaptervh;
 import android.view.View;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.IEarlyWins;
+import com.brookmanholmes.bma.R;
 
 import java.util.Locale;
 
@@ -15,6 +15,7 @@ import butterknife.Bind;
 /**
  * Created by helios on 4/12/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class RunOutsHolder extends MatchInfoHolder {
     @Bind(R.id.tvMaxBallRunsPlayer) TextView tvBreakAndRunPlayer;
     @Bind(R.id.tvMaxBallRunsOpponent) TextView tvBreakAndRunOpponent;

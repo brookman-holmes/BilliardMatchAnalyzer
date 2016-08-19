@@ -24,20 +24,20 @@ import java.util.List;
  * Created by Brookman Holmes on 10/27/2015.
  */
 public class Match<T extends AbstractPlayer> implements IMatch {
-    long matchId;
-    PlayerController<T> playerController;
-    String location;
-    String notes;
-    Date createdOn;
-    Game game;
-    LinkedList<T> player1 = new LinkedList<>();
-    LinkedList<T> player2 = new LinkedList<>();
-    LinkedList<Turn> turns = new LinkedList<>();
-    LinkedList<Turn> undoneTurns = new LinkedList<>();
-    LinkedList<GameStatus> games = new LinkedList<>();
-    private StatsDetail detail;
+    private final PlayerController<T> playerController;
+    private final Date createdOn;
+    private final Game game;
+    private final LinkedList<T> player1 = new LinkedList<>();
+    private final LinkedList<T> player2 = new LinkedList<>();
+    private final LinkedList<Turn> turns = new LinkedList<>();
+    private final LinkedList<Turn> undoneTurns = new LinkedList<>();
+    private final LinkedList<GameStatus> games = new LinkedList<>();
+    private final StatsDetail detail;
+    private long matchId;
+    private String location;
+    private String notes;
 
-    Match(Builder builder, PlayerController<T> playerController) {
+    private Match(Builder builder, PlayerController<T> playerController) {
         location = builder.location;
         notes = builder.notes;
         matchId = builder.id;
@@ -147,7 +147,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         addTurn(turn);
     }
 
-    void updatePlayerStats(Turn turn) {
+    private void updatePlayerStats(Turn turn) {
         Pair<T> pair = playerController.updatePlayerStats(getGameStatus(), turn);
 
         player1.addLast(pair.getPlayer());

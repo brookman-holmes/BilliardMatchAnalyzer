@@ -2,24 +2,24 @@ package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.content.Context;
 
-import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
-import com.brookmanholmes.bma.wizard.model.Page;
-import com.brookmanholmes.bma.wizard.model.PageList;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
+import com.brookmanholmes.bma.wizard.model.Page;
+import com.brookmanholmes.bma.wizard.model.PageList;
 
 /**
  * Created by Brookman Holmes on 1/7/2016.
  */
 public class CreateNewMatchWizardModel extends AbstractWizardModel {
-    String playerName = "Player 1", opponentName = "Player 2";
-    GameType gameType;
-    boolean playTheGhost;
-
-    private Match.Builder builder = new Match.Builder();
+    private final Match.Builder builder = new Match.Builder();
+    private String playerName = "Player 1";
+    private String opponentName = "Player 2";
+    private GameType gameType;
+    private boolean playTheGhost;
 
     public CreateNewMatchWizardModel(Context context) {
         super(context);

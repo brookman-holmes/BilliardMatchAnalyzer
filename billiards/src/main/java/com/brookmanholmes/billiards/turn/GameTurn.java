@@ -10,13 +10,13 @@ import java.util.List;
  * Created by Brookman Holmes on 10/30/2015.
  */
 public class GameTurn implements Turn {
-    final TableStatus tableStatus;
-    final TurnEnd turnEnd;
-    final boolean scratch;
-    final long matchId;
-    final int inningNumber;
-    final boolean gameLost;
-    final AdvStats advStats;
+    private final TableStatus tableStatus;
+    private final TurnEnd turnEnd;
+    private final boolean scratch;
+    private final long matchId;
+    private final int inningNumber;
+    private final boolean gameLost;
+    private final AdvStats advStats;
 
     public GameTurn(int inningNumber, long matchId, boolean scratch, TurnEnd turnEnd, TableStatus tableStatus, boolean isGameLost, AdvStats advStats) {
         this.inningNumber = inningNumber;

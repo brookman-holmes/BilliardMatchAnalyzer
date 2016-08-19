@@ -7,8 +7,9 @@ import com.brookmanholmes.bma.wizard.model.SingleFixedChoicePage;
  * Created by Brookman Holmes on 3/9/2016.
  */
 public class StatDetailPage extends SingleFixedChoicePage implements RequiresPlayerNames, UpdatesMatchBuilder {
-    String playerName = "Player 1-", opponentName = "Player 2-";
-    String startValue;
+    private String playerName = "Player 1-";
+    private String opponentName = "Player 2-";
+    private String startValue;
 
     public StatDetailPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);

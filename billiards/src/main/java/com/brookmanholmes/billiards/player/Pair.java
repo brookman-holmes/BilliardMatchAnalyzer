@@ -4,7 +4,8 @@ package com.brookmanholmes.billiards.player;
  * Created by Brookman Holmes on 2/3/2016.
  */
 public class Pair<T> {
-    private T player, opponent;
+    private final T player;
+    private final T opponent;
 
     public Pair(T player, T opponent) {
         this.player = player;

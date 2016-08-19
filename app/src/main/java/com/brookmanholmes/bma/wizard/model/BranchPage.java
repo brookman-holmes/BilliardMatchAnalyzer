@@ -29,9 +29,9 @@ import java.util.List;
  * next set of steps in the wizard may change.
  */
 public class BranchPage extends SingleFixedChoicePage {
-    protected List<Branch> branches = new ArrayList<>();
+    protected final List<Branch> branches = new ArrayList<>();
 
-    public BranchPage(ModelCallbacks callbacks, String title) {
+    protected BranchPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 
@@ -105,8 +105,8 @@ public class BranchPage extends SingleFixedChoicePage {
     }
 
     protected static class Branch {
+        public final PageList childPageList;
         public String choice;
-        public PageList childPageList;
 
         private Branch(String choice, PageList childPageList) {
             this.choice = choice;

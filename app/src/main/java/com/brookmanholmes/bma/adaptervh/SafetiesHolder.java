@@ -3,9 +3,9 @@ package com.brookmanholmes.bma.adaptervh;
 import android.view.View;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.bma.R;
 
 import java.util.Locale;
 
@@ -14,6 +14,7 @@ import butterknife.Bind;
 /**
  * Created by helios on 4/12/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class SafetiesHolder extends MatchInfoHolder {
     @Bind(R.id.tvSafetiesAttemptedPlayer) TextView tvSafetiesAttemptedPlayer;
     @Bind(R.id.tvSafetiesAttemptedOpponent) TextView tvSafetiesAttemptedOpponent;

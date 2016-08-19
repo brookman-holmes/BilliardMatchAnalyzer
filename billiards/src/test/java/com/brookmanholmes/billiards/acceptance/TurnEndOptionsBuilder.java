@@ -11,7 +11,7 @@ import static com.brookmanholmes.billiards.turn.TurnEnd.MISS;
  * Created by Brookman Holmes on 11/13/2015.
  */
 public class TurnEndOptionsBuilder {
-    private TurnEndOptions.Builder options = new TurnEndOptions.Builder();
+    private final TurnEndOptions.Builder options = new TurnEndOptions.Builder();
 
     public TurnEndOptions wonGame() {
         return options.wonGame(true).defaultOption(GAME_WON).build();

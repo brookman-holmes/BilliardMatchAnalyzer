@@ -23,9 +23,9 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.STATS_LEVEL_KE
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class AddTurnWizardModel extends AbstractWizardModel {
-    private Bundle matchData;
-    private TurnBuilder turnBuilder;
-    private String playerName;
+    private final Bundle matchData;
+    private final TurnBuilder turnBuilder;
+    private final String playerName;
 
     public AddTurnWizardModel(Context context, Bundle matchData) {
         super(context);
@@ -105,7 +105,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         }
     }
 
-    boolean getFoulPossible(TurnEnd turn) {
+    private boolean getFoulPossible(TurnEnd turn) {
         return turn == TurnEnd.MISS
                 || turn == TurnEnd.SAFETY_ERROR
                 || turn == TurnEnd.BREAK_MISS
@@ -181,7 +181,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private Page getAdvTurnEndPage() {
         return new TurnEndPage(this, context.getString(R.string.title_turn_end, playerName), matchData)
                 .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"), getSafetyErrorBranch())
-                .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"), getMissBranchPage(), getWhyMissPage("miss3"))
+                .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"), getMissBranchPage(), getWhyMissPage())
                 .addBranch(context.getString(R.string.turn_break_miss), getFoulPage("break"), getBreakErrorHow(), getBreakErrorWhy())
                 .addBranch(context.getString(R.string.turn_illegal_break), getFoulPage("illegal break"), getIllegalBreakHow(), getIllegalBreakWhy())
                 .addBranch(context.getString(R.string.turn_safety), getSafetyPage())
@@ -210,71 +210,66 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private Page getMissBranchPage() {
         return new MissBranchPage(this, context.getString(R.string.title_miss, playerName))
                 .addBranch(context.getString(R.string.miss_cut),
-                        getCutTypePage("cut miss1"),
-                        getAnglePage("cut miss2"),
-                        getHowMissPage("cut miss3", R.array.how_choices))
+                        getCutTypePage(),
+                        getAnglePage(),
+                        getHowMissPage(R.array.how_choices))
 
                 .addBranch(context.getString(R.string.miss_long),
-                        getHowMissPage("straight miss1", R.array.how_choices))
+                        getHowMissPage(R.array.how_choices))
 
                 .addBranch(context.getString(R.string.miss_bank),
-                        getBankPage("bank miss1"),
-                        getHowMissPage("bank miss2", R.array.how_choices_bank))
+                        getBankPage(),
+                        getHowMissPage(R.array.how_choices_bank))
 
                 .addBranch(context.getString(R.string.miss_kick),
-                        getKickPage("kick miss1"),
-                        getHowMissPage("kick miss2", R.array.how_choices_kick))
+                        getKickPage(),
+                        getHowMissPage(R.array.how_choices_kick))
 
                 .addBranch(context.getString(R.string.miss_combo),
-                        getHowMissPage("combo miss1", R.array.how_choices))
+                        getHowMissPage(R.array.how_choices))
 
                 .addBranch(context.getString(R.string.miss_carom),
-                        getHowMissPage("carom miss1", R.array.how_choices))
+                        getHowMissPage(R.array.how_choices))
 
                 .addBranch(context.getString(R.string.miss_jump),
-                        getHowMissPage("jump miss1", R.array.how_choices))
+                        getHowMissPage(R.array.how_choices))
 
                 .addBranch(context.getString(R.string.miss_masse),
-                        getHowMissPage("masse miss1", R.array.how_choices_masse))
+                        getHowMissPage(R.array.how_choices_masse))
 
                 .setValue(context.getString(R.string.miss_cut))
                 .setParentKey("Miss");
     }
 
-    private Page getWhyMissPage(String parentKey) {
+    private Page getWhyMissPage() {
         return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.why_choices))
-                .setParentKey(parentKey);
+                .setChoices(context.getResources().getStringArray(R.array.why_choices));
     }
 
-    private Page getCutTypePage(String parentKey) {
+    private Page getCutTypePage() {
         return new CutTypePage(this, context.getString(R.string.title_cut_type, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.cut_types))
                 .setValue(context.getResources().getString(R.string.cut_rail))
-                .setRequired(true)
-                .setParentKey(parentKey);
+                .setRequired(true);
     }
 
-    private Page getAnglePage(String parentKey) {
+    private Page getAnglePage() {
         return new AngleTypePage(this, context.getString(R.string.title_angle, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.angles))
                 .setValue(context.getResources().getStringArray(R.array.angles)[0])
-                .setRequired(true)
-                .setParentKey(parentKey);
+                .setRequired(true);
     }
 
-    private Page getBankPage(String parentKey) {
+    private Page getBankPage() {
         return new BankPage(this, context.getString(R.string.title_bank, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.banks))
-                .setParentKey(parentKey);
+                .setChoices(context.getResources().getStringArray(R.array.banks));
     }
 
-    private Page getKickPage(String parentKey) {
+    private Page getKickPage() {
         return new KickPage(this, context.getString(R.string.title_kick_type, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.kicks))
                 .setValue(context.getString(R.string.one_rail))
-                .setRequired(true)
-                .setParentKey(parentKey);
+                .setRequired(true);
     }
 
     private Page getBreakErrorHow() {
@@ -284,8 +279,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     private Page getBreakErrorWhy() {
         return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.why_choices_break))
-                .setParentKey("break miss why");
+                .setChoices(context.getResources().getStringArray(R.array.why_choices_break));
     }
 
     private Page getIllegalBreakHow() {
@@ -295,22 +289,19 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     private Page getIllegalBreakWhy() {
         return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.why_choices_illegal_break))
-                .setParentKey("illegal break why");
+                .setChoices(context.getResources().getStringArray(R.array.why_choices_illegal_break));
     }
 
     private Page getSafetyPage() {
         return new SafetyPage(this, context.getString(R.string.title_safety, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.safety_types))
                 .setValue(context.getString(R.string.safety_full_hook))
-                .setRequired(true)
-                .setParentKey("safety what");
+                .setRequired(true);
     }
 
-    private Page getHowMissPage(String parentKey, @ArrayRes int choices) {
+    private Page getHowMissPage(@ArrayRes int choices) {
         return new HowMissPage(this, context.getString(R.string.title_how_miss, playerName))
-                .setChoices(context.getResources().getStringArray(choices))
-                .setParentKey(parentKey);
+                .setChoices(context.getResources().getStringArray(choices));
     }
 
     public TurnBuilder getTurnBuilder() {

@@ -12,8 +12,9 @@
   limitations under the License.
   -->
 
-<LinearLayout style="@style/WizardPageContainer"
-              xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/WizardPageContainer">
 
     <TextView style="@style/WizardPageTitle" />
 
@@ -26,6 +27,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:saveEnabled="false"
-        android:scrollbarStyle="outsideOverlay" />
+        android:scrollbarStyle="outsideOverlay"
+        tools:ignore="InefficientWeight" />
 
 </LinearLayout>

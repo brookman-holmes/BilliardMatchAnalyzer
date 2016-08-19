@@ -33,7 +33,7 @@ public class TurnEndFragment extends ListFragment {
     private static final String ARG_KEY = "key";
     private static final String ARG_OPTIONS_KEY = "options";
     private static final String ARG_SELECTION_KEY = "selection";
-    ListView listView;
+    private ListView listView;
     private PageFragmentCallbacks callbacks;
     private String key;
     private TurnEndPage page;
@@ -193,7 +193,7 @@ public class TurnEndFragment extends ListFragment {
     }
 
     private static class CustomAdapter extends ArrayAdapter<String> {
-        List<String> objects;
+        final List<String> objects;
         public CustomAdapter(Context context, int resource, int textViewResourceId, List<String> objects) {
             super(context, resource, textViewResourceId, objects);
             this.objects = objects;

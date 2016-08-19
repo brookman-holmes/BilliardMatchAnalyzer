@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/7/2015.
  */
 public class TableUtilsTest {
-    TableStatus tableStatus;
+    private TableStatus tableStatus;
     @Before
     public void setUp() {
         tableStatus = TableStatus.newTable(GameType.BCA_EIGHT_BALL);

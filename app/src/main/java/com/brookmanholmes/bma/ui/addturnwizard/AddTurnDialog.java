@@ -15,7 +15,6 @@ import android.widget.Button;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.addturnwizard.model.AddTurnWizardModel;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.bma.ui.dialog.HelpDialogCreator;

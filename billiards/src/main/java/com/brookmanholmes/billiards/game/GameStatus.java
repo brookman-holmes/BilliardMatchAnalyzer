@@ -154,6 +154,7 @@ public final class GameStatus {
     }
 
     public static final class Builder {
+        private final GameType gameType;
         private int MAX_BALLS;
         private int GAME_BALL;
         private boolean playerAllowedToBreakAgain = false;
@@ -161,7 +162,6 @@ public final class GameStatus {
         private boolean opponentPlayedSuccessfulSafe = false;
         private PlayerTurn turn;
         private PlayerTurn breaker;
-        private GameType gameType;
         private boolean allowPush = false;
         private boolean allowTurnSkip = false;
         private PlayerColor currentPlayerColor = PlayerColor.OPEN;

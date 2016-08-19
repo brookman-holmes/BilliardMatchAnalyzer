@@ -9,10 +9,10 @@ import java.util.List;
 public class TurnEndOptions {
     public final boolean foul;
     public final boolean lostGame;
+    public final TurnEnd defaultCheck;
     public List<TurnEnd> possibleEndings = new ArrayList<>();
-    public TurnEnd defaultCheck;
 
-    TurnEndOptions(Builder builder) {
+    private TurnEndOptions(Builder builder) {
         possibleEndings = builder.turnEnds;
         foul = builder.scratch;
         defaultCheck = builder.checked;
@@ -52,9 +52,9 @@ public class TurnEndOptions {
     }
 
     public static class Builder {
+        private final List<TurnEnd> turnEnds = new ArrayList<>();
         private TurnEnd checked = TurnEnd.MISS;
         private boolean scratch;
-        private List<TurnEnd> turnEnds = new ArrayList<>();
         private boolean lostGame;
 
 

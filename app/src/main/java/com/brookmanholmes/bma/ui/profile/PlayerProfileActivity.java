@@ -43,17 +43,21 @@ import butterknife.ButterKnife;
  */
 public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     public static final String ARG_PLAYER_NAME = "arg player name";
-
+    private final List<Filterable> listeners = new ArrayList<>();
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerName) TextView playerName;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.opponentName) TextView opponentName;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerNameLayout) ViewGroup playerNameLayout;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.toolbar) Toolbar toolbar;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.pager) ViewPager pager;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tabs) TabLayout tabLayout;
-    ViewPagerAdapter adapter;
-    StatFilter filter;
-    String player;
-    List<Filterable> listeners = new ArrayList<>();
+    private StatFilter filter;
+    private String player;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +78,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         playerNameLayout.setVisibility(View.GONE);
         playerName.setText(player);
         opponentName.setText(filter.getOpponent());
-        adapter = new ViewPagerAdapter(getSupportFragmentManager(), player);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), player);
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(this);
@@ -129,7 +133,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         updateListeners();
     }
 
-    void updateListeners() {
+    private void updateListeners() {
         for (Filterable filterable : listeners) {
             filterable.setFilter(filter);
         }
@@ -179,7 +183,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
-        String player;
+        final String player;
 
         public ViewPagerAdapter(FragmentManager fm, String player) {
             super(fm);

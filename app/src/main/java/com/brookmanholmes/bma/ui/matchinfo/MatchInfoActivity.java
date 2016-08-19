@@ -30,6 +30,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.util.BreakType;
+import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
@@ -41,11 +46,6 @@ import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.CustomViewPager;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.turn.Turn;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -60,17 +60,20 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     public static final String TAG_TURNS_FRAGMENT = "turnsFragment";
     private static final String TAG = "MatchInfoActivity";
     private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
+    private final List<UpdateMatchInfo> listeners = new ArrayList<>();
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.toolbar) Toolbar toolbar;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerName) TextView playerName;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.opponentName) TextView opponentName;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.pager) CustomViewPager pager;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.coordinatorLayout) CoordinatorLayout layout;
-
-    DatabaseAdapter db;
-    Match<?> match;
-    Menu menu;
-    PagerAdapter adapter;
-    List<UpdateMatchInfo> listeners = new ArrayList<>();
+    private DatabaseAdapter db;
+    private Match<?> match;
+    private Menu menu;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +94,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             opponentName.setEnabled(false);
 
         setToolbarTitle(match.getGameStatus().gameType);
-        adapter = new PagerAdapter(getSupportFragmentManager(), getMatchId());
+        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), getMatchId());
         pager.setAdapter(adapter);
     }
 
@@ -105,7 +108,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         updateViews();
     }
 
-    @OnClick(R.id.buttonAddTurn) public void addInning(View view) {
+    @OnClick(R.id.buttonAddTurn)
+    public void addInning() {
         showAddTurnDialog();
     }
 
@@ -130,7 +134,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         return getIntent().getExtras().getLong(ARG_MATCH_ID);
     }
 
-    public void updateViews() {
+    private void updateViews() {
         if (menu != null)
             updateMenuItems();
 
@@ -286,7 +290,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         listeners.remove(info);
     }
 
-    void updateFragments() {
+    private void updateFragments() {
         for (UpdateMatchInfo listener : listeners) {
             listener.update(match);
         }
@@ -412,10 +416,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                         }
                     })
                     .create();
-        }
-
-        @Override public void dismiss() {
-            super.dismiss();
         }
 
         @Override public void onCancel(DialogInterface dialog) {
@@ -583,7 +583,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private static class PagerAdapter extends FragmentPagerAdapter {
-        private long matchId;
+        private final long matchId;
 
         public PagerAdapter(FragmentManager fm, long matchId) {
             super(fm);

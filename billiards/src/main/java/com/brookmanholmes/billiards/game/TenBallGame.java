@@ -9,8 +9,8 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
  * Created by Brookman Holmes on 10/27/2015.
  */
 class TenBallGame extends RotationGame {
-    final static int GAME_BALL = 10;
-    final static int MAX_BALLS = 10;
+    private final static int GAME_BALL = 10;
+    private final static int MAX_BALLS = 10;
 
     TenBallGame(PlayerTurn playerTurn, BreakType breakType) {
         super(GameType.BCA_TEN_BALL, playerTurn, breakType, MAX_BALLS, GAME_BALL);

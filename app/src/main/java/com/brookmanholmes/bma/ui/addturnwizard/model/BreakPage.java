@@ -20,8 +20,8 @@ import java.util.ArrayList;
  */
 public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     private static final String showShotPage = "show shot page";
-    private TableStatus tableStatus;
-    private GameType gameType;
+    private final TableStatus tableStatus;
+    private final GameType gameType;
 
     public BreakPage(ModelCallbacks callbacks, String title, String title2, Bundle matchData) {
         super(callbacks, title);

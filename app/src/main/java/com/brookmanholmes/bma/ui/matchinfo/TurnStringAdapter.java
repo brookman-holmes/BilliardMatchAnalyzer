@@ -11,46 +11,38 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
  * Created by Brookman Holmes on 4/30/2016.
  */
 class TurnStringAdapter {
-    Turn turn;
-    String playerName;
-    AbstractPlayer player;
-    StringBuilder turnBuilder = new StringBuilder();
-    String mainColor;
-    String title;
+    private final Turn turn;
+    private final String playerName;
+    private final StringBuilder turnBuilder = new StringBuilder();
 
     public TurnStringAdapter(Turn turn, AbstractPlayer player, String color) {
         this.turn = turn;
-        this.player = player;
 
-        mainColor = color;
-
-        playerName = "<b><font color='" + mainColor + "'>" + player.getName() + "</font></b>";
-
-        title = "%1$s %2$s";
+        playerName = "<b><font color='" + color + "'>" + player.getName() + "</font></b>";
     }
 
-    boolean isBreakShot() {
+    private boolean isBreakShot() {
         return turn.getBreakBallsMade() > 0 ||
                 turn.getTurnEnd() == TurnEnd.BREAK_MISS;
     }
 
-    boolean isBallMadeOnBreak() {
+    private boolean isBallMadeOnBreak() {
         return turn.getBreakBallsMade() > 0;
     }
 
-    boolean isBallMade() {
+    private boolean isBallMade() {
         return turn.getShootingBallsMade() > 0;
     }
 
-    String formatVal(int val) {
+    private String formatVal(int val) {
         return "<b><font color='#57000000'>" + val + "</font></b>";
     }
 
-    String formatVal(String val) {
+    private String formatVal(String val) {
         return "<b><font color='#57000000'>" + val + "</font></b>";
     }
 
-    void buildTurn() {
+    private void buildTurn() {
         if (isBreakShot()) {
             turnBuilder.append(playerName);
             if (isBallMadeOnBreak()) {
@@ -135,7 +127,7 @@ class TurnStringAdapter {
         return Html.fromHtml(turnBuilder.toString());
     }
 
-    void buildAdvStats() {
+    private void buildAdvStats() {
         if (turn.getAdvStats().getShotType().equals("Break shot")) {
             for (String item : turn.getAdvStats().getWhyTypes()) {
                 turnBuilder.append(" (")
@@ -174,7 +166,7 @@ class TurnStringAdapter {
         }
     }
 
-    void appendHowAndWhy() {
+    private void appendHowAndWhy() {
         // format hows
         if (turn.getAdvStats().getHowTypes().size() > 0) {
             turnBuilder.append("<br><br>How: ");

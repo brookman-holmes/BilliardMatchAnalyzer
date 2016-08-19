@@ -42,12 +42,12 @@ import java.util.List;
 import java.util.Set;
 
 public class MultipleChoiceFragment extends ListFragment {
-    protected static final String ARG_KEY = "key";
+    private static final String ARG_KEY = "key";
 
-    protected PageFragmentCallbacks callbacks;
-    protected String key;
-    protected List<String> choices;
-    protected Page page;
+    private PageFragmentCallbacks callbacks;
+    private String key;
+    private List<String> choices;
+    private Page page;
 
     public MultipleChoiceFragment() {
     }

@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 11/6/2015.
  */
+@SuppressWarnings("unused")
 public class ApaNineBallGameTest extends AbstractGameTest {
     @Override public void setUp() {
         game = new ApaNineBallGame();
@@ -74,11 +75,11 @@ public class ApaNineBallGameTest extends AbstractGameTest {
         return GameType.APA_NINE_BALL;
     }
 
-    com.brookmanholmes.billiards.turn.Turn createGameTurn(TurnEnd turnEnd, TableStatus tableStatus) {
+    private com.brookmanholmes.billiards.turn.Turn createGameTurn(TurnEnd turnEnd, TableStatus tableStatus) {
         return new GameTurn(0, 0L, false, turnEnd, tableStatus, false, null);
     }
 
-    TableStatus createTableStatus() {
+    private TableStatus createTableStatus() {
         return TableStatus.newTable(GameType.APA_NINE_BALL);
     }
 }

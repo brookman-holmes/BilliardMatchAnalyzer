@@ -8,8 +8,8 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
  * Created by Brookman Holmes on 10/27/2015.
  */
 class NineBallGame extends RotationGame {
-    final static int GAME_BALL = 9;
-    final static int MAX_BALLS = 9;
+    private final static int GAME_BALL = 9;
+    private final static int MAX_BALLS = 9;
 
     NineBallGame(PlayerTurn playerTurn, BreakType breakType) {
         super(GameType.BCA_NINE_BALL, playerTurn, breakType, MAX_BALLS, GAME_BALL);

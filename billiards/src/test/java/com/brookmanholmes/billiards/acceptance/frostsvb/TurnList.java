@@ -7,7 +7,7 @@ import com.brookmanholmes.billiards.turn.TurnBuilder;
 /**
  * Created by Brookman Holmes on 11/10/2015.
  */
-public class TurnList {
+class TurnList {
     /**
      * Game 1 (0-0)
      */
@@ -99,7 +99,7 @@ public class TurnList {
     //
     static Turn turn27 = turn().miss();
 
-    static TurnBuilder turn() {
+    private static TurnBuilder turn() {
         return new TurnBuilder(GameType.BCA_EIGHT_BALL);
     }
 }

@@ -17,8 +17,8 @@ import static com.brookmanholmes.billiards.game.util.PlayerColor.STRIPES;
  * Created by Brookman Holmes on 10/26/2015.
  */
 class EightBallGame extends Game {
-    final static int GAME_BALL = 8;
-    final static int MAX_BALLS = 15;
+    private final static int GAME_BALL = 8;
+    private final static int MAX_BALLS = 15;
 
     EightBallGame(PlayerTurn turn, BreakType breakType) {
         super(GameType.BCA_EIGHT_BALL, turn, breakType, MAX_BALLS, GAME_BALL);

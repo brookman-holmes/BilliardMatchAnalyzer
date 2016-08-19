@@ -8,13 +8,14 @@ import java.util.List;
  * Created by helios on 3/18/2016.
  */
 public class AdvStats {
-    private String player;
-    private String shotType, shotSubtype;
-    private List<String> howTypes = new ArrayList<>();
-    private List<String> whyTypes = new ArrayList<>();
-    private List<String> angles = new ArrayList<>();
-    private String startingPosition;
-    private boolean use;
+    private final String player;
+    private final String shotType;
+    private final String shotSubtype;
+    private final List<String> howTypes = new ArrayList<>();
+    private final List<String> whyTypes = new ArrayList<>();
+    private final List<String> angles = new ArrayList<>();
+    private final String startingPosition;
+    private final boolean use;
 
     private AdvStats(Builder builder) {
         this.shotType = builder.shotType;
@@ -73,11 +74,11 @@ public class AdvStats {
     }
 
     public static class Builder {
+        private final List<String> angles = new ArrayList<>();
+        private final List<String> howTypes = new ArrayList<>();
+        private final List<String> whyTypes = new ArrayList<>();
         private String player;
         private String shotType = "", shotSubtype = "";
-        private List<String> angles = new ArrayList<>();
-        private List<String> howTypes = new ArrayList<>();
-        private List<String> whyTypes = new ArrayList<>();
         private String startingPosition = "";
         private boolean use;
 

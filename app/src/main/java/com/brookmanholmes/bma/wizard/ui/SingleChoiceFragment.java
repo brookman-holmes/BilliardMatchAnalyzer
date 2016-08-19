@@ -41,10 +41,10 @@ import java.util.List;
 public class SingleChoiceFragment extends ListFragment {
     static final String ARG_TITLE_SIZE = "title size";
     private static final String ARG_KEY = "key";
-    protected PageFragmentCallbacks callbacks;
-    protected List<String> choices;
-    protected String key;
-    protected Page page;
+    private PageFragmentCallbacks callbacks;
+    private List<String> choices;
+    private String key;
+    private Page page;
 
     public SingleChoiceFragment() {
     }

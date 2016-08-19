@@ -11,24 +11,24 @@ import java.util.List;
  * Created by Brookman Holmes on 11/16/2015.
  */
 public class TurnEndOptionsList {
-    static TurnEndOptions option1 = option().wonGame();
-    static TurnEndOptions option2 = option().defaultSelections();
-    static TurnEndOptions option3 = option().defaultSelections();
-    static TurnEndOptions option4 = option().safetyError().miss().scratch().lostGame().scratch().select(TurnEnd.MISS);
-    static TurnEndOptions option5 = option().defaultSelections();
-    static TurnEndOptions option6 = option().wonGame();
-    static TurnEndOptions option7 = option().scratch().missOnBreak().select(TurnEnd.BREAK_MISS);
-    static TurnEndOptions option8 = option().reBreakOnScratch();
-    static TurnEndOptions option9 = option().defaultSelections();
-    static TurnEndOptions option10 = option().wonGame();
-    static TurnEndOptions option11 = option().wonGame();
-    static TurnEndOptions option12 = option().defaultSelections();
-    static TurnEndOptions option13 = option().defaultSelections();
-    static TurnEndOptions option14 = option().wonGame();
-    static TurnEndOptions option15 = option().scratch().missOnBreak().select(TurnEnd.BREAK_MISS);
-    static TurnEndOptions option16 = option().reBreakOnScratch();
-    static TurnEndOptions option17 = option().reBreak();
-    static TurnEndOptions option18 = option().wonGame();
+    private static final TurnEndOptions option1 = option().wonGame();
+    private static final TurnEndOptions option2 = option().defaultSelections();
+    private static final TurnEndOptions option3 = option().defaultSelections();
+    private static final TurnEndOptions option4 = option().safetyError().miss().scratch().lostGame().scratch().select(TurnEnd.MISS);
+    private static final TurnEndOptions option5 = option().defaultSelections();
+    private static final TurnEndOptions option6 = option().wonGame();
+    private static final TurnEndOptions option7 = option().scratch().missOnBreak().select(TurnEnd.BREAK_MISS);
+    private static final TurnEndOptions option8 = option().reBreakOnScratch();
+    private static final TurnEndOptions option9 = option().defaultSelections();
+    private static final TurnEndOptions option10 = option().wonGame();
+    private static final TurnEndOptions option11 = option().wonGame();
+    private static final TurnEndOptions option12 = option().defaultSelections();
+    private static final TurnEndOptions option13 = option().defaultSelections();
+    private static final TurnEndOptions option14 = option().wonGame();
+    private static final TurnEndOptions option15 = option().scratch().missOnBreak().select(TurnEnd.BREAK_MISS);
+    private static final TurnEndOptions option16 = option().reBreakOnScratch();
+    private static final TurnEndOptions option17 = option().reBreak();
+    private static final TurnEndOptions option18 = option().wonGame();
 
     public static List<TurnEndOptions> getOptionsList() {
         return Arrays.asList(
@@ -38,7 +38,7 @@ public class TurnEndOptionsList {
         );
     }
 
-    static TurnEndOptionsBuilder option() {
+    private static TurnEndOptionsBuilder option() {
         return new TurnEndOptionsBuilder();
     }
 }

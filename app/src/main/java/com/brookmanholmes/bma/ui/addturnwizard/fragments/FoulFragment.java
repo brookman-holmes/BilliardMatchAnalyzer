@@ -33,7 +33,7 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
  */
 public class FoulFragment extends ListFragment {
     private static final String ARG_KEY = "key";
-    ListView listView;
+    private ListView listView;
     private PageFragmentCallbacks callbacks;
     private String key;
     private FoulPage page;
@@ -165,7 +165,7 @@ public class FoulFragment extends ListFragment {
     }
 
     private static class CustomAdapter extends ArrayAdapter<String> {
-        List<String> objects;
+        final List<String> objects;
         public CustomAdapter(Context context, int resource, int textViewResourceId, List<String> objects) {
             super(context, resource, textViewResourceId, objects);
             this.objects = objects;

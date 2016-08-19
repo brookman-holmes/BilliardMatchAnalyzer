@@ -7,7 +7,7 @@ import com.brookmanholmes.billiards.game.util.GameType;
  * Created by Brookman Holmes on 11/8/2015.
  */
 public class TurnBuilder {
-    private TableStatus status;
+    private final TableStatus status;
     private boolean scratch = false;
 
     public TurnBuilder(GameType gameType) {

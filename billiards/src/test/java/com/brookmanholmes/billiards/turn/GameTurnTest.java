@@ -20,8 +20,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/5/2015.
  */
 public class GameTurnTest {
-    Turn turn;
-    TableStatus table;
+    private Turn turn;
+    private TableStatus table;
 
     @Before
     public void setUp() {

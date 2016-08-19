@@ -2,7 +2,6 @@ package com.brookmanholmes.bma.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -52,7 +51,9 @@ public class IntroActivity extends BaseActivity {
     private static final String MATCH_LIST_FRAGMENT = "match list fragment";
     private static final String PLAYER_LIST_FRAGMENT = "player list fragment";
 
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.toolbar) Toolbar toolbar;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.createMatch) FloatingActionButton fab;
 
 
@@ -64,7 +65,7 @@ public class IntroActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
 
-        if (findFragmentById(R.id.fragment_container) == null) {
+        if (findFragmentById() == null) {
             replaceFragment(getMatchListFragment(), MATCH_LIST_FRAGMENT);
         }
     }
@@ -93,8 +94,8 @@ public class IntroActivity extends BaseActivity {
         spinner.setAdapter(adapter);
 
         // select the item in the spinner that is the currently shown fragment so that rotation doesn't change it to item 0
-        final String selectedFragment = findFragmentById(R.id.fragment_container) == null ?
-                null : findFragmentById(R.id.fragment_container).getTag();
+        final String selectedFragment = findFragmentById() == null ?
+                null : findFragmentById().getTag();
         if (PLAYER_LIST_FRAGMENT.equals(selectedFragment))
             spinner.setSelection(1);
         else if (MATCH_LIST_FRAGMENT.equals(selectedFragment))
@@ -118,10 +119,6 @@ public class IntroActivity extends BaseActivity {
         });
 
         return true;
-    }
-
-    @Override protected void onPause() {
-        super.onPause();
     }
 
     @OnClick(R.id.createMatch) public void createNewMatch() {
@@ -159,8 +156,8 @@ public class IntroActivity extends BaseActivity {
         return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
-    private Fragment findFragmentById(int id) {
-        return getSupportFragmentManager().findFragmentById(id);
+    private Fragment findFragmentById() {
+        return getSupportFragmentManager().findFragmentById(R.id.fragment_container);
     }
 
     public static class PlayerListFragment extends Fragment {
@@ -191,8 +188,8 @@ public class IntroActivity extends BaseActivity {
         }
 
         private static class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
-            List<AbstractPlayer> players;
-            int[] colors = new int[]{Color.parseColor("#f44336"), Color.parseColor("#9C27B0"),
+            final List<AbstractPlayer> players;
+            final int[] colors = new int[]{Color.parseColor("#f44336"), Color.parseColor("#9C27B0"),
                     Color.parseColor("#3F51B5"), Color.parseColor("#2196F3"), Color.parseColor("#00BCD4"),
                     Color.parseColor("#4CAF50"), Color.parseColor("#CDDC39"), Color.parseColor("#FF9800"),
                     Color.parseColor("#FF5722"), Color.parseColor("#795548"), Color.parseColor("#9E9E9E"),

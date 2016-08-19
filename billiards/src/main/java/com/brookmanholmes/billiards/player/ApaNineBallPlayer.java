@@ -6,10 +6,10 @@ import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
+    private final int rank;
     int points = 0;
     private int winsOnBreak = 0;
     private int earlyWins = 0;
-    private int rank;
     private int deadBalls = 0;
 
     public ApaNineBallPlayer(String name, int rank) {

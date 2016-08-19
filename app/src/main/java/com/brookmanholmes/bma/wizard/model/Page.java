@@ -30,15 +30,15 @@ public abstract class Page implements PageTreeNode {
      */
     public static final String SIMPLE_DATA_KEY = "_";
 
-    protected ModelCallbacks modelCallbacks;
+    final ModelCallbacks modelCallbacks;
 
     /**
      * Current wizard values/selections.
      */
     protected Bundle data = new Bundle();
     protected String title;
-    protected boolean required = false;
     protected String parentKey;
+    private boolean required = false;
 
     protected Page(ModelCallbacks callbacks, String title) {
         modelCallbacks = callbacks;

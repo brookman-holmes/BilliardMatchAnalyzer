@@ -22,7 +22,7 @@ package com.brookmanholmes.bma.wizard.model;
  * @see com.brookmanholmes.bma.wizard.ui.ReviewFragment
  */
 public class ReviewItem {
-    public static final int DEFAULT_WEIGHT = 0;
+    private static final int DEFAULT_WEIGHT = 0;
 
     private int weight;
     private String title;
@@ -33,7 +33,7 @@ public class ReviewItem {
         this(title, displayValue, pageKey, DEFAULT_WEIGHT);
     }
 
-    public ReviewItem(String title, String displayValue, String pageKey, int weight) {
+    private ReviewItem(String title, String displayValue, String pageKey, int weight) {
         this.title = title;
         this.displayValue = displayValue;
         this.pageKey = pageKey;

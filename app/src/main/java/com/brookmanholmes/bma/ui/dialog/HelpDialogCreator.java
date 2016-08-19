@@ -12,9 +12,9 @@ import com.brookmanholmes.bma.R;
  * Created by Brookman Holmes on 3/30/2016.
  */
 public class HelpDialogCreator {
-    Context context;
-    AlertDialog.Builder builder;
-    String playerName;
+    private final Context context;
+    private final AlertDialog.Builder builder;
+    private final String playerName;
 
     public HelpDialogCreator(Context context, String pageTitle, String playerName) {
         this.context = context;

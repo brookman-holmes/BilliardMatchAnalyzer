@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.bma.R;
 
 import butterknife.Bind;
 
@@ -14,15 +14,25 @@ import butterknife.Bind;
  * Created by helios on 4/12/2016.
  */
 public class MatchOverviewHolder extends MatchInfoHolder {
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvWinPercentPlayer) TextView tvWinPctPlayer;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvWinPercentOpponent) TextView tvWinPctOpponent;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvWinTotalsPlayer) TextView tvWinTotalPlayer;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvWinTotalsOpponent) TextView tvWinTotalOpponent;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvAggressivenessRatingPlayer) TextView tvAggressivenessRatingPlayer;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvAggressivenessRatingOpponent) TextView tvAggressivenessRatingOpponent;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvTrueShootingPctPlayer) TextView tvTSPPlayer;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvTrueShootingPctOpponent) TextView tvTSPOpponent;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvTotalShotsPlayer) TextView tvTotalShotsPlayer;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvTotalShotsOpponent) TextView tvTotalShotsOpponent;
 
     public MatchOverviewHolder(View view, Match.StatsDetail detail) {

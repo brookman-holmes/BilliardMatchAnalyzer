@@ -1,17 +1,17 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
+import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.SingleFixedChoicePage;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
 /**
  * Created by helios on 2/20/2016.
  */
 public abstract class RankPage extends SingleFixedChoicePage implements RequiresPlayerNames, UpdatesMatchBuilder {
-    PlayerTurn playerTurn;
-    private String titleFormat;
+    private final PlayerTurn playerTurn;
+    private final String titleFormat;
 
-    public RankPage(ModelCallbacks callbacks, String title, PlayerTurn playerTurn) {
+    RankPage(ModelCallbacks callbacks, String title, PlayerTurn playerTurn) {
         super(callbacks, String.format(title, playerTurn.toString()));
 
         titleFormat = title;

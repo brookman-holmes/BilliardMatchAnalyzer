@@ -16,11 +16,12 @@ import java.util.Date;
  * Created by Brookman Holmes on 6/3/2016.
  */
 public class StatFilter {
-    String opponent;
-    int selectedDate = 0, selectedGameType = 0;
-    Date date;
-    private String[] dates = new String[]{"All time", "Today", "Last week", "Last month", "Last 3 months", "Last 6 months"};
-    private String[] gameTypes;
+    private final String[] dates;
+    private final String[] gameTypes;
+    private String opponent;
+    private int selectedDate = 0;
+    private int selectedGameType = 0;
+    private Date date;
 
     public StatFilter(String opponent, String[] gameTypes, String[] dates) {
         this.opponent = opponent;

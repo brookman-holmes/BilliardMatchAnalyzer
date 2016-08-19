@@ -55,9 +55,13 @@ public class CreateNewMatchActivity extends BaseActivity implements
         ModelCallbacks {
     private static final String TAG = "CreateNewMatchAct";
 
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.pager) ViewPager pager;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.next_button) Button nextButton;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.prev_button) Button prevButton;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.strip) StepPagerStrip pagerStrip;
 
     private MyPagerAdapter pagerAdapter;

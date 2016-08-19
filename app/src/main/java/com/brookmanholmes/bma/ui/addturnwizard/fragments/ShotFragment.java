@@ -11,15 +11,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.util.BallStatus;
+import com.brookmanholmes.billiards.game.util.BreakType;
+import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.ShotPage;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
@@ -42,13 +42,15 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
  */
 public abstract class ShotFragment extends Fragment {
     static final String ARG_KEY = "key";
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.title) TextView title;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.buttonRunOut) Button btnRunOut;
 
     ShotPage page;
-    GameType gameType;
     PageFragmentCallbacks callbacks;
     String key;
+    private GameType gameType;
 
     public ShotFragment() {
     }

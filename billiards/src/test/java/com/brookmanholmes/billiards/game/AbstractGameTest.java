@@ -22,9 +22,9 @@ import static org.mockito.Mockito.when;
 /**
  * Created by Brookman Holmes on 11/5/2015.
  */
+@SuppressWarnings("unused")
 public abstract class AbstractGameTest {
-    Game game, newGame;
-    List<Integer> ballsAtStartOfGameList;
+    Game game;
 
     TurnBuilder turn() {
         return new TurnBuilder(game.getGameType());
@@ -52,7 +52,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void tableContainsAllTheBallsItShould() {
-        ballsAtStartOfGameList = populateList();
+        List<Integer> ballsAtStartOfGameList = populateList();
         game.ballsOnTable.removeAll(ballsAtStartOfGameList);
         assertThat(game.ballsOnTable.isEmpty(), is(true));
     }
@@ -90,7 +90,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void startNewGameReturnsCorrectValues() {
-        newGame = createNewGame();
+        Game newGame = createNewGame();
 
         game.startNewGame(turn().win());
 
@@ -193,7 +193,7 @@ public abstract class AbstractGameTest {
 
     abstract List<Integer> populateList();
 
-    Game newGame(GameType type) {
+    private Game newGame(GameType type) {
         return Game.newGame(type, PlayerTurn.PLAYER, BreakType.WINNER);
     }
 }

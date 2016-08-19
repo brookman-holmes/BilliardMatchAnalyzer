@@ -48,10 +48,15 @@ import butterknife.ButterKnife;
 
 public class PlayerNameFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
     private static final String ARG_KEY = "key";
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerName) MaterialAutoCompleteTextView playerName;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.opponentName) MaterialAutoCompleteTextView opponentName;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.location) MaterialEditText location;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.extra) MaterialEditText extra;
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.cbGhost) CheckBox playTheGhost;
 
     private PageFragmentCallbacks callbacks;
@@ -188,7 +193,8 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             if (!menuVisible) {
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                if (getView() != null)
+                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             }
         }
     }

@@ -59,7 +59,7 @@ public abstract class CursorRecyclerAdapter<ListItemHolder extends RecyclerView.
         init(cursor);
     }
 
-    void init(Cursor c) {
+    private void init(Cursor c) {
         boolean cursorPresent = c != null;
         mCursor = c;
         mDataValid = cursorPresent;
@@ -270,7 +270,7 @@ public abstract class CursorRecyclerAdapter<ListItemHolder extends RecyclerView.
 
 class CursorFilter extends Filter {
 
-    CursorFilterClient mClient;
+    private final CursorFilterClient mClient;
 
     CursorFilter(CursorFilterClient client) {
         mClient = client;

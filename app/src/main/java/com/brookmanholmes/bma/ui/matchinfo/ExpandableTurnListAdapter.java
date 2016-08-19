@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
@@ -19,8 +17,9 @@ import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
-import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
@@ -34,13 +33,11 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 5/1/2016.
  */
 class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<ExpandableTurnListAdapter.GameViewHolder, ExpandableTurnListAdapter.TurnViewHolder> {
-    List<List<Turn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
-    Match<?> match;
-    RecyclerViewExpandableItemManager itemManager;
+    private List<List<Turn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
+    private Match<?> match;
 
-    public ExpandableTurnListAdapter(Match<?> match, RecyclerViewExpandableItemManager itemManager) {
+    public ExpandableTurnListAdapter(Match<?> match) {
         this.match = match;
-        this.itemManager = itemManager;
         setHasStableIds(true);
         data = buildDataSource(match.getTurns());
         // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet

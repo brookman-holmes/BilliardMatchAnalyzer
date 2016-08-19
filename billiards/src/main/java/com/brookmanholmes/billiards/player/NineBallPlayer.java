@@ -4,8 +4,8 @@ package com.brookmanholmes.billiards.player;
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class NineBallPlayer extends AbstractPlayer implements IWinsOnBreak {
-    int earlyWins = 0;
-    int winsOnBreak = 0;
+    private int earlyWins = 0;
+    private int winsOnBreak = 0;
 
     public NineBallPlayer(String name) {
         super(name);

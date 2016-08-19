@@ -14,9 +14,10 @@ import java.util.ArrayList;
  * Created by Brookman Holmes on 1/7/2016.
  */
 public class BreakTypePage extends BranchPage implements RequiresPlayerNames, UpdatesMatchBuilder {
-    String playerName = "Player 1", opponentName = "Player 2";
-    String valueEnding;
-    String firstBreak;
+    private final String valueEnding;
+    private final String firstBreak;
+    private String playerName = "Player 1";
+    private String opponentName = "Player 2";
 
     public BreakTypePage(ModelCallbacks callbacks, String title, Context context) {
         super(callbacks, title);

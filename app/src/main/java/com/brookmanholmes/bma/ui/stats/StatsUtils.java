@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * Created by Brookman Holmes on 3/20/2016.
  */
-public class StatsUtils {
+class StatsUtils {
     private static final int FULL_HOOK = 0,
             PARTIAL_HOOK = 1,
             LONG_T = 2,
@@ -153,7 +153,7 @@ public class StatsUtils {
         return new Pair<>(slow, fast);
     }
 
-    public static List<StatLineItem> getStats(List<AdvStats> stats) {
+    private static List<StatLineItem> getStats(List<AdvStats> stats) {
         List<StatLineItem> list = new ArrayList<>();
         Set<String> whyTypes = new HashSet<>();
         int total = stats.size();
@@ -220,13 +220,11 @@ public class StatsUtils {
     private static int getCountOfSubTypesInList(Context context, List<AdvStats> stats, String item) {
         int count = 0;
 
-        if (item.equals(context.getString(R.string.safety_open)))
+        if (item.equals(context.getString(R.string.safety_open))) {
             for (AdvStats stat : stats)
                 if (stat.getShotType().equals("Safety error"))
                     count++;
-                else
-                    ;
-        else
+        } else
             for (AdvStats stat : stats)
                 if (stat.getShotSubtype().equals(item))
                     count++;
@@ -247,9 +245,9 @@ public class StatsUtils {
     private static class StatLineItem implements Comparable<StatLineItem> {
         final NumberFormat pctf = NumberFormat.getPercentInstance();
 
-        private String description;
+        private final String description;
+        private final int total;
         private int count;
-        private int total;
 
         public StatLineItem(String description, int total) {
             this.description = description;

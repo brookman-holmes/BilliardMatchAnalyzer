@@ -33,22 +33,19 @@ public class StepPagerStrip extends View {
     private static final int[] ATTRS = new int[]{
             android.R.attr.gravity
     };
+    private final float tabWidth;
+    private final float tabHeight;
+    private final float indicatorSpacing;
+    private final float radius;
+    private final float nonCurrentRadius;
+    private final Paint prevTabPaint;
+    private final Paint nextTabPaint;
+    private final Paint selectedTabPaint;
     private int pageCount;
     private int currentPage;
-
     private int gravity = Gravity.LEFT | Gravity.TOP;
-    private float tabWidth;
-    private float tabHeight;
-    private float indicatorSpacing;
-    private float radius;
-    private float nonCurrentRadius;
-
-    private Paint prevTabPaint;
-    private Paint nextTabPaint;
-    private Paint selectedTabPaint;
 
     //private Scroller mScroller;
-
     private OnPageSelectedListener onPageSelectedListener;
 
     public StepPagerStrip(Context context) {

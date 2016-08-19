@@ -6,7 +6,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.util.BreakType;
@@ -16,12 +15,14 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.InvalidBallException;
 import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.bma.R;
 
 import java.util.ArrayList;
 
 /**
  * Created by Brookman Holmes on 1/27/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class MatchDialogHelperUtils {
     public static final String NEW_GAME_KEY = "new_game";
     public static final String OPPOSING_PLAYER_NAME_KEY = "opposing_player_name";

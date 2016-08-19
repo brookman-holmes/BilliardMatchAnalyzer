@@ -6,6 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brookmanholmes.billiards.game.InvalidGameTypeException;
+import com.brookmanholmes.billiards.game.util.BreakType;
+import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.adaptervh.ApaViewHolder;
 import com.brookmanholmes.bma.adaptervh.BaseViewHolder;
@@ -15,29 +19,26 @@ import com.brookmanholmes.bma.adaptervh.MatchOverviewHolder;
 import com.brookmanholmes.bma.adaptervh.RunOutsHolder;
 import com.brookmanholmes.bma.adaptervh.SafetiesHolder;
 import com.brookmanholmes.bma.adaptervh.ShootingPctHolder;
-import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
 
 
 /**
  * Created by Brookman Holmes on 1/13/2016.
  */
 class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
-    public static final int ITEM_MATCH_OVERVIEW = 0;
-    public static final int ITEM_SHOOTING_PCT = 1;
-    public static final int ITEM_SAFETIES = 2;
-    public static final int ITEM_BREAKS = 3;
-    public static final int ITEM_RUN_OUTS = 4;
-    public static final int ITEM_FOOTER = 10;
-    public static final int ITEM_APA_STATS = 5;
+    private static final int ITEM_MATCH_OVERVIEW = 0;
+    private static final int ITEM_SHOOTING_PCT = 1;
+    private static final int ITEM_SAFETIES = 2;
+    private static final int ITEM_BREAKS = 3;
+    private static final int ITEM_RUN_OUTS = 4;
+    private static final int ITEM_FOOTER = 10;
+    private static final int ITEM_APA_STATS = 5;
 
     final int gameBall;
-    final BreakType breakType;
-    Match.StatsDetail detail;
+    final Match.StatsDetail detail;
+    private final BreakType breakType;
     ViewType viewTypeToggle = ViewType.CARDS;
-    AbstractPlayer player, opponent;
+    private AbstractPlayer player;
+    private AbstractPlayer opponent;
 
     MatchInfoRecyclerAdapter(Match match) {
         detail = match.getAdvStats();

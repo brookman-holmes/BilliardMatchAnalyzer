@@ -17,6 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 11/7/2015.
  */
+@SuppressWarnings("unused")
 public abstract class AbstractTurnEndHelperTest {
     TurnEndHelper helper;
     TableStatus tableStatus;

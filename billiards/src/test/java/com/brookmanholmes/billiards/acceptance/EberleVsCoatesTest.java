@@ -22,8 +22,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/10/2015.
  */
 public class EberleVsCoatesTest extends MatchTester {
-    PlayerController<NineBallPlayer> controller;
-    List<Pair<NineBallPlayer>> expectedPairs;
+    private PlayerController<NineBallPlayer> controller;
+    private List<Pair<NineBallPlayer>> expectedPairs;
 
     @Override public void setUp() {
         expectedGameStatusList = GameStatusList.getGameStatuses();

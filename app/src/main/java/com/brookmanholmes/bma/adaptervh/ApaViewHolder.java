@@ -17,7 +17,7 @@ import butterknife.Bind;
 /**
  * Created by helios on 4/12/2016.
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class ApaViewHolder extends MatchInfoHolder{
     @Bind(R.id.tvInningsOpponent) TextView tvInningsOpponent;
     @Bind(R.id.tvDefensiveShotsPlayer) TextView tvDefensiveShotsPlayer;
