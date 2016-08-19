@@ -315,7 +315,7 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
                             @Override public void onClick(DialogInterface dialog, int which) {
                                 database.deleteMatch(getItemId());
                                 swapCursor(database.getMatches(player, opponent));
-                                notifyItemRemoved((int) getItemId());
+                                notifyItemRemoved(getAdapterPosition());
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
