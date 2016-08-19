@@ -70,7 +70,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_match);
 
-        firebaseAnalytics.logEvent("create match", null);
+        firebaseAnalytics.logEvent("create_match", null);
         wizardModel = new CreateNewMatchWizardModel(this);
 
         ButterKnife.bind(this);
@@ -125,7 +125,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         intent.putExtra(ARG_MATCH_ID, matchId);
 
         startActivity(intent);
-        firebaseAnalytics.logEvent("match created", MatchDialogHelperUtils.createBundleFromMatch(match));
+        firebaseAnalytics.logEvent("match_created", MatchDialogHelperUtils.createBundleFromMatch(match));
         finish();
     }
 

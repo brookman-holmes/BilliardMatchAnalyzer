@@ -23,24 +23,24 @@ import java.util.ArrayList;
  * Created by Brookman Holmes on 1/27/2016.
  */
 public class MatchDialogHelperUtils {
-    public static final String NEW_GAME_KEY = "new game";
-    public static final String OPPOSING_PLAYER_NAME_KEY = "opposing player name";
-    public static final String CURRENT_PLAYER_NAME_KEY = "player name";
-    public static final String GAME_TYPE_KEY = "game type";
-    public static final String BALLS_ON_TABLE_KEY = "balls on table";
+    public static final String NEW_GAME_KEY = "new_game";
+    public static final String OPPOSING_PLAYER_NAME_KEY = "opposing_player_name";
+    public static final String CURRENT_PLAYER_NAME_KEY = "player_name";
+    public static final String GAME_TYPE_KEY = "game_type";
+    public static final String BALLS_ON_TABLE_KEY = "balls_on_table";
     public static final String TURN_KEY = "turn";
-    public static final String ALLOW_PUSH_KEY = "allow push";
-    public static final String ALLOW_TURN_SKIP_KEY = "allow skip";
-    public static final String ALLOW_BREAK_AGAIN_KEY = "re break";
-    public static final String CURRENT_PLAYER_COLOR_KEY = "current player color";
+    public static final String ALLOW_PUSH_KEY = "allow_push";
+    public static final String ALLOW_TURN_SKIP_KEY = "allow_skip";
+    public static final String ALLOW_BREAK_AGAIN_KEY = "re_break";
+    public static final String CURRENT_PLAYER_COLOR_KEY = "current_player_color";
     public static final String BREAKER_KEY = "breaker";
-    public static final String CONSECUTIVE_FOULS_KEY = "current player consecutive fouls";
-    public static final String BREAK_TYPE_KEY = "break type";
-    public static final String SUCCESSFUL_SAFE_KEY = "successful safe";
-    public static final String STATS_LEVEL_KEY = "stats level";
-    public static final String OPPONENT_FOULS_KEY = "opponent fouls";
-    public static final String PLAYER_FOULS_KEY = "player fouls";
-    public static final String PLAYER_COLOR_KEY = "player color";
+    public static final String CONSECUTIVE_FOULS_KEY = "current_player_consecutive_fouls";
+    public static final String BREAK_TYPE_KEY = "break_type";
+    public static final String SUCCESSFUL_SAFE_KEY = "successful_safe";
+    public static final String STATS_LEVEL_KEY = "stats_level";
+    public static final String OPPONENT_FOULS_KEY = "opponent_fouls";
+    public static final String PLAYER_FOULS_KEY = "player_fouls";
+    public static final String PLAYER_COLOR_KEY = "player_color";
 
 
     private MatchDialogHelperUtils() {

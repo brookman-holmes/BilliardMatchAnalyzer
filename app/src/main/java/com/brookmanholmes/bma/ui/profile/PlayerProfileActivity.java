@@ -58,7 +58,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_profile);
-        firebaseAnalytics.logEvent("viewed profile", getIntent().getExtras());
+        firebaseAnalytics.logEvent("viewed_profile", getIntent().getExtras());
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);

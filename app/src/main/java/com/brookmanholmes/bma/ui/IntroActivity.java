@@ -55,13 +55,11 @@ public class IntroActivity extends BaseActivity {
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.createMatch) FloatingActionButton fab;
 
-    private SharedPreferences preferences;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
-        preferences = getSharedPreferences("com.brookmanholmes.bma", MODE_PRIVATE);
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null);
 
         setSupportActionBar(toolbar);
@@ -105,10 +103,13 @@ public class IntroActivity extends BaseActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1)
+                if (position == 1) {
                     replaceFragment(getPlayerListFragment(), PLAYER_LIST_FRAGMENT);
-                else
+                    firebaseAnalytics.logEvent("view_player_list", null);
+                } else {
                     replaceFragment(getMatchListFragment(), MATCH_LIST_FRAGMENT);
+                    firebaseAnalytics.logEvent("view_match_list", null);
+                }
             }
 
             @Override public void onNothingSelected(AdapterView<?> parent) {

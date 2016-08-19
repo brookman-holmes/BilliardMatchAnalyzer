@@ -15,6 +15,7 @@ import android.widget.Button;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.addturnwizard.model.AddTurnWizardModel;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.bma.ui.dialog.HelpDialogCreator;
@@ -23,6 +24,7 @@ import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.bma.wizard.ui.StepPagerStrip;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
@@ -78,6 +80,9 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
             throw new ClassCastException("Activity must implement AddTurnListener");
 
         listener = (AddTurnListener) getActivity();
+
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        firebaseAnalytics.logEvent("add_turn_started", null);
     }
 
     @Override public void onSaveInstanceState(Bundle outState) {

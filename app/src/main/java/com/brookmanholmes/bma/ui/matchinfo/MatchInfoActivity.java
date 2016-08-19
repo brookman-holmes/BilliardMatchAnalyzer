@@ -159,18 +159,25 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 turnBuilder.foul,
                 turnBuilder.lostGame,
                 turnBuilder.advStats.build()));
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString("turn_end", turnBuilder.turnEnd.name());
+        bundle.putBoolean("foul", turnBuilder.foul);
+        bundle.putBoolean("lost_game", turnBuilder.lostGame);
+        bundle.putString("ball_statuses", turnBuilder.tableStatus.getBallStatuses().toString());
+        firebaseAnalytics.logEvent("add_turn_finished", bundle);
     }
 
     private void addTurn(Turn turn) {
         db.insertTurn(turn, getMatchId(), match.getTurnCount());
-        //turnListFragment.updateMatch(match);
         updateViews();
     }
 
     private void undoTurn() {
+        firebaseAnalytics.logEvent("turn_undone", null);
         match.undoTurn();
         db.undoTurn(getMatchId(), match.getTurnCount() + 1);
-        //turnListFragment.updateMatch(match);
         updateViews();
     }
 
@@ -190,10 +197,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         if (id == R.id.action_notes) {
             showEditMatchNotesDialog();
+            firebaseAnalytics.logEvent("show_edit_match_notes", null);
         }
 
         if (id == R.id.action_location) {
             showEditMatchLocationDialog();
+            firebaseAnalytics.logEvent("show_edit_match_location", null);
         }
 
         if (id == R.id.action_game_status) {
@@ -207,6 +216,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                         }
                     })
                     .create().show();
+
+            firebaseAnalytics.logEvent("show_game_status", null);
         }
 
         if (id == R.id.action_undo) {
@@ -217,9 +228,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         if (id == R.id.action_redo) {
             Snackbar.make(layout, R.string.redid_turn, Snackbar.LENGTH_SHORT).show();
             addTurn(match.redoTurn());
+            firebaseAnalytics.logEvent("redid_turn", null);
         }
 
         if (item.getItemId() == R.id.action_match_view) {
+            firebaseAnalytics.logEvent("changed_match_view", null);
             if (pager.getCurrentItem() == 0) {
                 pager.setCurrentItem(1);
                 item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_stream));
