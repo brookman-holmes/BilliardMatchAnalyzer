@@ -101,6 +101,7 @@ public class DatabaseAdapter {
     }
 
     public void createSampleMatches() {
+        // TODO: 8/19/2016 REMOVE THESE BEFORE RELEASE, I might not have permission to use these people's names 
         long match = insertMatch(SampleMatchProvider.getHohmannSvbMatch());
         int count = 0;
         for (Turn turn : SampleMatchProvider.getHohmannSvbTurns()) {
