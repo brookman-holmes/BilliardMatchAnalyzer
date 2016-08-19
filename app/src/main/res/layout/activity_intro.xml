@@ -38,7 +38,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:elevation="12dp"
         android:src="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"
+        android:tint="@color/white"
         android:visibility="invisible"
         app:borderWidth="0dp"
         app:layout_behavior="com.brookmanholmes.bma.utils.ScrollAwareFABBehavior"/>

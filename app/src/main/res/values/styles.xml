@@ -45,7 +45,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@android:color/background_light</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="WizardPageTitle">
@@ -88,19 +88,19 @@
     </style>
 
     <style name="CustomDialogTransitionTheme" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
     <style name="SlideInFromLeftDialogTransitionTheme" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:windowEnterAnimation">@anim/slide_in_from_left</item>
         <item name="android:windowExitAnimation">@anim/slide_out_from_left</item>
     </style>
 
     <style name="SlideInFromRightDialogTransitionTheme" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:windowEnterAnimation">@anim/slide_in_from_right</item>
         <item name="android:windowExitAnimation">@anim/slide_out_from_right</item>
     </style>

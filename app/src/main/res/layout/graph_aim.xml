@@ -62,7 +62,7 @@
                 android:background="@color/colorAccent"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="12sp" />
 
             <TextView
@@ -73,7 +73,7 @@
                 android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>

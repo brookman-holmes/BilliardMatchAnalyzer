@@ -67,9 +67,7 @@ public class AdvStatsDialog extends DialogFragment {
 
         toolbar.setTitle(getString(R.string.title_advanced_stats, getArguments().getString(ARG_PLAYER_NAME, "ERROR NO NAME PRESENT IN ARGUMENTS")));
         toolbar.setTitleTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
-        Drawable backArrow = ActivityCompat.getDrawable(getContext(), R.drawable.ic_arrow_back_24dp);
-        backArrow.setTint(ActivityCompat.getColor(getContext(), android.R.color.white));
-        toolbar.setNavigationIcon(backArrow);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 dismiss();
