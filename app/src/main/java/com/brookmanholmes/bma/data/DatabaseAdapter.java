@@ -100,6 +100,20 @@ public class DatabaseAdapter {
         return table;
     }
 
+    public void createSampleMatches() {
+        long match = insertMatch(SampleMatchProvider.getHohmannSvbMatch());
+        int count = 0;
+        for (Turn turn : SampleMatchProvider.getHohmannSvbTurns()) {
+            insertTurn(turn, match, count++);
+        }
+
+        match = insertMatch(SampleMatchProvider.getShawRobertsMatch());
+        count = 0;
+        for (Turn turn : SampleMatchProvider.getShawRobertsTurns()) {
+            insertTurn(turn, match, count++);
+        }
+    }
+
     public List<String> getOpponentsOf(String playerName) {
         List<String> names = new ArrayList<>();
         Cursor c = getMatches(playerName, null);

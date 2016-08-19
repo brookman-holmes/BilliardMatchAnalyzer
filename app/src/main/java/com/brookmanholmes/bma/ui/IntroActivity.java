@@ -2,6 +2,7 @@ package com.brookmanholmes.bma.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -61,6 +62,14 @@ public class IntroActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
+
+        SharedPreferences preferences = getSharedPreferences("com.brookmanholmes.bma", MODE_PRIVATE);
+        if (preferences.getBoolean("first_run2", true)) {
+            DatabaseAdapter db = new DatabaseAdapter(this);
+            db.createSampleMatches();
+            preferences.edit().putBoolean("first_run2", false).apply();
+        }
+
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null);
 
         setSupportActionBar(toolbar);
