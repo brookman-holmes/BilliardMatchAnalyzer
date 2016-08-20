@@ -42,10 +42,12 @@ import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.bma.ui.dialog.GameStatusViewBuilder;
+import com.brookmanholmes.bma.ui.dialog.SubmitFeedbackDialog;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.CustomViewPager;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;

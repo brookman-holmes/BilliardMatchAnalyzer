@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.support.annotation.LayoutRes;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.brookmanholmes.bma.adaptervh.MatchOverviewHolder;
 import com.brookmanholmes.bma.adaptervh.RunOutsHolder;
 import com.brookmanholmes.bma.adaptervh.SafetiesHolder;
 import com.brookmanholmes.bma.adaptervh.ShootingPctHolder;
+import com.brookmanholmes.bma.utils.ConversionUtils;
 
 
 /**
@@ -30,15 +32,15 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int ITEM_SAFETIES = 2;
     private static final int ITEM_BREAKS = 3;
     private static final int ITEM_RUN_OUTS = 4;
-    private static final int ITEM_FOOTER = 10;
     private static final int ITEM_APA_STATS = 5;
+    private static final int ITEM_FOOTER = 10;
 
     final int gameBall;
     final Match.StatsDetail detail;
     private final BreakType breakType;
-    ViewType viewTypeToggle = ViewType.CARDS;
     private AbstractPlayer player;
     private AbstractPlayer opponent;
+    private boolean listView = false;
 
     MatchInfoRecyclerAdapter(Match match) {
         detail = match.getAdvStats();
@@ -46,11 +48,6 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         this.gameBall = match.getGameStatus().GAME_BALL;
         player = match.getPlayer();
         opponent = match.getOpponent();
-    }
-
-    MatchInfoRecyclerAdapter(Match match, ViewType viewType) {
-        this(match);
-        viewTypeToggle = viewType;
     }
 
     public static MatchInfoRecyclerAdapter createMatchAdapter(Match<?> match) {
@@ -70,26 +67,9 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public static MatchInfoRecyclerAdapter createMatchAdapterWithCardViews(Match<?> match) {
-        switch (match.getGameStatus().gameType) {
-            case BCA_NINE_BALL:
-                return new MatchInfoRecyclerAdapter(match, ViewType.CARDS);
-            case BCA_EIGHT_BALL:
-                return new MatchInfoRecyclerAdapter(match, ViewType.CARDS);
-            case BCA_TEN_BALL:
-                return new MatchInfoRecyclerAdapter(match, ViewType.CARDS);
-            case APA_NINE_BALL:
-                return new ApaMatchInfoRecyclerAdapter(match, ViewType.CARDS);
-            case APA_EIGHT_BALL:
-                return new ApaMatchInfoRecyclerAdapter(match, ViewType.CARDS);
-            default:
-                throw new InvalidGameTypeException(match.getGameStatus().gameType.toString());
-        }
-    }
-
     @Override public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(getLayoutResource(viewType), parent, false);
-        view.setTag(viewType);
+
         return getMatchInfoHolderByViewType(view, viewType);
     }
 
@@ -105,42 +85,24 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     @LayoutRes int getLayoutResource(int viewType) {
-        if (viewTypeToggle == ViewType.CARDS) {
-            switch (viewType) {
-                case ITEM_RUN_OUTS:
-                    return R.layout.card_run_outs;
-                case ITEM_BREAKS:
-                    return R.layout.card_breaks;
-                case ITEM_MATCH_OVERVIEW:
-                    return R.layout.card_match_overview;
-                case ITEM_SAFETIES:
-                    return R.layout.card_safeties;
-                case ITEM_SHOOTING_PCT:
-                    return R.layout.card_shooting_pct;
-                case ITEM_FOOTER:
-                    return R.layout.footer;
-                default:
-                    throw new IllegalArgumentException("No such view type: " + viewType);
-            }
-        } else {
-            switch (viewType) {
-                case ITEM_RUN_OUTS:
-                    return R.layout.plain_runs;
-                case ITEM_BREAKS:
-                    return R.layout.plain_breaks;
-                case ITEM_MATCH_OVERVIEW:
-                    return R.layout.plain_match_overview;
-                case ITEM_SAFETIES:
-                    return R.layout.plain_safeties;
-                case ITEM_SHOOTING_PCT:
-                    return R.layout.plain_shooting;
-                case ITEM_FOOTER:
-                    return R.layout.footer;
-                default:
-                    throw new IllegalArgumentException("No such view type: " + viewType);
-            }
+        switch (viewType) {
+            case ITEM_RUN_OUTS:
+                return R.layout.card_run_outs;
+            case ITEM_BREAKS:
+                return R.layout.card_breaks;
+            case ITEM_MATCH_OVERVIEW:
+                return R.layout.card_match_overview;
+            case ITEM_SAFETIES:
+                return R.layout.card_safeties;
+            case ITEM_SHOOTING_PCT:
+                return R.layout.card_shooting_pct;
+            case ITEM_FOOTER:
+                return R.layout.footer;
+            default:
+                throw new IllegalArgumentException("No such view type: " + viewType);
         }
     }
+
 
     @Override public int getItemViewType(int position) {
         if (breakType == BreakType.GHOST) {
@@ -186,21 +148,12 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         notifyDataSetChanged();
     }
 
-    enum ViewType {
-        CARDS,
-        LIST
-    }
-
     static class ApaMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter {
         int innings;
 
         ApaMatchInfoRecyclerAdapter(Match match) {
             super(match);
             this.innings = match.getGameStatus().innings;
-        }
-
-        ApaMatchInfoRecyclerAdapter(Match match, ViewType viewType) {
-            super(match, viewType);
         }
 
         @Override public void onBindViewHolder(BaseViewHolder holder, int position) {
@@ -224,21 +177,13 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
 
         @Override int getLayoutResource(int viewType) {
-            if (viewTypeToggle == ViewType.CARDS) {
-                switch (viewType) {
-                    case ITEM_APA_STATS:
-                        return R.layout.card_apa_stats;
-                    default:
-                        return super.getLayoutResource(viewType);
-                }
-            } else {
-                switch (viewType) {
-                    case ITEM_APA_STATS:
-                        return R.layout.plain_apa_stats;
-                    default:
-                        return super.getLayoutResource(viewType);
-                }
+            switch (viewType) {
+                case ITEM_APA_STATS:
+                    return R.layout.card_apa_stats;
+                default:
+                    return super.getLayoutResource(viewType);
             }
+
         }
 
         @Override public int getItemCount() {

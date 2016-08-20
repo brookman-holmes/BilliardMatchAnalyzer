@@ -41,4 +41,9 @@
         android:orderInCategory="0"
         android:title="Toggle view"
         app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_submit_feedback"
+          android:orderInCategory="500"
+          android:title="@string/submit_feedback"
+          app:showAsAction="never"/>
 </menu>

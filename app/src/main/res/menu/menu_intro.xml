@@ -2,10 +2,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".ui.IntroActivity">
-    <item
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/spinner"
@@ -13,4 +9,9 @@
         app:actionViewClass="android.widget.Spinner"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"/>
+
+    <item android:id="@+id/action_submit_feedback"
+          android:orderInCategory="500"
+          android:title="@string/submit_feedback"
+          app:showAsAction="never"/>
 </menu>
