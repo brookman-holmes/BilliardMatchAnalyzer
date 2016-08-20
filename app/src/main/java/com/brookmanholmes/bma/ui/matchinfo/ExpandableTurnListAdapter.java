@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui.matchinfo;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.TintableBackgroundView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -239,10 +240,10 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 ImageView childAt = (ImageView) ballContainer.getChildAt(ball - 1);
                 if (ballIsMade(tableStatus.getBallStatus(ball))) {
                     childAt.setVisibility(View.VISIBLE);
-                    childAt.getDrawable().setTint(ContextCompat.getColor(itemView.getContext(), getBallColorTint(ball)));
+                    childAt.getBackground().setTint(ContextCompat.getColor(itemView.getContext(), getBallColorTint(ball)));
                 } else if (ballIsDead(tableStatus.getBallStatus(ball))) {
                     childAt.setVisibility(View.VISIBLE);
-                    childAt.getDrawable().setTint(ContextCompat.getColor(itemView.getContext(), R.color.dead_ball));
+                    childAt.getBackground().setTint(ContextCompat.getColor(itemView.getContext(), R.color.dead_ball));
                 } else {
                     ballContainer.getChildAt(ball - 1).setVisibility(View.GONE);
                 }
