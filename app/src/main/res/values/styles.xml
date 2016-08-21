@@ -157,4 +157,14 @@
         <item name="android:visibility">gone</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="match_info_grid">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:columnCount">3</item>
+        <item name="android:columnOrderPreserved">true</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:useDefaultMargins">true</item>
+    </style>
 </resources>

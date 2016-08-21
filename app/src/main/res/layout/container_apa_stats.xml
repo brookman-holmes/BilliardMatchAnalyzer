@@ -14,13 +14,8 @@
 
     <GridLayout
         android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:rowCount="7"
-        android:useDefaultMargins="true">
+        style="@style/match_info_grid"
+        android:rowCount="7">
 
         <TextView
             android:id="@+id/tvRankPlayer"

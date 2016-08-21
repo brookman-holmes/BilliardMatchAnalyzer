@@ -1,7 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.support.annotation.LayoutRes;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +19,6 @@ import com.brookmanholmes.bma.adaptervh.MatchOverviewHolder;
 import com.brookmanholmes.bma.adaptervh.RunOutsHolder;
 import com.brookmanholmes.bma.adaptervh.SafetiesHolder;
 import com.brookmanholmes.bma.adaptervh.ShootingPctHolder;
-import com.brookmanholmes.bma.utils.ConversionUtils;
-
-import java.util.List;
 
 
 /**
@@ -76,11 +72,6 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override public void onBindViewHolder(BaseViewHolder holder, int position) {
         holder.bind(player, opponent);
-    }
-
-    @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, List<Object> payloads) {
-        super.onBindViewHolder(holder, position, payloads);
     }
 
     @Override public int getItemCount() {
