@@ -7,7 +7,10 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
+import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
+import com.brookmanholmes.billiards.player.Players;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.TableStatus;
@@ -122,7 +125,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
             player.setName(newName);
     }
 
-    public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
+    @Override public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
         ITurn turn = new Turn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost, advStats);
         undoneTurns.clear();
         addTurn(turn);
@@ -130,7 +133,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         return turn;
     }
 
-    public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
+    @Override public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
         ITurn turn = new Turn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost, new AdvStats.Builder("").build());
         undoneTurns.clear();
         addTurn(turn);
@@ -154,6 +157,12 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         if (game.getGameStatus().breakType == BreakType.GHOST && turn.getTurnEnd() != TurnEnd.GAME_WON) {
             insertGameWonForGhost();
         }
+
+        matchOver = isPlayersRaceFinished();
+    }
+
+    private boolean isPlayersRaceFinished() {
+        return Players.isMatchOver(getPlayer(), getOpponent());
     }
 
     private void insertGameWonForGhost() {

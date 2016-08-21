@@ -15,6 +15,8 @@ import java.util.List;
 interface IMatch<T extends AbstractPlayer> {
     ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats);
 
+    ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost);
+
     T getPlayer();
 
     T getOpponent();
