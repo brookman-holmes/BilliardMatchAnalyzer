@@ -1,7 +1,8 @@
 package com.brookmanholmes.billiards.game;
 
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.turn.GameTurn;
+import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
@@ -45,28 +46,28 @@ public class ApaNineBallGameTest extends AbstractGameTest {
     @Test
     public void getPointsFromTurnReturns0() {
         TableStatus table = createTableStatus();
-        com.brookmanholmes.billiards.turn.Turn turn = createGameTurn(TurnEnd.BREAK_MISS, table);
+        ITurn turn = createGameTurn(TurnEnd.BREAK_MISS, table);
 
         assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(0));
     }
 
     @Test
     public void getPointsFromTurnWithBreakBallsReturns3() {
-        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(1, 2, 3).miss();
+        ITurn turn = turn().breakBalls(1, 2, 3).miss();
 
         assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(3));
     }
 
     @Test
     public void getPointsFromTurnWithGameBallMadeReturns7() {
-        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(1, 2, 3).madeBalls(4, 5, 9).win();
+        ITurn turn = turn().breakBalls(1, 2, 3).madeBalls(4, 5, 9).win();
 
         assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(7));
     }
 
     @Test
     public void getPointsFromTurnWithGameBallMadeOnBreakReturns2() {
-        com.brookmanholmes.billiards.turn.Turn turn = turn().madeBalls(9).win();
+        ITurn turn = turn().madeBalls(9).win();
 
         assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(2));
     }
@@ -75,8 +76,8 @@ public class ApaNineBallGameTest extends AbstractGameTest {
         return GameType.APA_NINE_BALL;
     }
 
-    private com.brookmanholmes.billiards.turn.Turn createGameTurn(TurnEnd turnEnd, TableStatus tableStatus) {
-        return new GameTurn(0, 0L, false, turnEnd, tableStatus, false, null);
+    private ITurn createGameTurn(TurnEnd turnEnd, TableStatus tableStatus) {
+        return new Turn(0, 0L, false, turnEnd, tableStatus, false, null);
     }
 
     private TableStatus createTableStatus() {

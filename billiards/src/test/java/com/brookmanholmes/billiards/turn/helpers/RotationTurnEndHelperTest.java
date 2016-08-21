@@ -17,12 +17,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
     @Override public void setUp() {
-        helper = TurnEndHelper.create(GameType.BCA_NINE_BALL);
         tableStatus = TableStatus.newTable(GameType.BCA_NINE_BALL);
-        gameType = GameType.BCA_NINE_BALL;
-        GAME_BALL = 9;
         showScratchOnDeadBall = true;
-        gameBuilder = new GameStatus.Builder(gameType);
+        gameBuilder = new GameStatus.Builder(GameType.BCA_NINE_BALL);
     }
 
     @Override void setupLossStuff() {
@@ -32,29 +29,22 @@ public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
 
     @Test
     public void showPushOnBallsMadeOnBreak() {
-        helper.game = gameBuilder.allowPush().newGame().build();
         tableStatus.setBallTo(BallStatus.MADE_ON_BREAK, 1);
-        setupTurn();
-        helper.nextInning = turn;
+        helper = TurnEndHelper.create(gameBuilder.allowPush().newGame().build(), tableStatus);
 
         assertThat(helper.showPush(), is(true));
     }
 
     @Test
     public void dontShowPushOnBallsMadeOnBreakWithMoreBallsMade() {
-        helper.game = gameBuilder.allowPush().build();
-        setupTurn();
-        helper.nextInning = turn;
+        helper = TurnEndHelper.create(gameBuilder.allowPush().build(), tableStatus);
 
         assertThat(helper.showPush(), is(true));
     }
 
     @Test
     public void showTurnSkipAfterPush() {
-        setupTurn();
-        helper.nextInning = turn;
-        helper.game = gameBuilder.allowSkip().build();
-
+        helper = TurnEndHelper.create(gameBuilder.allowSkip().build(), tableStatus);
         assertThat(helper.showTurnSkip(), is(true));
 
         TurnEndOptions options = helper.createTurnEndOptionsBuilder().build();
@@ -65,9 +55,7 @@ public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
     @Test
     public void dontShowTurnSkipAfterPushWithMoreBallsMade() {
         tableStatus.setBallTo(BallStatus.MADE, 3);
-        setupTurn();
-        helper.nextInning = turn;
-        helper.game = gameBuilder.allowSkip().build();
+        helper = TurnEndHelper.create(gameBuilder.allowSkip().build(), tableStatus);
 
         assertThat(helper.showTurnSkip(), is(false));
     }

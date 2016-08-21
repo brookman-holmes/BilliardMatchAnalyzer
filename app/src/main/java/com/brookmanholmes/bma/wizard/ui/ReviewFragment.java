@@ -28,7 +28,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.player.ApaRaceToHelper;
+import com.brookmanholmes.billiards.player.Players;
 import com.brookmanholmes.billiards.player.RaceTo;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
@@ -130,7 +130,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
                 int playerRank = getPlayerRank();
                 int opponentRank = getOpponentRank();
 
-                RaceTo raceTo = ApaRaceToHelper.apa8BallRaceTo(playerRank, opponentRank);
+                RaceTo raceTo = Players.apa8BallRaceTo(playerRank, opponentRank);
 
                 setPlayerRaceToReviewItem(raceTo.getPlayerRaceTo());
                 setOpponentRaceToReviewItem(raceTo.getOpponentRaceTo());

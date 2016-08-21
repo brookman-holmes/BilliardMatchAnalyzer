@@ -20,13 +20,6 @@ public class RaceTo {
         return opponentRaceTo;
     }
 
-    @Override public String toString() {
-        return "RaceTo{" +
-                "playerRaceTo=" + playerRaceTo +
-                "\n opponentRaceTo=" + opponentRaceTo +
-                '}';
-    }
-
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

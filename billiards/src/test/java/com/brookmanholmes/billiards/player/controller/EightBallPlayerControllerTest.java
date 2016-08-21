@@ -5,7 +5,7 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.EightBallPlayer;
-import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -27,15 +27,15 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<
         assertThat(playerController.getMaximumBallsMakeable(), is(8));
     }
 
-    @Override Turn breakAndRunTurn() {
+    @Override ITurn breakAndRunTurn() {
         return turnBuilder.breakBalls(1, 3, 9).madeBalls(10, 11, 12, 13, 14, 15, 8).win();
     }
 
-    @Override Turn tableRunTurn() {
+    @Override ITurn tableRunTurn() {
         return turnBuilder.madeBalls(1, 2, 3, 4, 5, 6, 7, 8).win();
     }
 
-    @Override Turn fourBallRunTurn() {
+    @Override ITurn fourBallRunTurn() {
         return turnBuilder.offTable(1, 2, 3).madeBalls(4, 5, 6, 7, 8).win();
     }
 
@@ -47,7 +47,7 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<
         return player;
     }
 
-    @Override Turn failedRunOutTurn() {
+    @Override ITurn failedRunOutTurn() {
         return turnBuilder.breakBalls(1, 2, 3).miss();
     }
 

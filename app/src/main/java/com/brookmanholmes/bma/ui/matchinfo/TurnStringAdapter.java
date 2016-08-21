@@ -4,18 +4,18 @@ import android.text.Html;
 import android.text.Spanned;
 
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 /**
  * Created by Brookman Holmes on 4/30/2016.
  */
 class TurnStringAdapter {
-    private final Turn turn;
+    private final ITurn turn;
     private final String playerName;
     private final StringBuilder turnBuilder = new StringBuilder();
 
-    public TurnStringAdapter(Turn turn, AbstractPlayer player, String color) {
+    public TurnStringAdapter(ITurn turn, AbstractPlayer player, String color) {
         this.turn = turn;
 
         playerName = "<b><font color='" + color + "'>" + player.getName() + "</font></b>";

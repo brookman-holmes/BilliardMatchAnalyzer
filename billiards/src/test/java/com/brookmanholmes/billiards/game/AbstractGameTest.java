@@ -3,6 +3,8 @@ package com.brookmanholmes.billiards.game;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.turn.ITableStatus;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 import com.brookmanholmes.billiards.turn.TurnEnd;
@@ -59,7 +61,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void getGameWinnerReturnsPlayer() {
-        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
+        ITurn mockedTurn = mock(ITurn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_WON);
 
         game.turn = PlayerTurn.PLAYER;
@@ -69,7 +71,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void getGameWinnerReturnsOpponent() {
-        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
+        ITurn mockedTurn = mock(ITurn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
 
         game.turn = PlayerTurn.PLAYER;
@@ -79,7 +81,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void isGameOverReturnsTrue() {
-        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
+        ITurn mockedTurn = mock(ITurn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_WON);
         assertThat(game.isGameOver(mockedTurn), is(true));
 
@@ -113,7 +115,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void setAllowPlayerToBreakAgainReturnsFalse() {
-        com.brookmanholmes.billiards.turn.Turn turn = turn().deadOnBreak(1, 7).breakMiss();
+        ITurn turn = turn().deadOnBreak(1, 7).breakMiss();
 
         assertThat(game.setAllowPlayerToBreakAgain(turn), is(false));
 
@@ -124,7 +126,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void setOpponentPlayedSuccessfulSafeReturnsTrue() {
-        com.brookmanholmes.billiards.turn.Turn turn = turn().safety();
+        ITurn turn = turn().safety();
 
         assertThat(game.setOpponentPlayedSuccessfulSafe(turn), is(true));
 
@@ -134,7 +136,7 @@ public abstract class AbstractGameTest {
 
     @Test
     public void setCurrentPlayerConsecutiveFouls() {
-        com.brookmanholmes.billiards.turn.Turn turn = turn().scratch().miss();
+        ITurn turn = turn().scratch().miss();
 
         game.addTurn(turn().scratch().breakMiss());
         assertThat(game.consecutivePlayerFouls, is(1));
@@ -182,9 +184,9 @@ public abstract class AbstractGameTest {
     public void getCurrentTableStatusReturnsCorrectBalls() {
         game.ballsOnTable.removeAll(Arrays.asList(1, 2, 3, 7));
 
-        TableStatus table = game.getCurrentTableStatus();
+        ITableStatus table = game.getCurrentTableStatus();
 
-        assertThat(table.getBallsThatAreOffTable(), is(Arrays.asList(1, 2, 3, 7)));
+        assertThat(table.getBallsToRemoveFromTable(), is(Arrays.asList(1, 2, 3, 7)));
     }
 
     abstract GameType thisGamesGameType();

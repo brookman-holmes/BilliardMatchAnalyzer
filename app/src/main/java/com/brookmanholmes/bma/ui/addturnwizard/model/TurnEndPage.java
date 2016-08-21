@@ -20,22 +20,16 @@ import java.util.ArrayList;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
-    private final TurnEndHelper turnEndHelper;
     private TurnEndFragment fragment;
 
     public TurnEndPage(ModelCallbacks callbacks, String title, Bundle matchData) {
         super(callbacks, title);
         data.putAll(matchData);
         setRequired(true);
-
-        if (BreakType.valueOf(data.getString(MatchDialogHelperUtils.BREAK_TYPE_KEY)) == BreakType.GHOST)
-            turnEndHelper = TurnEndHelper.createGhostHelper();
-        else
-            turnEndHelper = TurnEndHelper.create(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)));
     }
 
     @Override public Fragment createFragment() {
-        TurnEndOptions options = turnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.createGameStatusFromBundle(data),
+        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.createGameStatusFromBundle(data),
                 TableStatus.newTable(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)), data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY)));
         ArrayList<String> stringList = new ArrayList<>();
         for (TurnEnd ending : options.possibleEndings) {
@@ -46,7 +40,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     }
 
     @Override public void getNewTurnInfo(AddTurnWizardModel model) {
-        TurnEndOptions options = turnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.createGameStatusFromBundle(data),
+        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.createGameStatusFromBundle(data),
                 model.getTableStatus());
         updateFragment(options);
     }

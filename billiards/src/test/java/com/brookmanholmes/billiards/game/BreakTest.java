@@ -2,6 +2,7 @@ package com.brookmanholmes.billiards.game;
 
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.junit.Test;
@@ -108,26 +109,26 @@ public class BreakTest {
         game = new NineBallGame(PlayerTurn.PLAYER, BreakType.ALTERNATE);
     }
 
-    private com.brookmanholmes.billiards.turn.Turn createMockTurnWithWin() {
-        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
+    private ITurn createMockTurnWithWin() {
+        ITurn mockedTurn = mock(ITurn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_WON);
         return mockedTurn;
     }
 
-    private com.brookmanholmes.billiards.turn.Turn createMockTurnWithLoss() {
-        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
+    private ITurn createMockTurnWithLoss() {
+        ITurn mockedTurn = mock(ITurn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
         when(mockedTurn.isGameLost()).thenReturn(true);
         return mockedTurn;
     }
 
-    private com.brookmanholmes.billiards.turn.Turn createMockTurnWithTheseBallsMade(boolean scratch, int... balls) {
+    private ITurn createMockTurnWithTheseBallsMade(boolean scratch, int... balls) {
         List<Integer> ballsMade = new ArrayList<>();
         for (int ball : balls) {
             ballsMade.add(ball);
         }
 
-        com.brookmanholmes.billiards.turn.Turn mockedTurn = mock(com.brookmanholmes.billiards.turn.Turn.class);
+        ITurn mockedTurn = mock(ITurn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
         when(mockedTurn.isFoul()).thenReturn(scratch);
         when(mockedTurn.getBallsToRemoveFromTable()).thenReturn(ballsMade);

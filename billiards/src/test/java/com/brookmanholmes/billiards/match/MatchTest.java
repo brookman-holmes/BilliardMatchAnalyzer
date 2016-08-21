@@ -6,7 +6,7 @@ import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.EightBallPlayer;
-import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 
 import org.junit.Before;
@@ -34,9 +34,9 @@ public class MatchTest {
     private AbstractPlayer player1;
     private AbstractPlayer player2;
 
-    private static List<Turn> turns() {
+    private static List<ITurn> turns() {
         TurnBuilder turnBuilder = new TurnBuilder(GameType.BCA_EIGHT_BALL);
-        List<Turn> turns = new ArrayList<>();
+        List<ITurn> turns = new ArrayList<>();
 
         turns.add(turnBuilder.breakMiss());
         turns.add(turnBuilder.miss());
@@ -75,7 +75,7 @@ public class MatchTest {
     public void updateGameStateUpdatesTheStateOfTheGame() {
         Game game = Game.newGame(gameType, turn, breakType);
 
-        Turn turn = turnBuilder.miss();
+        ITurn turn = turnBuilder.miss();
 
         game.addTurn(turn);
         match.updateGameState(turn);
@@ -90,7 +90,7 @@ public class MatchTest {
 
     @Test
     public void getTurnCountReturns5() {
-        for (Turn turn : turns()) {
+        for (ITurn turn : turns()) {
             match.addTurn(turn);
         }
 
@@ -213,7 +213,7 @@ public class MatchTest {
 
     @Test
     public void getGameStatusReturnsThirdTurn() {
-        for (Turn turn : turns()) {
+        for (ITurn turn : turns()) {
             match.addTurn(turn);
         }
 

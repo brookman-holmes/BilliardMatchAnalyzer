@@ -1,11 +1,12 @@
 package com.brookmanholmes.billiards.turn.helpers;
 
+import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.turn.GameTurn;
-import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.junit.Before;
@@ -21,27 +22,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public abstract class AbstractTurnEndHelperTest {
     TurnEndHelper helper;
     TableStatus tableStatus;
-    Turn turn;
-    GameType gameType;
+    ITurn turn;
     GameStatus.Builder gameBuilder;
-    int GAME_BALL;
     boolean showScratchOnDeadBall = false;
 
 
     @Before
     public abstract void setUp();
 
-    void setupTurn() {
-        turn = new GameTurn(0, 0, false, TurnEnd.MISS, tableStatus, false, null);
-    }
-
     @Test
     public void showWinIfWinOnBreakIsTrue() {
-        tableStatus.setBallTo(BallStatus.MADE_ON_BREAK, GAME_BALL);
+        tableStatus.setBallTo(BallStatus.MADE_ON_BREAK, gameBuilder.build().GAME_BALL);
 
-        helper.game = gameBuilder.newGame().build();
-        setupTurn();
-        helper.nextInning = turn;
+        helper = TurnEndHelper.create(gameBuilder.newGame().build(), tableStatus);
 
         assertThat(helper.showWin(), is(helper.game.winOnBreak));
     }
@@ -49,9 +42,7 @@ public abstract class AbstractTurnEndHelperTest {
     @Test
     public void showScratchOnDeadBall() {
         tableStatus.setBallTo(BallStatus.DEAD, 5);
-        setupTurn();
-        helper.nextInning = turn;
-        helper.game = gameBuilder.newGame().build();
+        helper = TurnEndHelper.create(gameBuilder.newGame().build(), tableStatus);
 
         assertThat(helper.checkFoul(), is(showScratchOnDeadBall));
     }
@@ -59,8 +50,7 @@ public abstract class AbstractTurnEndHelperTest {
     @Test
     public void showScratchOnDeadBallOnBreak() {
         tableStatus.setBallTo(BallStatus.DEAD_ON_BREAK, 5);
-        setupTurn();
-        helper.nextInning = turn;
+        helper = TurnEndHelper.create(gameBuilder.newGame().build(), tableStatus);
 
         // TODO: 11/14/2015 when i do straight pool this will have to be modified
         assertThat(helper.checkFoul(), is(true));
@@ -70,18 +60,14 @@ public abstract class AbstractTurnEndHelperTest {
     public void showLoss() {
         setupLossStuff();
 
-        setupTurn();
-        helper.nextInning = turn;
-        helper.game = gameBuilder.build();
+        helper = TurnEndHelper.create(gameBuilder.build(), tableStatus);
 
         assertThat(helper.lostGame(), is(true));
     }
 
     @Test
     public void showDefaultSelection() {
-        helper.game = gameBuilder.build();
-        setupTurn();
-        helper.nextInning = turn;
+        helper = TurnEndHelper.create(gameBuilder.build(), tableStatus);
 
         assertThat(helper.showMiss(), is(true));
         assertThat(helper.showSafety(), is(true));
@@ -90,9 +76,7 @@ public abstract class AbstractTurnEndHelperTest {
 
     @Test
     public void showBreakMiss() {
-        helper.game = gameBuilder.newGame().build();
-        setupTurn();
-        helper.nextInning = turn;
+        helper = TurnEndHelper.create(gameBuilder.newGame().build(), tableStatus);
 
         assertThat(helper.showBreakMiss(), is(true));
     }

@@ -40,7 +40,7 @@ public class TableStatusTest {
                 Arrays.asList(1, 2, 3, 4, 15, 5)
         );
 
-        List<Integer> ballsRemoved = tableStatus.getBallsThatAreOffTable();
+        List<Integer> ballsRemoved = tableStatus.getBallsToRemoveFromTable();
 
         assertThat(ballsRemoved.containsAll(expectedBallsRemoved), is(true));
     }
@@ -181,7 +181,7 @@ public class TableStatusTest {
         TableStatus table = TableStatus.newTable(GameType.BCA_NINE_BALL, ballsToKeepOnTable);
 
         assertThat(table.getBallsRemaining(), is(7));
-        assertThat(table.getBallsThatAreOffTable().containsAll(Arrays.asList(4, 5)), is(true));
+        assertThat(table.getBallsToRemoveFromTable().containsAll(Arrays.asList(4, 5)), is(true));
     }
 
     @Test(expected = InvalidBallException.class)

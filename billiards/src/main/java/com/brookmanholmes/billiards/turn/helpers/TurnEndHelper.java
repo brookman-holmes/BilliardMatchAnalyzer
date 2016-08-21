@@ -2,6 +2,7 @@ package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
+import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
@@ -11,29 +12,30 @@ import com.brookmanholmes.billiards.turn.TurnEndOptions;
 /**
  * Created by Brookman Holmes on 10/30/2015.
  */
-abstract public class TurnEndHelper {
-    ITableStatus nextInning;
+public abstract class TurnEndHelper {
+    ITableStatus tableStatus;
     GameStatus game;
 
-    TurnEndHelper() {
+    TurnEndHelper(GameStatus game, ITableStatus tableStatus) {
+        this.tableStatus = tableStatus;
+        this.game = game;
     }
 
-    public static TurnEndHelper createGhostHelper() {
-        return new GhostTurnEndHelper();
-    }
+    static TurnEndHelper create(GameStatus game, ITableStatus tableStatus) throws InvalidGameTypeException {
+        if (game.breakType == BreakType.GHOST)
+            return new GhostTurnEndHelper(game, tableStatus);
 
-    public static TurnEndHelper create(GameType gameType) throws InvalidGameTypeException {
-        switch (gameType) {
+        switch (game.gameType) {
             case APA_EIGHT_BALL:
-                return new ApaEightBallTurnEndHelper();
+                return new ApaEightBallTurnEndHelper(game, tableStatus);
             case APA_NINE_BALL:
-                return new RotationTurnEndHelper();
+                return new RotationTurnEndHelper(game, tableStatus);
             case BCA_EIGHT_BALL:
-                return new EightBallTurnEndHelper();
+                return new EightBallTurnEndHelper(game, tableStatus);
             case BCA_NINE_BALL:
-                return new RotationTurnEndHelper();
+                return new RotationTurnEndHelper(game, tableStatus);
             case BCA_TEN_BALL:
-                return new TenBallTurnEndHelper();
+                return new TenBallTurnEndHelper(game, tableStatus);
             default:
                 throw new InvalidGameTypeException();
         }
@@ -53,14 +55,14 @@ abstract public class TurnEndHelper {
 
     boolean showPush() {
         return ((game.allowPush && !game.newGame)
-                || (game.newGame && nextInning.getBreakBallsMade() > 0))
-                && nextInning.getShootingBallsMade() == 0;
+                || (game.newGame && tableStatus.getBreakBallsMade() > 0))
+                && tableStatus.getShootingBallsMade() == 0;
     }
 
     boolean showTurnSkip() {
         return game.allowTurnSkip
-                && nextInning.getShootingBallsMade() == 0
-                && nextInning.getDeadBalls() == 0;
+                && tableStatus.getShootingBallsMade() == 0
+                && tableStatus.getDeadBalls() == 0;
     }
 
     boolean showSafety() {
@@ -76,17 +78,17 @@ abstract public class TurnEndHelper {
     }
 
     boolean checkFoul() {
-        return nextInning.getDeadBallsOnBreak() > 0;
+        return tableStatus.getDeadBallsOnBreak() > 0;
     }
 
     boolean showBreakMiss() {
-        return game.newGame && nextInning.getBreakBallsMade() == 0;
+        return game.newGame && tableStatus.getBreakBallsMade() == 0;
     }
 
     TurnEndOptions.Builder createTurnEndOptionsBuilder() {
         if (game.playerAllowedToBreakAgain) {
             return new TurnEndOptions.Builder().allowPlayerToChooseWhoBreaks().defaultOption(TurnEnd.CONTINUE_WITH_GAME);
-        } else if (game.gameType == GameType.BCA_EIGHT_BALL && nextInning.getGameBallMadeOnBreak()  && nextInning.getShootingBallsMade() == 0 && nextInning.getDeadBalls() == 0) {
+        } else if (game.gameType == GameType.BCA_EIGHT_BALL && tableStatus.getGameBallMadeOnBreak()  && tableStatus.getShootingBallsMade() == 0 && tableStatus.getDeadBalls() == 0) {
             return new TurnEndOptions.Builder().allowPlayerToChooseToContinueGame().defaultOption(TurnEnd.CONTINUE_WITH_GAME);
         } else {
             return new TurnEndOptions.Builder()
@@ -103,10 +105,9 @@ abstract public class TurnEndHelper {
         }
     }
 
-    public TurnEndOptions getTurnEndOptions(GameStatus game, ITableStatus nextInning) {
-        this.game = game;
-        this.nextInning = nextInning;
+    public static TurnEndOptions getTurnEndOptions(GameStatus game, ITableStatus tableStatus) {
+        TurnEndHelper turnEndHelper = TurnEndHelper.create(game, tableStatus);
 
-        return createTurnEndOptionsBuilder().build();
+        return turnEndHelper.createTurnEndOptionsBuilder().build();
     }
 }

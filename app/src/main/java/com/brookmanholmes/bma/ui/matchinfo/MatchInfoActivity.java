@@ -36,7 +36,7 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
@@ -44,12 +44,10 @@ import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.bma.ui.dialog.GameStatusViewBuilder;
-import com.brookmanholmes.bma.ui.dialog.SubmitFeedbackDialog;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.CustomViewPager;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -194,7 +192,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 turnBuilder.lostGame,
                 turnBuilder.advStats.build()));
 
-
         Bundle bundle = new Bundle();
         bundle.putString("turn_end", turnBuilder.turnEnd.name());
         bundle.putBoolean("foul", turnBuilder.foul);
@@ -203,7 +200,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         firebaseAnalytics.logEvent("add_turn_finished", bundle);
     }
 
-    private void addTurn(Turn turn) {
+    private void addTurn(ITurn turn) {
         db.insertTurn(turn, getMatchId(), match.getTurnCount());
         updateViews();
     }

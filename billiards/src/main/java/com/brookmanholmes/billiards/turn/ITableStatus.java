@@ -25,9 +25,13 @@ public interface ITableStatus {
 
     BallStatus getBallStatus(int ball);
 
+    void setBallTo(BallStatus status, int... i);
+
     boolean getGameBallMadeIllegally();
 
     List<BallStatus> getBallStatuses();
+
+    List<Integer> getBallsToRemoveFromTable();
 
     int size();
 

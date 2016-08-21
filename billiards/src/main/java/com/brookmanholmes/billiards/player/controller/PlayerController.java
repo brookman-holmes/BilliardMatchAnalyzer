@@ -11,7 +11,7 @@ import com.brookmanholmes.billiards.player.IEarlyWins;
 import com.brookmanholmes.billiards.player.NineBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
-import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITurn;
 
 import java.util.Collection;
 
@@ -26,7 +26,7 @@ import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY_ERROR;
  */
 public abstract class PlayerController<T extends AbstractPlayer> {
     GameStatus gameStatus;
-    Turn turn;
+    ITurn turn;
     String playerName, opponentName;
 
     PlayerController(String playerName, String opponentName) {
@@ -87,7 +87,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
         opponentName = newName;
     }
 
-    public Pair<T> updatePlayerStats(GameStatus gameStatus, Turn turn) {
+    public Pair<T> updatePlayerStats(GameStatus gameStatus, ITurn turn) {
         assert gameStatus != null;
         assert turn != null;
 

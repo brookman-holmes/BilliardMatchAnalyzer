@@ -7,13 +7,13 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.MatchOverHelper;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.GameTurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITableStatus;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.Date;
@@ -30,8 +30,8 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     private final Game game;
     private final LinkedList<T> player1 = new LinkedList<>();
     private final LinkedList<T> player2 = new LinkedList<>();
-    private final LinkedList<Turn> turns = new LinkedList<>();
-    private final LinkedList<Turn> undoneTurns = new LinkedList<>();
+    private final LinkedList<ITurn> turns = new LinkedList<>();
+    private final LinkedList<ITurn> undoneTurns = new LinkedList<>();
     private final LinkedList<GameStatus> games = new LinkedList<>();
     private final StatsDetail detail;
     private long matchId;
@@ -122,16 +122,16 @@ public class Match<T extends AbstractPlayer> implements IMatch {
             player.setName(newName);
     }
 
-    public Turn createAndAddTurn(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
-        Turn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost, advStats);
+    public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
+        ITurn turn = new Turn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost, advStats);
         undoneTurns.clear();
         addTurn(turn);
 
         return turn;
     }
 
-    public Turn createAndAddTurn(TableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
-        Turn turn = new GameTurn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost, new AdvStats.Builder("").build());
+    public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
+        ITurn turn = new Turn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost, new AdvStats.Builder("").build());
         undoneTurns.clear();
         addTurn(turn);
 
@@ -143,10 +143,10 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     }
 
     public boolean isMatchOver() {
-        return MatchOverHelper.isMatchOver(getPlayer(), getOpponent()) || matchOver;
+        return matchOver;
     }
 
-    public void addTurn(Turn turn) {
+    public void addTurn(ITurn turn) {
         updatePlayerStats(turn);
         updateGameState(turn);
         turns.addLast(turn);
@@ -157,16 +157,15 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     }
 
     private void insertGameWonForGhost() {
-        TableStatus tableStatus = game.getCurrentTableStatus();
+        ITableStatus tableStatus = game.getCurrentTableStatus();
         tableStatus.setBallTo(BallStatus.MADE, game.getGhostBallsToWinGame());
 
-        Turn turn = new GameTurn(turns.size(), matchId, false, TurnEnd.GAME_WON, tableStatus, false, null);
-
+        ITurn turn = new Turn(turns.size(), matchId, false, TurnEnd.GAME_WON, tableStatus, false, null);
 
         addTurn(turn);
     }
 
-    private void updatePlayerStats(Turn turn) {
+    private void updatePlayerStats(ITurn turn) {
         Pair<T> pair = playerController.updatePlayerStats(getGameStatus(), turn);
 
         player1.addLast(pair.getPlayer());
@@ -177,28 +176,28 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         return turns.size();
     }
 
-    @Override public List<Turn> getTurns() {
+    @Override public List<ITurn> getTurns() {
         return turns;
     }
 
-    @Override public List<Turn> getTurns(int from, int to) {
+    @Override public List<ITurn> getTurns(int from, int to) {
         return turns.subList(from, to);
     }
 
-    void updateGameState(Turn turn) {
+    void updateGameState(ITurn turn) {
         games.addLast(game.getGameStatus());
         game.addTurn(turn);
     }
 
     public boolean isRedoTurn() {
-        return undoneTurns.size() > 0;
+        return undoneTurns.size() > 0 && !matchOver;
     }
 
     public boolean isUndoTurn() {
-        return turns.size() > 0;
+        return turns.size() > 0 && !matchOver;
     }
 
-    @Override public Turn redoTurn() {
+    @Override public ITurn redoTurn() {
         if (isRedoTurn()) {
             addTurn(undoneTurns.removeLast());
 

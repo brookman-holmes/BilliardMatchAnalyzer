@@ -19,8 +19,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 11/5/2015.
  */
-public class GameTurnTest {
-    private Turn turn;
+public class TurnTest {
+    private ITurn turn;
     private TableStatus table;
 
     @Before
@@ -91,7 +91,7 @@ public class GameTurnTest {
     }
 
 
-    private Turn createGameTurn(TableStatus table, boolean scratch, TurnEnd turnEnd, boolean isGameLost) {
-        return new com.brookmanholmes.billiards.turn.GameTurn(0, 0L, scratch, turnEnd, table, isGameLost, null);
+    private ITurn createGameTurn(TableStatus table, boolean scratch, TurnEnd turnEnd, boolean isGameLost) {
+        return new Turn(0, 0L, scratch, turnEnd, table, isGameLost, null);
     }
 }

@@ -4,6 +4,7 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 /**
@@ -15,24 +16,24 @@ abstract class RotationGame extends Game {
         allowPush = true;
     }
 
-    @Override void startNewGame(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override void startNewGame(ITurn turn) {
         super.startNewGame(turn);
         allowPush = true;
     }
 
-    @Override boolean setAllowPlayerToBreakAgain(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override boolean setAllowPlayerToBreakAgain(ITurn turn) {
         return false;
     }
 
-    @Override PlayerColor setPlayerColor(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override PlayerColor setPlayerColor(ITurn turn) {
         return PlayerColor.OPEN;
     }
 
-    @Override boolean setAllowTurnSkip(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override boolean setAllowTurnSkip(ITurn turn) {
         return turn.getTurnEnd() == TurnEnd.PUSH_SHOT;
     }
 
-    @Override boolean setAllowPush(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override boolean setAllowPush(ITurn turn) {
         return (turn.getBreakBallsMade() == 0 && !turn.isFoul() && turn.getTurnEnd() == TurnEnd.BREAK_MISS);
     }
 

@@ -4,6 +4,7 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableUtils;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
@@ -31,15 +32,15 @@ class EightBallGame extends Game {
             throw new InvalidGameTypeException(gameType.name());
     }
 
-    @Override boolean setAllowPush(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override boolean setAllowPush(ITurn turn) {
         return false;
     }
 
-    @Override boolean setAllowTurnSkip(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override boolean setAllowTurnSkip(ITurn turn) {
         return false;
     }
 
-    @Override boolean setAllowPlayerToBreakAgain(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override boolean setAllowPlayerToBreakAgain(ITurn turn) {
         return turn.getTurnEnd() == TurnEnd.BREAK_MISS && turn.isFoul() && turn.getBallsToRemoveFromTable().contains(GAME_BALL);
     }
 
@@ -47,7 +48,7 @@ class EightBallGame extends Game {
         return 0;
     }
 
-    @Override PlayerColor setPlayerColor(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override PlayerColor setPlayerColor(ITurn turn) {
         if (playerColor == OPEN) {
             if (TableUtils.getSolidsMade(turn.getBallStatuses()) > 0) {
                 return convertCurrentPlayerColorToPlayerColor(SOLIDS);

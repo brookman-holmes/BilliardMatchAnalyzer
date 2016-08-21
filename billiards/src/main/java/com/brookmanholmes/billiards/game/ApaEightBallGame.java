@@ -4,6 +4,7 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableUtils;
 
 /**
@@ -18,7 +19,7 @@ class ApaEightBallGame extends EightBallGame {
         return GameType.APA_EIGHT_BALL;
     }
 
-    @Override PlayerColor setPlayerColor(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override PlayerColor setPlayerColor(ITurn turn) {
         if (newGame && turn.getBreakBallsMade() > 0) {
             if (TableUtils.getSolidsMadeOnBreak(turn.getBallStatuses()) == TableUtils.getStripesMadeOnBreak(turn.getBallStatuses())) {
                 return super.setPlayerColor(turn);

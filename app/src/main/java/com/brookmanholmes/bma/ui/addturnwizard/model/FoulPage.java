@@ -33,9 +33,8 @@ public class FoulPage extends SingleFixedChoicePage implements UpdatesTurnInfo, 
     }
 
     @Override public void getNewTurnInfo(AddTurnWizardModel model) {
-        TurnEndHelper helper = TurnEndHelper.create(GameType.valueOf(data.getString(GAME_TYPE_KEY)));
 
-        TurnEndOptions options = helper.getTurnEndOptions(
+        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(
                 MatchDialogHelperUtils.createGameStatusFromBundle(data), model.getTableStatus()
         );
 

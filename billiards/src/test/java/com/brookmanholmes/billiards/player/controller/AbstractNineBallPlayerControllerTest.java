@@ -2,7 +2,7 @@ package com.brookmanholmes.billiards.player.controller;
 
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.IWinsOnBreak;
-import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITurn;
 
 import org.junit.Test;
 
@@ -26,15 +26,15 @@ public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPla
         assertThat(actualPlayer, is(expectedPlayer));
     }
 
-    @Override Turn breakAndRunTurn() {
+    @Override ITurn breakAndRunTurn() {
         return turnBuilder.breakBalls(1, 3).madeBalls(2, 4, 5, 6, 7, 8, 9).win();
     }
 
-    @Override Turn tableRunTurn() {
+    @Override ITurn tableRunTurn() {
         return turnBuilder.madeBalls(1, 2, 3, 4, 5, 6, 7, 8, 9).win();
     }
 
-    @Override Turn fourBallRunTurn() {
+    @Override ITurn fourBallRunTurn() {
         return turnBuilder.offTable(1, 2, 3, 4, 5).madeBalls(6, 7, 8, 9).win();
     }
 
@@ -46,7 +46,7 @@ public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPla
         return player;
     }
 
-    @Override Turn failedRunOutTurn() {
+    @Override ITurn failedRunOutTurn() {
         return turnBuilder.breakBalls(1, 2).madeBalls(3).safetyMiss();
     }
 

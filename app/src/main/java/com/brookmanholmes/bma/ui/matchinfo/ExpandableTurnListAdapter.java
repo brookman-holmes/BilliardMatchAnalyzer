@@ -3,7 +3,6 @@ package com.brookmanholmes.bma.ui.matchinfo;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.TintableBackgroundView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.ITableStatus;
-import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.utils.ConversionUtils;
@@ -34,7 +33,7 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 5/1/2016.
  */
 class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<ExpandableTurnListAdapter.GameViewHolder, ExpandableTurnListAdapter.TurnViewHolder> {
-    private List<List<Turn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
+    private List<List<ITurn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
     private Match<?> match;
 
     public ExpandableTurnListAdapter(Match<?> match) {
@@ -50,11 +49,11 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         notifyDataSetChanged(); // there is a bug thrown by the library this is based on so neat
     }
 
-    private List<List<Turn>> buildDataSource(List<Turn> turns) {
-        List<List<Turn>> data = new ArrayList<>();
-        ArrayList<Turn> turnsInGame = new ArrayList<>();
+    private List<List<ITurn>> buildDataSource(List<ITurn> turns) {
+        List<List<ITurn>> data = new ArrayList<>();
+        ArrayList<ITurn> turnsInGame = new ArrayList<>();
         for (int i = 0; i < turns.size(); i++) {
-            Turn turn = turns.get(i);
+            ITurn turn = turns.get(i);
 
             if ((!turn.isGameLost() && turn.getTurnEnd() != TurnEnd.GAME_WON)) {
                 turnsInGame.add(turn); // add any turn that doesn't end the game
@@ -72,7 +71,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         if (data.size() > 0 && data.get(data.size() - 1).size() > 0) {
             // if the last item is empty then it becomes the footer
             // otherwise we create a new one
-            data.add(new ArrayList<Turn>());
+            data.add(new ArrayList<ITurn>());
         }
 
         return data;
@@ -220,7 +219,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             ButterKnife.bind(this, itemView);
         }
 
-        private void bind(Turn turn, PlayerTurn playerTurn, AbstractPlayer player) {
+        private void bind(ITurn turn, PlayerTurn playerTurn, AbstractPlayer player) {
             String color = (playerTurn == PlayerTurn.PLAYER ? "#2196F3" : "#FF3D00");
             TurnStringAdapter turnStringAdapter = new TurnStringAdapter(turn, player, color);
 

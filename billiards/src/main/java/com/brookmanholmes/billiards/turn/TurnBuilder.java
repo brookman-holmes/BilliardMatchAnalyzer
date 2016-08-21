@@ -54,47 +54,47 @@ public class TurnBuilder {
         return this;
     }
 
-    public Turn miss() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.MISS, status, false, null);
+    public ITurn miss() {
+        return new Turn(0, 0L, scratch, TurnEnd.MISS, status, false, null);
     }
 
-    public Turn win() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.GAME_WON, status, false, null);
+    public ITurn win() {
+        return new Turn(0, 0L, scratch, TurnEnd.GAME_WON, status, false, null);
     }
 
-    public Turn lose() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.MISS, status, true, null);
+    public ITurn lose() {
+        return new Turn(0, 0L, scratch, TurnEnd.MISS, status, true, null);
     }
 
-    public Turn safety() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.SAFETY, status, false, null);
+    public ITurn safety() {
+        return new Turn(0, 0L, scratch, TurnEnd.SAFETY, status, false, null);
     }
 
-    public Turn safetyMiss() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.SAFETY_ERROR, status, false, null);
+    public ITurn safetyMiss() {
+        return new Turn(0, 0L, scratch, TurnEnd.SAFETY_ERROR, status, false, null);
     }
 
-    public Turn breakMiss() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.BREAK_MISS, status, false, null);
+    public ITurn breakMiss() {
+        return new Turn(0, 0L, scratch, TurnEnd.BREAK_MISS, status, false, null);
     }
 
-    public Turn push() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.PUSH_SHOT, status, false, null);
+    public ITurn push() {
+        return new Turn(0, 0L, scratch, TurnEnd.PUSH_SHOT, status, false, null);
     }
 
-    public Turn skipTurn() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.SKIP_TURN, status, false, null);
+    public ITurn skipTurn() {
+        return new Turn(0, 0L, scratch, TurnEnd.SKIP_TURN, status, false, null);
     }
 
-    public Turn continueGame() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.CONTINUE_WITH_GAME, status, false, null);
+    public ITurn continueGame() {
+        return new Turn(0, 0L, scratch, TurnEnd.CONTINUE_WITH_GAME, status, false, null);
     }
 
-    public Turn currentPlayerBreaks() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, false, null);
+    public ITurn currentPlayerBreaks() {
+        return new Turn(0, 0L, scratch, TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, false, null);
     }
 
-    public Turn opposingPlayerBreaks() {
-        return new GameTurn(0, 0L, scratch, TurnEnd.OPPONENT_BREAKS_AGAIN, status, false, null);
+    public ITurn opposingPlayerBreaks() {
+        return new Turn(0, 0L, scratch, TurnEnd.OPPONENT_BREAKS_AGAIN, status, false, null);
     }
 }

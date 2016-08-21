@@ -3,6 +3,7 @@ package com.brookmanholmes.billiards.game;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 /**
@@ -16,7 +17,7 @@ class TenBallGame extends RotationGame {
         super(GameType.BCA_TEN_BALL, playerTurn, breakType, MAX_BALLS, GAME_BALL);
     }
 
-    @Override boolean setAllowTurnSkip(com.brookmanholmes.billiards.turn.Turn turn) {
+    @Override boolean setAllowTurnSkip(ITurn turn) {
         return super.setAllowTurnSkip(turn) ||
                 (turn.getTurnEnd() == TurnEnd.MISS || turn.getTurnEnd() == TurnEnd.SAFETY_ERROR) &&
                         turn.getDeadBalls() > 0 && !turn.isFoul();

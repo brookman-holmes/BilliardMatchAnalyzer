@@ -2,8 +2,8 @@ package com.brookmanholmes.billiards.game.util;
 
 import org.junit.Test;
 
-import static com.brookmanholmes.billiards.player.ApaRaceToHelper.apa8BallRaceTo;
-import static com.brookmanholmes.billiards.player.ApaRaceToHelper.getMinimumMatchPointsEarned;
+import static com.brookmanholmes.billiards.player.Players.apa8BallRaceTo;
+import static com.brookmanholmes.billiards.player.Players.getMinimumMatchPointsEarned;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 /**

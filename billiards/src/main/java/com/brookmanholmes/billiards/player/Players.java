@@ -1,10 +1,9 @@
 package com.brookmanholmes.billiards.player;
 
-
 /**
- * Created by helios on 1/9/2016.
+ * Created by Brookman Holmes on 8/21/2016.
  */
-public class ApaRaceToHelper {
+public class Players {
     private static final int[] apa9BallRaces = new int[]{14, 19, 25, 31, 38, 46, 55, 65, 75};
     private static final RaceTo[] SL2_8 = new RaceTo[]{new RaceTo(2, 2), new RaceTo(2, 3), new RaceTo(2, 4), new RaceTo(2, 5), new RaceTo(2, 6), new RaceTo(2, 7)};
     private static final RaceTo[] SL3_8 = new RaceTo[]{new RaceTo(3, 2), new RaceTo(2, 2), new RaceTo(2, 3), new RaceTo(2, 4), new RaceTo(2, 5), new RaceTo(2, 6)};
@@ -23,6 +22,30 @@ public class ApaRaceToHelper {
     private static final int[] SL8_9 = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8};
     private static final int[] SL9_9 = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8};
     private static final int[][] minMatchPoints = new int[][]{SL1_9, SL2_9, SL3_9, SL4_9, SL5_9, SL6_9, SL7_9, SL8_9, SL9_9};
+
+    private Players() {
+    }
+
+
+    public static boolean isMatchOver(AbstractPlayer player, AbstractPlayer opponent) {
+        if (player instanceof ApaNineBallPlayer && opponent instanceof ApaNineBallPlayer)
+            return isMatchOverApa9((ApaNineBallPlayer)player, (ApaNineBallPlayer)opponent);
+        else if (player instanceof ApaEightBallPlayer && opponent instanceof ApaEightBallPlayer)
+            return isMatchOverApa8((ApaEightBallPlayer)player, (ApaEightBallPlayer)opponent);
+        else return false;
+    }
+
+    private static boolean isMatchOverApa9(ApaNineBallPlayer player, ApaNineBallPlayer opponent) {
+        return player.getPointsNeeded(0) <= player.getPoints() ||
+                opponent.getPointsNeeded(0) <= opponent.getPoints();
+    }
+
+    private static boolean isMatchOverApa8(ApaEightBallPlayer player, ApaEightBallPlayer opponent) {
+        RaceTo raceTo = apa8BallRaceTo(player.getRank(), opponent.getRank());
+
+        return raceTo.getPlayerRaceTo() <= player.getPoints() ||
+                raceTo.getOpponentRaceTo() <= opponent.getPoints();
+    }
 
     public static int apa9BallRaceTo(int rank) {
         if (rank > 9 || rank < 1)

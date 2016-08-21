@@ -17,9 +17,9 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.IApa;
 import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.GameTurn;
-import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -78,7 +78,7 @@ public class DatabaseAdapter {
         databaseHelper = DatabaseHelper.getInstance(context);
     }
 
-    private static String tableStatusToString(Turn table) {
+    private static String tableStatusToString(ITurn table) {
         String tableStatus = table.getGameType().name() + ",";
         for (int i = 1; i <= table.size(); i++) {
             tableStatus += table.getBallStatus(i).name();
@@ -111,7 +111,7 @@ public class DatabaseAdapter {
         database.update(TABLE_MATCHES, contentValues, COLUMN_ID + " = ?", new String[] {String.valueOf(match)});
         database.close();
         int count = 0;
-        for (Turn turn : SampleMatchProvider.getHohmannSvbTurns()) {
+        for (ITurn turn : SampleMatchProvider.getHohmannSvbTurns()) {
             insertTurn(turn, match, count++);
         }
 
@@ -120,7 +120,7 @@ public class DatabaseAdapter {
         database.update(TABLE_MATCHES, contentValues, COLUMN_ID + " = ?", new String[] {String.valueOf(match)});
         database.close();
         count = 0;
-        for (Turn turn : SampleMatchProvider.getShawRobertsTurns()) {
+        for (ITurn turn : SampleMatchProvider.getShawRobertsTurns()) {
             insertTurn(turn, match, count++);
         }
 
@@ -252,7 +252,7 @@ public class DatabaseAdapter {
 
         while (c.moveToNext()) {
             Match<?> match = createMatchFromCursor(c);
-            for (Turn turn : getMatchTurns(match.getMatchId())) {
+            for (ITurn turn : getMatchTurns(match.getMatchId())) {
                 match.addTurn(turn);
             }
             matches.add(match);
@@ -296,7 +296,7 @@ public class DatabaseAdapter {
         c.close();
         database.close();
 
-        for (Turn turn : getMatchTurns(id))
+        for (ITurn turn : getMatchTurns(id))
             match.addTurn(turn);
 
         return match;
@@ -504,7 +504,7 @@ public class DatabaseAdapter {
         database.close();
     }
 
-    public void insertTurn(Turn turn, long matchId, int turnCount) {
+    public void insertTurn(ITurn turn, long matchId, int turnCount) {
         database = databaseHelper.getReadableDatabase();
         database.delete(TABLE_TURNS,
                 COLUMN_MATCH_ID + "=? AND "
@@ -566,8 +566,8 @@ public class DatabaseAdapter {
             return null;
     }
 
-    private List<Turn> getMatchTurns(long id) {
-        List<Turn> turns = new ArrayList<>();
+    private List<ITurn> getMatchTurns(long id) {
+        List<ITurn> turns = new ArrayList<>();
         Cursor c = getMatchTurnsCursor(id);
 
         while (c.moveToNext()) {
@@ -593,8 +593,8 @@ public class DatabaseAdapter {
                 COLUMN_TURN_NUMBER + " ASC");
     }
 
-    private Turn buildTurnFromCursor(Cursor cursor, AdvStats advStats) {
-        return new GameTurn(
+    private ITurn buildTurnFromCursor(Cursor cursor, AdvStats advStats) {
+        return new Turn(
                 cursor.getInt(cursor.getColumnIndex(COLUMN_TURN_NUMBER)),
                 cursor.getLong(cursor.getColumnIndex(COLUMN_MATCH_ID)),
                 cursor.getInt(cursor.getColumnIndex(COLUMN_SCRATCH)) == 1,

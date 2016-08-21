@@ -91,7 +91,7 @@ final public class TableStatus implements ITableStatus {
         }
     }
 
-    public List<Integer> getBallsThatAreOffTable() {
+    @Override public List<Integer> getBallsToRemoveFromTable() {
         List<Integer> ballsOffTable = new ArrayList<>();
 
         for (int ball : table.keySet()) {

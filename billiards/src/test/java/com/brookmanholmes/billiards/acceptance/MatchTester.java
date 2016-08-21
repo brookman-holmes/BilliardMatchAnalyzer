@@ -2,7 +2,7 @@ package com.brookmanholmes.billiards.acceptance;
 
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
 import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
 
@@ -20,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public abstract class MatchTester {
     Game game;
-    List<Turn> turns;
+    List<ITurn> turns;
     List<GameStatus> expectedGameStatusList;
     List<TurnEndOptions> expectedTurnEndOptionsList;
 
@@ -45,10 +45,9 @@ public abstract class MatchTester {
     @Test
     public void verifyTurnEndOptionsWithList() {
         List<TurnEndOptions> actualTurnEndOptionsList = new ArrayList<>();
-        TurnEndHelper helper = TurnEndHelper.create(game.getGameType());
 
         for (int i = 0; i < turns.size(); i++) {
-            actualTurnEndOptionsList.add(helper.getTurnEndOptions(expectedGameStatusList.get(i), turns.get(i)));
+            actualTurnEndOptionsList.add(TurnEndHelper.getTurnEndOptions(expectedGameStatusList.get(i), turns.get(i)));
         }
 
         for (int i = 0; i < turns.size(); i++) {

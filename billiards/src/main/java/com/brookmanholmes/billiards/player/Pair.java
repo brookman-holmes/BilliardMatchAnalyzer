@@ -36,11 +36,4 @@ public class Pair<T> {
         result = 31 * result + opponent.hashCode();
         return result;
     }
-
-    @Override public String toString() {
-        return "Pair{" +
-                "player=" + player +
-                "\n opponent=" + opponent +
-                '}';
-    }
 }

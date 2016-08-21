@@ -1,9 +1,9 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
+import com.brookmanholmes.billiards.player.Players;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
-import com.brookmanholmes.billiards.player.ApaRaceToHelper;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class Apa9BallRankPage extends RankPage {
     }
 
     private String getRaceTo() {
-        return String.valueOf(ApaRaceToHelper.apa9BallRaceTo(Integer.valueOf(data.getString(Page.SIMPLE_DATA_KEY, "0"))));
+        return String.valueOf(Players.apa9BallRaceTo(Integer.valueOf(data.getString(Page.SIMPLE_DATA_KEY, "0"))));
     }
 
     @Override protected void setChoices() {

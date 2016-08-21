@@ -3,6 +3,7 @@ package com.brookmanholmes.billiards.game;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.turn.ITurn;
 
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class TenBallGameTest extends AbstractRotationGameTest {
     @Test
     public void playerMakingDeadBallAllowsForTurnSkip() {
-        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(3, 4).deadBalls(1).miss();
+        ITurn turn = turn().breakBalls(3, 4).deadBalls(1).miss();
 
         assertThat(game.setAllowTurnSkip(turn), is(true));
 
@@ -28,7 +29,7 @@ public class TenBallGameTest extends AbstractRotationGameTest {
 
     @Test
     public void playerMakingDeadBallAndScratchingDoesntAllowTurnSkip() {
-        com.brookmanholmes.billiards.turn.Turn turn = turn().breakBalls(3, 4).deadBalls(1).scratch().miss();
+        ITurn turn = turn().breakBalls(3, 4).deadBalls(1).scratch().miss();
 
         assertThat(game.setAllowTurnSkip(turn), is(false));
 

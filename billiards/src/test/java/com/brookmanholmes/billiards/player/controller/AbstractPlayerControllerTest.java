@@ -6,7 +6,7 @@ import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
-import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
@@ -239,7 +239,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
 
     @Test
     public void isGameOverReturnsFalse() {
-        Turn mockedTurn = Mockito.mock(Turn.class);
+        ITurn mockedTurn = Mockito.mock(ITurn.class);
         playerController.turn = mockedTurn;
         for (TurnEnd turnEnd : TurnEnd.values()) {
             if (turnEnd != TurnEnd.GAME_WON) {
@@ -278,13 +278,13 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
         playerController.updatePlayerStats(null, turnBuilder.miss());
     }
 
-    abstract Turn breakAndRunTurn();
+    abstract ITurn breakAndRunTurn();
 
-    abstract Turn tableRunTurn();
+    abstract ITurn tableRunTurn();
 
-    abstract Turn fourBallRunTurn();
+    abstract ITurn fourBallRunTurn();
 
-    abstract Turn failedRunOutTurn();
+    abstract ITurn failedRunOutTurn();
 
     abstract T getBlankPlayer();
 
