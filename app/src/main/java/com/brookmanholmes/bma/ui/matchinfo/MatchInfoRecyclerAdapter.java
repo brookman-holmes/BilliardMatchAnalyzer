@@ -22,6 +22,8 @@ import com.brookmanholmes.bma.adaptervh.SafetiesHolder;
 import com.brookmanholmes.bma.adaptervh.ShootingPctHolder;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 
+import java.util.List;
+
 
 /**
  * Created by Brookman Holmes on 1/13/2016.
@@ -40,7 +42,6 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private final BreakType breakType;
     private AbstractPlayer player;
     private AbstractPlayer opponent;
-    private boolean listView = false;
 
     MatchInfoRecyclerAdapter(Match match) {
         detail = match.getAdvStats();
@@ -75,6 +76,11 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override public void onBindViewHolder(BaseViewHolder holder, int position) {
         holder.bind(player, opponent);
+    }
+
+    @Override
+    public void onBindViewHolder(BaseViewHolder holder, int position, List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
     }
 
     @Override public int getItemCount() {
@@ -145,7 +151,8 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public void updatePlayers(Match<?> match) {
         player = match.getPlayer();
         opponent = match.getOpponent();
-        notifyDataSetChanged();
+
+        notifyItemRangeChanged(0, getItemCount());
     }
 
     static class ApaMatchInfoRecyclerAdapter extends MatchInfoRecyclerAdapter {
@@ -212,9 +219,8 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
 
         public void updatePlayers(Match<?> match) {
-            super.updatePlayers(match);
             innings = match.getGameStatus().innings;
-            notifyItemChanged(0);
+            super.updatePlayers(match);
         }
     }
 }

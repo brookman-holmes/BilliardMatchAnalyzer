@@ -15,98 +15,94 @@
     <TextView
         android:id="@+id/tvWinPercentPlayer"
         style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:text="1.000"/>
 
     <TextView
         style="@style/player_stats"
         android:layout_columnWeight="1"
-        android:layout_gravity="center"
         android:text="@string/title_win_pct"
         android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvWinPercentOpponent"
         style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:text="1.000"/>
 
     <TextView
         android:id="@+id/tvWinTotalsPlayer"
         style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:text="100/100"/>
 
     <TextView
         style="@style/player_stats"
         android:layout_columnWeight="1"
-        android:layout_gravity="center"
         android:text="@string/title_games_won"
         android:textColor="@color/secondary_text"/>
 
     <TextView
         android:id="@+id/tvWinTotalsOpponent"
         style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:text="100/100"/>
 
     <TextView
         android:id="@+id/tvTrueShootingPctPlayer"
         style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:text="1.000"/>
 
     <TextView
         style="@style/player_stats"
         android:layout_columnWeight="1"
-        android:layout_gravity="center"
         android:text="@string/title_tsp"
         android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvTrueShootingPctOpponent"
         style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:text="1.000"/>
 
     <TextView
         android:id="@+id/tvTotalShotsPlayer"
         style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:text="100/100"/>
 
     <TextView
         android:id="@+id/tvTotalShotsTitle"
         style="@style/player_stats"
         android:layout_columnWeight="1"
-        android:layout_gravity="center"
         android:text="@string/title_true_shots_made"
         android:textColor="@color/secondary_text"/>
 
     <TextView
         android:id="@+id/tvTotalShotsOpponent"
         style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:text="100/100"/>
 
     <TextView
         android:id="@+id/tvAggressivenessRatingPlayer"
         style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:text="1.000"/>
 
     <TextView
         android:id="@+id/tvAggressivenessRating"
         style="@style/player_stats"
         android:layout_columnWeight="1"
-        android:layout_gravity="center"
         android:text="@string/title_ar"
         android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvAggressivenessRatingOpponent"
         style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:text="1.000"/>
 
 </GridLayout>
