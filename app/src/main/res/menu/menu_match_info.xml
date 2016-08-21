@@ -42,6 +42,12 @@
         android:title="Toggle view"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/action_lock_match"
+        android:orderInCategory="499"
+        android:title="Lock match"
+        app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/action_submit_feedback"
           android:orderInCategory="500"
           android:title="@string/submit_feedback"

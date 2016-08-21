@@ -230,4 +230,6 @@
     <string name="submit_feedback">Submit feedback</string>
     <string name="match_over">Match is finished</string>
     <string name="undo">Undo</string>
+    <string name="unlock_match">Unlock match</string>
+    <string name="lock_match">Lock match</string>
 </resources>

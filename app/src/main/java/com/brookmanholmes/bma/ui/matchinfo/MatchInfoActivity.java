@@ -80,6 +80,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private DatabaseAdapter db;
     private Match<?> match;
     private Menu menu;
+    private Snackbar matchOverSnackbar;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +99,13 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         // no reason to click on The Ghost
         if (match.getGameStatus().breakType == BreakType.GHOST)
             opponentName.setEnabled(false);
+
+        matchOverSnackbar = makeSnackbar(R.string.match_over, Snackbar.LENGTH_INDEFINITE)
+                .setAction(android.R.string.ok, new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                matchOverSnackbar.dismiss();
+            }
+        });
 
         setToolbarTitle(match.getGameStatus().gameType);
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), getMatchId());
@@ -159,25 +167,19 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         if (match.isMatchOver()) {
             fabAddTurn.hide();
-            displayMatchOverSnackbar();
-        } else fabAddTurn.show();
+            matchOverSnackbar.show();
+        } else {
+            matchOverSnackbar.dismiss();
+            fabAddTurn.show();
+        }
     }
 
     private Snackbar makeSnackbar(@StringRes int resId, int duration) {
         return Snackbar.make(layout, resId, duration).setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
     }
 
-    private void displayMatchOverSnackbar() {
-        final Snackbar snackbar = makeSnackbar(R.string.match_over, Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction(android.R.string.ok, new View.OnClickListener() {
-            @Override public void onClick(View view) {
-                snackbar.dismiss();
-            }
-        });
-        snackbar.show();
-    }
-
     private void updateMenuItems() {
+        menu.findItem(R.id.action_lock_match).setTitle(match.isMatchOver() ? R.string.unlock_match : R.string.lock_match);
         menu.findItem(R.id.action_undo).setEnabled(match.isUndoTurn());
         menu.findItem(R.id.action_redo).setEnabled(match.isRedoTurn());
         menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 97);
@@ -226,6 +228,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        if (id == R.id.action_lock_match) {
+            match.setMatchOver(!match.isMatchOver());
+            updateViews();
+        }
 
         if (id == R.id.action_notes) {
             showEditMatchNotesDialog();
