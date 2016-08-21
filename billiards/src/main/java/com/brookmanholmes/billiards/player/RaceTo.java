@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.game.util;
+package com.brookmanholmes.billiards.player;
 
 /**
  * Created by Brookman Holmes on 1/11/2016.

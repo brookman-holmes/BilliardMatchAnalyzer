@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -73,6 +75,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     @Bind(R.id.pager) CustomViewPager pager;
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.coordinatorLayout) CoordinatorLayout layout;
+    @SuppressWarnings("WeakerAccess")
+    @Bind(R.id.buttonAddTurn) FloatingActionButton fabAddTurn;
     private DatabaseAdapter db;
     private Match<?> match;
     private Menu menu;
@@ -140,7 +144,10 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         if (menu != null)
             updateMenuItems();
 
-        if (match.getCurrentPlayersName().equals(playerName.getText().toString())) {
+        if (match.isMatchOver()) {
+            playerName.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            opponentName.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+        } else if (match.getCurrentPlayersName().equals(playerName.getText().toString())) {
             playerName.setTextColor(ContextCompat.getColor(this, android.R.color.white));
             opponentName.setTextColor(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
         } else {
@@ -149,6 +156,25 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         updateFragments();
+
+        if (match.isMatchOver()) {
+            fabAddTurn.hide();
+            displayMatchOverSnackbar();
+        } else fabAddTurn.show();
+    }
+
+    private Snackbar makeSnackbar(@StringRes int resId, int duration) {
+        return Snackbar.make(layout, resId, duration).setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+    }
+
+    private void displayMatchOverSnackbar() {
+        final Snackbar snackbar = makeSnackbar(R.string.match_over, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(android.R.string.ok, new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
+        snackbar.show();
     }
 
     private void updateMenuItems() {
@@ -227,12 +253,20 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         if (id == R.id.action_undo) {
-            Snackbar.make(layout, R.string.undid_turn, Snackbar.LENGTH_SHORT).show();
+            makeSnackbar(R.string.undid_turn, Snackbar.LENGTH_SHORT).setAction(R.string.redo_turn, new View.OnClickListener() {
+                @Override public void onClick(View view) {
+                    addTurn(match.redoTurn());
+                }
+            }).show();
             undoTurn();
         }
 
         if (id == R.id.action_redo) {
-            Snackbar.make(layout, R.string.redid_turn, Snackbar.LENGTH_SHORT).show();
+            makeSnackbar(R.string.redid_turn, Snackbar.LENGTH_SHORT).setAction(R.string.undo, new View.OnClickListener() {
+                @Override public void onClick(View view) {
+                    undoTurn();
+                }
+            }).show();
             addTurn(match.redoTurn());
             firebaseAnalytics.logEvent("redid_turn", null);
         }
@@ -547,7 +581,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             long matchId;
 
             if (getArguments().getLong(ARG_MATCH_ID, -1L) != -1L) {
-                 matchId = getArguments().getLong(ARG_MATCH_ID);
+                matchId = getArguments().getLong(ARG_MATCH_ID);
             } else {
                 throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
             }

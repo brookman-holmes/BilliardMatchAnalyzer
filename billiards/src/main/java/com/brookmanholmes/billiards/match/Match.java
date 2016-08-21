@@ -7,6 +7,7 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.MatchOverHelper;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 import com.brookmanholmes.billiards.turn.AdvStats;
@@ -36,12 +37,14 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     private long matchId;
     private String location;
     private String notes;
+    private boolean matchOver;
 
     private Match(Builder builder, PlayerController<T> playerController) {
         location = builder.location;
         notes = builder.notes;
         matchId = builder.id;
         detail = builder.statsDetail;
+        matchOver = builder.matchOver;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
         createdOn = builder.date;
@@ -133,6 +136,14 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         addTurn(turn);
 
         return turn;
+    }
+
+    public void setMatchOver(boolean isMatchOver) {
+        this.matchOver = isMatchOver;
+    }
+
+    public boolean isMatchOver() {
+        return MatchOverHelper.isMatchOver(getPlayer(), getOpponent()) || matchOver;
     }
 
     public void addTurn(Turn turn) {
@@ -244,6 +255,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         private long id;
         private StatsDetail statsDetail = StatsDetail.NORMAL;
         private Date date;
+        private boolean matchOver = false;
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;
@@ -252,6 +264,11 @@ public class Match<T extends AbstractPlayer> implements IMatch {
 
         public Builder() {
 
+        }
+
+        public Builder setMatchOver(boolean isMatchOver) {
+            this.matchOver = isMatchOver;
+            return this;
         }
 
         public Builder setPlayerName(String name) {

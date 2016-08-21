@@ -50,6 +50,7 @@ public class DatabaseAdapter {
     public static final String COLUMN_CREATED_ON = "created_on";
     public static final String COLUMN_PLAYER_RANK = "player_rank";
     public static final String COLUMN_OPPONENT_RANK = "opponent_rank";
+    public static final String COLUMN_MATCH_FINISHED = "match_finished";
     public static final String TABLE_TURNS = "turns_table";
     public static final String COLUMN_TABLE_STATUS = "table_status";
     public static final String COLUMN_TURN_END = "turn_end";
@@ -101,18 +102,29 @@ public class DatabaseAdapter {
     }
 
     public void createSampleMatches() {
-        // TODO: 8/19/2016 REMOVE THESE BEFORE RELEASE, I might not have permission to use these people's names 
+        // TODO: 8/19/2016 REMOVE THESE BEFORE RELEASE, I might not have permission to use these people's names
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_MATCH_FINISHED, true);
+
         long match = insertMatch(SampleMatchProvider.getHohmannSvbMatch());
+        database = databaseHelper.getReadableDatabase();
+        database.update(TABLE_MATCHES, contentValues, COLUMN_ID + " = ?", new String[] {String.valueOf(match)});
+        database.close();
         int count = 0;
         for (Turn turn : SampleMatchProvider.getHohmannSvbTurns()) {
             insertTurn(turn, match, count++);
         }
 
         match = insertMatch(SampleMatchProvider.getShawRobertsMatch());
+        database = databaseHelper.getReadableDatabase();
+        database.update(TABLE_MATCHES, contentValues, COLUMN_ID + " = ?", new String[] {String.valueOf(match)});
+        database.close();
         count = 0;
         for (Turn turn : SampleMatchProvider.getShawRobertsTurns()) {
             insertTurn(turn, match, count++);
         }
+
+
     }
 
     public List<String> getOpponentsOf(String playerName) {
@@ -225,6 +237,7 @@ public class DatabaseAdapter {
                 + COLUMN_OPPONENT_RANK + ", "
                 + COLUMN_NOTES + ", "
                 + COLUMN_STATS_DETAIL + ", "
+                + COLUMN_MATCH_FINISHED + ", "
                 + COLUMN_LOCATION + "\n";
 
         final String query = "SELECT " + selection + "from " + TABLE_MATCHES + " m\n"
@@ -262,6 +275,7 @@ public class DatabaseAdapter {
                 + COLUMN_PLAYER_RANK + ", "
                 + COLUMN_OPPONENT_RANK + ", "
                 + COLUMN_NOTES + ", "
+                + COLUMN_MATCH_FINISHED + ", "
                 + COLUMN_STATS_DETAIL + ", "
                 + COLUMN_LOCATION + "\n";
 
@@ -299,6 +313,7 @@ public class DatabaseAdapter {
                 .setLocation(c.getString(c.getColumnIndex(COLUMN_LOCATION)))
                 .setMatchId(c.getLong(c.getColumnIndex("_id")))
                 .setNotes(c.getString(c.getColumnIndex(COLUMN_NOTES)))
+                .setMatchOver(c.getInt(c.getColumnIndex(COLUMN_MATCH_FINISHED)) == 1)
                 .setStatsDetail(getStatDetail(c))
                 .build(getGameType(c));
     }
@@ -349,6 +364,7 @@ public class DatabaseAdapter {
                 + COLUMN_PLAYER_RANK + ", "
                 + COLUMN_OPPONENT_RANK + ", "
                 + COLUMN_NOTES + ", "
+                + COLUMN_MATCH_FINISHED + ", "
                 + COLUMN_STATS_DETAIL + ", "
                 + COLUMN_LOCATION + "\n";
 

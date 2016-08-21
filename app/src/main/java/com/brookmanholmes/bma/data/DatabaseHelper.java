@@ -14,6 +14,7 @@ import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_GAME_TYPE;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_ID;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_IS_GAME_LOST;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_LOCATION;
+import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_MATCH_FINISHED;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_MATCH_ID;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_NAME;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_NOTES;
@@ -42,7 +43,7 @@ import static com.brookmanholmes.bma.data.DatabaseAdapter.TABLE_WHYS;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 19;
+    private static final int DATABASE_VERSION = 20;
     private static DatabaseHelper sInstance;
 
     /**
@@ -127,6 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_PLAYER_RANK + " INTEGER NOT NULL DEFAULT 0, "
                 + COLUMN_OPPONENT_RANK + " INTEGER NOT NULL DEFAULT 0, "
                 + COLUMN_NOTES + " TEXT COLLATE NOCASE DEFAULT NULL, "
+                + COLUMN_MATCH_FINISHED + " INTEGER NOT NULL DEFAULT 0, "
                 + COLUMN_STATS_DETAIL + " TEXT COLLATE NOCASE DEFAULT " + Match.StatsDetail.NORMAL.name()
                 + ");";
     }

@@ -228,4 +228,6 @@
     <string name="legend_made_ball">Made a ball %3$s (%1$d/%2$d)</string>
     <string name="title_review">Review</string>
     <string name="submit_feedback">Submit feedback</string>
+    <string name="match_over">Match is finished</string>
+    <string name="undo">Undo</string>
 </resources>

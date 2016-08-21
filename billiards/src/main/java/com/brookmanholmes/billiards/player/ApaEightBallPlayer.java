@@ -1,8 +1,5 @@
 package com.brookmanholmes.billiards.player;
 
-import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
-import com.brookmanholmes.billiards.game.util.RaceTo;
-
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */

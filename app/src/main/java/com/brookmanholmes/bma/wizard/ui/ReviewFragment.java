@@ -28,8 +28,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
-import com.brookmanholmes.billiards.game.util.RaceTo;
+import com.brookmanholmes.billiards.player.ApaRaceToHelper;
+import com.brookmanholmes.billiards.player.RaceTo;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage;

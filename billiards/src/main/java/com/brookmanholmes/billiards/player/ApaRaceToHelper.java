@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.game.util;
+package com.brookmanholmes.billiards.player;
 
 
 /**

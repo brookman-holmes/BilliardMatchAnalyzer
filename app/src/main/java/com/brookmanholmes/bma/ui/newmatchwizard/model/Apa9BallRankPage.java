@@ -3,7 +3,7 @@ package com.brookmanholmes.bma.ui.newmatchwizard.model;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
-import com.brookmanholmes.billiards.game.util.ApaRaceToHelper;
+import com.brookmanholmes.billiards.player.ApaRaceToHelper;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
 import java.util.ArrayList;
