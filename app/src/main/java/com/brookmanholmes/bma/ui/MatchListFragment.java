@@ -3,15 +3,13 @@ package com.brookmanholmes.bma.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.util.DiffUtil;
+import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,17 +20,16 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
-import com.brookmanholmes.bma.utils.CursorRecyclerAdapter;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,8 +39,7 @@ import butterknife.OnLongClick;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MatchListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int LOADER_ID = 100;
+public class MatchListFragment extends Fragment {
     private static final String ARG_PLAYER = "arg player";
     private static final String ARG_OPPONENT = "arg opponent";
 
@@ -83,29 +79,24 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
 
-        adapter = new MatchListRecyclerAdapter(getContext(), null, player, opponent);
+        adapter = new MatchListRecyclerAdapter(getContext(), new DatabaseAdapter(getContext()).getMatches(player, opponent));
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
-        getLoaderManager().initLoader(LOADER_ID, getArguments(), this);
 
         return view;
     }
 
     @Override public void onResume() {
         super.onResume();
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
+        adapter.update(new DatabaseAdapter(getContext()).getMatches(player, opponent));
     }
 
     @Override public void onDestroyView() {
         recyclerView.setAdapter(null);
         recyclerView = null;
         layoutManager = null;
-        getLoaderManager().destroyLoader(LOADER_ID);
-
         ButterKnife.unbind(this);
-
 
         super.onDestroyView();
     }
@@ -116,74 +107,60 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
         super.onDestroy();
     }
 
-    /**
-     * Loader methods
-     */
-    @Override public Loader<Cursor> onCreateLoader(int loaderID, Bundle args) {
-        return new MatchListLoader(getContext(), player, opponent);
-    }
+    static class MatchListRecyclerAdapter extends RecyclerView.Adapter<MatchListRecyclerAdapter.ListItemHolder> {
+        List<Match> matches;
+        Context context;
 
-    @Override public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
-        adapter.swapCursor(cursor);
-    }
-
-    @Override public void onLoaderReset(Loader<Cursor> loader) {
-        adapter.swapCursor(null);
-    }
-
-    private static class MatchListLoader extends CursorLoader {
-        final String player;
-        final String opponent;
-        public MatchListLoader(Context context, String player, String opponent) {
-            super(context);
-            this.player = player;
-            this.opponent = opponent;
-        }
-
-        @Override public Cursor loadInBackground() {
-            DatabaseAdapter databaseAdapter = new DatabaseAdapter(getContext());
-            return databaseAdapter.getMatches(player, opponent);
-        }
-    }
-
-    /**
-     * Created by Brookman Holmes on 1/13/2016.
-     */
-    static class MatchListRecyclerAdapter extends CursorRecyclerAdapter<MatchListRecyclerAdapter.ListItemHolder> {
-        final Context context;
-        private String player, opponent;
-
-
-        public MatchListRecyclerAdapter(Context context, Cursor cursor, @Nullable String player, @Nullable String opponent) {
-            this(context, cursor);
-
-            this.player = player;
-            this.opponent = opponent;
-        }
-
-        public MatchListRecyclerAdapter(Context context, Cursor cursor) {
-            super(cursor);
-
+        public MatchListRecyclerAdapter(Context context, List<Match> matches) {
+            this.matches = matches;
             this.context = context;
-            setHasStableIds(true);
-        }
-
-        @Override public void onBindViewHolderCursor(ListItemHolder holder, Cursor cursor) {
-            holder.setLocation(getLocation(cursor));
-            holder.date.setText(getDate(cursor));
-            holder.playerNames.setText(getPlayerNames(cursor));
-            holder.breakType.setText(getBreakType(cursor));
-            holder.gameType.setImageResource(getImageId(cursor));
-            holder.ruleSet.setText(getRuleSet(cursor));
         }
 
         @Override public ListItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ListItemHolder(LayoutInflater.from(parent.getContext())
+            return new ListItemHolder(LayoutInflater.from(context)
                     .inflate(R.layout.card_match_row, parent, false));
         }
 
-        private String getBreakType(Cursor cursor) {
-            switch (BreakType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_BREAK_TYPE)))) {
+        @Override public void onBindViewHolder(ListItemHolder holder, int position) {
+            Match<?> match = matches.get(position);
+            holder.setLocation(match.getLocation());
+            holder.date.setText(getDate(match.getCreatedOn()));
+            holder.playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
+            holder.breakType.setText(getBreakType(match.getGameStatus().breakType, match.getPlayer().getName(), match.getOpponent().getName()));
+            holder.gameType.setImageResource(getImageId(match.getGameStatus().gameType));
+            holder.ruleSet.setText(getRuleSet(match.getGameStatus().gameType));
+            holder.itemView.setTag(match.getMatchId());
+            holder.id = match.getMatchId();
+        }
+
+        @Override
+        public void onBindViewHolder(ListItemHolder holder, int position, List<Object> payloads) {
+            if (payloads.size() > position) {
+                Bundle bundle = (Bundle) payloads.get(position);
+                if (bundle.containsKey(DatabaseAdapter.COLUMN_LOCATION))
+                    holder.location.setText(bundle.getString(DatabaseAdapter.COLUMN_LOCATION));
+                if (bundle.containsKey("player_name"))
+                    holder.playerNames.setText(getString(R.string.and, bundle.getString("player_name"), bundle.getString("opp_name")));
+            } else
+                super.onBindViewHolder(holder, position, payloads);
+        }
+
+        @Override public int getItemCount() {
+            return matches.size();
+        }
+
+        private void update(List<Match> matches) {
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MatchListDiffCallback(this.matches, matches));
+            this.matches = matches;
+            diffResult.dispatchUpdatesTo(this);
+        }
+
+        private String getDate(Date date) {
+            return DateFormat.getDateInstance().format(date);
+        }
+
+        private String getBreakType(BreakType breakType, String playerName, String opponentName) {
+            switch (breakType) {
                 case WINNER:
                     return getString(R.string.break_winner);
                 case LOSER:
@@ -191,37 +168,18 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
                 case ALTERNATE:
                     return getString(R.string.break_alternate);
                 case PLAYER:
-                    return getString(R.string.break_player, getPlayerName(cursor));
+                    return getString(R.string.break_player, playerName);
                 case OPPONENT:
-                    return getString(R.string.break_player, getOpponentName(cursor));
+                    return getString(R.string.break_player, opponentName);
                 case GHOST:
-                    return getString(R.string.break_player, getPlayerName(cursor));
+                    return getString(R.string.break_player, playerName);
                 default:
                     throw new IllegalArgumentException();
             }
         }
 
-        private String getDate(Cursor cursor) {
-            String dateString = cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_CREATED_ON));
-
-            DateFormat format = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
-            Date date;
-            try {
-                date = format.parse(dateString);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                date = new Date();
-            }
-
-            return DateFormat.getDateInstance().format(date);
-        }
-
-        private String getLocation(Cursor cursor) {
-            return cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_LOCATION));
-        }
-
-        private int getImageId(Cursor cursor) {
-            switch (GameType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE)))) {
+        private int getImageId(GameType gameType) {
+            switch (gameType) {
                 case BCA_EIGHT_BALL:
                     return R.drawable.eight_ball;
                 case BCA_NINE_BALL:
@@ -241,8 +199,8 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
             }
         }
 
-        private String getRuleSet(Cursor cursor) {
-            switch (GameType.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.COLUMN_GAME_TYPE)))) {
+        private String getRuleSet(GameType gameType) {
+            switch (gameType) {
                 case BCA_EIGHT_BALL:
                     return getString(R.string.bca_rules);
                 case BCA_NINE_BALL:
@@ -258,18 +216,6 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
             }
         }
 
-        private String getPlayerNames(Cursor cursor) {
-            return getString(R.string.and, getPlayerName(cursor), getOpponentName(cursor));
-        }
-
-        private String getPlayerName(Cursor cursor) {
-            return cursor.getString(cursor.getColumnIndex("player_name"));
-        }
-
-        private String getOpponentName(Cursor cursor) {
-            return cursor.getString(cursor.getColumnIndex("opp_name"));
-        }
-
         private String getString(@StringRes int resId) {
             return context.getString(resId);
         }
@@ -279,6 +225,7 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
         }
 
         class ListItemHolder extends RecyclerView.ViewHolder {
+            long id;
             @Bind(R.id.players) TextView playerNames;
             @Bind(R.id.breakType) TextView breakType;
             @Bind(R.id.imgGameType) ImageView gameType;
@@ -302,19 +249,18 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
 
             @OnClick(R.id.container) public void onClick() {
                 final Intent intent = new Intent(getContext(), MatchInfoActivity.class);
-                intent.putExtra(BaseActivity.ARG_MATCH_ID, getItemId());
+                intent.putExtra(BaseActivity.ARG_MATCH_ID, id);
                 getContext().startActivity(intent);
             }
 
             @OnLongClick(R.id.container) public boolean onLongClick() {
-                final DatabaseAdapter database = new DatabaseAdapter(getContext());
-
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
                 builder.setMessage(getString(R.string.delete_match))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override public void onClick(DialogInterface dialog, int which) {
-                                database.deleteMatch(getItemId());
-                                swapCursor(database.getMatches(player, opponent));
+                                new DatabaseAdapter(getContext()).deleteMatch(id); // remove from the database
+                                // update recyclerView
+                                matches.remove(getAdapterPosition());
                                 notifyItemRemoved(getAdapterPosition());
                             }
                         })
@@ -328,6 +274,60 @@ public class MatchListFragment extends Fragment implements LoaderManager.LoaderC
 
             private Context getContext() {
                 return itemView.getContext();
+            }
+        }
+
+        private static class MatchListDiffCallback extends DiffUtil.Callback {
+            private List<Match> oldList;
+            private List<Match> newList;
+
+            public MatchListDiffCallback(List<Match> oldList, List<Match> newList) {
+                this.oldList = oldList;
+                this.newList = newList;
+            }
+
+            @Override public int getOldListSize() {
+                return oldList != null ? oldList.size() : 0;
+            }
+
+            @Override public int getNewListSize() {
+                return newList != null ? newList.size() : 0;
+            }
+
+            @Override public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return Long.compare(newList.get(newItemPosition).getMatchId(), oldList.get(oldItemPosition).getMatchId()) == 0;
+            }
+
+            @Override public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                Match oldMatch = oldList.get(oldItemPosition);
+                Match newMatch = newList.get(newItemPosition);
+
+                return newMatch.getPlayer().getName().equals(oldMatch.getPlayer().getName()) &&
+                        newMatch.getOpponent().getName().equals(oldMatch.getOpponent().getName()) &&
+                        newMatch.getNotes().equals(oldMatch.getNotes()) &&
+                        newMatch.getLocation().equals(oldMatch.getLocation());
+            }
+
+            @Nullable @Override
+            public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+                Match oldMatch = oldList.get(oldItemPosition);
+                Match newMatch = newList.get(newItemPosition);
+
+                Bundle diff = new Bundle();
+
+                if (!newMatch.getPlayer().getName().equals(oldMatch.getPlayer().getName()) ||
+                        !newMatch.getOpponent().getName().equals(oldMatch.getOpponent().getName())) {
+                    diff.putString("player_name", newMatch.getPlayer().getName());
+                    diff.putString("opp_name", newMatch.getOpponent().getName());
+                }
+
+                if (!newMatch.getLocation().equals(oldMatch.getLocation()))
+                    diff.putString(DatabaseAdapter.COLUMN_LOCATION, newMatch.getLocation());
+
+                if (diff.size() == 0)
+                    return null;
+
+                return diff;
             }
         }
     }

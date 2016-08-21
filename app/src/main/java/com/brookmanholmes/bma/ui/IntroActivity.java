@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
@@ -255,10 +256,8 @@ public class IntroActivity extends BaseActivity {
                 Context context = itemView.getContext();
                 gamesPlayed.setText(context.getResources().getQuantityString(R.plurals.num_games, player.getGamesPlayed(), player.getGamesPlayed()));
                 DatabaseAdapter db = new DatabaseAdapter(itemView.getContext());
-                Cursor cursor = db.getMatches(player.getName(), null);
-                int count = cursor.getCount();
-                cursor.close();
-                matchesPlayed.setText(context.getResources().getQuantityString(R.plurals.num_matches, count, count));
+                List<Match> matches = db.getMatches(player.getName(), null);
+                matchesPlayed.setText(context.getResources().getQuantityString(R.plurals.num_matches, matches.size(), matches.size()));
                 shootingPct.setText(String.format(context.getString(R.string.shooting_pct), player.getShootingPct()));
                 safetyPct.setText(String.format(context.getString(R.string.safety_pct), player.getSafetyPct()));
                 breakPct.setText(String.format(context.getString(R.string.breaking_pct), player.getBreakPct()));

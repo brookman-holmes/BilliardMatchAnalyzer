@@ -57,6 +57,7 @@ public class SubmitFeedbackDialog extends DialogFragment {
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
+                        hideKeyboard();
                         dialog.cancel();
                     }
                 })

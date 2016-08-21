@@ -117,18 +117,17 @@ public class DatabaseAdapter {
 
     public List<String> getOpponentsOf(String playerName) {
         List<String> names = new ArrayList<>();
-        Cursor c = getMatches(playerName, null);
+        List<Match> matches = getMatches(playerName, null);
 
-        while (c.moveToNext()) {
-            String player = c.getString(c.getColumnIndex("player_name"));
-            String opponent = c.getString(c.getColumnIndex("opp_name"));
+        for (Match match : matches) {
+            String player = match.getPlayer().getName();
+            String opponent = match.getOpponent().getName();
 
             if (!playerName.equals(player) && !names.contains(player))
                 names.add(player);
             if (!playerName.equals(opponent) && !names.contains(opponent))
                 names.add(opponent);
         }
-        c.close();
 
         return names;
     }
@@ -334,7 +333,8 @@ public class DatabaseAdapter {
         return GameType.valueOf(c.getString(c.getColumnIndex(COLUMN_GAME_TYPE)));
     }
 
-    public Cursor getMatches(@Nullable String player, @Nullable String opponent) {
+    public List<Match> getMatches(@Nullable String player, @Nullable String opponent) {
+        List<Match> matches = new ArrayList<>();
         database = databaseHelper.getReadableDatabase();
 
         final String selection = "m." + COLUMN_ID + " as _id, "
@@ -342,12 +342,14 @@ public class DatabaseAdapter {
                 + "opp." + COLUMN_NAME + " as opp_name, "
                 + "p." + COLUMN_ID + " as player_id, "
                 + "opp." + COLUMN_ID + " as opp_id, "
+                + COLUMN_PLAYER_TURN + ", "
                 + COLUMN_GAME_TYPE + ", "
                 + COLUMN_BREAK_TYPE + ", "
                 + COLUMN_CREATED_ON + ", "
-                + COLUMN_PLAYER_TURN + ", "
                 + COLUMN_PLAYER_RANK + ", "
                 + COLUMN_OPPONENT_RANK + ", "
+                + COLUMN_NOTES + ", "
+                + COLUMN_STATS_DETAIL + ", "
                 + COLUMN_LOCATION + "\n";
 
         String query = "SELECT " + selection + "from " + TABLE_MATCHES + " m\n"
@@ -382,7 +384,13 @@ public class DatabaseAdapter {
             }
         }
 
-        return database.rawQuery(query, queryArgs);
+        Cursor cursor = database.rawQuery(query, queryArgs);
+        while (cursor.moveToNext()) {
+            matches.add(createMatchFromCursor(cursor));
+        }
+
+        cursor.close();
+        return matches;
     }
 
     private void insertPlayer(AbstractPlayer player, long id) {

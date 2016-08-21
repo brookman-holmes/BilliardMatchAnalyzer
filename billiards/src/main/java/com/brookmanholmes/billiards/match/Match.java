@@ -216,7 +216,12 @@ public class Match<T extends AbstractPlayer> implements IMatch {
 
     @Override public String toString() {
         return "Match{" +
-                "game=" + game +
+                "createdOn=" + createdOn +
+                "\n game=" + game +
+                "\n detail=" + detail +
+                "\n matchId=" + matchId +
+                "\n location='" + location + '\'' +
+                "\n notes='" + notes + '\'' +
                 '}';
     }
 
