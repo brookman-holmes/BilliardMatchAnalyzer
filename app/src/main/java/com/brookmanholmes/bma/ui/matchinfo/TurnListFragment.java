@@ -76,7 +76,7 @@ public class TurnListFragment extends Fragment implements
         wrappedAdapter = itemManager.createWrappedAdapter(adapter);
     }
 
-    @Override public void update(Match<?> match) {
+    @Override public void update(Match match) {
         adapter.updateMatch(match);
         // after update scroll to the end of the data
         itemManager.expandGroup(adapter.getGroupCount() >= 2 ? adapter.getGroupCount() - 2 : 0);

@@ -76,7 +76,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.buttonAddTurn) FloatingActionButton fabAddTurn;
     private DatabaseAdapter db;
-    private Match<?> match;
+    private Match match;
     private Menu menu;
     private Snackbar matchOverSnackbar;
 
@@ -337,7 +337,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     interface UpdateMatchInfo {
-        void update(Match<?> match);
+        void update(Match match);
     }
 
     public static class ChoiceDialog extends DialogFragment {
@@ -405,7 +405,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         String preText;
         EditText input;
         DatabaseAdapter db;
-        Match<?> match;
+        Match match;
         long matchId;
         private InputMethodManager inputMethodManager;
 
@@ -576,7 +576,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             super.onDetach();
         }
 
-        @Override public void update(Match<?> match) {
+        @Override public void update(Match match) {
             adapter.updatePlayers(match);
         }
 
@@ -591,7 +591,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             }
 
             DatabaseAdapter db = new DatabaseAdapter(getContext());
-            Match<?> match = db.getMatch(matchId);
+            Match match = db.getMatch(matchId);
             adapter = MatchInfoRecyclerAdapter.createMatchAdapter(match);
         }
 

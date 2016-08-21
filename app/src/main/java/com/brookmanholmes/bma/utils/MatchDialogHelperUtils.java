@@ -47,7 +47,7 @@ public class MatchDialogHelperUtils {
     private MatchDialogHelperUtils() {
     }
 
-    public static Bundle createBundleFromMatch(Match<?> match) {
+    public static Bundle createBundleFromMatch(Match match) {
         Bundle args = new Bundle();
 
         args.putBoolean(ALLOW_TURN_SKIP_KEY, match.getGameStatus().allowTurnSkip);
@@ -70,7 +70,7 @@ public class MatchDialogHelperUtils {
         return args;
     }
 
-    public static String getCurrentPlayersName(Match<?> match) {
+    public static String getCurrentPlayersName(Match match) {
         switch (match.getGameStatus().turn) {
             case OPPONENT:
                 return match.getOpponent().getName();
@@ -82,7 +82,7 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    public static String getOpposingPlayersName(Match<?> match) {
+    public static String getOpposingPlayersName(Match match) {
         switch (match.getGameStatus().turn) {
             case PLAYER:
                 return match.getOpponent().getName();
@@ -94,7 +94,7 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    public static int getGameBall(Match<?> match) {
+    public static int getGameBall(Match match) {
         switch (match.getGameStatus().gameType) {
             case APA_EIGHT_BALL:
                 return 8;

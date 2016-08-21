@@ -47,7 +47,7 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         opponent = match.getOpponent();
     }
 
-    public static MatchInfoRecyclerAdapter createMatchAdapter(Match<?> match) {
+    public static MatchInfoRecyclerAdapter createMatchAdapter(Match match) {
         switch (match.getGameStatus().gameType) {
             case BCA_NINE_BALL:
                 return new MatchInfoRecyclerAdapter(match);
@@ -139,7 +139,7 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public void updatePlayers(Match<?> match) {
+    public void updatePlayers(Match match) {
         player = match.getPlayer();
         opponent = match.getOpponent();
 
@@ -209,7 +209,7 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }
         }
 
-        public void updatePlayers(Match<?> match) {
+        public void updatePlayers(Match match) {
             innings = match.getGameStatus().innings;
             super.updatePlayers(match);
         }

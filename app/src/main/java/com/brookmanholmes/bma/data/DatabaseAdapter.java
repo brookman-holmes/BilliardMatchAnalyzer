@@ -146,9 +146,9 @@ public class DatabaseAdapter {
 
     public List<String> getPlayerNames() {
         List<String> names = new ArrayList<>();
-        List<Match<?>> matches = getMatches();
+        List<Match> matches = getMatches();
 
-        for (Match<?> match : matches) {
+        for (Match match : matches) {
             if (!names.contains(match.getPlayer().getName()))
                 names.add(match.getPlayer().getName());
             if (match.getGameStatus().breakType != BreakType.GHOST && !names.contains(match.getOpponent().getName()))
@@ -162,7 +162,7 @@ public class DatabaseAdapter {
         database = databaseHelper.getReadableDatabase();
         List<AbstractPlayer> players = new ArrayList<>();
 
-        for (Match<?> match : getMatches()) {
+        for (Match match : getMatches()) {
             combinePlayerInList(players, match.getPlayer());
             if (match.getGameStatus().breakType != BreakType.GHOST)
                 combinePlayerInList(players, match.getOpponent());
@@ -200,7 +200,7 @@ public class DatabaseAdapter {
                 null);
 
         while (c.moveToNext()) {
-            Match<?> match = getMatch(c.getLong(c.getColumnIndex(COLUMN_MATCH_ID)));
+            Match match = getMatch(c.getLong(c.getColumnIndex(COLUMN_MATCH_ID)));
             Pair<AbstractPlayer, AbstractPlayer> pair;
 
             if (match.getPlayer().getName().equals(playerName)) {
@@ -221,8 +221,8 @@ public class DatabaseAdapter {
         return players;
     }
 
-    private List<Match<?>> getMatches() {
-        List<Match<?>> matches = new ArrayList<>();
+    private List<Match> getMatches() {
+        List<Match> matches = new ArrayList<>();
         database = databaseHelper.getReadableDatabase();
         final String selection = "m." + COLUMN_ID + " as _id, "
                 + "p." + COLUMN_NAME + " as player_name, "
@@ -251,7 +251,7 @@ public class DatabaseAdapter {
         Cursor c = database.rawQuery(query, null);
 
         while (c.moveToNext()) {
-            Match<?> match = createMatchFromCursor(c);
+            Match match = createMatchFromCursor(c);
             for (ITurn turn : getMatchTurns(match.getMatchId())) {
                 match.addTurn(turn);
             }
@@ -261,7 +261,7 @@ public class DatabaseAdapter {
         return matches;
     }
 
-    public Match<?> getMatch(long id) {
+    public Match getMatch(long id) {
         database = databaseHelper.getReadableDatabase();
         final String selection = "m." + COLUMN_ID + " as _id, "
                 + "p." + COLUMN_NAME + " as player_name, "
@@ -291,7 +291,7 @@ public class DatabaseAdapter {
         Cursor c = database.rawQuery(query, null);
         c.moveToFirst();
 
-        Match<?> match = createMatchFromCursor(c);
+        Match match = createMatchFromCursor(c);
 
         c.close();
         database.close();
@@ -302,7 +302,7 @@ public class DatabaseAdapter {
         return match;
     }
 
-    private Match<?> createMatchFromCursor(Cursor c) {
+    private Match createMatchFromCursor(Cursor c) {
         return new Match.Builder(
                 c.getString(c.getColumnIndex("player_name")),
                 c.getString(c.getColumnIndex("opp_name")))

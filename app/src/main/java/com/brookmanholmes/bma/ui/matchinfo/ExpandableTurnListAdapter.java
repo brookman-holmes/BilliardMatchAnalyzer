@@ -34,16 +34,16 @@ import butterknife.ButterKnife;
  */
 class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<ExpandableTurnListAdapter.GameViewHolder, ExpandableTurnListAdapter.TurnViewHolder> {
     private List<List<ITurn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
-    private Match<?> match;
+    private Match match;
 
-    public ExpandableTurnListAdapter(Match<?> match) {
+    public ExpandableTurnListAdapter(Match match) {
         this.match = match;
         setHasStableIds(true);
         data = buildDataSource(match.getTurns());
         // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
     }
 
-    public void updateMatch(Match<?> match) {
+    public void updateMatch(Match match) {
         this.match = match;
         data = buildDataSource(match.getTurns());
         notifyDataSetChanged(); // there is a bug thrown by the library this is based on so neat

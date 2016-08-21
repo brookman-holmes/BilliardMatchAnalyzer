@@ -41,7 +41,7 @@ public class GameStatusViewBuilder {
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.pushStatus) TextView pushStatus;
 
-    private GameStatusViewBuilder(Match<?> match, View view) {
+    private GameStatusViewBuilder(Match match, View view) {
         ButterKnife.bind(this, view);
         Context context = view.getContext();
         String playerName = match.getPlayer().getName();
@@ -72,7 +72,7 @@ public class GameStatusViewBuilder {
         setBallsOnTable(match, ballContainer);
     }
 
-    private static String getLastBreaker(Match<?> match) {
+    private static String getLastBreaker(Match match) {
         GameStatus gameStatus = match.getGameStatus();
         String playerName = getPlayerName(match, gameStatus.breaker);
         if (gameStatus.newGame) {
@@ -82,13 +82,13 @@ public class GameStatusViewBuilder {
         }
     }
 
-    private static String getPlayerName(Match<?> match, PlayerTurn turn) {
+    private static String getPlayerName(Match match, PlayerTurn turn) {
         if (turn == PlayerTurn.PLAYER)
             return match.getPlayer().getName();
         else return match.getOpponent().getName();
     }
 
-    private static String getPlayerTurnString(Match<?> match) {
+    private static String getPlayerTurnString(Match match) {
         if (match.getGameStatus().newGame)
             return "Start of new game";
         else return String.format(Locale.getDefault(), "%1$s\'s turn", getPlayerName(match, match.getGameStatus().turn));
@@ -98,14 +98,14 @@ public class GameStatusViewBuilder {
         return String.format(Locale.getDefault(), "%1$s is on %2$d fouls", name, fouls);
     }
 
-    private static String getColorInfo(Context context, Match<?> match) {
+    private static String getColorInfo(Context context, Match match) {
         if (match.getGameStatus().playerColor == PlayerColor.OPEN)
             return context.getString(R.string.open_table);
         else return String.format(Locale.getDefault(), "%1$s and %2$s",
                 getPlayerColorString(context, match), getOpponentColorString(context, match));
     }
 
-    private static String getPlayerColorString(Context context, Match<?> match) {
+    private static String getPlayerColorString(Context context, Match match) {
         if (match.getGameStatus().playerColor == PlayerColor.OPEN)
             return "";
         else if (match.getGameStatus().playerColor == PlayerColor.STRIPES)
@@ -113,7 +113,7 @@ public class GameStatusViewBuilder {
         else return context.getString(R.string.solids_table, match.getPlayer().getName());
     }
 
-    private static String getOpponentColorString(Context context, Match<?> match) {
+    private static String getOpponentColorString(Context context, Match match) {
         if (match.getGameStatus().playerColor == PlayerColor.OPEN)
             return "";
         else if (match.getGameStatus().playerColor == PlayerColor.SOLIDS)
@@ -121,7 +121,7 @@ public class GameStatusViewBuilder {
         else return context.getString(R.string.solids_table, match.getOpponent().getName());
     }
 
-    private static String getPushStatusString(Context context, Match<?> match) {
+    private static String getPushStatusString(Context context, Match match) {
         if (match.getGameStatus().allowPush && !match.getGameStatus().newGame)
             return context.getString(R.string.allow_push, getPlayerName(match, match.getGameStatus().turn));
         else if (match.getGameStatus().allowTurnSkip)
@@ -130,7 +130,7 @@ public class GameStatusViewBuilder {
             return context.getString(R.string.no_push_no_turn_skip);
     }
 
-    private static void setBallsOnTable(Match<?> match, GridLayout ballContainer) {
+    private static void setBallsOnTable(Match match, GridLayout ballContainer) {
         //reverse loop because you want to remove the last fucking ball and not change the count of the children by removing from the front
         for (int ball = ballContainer.getChildCount() - 1; ball >= 0; ball--) {
             if (!match.getGameStatus().ballsOnTable.contains(ball + 1))
@@ -138,7 +138,7 @@ public class GameStatusViewBuilder {
         }
     }
 
-    public static void bindView(Match<?> match, View view) {
+    public static void bindView(Match match, View view) {
         new GameStatusViewBuilder(match, view);
     }
 }

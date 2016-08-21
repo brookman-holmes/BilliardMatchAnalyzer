@@ -122,7 +122,7 @@ public class MatchListFragment extends Fragment {
         }
 
         @Override public void onBindViewHolder(ListItemHolder holder, int position) {
-            Match<?> match = matches.get(position);
+            Match match = matches.get(position);
             holder.setLocation(match.getLocation());
             holder.date.setText(getDate(match.getCreatedOn()));
             holder.playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));

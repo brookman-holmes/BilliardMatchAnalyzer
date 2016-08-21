@@ -19,7 +19,7 @@ class SampleMatchProvider {
         return HohmannSvbMatch.getTurns();
     }
 
-    public static Match<?> getHohmannSvbMatch() {
+    public static Match getHohmannSvbMatch() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, Calendar.JULY);
         cal.set(Calendar.YEAR, 2015);
@@ -35,7 +35,7 @@ class SampleMatchProvider {
         return ShawRobertsMatch.getTurns();
     }
 
-    public static Match<?> getShawRobertsMatch() {
+    public static Match getShawRobertsMatch() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, Calendar.JUNE);
         cal.set(Calendar.YEAR, 2015);

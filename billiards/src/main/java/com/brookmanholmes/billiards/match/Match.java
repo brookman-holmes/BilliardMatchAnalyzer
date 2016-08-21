@@ -27,12 +27,12 @@ import java.util.List;
 /**
  * Created by Brookman Holmes on 10/27/2015.
  */
-public class Match<T extends AbstractPlayer> implements IMatch {
-    private final PlayerController<T> playerController;
+public class Match implements IMatch {
+    private final PlayerController playerController;
     private final Date createdOn;
     private final Game game;
-    private final LinkedList<T> player1 = new LinkedList<>();
-    private final LinkedList<T> player2 = new LinkedList<>();
+    private final LinkedList<AbstractPlayer> player1 = new LinkedList<>();
+    private final LinkedList<AbstractPlayer> player2 = new LinkedList<>();
     private final LinkedList<ITurn> turns = new LinkedList<>();
     private final LinkedList<ITurn> undoneTurns = new LinkedList<>();
     private final LinkedList<GameStatus> games = new LinkedList<>();
@@ -42,7 +42,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     private String notes;
     private boolean matchOver;
 
-    private Match(Builder builder, PlayerController<T> playerController) {
+    private Match(Builder builder, PlayerController playerController) {
         location = builder.location;
         notes = builder.notes;
         matchId = builder.id;
@@ -85,19 +85,19 @@ public class Match<T extends AbstractPlayer> implements IMatch {
         return games.get(turn);
     }
 
-    public T getPlayer() {
+    public AbstractPlayer getPlayer() {
         return PlayerController.getPlayerFromList(player1, playerController.newPlayer());
     }
 
-    public T getOpponent() {
+    public AbstractPlayer getOpponent() {
         return PlayerController.getPlayerFromList(player2, playerController.newOpponent());
     }
 
-    @Override public T getPlayer(int from, int to) {
+    @Override public AbstractPlayer getPlayer(int from, int to) {
         return PlayerController.getPlayerFromList(player1.subList(from, to), playerController.newPlayer());
     }
 
-    @Override public T getOpponent(int from, int to) {
+    @Override public AbstractPlayer getOpponent(int from, int to) {
         return PlayerController.getPlayerFromList(player2.subList(from, to), playerController.newOpponent());
     }
 
@@ -115,13 +115,13 @@ public class Match<T extends AbstractPlayer> implements IMatch {
 
     @Override public void setPlayerName(String newName) {
         playerController.setPlayerName(newName);
-        for (T player : player1)
+        for (AbstractPlayer player : player1)
             player.setName(newName);
     }
 
     @Override public void setOpponentName(String newName) {
         playerController.setOpponentName(newName);
-        for (T player : player2)
+        for (AbstractPlayer player : player2)
             player.setName(newName);
     }
 
@@ -175,7 +175,7 @@ public class Match<T extends AbstractPlayer> implements IMatch {
     }
 
     private void updatePlayerStats(ITurn turn) {
-        Pair<T> pair = playerController.updatePlayerStats(getGameStatus(), turn);
+        Pair<AbstractPlayer> pair = playerController.updatePlayerStats(getGameStatus(), turn);
 
         player1.addLast(pair.getPlayer());
         player2.addLast(pair.getOpponent());
@@ -305,9 +305,9 @@ public class Match<T extends AbstractPlayer> implements IMatch {
             return this;
         }
 
-        public Match<?> build(GameType gameType) {
+        public Match build(GameType gameType) {
             this.gameType = gameType;
-            return new Match<>(this, PlayerController.createController(Game.newGame(gameType, playerTurn, breakType), playerName, opponentName, playerRank, opponentRank));
+            return new Match(this, PlayerController.createController(Game.newGame(gameType, playerTurn, breakType), playerName, opponentName, playerRank, opponentRank));
         }
 
         public Builder setBreakType(BreakType breakType) {
