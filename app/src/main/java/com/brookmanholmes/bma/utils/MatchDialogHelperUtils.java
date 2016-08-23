@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.utils;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -18,6 +19,7 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Brookman Holmes on 1/27/2016.
@@ -64,7 +66,7 @@ public class MatchDialogHelperUtils {
         args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.name());
         args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
         args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
-        args.putString(STATS_LEVEL_KEY, match.getAdvStats().name());
+        args.putString(STATS_LEVEL_KEY, match.getStatDetailLevel().name());
         args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
         args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
         return args;
@@ -243,30 +245,30 @@ public class MatchDialogHelperUtils {
             view.setImageLevel(0);
     }
 
-    @StringRes public static int convertTurnEndToStringRes(TurnEnd end) {
+    public static String convertTurnEndToStringRes(Context context, TurnEnd end, String currentPlayer, String opposingPlayer) {
         switch (end) {
             case SAFETY:
-                return R.string.turn_safety;
+                return context.getString(R.string.turn_safety);
             case SAFETY_ERROR:
-                return R.string.turn_safety_error;
+                return context.getString(R.string.turn_safety_error);
             case MISS:
-                return R.string.turn_miss;
+                return context.getString(R.string.turn_miss);
             case BREAK_MISS:
-                return R.string.turn_break_miss;
+                return context.getString(R.string.turn_break_miss);
             case GAME_WON:
-                return R.string.turn_won_game;
+                return context.getString(R.string.turn_won_game);
             case PUSH_SHOT:
-                return R.string.turn_push;
+                return context.getString(R.string.turn_push);
             case SKIP_TURN:
-                return R.string.turn_skip;
+                return context.getString(R.string.turn_skip);
             case CURRENT_PLAYER_BREAKS_AGAIN:
-                return R.string.turn_current_player_breaks;
+                return context.getString(R.string.turn_current_player_breaks, currentPlayer);
             case OPPONENT_BREAKS_AGAIN:
-                return R.string.turn_non_current_player_breaks;
+                return context.getString(R.string.turn_non_current_player_breaks, opposingPlayer);
             case CONTINUE_WITH_GAME:
-                return R.string.turn_continue_game;
+                return context.getString(R.string.turn_continue_game);
             case ILLEGAL_BREAK:
-                return R.string.turn_illegal_break;
+                return context.getString(R.string.turn_illegal_break);
             default:
                 throw new IllegalArgumentException("No such conversion for: " + end.toString());
         }

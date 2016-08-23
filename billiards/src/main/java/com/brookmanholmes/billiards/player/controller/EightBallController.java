@@ -6,8 +6,8 @@ import com.brookmanholmes.billiards.player.EightBallPlayer;
  * Created by Brookman Holmes on 10/28/2015.
  */
 class EightBallController extends PlayerController<EightBallPlayer> {
-    EightBallController(String playerName, String opponentName) {
-        super(playerName, opponentName);
+    EightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
+        super(playerName, opponentName, playerRank, opponentRank);
     }
 
     @Override int getMaximumBallsMakeable() {
@@ -15,10 +15,10 @@ class EightBallController extends PlayerController<EightBallPlayer> {
     }
 
     @Override public EightBallPlayer newPlayer() {
-        return new EightBallPlayer(playerName);
+        return new EightBallPlayer(playerName, playerRank);
     }
 
     @Override public EightBallPlayer newOpponent() {
-        return new EightBallPlayer(opponentName);
+        return new EightBallPlayer(opponentName, opponentRank);
     }
 }

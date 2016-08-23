@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.TextViewCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class TurnEndFragment extends ListFragment {
+    private static final String TAG = "TurnEndFragment";
     private static final String ARG_KEY = "key";
     private static final String ARG_OPTIONS_KEY = "options";
     private static final String ARG_SELECTION_KEY = "selection";
@@ -77,12 +79,7 @@ public class TurnEndFragment extends ListFragment {
         adapter.clear();
         for (String option : options) {
             TurnEnd ending = TurnEnd.valueOf(option);
-            if (ending == TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN)
-                adapter.add(getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending), page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
-            else if (ending == TurnEnd.OPPONENT_BREAKS_AGAIN)
-                adapter.add(getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending), page.getData().getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)));
-            else
-                adapter.add(getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending)));
+                adapter.add(getString(ending));
         }
 
         adapter.sort();
@@ -151,7 +148,7 @@ public class TurnEndFragment extends ListFragment {
         if (adapter.contains(getTurnEndFromPage())) {
             listView.setItemChecked(adapter.indexOf(getTurnEndFromPage()), true);
         } else {
-            listView.setItemChecked(adapter.indexOf(getDefaultCheck(defaultChecked)), true);
+            listView.setItemChecked(adapter.indexOf(getString(defaultChecked)), true);
             updatePage(listView.getCheckedItemPosition());
         }
     }
@@ -159,26 +156,17 @@ public class TurnEndFragment extends ListFragment {
     private void repopulateChoicesList(List<TurnEnd> options) {
         adapter.clear();
         for (TurnEnd ending : options) {
-            if (ending == TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN)
-                adapter.add(getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending), page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
-            else if (ending == TurnEnd.OPPONENT_BREAKS_AGAIN)
-                adapter.add(getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending), page.getData().getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)));
-            else
-                adapter.add(getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending)));
+                adapter.add(getString(ending));
         }
         adapter.sort();
         adapter.notifyDataSetChanged();
     }
 
-    private String getDefaultCheck(TurnEnd ending) {
-        if (ending == TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN)
-            return getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending),
-                    page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY));
-        else if (ending == TurnEnd.OPPONENT_BREAKS_AGAIN)
-            return getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending),
-                    page.getData().getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY));
-        else
-            return getString(MatchDialogHelperUtils.convertTurnEndToStringRes(ending));
+    private String getString(TurnEnd ending) {
+        return MatchDialogHelperUtils.convertTurnEndToStringRes(getContext(),
+                ending,
+                page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY),
+                page.getData().getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY));
     }
 
     private void updatePage(int position) {

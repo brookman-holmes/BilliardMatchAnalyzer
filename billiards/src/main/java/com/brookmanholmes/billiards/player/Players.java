@@ -32,12 +32,9 @@ public class Players {
             return isMatchOverApa9((ApaNineBallPlayer)player, (ApaNineBallPlayer)opponent);
         else if (player instanceof ApaEightBallPlayer && opponent instanceof ApaEightBallPlayer)
             return isMatchOverApa8((ApaEightBallPlayer)player, (ApaEightBallPlayer)opponent);
-        /**
-         * todo setup isMatchOver for other player types, which will most likely be something like storing
-         * a player rank in Abstract player and checking if their win count is equal to their rank (or point count,
-         * depending on the game type)
-         */
-        else return false;
+        else
+            return player.getRank() <= player.getWins() ||
+                    opponent.getRank() <= opponent.getWins();
     }
 
     private static boolean isMatchOverApa9(ApaNineBallPlayer player, ApaNineBallPlayer opponent) {

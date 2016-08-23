@@ -59,8 +59,6 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         reviewAdapter = new ReviewAdapter();
     }
 
-
-    // // TODO: 5/21/2016 Use Context to setup this page
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         wizardModel = callbacks.onGetModel();

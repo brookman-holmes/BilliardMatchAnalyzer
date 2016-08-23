@@ -7,6 +7,10 @@ public class CompPlayer extends AbstractPlayer implements IWinsOnBreak {
     private int earlyWins = 0;
     private int winsOnBreak = 0;
 
+    public CompPlayer(String name, int rank) {
+        super(name, rank);
+    }
+
     public CompPlayer(String name) {
         super(name);
     }

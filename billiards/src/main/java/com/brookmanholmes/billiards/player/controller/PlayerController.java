@@ -28,36 +28,39 @@ public abstract class PlayerController<T extends AbstractPlayer> {
     GameStatus gameStatus;
     ITurn turn;
     String playerName, opponentName;
+    int playerRank, opponentRank;
 
-    PlayerController(String playerName, String opponentName) {
+    PlayerController(String playerName, String opponentName, int playerRank, int opponentRank) {
         this.playerName = playerName;
         this.opponentName = opponentName;
+        this.playerRank = playerRank;
+        this.opponentRank = opponentRank;
     }
 
-    public static PlayerController<NineBallPlayer> createNineBallController(String playerName, String opponentName) {
-        return new NineBallController(playerName, opponentName);
+    public static PlayerController<NineBallPlayer> createNineBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
+        return new NineBallController(playerName, opponentName, playerRank, opponentRank);
     }
 
-    public static PlayerController<TenBallPlayer> createTenBallController(String playerName, String opponentName) {
-        return new TenBallController(playerName, opponentName);
+    public static PlayerController<TenBallPlayer> createTenBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
+        return new TenBallController(playerName, opponentName, playerRank, opponentRank);
     }
 
-    public static PlayerController<EightBallPlayer> createEightBallController(String playerName, String opponentName) {
-        return new EightBallController(playerName, opponentName);
+    public static PlayerController<EightBallPlayer> createEightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
+        return new EightBallController(playerName, opponentName, playerRank, opponentRank);
     }
 
     public static PlayerController<?> createController(Game game, String playerName, String opponentName, int playerRank, int opponentRank) {
         switch (game.getGameType()) {
             case BCA_NINE_BALL:
-                return new NineBallController(playerName, opponentName);
+                return new NineBallController(playerName, opponentName, playerRank, opponentRank);
             case BCA_TEN_BALL:
-                return new TenBallController(playerName, opponentName);
+                return new TenBallController(playerName, opponentName, playerRank, opponentRank);
             case APA_EIGHT_BALL:
                 return new ApaEightBallController(playerName, opponentName, playerRank, opponentRank);
             case APA_NINE_BALL:
                 return new ApaNineBallController(playerName, opponentName, playerRank, opponentRank);
             case BCA_EIGHT_BALL:
-                return new EightBallController(playerName, opponentName);
+                return new EightBallController(playerName, opponentName, playerRank, opponentRank);
             default:
                 throw new InvalidGameTypeException(game.getGameType().name());
         }

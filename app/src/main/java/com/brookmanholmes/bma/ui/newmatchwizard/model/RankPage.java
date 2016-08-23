@@ -1,5 +1,7 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
+import android.support.v4.app.Fragment;
+
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.SingleFixedChoicePage;

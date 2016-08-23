@@ -38,14 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SingleChoiceFragment extends ListFragment {
-    static final String ARG_TITLE_SIZE = "title size";
-    private static final String ARG_KEY = "key";
-    private PageFragmentCallbacks callbacks;
-    private List<String> choices;
-    private String key;
-    private Page page;
-
+public class SingleChoiceFragment extends BaseChoiceFragment {
     public SingleChoiceFragment() {
     }
 
@@ -53,6 +46,27 @@ public class SingleChoiceFragment extends ListFragment {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
         args.putInt(ARG_TITLE_SIZE, titleSize);
+
+        SingleChoiceFragment fragment = new SingleChoiceFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static SingleChoiceFragment create(String key, int titleSize, boolean sortPage) {
+        Bundle args = new Bundle();
+        args.putString(ARG_KEY, key);
+        args.putInt(ARG_TITLE_SIZE, titleSize);
+        args.putBoolean(ARG_SORT_PAGE, sortPage);
+
+        SingleChoiceFragment fragment = new SingleChoiceFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static SingleChoiceFragment create(String key, boolean sortPage) {
+        Bundle args = new Bundle();
+        args.putString(ARG_KEY, key);
+        args.putBoolean(ARG_SORT_PAGE, sortPage);
 
         SingleChoiceFragment fragment = new SingleChoiceFragment();
         fragment.setArguments(args);
@@ -68,83 +82,29 @@ public class SingleChoiceFragment extends ListFragment {
         return fragment;
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Bundle args = getArguments();
-        key = args.getString(ARG_KEY);
-
-    }
-
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
-        page = callbacks.onGetPage(key);
-
-        SingleFixedChoicePage fixedChoicePage = (SingleFixedChoicePage) page;
-        choices = new ArrayList<>();
-        for (int i = 0; i < fixedChoicePage.getOptionCount(); i++) {
-            choices.add(fixedChoicePage.getOptionAt(i));
-        }
-        Collections.sort(choices);
-        View rootView = inflater.inflate(R.layout.fragment_page, container, false);
-        ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
-
-        if (getArguments().getInt(SingleChoiceFragment.ARG_TITLE_SIZE, -1) != -1) {
-            TextView title = (TextView) rootView.findViewById(android.R.id.title);
-            TextViewCompat.setTextAppearance(title, R.style.WizardPageTitle2);
-            title.setPadding(0, 0, 0, 0);
-        }
-
-        final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
-        setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_single_choice,
-                android.R.id.text1,
-                choices));
-        listView.setDividerHeight(0);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
+    @Override protected void preSelectItems() {
         // Pre-select currently selected item.
         new Handler().post(new Runnable() {
             @Override public void run() {
                 String selection = page.getData().getString(Page.SIMPLE_DATA_KEY);
                 for (int i = 0; i < choices.size(); i++) {
                     if (choices.get(i).equals(selection)) {
-                        listView.setItemChecked(i, true);
+                        getListView().setItemChecked(i, true);
                         break;
                     }
                 }
             }
         });
-
-        return rootView;
-    }
-
-    @Override public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (getParentFragment() instanceof PageFragmentCallbacks) {
-            callbacks = (PageFragmentCallbacks) getParentFragment();
-        } else if (getActivity() instanceof PageFragmentCallbacks) {
-            callbacks = (PageFragmentCallbacks) getActivity();
-        } else {
-            throw new ClassCastException("Activity/ParentFragment must implement PageFragmentCallbacks");
-        }
-    }
-
-    @Override public void onDetach() {
-        super.onDetach();
-        callbacks = null;
-    }
-
-    @Override public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        super.onDestroy();
     }
 
     @Override public void onListItemClick(ListView l, View v, int position, long id) {
         page.getData().putString(Page.SIMPLE_DATA_KEY,
                 getListAdapter().getItem(position).toString());
         page.notifyDataChanged();
+    }
+
+    @Override protected void setListTypeArgs() {
+        layoutRes = android.R.layout.simple_list_item_single_choice;
+        choiceMode = ListView.CHOICE_MODE_SINGLE;
     }
 }

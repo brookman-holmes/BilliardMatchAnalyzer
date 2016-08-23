@@ -8,7 +8,7 @@
     <string name="turn_skip">Skip turn</string>
     <string name="turn_illegal_break">Illegal break</string>
     <string name="turn_won_game">Won game</string>
-    <string name="turn_current_player_breaks">Have %1$s break</string>
+    <string name="turn_current_player_breaks">Have %1$s break again</string>
     <string name="turn_non_current_player_breaks">Have %1$s break</string>
     <string name="turn_continue_game">Continue with game</string>
 

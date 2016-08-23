@@ -6,8 +6,8 @@ import com.brookmanholmes.billiards.player.TenBallPlayer;
  * Created by Brookman Holmes on 1/12/2016.
  */
 class TenBallController extends PlayerController<TenBallPlayer> {
-    TenBallController(String playerName, String opponentName) {
-        super(playerName, opponentName);
+    TenBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
+        super(playerName, opponentName, playerRank, opponentRank);
     }
 
     @Override void addRunOutStats(TenBallPlayer player) {
@@ -18,10 +18,10 @@ class TenBallController extends PlayerController<TenBallPlayer> {
     }
 
     @Override public TenBallPlayer newPlayer() {
-        return new TenBallPlayer(playerName);
+        return new TenBallPlayer(playerName, playerRank);
     }
 
     @Override public TenBallPlayer newOpponent() {
-        return new TenBallPlayer(opponentName);
+        return new TenBallPlayer(opponentName, opponentRank);
     }
 }

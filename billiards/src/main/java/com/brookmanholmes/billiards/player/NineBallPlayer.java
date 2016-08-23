@@ -7,6 +7,10 @@ public class NineBallPlayer extends AbstractPlayer implements IWinsOnBreak {
     private int earlyWins = 0;
     private int winsOnBreak = 0;
 
+    public NineBallPlayer(String name, int rank) {
+        super(name, rank);
+    }
+
     public NineBallPlayer(String name) {
         super(name);
     }

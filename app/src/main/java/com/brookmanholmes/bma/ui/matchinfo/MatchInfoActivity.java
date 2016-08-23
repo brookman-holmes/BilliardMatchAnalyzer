@@ -364,7 +364,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             turn = PlayerTurn.valueOf(getArguments().getString(ARG_PLAYER_TURN));
             name = getArguments().getString(ARG_PLAYER_NAME);
             matchId = getArguments().getLong(ARG_MATCH_ID);
-            if (playerHasAdvancedStats(turn, db.getMatch(matchId).getAdvStats())) {
+            if (playerHasAdvancedStats(turn, db.getMatch(matchId).getStatDetailLevel())) {
                 items = new String[]{getString(R.string.view_profile), getString(R.string.view_adv_stats), getString(R.string.edit_name)};
             } else {
                 items = new String[]{getString(R.string.view_profile), getString(R.string.edit_name)};

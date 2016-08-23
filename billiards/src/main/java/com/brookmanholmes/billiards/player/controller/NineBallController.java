@@ -6,8 +6,8 @@ import com.brookmanholmes.billiards.player.NineBallPlayer;
  * Created by Brookman Holmes on 10/28/2015.
  */
 class NineBallController extends PlayerController<NineBallPlayer> {
-    NineBallController(String playerName, String opponentName) {
-        super(playerName, opponentName);
+    NineBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
+        super(playerName, opponentName, playerRank, opponentRank);
     }
 
     @Override void addBreakingStats(NineBallPlayer player) {
@@ -25,11 +25,11 @@ class NineBallController extends PlayerController<NineBallPlayer> {
             player.addEarlyWin();
     }
 
-    @Override public NineBallPlayer newOpponent() {
-        return new NineBallPlayer(opponentName);
+    @Override public NineBallPlayer newPlayer() {
+        return new NineBallPlayer(playerName, playerRank);
     }
 
-    @Override public NineBallPlayer newPlayer() {
-        return new NineBallPlayer(playerName);
+    @Override public NineBallPlayer newOpponent() {
+        return new NineBallPlayer(opponentName, opponentRank);
     }
 }

@@ -28,6 +28,8 @@ class SampleMatchProvider {
                 .setDate(cal.getTime())
                 .setBreakType(BreakType.ALTERNATE)
                 .setPlayerTurn(PlayerTurn.PLAYER)
+                .setDate(cal.getTime())
+                .setPlayerRanks(9,9)
                 .build(GameType.BCA_TEN_BALL);
     }
 
@@ -43,6 +45,8 @@ class SampleMatchProvider {
         return new Match.Builder("Shaw", "Roberts")
                 .setBreakType(BreakType.ALTERNATE)
                 .setPlayerTurn(PlayerTurn.OPPONENT)
+                .setDate(cal.getTime())
+                .setPlayerRanks(7,7)
                 .build(GameType.BCA_TEN_BALL);
     }
 

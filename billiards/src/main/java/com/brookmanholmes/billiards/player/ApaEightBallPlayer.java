@@ -4,13 +4,11 @@ package com.brookmanholmes.billiards.player;
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class ApaEightBallPlayer extends AbstractPlayer implements IApa {
-    private final int rank;
     private int winsOnBreak = 0;
     private int earlyWins = 0;
 
     public ApaEightBallPlayer(String name, int rank) {
-        super(name);
-        this.rank = rank;
+        super(name, rank);
     }
 
     @Override public void addPlayerStats(AbstractPlayer player) {

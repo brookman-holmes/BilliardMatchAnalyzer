@@ -40,7 +40,7 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private AbstractPlayer opponent;
 
     MatchInfoRecyclerAdapter(Match match) {
-        detail = match.getAdvStats();
+        detail = match.getStatDetailLevel();
         breakType = match.getGameStatus().breakType;
         this.gameBall = match.getGameStatus().GAME_BALL;
         player = match.getPlayer();

@@ -6,8 +6,6 @@ package com.brookmanholmes.billiards.player;
 public interface IApa extends IWinsOnBreak {
     int getMatchPoints(int opponentScore, int opponentRank);
 
-    int getRank();
-
     int getPoints();
 
     int getPointsNeeded(int opponentRank);

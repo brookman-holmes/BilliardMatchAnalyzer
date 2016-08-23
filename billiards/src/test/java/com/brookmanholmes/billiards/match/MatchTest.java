@@ -27,7 +27,7 @@ public class MatchTest {
     private final BreakType breakType = BreakType.WINNER;
     private final GameType gameType = GameType.BCA_EIGHT_BALL;
     private final PlayerTurn turn = PlayerTurn.OPPONENT;
-    private Match<?> match;
+    private Match match;
     private TurnBuilder turnBuilder;
 
 

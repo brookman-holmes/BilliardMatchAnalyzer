@@ -5,6 +5,11 @@ package com.brookmanholmes.billiards.player;
  */
 public class TenBallPlayer extends AbstractPlayer implements IEarlyWins {
     private int earlyWins = 0;
+
+    public TenBallPlayer(String name, int rank) {
+        super(name, rank);
+    }
+
     public TenBallPlayer(String name) {
         super(name);
     }

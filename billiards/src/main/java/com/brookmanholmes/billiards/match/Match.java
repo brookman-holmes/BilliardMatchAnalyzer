@@ -7,13 +7,10 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
-import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.Players;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
@@ -47,7 +44,6 @@ public class Match implements IMatch {
         notes = builder.notes;
         matchId = builder.id;
         detail = builder.statsDetail;
-        matchOver = builder.matchOver;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
         createdOn = builder.date;
@@ -225,7 +221,7 @@ public class Match implements IMatch {
         }
     }
 
-    public StatsDetail getAdvStats() {
+    public StatsDetail getStatDetailLevel() {
         return detail;
     }
 
@@ -263,7 +259,6 @@ public class Match implements IMatch {
         private long id;
         private StatsDetail statsDetail = StatsDetail.NORMAL;
         private Date date;
-        private boolean matchOver = false;
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;
@@ -272,11 +267,6 @@ public class Match implements IMatch {
 
         public Builder() {
 
-        }
-
-        public Builder setMatchOver(boolean isMatchOver) {
-            this.matchOver = isMatchOver;
-            return this;
         }
 
         public Builder setPlayerName(String name) {

@@ -4,15 +4,13 @@ package com.brookmanholmes.billiards.player;
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
-    private final int rank;
     int points = 0;
     private int winsOnBreak = 0;
     private int earlyWins = 0;
     private int deadBalls = 0;
 
     public ApaNineBallPlayer(String name, int rank) {
-        super(name);
-        this.rank = rank;
+        super(name, rank);
     }
 
     @Override public void addPlayerStats(AbstractPlayer player) {
@@ -95,10 +93,6 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
         super.addGameWon();
         // the player had to have made the 9 ball to get to this point... I think...
         points++;
-    }
-
-    @Override public int getRank() {
-        return rank;
     }
 
     @Override public boolean equals(Object o) {

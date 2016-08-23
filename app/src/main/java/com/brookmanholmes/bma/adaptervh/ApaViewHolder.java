@@ -52,14 +52,14 @@ public class ApaViewHolder extends MatchInfoHolder{
         }
 
         if (player instanceof IApa && opponent instanceof IApa) {
-            tvPointsPlayer.setText(itemView.getContext().getString(R.string.out_of, ((IApa) player).getPoints(), ((IApa) player).getPointsNeeded(((IApa) opponent).getRank())));
-            tvPointsOpponent.setText(itemView.getContext().getString(R.string.out_of, ((IApa) opponent).getPoints(), ((IApa) opponent).getPointsNeeded(((IApa) player).getRank())));
-            tvRankPlayer.setText(String.format(Locale.getDefault(), "%d", ((IApa) player).getRank()));
-            tvRankOpponent.setText(String.format(Locale.getDefault(), "%d", ((IApa) opponent).getRank()));
+            tvPointsPlayer.setText(itemView.getContext().getString(R.string.out_of, ((IApa) player).getPoints(), ((IApa) player).getPointsNeeded(opponent.getRank())));
+            tvPointsOpponent.setText(itemView.getContext().getString(R.string.out_of, ((IApa) opponent).getPoints(), ((IApa) opponent).getPointsNeeded(player.getRank())));
+            tvRankPlayer.setText(String.format(Locale.getDefault(), "%d", player.getRank()));
+            tvRankOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getRank()));
 
-            tvMatchPointsPlayer.setText(String.format(Locale.getDefault(), "%d", ((IApa) player).getMatchPoints(((IApa) opponent).getPoints(), ((IApa) opponent).getRank())));
+            tvMatchPointsPlayer.setText(String.format(Locale.getDefault(), "%d", ((IApa) player).getMatchPoints(((IApa) opponent).getPoints(), opponent.getRank())));
 
-            tvMatchPointsOpponent.setText(String.format(Locale.getDefault(), "%d", ((IApa) opponent).getMatchPoints(((IApa) opponent).getPoints(), ((IApa) opponent).getRank())));
+            tvMatchPointsOpponent.setText(String.format(Locale.getDefault(), "%d", ((IApa) opponent).getMatchPoints(((IApa) opponent).getPoints(), opponent.getRank())));
 
             tvDefensiveShotsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getSafetyAttempts()));
             tvDefensiveShotsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getSafetyAttempts()));

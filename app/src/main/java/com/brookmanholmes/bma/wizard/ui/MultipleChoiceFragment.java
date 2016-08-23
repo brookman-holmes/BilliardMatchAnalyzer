@@ -16,39 +16,18 @@
 
 package com.brookmanholmes.bma.wizard.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ListFragment;
-import android.support.v4.widget.TextViewCompat;
 import android.util.SparseBooleanArray;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import com.brookmanholmes.bma.MyApplication;
-import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.wizard.model.MultipleFixedChoicePage;
 import com.brookmanholmes.bma.wizard.model.Page;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class MultipleChoiceFragment extends ListFragment {
-    private static final String ARG_KEY = "key";
-
-    private PageFragmentCallbacks callbacks;
-    private String key;
-    private List<String> choices;
-    private Page page;
-
+public class MultipleChoiceFragment extends BaseChoiceFragment {
     public MultipleChoiceFragment() {
     }
 
@@ -71,60 +50,14 @@ public class MultipleChoiceFragment extends ListFragment {
         return fragment;
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public static MultipleChoiceFragment create(String key, boolean sortPage) {
+        Bundle args = new Bundle();
+        args.putString(ARG_KEY, key);
+        args.putBoolean(ARG_SORT_PAGE, sortPage);
 
-        Bundle args = getArguments();
-        key = args.getString(ARG_KEY);
-    }
-
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
-        page = callbacks.onGetPage(key);
-
-        MultipleFixedChoicePage fixedChoicePage = (MultipleFixedChoicePage) page;
-        choices = new ArrayList<>();
-        for (int i = 0; i < fixedChoicePage.getOptionCount(); i++) {
-            choices.add(fixedChoicePage.getOptionAt(i));
-        }
-        Collections.sort(choices);
-        View rootView = inflater.inflate(R.layout.fragment_page, container, false);
-        ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
-
-        if (getArguments().getInt(SingleChoiceFragment.ARG_TITLE_SIZE, -1) != -1) {
-            TextView title = (TextView) rootView.findViewById(android.R.id.title);
-            TextViewCompat.setTextAppearance(title, R.style.WizardPageTitle2);
-            title.setPadding(0, 0, 0, 0);
-        }
-
-        final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
-        setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_multiple_choice,
-                android.R.id.text1,
-                choices));
-        listView.setDividerHeight(0);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-        // Pre-select currently selected items.
-        new Handler().post(new Runnable() {
-            @Override public void run() {
-                ArrayList<String> selectedItems = page.getData().getStringArrayList(
-                        Page.SIMPLE_DATA_KEY);
-                if (selectedItems == null || selectedItems.size() == 0) {
-                    return;
-                }
-
-                Set<String> selectedSet = new HashSet<>(selectedItems);
-
-                for (int i = 0; i < choices.size(); i++) {
-                    if (selectedSet.contains(choices.get(i))) {
-                        listView.setItemChecked(i, true);
-                    }
-                }
-            }
-        });
-
-        return rootView;
+        MultipleChoiceFragment fragment = new MultipleChoiceFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override public void onResume() {
@@ -148,31 +81,6 @@ public class MultipleChoiceFragment extends ListFragment {
         }
     }
 
-    @Override public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (getParentFragment() instanceof PageFragmentCallbacks) {
-            callbacks = (PageFragmentCallbacks) getParentFragment();
-        } else if (getActivity() instanceof PageFragmentCallbacks) {
-            callbacks = (PageFragmentCallbacks) getActivity();
-        } else {
-            throw new ClassCastException("Activity/ParentFragment must implement PageFragmentCallbacks");
-        }
-
-
-    }
-
-    @Override public void onDetach() {
-        super.onDetach();
-        callbacks = null;
-    }
-
-    @Override public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        super.onDestroy();
-    }
-
     @Override public void onListItemClick(ListView l, View v, int position, long id) {
         SparseBooleanArray checkedPositions = getListView().getCheckedItemPositions();
         ArrayList<String> selections = new ArrayList<>();
@@ -184,5 +92,31 @@ public class MultipleChoiceFragment extends ListFragment {
 
         page.getData().putStringArrayList(Page.SIMPLE_DATA_KEY, selections);
         page.notifyDataChanged();
+    }
+
+    @Override protected void preSelectItems() {
+        // Pre-select currently selected items.
+        new Handler().post(new Runnable() {
+            @Override public void run() {
+                ArrayList<String> selectedItems = page.getData().getStringArrayList(
+                        Page.SIMPLE_DATA_KEY);
+                if (selectedItems == null || selectedItems.size() == 0) {
+                    return;
+                }
+
+                Set<String> selectedSet = new HashSet<>(selectedItems);
+
+                for (int i = 0; i < choices.size(); i++) {
+                    if (selectedSet.contains(choices.get(i))) {
+                        getListView().setItemChecked(i, true);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override protected void setListTypeArgs() {
+        layoutRes = android.R.layout.simple_list_item_multiple_choice;
+        choiceMode = ListView.CHOICE_MODE_MULTIPLE;
     }
 }

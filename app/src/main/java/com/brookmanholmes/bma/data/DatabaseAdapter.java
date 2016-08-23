@@ -15,7 +15,6 @@ import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.IApa;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TableStatus;
@@ -50,7 +49,6 @@ public class DatabaseAdapter {
     public static final String COLUMN_CREATED_ON = "created_on";
     public static final String COLUMN_PLAYER_RANK = "player_rank";
     public static final String COLUMN_OPPONENT_RANK = "opponent_rank";
-    public static final String COLUMN_MATCH_FINISHED = "match_finished";
     public static final String TABLE_TURNS = "turns_table";
     public static final String COLUMN_TABLE_STATUS = "table_status";
     public static final String COLUMN_TURN_END = "turn_end";
@@ -103,28 +101,17 @@ public class DatabaseAdapter {
 
     public void createSampleMatches() {
         // TODO: 8/19/2016 REMOVE THESE BEFORE RELEASE, I might not have permission to use these people's names
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_MATCH_FINISHED, true);
-
         long match = insertMatch(SampleMatchProvider.getHohmannSvbMatch());
-        database = databaseHelper.getReadableDatabase();
-        database.update(TABLE_MATCHES, contentValues, COLUMN_ID + " = ?", new String[] {String.valueOf(match)});
-        database.close();
         int count = 0;
         for (ITurn turn : SampleMatchProvider.getHohmannSvbTurns()) {
             insertTurn(turn, match, count++);
         }
 
         match = insertMatch(SampleMatchProvider.getShawRobertsMatch());
-        database = databaseHelper.getReadableDatabase();
-        database.update(TABLE_MATCHES, contentValues, COLUMN_ID + " = ?", new String[] {String.valueOf(match)});
-        database.close();
         count = 0;
         for (ITurn turn : SampleMatchProvider.getShawRobertsTurns()) {
             insertTurn(turn, match, count++);
         }
-
-
     }
 
     public List<String> getOpponentsOf(String playerName) {
@@ -237,7 +224,6 @@ public class DatabaseAdapter {
                 + COLUMN_OPPONENT_RANK + ", "
                 + COLUMN_NOTES + ", "
                 + COLUMN_STATS_DETAIL + ", "
-                + COLUMN_MATCH_FINISHED + ", "
                 + COLUMN_LOCATION + "\n";
 
         final String query = "SELECT " + selection + "from " + TABLE_MATCHES + " m\n"
@@ -275,7 +261,6 @@ public class DatabaseAdapter {
                 + COLUMN_PLAYER_RANK + ", "
                 + COLUMN_OPPONENT_RANK + ", "
                 + COLUMN_NOTES + ", "
-                + COLUMN_MATCH_FINISHED + ", "
                 + COLUMN_STATS_DETAIL + ", "
                 + COLUMN_LOCATION + "\n";
 
@@ -313,7 +298,6 @@ public class DatabaseAdapter {
                 .setLocation(c.getString(c.getColumnIndex(COLUMN_LOCATION)))
                 .setMatchId(c.getLong(c.getColumnIndex("_id")))
                 .setNotes(c.getString(c.getColumnIndex(COLUMN_NOTES)))
-                .setMatchOver(c.getInt(c.getColumnIndex(COLUMN_MATCH_FINISHED)) == 1)
                 .setStatsDetail(getStatDetail(c))
                 .build(getGameType(c));
     }
@@ -364,7 +348,6 @@ public class DatabaseAdapter {
                 + COLUMN_PLAYER_RANK + ", "
                 + COLUMN_OPPONENT_RANK + ", "
                 + COLUMN_NOTES + ", "
-                + COLUMN_MATCH_FINISHED + ", "
                 + COLUMN_STATS_DETAIL + ", "
                 + COLUMN_LOCATION + "\n";
 
@@ -448,16 +431,13 @@ public class DatabaseAdapter {
 
             matchValues.put(COLUMN_PLAYER_TURN, status.turn.name());
             matchValues.put(COLUMN_GAME_TYPE, status.gameType.name());
-            matchValues.put(COLUMN_CREATED_ON, getCurrentDate());
+            matchValues.put(COLUMN_CREATED_ON, formatDate(match.getCreatedOn()));
             matchValues.put(COLUMN_BREAK_TYPE, status.breakType.name());
             matchValues.put(COLUMN_LOCATION, match.getLocation());
-            matchValues.put(COLUMN_STATS_DETAIL, match.getAdvStats().name());
+            matchValues.put(COLUMN_STATS_DETAIL, match.getStatDetailLevel().name());
             matchValues.put(COLUMN_NOTES, match.getNotes());
-
-            if (match.getPlayer() instanceof IApa && match.getOpponent() instanceof IApa) {
-                matchValues.put(COLUMN_PLAYER_RANK, ((IApa) match.getPlayer()).getRank());
-                matchValues.put(COLUMN_OPPONENT_RANK, ((IApa) match.getOpponent()).getRank());
-            }
+            matchValues.put(COLUMN_PLAYER_RANK, match.getPlayer().getRank());
+            matchValues.put(COLUMN_OPPONENT_RANK, match.getOpponent().getRank());
 
 
             long matchId = database.insert(TABLE_MATCHES, null, matchValues);
@@ -488,9 +468,9 @@ public class DatabaseAdapter {
         database.close();
     }
 
-    private String getCurrentDate() {
+    private String formatDate(Date date) {
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
-        return dateFormat.format(new Date());
+        return dateFormat.format(date);
     }
 
     public void editPlayerName(long matchId, String name, String newName) {

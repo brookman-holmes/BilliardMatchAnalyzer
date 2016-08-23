@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
@@ -10,6 +11,8 @@ import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.PageList;
+
+import java.util.Date;
 
 /**
  * Created by Brookman Holmes on 1/7/2016.
@@ -94,13 +97,25 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
                         getApaRankPage(GameType.APA_NINE_BALL, PlayerTurn.OPPONENT),
                         getFirstBreakPage("apa 9"))
                 .addBranch(context.getString(R.string.game_bca_eight),
-                        getBreakTypePage("bca 8"))
+                        getBcaRankPage(PlayerTurn.PLAYER),
+                        getBcaRankPage(PlayerTurn.OPPONENT),
+                        getBreakTypePage("bca 8")
+                )
                 .addBranch(context.getString(R.string.game_bca_nine),
-                        getBreakTypePage("bca 9"))
+                        getBcaRankPage(PlayerTurn.PLAYER),
+                        getBcaRankPage(PlayerTurn.OPPONENT),
+                        getBreakTypePage("bca 9")
+                )
                 .addBranch(context.getString(R.string.game_bca_ten),
+                        getBcaRankPage(PlayerTurn.PLAYER),
+                        getBcaRankPage(PlayerTurn.OPPONENT),
                         getBreakTypePage("bca 10"))
                 .setValue(context.getString(R.string.game_bca_nine))
                 .setRequired(true);
+    }
+
+    private Page getBcaRankPage(PlayerTurn turn) {
+        return new BcaRankPage(this, "%1$s races to?", turn);
     }
 
     private Page getFirstBreakPage(String parentKey) {
@@ -183,6 +198,8 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         else if (playerTurn == PlayerTurn.OPPONENT)
             builder.setOpponentRank(Integer.valueOf(playerRank));
         else throw new IllegalArgumentException("No such PlayerTurn: " + playerTurn);
+
+        Log.i("CNMWM", "player rank is " + playerRank);
     }
 
     void setFirstBreaker(PlayerTurn turn) {
@@ -227,6 +244,6 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
 
     public Match createMatch() {
         updateBuilder();
-        return builder.build(gameType);
+        return builder.setDate(new Date()).build(gameType);
     }
 }

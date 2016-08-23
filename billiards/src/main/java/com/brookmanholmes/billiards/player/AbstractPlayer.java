@@ -13,6 +13,9 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     private final static DecimalFormat avgf = new DecimalFormat("##.##");
     private final static String ZERO_PERCENT = ".000";
     private final static String ZERO = "0";
+    private String name = "";
+    private Date date;
+    int rank;
     int safetyAttempts = 0;
     int safetySuccesses = 0;
     int safetyScratches = 0;
@@ -28,16 +31,20 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     int shootingScratches = 0;
     int gameTotal = 0;
     int gameWins = 0;
-    private String name = "";
-    private Date date;
-    private int safetyEscapes = 0;
-    private int safetyForcedErrors = 0;
-    private int runOuts = 0;
-    private int runTierOne = 0;
-    private int runTierTwo = 0;
+    int safetyEscapes = 0;
+    int safetyForcedErrors = 0;
+    int runOuts = 0;
+    int runTierOne = 0;
+    int runTierTwo = 0;
 
-    AbstractPlayer(String name) {
+    public AbstractPlayer(String name, int rank) {
         this.name = name;
+        this.rank = rank;
+    }
+
+    public AbstractPlayer(String name) {
+        this.name = name;
+        this.rank = Integer.MAX_VALUE;
     }
 
     public void addPlayerStats(AbstractPlayer player) {
@@ -73,6 +80,10 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getRank() {
+        return rank;
     }
 
     public Date getMatchDate() {
