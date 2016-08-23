@@ -140,6 +140,7 @@
     <string name="matches">Matches</string>
     <string name="edit_player_name">Change %1$s\'s name</string>
     <string name="rank">Rank</string>
+    <string name="ranks">Ranks</string>
     <string name="description_rank">The APA rank of the player</string>
     <string name="points">Points / points needed</string>
     <string name="match_points">Match points earned</string>
@@ -232,4 +233,7 @@
     <string name="undo">Undo</string>
     <string name="unlock_match">Unlock match</string>
     <string name="lock_match">Lock match</string>
+    <string name="total_fouls">Total fouls</string>
+    <string name="race_to">How many games does %1$s play to?</string>
+    <string name="apa_ranks">What is %1$s\'s rank?</string>
 </resources>

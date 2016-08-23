@@ -34,6 +34,10 @@ public class MatchOverviewHolder extends MatchInfoHolder {
     @Bind(R.id.tvTotalShotsPlayer) TextView tvTotalShotsPlayer;
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvTotalShotsOpponent) TextView tvTotalShotsOpponent;
+    @SuppressWarnings("WeakerAccess")
+    @Bind(R.id.tvTotalFoulsPlayer) TextView tvTotalFoulsPlayer;
+    @SuppressWarnings("WeakerAccess")
+    @Bind(R.id.tvTotalFoulsOpponent) TextView tvTotalFoulsOpponent;
 
     public MatchOverviewHolder(View view, Match.StatsDetail detail) {
         super(view);
@@ -81,6 +85,9 @@ public class MatchOverviewHolder extends MatchInfoHolder {
 
         tvTotalShotsPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getShotsSucceededOfAllTypes(), player.getShotAttemptsOfAllTypes()));
         tvTotalShotsOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getShotsSucceededOfAllTypes(), opponent.getShotAttemptsOfAllTypes()));
+
+        tvTotalFoulsOpponent.setText(String.valueOf(opponent.getTotalFouls()));
+        tvTotalFoulsPlayer.setText(String.valueOf(player.getTotalFouls()));
     }
 
     @Override int getLayoutRes() {

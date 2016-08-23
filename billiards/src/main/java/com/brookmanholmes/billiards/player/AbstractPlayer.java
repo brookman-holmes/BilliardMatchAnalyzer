@@ -18,17 +18,17 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     int rank;
     int safetyAttempts = 0;
     int safetySuccesses = 0;
-    int safetyScratches = 0;
+    int safetyFouls = 0;
     int safetyReturns = 0;
     int breakSuccesses = 0;
     int breakAttempts = 0;
     int breakContinuations = 0;
-    int breakScratches = 0;
+    int breakFouls = 0;
     int breakBallsMade = 0;
     int shootingBallsMade = 0;
     int shootingTurns = 0;
     int shootingMisses = 0;
-    int shootingScratches = 0;
+    int shootingFouls = 0;
     int gameTotal = 0;
     int gameWins = 0;
     int safetyEscapes = 0;
@@ -51,20 +51,20 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         this.safetyAttempts += player.safetyAttempts;
         this.safetyReturns += player.safetyReturns;
         this.safetySuccesses += player.safetySuccesses;
-        this.safetyScratches += player.safetyScratches;
+        this.safetyFouls += player.safetyFouls;
         this.safetyEscapes += player.safetyEscapes;
         this.safetyForcedErrors += player.safetyForcedErrors;
 
         this.breakSuccesses += player.breakSuccesses;
         this.breakAttempts += player.breakAttempts;
         this.breakContinuations += player.breakContinuations;
-        this.breakScratches += player.breakScratches;
+        this.breakFouls += player.breakFouls;
         this.breakBallsMade += player.breakBallsMade;
 
         shootingBallsMade += player.shootingBallsMade;
         shootingTurns += player.shootingTurns;
         shootingMisses += player.shootingMisses;
-        shootingScratches += player.shootingScratches;
+        shootingFouls += player.shootingFouls;
 
         runOuts += player.runOuts;
         runTierOne += player.runTierOne;
@@ -98,7 +98,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         safetyAttempts++;
 
         if (scratch)
-            safetyScratches++;
+            safetyFouls++;
     }
 
     public void addSafety(boolean opponentPlayedSuccessfulSafe) {
@@ -112,7 +112,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         shootingTurns++;
 
         if (scratch)
-            shootingScratches++;
+            shootingFouls++;
     }
 
     public void addShootingMiss() {
@@ -123,7 +123,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         breakAttempts++;
 
         if (scratch)
-            breakScratches++;
+            breakFouls++;
         else {
             if (ballsMade > 0) {
                 breakBallsMade += ballsMade;
@@ -152,6 +152,10 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         return gameTotal;
     }
 
+    public int getTotalFouls() {
+        return shootingFouls + safetyFouls + breakFouls;
+    }
+
     public int getShootingBallsMade() {
         return shootingBallsMade;
     }
@@ -160,8 +164,8 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         return shootingMisses + shootingBallsMade;
     }
 
-    public int getShootingScratches() {
-        return shootingScratches;
+    public int getShootingFouls() {
+        return shootingFouls;
     }
 
     public int getSafetyAttempts() {
@@ -172,8 +176,8 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         return safetySuccesses;
     }
 
-    public int getSafetyScratches() {
-        return safetyScratches;
+    public int getSafetyFouls() {
+        return safetyFouls;
     }
 
     public int getSafetyReturns() {
@@ -213,7 +217,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     }
 
     public int getBreakFouls() {
-        return breakScratches;
+        return breakFouls;
     }
 
     public int getBreakBallsMade() {
@@ -312,19 +316,19 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
 
         if (safetyAttempts != that.safetyAttempts) return false;
         if (safetySuccesses != that.safetySuccesses) return false;
-        if (safetyScratches != that.safetyScratches) return false;
+        if (safetyFouls != that.safetyFouls) return false;
         if (safetyReturns != that.safetyReturns) return false;
         if (safetyEscapes != that.safetyEscapes) return false;
         if (safetyForcedErrors != that.safetyForcedErrors) return false;
         if (breakSuccesses != that.breakSuccesses) return false;
         if (breakAttempts != that.breakAttempts) return false;
         if (breakContinuations != that.breakContinuations) return false;
-        if (breakScratches != that.breakScratches) return false;
+        if (breakFouls != that.breakFouls) return false;
         if (breakBallsMade != that.breakBallsMade) return false;
         if (shootingBallsMade != that.shootingBallsMade) return false;
         if (shootingTurns != that.shootingTurns) return false;
         if (shootingMisses != that.shootingMisses) return false;
-        if (shootingScratches != that.shootingScratches) return false;
+        if (shootingFouls != that.shootingFouls) return false;
         if (runOuts != that.runOuts) return false;
         if (runTierOne != that.runTierOne) return false;
         if (runTierTwo != that.runTierTwo) return false;
@@ -338,19 +342,19 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         int result = name.hashCode();
         result = 31 * result + safetyAttempts;
         result = 31 * result + safetySuccesses;
-        result = 31 * result + safetyScratches;
+        result = 31 * result + safetyFouls;
         result = 31 * result + safetyReturns;
         result = 31 * result + safetyEscapes;
         result = 31 * result + safetyForcedErrors;
         result = 31 * result + breakSuccesses;
         result = 31 * result + breakAttempts;
         result = 31 * result + breakContinuations;
-        result = 31 * result + breakScratches;
+        result = 31 * result + breakFouls;
         result = 31 * result + breakBallsMade;
         result = 31 * result + shootingBallsMade;
         result = 31 * result + shootingTurns;
         result = 31 * result + shootingMisses;
-        result = 31 * result + shootingScratches;
+        result = 31 * result + shootingFouls;
         result = 31 * result + runOuts;
         result = 31 * result + runTierOne;
         result = 31 * result + runTierTwo;
@@ -364,19 +368,19 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
                 "name='" + name + '\'' +
                 "\n safetyAttempts=" + safetyAttempts +
                 "\n safetySuccesses=" + safetySuccesses +
-                "\n safetyScratches=" + safetyScratches +
+                "\n safetyFouls=" + safetyFouls +
                 "\n safetyReturns=" + safetyReturns +
                 "\n safetyEscapes=" + safetyEscapes +
                 "\n safetyForcedErrors=" + safetyForcedErrors +
                 "\n breakSuccesses=" + breakSuccesses +
                 "\n breakAttempts=" + breakAttempts +
                 "\n breakContinuations=" + breakContinuations +
-                "\n breakScratches=" + breakScratches +
+                "\n breakFouls=" + breakFouls +
                 "\n breakBallsMade=" + breakBallsMade +
                 "\n shootingBallsMade=" + shootingBallsMade +
                 "\n shootingTurns=" + shootingTurns +
                 "\n shootingMisses=" + shootingMisses +
-                "\n shootingScratches=" + shootingScratches +
+                "\n shootingFouls=" + shootingFouls +
                 "\n runOuts=" + runOuts +
                 "\n runTierOne=" + runTierOne +
                 "\n runTierTwo=" + runTierTwo +

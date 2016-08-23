@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
         android:layout_centerHorizontal="true"
-        android:columnCount="5"
-        android:rowCount="2"
+        android:columnCount="3"
         android:useDefaultMargins="true">
 
         <ImageView
@@ -75,7 +74,9 @@
             android:id="@+id/ten_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:src="@drawable/ten_ball_level" />
+            android:src="@drawable/ten_ball_level"
+            android:layout_columnSpan="3"
+            android:layout_gravity="center_horizontal"/>
     </GridLayout>
 
     <Button

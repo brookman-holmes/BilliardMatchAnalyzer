@@ -37,7 +37,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
         actual.addSafetyAttempt(true);
 
         expected.safetyAttempts++;
-        expected.safetyScratches++;
+        expected.safetyFouls++;
 
         assertThat(actual, is(expected));
     }
@@ -57,7 +57,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
         actual.addShootingBallsMade(8, true);
 
         expected.shootingBallsMade += 8;
-        expected.shootingScratches++;
+        expected.shootingFouls++;
         expected.shootingTurns++;
 
         assertThat(actual, is(expected));
@@ -101,7 +101,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
         actual.addBreakShot(0, false, true);
 
         expected.breakAttempts++;
-        expected.breakScratches++;
+        expected.breakFouls++;
 
         assertThat(actual, is(expected));
     }

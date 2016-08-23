@@ -126,6 +126,9 @@ public class FoulFragment extends ListFragment {
             if (GameType.valueOf(page.getData().getString(GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL) {
                 adapter.add(getString(R.string.foul_lost_game));
                 defaultChecked = getString(R.string.foul_lost_game);
+            } else if (GameType.valueOf(page.getData().getString(GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL) {
+                adapter.add(getString(R.string.foul_lost_game));
+                defaultChecked = getString(R.string.foul_lost_game);
             } else {
                 adapter.add(getString(R.string.foul_lost_game));
                 adapter.add(getString(R.string.yes));
@@ -134,6 +137,7 @@ public class FoulFragment extends ListFragment {
 
             if (turnEndOptions.possibleEndings.contains(TurnEnd.SAFETY))
                 adapter.add(getString(R.string.no));
+
         } else if (turnEndOptions.foul) {
             adapter.add(getString(R.string.yes));
             defaultChecked = getString(R.string.yes);

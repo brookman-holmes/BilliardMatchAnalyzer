@@ -53,11 +53,11 @@ public class ShootingPctHolder extends MatchInfoHolder {
         highlightBetterPlayerStats(tvAvgBallsTurnPlayer, tvAvgBallsTurnOpponent, Double.parseDouble(player.getAvgBallsTurn()), Double.parseDouble(opponent.getAvgBallsTurn()));
 
         // Scratches
-        tvScratchesPlayer.setText(String.valueOf(player.getShootingScratches()));
-        tvScratchesOpponent.setText(String.valueOf(opponent.getShootingScratches()));
+        tvScratchesPlayer.setText(String.valueOf(player.getShootingFouls()));
+        tvScratchesOpponent.setText(String.valueOf(opponent.getShootingFouls()));
 
         // highlight the player with fewer scratches
-        highlightPlayerStat(tvScratchesPlayer, tvScratchesOpponent, player.getShootingScratches(), opponent.getShootingScratches());
+        highlightPlayerStat(tvScratchesPlayer, tvScratchesOpponent, player.getShootingFouls(), opponent.getShootingFouls());
     }
 
     @Override int getLayoutRes() {

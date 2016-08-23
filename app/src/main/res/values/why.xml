@@ -24,6 +24,8 @@
     <string name="why_table_issues">Table roll off/cling/bad pocket</string>
     <string name="why_bad_pattern">Bad pattern</string>
     <string name="why_body_mechanics">Body mechanics (moved, stood up, etc.)</string>
+    <string name="why_impeding_ball">Attempted to avoid an impeding ball</string>
+    <string name="why_misjudge_aim">Misjudged the aim to make the ball</string>
 
 
     <string-array name="why_choices">
@@ -47,6 +49,8 @@
         <item>@string/why_too_much_follow</item>
         <item>@string/why_table_issues</item>
         <item>@string/why_bad_pattern</item>
+        <item>@string/why_impeding_ball</item>
+        <item>@string/why_misjudge_aim</item>
     </string-array>
 
     <string-array name="why_choices_break">

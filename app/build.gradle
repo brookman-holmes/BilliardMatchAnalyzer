@@ -1,6 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-
 
 android {
     compileSdkVersion 24
@@ -10,9 +8,10 @@ android {
         applicationId "com.brookmanholmes.bma"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.0.3"
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -23,9 +22,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
     }
 }
 
@@ -57,17 +53,6 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-}
-buildscript {
-    ext.kotlin_version = '1.0.2'
-    ext.support_library_version = '23.2.1'
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
 }
 
 apply plugin: 'com.google.gms.google-services'

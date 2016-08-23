@@ -62,10 +62,10 @@ public class SafetiesHolder extends MatchInfoHolder {
         tvSafetiesAttemptedPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getSafetySuccesses(), player.getSafetyAttempts()));
         tvSafetiesAttemptedOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getSafetySuccesses(), opponent.getSafetyAttempts()));
 
-        tvSafetyScratchesOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getSafetyScratches()));
-        tvSafetyScratchesPlayer.setText(String.format(Locale.getDefault(), "%d", player.getSafetyScratches()));
+        tvSafetyScratchesOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getSafetyFouls()));
+        tvSafetyScratchesPlayer.setText(String.format(Locale.getDefault(), "%d", player.getSafetyFouls()));
 
-        highlightPlayerStat(tvSafetyScratchesPlayer, tvSafetyScratchesOpponent, player.getSafetyScratches(), opponent.getSafetyScratches());
+        highlightPlayerStat(tvSafetyScratchesPlayer, tvSafetyScratchesOpponent, player.getSafetyFouls(), opponent.getSafetyFouls());
 
         tvSafetyReturnsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getSafetyReturns()));
         tvSafetyReturnsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getSafetyReturns()));

@@ -33,7 +33,7 @@
         android:textAllCaps="true"
         android:textColor="@android:color/tertiary_text_light"
         android:textStyle="bold"
-        android:layout_weight="1"/>
+        android:layout_weight=".5"/>
 
     <TextView
         android:id="@android:id/text2"

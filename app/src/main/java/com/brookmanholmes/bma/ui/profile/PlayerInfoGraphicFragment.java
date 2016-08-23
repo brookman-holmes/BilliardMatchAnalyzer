@@ -185,7 +185,7 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
             players.clear();
             opponents.clear();
             splitPlayers(pairs);
-            notifyDataSetChanged();
+            notifyItemRangeChanged(0, getItemCount());
         }
 
         @Override

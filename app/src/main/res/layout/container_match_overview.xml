@@ -81,9 +81,30 @@
         />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTotalFoulsPlayer"
+        style="@style/player_stats"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/total_fouls"
+        style="@style/player_stats"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTotalFoulsOpponent"
+        style="@style/player_stats"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
         android:id="@+id/tvAggressivenessRatingPlayer"
         style="@style/player_stats"
-        android:textColor="@color/primary_text"
+        android:textColor="@color/secondary_text"
         />
 
     <TextView
@@ -91,12 +112,12 @@
         style="@style/player_stats"
         android:layout_columnWeight="1"
         android:text="@string/title_ar"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/secondary_text"/>
 
     <TextView
         android:id="@+id/tvAggressivenessRatingOpponent"
         style="@style/player_stats"
-        android:textColor="@color/primary_text"
+        android:textColor="@color/secondary_text"
         />
 
 </GridLayout>
