@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.addturnwizard;
 
+import android.animation.Animator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
 
@@ -36,7 +38,7 @@ import butterknife.OnClick;
  * Created by Brookman Holmes on 2/20/2016.
  */
 @SuppressWarnings("WeakerAccess")
-public class AddTurnDialog extends DialogFragment implements PageFragmentCallbacks, ModelCallbacks {
+public class AddTurnDialog extends DialogFragment implements PageFragmentCallbacks, ModelCallbacks, View.OnLayoutChangeListener {
     @Bind(R.id.pager) ViewPager pager;
     @Bind(R.id.strip) StepPagerStrip pagerStrip;
     @Bind(R.id.next_button) Button nextButton;
@@ -93,6 +95,8 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         View view = inflater.inflate(R.layout.fragment_add_turn, container, false);
         ButterKnife.bind(this, view);
 
+        view.addOnLayoutChangeListener(this);
+
         pager.setAdapter(pagerAdapter);
         pagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
             @Override public void onPageStripSelected(int position) {
@@ -122,7 +126,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
+        //getDialog().getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
     }
 
     @Override public void onDestroyView() {
@@ -134,6 +138,16 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
         super.onDestroy();
+    }
+
+    @Override
+    public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        view.removeOnLayoutChangeListener(this);
+        float finalRadius = (float) Math.hypot(view.getWidth(), view.getHeight());
+        // TODO: 8/24/2016 view.getWidth() and getHeight() are a workaround for finding the absolute location of the fab that starts this
+        Animator anim = ViewAnimationUtils.createCircularReveal(view, view.getWidth(), view.getHeight(), 0, finalRadius);
+        anim.setDuration(500);
+        anim.start();
     }
 
     @Override public void onPageDataChanged(Page page) {
@@ -196,6 +210,40 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
             pager.setCurrentItem(pager.getCurrentItem() + 1);
             wizardModel.updatePagesWithTurnInfo();
         }
+    }
+
+    @Override public void dismiss() {
+        circularDeveal();
+    }
+
+    private void realDismiss() {
+        super.dismiss();
+    }
+
+    private void circularDeveal() {
+        View view = getView();
+        float finalRadius = (float) Math.hypot(view.getWidth(), view.getHeight());
+        // TODO: 8/24/2016 view.getWidth() and getHeight() are a workaround for finding the absolute location of the fab that starts this
+        Animator anim = ViewAnimationUtils.createCircularReveal(view, view.getWidth(), view.getHeight(), finalRadius, 0);
+        anim.setDuration(500);
+        anim.addListener(new Animator.AnimatorListener() {
+            @Override public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override public void onAnimationEnd(Animator animator) {
+                realDismiss();
+            }
+
+            @Override public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+        anim.start();
     }
 
     @OnClick(R.id.prev_button) public void prevButton() {
