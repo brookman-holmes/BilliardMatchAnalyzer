@@ -114,24 +114,11 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
                 .setRequired(true);
     }
 
-    private Page getBcaRankPage(PlayerTurn turn) {
-        return new BcaRankPage(this, "%1$s races to?", turn);
-    }
-
     private Page getFirstBreakPage(String parentKey) {
         return new FirstBreakPage(this, context.getString(R.string.title_page_first_break), parentKey)
                 .setChoices(playerName, opponentName)
                 .setValue(playerName)
                 .setRequired(true);
-    }
-
-    private Page getApaRankPage(GameType gameType, PlayerTurn playerTurn) {
-        if (gameType == GameType.APA_EIGHT_BALL) {
-            return new Apa8BallRankPage(this, context.getString(R.string.title_page_rank), playerTurn)
-                    .setRequired(true);
-        } else if (gameType == GameType.APA_NINE_BALL) {
-            return new Apa9BallRankPage(this, context.getString(R.string.title_page_rank), playerTurn);
-        } else throw new IllegalArgumentException("That game type is not supported: " + gameType);
     }
 
     private Page getStatDetailPage() {
