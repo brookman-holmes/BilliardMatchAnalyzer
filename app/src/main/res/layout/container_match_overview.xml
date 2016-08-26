@@ -28,19 +28,20 @@
         android:id="@+id/tvWinTotalsPlayer"
         style="@style/player_stats"
         android:textColor="@color/secondary_text"
-        />
+        android:tag="disappearable"/>
 
     <TextView
         style="@style/player_stats"
         android:layout_columnWeight="1"
         android:text="@string/title_games_won"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvWinTotalsOpponent"
         style="@style/player_stats"
         android:textColor="@color/secondary_text"
-        />
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvTrueShootingPctPlayer"
@@ -65,59 +66,64 @@
         android:id="@+id/tvTotalShotsPlayer"
         style="@style/player_stats"
         android:textColor="@color/secondary_text"
-        />
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvTotalShotsTitle"
         style="@style/player_stats"
         android:layout_columnWeight="1"
         android:text="@string/title_true_shots_made"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvTotalShotsOpponent"
         style="@style/player_stats"
         android:textColor="@color/secondary_text"
-        />
+        android:tag="disappearable"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvTotalFoulsPlayer"
         style="@style/player_stats"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/total_fouls"
         style="@style/player_stats"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvTotalFoulsOpponent"
         style="@style/player_stats"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvAggressivenessRatingPlayer"
         style="@style/player_stats"
         android:textColor="@color/secondary_text"
-        />
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvAggressivenessRating"
         style="@style/player_stats"
         android:layout_columnWeight="1"
         android:text="@string/title_ar"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvAggressivenessRatingOpponent"
         style="@style/player_stats"
         android:textColor="@color/secondary_text"
-        />
+        android:tag="disappearable"/>
 
 </GridLayout>

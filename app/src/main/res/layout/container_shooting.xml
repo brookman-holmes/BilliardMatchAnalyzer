@@ -36,55 +36,64 @@
         android:id="@+id/tvBallTotalPlayer"
         style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         style="@style/player_stats"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:text="@string/title_shots_made"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvBallTotalOpponent"
         style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvAvgBallsTurnPlayer"
         style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"/>
 
     <TextView
         style="@style/player_stats"
         android:layout_gravity="center"
         android:text="@string/title_avg_balls_turn"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvAvgBallsTurnOpponent"
         style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvScratchesPlayer"
         style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         style="@style/player_stats"
         android:layout_gravity="center"
         android:text="@string/title_shooting_fouls"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvScratchesOpponent"
         style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
 </GridLayout>

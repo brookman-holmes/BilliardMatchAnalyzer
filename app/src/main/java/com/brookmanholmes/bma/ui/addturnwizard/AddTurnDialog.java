@@ -213,6 +213,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     }
 
     @Override public void dismiss() {
+        // TODO: 8/24/2016 this probably doesn't work for pressing the back button? need to intercept it somehow
         circularDeveal();
     }
 

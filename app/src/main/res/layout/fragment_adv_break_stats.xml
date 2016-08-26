@@ -12,7 +12,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
-        >
+        android:id="@+id/baseLayout">
 
         <TextView
             android:id="@+id/tvBreakErrorsTitle"

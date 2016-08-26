@@ -87,28 +87,30 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     }
 
     private Page getGameChoicePage() {
+        String apa9ReviewString = context.getString(R.string.apa_nine_review);
+        String reviewString = context.getString(R.string.bca_review);
         return new GameChoicePage(this, context.getString(R.string.title_page_games), context)
                 .addBranch(context.getString(R.string.game_apa_eight),
-                        new RaceToPage(this, context.getString(R.string.ranks), "")
-                                .setRaceToChoices(2, 8, 5),
+                        new RaceToPage(this, context.getString(R.string.ranks), reviewString, GameType.APA_EIGHT_BALL, context.getString(R.string.race))
+                                .setRaceToChoices(2, 8, 4, 6),
                         getFirstBreakPage("apa 8"))
                 .addBranch(context.getString(R.string.game_apa_nine),
-                        new RaceToPage(this, context.getString(R.string.ranks), "")
-                                .setRaceToChoices(1, 10, 5),
+                        new RaceToPage(this, context.getString(R.string.ranks), apa9ReviewString, GameType.APA_NINE_BALL, context.getString(R.string.race))
+                                .setRaceToChoices(1, 10, 5, 9),
                         getFirstBreakPage("apa 9"))
                 .addBranch(context.getString(R.string.game_bca_eight),
-                        new RaceToPage(this, "Race", "")
-                                .setRaceToChoices(1, 22, 5),
+                        new RaceToPage(this, context.getString(R.string.race), reviewString)
+                                .setRaceToChoices(1, 22, 5, 7),
                         getBreakTypePage("bca 8")
                 )
                 .addBranch(context.getString(R.string.game_bca_nine),
-                        new RaceToPage(this, "Race", "")
-                                .setRaceToChoices(1, 22, 5),
+                        new RaceToPage(this, context.getString(R.string.race), reviewString)
+                                .setRaceToChoices(1, 22, 5, 7),
                         getBreakTypePage("bca 9")
                 )
                 .addBranch(context.getString(R.string.game_bca_ten),
-                        new RaceToPage(this, "Race", "")
-                                .setRaceToChoices(1, 22, 5),
+                        new RaceToPage(this, context.getString(R.string.race), reviewString)
+                                .setRaceToChoices(1, 22, 5, 7),
                         getBreakTypePage("bca 10"))
                 .setValue(context.getString(R.string.game_bca_nine))
                 .setRequired(true);
@@ -177,14 +179,6 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
             builder.setPlayerTurn(PlayerTurn.PLAYER);
         if (breakType == BreakType.OPPONENT)
             builder.setPlayerTurn(PlayerTurn.OPPONENT);
-    }
-
-    void setPlayerRank(PlayerTurn playerTurn, String playerRank) {
-        if (playerTurn == PlayerTurn.PLAYER)
-            builder.setPlayerRank(Integer.valueOf(playerRank));
-        else if (playerTurn == PlayerTurn.OPPONENT)
-            builder.setOpponentRank(Integer.valueOf(playerRank));
-        else throw new IllegalArgumentException("No such PlayerTurn: " + playerTurn);
     }
 
     void setPlayerRanks(int playerRank, int opponentRank) {

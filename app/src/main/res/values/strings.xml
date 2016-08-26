@@ -236,4 +236,7 @@
     <string name="total_fouls">Total fouls</string>
     <string name="race_to">How many games does %1$s play to?</string>
     <string name="apa_ranks">What is %1$s\'s rank?</string>
+    <string name="apa_nine_review">%1$s needs %2$d points\n\n%3$s needs %4$d points</string>
+    <string name="bca_review">%1$s needs %2$d games\n\n%3$s needs %4$d games</string>
+    <string name="race">Race</string>
 </resources>

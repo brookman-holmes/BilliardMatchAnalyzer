@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/title_safety_pct"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:layout_columnWeight="1"/>
 
     <TextView
         android:id="@+id/tvSafetyPctOpponent"
@@ -30,20 +31,23 @@
         android:id="@+id/tvSafetiesAttemptedPlayer"
         style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         style="@style/player_stats"
         android:layout_columnWeight="1"
         android:layout_gravity="center"
         android:text="@string/title_safeties_made"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvSafetiesAttemptedOpponent"
         style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvSafetyScratchesPlayer"
@@ -51,7 +55,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"/>
 
     <TextView
         style="@style/player_stats"
@@ -59,7 +64,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/title_safety_fouls"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"
+        android:layout_columnWeight="1"/>
 
     <TextView
         android:id="@+id/tvSafetyScratchesOpponent"
@@ -67,7 +74,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvSafetyEscapesPlayer"
@@ -75,7 +83,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvSafetyEscapesTitle"
@@ -84,7 +93,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/title_safety_escapes"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"
+        android:layout_columnWeight="1"/>
 
     <TextView
         android:id="@+id/tvSafetyEscapesOpponent"
@@ -92,7 +103,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvSafetyReturnsPlayer"
@@ -100,7 +112,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvSafetyReturnsTitle"
@@ -109,7 +122,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/title_safeties_returned"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"
+        android:layout_columnWeight="1"/>
 
     <TextView
         android:id="@+id/tvSafetyReturnsOpponent"
@@ -117,7 +132,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvForcedErrorsPlayer"
@@ -125,7 +141,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 
     <TextView
         android:id="@+id/tvForcedErrorsTitle"
@@ -134,7 +151,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/title_forced_fouls"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"
+        android:layout_columnWeight="1"/>
 
     <TextView
         android:id="@+id/tvForcedErrorsOpponent"
@@ -142,5 +161,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/secondary_text"/>
+        android:textColor="@color/secondary_text"
+        android:tag="disappearable"/>
 </GridLayout>

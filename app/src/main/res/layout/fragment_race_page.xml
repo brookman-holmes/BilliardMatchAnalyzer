@@ -15,7 +15,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,17 +25,19 @@
             android:id="@+id/playerName"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
 
-        <Spinner
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/playerRankSpinner"
-            android:padding="12dp"/>
+        <include layout="@layout/grid_number_picker"
+                 android:id="@+id/playerRankGrid"
+                 android:layout_height="match_parent"
+                 android:layout_width="match_parent"
+                 android:layout_gravity="center_horizontal"/>
+
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,11 +45,11 @@
             android:text="New Text"
             android:id="@+id/opponentName"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
+        <include layout="@layout/grid_number_picker"
+                 android:id="@+id/opponentRankGrid"
+                 android:layout_height="match_parent"
+                 android:layout_width="match_parent"
+                 android:layout_gravity="center_horizontal"/>
 
-        <Spinner
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/opponentRankSpinner"
-            android:padding="12dp"/>
     </LinearLayout>
 </LinearLayout>
