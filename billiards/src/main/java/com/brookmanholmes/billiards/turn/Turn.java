@@ -76,6 +76,7 @@ public class Turn implements ITurn {
         return tableStatus.getGameBallMadeIllegally();
     }
 
+    // TODO: 8/26/2016 add test for this method
     @Override public void setBallTo(BallStatus status, int... i) {
         tableStatus.setBallTo(status, i);
     }

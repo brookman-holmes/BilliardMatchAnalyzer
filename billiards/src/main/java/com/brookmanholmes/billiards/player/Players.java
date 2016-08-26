@@ -37,11 +37,13 @@ public class Players {
                     opponent.getRank() <= opponent.getWins();
     }
 
+    // TODO: 8/26/2016 test this method
     private static boolean isMatchOverApa9(ApaNineBallPlayer player, ApaNineBallPlayer opponent) {
         return player.getPointsNeeded(0) <= player.getPoints() ||
                 opponent.getPointsNeeded(0) <= opponent.getPoints();
     }
 
+    // TODO: 8/26/2016 test this method
     private static boolean isMatchOverApa8(ApaEightBallPlayer player, ApaEightBallPlayer opponent) {
         RaceTo raceTo = apa8BallRaceTo(player.getRank(), opponent.getRank());
 
@@ -63,6 +65,7 @@ public class Players {
             return apa8BallRaceTable[playerRank - 2][opponentRank - 2];
     }
 
+    // TODO: 8/26/2016 test this method more thoroughly
     public static int getMinimumMatchPointsEarned(int playerRank, int playerScore) {
         if (playerScore > apa9BallRaceTo(playerRank))
             return 8;

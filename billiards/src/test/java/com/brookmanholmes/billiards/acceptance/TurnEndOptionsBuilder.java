@@ -58,7 +58,7 @@ public class TurnEndOptionsBuilder {
     }
 
     public TurnEndOptions reBreak() {
-        return options.allowPlayerToChooseToContinueGame().defaultOption(CONTINUE_WITH_GAME).build();
+        return options.allowPlayerToChooseToContinueGame().defaultOption(MISS).build();
     }
 
     public TurnEndOptions reBreakOnScratch() {

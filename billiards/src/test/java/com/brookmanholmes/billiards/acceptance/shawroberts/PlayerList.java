@@ -1,5 +1,6 @@
 package com.brookmanholmes.billiards.acceptance.shawroberts;
 
+import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
 
@@ -18,7 +19,7 @@ public class PlayerList {
         return new TenBallPlayer("Shaw");
     }
 
-    private static Pair<TenBallPlayer> turn1() {
+    private static Pair<AbstractPlayer> turn1() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -29,55 +30,55 @@ public class PlayerList {
 
         shaw.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn2() {
+    private static Pair<AbstractPlayer> turn2() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         shaw.addBreakShot(0, false, false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn3() {
+    private static Pair<AbstractPlayer> turn3() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn4() {
+    private static Pair<AbstractPlayer> turn4() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         shaw.addSafetyAttempt(false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn5() {
+    private static Pair<AbstractPlayer> turn5() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         roberts.addShootingBallsMade(4, false);
         roberts.addShootingMiss();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn6() {
+    private static Pair<AbstractPlayer> turn6() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         shaw.addShootingBallsMade(1, true);
         shaw.addShootingMiss();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn7() {
+    private static Pair<AbstractPlayer> turn7() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -87,19 +88,19 @@ public class PlayerList {
 
         shaw.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn8() {
+    private static Pair<AbstractPlayer> turn8() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         roberts.addBreakShot(0, false, true);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn9() {
+    private static Pair<AbstractPlayer> turn9() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -108,10 +109,10 @@ public class PlayerList {
 
         roberts.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn10() {
+    private static Pair<AbstractPlayer> turn10() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -122,10 +123,10 @@ public class PlayerList {
 
         roberts.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn11() {
+    private static Pair<AbstractPlayer> turn11() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -136,10 +137,10 @@ public class PlayerList {
 
         shaw.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn12() {
+    private static Pair<AbstractPlayer> turn12() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -147,19 +148,19 @@ public class PlayerList {
         shaw.addShootingBallsMade(2, false);
         shaw.addSafety(false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn13() {
+    private static Pair<AbstractPlayer> turn13() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         roberts.addSafetyAttempt(false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn14() {
+    private static Pair<AbstractPlayer> turn14() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -168,56 +169,56 @@ public class PlayerList {
 
         roberts.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn15() {
+    private static Pair<AbstractPlayer> turn15() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         roberts.addBreakShot(3, false, false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn16() {
+    private static Pair<AbstractPlayer> turn16() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn17() {
+    private static Pair<AbstractPlayer> turn17() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         roberts.addShootingBallsMade(0, true);
         roberts.addShootingMiss();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn18() {
+    private static Pair<AbstractPlayer> turn18() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         shaw.addSafety(false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn19() {
+    private static Pair<AbstractPlayer> turn19() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         roberts.addSafetyAttempt(true);
         roberts.addSafetyForcedError();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn20() {
+    private static Pair<AbstractPlayer> turn20() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -226,10 +227,10 @@ public class PlayerList {
 
         roberts.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn21() {
+    private static Pair<AbstractPlayer> turn21() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -237,39 +238,39 @@ public class PlayerList {
         shaw.addShootingBallsMade(1, false);
         shaw.addSafety(false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn22() {
+    private static Pair<AbstractPlayer> turn22() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         roberts.addShootingBallsMade(0, false);
         roberts.addShootingMiss();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn23() {
+    private static Pair<AbstractPlayer> turn23() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         shaw.addSafetyAttempt(false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn24() {
+    private static Pair<AbstractPlayer> turn24() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         roberts.addShootingMiss();
         roberts.addShootingBallsMade(0, false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn25() {
+    private static Pair<AbstractPlayer> turn25() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -278,10 +279,10 @@ public class PlayerList {
 
         roberts.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn26() {
+    private static Pair<AbstractPlayer> turn26() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -289,10 +290,10 @@ public class PlayerList {
         roberts.addShootingBallsMade(0, false);
         roberts.addShootingMiss();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn27() {
+    private static Pair<AbstractPlayer> turn27() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -301,19 +302,19 @@ public class PlayerList {
 
         roberts.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn28() {
+    private static Pair<AbstractPlayer> turn28() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         shaw.addBreakShot(0, false, false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn29() {
+    private static Pair<AbstractPlayer> turn29() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -324,38 +325,38 @@ public class PlayerList {
 
         shaw.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn30() {
+    private static Pair<AbstractPlayer> turn30() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         roberts.addBreakShot(1, false, false);
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn31() {
+    private static Pair<AbstractPlayer> turn31() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         // skip turn
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn32() {
+    private static Pair<AbstractPlayer> turn32() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
         roberts.addShootingBallsMade(0, false);
         roberts.addShootingMiss();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    private static Pair<TenBallPlayer> turn33() {
+    private static Pair<AbstractPlayer> turn33() {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
@@ -364,10 +365,10 @@ public class PlayerList {
 
         roberts.addGameLost();
 
-        return new Pair<>(shaw, roberts);
+        return new Pair<AbstractPlayer>(shaw, roberts);
     }
 
-    public static List<Pair<TenBallPlayer>> getPlayerPairs() {
+    public static List<Pair<AbstractPlayer>> getPlayerPairs() {
         return Arrays.asList(
                 turn1(), turn2(), turn3(), turn4(), turn5(), turn6(), turn7(), turn8(), turn9(), turn10(),
                 turn11(), turn12(), turn13(), turn14(), turn15(), turn16(), turn17(), turn18(), turn19(), turn20(),

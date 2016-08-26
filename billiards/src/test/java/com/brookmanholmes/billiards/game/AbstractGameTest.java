@@ -5,7 +5,6 @@ import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
-import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
@@ -35,6 +34,15 @@ public abstract class AbstractGameTest {
     @Before
     public abstract void setUp();
 
+    @Test
+    public void getGhostBallsToWinGameReturnsAllBalls() {
+        // TODO: 8/26/2016 create this test
+    }
+
+    @Test
+    public void getGhostBallsToWinGameReturnsSomeBalls() {
+        // TODO: 8/26/2016 create this test
+    }
 
     @Test
     public void removeBallsFromTableDoesntRemoveGameBall() {

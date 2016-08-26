@@ -5,9 +5,9 @@ import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerColor;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
-import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
     @Override Game createNewGame() {
         return new EightBallGame(PlayerTurn.PLAYER, BreakType.WINNER);
     }
-
+    
     @Test
     public void setPlayerAllowedToBreakAgainReturnsTrue() {
         TableStatus tableStatus = TableStatus.newTable(game.gameType);

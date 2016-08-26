@@ -14,7 +14,7 @@ import com.brookmanholmes.billiards.turn.TurnBuilder;
 public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<TenBallPlayer> {
     @Override public void setUp() {
         game = Game.newGame(GameType.BCA_TEN_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
-        playerController = new TenBallController("", "");
+        playerController = new TenBallController("", "", 0, 0);
         actualPlayer = new TenBallPlayer("");
         expectedPlayer = new TenBallPlayer("");
         turnBuilder = new TurnBuilder(game.getGameType());

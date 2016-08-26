@@ -28,4 +28,19 @@ public class ApaEightBallPlayerTest extends AbstractPlayerTest {
 
         assertThat(actual, is(expected));
     }
+
+    @Test
+    public void getMatchPointsTests() {
+        // TODO: 8/26/2016 create this test + more to test function
+    }
+
+    @Test
+    public void addWinOnBreakAdds10Wins() {
+        // TODO: 8/26/2016 create this test
+    }
+
+    @Test
+    public void addEarlyWinsAdds10Wins() {
+        // TODO: 8/26/2016 create this test
+    }
 }

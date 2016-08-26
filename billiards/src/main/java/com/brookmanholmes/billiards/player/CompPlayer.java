@@ -4,6 +4,7 @@ package com.brookmanholmes.billiards.player;
  * Created by Brookman Holmes on 5/9/2016.
  */
 public class CompPlayer extends AbstractPlayer implements IWinsOnBreak {
+    // TODO: 8/26/2016 create tests for this whole class
     private int earlyWins = 0;
     private int winsOnBreak = 0;
 

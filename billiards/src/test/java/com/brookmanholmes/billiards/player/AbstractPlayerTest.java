@@ -33,6 +33,26 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
     }
 
     @Test
+    public void dateIsNullGeneratesNewDate() {
+        // TODO: 8/26/2016 create this test
+    }
+
+    @Test
+    public void dateEqualsSomeDate() {
+        // TODO: 8/26/2016 create this test
+    }
+
+    @Test
+    public void getTotalFoulsReturns0() {
+        // TODO: 8/26/2016 create this test
+    }
+
+    @Test
+    public void getTotalFoulsReturnsValues() {
+        // TODO: 8/26/2016 create this test
+    }
+
+    @Test
     public void addSafetyAttemptWithScratchAddsOneToTotalAndAddsAScratch() {
         actual.addSafetyAttempt(true);
 

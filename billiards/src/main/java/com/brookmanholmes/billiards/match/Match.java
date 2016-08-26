@@ -25,6 +25,7 @@ import java.util.List;
  * Created by Brookman Holmes on 10/27/2015.
  */
 public class Match implements IMatch {
+    // TODO: 8/26/2016 test this class more thoroughly
     private final PlayerController playerController;
     private final Date createdOn;
     private final Game game;

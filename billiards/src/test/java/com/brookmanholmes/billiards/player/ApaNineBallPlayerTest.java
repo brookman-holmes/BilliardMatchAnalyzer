@@ -14,6 +14,16 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
     }
 
     @Test
+    public void addWinOnBreakAdds10Wins() {
+        // TODO: 8/26/2016 create this test
+    }
+
+    @Test
+    public void addEarlyWinsAdds10Wins() {
+        // TODO: 8/26/2016 create this test
+    }
+
+    @Test
     public void makeSurePlayerReceivesPointsForMakingBalls() {
         actual.addShootingBallsMade(5, false);
 

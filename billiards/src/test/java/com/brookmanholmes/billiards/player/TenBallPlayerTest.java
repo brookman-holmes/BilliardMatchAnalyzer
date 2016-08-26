@@ -26,4 +26,9 @@ public class TenBallPlayerTest extends AbstractPlayerTest {
 
         assertThat(actual, is(expected));
     }
+
+    @Test
+    public void addEarlyWinsAdds10Wins() {
+        // TODO: 8/26/2016 create this test
+    }
 }

@@ -8,6 +8,7 @@ import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
@@ -23,8 +24,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/9/2015.
  */
 public class ShawVsRobertsTest extends MatchTester {
-    private PlayerController<TenBallPlayer> controller;
-    private List<Pair<TenBallPlayer>> expectedPairs;
+    private PlayerController controller;
+    private List<Pair<AbstractPlayer>> expectedPairs;
     @Override public void setUp() {
         expectedGameStatusList = GameStatusList.getGameStatuses();
         expectedTurnEndOptionsList = TurnEndOptionsList.getOptionsList();
@@ -32,7 +33,7 @@ public class ShawVsRobertsTest extends MatchTester {
         turns = TurnList.getTurns();
 
         game = Game.newGame(GameType.BCA_TEN_BALL, PlayerTurn.OPPONENT, BreakType.ALTERNATE);
-        controller = PlayerController.createTenBallController("Shaw", "Roberts");
+        controller = PlayerController.createTenBallController("Shaw", "Roberts", 7, 7);
     }
 
     @Test

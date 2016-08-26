@@ -76,7 +76,7 @@ class EightBallGame extends Game {
     @Override public int[] getGhostBallsToWinGame() {
         if (playerColor == SOLIDS) {
             ballsOnTable.removeAll(Arrays.asList(1,2,3,4,5,6,7));
-        } else if (playerColor == STRIPES) {
+        } else {
             ballsOnTable.removeAll(Arrays.asList(9,10,11,12,13,14,15));
         }
 

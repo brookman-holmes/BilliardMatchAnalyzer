@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<EightBallPlayer> {
     @Override public void setUp() {
         game = Game.newGame(GameType.BCA_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
-        playerController = new EightBallController("", "");
+        playerController = new EightBallController("", "", 0, 0);
         actualPlayer = new EightBallPlayer("");
         expectedPlayer = new EightBallPlayer("");
         turnBuilder = new TurnBuilder(game.getGameType());
