@@ -485,10 +485,10 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
             void bind(CompPlayer player) {
                 float attempts = player.getBreakAttempts();
 
-                float continuation = (float) player.getBreakContinuations() / attempts;
-                float successes = (float) player.getBreakSuccesses() / attempts;
-                float wins = (float) player.getWinsOnBreak() / attempts;
-                float fouls = (float) player.getBreakFouls() / attempts;
+                float continuation = attempts != 0 ? (float) player.getBreakContinuations() / attempts : 0;
+                float successes = attempts != 0 ? (float) player.getBreakSuccesses() / attempts : 0;
+                float wins = attempts != 0 ? (float) player.getWinsOnBreak() / attempts : 0;
+                float fouls = attempts != 0 ? (float) player.getBreakFouls() / attempts : 0;
 
                 decoView.addSeries(new SeriesItem.Builder(color1)
                         .setRange(0, 100, successes * 100)
@@ -548,6 +548,7 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
                 color3 = ContextCompat.getColor(itemView.getContext(), R.color.chart1);
             }
 
+            // TODO: 8/26/2016 make sure that numbers are within range
             public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
                 CompPlayer player = getPlayerFromList(players);
                 CompPlayer opponent = getPlayerFromList(opponents);

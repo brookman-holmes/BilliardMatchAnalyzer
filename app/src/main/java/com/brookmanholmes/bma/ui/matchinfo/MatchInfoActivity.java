@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +32,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.util.BreakType;
@@ -79,6 +83,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private Match match;
     private Menu menu;
     private Snackbar matchOverSnackbar;
+    private Drawable playerArrow, opponentArrow;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,11 +93,16 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         setSupportActionBar(toolbar);
 
+        playerArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down_white);
+        opponentArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down_white);
+
         db = new DatabaseAdapter(this);
 
         match = db.getMatch(getMatchId());
         playerName.setText(match.getPlayer().getName());
+        playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, playerArrow, null);
         opponentName.setText(match.getOpponent().getName());
+        opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, opponentArrow, null);
 
         // no reason to click on The Ghost
         if (match.getGameStatus().breakType == BreakType.GHOST)
@@ -125,11 +135,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         showAddTurnDialog();
     }
 
-    @OnClick({R.id.opponentName, R.id.playerName})
-    public void showPlayerOptionsMenu(TextView view) {
-        String name = view.getText().toString();
+    @OnClick({R.id.opponentNameLayout, R.id.playerNameLayout})
+    public void showPlayerOptionsMenu(LinearLayout view) {
+        String name = ((TextView) view.getChildAt(0)).getText().toString();
         PlayerTurn turn = match.getPlayer().getName().equals(name) ? PlayerTurn.PLAYER : PlayerTurn.OPPONENT;
-        showChoiceDialog(name, turn);
+        showChoiceDialog(name, turn, view);
     }
 
     private void updatePlayerNames(String name, String newName) {
@@ -151,14 +161,18 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             updateMenuItems();
 
         if (match.isMatchOver()) {
-            playerName.setTextColor(ContextCompat.getColor(this, android.R.color.white));
-            opponentName.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            playerName.setTextColor(ContextCompat.getColor(this, R.color.white));
+            opponentName.setTextColor(ContextCompat.getColor(this, R.color.white));
         } else if (match.getCurrentPlayersName().equals(playerName.getText().toString())) {
-            playerName.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            playerName.setTextColor(ContextCompat.getColor(this, R.color.white));
+            playerArrow.setTint(ContextCompat.getColor(this, R.color.white));
             opponentName.setTextColor(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
+            opponentArrow.setTint(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
         } else {
             playerName.setTextColor(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
-            opponentName.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            playerArrow.setTint(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
+            opponentName.setTextColor(ContextCompat.getColor(this, R.color.white));
+            opponentArrow.setTint(ContextCompat.getColor(this, R.color.white));
         }
 
         updateFragments();
@@ -311,9 +325,43 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         dialog.show(getSupportFragmentManager(), "EditMatchLocation");
     }
 
-    private void showChoiceDialog(final String name, final PlayerTurn turn) {
-        ChoiceDialog dialog = ChoiceDialog.create(getMatchId(), turn, name);
-        dialog.show(getSupportFragmentManager(), "ChoiceDialog");
+    private void showChoiceDialog(final String name, final PlayerTurn turn, final View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view, Gravity.CENTER);
+
+        if (playerHasAdvancedStats(turn, match.getStatDetailLevel()))
+            popupMenu.inflate(R.menu.menu_player_adv);
+        else popupMenu.inflate(R.menu.menu_player);
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.action_adv_stats)
+                    showAdvancedStatsDialog(name, turn);
+
+                if (id == R.id.action_edit_name)
+                    showEditPlayerNameDialog(name);
+
+                if (id == R.id.action_view_profile) {
+                    Intent intent = new Intent(MatchInfoActivity.this, PlayerProfileActivity.class);
+                    intent.putExtra(ARG_PLAYER_NAME, name);
+                    startActivity(intent);
+                }
+
+                return true;
+            }
+        });
+
+        popupMenu.show();
+    }
+
+    private boolean playerHasAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
+        if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
+            return true;
+        else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
+            return true;
+        else return detail == Match.StatsDetail.ADVANCED;
     }
 
     void registerFragment(UpdateMatchInfo info) {
@@ -332,64 +380,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     interface UpdateMatchInfo {
         void update(Match match);
-    }
-
-    public static class ChoiceDialog extends DialogFragment {
-        private static final String ARG_PLAYER_TURN = "arg player turn";
-        String[] items;
-        long matchId;
-        String name;
-        PlayerTurn turn;
-
-        static ChoiceDialog create(long matchId, PlayerTurn turn, String name) {
-            ChoiceDialog dialog = new ChoiceDialog();
-            Bundle args = new Bundle();
-            args.putLong(ARG_MATCH_ID, matchId);
-            args.putString(ARG_PLAYER_TURN, turn.name());
-            args.putString(ARG_PLAYER_NAME, name);
-
-            dialog.setArguments(args);
-            return dialog;
-        }
-
-        @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            DatabaseAdapter db = new DatabaseAdapter(getContext());
-            turn = PlayerTurn.valueOf(getArguments().getString(ARG_PLAYER_TURN));
-            name = getArguments().getString(ARG_PLAYER_NAME);
-            matchId = getArguments().getLong(ARG_MATCH_ID);
-            if (playerHasAdvancedStats(turn, db.getMatch(matchId).getStatDetailLevel())) {
-                items = new String[]{getString(R.string.view_profile), getString(R.string.view_adv_stats), getString(R.string.edit_name)};
-            } else {
-                items = new String[]{getString(R.string.view_profile), getString(R.string.edit_name)};
-            }
-        }
-
-        @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme)
-                    .setTitle(name)
-                    .setItems(items, new DialogInterface.OnClickListener() {
-                        @Override public void onClick(DialogInterface dialog, int which) {
-                            if (items[which].equals(getString(R.string.view_adv_stats)))
-                                ((MatchInfoActivity) getActivity()).showAdvancedStatsDialog(name, turn);
-                            else if (items[which].equals(getString(R.string.view_profile))) {
-                                Intent intent = new Intent(getContext(), PlayerProfileActivity.class);
-                                intent.putExtra(ARG_PLAYER_NAME, name);
-                                startActivity(intent);
-                            } else if (items[which].equals(getString(R.string.edit_name))) {
-                                ((MatchInfoActivity) getActivity()).showEditPlayerNameDialog(name);
-                            }
-                        }
-                    }).create();
-        }
-
-        private boolean playerHasAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
-            if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
-                return true;
-            else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
-                return true;
-            else return detail == Match.StatsDetail.ADVANCED;
-        }
     }
 
     public static abstract class EditTextDialog extends DialogFragment {
