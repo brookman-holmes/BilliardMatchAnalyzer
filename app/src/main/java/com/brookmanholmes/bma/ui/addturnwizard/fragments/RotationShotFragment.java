@@ -2,6 +2,7 @@ package com.brookmanholmes.bma.ui.addturnwizard.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,12 +43,16 @@ public class RotationShotFragment extends ShotFragment {
 
     @OnClick(R.id.buttonRunOut) @Override void runOut() {
         List<BallStatus> ballStatusList = page.getBallStatuses();
+        Log.i("BallStatuses", ballStatusList.toString());
         for (int i = 0; i < ballStatusList.size(); i++) {
             if (ballStatusList.get(i) == BallStatus.ON_TABLE) {
                 page.updateBallStatus(i + 1);
             }
 
             if (ballStatusList.get(i) == BallStatus.GAME_BALL_DEAD_ON_BREAK)
+                page.updateBallStatus(i + 1);
+
+            if (ballStatusList.get(i) == BallStatus.GAME_BALL_MADE_ON_BREAK)
                 page.updateBallStatus(i + 1);
         }
     }

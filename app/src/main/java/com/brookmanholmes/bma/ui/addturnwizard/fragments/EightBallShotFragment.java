@@ -72,7 +72,7 @@ public class EightBallShotFragment extends ShotFragment {
     private void selectAllStripes() {
         List<BallStatus> ballStatusList = page.getBallStatuses();
         for (int i = 7; i < 15; i++) {
-            if (ballStatusList.get(i) == BallStatus.ON_TABLE || ballStatusList.get(i) == BallStatus.GAME_BALL_DEAD_ON_BREAK) {
+            if (selectBall(ballStatusList.get(i))) {
                 page.updateBallStatus(i + 1);
             }
         }
@@ -81,10 +81,16 @@ public class EightBallShotFragment extends ShotFragment {
     private void selectAllSolids() {
         List<BallStatus> ballStatusList = page.getBallStatuses();
         for (int i = 0; i < 8; i++) {
-            if (ballStatusList.get(i) == BallStatus.ON_TABLE || ballStatusList.get(i) == BallStatus.GAME_BALL_DEAD_ON_BREAK) {
+            if (selectBall(ballStatusList.get(i))) {
                 page.updateBallStatus(i + 1);
             }
         }
+    }
+
+    private boolean selectBall(BallStatus ballStatus) {
+        return ballStatus == BallStatus.ON_TABLE ||
+                ballStatus == BallStatus.GAME_BALL_DEAD_ON_BREAK ||
+                ballStatus == BallStatus.GAME_BALL_MADE_ON_BREAK;
     }
 
     private void setButtonRunOut() {
