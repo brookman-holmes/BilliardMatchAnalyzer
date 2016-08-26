@@ -11,9 +11,9 @@ import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.Players;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.Date;
@@ -137,10 +137,6 @@ public class Match implements IMatch {
         return turn;
     }
 
-    public void setMatchOver(boolean isMatchOver) {
-        this.matchOver = isMatchOver;
-    }
-
     public boolean isMatchOver() {
         return matchOver;
     }
@@ -199,7 +195,7 @@ public class Match implements IMatch {
     }
 
     public boolean isUndoTurn() {
-        return turns.size() > 0 && !matchOver;
+        return turns.size() > 0;
     }
 
     @Override public ITurn redoTurn() {
@@ -218,6 +214,7 @@ public class Match implements IMatch {
             game.setGameStatus(games.removeLast());
 
             undoneTurns.addLast(turns.removeLast());
+            matchOver = isPlayersRaceFinished();
         }
     }
 
