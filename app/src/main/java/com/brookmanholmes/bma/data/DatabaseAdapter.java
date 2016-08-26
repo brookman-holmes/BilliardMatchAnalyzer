@@ -20,6 +20,7 @@ import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.bma.ui.stats.StatFilter;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,8 +31,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
@@ -610,6 +613,52 @@ public class DatabaseAdapter {
 
         while (c.moveToNext()) {
             list.add(buildAdvStatsFromCursor(c));
+        }
+
+        c.close();
+        database.close();
+
+        return list;
+    }
+
+    public List<AdvStats> getAdvStats(String playerName, String[] shotTypes, StatFilter filter) {
+        String opponent = null;
+        if (!filter.getOpponent().equals("All opponents"))
+            opponent = filter.getOpponent();
+        List<Match> matches = getMatches(playerName, opponent);
+
+        Set<Long> matchIds = new HashSet<>(matches.size());
+
+        for (Match match : matches) {
+            if (filter.isMatchQualified(match))
+                matchIds.add(match.getMatchId());
+        }
+
+        database = databaseHelper.getReadableDatabase();
+        List<AdvStats> list = new ArrayList<>();
+
+        String query = COLUMN_NAME + "=?";
+
+        String shotTypesQuery = " AND (";
+        for (int i = 0; i < shotTypes.length; i++) {
+            shotTypesQuery += COLUMN_SHOT_TYPE + "=?";
+
+            if (i != shotTypes.length - 1)
+                shotTypesQuery += " OR ";
+        }
+        shotTypesQuery += ")";
+
+        Cursor c = database.query(TABLE_ADV_STATS,
+                null,
+                query + shotTypesQuery,
+                ArrayUtils.addAll(new String[]{playerName}, shotTypes),
+                null,
+                null,
+                null);
+
+        while (c.moveToNext()) {
+            if (matchIds.contains(c.getLong(c.getColumnIndex(COLUMN_MATCH_ID))))
+                list.add(buildAdvStatsFromCursor(c));
         }
 
         c.close();

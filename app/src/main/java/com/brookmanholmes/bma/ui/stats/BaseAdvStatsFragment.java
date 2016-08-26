@@ -13,6 +13,7 @@ import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -27,12 +28,14 @@ import butterknife.ButterKnife;
 public abstract class BaseAdvStatsFragment extends Fragment implements Filterable {
     List<AdvStats> stats = new ArrayList<>();
     @Bind(R.id.parentView) LinearLayout statsLayout;
+    String playerName;
+    List<String> shotTypes;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID, -1L);
-        String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
-        List<String> shotTypes = getShotTypes();
+        playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
+        shotTypes = getShotTypes();
 
         DatabaseAdapter db = new DatabaseAdapter(getContext());
         stats = matchId == -1L ?
@@ -56,22 +59,29 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        updateView();
+        if (getActivity() instanceof PlayerProfileActivity) {
+            ((PlayerProfileActivity) getActivity()).addListener(this);
+        } else updateView();
     }
 
     @Override public void onDestroyView() {
         ButterKnife.unbind(this);
+        if (getActivity() instanceof PlayerProfileActivity) {
+            ((PlayerProfileActivity) getActivity()).removeListener(this);
+        }
         super.onDestroyView();
     }
 
     @Override public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
+
         super.onDestroy();
     }
 
     @Override
     public void setFilter(StatFilter filter) {
-
+        stats = new DatabaseAdapter(getContext()).getAdvStats(playerName, shotTypes.toArray(new String[shotTypes.size()]), filter);
+        updateView();
     }
 }
