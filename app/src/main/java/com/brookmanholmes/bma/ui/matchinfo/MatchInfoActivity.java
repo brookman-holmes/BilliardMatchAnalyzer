@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -73,6 +74,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     @Bind(R.id.playerName) TextView playerName;
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.opponentName) TextView opponentName;
+    @Bind(R.id.playerNameLayout) View playerNameLayout;
+    @Bind(R.id.opponentNameLayout) View opponentNameLayout;
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.pager) CustomViewPager pager;
     @SuppressWarnings("WeakerAccess")
@@ -83,7 +86,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private Match match;
     private Menu menu;
     private Snackbar matchOverSnackbar;
-    private Drawable playerArrow, opponentArrow;
+    private Drawable activeArrow, inactiveArrow;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,20 +96,20 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         setSupportActionBar(toolbar);
 
-        playerArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down_white);
-        opponentArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down_white);
+        activeArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down);
+        inactiveArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down_inactive);
 
         db = new DatabaseAdapter(this);
 
         match = db.getMatch(getMatchId());
         playerName.setText(match.getPlayer().getName());
-        playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, playerArrow, null);
+        playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
         opponentName.setText(match.getOpponent().getName());
-        opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, opponentArrow, null);
+        opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, inactiveArrow, null);
 
         // no reason to click on The Ghost
         if (match.getGameStatus().breakType == BreakType.GHOST)
-            opponentName.setEnabled(false);
+            opponentNameLayout.setEnabled(false);
 
         matchOverSnackbar = makeSnackbar(R.string.match_over, Snackbar.LENGTH_INDEFINITE)
                 .setAction(android.R.string.ok, new View.OnClickListener() {
@@ -163,16 +166,18 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         if (match.isMatchOver()) {
             playerName.setTextColor(ContextCompat.getColor(this, R.color.white));
             opponentName.setTextColor(ContextCompat.getColor(this, R.color.white));
+            playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
+            opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
         } else if (match.getCurrentPlayersName().equals(playerName.getText().toString())) {
             playerName.setTextColor(ContextCompat.getColor(this, R.color.white));
-            playerArrow.setTint(ContextCompat.getColor(this, R.color.white));
+            playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
             opponentName.setTextColor(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
-            opponentArrow.setTint(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
+            opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, inactiveArrow, null);
         } else {
             playerName.setTextColor(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
-            playerArrow.setTint(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
+            playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, inactiveArrow, null);
             opponentName.setTextColor(ContextCompat.getColor(this, R.color.white));
-            opponentArrow.setTint(ContextCompat.getColor(this, R.color.white));
+            opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
         }
 
         updateFragments();
