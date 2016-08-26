@@ -49,6 +49,7 @@ dependencies {
     compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.3@aar') {
         transitive = true
     }
+    compile 'de.cketti.mailto:email-intent-builder:1.0.0'
     compile 'com.github.bmarrdev:android-DecoView-charting:v1.2'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'

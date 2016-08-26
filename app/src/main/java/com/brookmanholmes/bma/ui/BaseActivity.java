@@ -2,15 +2,15 @@ package com.brookmanholmes.bma.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.ui.dialog.SubmitFeedbackDialog;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.leakcanary.RefWatcher;
+
+import de.cketti.mailto.EmailIntentBuilder;
 
 /**
  * Created by Brookman Holmes on 1/16/2016.
@@ -32,8 +32,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_submit_feedback) {
-            DialogFragment dialog = new SubmitFeedbackDialog();
-            dialog.show(getSupportFragmentManager(), "SubmitFeedbackDialog");
+            EmailIntentBuilder.from(this)
+                    .to("brookman.holmes@gmail.com")
+                    .subject("Billiard Match Analyzer Feedback")
+                    .start();
         }
 
         return super.onOptionsItemSelected(item);
