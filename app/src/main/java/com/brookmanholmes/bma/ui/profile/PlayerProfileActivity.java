@@ -44,6 +44,7 @@ import butterknife.ButterKnife;
 public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     public static final String ARG_PLAYER_NAME = "arg player name";
     private final List<Filterable> listeners = new ArrayList<>();
+
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerName) TextView playerName;
     @SuppressWarnings("WeakerAccess")
@@ -128,7 +129,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
                 .create().show();
     }
 
-    void addListener(Filterable filterable) {
+    public void addListener(Filterable filterable) {
         listeners.add(filterable);
         updateListeners();
     }
@@ -139,7 +140,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         }
     }
 
-    void removeListener(Filterable filterable) {
+    public void removeListener(Filterable filterable) {
         listeners.remove(filterable);
     }
 

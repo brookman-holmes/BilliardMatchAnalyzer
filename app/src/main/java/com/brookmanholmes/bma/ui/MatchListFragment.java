@@ -25,9 +25,13 @@ import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
+import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
+import com.brookmanholmes.bma.ui.stats.Filterable;
+import com.brookmanholmes.bma.ui.stats.StatFilter;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +43,7 @@ import butterknife.OnLongClick;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MatchListFragment extends Fragment {
+public class MatchListFragment extends Fragment implements Filterable{
     private static final String ARG_PLAYER = "arg player";
     private static final String ARG_OPPONENT = "arg opponent";
 
@@ -72,6 +76,12 @@ public class MatchListFragment extends Fragment {
             player = getArguments().getString(ARG_PLAYER, null);
             opponent = getArguments().getString(ARG_OPPONENT, null);
         }
+
+        adapter = new MatchListRecyclerAdapter(getContext(), new DatabaseAdapter(getContext()).getMatches(player, opponent));
+
+        if (getActivity() instanceof PlayerProfileActivity) {
+            ((PlayerProfileActivity) getActivity()).addListener(this);
+        }
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,7 +89,6 @@ public class MatchListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
 
-        adapter = new MatchListRecyclerAdapter(getContext(), new DatabaseAdapter(getContext()).getMatches(player, opponent));
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -104,7 +113,27 @@ public class MatchListFragment extends Fragment {
     @Override public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
+
+        if (getActivity() instanceof PlayerProfileActivity) {
+            ((PlayerProfileActivity) getActivity()).removeListener(this);
+        }
         super.onDestroy();
+    }
+
+    @Override public void setFilter(StatFilter filter) {
+        List<Match> filteredMatches = new ArrayList<>();
+        String opponent = filter.getOpponent();
+        if (opponent.equals("All opponents"))
+            opponent = null;
+
+        List<Match> matches = new DatabaseAdapter(getContext()).getMatches(player, opponent);
+        for (Match match : matches) {
+            if (filter.isMatchQualified(match)) {
+                filteredMatches.add(match);
+            }
+        }
+
+        adapter.update(filteredMatches);
     }
 
     static class MatchListRecyclerAdapter extends RecyclerView.Adapter<MatchListRecyclerAdapter.ListItemHolder> {

@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.stats;
 
+import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.AmericanRotationPlayer;
 import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
@@ -118,5 +119,10 @@ public class StatFilter {
 
     private boolean isPlayerNameCorrect(String name) {
         return opponent.equals("All opponents") || opponent.equals(name);
+    }
+
+    public boolean isMatchQualified(Match match) {
+        return isDateInRange(match.getCreatedOn()) &&
+                isPlayerOfGameType(match.getPlayer());
     }
 }
