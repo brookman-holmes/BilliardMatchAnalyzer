@@ -19,6 +19,7 @@ package com.brookmanholmes.bma.wizard.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
@@ -84,9 +85,13 @@ public abstract class BaseChoiceFragment extends ListFragment {
 
         setListTypeArgs();
         setListView(view);
-        preSelectItems();
 
         return view;
+    }
+
+    @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        preSelectItems();
     }
 
     @Override public void onDetach() {
@@ -126,12 +131,16 @@ public abstract class BaseChoiceFragment extends ListFragment {
 
     protected void setListView(View view) {
         final ListView listView = (ListView) view.findViewById(android.R.id.list);
-        setListAdapter(new ArrayAdapter<>(getActivity(),
+        setAdapter();
+        listView.setDividerHeight(0);
+        listView.setChoiceMode(choiceMode);
+    }
+
+    protected void setAdapter() {
+        setListAdapter(new ArrayAdapter<>(getContext(),
                 layoutRes,
                 android.R.id.text1,
                 choices));
-        listView.setDividerHeight(0);
-        listView.setChoiceMode(choiceMode);
     }
 
     protected abstract void preSelectItems();

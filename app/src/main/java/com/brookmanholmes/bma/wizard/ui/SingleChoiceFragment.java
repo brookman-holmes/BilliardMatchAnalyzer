@@ -84,17 +84,13 @@ public class SingleChoiceFragment extends BaseChoiceFragment {
 
     @Override protected void preSelectItems() {
         // Pre-select currently selected item.
-        new Handler().post(new Runnable() {
-            @Override public void run() {
-                String selection = page.getData().getString(Page.SIMPLE_DATA_KEY);
-                for (int i = 0; i < choices.size(); i++) {
-                    if (choices.get(i).equals(selection)) {
-                        getListView().setItemChecked(i, true);
-                        break;
-                    }
-                }
+        String selection = page.getData().getString(Page.SIMPLE_DATA_KEY);
+        for (int i = 0; i < choices.size(); i++) {
+            if (choices.get(i).equals(selection)) {
+                getListView().setItemChecked(i, true);
+                break;
             }
-        });
+        }
     }
 
     @Override public void onListItemClick(ListView l, View v, int position, long id) {

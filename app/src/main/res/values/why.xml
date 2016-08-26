@@ -56,8 +56,10 @@
     <string-array name="why_choices_break">
         <item>@string/why_english</item>
         <item>@string/why_aim</item>
-        <item>@string/why_follow</item>
-        <item>@string/why_draw</item>
+        <item>@string/why_too_much_follow</item>
+        <item>@string/why_too_little_follow</item>
+        <item>@string/why_too_much_draw</item>
+        <item>@string/why_too_little_draw</item>
         <item>@string/why_tried_too_hard</item>
     </string-array>
 
