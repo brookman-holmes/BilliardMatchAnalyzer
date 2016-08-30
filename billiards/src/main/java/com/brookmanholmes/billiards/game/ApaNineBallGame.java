@@ -15,6 +15,12 @@ class ApaNineBallGame extends NineBallGame {
         allowPush = false;
     }
 
+    /**
+     * Gets the number of points that the turn is worth (based on the APA 9 ball scoring system)
+     *
+     * @param turn The turn to check
+     * @return an integer between 0 and 10 that this turn is worth
+     */
     public static int getPointsFromTurn(ITurn turn) {
         return turn.getBreakBallsMade()
                 + turn.getShootingBallsMade()

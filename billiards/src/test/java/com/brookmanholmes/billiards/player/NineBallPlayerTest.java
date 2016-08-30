@@ -8,8 +8,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 1/19/2016.
  */
-public class NineBallPlayerTest extends AbstractPlayerTest {
+public class NineBallPlayerTest extends AbstractPlayerTest<NineBallPlayer> {
     @Override public void setUp() {
+        rank = Integer.MAX_VALUE;
         expected = new NineBallPlayer(testName);
         actual = new NineBallPlayer(testName);
     }
@@ -23,20 +24,23 @@ public class NineBallPlayerTest extends AbstractPlayerTest {
 
         actual.addPlayerStats(player);
 
-        ((NineBallPlayer) expected).addEarlyWin();
-        ((NineBallPlayer) expected).addWinOnBreak();
+        expected.addEarlyWin();
+        expected.addWinOnBreak();
 
         assertThat(actual, is(expected));
     }
 
     @Test
     public void addWinOnBreakAdds10Wins() {
-        // TODO: 8/26/2016 create this test
+        actual.addWinsOnBreak(10);
+
+        assertThat(actual.getWinsOnBreak(), is(10));
     }
 
     @Test
     public void addEarlyWinsAdds10Wins() {
-        // TODO: 8/26/2016 create this test
-    }
+        actual.addEarlyWins(10);
 
+        assertThat(actual.getEarlyWins(), is(10));
+    }
 }

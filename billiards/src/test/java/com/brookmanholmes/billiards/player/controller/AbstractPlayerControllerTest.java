@@ -197,7 +197,6 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
 
     @Test
     public void fourBallRunOutGivesAFourBallRun() {
-        // // TODO: 1/30/2016 add in a turn here to simulate the game being underway
         playerController.turn = fourBallRunTurn();
         playerController.gameStatus = game.getGameStatus();
 

@@ -9,18 +9,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer> {
     @Override public void setUp() {
-        expected = new ApaNineBallPlayer(testName, 5);
-        actual = new ApaNineBallPlayer(testName, 5);
-    }
-
-    @Test
-    public void addWinOnBreakAdds10Wins() {
-        // TODO: 8/26/2016 create this test
-    }
-
-    @Test
-    public void addEarlyWinsAdds10Wins() {
-        // TODO: 8/26/2016 create this test
+        rank = 5;
+        expected = new ApaNineBallPlayer(testName, rank);
+        actual = new ApaNineBallPlayer(testName, rank);
     }
 
     @Test
@@ -47,7 +38,7 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
 
     @Test
     public void addPlayerStatsWorksCorrectlyForNineBall() {
-        ApaNineBallPlayer player = new ApaNineBallPlayer(testName, 5);
+        ApaNineBallPlayer player = new ApaNineBallPlayer(testName, rank);
 
         player.addEarlyWin();
         player.addWinOnBreak();
@@ -93,10 +84,40 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
 
     @Test
     public void addDeadBallsEquals3() {
-        ApaNineBallPlayer player = new ApaNineBallPlayer(testName, 5);
+        ApaNineBallPlayer player = new ApaNineBallPlayer(testName, rank);
 
         player.addDeadBalls(3);
 
         assertThat(player.getDeadBalls(), is(3));
+    }
+
+    @Test
+    public void addWinOnBreakAdds10Wins() {
+        actual.addWinsOnBreak(10);
+
+        assertThat(actual.getWinsOnBreak(), is(10));
+    }
+
+    @Test
+    public void addEarlyWinsAdds10Wins() {
+        actual.addEarlyWins(10);
+
+        assertThat(actual.getEarlyWins(), is(10));
+    }
+
+    @Test
+    public void getMatchPointsReturns20() {
+        actual.addPoints(700);
+        assertThat(actual.getMatchPoints(0, 9), is(20));
+    }
+
+    @Test
+    public void getMatchPointsReturns0() {
+        assertThat(actual.getMatchPoints(0, 9), is(0));
+    }
+
+    @Test
+    public void getPointsNeededReturnsRank5Value() {
+        assertThat(actual.getPointsNeeded(0), is(Players.apa9BallRaceTo(rank)));
     }
 }

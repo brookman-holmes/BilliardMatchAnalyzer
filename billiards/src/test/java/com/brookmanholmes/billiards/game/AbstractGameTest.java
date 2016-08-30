@@ -36,12 +36,32 @@ public abstract class AbstractGameTest {
 
     @Test
     public void getGhostBallsToWinGameReturnsAllBalls() {
-        // TODO: 8/26/2016 create this test
+        int[] expected = getAllBallsOnTable();
+
+        assertThat(game.getGhostBallsToWinGame(), is(expected));
     }
 
     @Test
     public void getGhostBallsToWinGameReturnsSomeBalls() {
-        // TODO: 8/26/2016 create this test
+        int[] expected = getBallsOnTableAfterRemoval();
+        removeBalls();
+
+        assertThat(game.getGhostBallsToWinGame(), is(expected));
+    }
+
+    abstract int[] getBallsOnTableAfterRemoval();
+
+    abstract int[] getAllBallsOnTable();
+
+    abstract void removeBalls();
+
+    @Test
+    public void setGameStatusReturnsSameStatus() {
+        GameStatus gameStatus = game.getGameStatus();
+        game.addTurn(turn().madeBalls(1, 2, 3).breakBalls(4).miss());
+        game.setGameStatus(gameStatus);
+
+        assertThat(game, is(createNewGame()));
     }
 
     @Test

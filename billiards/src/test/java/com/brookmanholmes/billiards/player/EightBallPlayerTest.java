@@ -5,6 +5,7 @@ package com.brookmanholmes.billiards.player;
  */
 public class EightBallPlayerTest extends AbstractPlayerTest {
     @Override public void setUp() {
+        rank = Integer.MAX_VALUE;
         expected = new EightBallPlayer(testName);
         actual = new EightBallPlayer(testName);
     }

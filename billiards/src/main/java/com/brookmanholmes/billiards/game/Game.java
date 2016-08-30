@@ -41,6 +41,15 @@ public abstract class Game {
 
     List<Integer> ballsOnTable;
 
+    /**
+     * Sets up the initial game status based on the inputs
+     *
+     * @param gameType  the type of game being played
+     * @param turn      the turn of the first player
+     * @param breakType the type of break that the game will use
+     * @param MAX_BALLS The maximum balls in the game
+     * @param GAME_BALL The ball that ends the game (8,9,10 generally)
+     */
     Game(GameType gameType, PlayerTurn turn, BreakType breakType, int MAX_BALLS, int GAME_BALL) {
         this.gameType = gameType;
         this.breakType = breakType;
@@ -73,37 +82,12 @@ public abstract class Game {
         }
     }
 
-    private PlayerTurn changeTurn(PlayerTurn turn) {
-        if (turn.nextPlayer() == firstPlayerToShoot)
-            innings++;
-
-        return turn.nextPlayer();
-    }
-
-    public void setGameStatus(GameStatus gameStatus) {
-        this.turn = gameStatus.turn;
-        this.breaker = gameStatus.breaker;
-        this.playerAllowedToBreakAgain = gameStatus.playerAllowedToBreakAgain;
-        this.newGame = gameStatus.newGame;
-        this.allowPush = gameStatus.allowPush;
-        this.allowTurnSkip = gameStatus.allowTurnSkip;
-        this.opponentPlayedSuccessfulSafe = gameStatus.opponentPlayedSuccessfulSafe;
-        this.consecutiveOpponentFouls = gameStatus.consecutiveOpponentFouls;
-        this.consecutivePlayerFouls = gameStatus.consecutivePlayerFouls;
-        this.playerColor = gameStatus.playerColor;
-        this.innings = gameStatus.innings;
-
-        ballsOnTable = new ArrayList<>(gameStatus.ballsOnTable);
-    }
-
-    abstract boolean setAllowPush(ITurn turn);
-
-    abstract boolean setAllowTurnSkip(ITurn turn);
-
-    abstract PlayerColor setPlayerColor(ITurn turn);
-
-    abstract boolean setAllowPlayerToBreakAgain(ITurn turn);
-
+    /**
+     * Adds a turn to the game and updates it's state based on the turn
+     *
+     * @param turn The turn to add to the game
+     * @return The new game status of the game
+     */
     final public GameStatus addTurn(ITurn turn) {
         if (isGameOver(turn))
             startNewGame(turn);
@@ -114,36 +98,105 @@ public abstract class Game {
         } else if (turn.getTurnEnd() == TurnEnd.OPPONENT_BREAKS_AGAIN) {
             startNewGame(changeTurn(this.turn));
         } else
-            setGameStatus(turn);
+            updateGameStatus(turn);
 
         return new GameStatus(this);
     }
 
+    /**
+     * @param turn
+     */
+    private void updateGameStatus(ITurn turn) {
+        setConsecutiveFouls(turn);
+
+        removeBallsFromTable(turn.getBallsToRemoveFromTable());
+
+        newGame = false;
+
+        allowPush = setAllowPush(turn);
+        allowTurnSkip = setAllowTurnSkip(turn);
+        playerColor = setPlayerColor(turn);
+        playerAllowedToBreakAgain = setAllowPlayerToBreakAgain(turn);
+        opponentPlayedSuccessfulSafe = setOpponentPlayedSuccessfulSafe(turn);
+        // this happens at the end
+        this.turn = changeTurn(this.turn);
+    }
+
+    /**
+     * Determines whether or not the game should allow a push shot
+     * @param turn the incoming turn
+     * @return true for if a push shot is allowed, false if a push shot is not
+     */
+    abstract boolean setAllowPush(ITurn turn);
+
+    /**
+     * Determines whether or not the game should allow a player to skip their turn
+     * @param turn the incoming turn
+     * @return true for if turn skipping is allowed, false if turn skipping is not
+     */
+    abstract boolean setAllowTurnSkip(ITurn turn);
+
+    /**
+     * Determines whether the player is solids, stripes or undetermined
+     * @param turn The incoming turn
+     * @return 0 for open, 1 for Player is solids, 2 for Player is solids
+     */
+    abstract PlayerColor setPlayerColor(ITurn turn);
+
+    /**
+     * Determine whether a player is allowed to break again
+     * @param turn the incoming turn
+     * @return true for a re-break is allowed, false for it is not
+     */
+    abstract boolean setAllowPlayerToBreakAgain(ITurn turn);
+
+    /**
+     * Determines whether the incoming turn was a SAFETY
+     *
+     * @param turn The incoming turn
+     * @return true: the player played a safety, false: the player did not play a safety
+     */
+    boolean setOpponentPlayedSuccessfulSafe(ITurn turn) {
+        return turn.getTurnEnd() == TurnEnd.SAFETY;
+    }
+
+    /**
+     * Changes the turn of the game to the next player
+     *
+     * @param turn Which player's turn it currently is
+     * @return Which player shoots next
+     */
+    private PlayerTurn changeTurn(PlayerTurn turn) {
+        if (turn.nextPlayer() == firstPlayerToShoot)
+            innings++;
+
+        return turn.nextPlayer();
+    }
+
+    /**
+     * Determines whether a new game should be started
+     * @param turn The incoming turn
+     * @return true for the game is over, false for the game is not over
+     */
     boolean isGameOver(ITurn turn) {
         return turn.getTurnEnd() == TurnEnd.GAME_WON || turn.isGameLost();
     }
 
+    /**
+     * Sets the game status to a new game
+     * @param turn The incoming turn
+     */
     void startNewGame(ITurn turn) {
         this.breaker = setBreaker(getGameWinner(turn));
         startNewGame(breaker);
     }
 
-    private void startNewGame(PlayerTurn nextBreaker) {
-        // don't set this.breaker because it'll ruin the order of switching breaks
-        this.turn = nextBreaker;
-        newGame = true;
-        opponentPlayedSuccessfulSafe = false;
-
-        playerAllowedToBreakAgain = false;
-        playerColor = OPEN;
-        consecutiveOpponentFouls = 0;
-        consecutivePlayerFouls = 0;
-        allowPush = false;
-        allowTurnSkip = false;
-
-        ballsOnTable = newTable();
-    }
-
+    /**
+     * Determines the player which should break based on who won the last game
+     *
+     * @param previousGameWinner The winner of the previous game
+     * @return The player that breaks in the new game (PLAYER or OPPONENT)
+     */
     PlayerTurn setBreaker(PlayerTurn previousGameWinner) {
         switch (breakType) {
             case WINNER:
@@ -163,12 +216,41 @@ public abstract class Game {
         }
     }
 
+    /**
+     * Sets the game status to a new game with the correct player breaking
+     * @param nextBreaker The player that should break for the new game
+     */
+    private void startNewGame(PlayerTurn nextBreaker) {
+        // don't set this.breaker because it'll ruin the order of switching breaks
+        this.turn = nextBreaker;
+        newGame = true;
+        opponentPlayedSuccessfulSafe = false;
+
+        playerAllowedToBreakAgain = false;
+        playerColor = OPEN;
+        consecutiveOpponentFouls = 0;
+        consecutivePlayerFouls = 0;
+        allowPush = false;
+        allowTurnSkip = false;
+
+        ballsOnTable = newTable();
+    }
+
+    /**
+     * Determines the winner of the game
+     * @param turn The incoming turn
+     * @return The player that won the game (PLAYER or OPPONENT)
+     */
     PlayerTurn getGameWinner(ITurn turn) {
         if (turn.getTurnEnd() == TurnEnd.GAME_WON)
             return this.turn;
         else return changeTurn(this.turn);
     }
 
+    /**
+     * Creates a list of balls that are on the table based on the maximum number of balls allowed
+     * @return a list of integers between 1 and MAX_BALLS
+     */
     private List<Integer> newTable() {
         List<Integer> table = new ArrayList<>(MAX_BALLS);
         for (int i = 1; i <= MAX_BALLS; i++)
@@ -177,6 +259,10 @@ public abstract class Game {
         return table;
     }
 
+    /**
+     * Sets the consecutive fouls of PLAYER and OPPONENT
+     * @param turn The incoming turn
+     */
     private void setConsecutiveFouls(ITurn turn) {
         if (turn.isFoul()) {
             if (this.turn == PlayerTurn.PLAYER)
@@ -191,10 +277,10 @@ public abstract class Game {
         }
     }
 
-    boolean setOpponentPlayedSuccessfulSafe(ITurn turn) {
-        return turn.getTurnEnd() == TurnEnd.SAFETY;
-    }
-
+    /**
+     * Removes balls that are not on the table anymore
+     * @param ballsToRemove The list of balls that are to be removed
+     */
     void removeBallsFromTable(List<Integer> ballsToRemove) {
         ballsOnTable.removeAll(ballsToRemove);
 
@@ -202,48 +288,82 @@ public abstract class Game {
             ballsOnTable.add(GAME_BALL);
     }
 
+    /**
+     * Retrieve the consecutive fouls based on who the current player is
+     * @return an integer that is between 0 and (hopefully) 2
+     */
     int getCurrentPlayersConsecutiveFouls() {
         if (turn == PlayerTurn.PLAYER)
             return consecutivePlayerFouls;
         else return consecutiveOpponentFouls;
     }
 
+    /**
+     * Retrieves who's turn it is
+     * @return PLAYER or OPPONENT
+     */
     public PlayerTurn getTurn() {
         return turn;
     }
 
+    /**
+     * Retrieves the type of game that is being played
+     * @return a value from GameType
+     */
     public GameType getGameType() {
         return gameType;
     }
 
+    /**
+     * Retrieves the current game status of the game
+     * @return a new GameStatus
+     */
     public GameStatus getGameStatus() {
         return new GameStatus(this);
     }
 
-    private void setGameStatus(ITurn turn) {
-        setConsecutiveFouls(turn);
+    /**
+     * Sets the game status of this game to the same as another game status
+     *
+     * @param gameStatus The game status that you would like this game to have
+     */
+    public void setGameStatus(GameStatus gameStatus) {
+        this.turn = gameStatus.turn;
+        this.breaker = gameStatus.breaker;
+        this.playerAllowedToBreakAgain = gameStatus.playerAllowedToBreakAgain;
+        this.newGame = gameStatus.newGame;
+        this.allowPush = gameStatus.allowPush;
+        this.allowTurnSkip = gameStatus.allowTurnSkip;
+        this.opponentPlayedSuccessfulSafe = gameStatus.opponentPlayedSuccessfulSafe;
+        this.consecutiveOpponentFouls = gameStatus.consecutiveOpponentFouls;
+        this.consecutivePlayerFouls = gameStatus.consecutivePlayerFouls;
+        this.playerColor = gameStatus.playerColor;
+        this.innings = gameStatus.innings;
 
-        removeBallsFromTable(turn.getBallsToRemoveFromTable());
-
-        newGame = false;
-
-        allowPush = setAllowPush(turn);
-        allowTurnSkip = setAllowTurnSkip(turn);
-        playerColor = setPlayerColor(turn);
-        playerAllowedToBreakAgain = setAllowPlayerToBreakAgain(turn);
-        opponentPlayedSuccessfulSafe = setOpponentPlayedSuccessfulSafe(turn);
-        // this happens at the end
-        this.turn = changeTurn(this.turn);
+        ballsOnTable = new ArrayList<>(gameStatus.ballsOnTable);
     }
 
+    /**
+     * Retrieves the current table status of this game
+     * @return A new TableStatus that contains the current balls on the table
+     */
     public ITableStatus getCurrentTableStatus() {
         return TableStatus.newTable(gameType, ballsOnTable);
     }
 
+    /**
+     * Retrieves whether or not the game is possible to win on the break
+     * @return True if you can win by making a specified ball on the break, false otherwise
+     */
     boolean winOnBreak() {
         return false;
     }
 
+    /**
+     * Returns the type of balls that the current player is on
+     * @return OPEN means that no color has been selected, SOLIDS if the current player is shooting
+     * solids or STRIPES if the current player is shooting stripes
+     */
     PlayerColor getCurrentPlayerColor() {
         if (playerColor == OPEN) {
             return OPEN;
@@ -259,6 +379,11 @@ public abstract class Game {
         }
     }
 
+    /**
+     * Retrieves an array of balls that the ghost 'made' when it was their turn
+     * @return a new integer array where each element is corresponds to a ball that is currently
+     * on the table and will be 'made' by the ghost
+     */
     public abstract int[] getGhostBallsToWinGame();
 
     @Override public String toString() {
@@ -281,5 +406,52 @@ public abstract class Game {
                 "\n innings=" + innings +
                 "\n ballsOnTable=" + ballsOnTable +
                 '}';
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Game game = (Game) o;
+
+        if (GAME_BALL != game.GAME_BALL) return false;
+        if (MAX_BALLS != game.MAX_BALLS) return false;
+        if (playerAllowedToBreakAgain != game.playerAllowedToBreakAgain) return false;
+        if (newGame != game.newGame) return false;
+        if (allowTurnSkip != game.allowTurnSkip) return false;
+        if (allowPush != game.allowPush) return false;
+        if (opponentPlayedSuccessfulSafe != game.opponentPlayedSuccessfulSafe) return false;
+        if (consecutivePlayerFouls != game.consecutivePlayerFouls) return false;
+        if (consecutiveOpponentFouls != game.consecutiveOpponentFouls) return false;
+        if (innings != game.innings) return false;
+        if (breakType != game.breakType) return false;
+        if (gameType != game.gameType) return false;
+        if (firstPlayerToShoot != game.firstPlayerToShoot) return false;
+        if (playerColor != game.playerColor) return false;
+        if (turn != game.turn) return false;
+        if (breaker != game.breaker) return false;
+        return ballsOnTable.equals(game.ballsOnTable);
+
+    }
+
+    @Override public int hashCode() {
+        int result = GAME_BALL;
+        result = 31 * result + MAX_BALLS;
+        result = 31 * result + breakType.hashCode();
+        result = 31 * result + gameType.hashCode();
+        result = 31 * result + firstPlayerToShoot.hashCode();
+        result = 31 * result + playerColor.hashCode();
+        result = 31 * result + turn.hashCode();
+        result = 31 * result + breaker.hashCode();
+        result = 31 * result + (playerAllowedToBreakAgain ? 1 : 0);
+        result = 31 * result + (newGame ? 1 : 0);
+        result = 31 * result + (allowTurnSkip ? 1 : 0);
+        result = 31 * result + (allowPush ? 1 : 0);
+        result = 31 * result + (opponentPlayedSuccessfulSafe ? 1 : 0);
+        result = 31 * result + consecutivePlayerFouls;
+        result = 31 * result + consecutiveOpponentFouls;
+        result = 31 * result + innings;
+        result = 31 * result + ballsOnTable.hashCode();
+        return result;
     }
 }

@@ -4,43 +4,89 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
 /**
  * Created by Brookman Holmes on 1/19/2016.
  */
-public class ApaEightBallPlayerTest extends AbstractPlayerTest {
+public class ApaEightBallPlayerTest extends AbstractPlayerTest<ApaEightBallPlayer> {
     @Override public void setUp() {
-        expected = new ApaEightBallPlayer(testName, 5);
-        actual = new ApaEightBallPlayer(testName, 5);
+        rank = 5;
+        expected = new ApaEightBallPlayer(testName, rank);
+        actual = new ApaEightBallPlayer(testName, rank);
     }
 
     @Test
     public void addPlayerStatsWorksCorrectlyForNineBall() {
-        ApaEightBallPlayer player = new ApaEightBallPlayer(testName, 5);
+        ApaEightBallPlayer player = new ApaEightBallPlayer(testName, rank);
 
         player.addEarlyWin();
         player.addWinOnBreak();
 
         actual.addPlayerStats(player);
 
-        ((ApaEightBallPlayer) expected).addEarlyWin();
-        ((ApaEightBallPlayer) expected).addWinOnBreak();
+        expected.addEarlyWin();
+        expected.addWinOnBreak();
 
         assertThat(actual, is(expected));
     }
 
     @Test
-    public void getMatchPointsTests() {
-        // TODO: 8/26/2016 create this test + more to test function
+    public void getMatchPointsReturns0() {
+        assertThat(actual.getMatchPoints(0, 2), is(0));
+    }
+
+    @Test
+    public void getMatchPointsReturns1() {
+        actual.addGameWon();
+        actual.addGameWon();
+        actual.addGameWon();
+        actual.addGameWon();
+
+        assertThat(actual.getMatchPoints(0, 2), is(1));
+    }
+
+    @Test
+    public void getMatchPointsReturns2() {
+        actual.addGameWon();
+        actual.addGameWon();
+        actual.addGameWon();
+        actual.addGameWon();
+        actual.addGameWon();
+
+        assertThat(actual.getMatchPoints(1, 2), is(2));
+    }
+
+    @Test
+    public void getMatchPointsReturns3() {
+        actual.addGameWon();
+        actual.addGameWon();
+        actual.addGameWon();
+        actual.addGameWon();
+        actual.addGameWon();
+
+        assertThat(actual.getMatchPoints(0, 2), is(3));
     }
 
     @Test
     public void addWinOnBreakAdds10Wins() {
-        // TODO: 8/26/2016 create this test
+        actual.addWinsOnBreak(10);
+
+        assertThat(actual.getWinsOnBreak(), is(10));
     }
 
     @Test
     public void addEarlyWinsAdds10Wins() {
-        // TODO: 8/26/2016 create this test
+        actual.addEarlyWins(10);
+
+        assertThat(actual.getEarlyWins(), is(10));
     }
+
+    @Test
+    public void getPointsReturnsGameWins() {
+        actual.addGameWon();
+        actual.addGameWon();
+
+        assertThat(actual.getPoints(), is(actual.getWins()));
+    }
+
+
 }

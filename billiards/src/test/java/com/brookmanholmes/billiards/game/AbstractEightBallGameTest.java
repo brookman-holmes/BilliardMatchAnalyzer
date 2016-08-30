@@ -5,6 +5,8 @@ import com.brookmanholmes.billiards.game.util.PlayerTurn;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -46,5 +48,17 @@ public abstract class AbstractEightBallGameTest extends AbstractGameTest {
     public void setAllowTurnSkipReturnsFalse() {
         assertThat(game.setAllowTurnSkip(
                 turn().madeBalls(1, 2, 3).miss()), is(false));
+    }
+
+    @Override int[] getAllBallsOnTable() {
+        return new int[]{1, 2, 3, 4, 5, 6, 7, 8};
+    }
+
+    @Override int[] getBallsOnTableAfterRemoval() {
+        return new int[]{2, 3, 4, 5, 6, 8};
+    }
+
+    @Override void removeBalls() {
+        game.ballsOnTable.removeAll(Arrays.asList(1, 7, 9, 10, 11, 12, 13, 14, 15));
     }
 }

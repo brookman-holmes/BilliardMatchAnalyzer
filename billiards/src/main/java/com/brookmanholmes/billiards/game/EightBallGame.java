@@ -32,20 +32,32 @@ class EightBallGame extends Game {
             throw new InvalidGameTypeException(gameType.name());
     }
 
+    /**
+     * Changes the input from a PlayerColor to the correct PlayerColor based on the turn and returns
+     * it
+     *
+     * @param currentPlayerColor The player color that the current player should be
+     * @return The player color of the Player
+     */
+    PlayerColor convertCurrentPlayerColorToPlayerColor(PlayerColor currentPlayerColor) {
+        if (currentPlayerColor == OPEN)
+            return OPEN;
+
+        if (turn == PlayerTurn.PLAYER)
+            return currentPlayerColor;
+        else {
+            if (currentPlayerColor == SOLIDS)
+                return STRIPES;
+            else return SOLIDS;
+        }
+    }
+
     @Override boolean setAllowPush(ITurn turn) {
         return false;
     }
 
     @Override boolean setAllowTurnSkip(ITurn turn) {
         return false;
-    }
-
-    @Override boolean setAllowPlayerToBreakAgain(ITurn turn) {
-        return turn.getTurnEnd() == TurnEnd.BREAK_MISS && turn.isFoul() && turn.getBallsToRemoveFromTable().contains(GAME_BALL);
-    }
-
-    @Override int getCurrentPlayersConsecutiveFouls() {
-        return 0;
     }
 
     @Override PlayerColor setPlayerColor(ITurn turn) {
@@ -60,24 +72,17 @@ class EightBallGame extends Game {
             return playerColor;
     }
 
-    PlayerColor convertCurrentPlayerColorToPlayerColor(PlayerColor currentPlayerColor) {
-        if (currentPlayerColor == OPEN)
-            return OPEN;
-
-        if (turn == PlayerTurn.PLAYER)
-            return currentPlayerColor;
-        else {
-            if (currentPlayerColor == SOLIDS)
-                return STRIPES;
-            else return SOLIDS;
-        }
+    @Override boolean setAllowPlayerToBreakAgain(ITurn turn) {
+        return turn.getTurnEnd() == TurnEnd.BREAK_MISS
+                && turn.isFoul()
+                && turn.getBallsToRemoveFromTable().contains(GAME_BALL);
     }
 
     @Override public int[] getGhostBallsToWinGame() {
         if (playerColor == SOLIDS) {
-            ballsOnTable.removeAll(Arrays.asList(1,2,3,4,5,6,7));
+            ballsOnTable.removeAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
         } else {
-            ballsOnTable.removeAll(Arrays.asList(9,10,11,12,13,14,15));
+            ballsOnTable.removeAll(Arrays.asList(9, 10, 11, 12, 13, 14, 15));
         }
 
         int[] ballsToWin = new int[ballsOnTable.size()];
@@ -87,5 +92,9 @@ class EightBallGame extends Game {
         }
 
         return ballsToWin;
+    }
+
+    @Override int getCurrentPlayersConsecutiveFouls() {
+        return 0;
     }
 }

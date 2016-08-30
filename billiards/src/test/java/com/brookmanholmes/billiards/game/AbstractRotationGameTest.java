@@ -1,8 +1,11 @@
 package com.brookmanholmes.billiards.game;
 
+import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.ITurn;
 
 import org.junit.Test;
+
+import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,5 +39,21 @@ public abstract class AbstractRotationGameTest extends AbstractGameTest {
         game.addTurn(turn);
 
         assertThat(game.allowPush, is(true));
+    }
+
+    @Override int[] getAllBallsOnTable() {
+        if (game.gameType == GameType.BCA_NINE_BALL || game.gameType == GameType.APA_NINE_BALL)
+            return new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        else return new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    }
+
+    @Override int[] getBallsOnTableAfterRemoval() {
+        if (game.gameType == GameType.BCA_NINE_BALL || game.gameType == GameType.APA_NINE_BALL)
+            return new int[]{2, 3, 4, 5, 6, 7, 9};
+        else return new int[]{2, 3, 4, 5, 6, 7, 8, 10};
+    }
+
+    @Override void removeBalls() {
+        game.ballsOnTable.removeAll(Arrays.asList(1, (game.GAME_BALL - 1)));
     }
 }

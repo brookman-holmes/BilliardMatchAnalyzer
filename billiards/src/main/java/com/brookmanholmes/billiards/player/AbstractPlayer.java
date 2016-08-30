@@ -13,8 +13,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     private final static DecimalFormat avgf = new DecimalFormat("##.##");
     private final static String ZERO_PERCENT = ".000";
     private final static String ZERO = "0";
-    private String name = "";
-    private Date date;
+    Date date;
     int rank;
     int safetyAttempts = 0;
     int safetySuccesses = 0;
@@ -36,6 +35,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     int runOuts = 0;
     int runTierOne = 0;
     int runTierTwo = 0;
+    private String name = "";
 
     public AbstractPlayer(String name, int rank) {
         this.name = name;

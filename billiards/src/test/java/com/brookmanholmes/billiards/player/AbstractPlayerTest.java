@@ -3,6 +3,8 @@ package com.brookmanholmes.billiards.player;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -14,6 +16,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
     final String testName = "";
     T actual;
     T expected;
+    int rank;
 
     @Before
     public abstract void setUp();
@@ -21,6 +24,11 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
     @Test
     public void getNameReturnsName() {
         assertThat(actual.getName(), is(""));
+    }
+
+    @Test
+    public void getRankReturnsRank() {
+        assertThat(actual.getRank(), is(rank));
     }
 
     @Test
@@ -34,22 +42,29 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
 
     @Test
     public void dateIsNullGeneratesNewDate() {
-        // TODO: 8/26/2016 create this test
+        Date date = null;
+        assertThat(actual.date, is(date));
     }
 
     @Test
     public void dateEqualsSomeDate() {
-        // TODO: 8/26/2016 create this test
+        Date date = new Date();
+        actual.setMatchDate(date);
+
+        assertThat(actual.getMatchDate(), is(date));
     }
 
     @Test
     public void getTotalFoulsReturns0() {
-        // TODO: 8/26/2016 create this test
+        assertThat(actual.getTotalFouls(), is(0));
     }
 
     @Test
     public void getTotalFoulsReturnsValues() {
-        // TODO: 8/26/2016 create this test
+        actual.breakFouls = 1;
+        actual.safetyFouls = 2;
+        actual.shootingFouls = 3;
+        assertThat(actual.getTotalFouls(), is(6));
     }
 
     @Test
@@ -235,6 +250,19 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
         actual.addSafetyAttempt(false);
 
         assertThat(actual.getSafetyPct(), is(".500"));
+    }
+
+    @Test
+    public void checkGetBreakPctTextIsCorrect() {
+        assertThat(actual.getBreakPct(), is(".000"));
+
+        actual.addBreakShot(1, false, false);
+
+        assertThat(actual.getBreakPct(), is("1.000"));
+
+        actual.addBreakShot(0, false, false);
+
+        assertThat(actual.getBreakPct(), is(".500"));
     }
 
     @Test

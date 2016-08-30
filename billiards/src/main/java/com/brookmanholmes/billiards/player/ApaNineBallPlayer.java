@@ -84,7 +84,7 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
     }
 
     @Override public int getMatchPoints(int opponentScore, int opponentRank) {
-        if (points == Players.apa9BallRaceTo(rank))
+        if (points >= Players.apa9BallRaceTo(rank))
             return 20 - Players.getMinimumMatchPointsEarned(opponentRank, opponentScore);
         else return Players.getMinimumMatchPointsEarned(rank, points);
     }

@@ -1,9 +1,9 @@
 package com.brookmanholmes.billiards.game;
 
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.junit.Test;
@@ -82,5 +82,17 @@ public class ApaNineBallGameTest extends AbstractGameTest {
 
     private TableStatus createTableStatus() {
         return TableStatus.newTable(GameType.APA_NINE_BALL);
+    }
+
+    @Override int[] getAllBallsOnTable() {
+        return new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    }
+
+    @Override int[] getBallsOnTableAfterRemoval() {
+        return new int[]{2, 3, 4, 5, 6, 7, 9};
+    }
+
+    @Override void removeBalls() {
+        game.ballsOnTable.removeAll(Arrays.asList(1, 8));
     }
 }
