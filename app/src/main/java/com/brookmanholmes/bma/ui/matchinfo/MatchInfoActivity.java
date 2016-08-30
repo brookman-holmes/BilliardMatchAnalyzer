@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -17,12 +18,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -61,13 +63,17 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import tourguide.tourguide.ChainTourGuide;
+import tourguide.tourguide.Overlay;
+import tourguide.tourguide.Sequence;
+import tourguide.tourguide.ToolTip;
+import tourguide.tourguide.TourGuide;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
-    public static final String TAG_INFO_FRAGMENT = "infoFragment";
-    public static final String TAG_TURNS_FRAGMENT = "turnsFragment";
     private static final String TAG = "MatchInfoActivity";
     private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     private final List<UpdateMatchInfo> listeners = new ArrayList<>();
+
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.toolbar) Toolbar toolbar;
     @SuppressWarnings("WeakerAccess")
@@ -84,7 +90,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     @Bind(R.id.buttonAddTurn) FloatingActionButton fabAddTurn;
     private DatabaseAdapter db;
     private Match match;
-    private Menu menu;
+    private Menu mMenu;
     private Snackbar matchOverSnackbar;
     private Drawable activeArrow, inactiveArrow;
 
@@ -113,10 +119,10 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         matchOverSnackbar = makeSnackbar(R.string.match_over, Snackbar.LENGTH_INDEFINITE)
                 .setAction(android.R.string.ok, new View.OnClickListener() {
-            @Override public void onClick(View view) {
-                matchOverSnackbar.dismiss();
-            }
-        });
+                    @Override public void onClick(View view) {
+                        matchOverSnackbar.dismiss();
+                    }
+                });
 
         setToolbarTitle(match.getGameStatus().gameType);
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), getMatchId());
@@ -160,7 +166,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void updateViews() {
-        if (menu != null)
+        if (mMenu != null)
             updateMenuItems();
 
         if (match.isMatchOver()) {
@@ -196,10 +202,10 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void updateMenuItems() {
-        menu.findItem(R.id.action_undo).setEnabled(match.isUndoTurn());
-        menu.findItem(R.id.action_redo).setEnabled(match.isRedoTurn());
-        menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 97);
-        menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 97);
+        mMenu.findItem(R.id.action_undo).setEnabled(match.isUndoTurn());
+        mMenu.findItem(R.id.action_redo).setEnabled(match.isRedoTurn());
+        mMenu.findItem(R.id.action_undo).getIcon().setAlpha(this.mMenu.findItem(R.id.action_undo).isEnabled() ? 255 : 97);
+        mMenu.findItem(R.id.action_redo).getIcon().setAlpha(this.mMenu.findItem(R.id.action_redo).isEnabled() ? 255 : 97);
     }
 
     @Override public void addTurn(TurnBuilder turnBuilder) {
@@ -231,11 +237,72 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        Log.i(TAG, "onCreateOptionsMenu called");
         getMenuInflater().inflate(R.menu.menu_match_info, menu);
-        this.menu = menu;
+        this.mMenu = menu;
         updateMenuItems();
+
+        createGuide();
+
         return true;
+    }
+
+    private void createGuide() {
+        if (preferences.getBoolean("first_run_tutorial_info", true)) {
+            Overlay overlay = new Overlay()
+                    .setStyle(Overlay.Style.Circle)
+                    .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryTransparent))
+                    .disableClick(true)
+                    .disableClickThroughHole(true);
+
+            ChainTourGuide t1 = ChainTourGuide.init(this)
+                    .setToolTip(new ToolTip()
+                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+                            .setTextColor(ContextCompat.getColor(this, R.color.white))
+                            .setDescription("You can add a turn to the match by clicking here")
+                            .setGravity(Gravity.TOP | Gravity.LEFT))
+                    .setOverlay(overlay)
+                    .playLater(fabAddTurn);
+
+            ChainTourGuide t2 = ChainTourGuide.init(this)
+                    .setToolTip(new ToolTip()
+                            .setTextColor(ContextCompat.getColor(this, R.color.white))
+                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+                            .setDescription("Clicking on items in the toolbar and menu will allow you to do things like " +
+                                    "undo turns, change the way the match is viewed, " +
+                                    "view the status of the current game and more")
+                            .setGravity(Gravity.CENTER)
+                    .setShadow(true))
+                    .setOverlay(new Overlay()
+                            .setStyle(Overlay.Style.Rectangle)
+                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryTransparent))
+                            .disableClick(true)
+                            .disableClickThroughHole(true))
+                    .playLater(toolbar);
+
+            ChainTourGuide t5 = ChainTourGuide.init(this)
+                    .setToolTip(new ToolTip()
+                            .setTextColor(ContextCompat.getColor(this, R.color.white))
+                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+                            .setDescription("Clicking on a player's name will give you some options\n" +
+                                    "to choose from, like view their advanced stats for this match\n" +
+                                    "or going directly to their profile")
+                            .setGravity(Gravity.LEFT | Gravity.BOTTOM))
+                    .playLater(opponentNameLayout);
+
+            Sequence sequence = new Sequence.SequenceBuilder()
+                    .add(t1, t2, t5)
+                    .setDefaultPointer(null)
+                    .setDefaultOverlay(overlay)
+                    .setContinueMethod(Sequence.ContinueMethod.Overlay)
+                    .build();
+
+            ChainTourGuide.init(this).playInSequence(sequence);
+
+
+
+            preferences.edit().putBoolean("first_run_tutorial_info", false).apply();
+        }
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {

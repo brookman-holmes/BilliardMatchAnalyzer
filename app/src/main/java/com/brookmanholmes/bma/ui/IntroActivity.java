@@ -19,11 +19,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
@@ -47,6 +50,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import tourguide.tourguide.ChainTourGuide;
+import tourguide.tourguide.Overlay;
+import tourguide.tourguide.Sequence;
+import tourguide.tourguide.ToolTip;
+import tourguide.tourguide.TourGuide;
 
 public class IntroActivity extends BaseActivity {
     public static final String TAG = "IntroActivity";
@@ -64,7 +72,6 @@ public class IntroActivity extends BaseActivity {
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
 
-        SharedPreferences preferences = getSharedPreferences("com.brookmanholmes.bma", MODE_PRIVATE);
         if (preferences.getBoolean("first_run2", true)) {
             DatabaseAdapter db = new DatabaseAdapter(this);
             db.createSampleMatches();
@@ -94,6 +101,7 @@ public class IntroActivity extends BaseActivity {
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_intro, menu);
         MenuItem item = menu.findItem(R.id.spinner);
+
         Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
         spinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.rounded_rectangle));
         @SuppressWarnings("ConstantConditions") ArrayAdapter<String> adapter = new ArrayAdapter<>(getSupportActionBar().getThemedContext(),
@@ -104,8 +112,7 @@ public class IntroActivity extends BaseActivity {
         spinner.setAdapter(adapter);
 
         // select the item in the spinner that is the currently shown fragment so that rotation doesn't change it to item 0
-        final String selectedFragment = findFragmentById() == null ?
-                null : findFragmentById().getTag();
+        final String selectedFragment = findFragmentById() == null ? null : findFragmentById().getTag();
         if (PLAYER_LIST_FRAGMENT.equals(selectedFragment))
             spinner.setSelection(1);
         else if (MATCH_LIST_FRAGMENT.equals(selectedFragment))
@@ -127,6 +134,8 @@ public class IntroActivity extends BaseActivity {
 
             }
         });
+
+        createGuide(spinner);
 
         return true;
     }
@@ -168,6 +177,46 @@ public class IntroActivity extends BaseActivity {
 
     private Fragment findFragmentById() {
         return getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+    }
+
+    private void createGuide(View view) {
+        if (preferences.getBoolean("first_run_tutorial_intro", true)) {
+            Overlay overlay = new Overlay()
+                    .setStyle(Overlay.Style.Circle)
+                    .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryTransparent))
+                    .disableClick(true)
+                    .disableClickThroughHole(true);
+
+            ChainTourGuide t2 = ChainTourGuide.init(this)
+                    .setToolTip(new ToolTip()
+
+                            .setTextColor(ContextCompat.getColor(this, R.color.white))
+                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+                            .setDescription("Click here to change the view between matches and players")
+                            .setGravity(Gravity.LEFT|Gravity.BOTTOM))
+                    .setOverlay(overlay)
+                    .playLater(view);
+
+            ChainTourGuide t1 = ChainTourGuide.init(this)
+                    .setToolTip(new ToolTip()
+                            .setTitle("Welcome")
+                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+                            .setTextColor(ContextCompat.getColor(this, R.color.white))
+                            .setDescription("You can create a new match by clicking on this button")
+                            .setGravity(Gravity.TOP|Gravity.LEFT))
+                    .setOverlay(overlay)
+                    .playLater(fab);
+
+            Sequence sequence = new Sequence.SequenceBuilder()
+                    .add(t1, t2)
+                    .setDefaultPointer(null)
+                    .setContinueMethod(Sequence.ContinueMethod.Overlay)
+                    .build();
+
+            ChainTourGuide.init(this).playInSequence(sequence);
+
+            preferences.edit().putBoolean("first_run_tutorial_intro", false).apply();
+        }
     }
 
     public static class PlayerListFragment extends Fragment {

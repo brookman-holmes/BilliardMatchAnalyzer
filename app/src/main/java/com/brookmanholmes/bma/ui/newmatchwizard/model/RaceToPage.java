@@ -16,7 +16,6 @@ import java.util.Locale;
 /**
  * Created by Brookman Holmes on 8/23/2016.
  */
-// TODO: 8/23/2016 fix APA version of this and also just complete this in general
 public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatchBuilder {
     public static final String PLAYER_RANK_KEY = "player_rank";
     public static final String OPPONENT_RANK_KEY = "opponent_rank";
@@ -36,6 +35,7 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
     protected RaceToPage(ModelCallbacks callbacks, String title, String reviewString) {
         super(callbacks, title);
         this.reviewString = reviewString;
+        this.reviewTitle = title;
     }
 
     public RaceToPage setRaceToChoices(int lower, int upper, int defaultChoice, int columns) {
