@@ -10,6 +10,12 @@
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"/>
 
+    <item
+        android:id="@+id/action_reset_preferences"
+        android:orderInCategory="100"
+        android:title="Reset tutorial"
+        app:showAsAction="never"/>
+
     <item android:id="@+id/action_submit_feedback"
           android:orderInCategory="500"
           android:title="@string/submit_feedback"

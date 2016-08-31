@@ -2,29 +2,18 @@ package com.brookmanholmes.bma.ui.newmatchwizard.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.TextViewCompat;
-import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.ui.addturnwizard.model.FoulPage;
+import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.RaceToPage;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
-import com.github.pavlospt.roundedletterview.RoundedLetterView;
-import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 8/23/2016.
  */
-public class RaceToFragment extends Fragment {
+public class RaceToFragment extends BaseFragment {
     private static final String ARG_KEY = "key";
     private static final String ARG_LOWER_BOUND_KEY = "lower_bound";
     private static final String ARG_UPPER_BOUND_KEY = "upper_bound";
@@ -40,16 +29,14 @@ public class RaceToFragment extends Fragment {
     private static final String ARG_COLUMNS = "column_count";
     private static final String ARG_PLAYER_INDEX = "player_index";
     private static final String ARG_OPP_INDEX = "opp_index";
-
-    private PageFragmentCallbacks callbacks;
-    private String key;
-    private RaceToPage page;
-
     @Bind(R.id.playerName) TextView playerName;
     @Bind(R.id.opponentName) TextView opponentName;
     @Bind(R.id.playerRankGrid) GridLayout playerGrid;
     @Bind(R.id.opponentRankGrid) GridLayout opponentGrid;
     RaceController playerController, opponentController;
+    private PageFragmentCallbacks callbacks;
+    private String key;
+    private RaceToPage page;
 
     public RaceToFragment() {
     }
@@ -110,17 +97,6 @@ public class RaceToFragment extends Fragment {
     @Override public void onPause() {
         page.unregisterListener();
         super.onPause();
-    }
-
-    @Override public void onDestroyView() {
-        ButterKnife.unbind(this);
-        super.onDestroyView();
-    }
-
-    @Override public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        super.onDestroy();
     }
 
     @Override public void onDetach() {

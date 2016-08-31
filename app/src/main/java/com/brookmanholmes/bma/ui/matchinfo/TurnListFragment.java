@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,14 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.ui.BaseFragment;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
-import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 4/28/2016.
  */
-public class TurnListFragment extends Fragment implements
+public class TurnListFragment extends BaseFragment implements
         RecyclerViewExpandableItemManager.OnGroupCollapseListener,
         RecyclerViewExpandableItemManager.OnGroupExpandListener,
         MatchInfoActivity.UpdateMatchInfo {
@@ -123,14 +121,7 @@ public class TurnListFragment extends Fragment implements
             wrappedAdapter = null;
         }
         layoutManager = null;
-        ButterKnife.unbind(this);
         super.onDestroyView();
-    }
-
-    @Override public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        super.onDestroy();
     }
 
     @Override public void onDetach() {

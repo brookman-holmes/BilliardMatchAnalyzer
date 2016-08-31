@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.util.DiffUtil;
-import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,14 +19,12 @@ import android.widget.TextView;
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.Filterable;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -43,15 +39,9 @@ import butterknife.OnLongClick;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MatchListFragment extends Fragment implements Filterable{
+public class MatchListFragment extends BaseRecyclerFragment implements Filterable {
     private static final String ARG_PLAYER = "arg player";
     private static final String ARG_OPPONENT = "arg opponent";
-
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.scrollView) RecyclerView recyclerView;
-    private LinearLayoutManager layoutManager;
-    private MatchListRecyclerAdapter adapter;
-
     private String player, opponent;
 
     public MatchListFragment() {
@@ -84,36 +74,12 @@ public class MatchListFragment extends Fragment implements Filterable{
         }
     }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-        ButterKnife.bind(this, view);
-
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-        return view;
-    }
-
     @Override public void onResume() {
         super.onResume();
-        adapter.update(new DatabaseAdapter(getContext()).getMatches(player, opponent));
-    }
-
-    @Override public void onDestroyView() {
-        recyclerView.setAdapter(null);
-        recyclerView = null;
-        layoutManager = null;
-        ButterKnife.unbind(this);
-
-        super.onDestroyView();
+        ((MatchListRecyclerAdapter) adapter).update(new DatabaseAdapter(getContext()).getMatches(player, opponent));
     }
 
     @Override public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).removeListener(this);
         }
@@ -133,7 +99,11 @@ public class MatchListFragment extends Fragment implements Filterable{
             }
         }
 
-        adapter.update(filteredMatches);
+        ((MatchListRecyclerAdapter) adapter).update(filteredMatches);
+    }
+
+    @Override protected RecyclerView.LayoutManager getLayoutManager() {
+        return new LinearLayoutManager(getContext());
     }
 
     static class MatchListRecyclerAdapter extends RecyclerView.Adapter<MatchListRecyclerAdapter.ListItemHolder> {
@@ -253,59 +223,6 @@ public class MatchListFragment extends Fragment implements Filterable{
             return context.getString(resId, formatArgs);
         }
 
-        class ListItemHolder extends RecyclerView.ViewHolder {
-            long id;
-            @Bind(R.id.players) TextView playerNames;
-            @Bind(R.id.breakType) TextView breakType;
-            @Bind(R.id.imgGameType) ImageView gameType;
-            @Bind(R.id.location) TextView location;
-            @Bind(R.id.date) TextView date;
-            @Bind(R.id.ruleSet) TextView ruleSet;
-
-            public ListItemHolder(View itemView) {
-                super(itemView);
-                ButterKnife.bind(this, itemView);
-            }
-
-            void setLocation(String location) {
-                if (location.isEmpty())
-                    this.location.setVisibility(View.GONE);
-                else {
-                    this.location.setVisibility(View.VISIBLE);
-                    this.location.setText(location);
-                }
-            }
-
-            @OnClick(R.id.container) public void onClick() {
-                final Intent intent = new Intent(getContext(), MatchInfoActivity.class);
-                intent.putExtra(BaseActivity.ARG_MATCH_ID, id);
-                getContext().startActivity(intent);
-            }
-
-            @OnLongClick(R.id.container) public boolean onLongClick() {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-                builder.setMessage(getString(R.string.delete_match))
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override public void onClick(DialogInterface dialog, int which) {
-                                new DatabaseAdapter(getContext()).deleteMatch(id); // remove from the database
-                                // update recyclerView
-                                matches.remove(getAdapterPosition());
-                                notifyItemRemoved(getAdapterPosition());
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
-                return true;
-            }
-
-            private Context getContext() {
-                return itemView.getContext();
-            }
-        }
-
         private static class MatchListDiffCallback extends DiffUtil.Callback {
             private List<Match> oldList;
             private List<Match> newList;
@@ -357,6 +274,59 @@ public class MatchListFragment extends Fragment implements Filterable{
                     return null;
 
                 return diff;
+            }
+        }
+
+        class ListItemHolder extends RecyclerView.ViewHolder {
+            long id;
+            @Bind(R.id.players) TextView playerNames;
+            @Bind(R.id.breakType) TextView breakType;
+            @Bind(R.id.imgGameType) ImageView gameType;
+            @Bind(R.id.location) TextView location;
+            @Bind(R.id.date) TextView date;
+            @Bind(R.id.ruleSet) TextView ruleSet;
+
+            public ListItemHolder(View itemView) {
+                super(itemView);
+                ButterKnife.bind(this, itemView);
+            }
+
+            void setLocation(String location) {
+                if (location.isEmpty())
+                    this.location.setVisibility(View.GONE);
+                else {
+                    this.location.setVisibility(View.VISIBLE);
+                    this.location.setText(location);
+                }
+            }
+
+            @OnClick(R.id.container) public void onClick() {
+                final Intent intent = new Intent(getContext(), MatchInfoActivity.class);
+                intent.putExtra(BaseActivity.ARG_MATCH_ID, id);
+                getContext().startActivity(intent);
+            }
+
+            @OnLongClick(R.id.container) public boolean onLongClick() {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                builder.setMessage(getString(R.string.delete_match))
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialog, int which) {
+                                new DatabaseAdapter(getContext()).deleteMatch(id); // remove from the database
+                                // update recyclerView
+                                matches.remove(getAdapterPosition());
+                                notifyItemRemoved(getAdapterPosition());
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+                return true;
+            }
+
+            private Context getContext() {
+                return itemView.getContext();
             }
         }
     }

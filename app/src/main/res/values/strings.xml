@@ -239,4 +239,5 @@
     <string name="apa_nine_review">%1$s needs %2$d points\n\n%3$s needs %4$d points</string>
     <string name="bca_review">%1$s needs %2$d games\n\n%3$s needs %4$d games</string>
     <string name="race">Race</string>
+    <string name="click_button_test">Click the question mark\nif you have any questions</string>
 </resources>

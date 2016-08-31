@@ -18,7 +18,6 @@ package com.brookmanholmes.bma.ui.newmatchwizard.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -31,22 +30,21 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PlayerNameFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
+public class PlayerNameFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener {
     private static final String ARG_KEY = "key";
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerName) MaterialAutoCompleteTextView playerName;
@@ -145,17 +143,6 @@ public class PlayerNameFragment extends Fragment implements CompoundButton.OnChe
         extra.addTextChangedListener(textWatcher(PlayerNamePage.EXTRA_INFO_KEY));
 
         ((CreateNewMatchActivity)getActivity()).showKeyboard();
-    }
-
-    @Override public void onDestroyView() {
-        ButterKnife.unbind(this);
-        super.onDestroyView();
-    }
-
-    @Override public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        super.onDestroy();
     }
 
     private TextWatcher textWatcher(final String key) {

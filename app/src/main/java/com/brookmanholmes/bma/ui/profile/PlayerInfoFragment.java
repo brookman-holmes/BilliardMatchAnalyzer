@@ -3,7 +3,6 @@ package com.brookmanholmes.bma.ui.profile;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.CompPlayer;
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.adaptervh.BaseViewHolder;
 import com.brookmanholmes.bma.adaptervh.BreaksHolder;
@@ -23,27 +21,20 @@ import com.brookmanholmes.bma.adaptervh.RunOutsHolder;
 import com.brookmanholmes.bma.adaptervh.SafetiesHolder;
 import com.brookmanholmes.bma.adaptervh.ShootingPctHolder;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.ui.BaseRecyclerFragment;
 import com.brookmanholmes.bma.ui.stats.Filterable;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
-import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * Created by helios on 5/15/2016.
  */
-public class PlayerInfoFragment extends Fragment implements Filterable {
+public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterable {
     private static final String ARG_PLAYER = "arg player";
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.scrollView) RecyclerView recyclerView;
-    private PlayerInfoAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
     private DatabaseAdapter database;
     private String player;
 
@@ -72,32 +63,7 @@ public class PlayerInfoFragment extends Fragment implements Filterable {
         }
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-        ButterKnife.bind(this, view);
-
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-        return view;
-    }
-
-    @Override public void onDestroyView() {
-        recyclerView.setAdapter(null);
-        recyclerView = null;
-        layoutManager = null;
-
-        ButterKnife.unbind(this);
-
-        super.onDestroyView();
-    }
-
     @Override public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).removeListener(this);
         }
@@ -113,7 +79,11 @@ public class PlayerInfoFragment extends Fragment implements Filterable {
                 filteredPlayers.add(pair);
         }
 
-        adapter.updatePlayers(filteredPlayers);
+        ((PlayerInfoAdapter) adapter).updatePlayers(filteredPlayers);
+    }
+
+    @Override protected RecyclerView.LayoutManager getLayoutManager() {
+        return new LinearLayoutManager(getContext());
     }
 
     /**

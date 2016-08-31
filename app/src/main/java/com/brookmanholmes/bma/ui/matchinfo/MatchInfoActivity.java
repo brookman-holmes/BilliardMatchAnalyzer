@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -18,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +29,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -44,10 +41,10 @@ import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.ITurn;
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseActivity;
+import com.brookmanholmes.bma.ui.BaseRecyclerFragment;
 import com.brookmanholmes.bma.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.bma.ui.dialog.GameStatusViewBuilder;
@@ -55,7 +52,6 @@ import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.CustomViewPager;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +63,6 @@ import tourguide.tourguide.ChainTourGuide;
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
-import tourguide.tourguide.TourGuide;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
     private static final String TAG = "MatchInfoActivity";
@@ -298,8 +293,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                     .build();
 
             ChainTourGuide.init(this).playInSequence(sequence);
-
-
 
             preferences.edit().putBoolean("first_run_tutorial_info", false).apply();
         }
@@ -597,11 +590,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
     }
 
-    public static class MatchInfoFragment extends Fragment implements UpdateMatchInfo {
+    public static class MatchInfoFragment extends BaseRecyclerFragment implements UpdateMatchInfo {
         private static final String TAG = "MatchInfoFragment";
-        @Bind(R.id.scrollView) RecyclerView recyclerView;
-        private LinearLayoutManager layoutManager;
-        private MatchInfoRecyclerAdapter adapter;
 
         /**
          * Mandatory empty constructor for the fragment manager to instantiate the
@@ -633,7 +623,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         @Override public void update(Match match) {
-            adapter.updatePlayers(match);
+            ((MatchInfoRecyclerAdapter) adapter).updatePlayers(match);
         }
 
         @Override public void onCreate(Bundle savedInstanceState) {
@@ -651,30 +641,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             adapter = MatchInfoRecyclerAdapter.createMatchAdapter(match);
         }
 
-        @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                           Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-            ButterKnife.bind(this, view);
-
-            layoutManager = new LinearLayoutManager(getContext());
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
-
-            return view;
-        }
-
-        @Override public void onDestroyView() {
-            recyclerView.setAdapter(null);
-            recyclerView = null;
-            layoutManager = null;
-            ButterKnife.unbind(this);
-            super.onDestroyView();
-        }
-
-        @Override public void onDestroy() {
-            RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-            refWatcher.watch(this);
-            super.onDestroy();
+        @Override protected RecyclerView.LayoutManager getLayoutManager() {
+            return new LinearLayoutManager(getContext());
         }
     }
 

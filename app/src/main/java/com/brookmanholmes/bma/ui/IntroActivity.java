@@ -2,9 +2,7 @@ package com.brookmanholmes.bma.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,8 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
@@ -41,6 +37,7 @@ import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.utils.ConversionUtils;
+import com.brookmanholmes.bma.utils.PreferencesUtil;
 import com.github.pavlospt.roundedletterview.RoundedLetterView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -54,7 +51,6 @@ import tourguide.tourguide.ChainTourGuide;
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
-import tourguide.tourguide.TourGuide;
 
 public class IntroActivity extends BaseActivity {
     public static final String TAG = "IntroActivity";
@@ -138,6 +134,15 @@ public class IntroActivity extends BaseActivity {
         createGuide(spinner);
 
         return true;
+    }
+
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_reset_preferences) {
+            PreferencesUtil.resetTutorial(preferences);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @OnClick(R.id.createMatch) public void createNewMatch() {

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.MyApplication;
@@ -39,11 +40,11 @@ import butterknife.OnClick;
  */
 @SuppressWarnings("WeakerAccess")
 public class AddTurnDialog extends DialogFragment implements PageFragmentCallbacks, ModelCallbacks, View.OnLayoutChangeListener {
+    @Bind(R.id.imgHelp) public ImageView help;
     @Bind(R.id.pager) ViewPager pager;
     @Bind(R.id.strip) StepPagerStrip pagerStrip;
     @Bind(R.id.next_button) Button nextButton;
     @Bind(R.id.prev_button) Button prevButton;
-
     private MyPagerAdapter pagerAdapter;
     private AddTurnWizardModel wizardModel;
     private List<Page> currentPageSequence;
@@ -122,11 +123,6 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         onPageTreeChanged();
 
         return view;
-    }
-
-    @Override public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //getDialog().getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
     }
 
     @Override public void onDestroyView() {

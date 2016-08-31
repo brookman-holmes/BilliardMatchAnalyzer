@@ -8,7 +8,6 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +18,9 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.CompPlayer;
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.ui.BaseRecyclerFragment;
 import com.brookmanholmes.bma.ui.stats.Filterable;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
 import com.github.mikephil.charting.charts.LineChart;
@@ -31,7 +30,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
-import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -46,14 +44,10 @@ import butterknife.ButterKnife;
 /**
  * Created by helios on 5/15/2016.
  */
-public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
+public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements Filterable {
     private static final String ARG_PLAYER = "arg player";
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.scrollView) RecyclerView recyclerView;
-    private GridLayoutManager layoutManager;
     private DatabaseAdapter database;
     private String player;
-    private PlayerInfoGraphicAdapter adapter;
 
     public PlayerInfoGraphicFragment() {
     }
@@ -86,44 +80,7 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
         }
     }
 
-    @Nullable @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-        ButterKnife.bind(this, view);
-
-        layoutManager = new GridLayoutManager(getContext(), 3);
-        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override public int getSpanSize(int position) {
-                switch (adapter.getItemViewType(position)) {
-                    case PlayerInfoGraphicAdapter.ITEM_GRAPH:
-                        return 3;
-                    case PlayerInfoGraphicAdapter.ITEM_SAFETY_GRAPH:
-                        return 2;
-                    case PlayerInfoGraphicAdapter.ITEM_BREAK_GRAPH:
-                        return 2;
-                    default:
-                        return 1;
-                }
-            }
-        });
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-        return view;
-    }
-
-    @Override public void onDestroyView() {
-        recyclerView.setAdapter(null);
-        recyclerView = null;
-        layoutManager = null;
-        ButterKnife.unbind(this);
-
-        super.onDestroyView();
-    }
-
     @Override public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).removeListener(this);
         }
@@ -139,7 +96,26 @@ public class PlayerInfoGraphicFragment extends Fragment implements Filterable {
                 filteredPlayers.add(pair);
         }
 
-        adapter.updatePlayers(filteredPlayers);
+        ((PlayerInfoGraphicAdapter) adapter).updatePlayers(filteredPlayers);
+    }
+
+    @Override protected RecyclerView.LayoutManager getLayoutManager() {
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override public int getSpanSize(int position) {
+                switch (adapter.getItemViewType(position)) {
+                    case PlayerInfoGraphicAdapter.ITEM_GRAPH:
+                        return 3;
+                    case PlayerInfoGraphicAdapter.ITEM_SAFETY_GRAPH:
+                        return 2;
+                    case PlayerInfoGraphicAdapter.ITEM_BREAK_GRAPH:
+                        return 2;
+                    default:
+                        return 1;
+                }
+            }
+        });
+        return layoutManager;
     }
 
     /**

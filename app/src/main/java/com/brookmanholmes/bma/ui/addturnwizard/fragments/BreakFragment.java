@@ -3,7 +3,6 @@ package com.brookmanholmes.bma.ui.addturnwizard.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +11,10 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.util.BallStatus;
 import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.addturnwizard.model.BreakPage;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
-import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,7 +32,7 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
  * Created by Brookman Holmes on 2/20/2016.
  */
 @SuppressWarnings("WeakerAccess")
-public class BreakFragment extends Fragment {
+public class BreakFragment extends BaseFragment {
     private static final String ARG_KEY = "key";
     private static final int ballIds[] = {R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
@@ -98,17 +96,6 @@ public class BreakFragment extends Fragment {
     @Override public void onDetach() {
         super.onDetach();
         callbacks = null;
-    }
-
-    @Override public void onDestroyView() {
-        ButterKnife.unbind(this);
-        super.onDestroyView();
-    }
-
-    @Override public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        super.onDestroy();
     }
 
     @Nullable @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
