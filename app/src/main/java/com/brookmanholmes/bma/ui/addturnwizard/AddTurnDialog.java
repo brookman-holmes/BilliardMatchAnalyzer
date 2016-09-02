@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.addturnwizard;
 
 import android.animation.Animator;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -22,6 +23,7 @@ import com.brookmanholmes.bma.ui.addturnwizard.model.AddTurnWizardModel;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.bma.ui.dialog.HelpDialogCreator;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+import com.brookmanholmes.bma.utils.PreferencesUtil;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
@@ -123,6 +125,14 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         onPageTreeChanged();
 
         return view;
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        if (PreferencesUtil.getSharedPreferences(getActivity()).getBoolean("first_run_tutorial_add_turn_balls", true)) {
+            help();
+            PreferencesUtil.getSharedPreferences(getActivity()).edit().putBoolean("first_run_tutorial_add_turn_balls", false).apply();
+        }
     }
 
     @Override public void onDestroyView() {

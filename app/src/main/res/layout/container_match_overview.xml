@@ -21,8 +21,7 @@
     <TextView
         android:id="@+id/tvWinPercentOpponent"
         style="@style/player_stats"
-        android:textColor="@color/primary_text"
-        />
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvWinTotalsPlayer"
@@ -35,7 +34,8 @@
         android:layout_columnWeight="1"
         android:text="@string/title_games_won"
         android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        android:tag="disappearable"
+        android:id="@+id/tvWinTotalTitle"/>
 
     <TextView
         android:id="@+id/tvWinTotalsOpponent"
@@ -47,8 +47,7 @@
         android:id="@+id/tvTrueShootingPctPlayer"
         style="@style/player_stats"
         android:layout_gravity="center"
-        android:textColor="@color/primary_text"
-        />
+        android:textColor="@color/primary_text"/>
 
     <TextView
         style="@style/player_stats"
@@ -59,8 +58,7 @@
     <TextView
         android:id="@+id/tvTrueShootingPctOpponent"
         style="@style/player_stats"
-        android:textColor="@color/primary_text"
-        />
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/tvTotalShotsPlayer"

@@ -250,14 +250,27 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                     .disableClick(true)
                     .disableClickThroughHole(true);
 
-            ChainTourGuide t1 = ChainTourGuide.init(this)
-                    .setToolTip(new ToolTip()
-                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
-                            .setTextColor(ContextCompat.getColor(this, R.color.white))
-                            .setDescription("You can add a turn to the match by clicking here")
-                            .setGravity(Gravity.TOP | Gravity.LEFT))
-                    .setOverlay(overlay)
-                    .playLater(fabAddTurn);
+            ChainTourGuide t1;
+
+            if (match.isMatchOver()) {
+                t1 = ChainTourGuide.init(this)
+                        .setToolTip(new ToolTip()
+                                .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+                                .setTextColor(ContextCompat.getColor(this, R.color.white))
+                                .setDescription("When you finish a match this snackbar will alert you that it is over")
+                                .setGravity(Gravity.TOP | Gravity.LEFT))
+                        .setOverlay(overlay)
+                        .playLater(matchOverSnackbar.getView());
+            } else {
+                t1 = ChainTourGuide.init(this)
+                        .setToolTip(new ToolTip()
+                                .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+                                .setTextColor(ContextCompat.getColor(this, R.color.white))
+                                .setDescription("You can add a turn to the match by clicking here")
+                                .setGravity(Gravity.TOP | Gravity.LEFT))
+                        .setOverlay(overlay)
+                        .playLater(fabAddTurn);
+            }
 
             ChainTourGuide t2 = ChainTourGuide.init(this)
                     .setToolTip(new ToolTip()

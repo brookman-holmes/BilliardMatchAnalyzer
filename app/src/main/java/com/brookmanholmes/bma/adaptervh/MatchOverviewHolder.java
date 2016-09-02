@@ -6,6 +6,9 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
+import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
+import com.brookmanholmes.billiards.player.IApa;
 import com.brookmanholmes.bma.R;
 
 import butterknife.Bind;
@@ -71,9 +74,18 @@ public class MatchOverviewHolder extends MatchInfoHolder {
 
         highlightBetterPlayerStats(tvWinPctPlayer, tvWinPctOpponent, player.getWins(), opponent.getWins());
 
-        // Games Won x/y
-        tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGamesPlayed()));
-        tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getGamesPlayed()));
+        // Games Won / games needed
+        if (player instanceof ApaEightBallPlayer && opponent instanceof ApaEightBallPlayer) {
+            tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), ((ApaEightBallPlayer) player).getPointsNeeded(opponent.getRank())));
+            tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), ((ApaEightBallPlayer) opponent).getPointsNeeded(player.getRank())));
+        } else if (player instanceof ApaNineBallPlayer && opponent instanceof ApaNineBallPlayer){
+            ((TextView)itemView.findViewById(R.id.tvWinTotalTitle)).setText(itemView.getContext().getString(R.string.title_games_won_apa));
+            tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGamesPlayed()));
+            tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getGamesPlayed()));
+        } else {
+            tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getRank()));
+            tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getRank()));
+        }
 
         tvTSPPlayer.setText(player.getTrueShootingPct());
         tvTSPOpponent.setText(opponent.getTrueShootingPct());

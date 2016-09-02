@@ -9,10 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnEndPage;
@@ -27,10 +31,12 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
+
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
-public class TurnEndFragment extends ListFragment {
+public class TurnEndFragment extends ListFragment implements RadioGroup.OnCheckedChangeListener {
     private static final String TAG = "TurnEndFragment";
     private static final String ARG_KEY = "key";
     private static final String ARG_OPTIONS_KEY = "options";
@@ -40,6 +46,8 @@ public class TurnEndFragment extends ListFragment {
     private String key;
     private TurnEndPage page;
     private CustomAdapter adapter;
+    private LinearLayout foulLayout;
+    private RadioGroup foulGroup;
 
     public TurnEndFragment() {
     }
@@ -100,11 +108,15 @@ public class TurnEndFragment extends ListFragment {
         else {
             populateChoicesList(options);
         }
-        View rootView = inflater.inflate(R.layout.fragment_page, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_page_turn_end, container, false);
         TextView title = (TextView) rootView.findViewById(android.R.id.title);
         TextViewCompat.setTextAppearance(title, R.style.WizardPageTitle2);
         title.setPadding(0, 0, 0, 0);
-
+        foulLayout = (LinearLayout) rootView.findViewById(R.id.foulLayout);
+        foulGroup = (RadioGroup) rootView.findViewById(R.id.foulGroup);
+        foulGroup.setOnCheckedChangeListener(this);
+        foulGroup.check(R.id.no);
+        ((TextView)rootView.findViewById(R.id.subTitle)).setText(getString(R.string.title_foul, page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
         listView = (ListView) rootView.findViewById(android.R.id.list);
 
@@ -139,16 +151,87 @@ public class TurnEndFragment extends ListFragment {
     }
 
     @Override public void onListItemClick(ListView l, View v, int position, long id) {
+        String selection = adapter.getItem(position);
+        updateFoulLayout(selection);
         updatePage(position);
     }
 
-    public void updateOptions(List<TurnEnd> options, TurnEnd defaultChecked) {
-        repopulateChoicesList(options);
+    private void updateFoulLayout(String selection) {
+        if (selection.equals(getString(R.string.turn_safety_error)) ||
+                selection.equals(getString(R.string.turn_break_miss)) ||
+                selection.equals(getString(R.string.turn_illegal_break)) ||
+                selection.equals(getString(R.string.turn_miss))) {
+            foulLayout.setVisibility(View.VISIBLE);
+        } else {
+            foulLayout.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
+        if (checkedId == R.id.yes)
+            page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.yes));
+        else if (checkedId == R.id.no)
+            page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.no));
+        else if (checkedId == R.id.lostGame)
+            page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.foul_lost_game));
+    }
+
+    private void updateFoulChoices(TurnEndOptions options) {
+        if (options.lostGame) {
+            if (GameType.valueOf(page.getData().getString(GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL ||
+                    GameType.valueOf(page.getData().getString(GAME_TYPE_KEY)) == GameType.APA_EIGHT_BALL) {
+                foulGroup.findViewById(R.id.lostGame).setVisibility(View.VISIBLE);
+                foulGroup.findViewById(R.id.no).setVisibility(View.GONE);
+                foulGroup.findViewById(R.id.yes).setVisibility(View.GONE);
+            } else {
+                foulGroup.findViewById(R.id.lostGame).setVisibility(View.GONE);
+                foulGroup.findViewById(R.id.no).setVisibility(View.GONE);
+                foulGroup.findViewById(R.id.yes).setVisibility(View.VISIBLE);
+            }
+
+            if (options.possibleEndings.contains(TurnEnd.SAFETY))
+                foulGroup.findViewById(R.id.no).setVisibility(View.VISIBLE);
+
+        } else if (options.foul) {
+            foulGroup.findViewById(R.id.lostGame).setVisibility(View.GONE);
+            foulGroup.findViewById(R.id.no).setVisibility(View.GONE);
+            foulGroup.findViewById(R.id.yes).setVisibility(View.VISIBLE);
+        } else {
+            foulGroup.findViewById(R.id.lostGame).setVisibility(View.GONE);
+            foulGroup.findViewById(R.id.no).setVisibility(View.VISIBLE);
+            foulGroup.findViewById(R.id.yes).setVisibility(View.VISIBLE);
+        }
+
+        updateFoulChoice();
+    }
+
+    private void updateFoulChoice() {
+        boolean no = foulGroup.findViewById(R.id.no).getVisibility() == View.VISIBLE;
+        boolean yes = foulGroup.findViewById(R.id.yes).getVisibility() == View.VISIBLE;
+        boolean lostGame = foulGroup.findViewById(R.id.lostGame).getVisibility() == View.VISIBLE;
+
+        if (!no && !yes) // if the only option is lost game check it
+            foulGroup.check(R.id.lostGame);
+        else if (!no && !lostGame) // if the only option is foul check it
+            foulGroup.check(R.id.yes);
+        else {
+            if (getFoulFromPage().equals(getString(R.string.no)))
+                foulGroup.check(R.id.no);
+            else if (getFoulFromPage().equals(getString(R.string.yes)))
+                foulGroup.check(R.id.yes);
+            else
+                foulGroup.check(R.id.lostGame);
+        }
+    }
+
+    public void updateOptions(TurnEndOptions options) {
+        repopulateChoicesList(options.possibleEndings);
+        updateFoulChoices(options);
 
         if (adapter.contains(getTurnEndFromPage())) {
             listView.setItemChecked(adapter.indexOf(getTurnEndFromPage()), true);
         } else {
-            listView.setItemChecked(adapter.indexOf(getString(defaultChecked)), true);
+            listView.setItemChecked(adapter.indexOf(getString(options.defaultCheck)), true);
             updatePage(listView.getCheckedItemPosition());
         }
     }
@@ -178,6 +261,10 @@ public class TurnEndFragment extends ListFragment {
 
     private String getTurnEndFromPage() {
         return page.getData().getString(Page.SIMPLE_DATA_KEY, "");
+    }
+
+    private String getFoulFromPage() {
+        return page.getData().getString(TurnEndPage.FOUL_KEY, getString(R.string.no));
     }
 
     private static class CustomAdapter extends ArrayAdapter<String> {

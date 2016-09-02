@@ -2,6 +2,7 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.brookmanholmes.billiards.game.util.BreakType;
 import com.brookmanholmes.billiards.game.util.GameType;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
+    public static final String FOUL_KEY = "foul_key";
     private TurnEndFragment fragment;
 
     public TurnEndPage(ModelCallbacks callbacks, String title, Bundle matchData) {
@@ -46,7 +48,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        model.setTurnEnd(data.getString(SIMPLE_DATA_KEY));
+        model.setTurnEnd(data.getString(SIMPLE_DATA_KEY), data.getString(FOUL_KEY));
     }
 
     public void registerListener(TurnEndFragment fragment) {
@@ -60,7 +62,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     private void updateFragment(TurnEndOptions options) {
         if (fragment != null) {
 
-            fragment.updateOptions(options.possibleEndings, options.defaultCheck);
+            fragment.updateOptions(options);
         }
     }
 }

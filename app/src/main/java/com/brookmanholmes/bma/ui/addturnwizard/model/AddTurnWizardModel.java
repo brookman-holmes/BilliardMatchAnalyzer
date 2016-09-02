@@ -94,14 +94,12 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         return turnBuilder.tableStatus;
     }
 
-    void setTurnEnd(String turnEnd) {
+    void setTurnEnd(String turnEnd, String foul) {
         turnBuilder.turnEnd = convertStringToTurnEnd(turnEnd);
 
-        // this is a band aid to the real problem of pages updating the whole sequence (even themselves) when
-        // data on that page has been changed
-        if (!getFoulPossible(turnBuilder.turnEnd)) {
-            turnBuilder.foul = false;
-            turnBuilder.lostGame = false;
+        if (getFoulPossible(turnBuilder.turnEnd)) {
+            turnBuilder.foul = (context.getString(R.string.yes).equals(foul) || context.getString(R.string.foul_lost_game).equals(foul));
+            turnBuilder.lostGame = context.getString(R.string.foul_lost_game).equals(foul);
         }
     }
 
@@ -110,11 +108,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 || turn == TurnEnd.SAFETY_ERROR
                 || turn == TurnEnd.BREAK_MISS
                 || turn == TurnEnd.ILLEGAL_BREAK;
-    }
-
-    void setFoul(String foul) {
-        turnBuilder.foul = (context.getString(R.string.yes).equals(foul) || context.getString(R.string.foul_lost_game).equals(foul));
-        turnBuilder.lostGame = context.getString(R.string.foul_lost_game).equals(foul);
     }
 
     AdvStats.Builder getAdvStats() {
@@ -165,11 +158,11 @@ public class AddTurnWizardModel extends AbstractWizardModel {
             return getAdvTurnEndPage();
         } else
             return new TurnEndPage(this, context.getString(R.string.title_turn_end, playerName), matchData)
-                    .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"))
-                    .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"))
-                    .addBranch(context.getString(R.string.turn_break_miss), getFoulPage("break"))
+                    .addBranch(context.getString(R.string.turn_safety_error))
+                    .addBranch(context.getString(R.string.turn_miss))
+                    .addBranch(context.getString(R.string.turn_break_miss))
                     .addBranch(context.getString(R.string.turn_safety))
-                    .addBranch(context.getString(R.string.turn_illegal_break), getFoulPage("illegal break"))
+                    .addBranch(context.getString(R.string.turn_illegal_break))
                     .addBranch(context.getString(R.string.turn_won_game))
                     .addBranch(context.getString(R.string.turn_push))
                     .addBranch(context.getString(R.string.turn_skip))
@@ -180,10 +173,10 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     private Page getAdvTurnEndPage() {
         return new TurnEndPage(this, context.getString(R.string.title_turn_end, playerName), matchData)
-                .addBranch(context.getString(R.string.turn_safety_error), getFoulPage("safety error"), getSafetyErrorBranch())
-                .addBranch(context.getString(R.string.turn_miss), getFoulPage("miss"), getMissBranchPage(), getWhyMissPage())
-                .addBranch(context.getString(R.string.turn_break_miss), getFoulPage("break"), getBreakErrorHow(), getBreakErrorWhy())
-                .addBranch(context.getString(R.string.turn_illegal_break), getFoulPage("illegal break"), getIllegalBreakHow(), getIllegalBreakWhy())
+                .addBranch(context.getString(R.string.turn_safety_error), getSafetyErrorBranch())
+                .addBranch(context.getString(R.string.turn_miss), getMissBranchPage(), getWhyMissPage())
+                .addBranch(context.getString(R.string.turn_break_miss), getBreakErrorHow(), getBreakErrorWhy())
+                .addBranch(context.getString(R.string.turn_illegal_break), getIllegalBreakHow(), getIllegalBreakWhy())
                 .addBranch(context.getString(R.string.turn_safety), getSafetyPage())
                 .addBranch(context.getString(R.string.turn_won_game))
                 .addBranch(context.getString(R.string.turn_push))
@@ -191,14 +184,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)))
                 .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)))
                 .setValue(context.getString(R.string.turn_miss));
-    }
-
-    private Page getFoulPage(String parentKey) {
-        return new FoulPage(this, context.getString(R.string.title_foul, playerName), matchData)
-                .setChoices(context.getResources().getStringArray(R.array.foul_types))
-                .setValue(context.getString(R.string.no))
-                .setParentKey(parentKey)
-                .setRequired(true);
     }
 
     private Page getSafetyErrorBranch() {

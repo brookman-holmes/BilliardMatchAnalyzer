@@ -8,7 +8,8 @@
     <string name="title_avg_balls_turn">Average balls / turn</string>
     <string name="title_shots_made">Shots made / shots</string>
     <string name="title_shooting_fouls">Shooting fouls</string>
-    <string name="title_games_won">Games won / total games</string>
+    <string name="title_games_won">Games won / games needed</string>
+    <string name="title_games_won_apa">Games won / games played</string>
     <string name="title_win_pct">Win percentage</string>
     <string name="title_tsp">True shooting percentage</string>
     <string name="title_true_shots_made">Total shots made / total shots</string>

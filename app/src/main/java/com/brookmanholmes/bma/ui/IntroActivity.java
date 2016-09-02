@@ -189,8 +189,7 @@ public class IntroActivity extends BaseActivity {
             Overlay overlay = new Overlay()
                     .setStyle(Overlay.Style.Circle)
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryTransparent))
-                    .disableClick(true)
-                    .disableClickThroughHole(true);
+                    .disableClick(true);
 
             ChainTourGuide t2 = ChainTourGuide.init(this)
                     .setToolTip(new ToolTip()
