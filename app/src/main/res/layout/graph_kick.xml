@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingTop="8dp"
-        android:text="Kicks"
+        android:text="@string/miss_kick"
         android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />
@@ -27,7 +27,7 @@
             android:gravity="center_vertical"
             android:minWidth="50dp"
             android:paddingStart="8dp"
-            android:text="long"
+            android:text="@string/title_long"
             android:textAllCaps="true"
             android:textSize="12sp" />
 
@@ -40,7 +40,7 @@
             android:gravity="center_vertical|end"
             android:minWidth="50dp"
             android:paddingEnd="8dp"
-            android:text="short"
+            android:text="@string/title_short"
             android:textAllCaps="true"
             android:textSize="12sp" />
 

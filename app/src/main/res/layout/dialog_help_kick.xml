@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
-        android:text="How many rails was your kick shot?"
+        android:text="@string/title_help_kicks"
         android:textColor="@color/colorPrimary"/>
 
     <TextView
@@ -19,5 +19,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="4dp"
-        android:text="For kick shots you can select how many rails your attempt was"/>
+        android:text="@string/description_help_kicks"/>
 </LinearLayout>

@@ -22,7 +22,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -232,7 +231,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
-        Log.i(TAG, "onCreateOptionsMenu called");
         getMenuInflater().inflate(R.menu.menu_match_info, menu);
         this.mMenu = menu;
         updateMenuItems();

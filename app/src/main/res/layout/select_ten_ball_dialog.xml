@@ -74,9 +74,9 @@
             android:id="@+id/ten_ball"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:src="@drawable/ten_ball_level"
             android:layout_columnSpan="3"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ten_ball_level"/>
     </GridLayout>
 
     <Button
@@ -87,7 +87,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:padding="16dp"
-        android:text="Select all stripes"
         android:textAllCaps="true"
         android:textColor="@color/colorPrimary"
         android:visibility="gone"/>

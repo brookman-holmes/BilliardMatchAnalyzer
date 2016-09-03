@@ -39,7 +39,7 @@
         android:id="@+id/action_match_view"
         android:icon="@drawable/ic_view_list"
         android:orderInCategory="0"
-        android:title="Toggle view"
+        android:title="@string/toggle_view"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_submit_feedback"

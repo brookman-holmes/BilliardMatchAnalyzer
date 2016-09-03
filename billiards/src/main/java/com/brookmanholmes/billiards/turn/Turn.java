@@ -77,8 +77,8 @@ public class Turn implements ITurn {
     }
 
     // TODO: 8/26/2016 add test for this method
-    @Override public void setBallTo(BallStatus status, int... i) {
-        tableStatus.setBallTo(status, i);
+    @Override public void setBallTo(BallStatus status, int... balls) {
+        tableStatus.setBallTo(status, balls);
     }
 
     @Override public boolean isGameLost() {

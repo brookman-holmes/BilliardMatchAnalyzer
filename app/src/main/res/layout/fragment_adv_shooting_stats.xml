@@ -6,96 +6,17 @@
     android:animateLayoutChanges="true">
 
     <LinearLayout
+        android:id="@+id/baseLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp"
-        android:id="@+id/baseLayout">
+        android:paddingTop="16dp">
 
-        <TextView
-            android:id="@+id/shootingErrorTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_shooting_errors"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/primary_text"/>
+        <include layout="@layout/container_adv_stat_title"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:paddingTop="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="160dp"
-                    android:text="Shot type"
-                    android:textColor="@color/primary_text"
-                    />
-
-                <Spinner
-                    android:id="@+id/shotTypeSpinner"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/shotSubTypeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="160dp"
-                    android:text="Cut type"
-                    android:textColor="@color/primary_text"/>
-
-                <Spinner
-                    android:id="@+id/shotSubTypeSpinner"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"/>
-
-            </LinearLayout>
-        </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="160dp"
-                    android:text="Angle/Bank/Kick"
-                    android:textColor="@color/primary_text"/>
-
-                <Spinner
-                    android:id="@+id/angleSpinner"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"/>
-
-            </LinearLayout>
+        <include layout="@layout/container_adv_shot_filter"/>
 
         <include layout="@layout/container_miscues"/>
 

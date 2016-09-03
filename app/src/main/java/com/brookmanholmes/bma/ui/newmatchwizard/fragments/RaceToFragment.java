@@ -153,7 +153,7 @@ public class RaceToFragment extends BaseFragment {
         }
 
         private void deselectView(int selection) {
-            ((TextView)grid.getChildAt(selection)).getBackground().setTint(ContextCompat.getColor(getContext(), R.color.white));
+            grid.getChildAt(selection).getBackground().setTint(ContextCompat.getColor(getContext(), R.color.white));
             ((TextView)grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.primary_text));
         }
 
@@ -163,7 +163,7 @@ public class RaceToFragment extends BaseFragment {
         }
 
         private void selectView(int selection) {
-            ((TextView)grid.getChildAt(selection)).getBackground().setTint(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            grid.getChildAt(selection).getBackground().setTint(ContextCompat.getColor(getContext(), R.color.colorPrimary));
             ((TextView)grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             this.selection = selection;
         }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinatorLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    tools:context=".ui.matchinfo.MatchInfoActivity">
+<android.support.design.widget.CoordinatorLayout android:id="@+id/coordinatorLayout"
+                                                 xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:animateLayoutChanges="true"
+                                                 tools:context=".ui.matchinfo.MatchInfoActivity">
 
     <com.brookmanholmes.bma.utils.CustomViewPager
         android:id="@+id/pager"
@@ -51,7 +51,6 @@
                     android:drawableEnd="@drawable/ic_arrow_drop_down"
                     android:ellipsize="marquee"
                     android:gravity="center"
-                    android:text="Brookman"
                     android:textColor="@color/white"
                     android:textSize="23sp"
                     android:textStyle="bold" />
@@ -73,7 +72,6 @@
                     android:drawableEnd="@drawable/ic_arrow_drop_down"
                     android:ellipsize="marquee"
                     android:gravity="center"
-                    android:text="Cliff"
                     android:textColor="@color/white"
                     android:textSize="23sp"
                     android:textStyle="bold" />

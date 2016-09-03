@@ -12,15 +12,15 @@
 
         <TextView
             style="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/colorPrimary"
-            android:text="Types of misses"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/title_types_of_misses"
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/miss_bank" />
+            android:text="@string/miss_bank"
+            android:textColor="@color/primary_text"/>
 
         <TextView
             style="@style/help_dialog_text"
@@ -28,8 +28,8 @@
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/miss_carom" />
+            android:text="@string/miss_carom"
+            android:textColor="@color/primary_text"/>
 
         <TextView
             style="@style/help_dialog_text"
@@ -37,8 +37,8 @@
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/miss_combo" />
+            android:text="@string/miss_combo"
+            android:textColor="@color/primary_text"/>
 
         <TextView
             style="@style/help_dialog_text"
@@ -46,8 +46,8 @@
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/miss_cut" />
+            android:text="@string/miss_cut"
+            android:textColor="@color/primary_text"/>
 
         <TextView
             style="@style/help_dialog_text"
@@ -55,8 +55,8 @@
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/miss_jump" />
+            android:text="@string/miss_jump"
+            android:textColor="@color/primary_text"/>
 
         <TextView
             style="@style/help_dialog_text"
@@ -64,8 +64,8 @@
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/miss_kick" />
+            android:text="@string/miss_kick"
+            android:textColor="@color/primary_text"/>
 
         <TextView
             style="@style/help_dialog_text"
@@ -73,8 +73,8 @@
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/miss_long" />
+            android:text="@string/miss_long"
+            android:textColor="@color/primary_text"/>
 
         <TextView
             style="@style/help_dialog_text"
@@ -82,8 +82,8 @@
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/miss_masse" />
+            android:text="@string/miss_masse"
+            android:textColor="@color/primary_text"/>
 
         <TextView
             style="@style/help_dialog_text"

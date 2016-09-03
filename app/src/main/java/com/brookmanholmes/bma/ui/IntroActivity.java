@@ -193,7 +193,6 @@ public class IntroActivity extends BaseActivity {
 
             ChainTourGuide t2 = ChainTourGuide.init(this)
                     .setToolTip(new ToolTip()
-
                             .setTextColor(ContextCompat.getColor(this, R.color.white))
                             .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
                             .setDescription("Click here to change the view between matches and players")

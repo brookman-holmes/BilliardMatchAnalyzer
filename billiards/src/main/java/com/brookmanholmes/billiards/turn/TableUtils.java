@@ -16,32 +16,59 @@ import static com.brookmanholmes.billiards.game.util.PlayerColor.STRIPES;
  * Created by Brookman Holmes on 11/7/2015.
  */
 public class TableUtils {
+    /**
+     * Calculates the number of stripes that were legally pocketed on the break
+     * @param ballStatuses A list of balls on the table, must be of size 15
+     * @return the number of stripes made on the break
+     */
     public static int getStripesMadeOnBreak(List<BallStatus> ballStatuses) {
         return getColorMadeOnBreak(ballStatuses, STRIPES);
     }
 
+    /**
+     * Calculates the number of solids that were legally pocketed on the break
+     * @param ballStatuses A list of balls on the table, must be of size 15
+     * @return the number of solids made on the break
+     */
     public static int getSolidsMadeOnBreak(List<BallStatus> ballStatuses) {
-
         return getColorMadeOnBreak(ballStatuses, SOLIDS);
     }
 
+    /**
+     * Calculates the number of solids that were legally pocketed, does not include balls made on
+     * the break
+     * @param ballStatuses A list of balls on the table, must be of size 15
+     * @return the number of solids made
+     */
     public static int getSolidsMade(List<BallStatus> ballStatuses) {
-
         return getColorMade(ballStatuses, SOLIDS);
     }
 
+    /**
+     * Calculates the number of stripes that were legally pocketed, does not include balls made on
+     * the break
+     * @param ballStatuses A list of balls on the table, must be of size 15
+     * @return the number of stripes made
+     */
     public static int getStripesMade(List<BallStatus> ballStatuses) {
-
         return getColorMade(ballStatuses, STRIPES);
     }
 
+    /**
+     * Calculates the number of solids that remain on the table
+     * @param ballStatuses A list of balls on the table, must be of size 15
+     * @return the number of solids on the table
+     */
     public static int getSolidsRemaining(List<BallStatus> ballStatuses) {
-
         return getColorRemaining(ballStatuses, SOLIDS);
     }
 
+    /**
+     * Calculates the number of stripes that remain on the table
+     * @param ballStatuses A list of balls on the table, must be of size 15
+     * @return the number of stripes on the table
+     */
     public static int getStripesRemaining(List<BallStatus> ballStatuses) {
-
         return getColorRemaining(ballStatuses, STRIPES);
     }
 

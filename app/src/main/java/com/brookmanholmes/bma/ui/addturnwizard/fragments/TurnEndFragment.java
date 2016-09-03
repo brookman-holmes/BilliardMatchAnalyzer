@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.TextViewCompat;
-import android.util.Log;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,6 +157,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
     }
 
     private void updateFoulLayout(String selection) {
+        TransitionManager.beginDelayedTransition(foulLayout);
         if (selection.equals(getString(R.string.turn_safety_error)) ||
                 selection.equals(getString(R.string.turn_break_miss)) ||
                 selection.equals(getString(R.string.turn_illegal_break)) ||

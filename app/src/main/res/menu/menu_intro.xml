@@ -13,7 +13,7 @@
     <item
         android:id="@+id/action_reset_preferences"
         android:orderInCategory="100"
-        android:title="Reset tutorial"
+        android:title="@string/reset_tutorial"
         app:showAsAction="never"/>
 
     <item android:id="@+id/action_submit_feedback"

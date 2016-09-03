@@ -10,10 +10,10 @@ public class TurnEndOptions {
     public final boolean foul;
     public final boolean lostGame;
     public final TurnEnd defaultCheck;
-    public List<TurnEnd> possibleEndings = new ArrayList<>();
+    public final List<TurnEnd> possibleEndings = new ArrayList<>();
 
     private TurnEndOptions(Builder builder) {
-        possibleEndings = builder.turnEnds;
+        possibleEndings.addAll(builder.turnEnds);
         foul = builder.scratch;
         defaultCheck = builder.checked;
         lostGame = builder.lostGame;
@@ -31,7 +31,6 @@ public class TurnEndOptions {
         if (!options.possibleEndings.containsAll(possibleEndings)) return false;
         if (possibleEndings.size() != options.possibleEndings.size()) return false;
         return defaultCheck == options.defaultCheck;
-
     }
 
     @Override public int hashCode() {
@@ -56,7 +55,6 @@ public class TurnEndOptions {
         private TurnEnd checked = TurnEnd.MISS;
         private boolean scratch;
         private boolean lostGame;
-
 
         public Builder() {
         }

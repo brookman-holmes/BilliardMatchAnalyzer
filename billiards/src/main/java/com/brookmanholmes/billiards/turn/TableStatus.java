@@ -57,6 +57,17 @@ final public class TableStatus implements ITableStatus {
         }
     }
 
+    /**
+     * Creates a new table of the correct size with all balls on the table
+     *
+     * @param gameType The type of game this table represents
+     *                 {@link com.brookmanholmes.billiards.game.util.GameType}
+     * @return A new table with all balls on it
+     * @throws InvalidGameTypeException thrown when
+     *                                  {@link com.brookmanholmes.billiards.game.util.GameType#AMERICAN_ROTATION} or
+     *                                  {@link com.brookmanholmes.billiards.game.util.GameType#STRAIGHT_POOL} is selected because
+     *                                  these games are not yet supported
+     */
     public static TableStatus newTable(GameType gameType) throws InvalidGameTypeException {
         switch (gameType) {
             case APA_EIGHT_BALL:
@@ -74,6 +85,16 @@ final public class TableStatus implements ITableStatus {
         }
     }
 
+    /**
+     * Creates a new table of the correct size with only the specified balls on it
+     * @param gameType The type of game this table represents
+     * @param ballsOnTable The balls which you want to remain on the table
+     * @return A new table with only the balls in {@param ballsOnTable} on it
+     * @throws InvalidGameTypeException thrown when
+     * {@link com.brookmanholmes.billiards.game.util.GameType#AMERICAN_ROTATION} or
+     * {@link com.brookmanholmes.billiards.game.util.GameType#STRAIGHT_POOL} is selected because
+     * these games are not yet supported
+     */
     public static TableStatus newTable(GameType gameType, List<Integer> ballsOnTable) throws InvalidGameTypeException {
         switch (gameType) {
             case APA_EIGHT_BALL:
@@ -102,7 +123,7 @@ final public class TableStatus implements ITableStatus {
         return ballsOffTable;
     }
 
-    public List<BallStatus> getBallStatuses() {
+    @Override public List<BallStatus> getBallStatuses() {
         List<BallStatus> ballStatuses = new ArrayList<>();
         for (int i = 1; i <= size(); i++) {
             ballStatuses.add(table.get(i));
@@ -111,15 +132,19 @@ final public class TableStatus implements ITableStatus {
         return ballStatuses;
     }
 
-    public void removeBallsFromTable(List<Integer> ballsToRemove) {
+    /**
+     * Removes balls in the list from the table
+     * @param ballsToRemove integers representing each ball that you want to remove
+     */
+    public void removeBallsFromTable(int... ballsToRemove) {
         for (int ball : ballsToRemove) {
             if (table.get(ball) == ON_TABLE)
                 table.put(ball, OFF_TABLE);
         }
     }
 
-    public void setBallTo(BallStatus status, int... i) throws InvalidBallException {
-        for (int ball : i) {
+    @Override public void setBallTo(BallStatus status, int... balls) throws InvalidBallException {
+        for (int ball : balls) {
             if (table.get(ball) == null) {
                 throw new InvalidBallException();
             } else
@@ -127,61 +152,60 @@ final public class TableStatus implements ITableStatus {
         }
     }
 
-    public int getDeadBalls() {
+    @Override public int getDeadBalls() {
         return Collections.frequency(table.values(), DEAD)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_DEAD ? 1 : 0);
     }
 
-    public int getDeadBallsOnBreak() {
+    @Override public int getDeadBallsOnBreak() {
         return Collections.frequency(table.values(), DEAD_ON_BREAK)
                 + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_MADE ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_DEAD ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK ? 1 : 0);
     }
 
-    public int getBallsRemaining() {
+    @Override public int getBallsRemaining() {
         return Collections.frequency(table.values(), ON_TABLE);
     }
 
-    public int getBreakBallsMade() {
+    @Override public int getBreakBallsMade() {
         return Collections.frequency(table.values(), MADE_ON_BREAK)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_DEAD ? 1 : 0);
     }
 
-    public int getShootingBallsMade() {
+    @Override public int getShootingBallsMade() {
         return Collections.frequency(table.values(), MADE)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_MADE ? 1 : 0);
     }
 
-    public boolean isGameBallMade() {
+    @Override public boolean isGameBallMade() {
         return table.get(GAME_BALL) == MADE ||
                 table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE ||
                 table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_MADE;
     }
 
-    public boolean getGameBallMadeOnBreak() {
+    @Override public boolean getGameBallMadeOnBreak() {
         return table.get(GAME_BALL) == MADE_ON_BREAK
                 || table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK
                 || table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_DEAD
                 || table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE;
     }
 
-    public boolean getGameBallMadeIllegally() {
-        BallStatus status = table.get(GAME_BALL);
-
-        return status == DEAD || status == GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
+    @Override public boolean getGameBallMadeIllegally() {
+        return table.get(GAME_BALL) == DEAD ||
+                table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
     }
 
-    public BallStatus getBallStatus(int ball) throws InvalidBallException {
+    @Override public BallStatus getBallStatus(int ball) throws InvalidBallException {
         if (table.get(ball) != null)
             return table.get(ball);
         else throw new InvalidBallException();
     }
 
-    public GameType getGameType() {
+    @Override public GameType getGameType() {
         return gameType;
     }
 
@@ -218,6 +242,4 @@ final public class TableStatus implements ITableStatus {
                 ", GAME_BALL=" + GAME_BALL +
                 '}';
     }
-
-
 }

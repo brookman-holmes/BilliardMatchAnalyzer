@@ -9,31 +9,120 @@ import java.util.List;
  * Created by Brookman Holmes on 1/31/2016.
  */
 public interface ITableStatus {
+    /**
+     * Returns the number of balls of status
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#MADE}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_MADE}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_DEAD_ON_BREAK_THEN_MADE}
+     *
+     * @return the number of balls made
+     */
     int getShootingBallsMade();
 
+    /**
+     * Returns the number of balls of status
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#DEAD}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_DEAD}
+     * @return the number of dead shooting balls
+     */
     int getDeadBalls();
 
+    /**
+     * Returns the number of balls of status
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#DEAD_ON_BREAK}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_DEAD_ON_BREAK_THEN_MADE}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_DEAD_ON_BREAK_THEN_DEAD}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_DEAD_ON_BREAK}
+     * @return the number of dead break balls
+     */
     int getDeadBallsOnBreak();
 
+    /**
+     * Returns the number of balls with status
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#MADE_ON_BREAK}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_MADE}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_DEAD}
+     * @return the number of balls made on the break
+     */
     int getBreakBallsMade();
 
+    /**
+     * Returns whether or not the game ball has status
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#MADE_ON_BREAK}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_DEAD}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_MADE}
+     * @return true if the game ball was legally pocketed on the break, false otherwise
+     */
     boolean getGameBallMadeOnBreak();
 
+    /**
+     * Returns whether or not the game ball has status
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#MADE}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_MADE}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_DEAD_ON_BREAK_THEN_MADE}
+     * @return true if the game ball was legally pocketed, false otherwise
+     */
     boolean isGameBallMade();
 
+    /**
+     * Return the number of balls of status
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#ON_TABLE}
+     * @return the number of balls on the table
+     */
     int getBallsRemaining();
 
-    BallStatus getBallStatus(int ball);
+    /**
+     * Retrieve the status of a ball
+     *
+     * @param ball the number of the ball you want
+     * @return the current status of the ball in the form of
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus}
+     * @throws InvalidBallException if the ball is not in the range of 1 to 9, 10, or 15 (depending
+     *                              on the game type)
+     */
+    BallStatus getBallStatus(int ball) throws InvalidBallException;
 
-    void setBallTo(BallStatus status, int... i);
+    /**
+     * Sets the status of certain balls on the table
+     *
+     * @param status The status that you want to set the balls to
+     * @param balls  The balls to set to that status
+     */
+    void setBallTo(BallStatus status, int... balls);
 
+    /**
+     * Returns whether or not the game ball has status
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#DEAD}
+     * {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_DEAD}
+     * @return true if the game ball was illegally pocketed, false otherwise
+     */
     boolean getGameBallMadeIllegally();
 
+    /**
+     * Returns a list of BallStatuses, where each ball is represented in order by the list
+     * i.e. 1 ball is at location 0, 8 ball is at location 7, etc.
+     * @return A list of BallStatuses representing the state of the table
+     */
     List<BallStatus> getBallStatuses();
 
+    /**
+     * Returns a list of balls that are to be removed from the table when this turn is added
+     * to the current game where each integer represents that ball
+     * @return A list of balls that are no longer on the table
+     */
     List<Integer> getBallsToRemoveFromTable();
 
+    /**
+     * The number of balls that this game keeps track of
+     * @return a number that is 9 (nine ball), 10 (ten ball), or 15 (eight ball)
+     */
     int size();
 
+    /**
+     * The type of game that this interface is representing
+     * @return an enum of type {@link com.brookmanholmes.billiards.game.util.GameType}
+     */
     GameType getGameType();
 }

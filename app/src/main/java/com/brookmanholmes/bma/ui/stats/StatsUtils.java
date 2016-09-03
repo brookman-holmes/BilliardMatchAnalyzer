@@ -1,7 +1,6 @@
 package com.brookmanholmes.bma.ui.stats;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -153,7 +151,7 @@ class StatsUtils {
         return new Pair<>(slow, fast);
     }
 
-    private static List<StatLineItem> getStats(List<AdvStats> stats) {
+    public static List<StatLineItem> getStats(List<AdvStats> stats) {
         List<StatLineItem> list = new ArrayList<>();
         Set<String> whyTypes = new HashSet<>();
         int total = stats.size();
@@ -167,7 +165,7 @@ class StatsUtils {
         }
 
         for (StatLineItem item : list) {
-            item.count = getCountOfWhyItemsInList(stats, item.description);
+            item.setCount(getCountOfWhyItemsInList(stats, item.getDescription()));
         }
 
         Collections.sort(list);
@@ -194,7 +192,7 @@ class StatsUtils {
         list.add(new StatLineItem(context.getString(R.string.safety_open), total));
 
         for (StatLineItem item : list) {
-            item.count = getCountOfSubTypesInList(context, stats, item.description);
+            item.setCount(getCountOfSubTypesInList(context, stats, item.getDescription()));
         }
 
         return list;
@@ -203,7 +201,7 @@ class StatsUtils {
     public static int getFailedSafeties(Context context, List<AdvStats> stats) {
         List<StatLineItem> safeties = getSafetyStats(context, stats);
 
-        return safeties.get(OPEN).count;
+        return safeties.get(OPEN).getCount();
     }
 
     public static int getMiscues(Context context, List<AdvStats> stats) {
@@ -240,38 +238,5 @@ class StatsUtils {
         }
 
         return count;
-    }
-
-    private static class StatLineItem implements Comparable<StatLineItem> {
-        final NumberFormat pctf = NumberFormat.getPercentInstance();
-
-        private final String description;
-        private final int total;
-        private int count;
-
-        public StatLineItem(String description, int total) {
-            this.description = description;
-            this.count = 0;
-            this.total = total;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public String getCount() {
-            return Integer.toString(count);
-        }
-
-        public String getPercentage() {
-            if (total == 0)
-                return pctf.format(0);
-            else
-                return pctf.format((double) count / (double) total);
-        }
-
-        @Override public int compareTo(@NonNull StatLineItem another) {
-            return Integer.compare(count, another.count);
-        }
     }
 }
