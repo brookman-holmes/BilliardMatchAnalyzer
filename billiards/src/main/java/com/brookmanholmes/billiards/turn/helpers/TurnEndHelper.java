@@ -11,6 +11,7 @@ import com.brookmanholmes.billiards.turn.TurnEndOptions;
 
 /**
  * Created by Brookman Holmes on 10/30/2015.
+ * Helper class that creates a TurnEndOptions object based on the status of the table
  */
 public abstract class TurnEndHelper {
     ITableStatus tableStatus;
@@ -105,6 +106,14 @@ public abstract class TurnEndHelper {
         }
     }
 
+    /**
+     * Creates a new {@link com.brookmanholmes.billiards.turn.TurnEndOptions} object with a list of
+     * the possible turn endings based on the current status of the game and the status of the table
+     * for the next turn
+     * @param game The current status of the game
+     * @param tableStatus The status of the table for the next turn
+     * @return A new {@link com.brookmanholmes.billiards.turn.TurnEndOptions} object
+     */
     public static TurnEndOptions getTurnEndOptions(GameStatus game, ITableStatus tableStatus) {
         TurnEndHelper turnEndHelper = TurnEndHelper.create(game, tableStatus);
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.TextViewCompat;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,22 +82,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
                 android.R.layout.simple_list_item_single_choice,
                 android.R.id.text1,
                 new ArrayList<String>());
-    }
 
-    private void populateChoicesList(List<String> options) {
-        adapter.clear();
-        for (String option : options) {
-            TurnEnd ending = TurnEnd.valueOf(option);
-                adapter.add(getString(ending));
-        }
-
-        adapter.sort();
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override public void onResume() {
-        super.onResume();
-        page.registerListener(this);
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,6 +115,11 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         return rootView;
     }
 
+    @Override public void onResume() {
+        super.onResume();
+        page.registerListener(this);
+    }
+
     @Override public void onPause() {
         page.unregisterListener();
         super.onPause();
@@ -156,18 +147,6 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         updatePage(position);
     }
 
-    private void updateFoulLayout(String selection) {
-        TransitionManager.beginDelayedTransition(foulLayout);
-        if (selection.equals(getString(R.string.turn_safety_error)) ||
-                selection.equals(getString(R.string.turn_break_miss)) ||
-                selection.equals(getString(R.string.turn_illegal_break)) ||
-                selection.equals(getString(R.string.turn_miss))) {
-            foulLayout.setVisibility(View.VISIBLE);
-        } else {
-            foulLayout.setVisibility(View.INVISIBLE);
-        }
-    }
-
     @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
         if (checkedId == R.id.yes)
             page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.yes));
@@ -175,6 +154,26 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
             page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.no));
         else if (checkedId == R.id.lostGame)
             page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.foul_lost_game));
+    }
+
+    private void populateChoicesList(List<String> options) {
+        adapter.clear();
+        for (String option : options) {
+            TurnEnd ending = TurnEnd.valueOf(option);
+            adapter.add(getString(ending));
+        }
+
+        adapter.sort();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void updateFoulLayout(String selection) {
+        TransitionManager.beginDelayedTransition(foulLayout);
+        if (page.isFoulPossible(selection)) {
+            foulLayout.setVisibility(View.VISIBLE);
+        } else {
+            foulLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void updateFoulChoices(TurnEndOptions options) {
@@ -235,6 +234,8 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
             listView.setItemChecked(adapter.indexOf(getString(options.defaultCheck)), true);
             updatePage(listView.getCheckedItemPosition());
         }
+
+        updateFoulLayout(getTurnEndFromPage());
     }
 
     private void repopulateChoicesList(List<TurnEnd> options) {

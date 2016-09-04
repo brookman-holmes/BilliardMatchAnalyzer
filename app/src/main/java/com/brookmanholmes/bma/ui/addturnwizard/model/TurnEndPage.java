@@ -51,6 +51,18 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         model.setTurnEnd(data.getString(SIMPLE_DATA_KEY), data.getString(FOUL_KEY));
     }
 
+    public boolean isFoulPossible(String turnEnd) {
+        if (turnEnd.equals(branches.get(0).choice))
+            return true;
+        else if (turnEnd.equals(branches.get(1).choice))
+            return true;
+        else if (turnEnd.equals(branches.get(2).choice))
+            return true;
+        else if (turnEnd.equals(branches.get(3).choice))
+            return true;
+        else return false;
+    }
+
     public void registerListener(TurnEndFragment fragment) {
         this.fragment = fragment;
     }
@@ -61,7 +73,6 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
 
     private void updateFragment(TurnEndOptions options) {
         if (fragment != null) {
-
             fragment.updateOptions(options);
         }
     }

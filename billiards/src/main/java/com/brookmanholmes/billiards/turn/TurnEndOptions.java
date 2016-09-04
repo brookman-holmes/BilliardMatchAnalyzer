@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Created by brookman on 9/26/15.
+ * A data class that contains the possible endings for a turn based on the game status and the
+ * status of the balls for the next turn
  */
 public class TurnEndOptions {
     public final boolean foul;

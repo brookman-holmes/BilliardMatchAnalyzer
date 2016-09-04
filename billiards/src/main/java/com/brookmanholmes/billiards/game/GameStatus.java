@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by Brookman Holmes on 10/30/2015.
+ * A data class to capture the state of a game
  */
 public final class GameStatus {
     public final int GAME_BALL;
