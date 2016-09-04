@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="stat_levels">
-        <item>@string/detail_simple</item>
         <item>@string/detail_normal</item>
         <item>@string/detail_advanced</item>
         <item>@string/detail_player</item>

@@ -239,7 +239,6 @@ public class Match implements IMatch {
     }
 
     public enum StatsDetail {
-        SIMPLE,
         NORMAL,
         ADVANCED,
         ADVANCED_PLAYER,

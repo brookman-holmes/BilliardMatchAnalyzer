@@ -39,6 +39,10 @@ class EightBallTurnEndHelper extends TurnEndHelper {
         return false;
     }
 
+    /**
+     * Returns whether the current player has any balls remaining on the table
+     * @return True if the player has balls remaining, false otherwise
+     */
     private boolean currentPlayerBallsRemaining() {
         if (game.currentPlayerColor == PlayerColor.SOLIDS) {
             return TableUtils.getSolidsRemaining(tableStatus.getBallStatuses()) > 0;

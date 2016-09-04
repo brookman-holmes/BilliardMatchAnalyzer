@@ -104,7 +104,7 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
 
     @Test
     public void ifReBreakAndPlayerChoosesToBreakAgain() {
-        ITurn turn = turn().deadOnBreak(8).scratch().breakMiss();
+        ITurn turn = turn().deadOnBreak(8).fouled().breakMiss();
 
         game.addTurn(turn);
 

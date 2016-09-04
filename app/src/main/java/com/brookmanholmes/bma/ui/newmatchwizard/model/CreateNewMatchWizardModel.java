@@ -38,6 +38,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         }
 
         updatePlayerNames();
+
         if (page instanceof UpdatesMatchBuilder)
             ((UpdatesMatchBuilder) page).updateMatchBuilder(this);
     }
@@ -49,17 +50,16 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     }
 
     private void updateBuilder() {
-        for (Page page : getCurrentPageSequence()) {
-            if (page instanceof UpdatesMatchBuilder)
-                ((UpdatesMatchBuilder) page).updateMatchBuilder(this);
+        for (int i = 0; i < getCurrentPageSequence().size(); i++) {
+            if (getCurrentPageSequence().get(i) instanceof UpdatesMatchBuilder)
+                ((UpdatesMatchBuilder) getCurrentPageSequence().get(i)).updateMatchBuilder(this);
         }
     }
 
     private void updatePlayerNames() {
-        for (Page page : rootPageList) {
-            if (page instanceof RequiresPlayerNames) {
-                ((RequiresPlayerNames) page).setPlayerNames(playerName, opponentName);
-            }
+        for (int i = 0; i < getCurrentPageSequence().size(); i++) {
+            if (getCurrentPageSequence().get(i) instanceof RequiresPlayerNames)
+                ((RequiresPlayerNames) getCurrentPageSequence().get(i)).setPlayerNames(playerName, opponentName);
         }
     }
 
@@ -74,15 +74,6 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     private Page getPlayerNamePage() {
         return new PlayerNamePage(this, context.getString(R.string.title_page_players),
                 context.getString(R.string.player_number), context.getString(R.string.location))
-                .setRequired(true);
-    }
-
-    private Page getGhostGameChoicePage() {
-        return new GameChoicePage(this, context.getString(R.string.title_page_games), context)
-                .addBranch(context.getString(R.string.game_bca_eight))
-                .addBranch(context.getString(R.string.game_bca_nine))
-                .addBranch(context.getString(R.string.game_bca_ten))
-                .setValue(context.getString(R.string.game_bca_nine))
                 .setRequired(true);
     }
 
@@ -210,9 +201,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     void setStatDetail(String value) {
         Match.StatsDetail detail;
 
-        if (value.equals(context.getString(R.string.detail_simple)))
-            detail = Match.StatsDetail.SIMPLE;
-        else if (value.equals(context.getString(R.string.detail_normal)))
+        if (value.equals(context.getString(R.string.detail_normal)))
             detail = Match.StatsDetail.NORMAL;
         else if (value.equals(context.getString(R.string.detail_advanced)))
             detail = Match.StatsDetail.ADVANCED;

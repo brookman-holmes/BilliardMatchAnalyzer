@@ -59,14 +59,13 @@ final public class TableStatus implements ITableStatus {
 
     /**
      * Creates a new table of the correct size with all balls on the table
-     *
      * @param gameType The type of game this table represents
-     *                 {@link com.brookmanholmes.billiards.game.util.GameType}
+     * {@link com.brookmanholmes.billiards.game.util.GameType}
      * @return A new table with all balls on it
      * @throws InvalidGameTypeException thrown when
-     *                                  {@link com.brookmanholmes.billiards.game.util.GameType#AMERICAN_ROTATION} or
-     *                                  {@link com.brookmanholmes.billiards.game.util.GameType#STRAIGHT_POOL} is selected because
-     *                                  these games are not yet supported
+     * {@link com.brookmanholmes.billiards.game.util.GameType#AMERICAN_ROTATION} or
+     * {@link com.brookmanholmes.billiards.game.util.GameType#STRAIGHT_POOL} is selected because
+     * these games are not yet supported
      */
     public static TableStatus newTable(GameType gameType) throws InvalidGameTypeException {
         switch (gameType) {
@@ -209,10 +208,15 @@ final public class TableStatus implements ITableStatus {
         return gameType;
     }
 
-    public int size() {
+    @Override public int size() {
         return table.size();
     }
 
+    /**
+     * Places balls into the table with the given status from 1 to {@param size} (inclusive)
+     * @param size The highest ball that goes on the table
+     * @param statusOfBalls The status of all the balls you are putting on the table
+     */
     private void setupTable(int size, BallStatus statusOfBalls) {
         for (int i = 1; i <= size; i++) {
             table.put(i, statusOfBalls);

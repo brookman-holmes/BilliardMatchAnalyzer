@@ -164,9 +164,9 @@ public abstract class AbstractGameTest {
 
     @Test
     public void setCurrentPlayerConsecutiveFouls() {
-        ITurn turn = turn().scratch().miss();
+        ITurn turn = turn().fouled().miss();
 
-        game.addTurn(turn().scratch().breakMiss());
+        game.addTurn(turn().fouled().breakMiss());
         assertThat(game.consecutivePlayerFouls, is(1));
         assertThat(game.consecutiveOpponentFouls, is(0));
 

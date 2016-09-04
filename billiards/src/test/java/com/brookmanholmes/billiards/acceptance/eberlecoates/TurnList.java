@@ -71,7 +71,7 @@ public class TurnList {
      * GAME 7 (4-4)
      */
     // Max breaks hangs the 9 and scratches
-    private static final ITurn turn20 = turn().breakBalls(2, 8, 6).madeBalls(1, 3, 4, 5, 7).scratch().miss();
+    private static final ITurn turn20 = turn().breakBalls(2, 8, 6).madeBalls(1, 3, 4, 5, 7).fouled().miss();
     // Jeff wins
     private static final ITurn turn21 = turn().offTable(2, 8, 6, 1, 3, 4, 5, 7).madeBalls(9).win();
     /**
@@ -84,11 +84,11 @@ public class TurnList {
     // Jeff misses the 1
     private static final ITurn turn24 = turn().offTable(3, 5).miss();
     // Max misses the 1 and scratches
-    private static final ITurn turn25 = turn().offTable(3, 5).scratch().miss();
+    private static final ITurn turn25 = turn().offTable(3, 5).fouled().miss();
     // Jeff makes a couple balls and plays safe
     private static final ITurn turn26 = turn().madeBalls(1, 2).offTable(3, 5).safety();
     // Max misses
-    private static final ITurn turn27 = turn().offTable(1, 2, 3, 5).scratch().miss();
+    private static final ITurn turn27 = turn().offTable(1, 2, 3, 5).fouled().miss();
     // Jeff runs out
     private static final ITurn turn28 = turn().offTable(1, 2, 3, 5).madeBalls(4, 6, 7, 8, 9).win();
     /**
@@ -165,7 +165,7 @@ public class TurnList {
     // Max breaks and almost scratches
     private static final ITurn turn54 = turn().breakBalls(2).safetyMiss();
     // Jeff scratches
-    private static final ITurn turn55 = turn().offTable(2).scratch().miss();
+    private static final ITurn turn55 = turn().offTable(2).fouled().miss();
     // Max runs out and wins the set!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     private static final ITurn turn56 = turn().offTable(2).madeBalls(1, 3, 4, 5, 6, 7, 8, 9).win();
 

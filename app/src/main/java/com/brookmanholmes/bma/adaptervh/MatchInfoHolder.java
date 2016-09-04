@@ -125,6 +125,4 @@ public abstract class MatchInfoHolder extends BaseViewHolder {
     }
 
     public abstract void bind(AbstractPlayer player, AbstractPlayer opponent);
-
-    protected abstract void setVisibilities(View view, Match.StatsDetail detail);
 }

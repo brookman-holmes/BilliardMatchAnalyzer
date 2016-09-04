@@ -29,25 +29,9 @@ public class SafetiesHolder extends MatchInfoHolder {
     @Bind(R.id.tvForcedErrorsPlayer) TextView tvForcedErrorsPlayer;
     @Bind(R.id.tvForcedErrorsOpponent) TextView tvForcedErrorsOpponent;
 
-    public SafetiesHolder(View view, Match.StatsDetail detail) {
+    public SafetiesHolder(View view) {
         super(view);
         title.setText(view.getContext().getString(R.string.title_safeties));
-        setVisibilities(view, detail);
-    }
-
-    @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
-        if (detail == Match.StatsDetail.SIMPLE) {
-            tvSafetyReturnsPlayer.setVisibility(View.GONE);
-            tvSafetyEscapesPlayer.setVisibility(View.GONE);
-            tvSafetyReturnsOpponent.setVisibility(View.GONE);
-            tvSafetyEscapesOpponent.setVisibility(View.GONE);
-            tvForcedErrorsOpponent.setVisibility(View.GONE);
-            tvForcedErrorsPlayer.setVisibility(View.GONE);
-
-            view.findViewById(R.id.tvForcedErrorsTitle).setVisibility(View.GONE);
-            view.findViewById(R.id.tvSafetyEscapesTitle).setVisibility(View.GONE);
-            view.findViewById(R.id.tvSafetyReturnsTitle).setVisibility(View.GONE);
-        }
     }
 
     @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {

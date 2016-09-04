@@ -23,15 +23,9 @@ public class ShootingPctHolder extends MatchInfoHolder {
     @Bind(R.id.tvScratchesPlayer) TextView tvScratchesPlayer;
     @Bind(R.id.tvScratchesOpponent) TextView tvScratchesOpponent;
 
-    public ShootingPctHolder(View view, Match.StatsDetail detail) {
+    public ShootingPctHolder(View view) {
         super(view);
         title.setText(view.getContext().getString(R.string.title_shooting));
-
-        setVisibilities(view, detail);
-    }
-
-    @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
-
     }
 
     @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {

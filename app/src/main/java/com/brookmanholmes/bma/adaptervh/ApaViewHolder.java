@@ -32,14 +32,9 @@ public class ApaViewHolder extends MatchInfoHolder{
     @Bind(R.id.tvDeadBallsOpponent) TextView tvDeadBalls;
     @Bind(R.id.tvDeadBallsTitle) TextView tvDeadBallsTitle;
 
-    public ApaViewHolder(View view, Match.StatsDetail detail) {
+    public ApaViewHolder(View view) {
         super(view);
         title.setText(view.getContext().getString(R.string.title_apa_stats));
-        setVisibilities(view, detail);
-    }
-
-    @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
-
     }
 
     @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {

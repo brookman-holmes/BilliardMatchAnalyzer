@@ -34,13 +34,11 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int ITEM_FOOTER = 10;
 
     final int gameBall;
-    final Match.StatsDetail detail;
     private final BreakType breakType;
     private AbstractPlayer player;
     private AbstractPlayer opponent;
 
     MatchInfoRecyclerAdapter(Match match) {
-        detail = match.getStatDetailLevel();
         breakType = match.getGameStatus().breakType;
         this.gameBall = match.getGameStatus().GAME_BALL;
         player = match.getPlayer();
@@ -123,15 +121,15 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     BaseViewHolder getMatchInfoHolderByViewType(View view, int viewType) {
         switch (viewType) {
             case ITEM_MATCH_OVERVIEW:
-                return new MatchOverviewHolder(view, detail);
+                return new MatchOverviewHolder(view);
             case ITEM_SHOOTING_PCT:
-                return new ShootingPctHolder(view, detail);
+                return new ShootingPctHolder(view);
             case ITEM_BREAKS:
-                return new BreaksHolder(view, gameBall, detail);
+                return new BreaksHolder(view, gameBall);
             case ITEM_RUN_OUTS:
-                return new RunOutsHolder(view, detail);
+                return new RunOutsHolder(view);
             case ITEM_SAFETIES:
-                return new SafetiesHolder(view, detail);
+                return new SafetiesHolder(view);
             case ITEM_FOOTER:
                 return new FooterViewHolder(view);
             default:
@@ -164,11 +162,11 @@ class MatchInfoRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override BaseViewHolder getMatchInfoHolderByViewType(View view, int viewType) {
             switch (viewType) {
                 case ITEM_APA_STATS:
-                    return new ApaViewHolder(view, detail);
+                    return new ApaViewHolder(view);
                 case ITEM_BREAKS:
-                    return new BreaksHolder(view, gameBall, detail);
+                    return new BreaksHolder(view, gameBall);
                 case ITEM_RUN_OUTS:
-                    return new RunOutsHolder(view, detail);
+                    return new RunOutsHolder(view);
                 default:
                     return super.getMatchInfoHolderByViewType(view, viewType);
             }

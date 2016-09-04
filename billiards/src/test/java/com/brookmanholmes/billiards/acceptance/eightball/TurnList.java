@@ -36,7 +36,7 @@ public class TurnList {
      * Game 4
      */
     // opponent breaks and scratches and makes the 8
-    private static final ITurn turn7 = turn().deadOnBreak(8).scratch().breakMiss();
+    private static final ITurn turn7 = turn().deadOnBreak(8).fouled().breakMiss();
     // player chooses to break
     private static final ITurn turn8 = turn().currentPlayerBreaks();
     // player breaks and makes a few balls
@@ -61,7 +61,7 @@ public class TurnList {
      * Game 7
      */
     // player scratches and makes the 8 on the break
-    private static final ITurn turn15 = turn().scratch().deadOnBreak(8).breakMiss();
+    private static final ITurn turn15 = turn().fouled().deadOnBreak(8).breakMiss();
     // opponent lets player break
     private static final ITurn turn16 = turn().opposingPlayerBreaks();
     // player breaks and makes a few balls, including the 8 and wants to rebreak

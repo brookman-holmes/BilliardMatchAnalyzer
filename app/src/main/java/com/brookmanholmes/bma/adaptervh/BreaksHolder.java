@@ -29,7 +29,7 @@ public class BreaksHolder extends MatchInfoHolder {
     @Bind(R.id.tvBreakScratchesOpponent) TextView tvBreakScratchesOpponent;
     @Bind(R.id.tvBreakWinsTitle) TextView breakWinsTitle;
 
-    public BreaksHolder(View view, int gameBall, Match.StatsDetail detail) {
+    public BreaksHolder(View view, int gameBall) {
         super(view);
         breakWinsTitle.setText(view.getContext().getString(R.string.title_game_won_on_break, gameBall));
 
@@ -38,23 +38,13 @@ public class BreaksHolder extends MatchInfoHolder {
         tvBreakWinsOpponent.setVisibility(View.GONE);
 
         title.setText(view.getContext().getString(R.string.title_breaks));
-        setVisibilities(view, detail);
     }
 
-    public BreaksHolder(View view, Match.StatsDetail detail) {
+    public BreaksHolder(View view) {
         super(view);
 
         breakWinsTitle.setText(view.getContext().getString(R.string.title_game_won_on_break, "8/9"));
         title.setText(view.getContext().getString(R.string.title_breaks));
-        setVisibilities(view, detail);
-    }
-
-    @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
-        if (detail == Match.StatsDetail.SIMPLE) {
-            tvBreakContinuationsOpponent.setVisibility(View.GONE);
-            tvBreakContinuationsPlayer.setVisibility(View.GONE);
-            view.findViewById(R.id.tvBreakContinuationsTitle).setVisibility(View.GONE);
-        }
     }
 
     @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {

@@ -11,7 +11,12 @@ public class TurnBuilder {
     private final int GAME_BALL;
     private final ITableStatus status;
     private boolean scratch = false;
+    private AdvStats advStats = null;
 
+    /**
+     * Creates a builder for creating a new turn to add to a match
+     * @param gameType The type of game that this turn is being added to
+     */
     public TurnBuilder(GameType gameType) {
         status = TableStatus.newTable(gameType);
         switch (gameType) {
@@ -35,87 +40,191 @@ public class TurnBuilder {
         }
     }
 
+    /**
+     * Sets status of balls to {@link com.brookmanholmes.billiards.game.util.BallStatus#DEAD}
+     * @param balls the balls which you want to be set to dead
+     * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
+     */
     public TurnBuilder deadBalls(int... balls) {
         status.setBallTo(BallStatus.DEAD, balls);
         return this;
     }
 
+    /**
+     * Sets status of balls to {@link com.brookmanholmes.billiards.game.util.BallStatus#DEAD_ON_BREAK}
+     * @param balls the balls which you want to be set to dead on the break
+     * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
+     */
     public TurnBuilder deadOnBreak(int... balls) {
         status.setBallTo(BallStatus.DEAD_ON_BREAK, balls);
         return this;
     }
 
+    /**
+     * Sets status of balls to {@link com.brookmanholmes.billiards.game.util.BallStatus#MADE}
+     * @param balls the balls which you want to be set to made
+     * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
+     */
     public TurnBuilder madeBalls(int... balls) {
         status.setBallTo(BallStatus.MADE, balls);
         return this;
     }
 
+    /**
+     * Sets status of game ball to {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_MADE}
+     * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
+     */
     public TurnBuilder gameBallMadeOnBreakAndThenMade() {
         status.setBallTo(BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE, GAME_BALL);
         return this;
     }
 
+    /**
+     * Sets status of game ball to {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_DEAD}
+     * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
+     */
     public TurnBuilder gameBallMadeOnBreakAndThenDead() {
         status.setBallTo(BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD, GAME_BALL);
         return this;
     }
 
+    /**
+     * Sets status of balls to {@link com.brookmanholmes.billiards.game.util.BallStatus#MADE_ON_BREAK}
+     * @param balls the balls which you want to be set to made on the break
+     * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
+     */
     public TurnBuilder breakBalls(int... balls) {
         status.setBallTo(BallStatus.MADE_ON_BREAK, balls);
         return this;
     }
 
+    /**
+     * Sets status of balls to {@link com.brookmanholmes.billiards.game.util.BallStatus#OFF_TABLE}
+     * @param balls the balls which you want to be set to off the table
+     * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
+     */
     public TurnBuilder offTable(int... balls) {
         status.setBallTo(BallStatus.OFF_TABLE, balls);
         return this;
     }
 
-    public TurnBuilder scratch() {
+    /**
+     * Sets that you fouled
+     * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
+     */
+    public TurnBuilder fouled() {
         scratch = true;
         return this;
     }
 
+    /**
+     * Sets the advanced stats for this turn
+     * @param advStats The {@link com.brookmanholmes.billiards.turn.AdvStats} that you would like to
+     *                 add to this turn
+     * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
+     */
+    public TurnBuilder setAdvStats(AdvStats advStats) {
+        this.advStats = advStats;
+        return this;
+    }
+
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#MISS} as the turn end
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn miss() {
-        return new Turn(0, 0L, scratch, TurnEnd.MISS, status, false, null);
+        return new Turn(0, 0L, scratch, TurnEnd.MISS, status, false, advStats);
     }
 
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#MISS} as the turn end
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn win() {
-        return new Turn(0, 0L, scratch, TurnEnd.GAME_WON, status, false, null);
+        return new Turn(0, 0L, scratch, TurnEnd.GAME_WON, status, false, advStats);
     }
 
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#MISS} as the turn end and that you lost the
+     * game
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn lose() {
-        return new Turn(0, 0L, scratch, TurnEnd.MISS, status, true, null);
+        return new Turn(0, 0L, scratch, TurnEnd.MISS, status, true, advStats);
     }
 
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#SAFETY} as the turn end
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn safety() {
-        return new Turn(0, 0L, scratch, TurnEnd.SAFETY, status, false, null);
+        return new Turn(0, 0L, scratch, TurnEnd.SAFETY, status, false, advStats);
     }
 
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#SAFETY_ERROR} as the turn end
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn safetyMiss() {
-        return new Turn(0, 0L, scratch, TurnEnd.SAFETY_ERROR, status, false, null);
+        return new Turn(0, 0L, scratch, TurnEnd.SAFETY_ERROR, status, false, advStats);
     }
 
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#BREAK_MISS} as the turn end
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn breakMiss() {
-        return new Turn(0, 0L, scratch, TurnEnd.BREAK_MISS, status, false, null);
+        return new Turn(0, 0L, scratch, TurnEnd.BREAK_MISS, status, false, advStats);
     }
 
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#PUSH_SHOT} as the turn end
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn push() {
-        return new Turn(0, 0L, scratch, TurnEnd.PUSH_SHOT, status, false, null);
+        return new Turn(0, 0L, scratch, TurnEnd.PUSH_SHOT, status, false, advStats);
     }
 
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#SKIP_TURN} as the turn end
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn skipTurn() {
-        return new Turn(0, 0L, scratch, TurnEnd.SKIP_TURN, status, false, null);
+        return new Turn(0, 0L, scratch, TurnEnd.SKIP_TURN, status, false, advStats);
     }
 
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#CONTINUE_WITH_GAME} as the turn end
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn continueGame() {
-        return new Turn(0, 0L, scratch, TurnEnd.CONTINUE_WITH_GAME, status, false, null);
+        return new Turn(0, 0L, scratch, TurnEnd.CONTINUE_WITH_GAME, status, false, advStats);
     }
 
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#CURRENT_PLAYER_BREAKS_AGAIN} as the turn end
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn currentPlayerBreaks() {
-        return new Turn(0, 0L, scratch, TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, false, null);
+        return new Turn(0, 0L, scratch, TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, false, advStats);
     }
 
+    /**
+     * Creates a new turn with the arguments supplied to this builder with
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#OPPONENT_BREAKS_AGAIN} as the turn end
+     * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
+     */
     public ITurn opposingPlayerBreaks() {
-        return new Turn(0, 0L, scratch, TurnEnd.OPPONENT_BREAKS_AGAIN, status, false, null);
+        return new Turn(0, 0L, scratch, TurnEnd.OPPONENT_BREAKS_AGAIN, status, false, advStats);
     }
 }

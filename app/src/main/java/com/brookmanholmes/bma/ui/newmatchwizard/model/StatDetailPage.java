@@ -24,8 +24,8 @@ public class StatDetailPage extends SingleFixedChoicePage implements RequiresPla
         this.playerName = playerName;
         this.opponentName = opponentName;
 
-        choices.set(3, String.format(startValue, playerName));
-        choices.set(4, String.format(startValue, opponentName));
+        choices.set(2, String.format(startValue, playerName));
+        choices.set(3, String.format(startValue, opponentName));
     }
 
     @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {

@@ -17,11 +17,31 @@ public abstract class TurnEndHelper {
     ITableStatus tableStatus;
     GameStatus game;
 
+    /**
+     * Constructs a new TurnEndHelper setting the game status and table status
+     * @param game The current status of the game you wish you create a new
+     * {@link com.brookmanholmes.billiards.turn.TurnEndOptions} for
+     * @param tableStatus The status of the table that you want a new
+     * {@link com.brookmanholmes.billiards.turn.TurnEndOptions} for
+     */
     TurnEndHelper(GameStatus game, ITableStatus tableStatus) {
         this.tableStatus = tableStatus;
         this.game = game;
     }
 
+    /**
+     * Convenience method to create a new TurnEndHelper of the correct type to provide accurate
+     * turn endings
+     * @param game The current status of the game you wish you create a new
+     * {@link com.brookmanholmes.billiards.turn.TurnEndOptions} for
+     * @param tableStatus The status of the table that you want a new
+     * {@link com.brookmanholmes.billiards.turn.TurnEndOptions} for
+     * @return A new TurnEndHelper of the correct subclass
+     * @throws InvalidGameTypeException when provided with
+     * {@link com.brookmanholmes.billiards.game.util.GameType#AMERICAN_ROTATION} or
+     * {@link com.brookmanholmes.billiards.game.util.GameType#STRAIGHT_POOL} because those games
+     * are not yet supported
+     */
     static TurnEndHelper create(GameStatus game, ITableStatus tableStatus) throws InvalidGameTypeException {
         if (game.breakType == BreakType.GHOST)
             return new GhostTurnEndHelper(game, tableStatus);
@@ -42,10 +62,24 @@ public abstract class TurnEndHelper {
         }
     }
 
+    /**
+     * Determines whether or not the player could have won the game
+     * @return true if the game is won, false if the game is not
+     */
     abstract boolean showWin();
 
+    /**
+     * Determines whether or not the player could have lost the game
+     * @return true if the game could have been lost, false if the game could not be lost
+     */
     abstract boolean lostGame();
 
+    /**
+     * Determines the default selection for the end of the turn
+     * @return One of {@link com.brookmanholmes.billiards.turn.TurnEnd#GAME_WON}
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#BREAK_MISS}
+     * {@link com.brookmanholmes.billiards.turn.TurnEnd#MISS}, depending on status of the table
+     */
     private TurnEnd selection() {
         if (showWin())
             return TurnEnd.GAME_WON;
@@ -54,43 +88,77 @@ public abstract class TurnEndHelper {
         else return TurnEnd.MISS;
     }
 
+    /**
+     * Determines if the player is allowed to push
+     * @return true if they are, false otherwise
+     */
     boolean showPush() {
         return ((game.allowPush && !game.newGame)
                 || (game.newGame && tableStatus.getBreakBallsMade() > 0))
                 && tableStatus.getShootingBallsMade() == 0;
     }
 
+    /**
+     * Determines if the player is allowed to skip their turn (because the other player pushed or
+     * (in 10 ball) accidentally made a ball)
+     * @return True if they are allowed to skip their turn, false otherwise
+     */
     boolean showTurnSkip() {
         return game.allowTurnSkip
                 && tableStatus.getShootingBallsMade() == 0
                 && tableStatus.getDeadBalls() == 0;
     }
 
+    /**
+     * Determines if the player could have played safe for their turn end
+     * @return true if possible, false otherwise
+     */
     boolean showSafety() {
         return !showWin() && !showBreakMiss();
     }
 
+    /**
+     * Determines if the player could have failed their safety attempt for their turn end
+     * @return True if they potentially missed their safety, false otherwise
+     */
     boolean showSafetyMiss() {
         return !showWin() && !showBreakMiss();
     }
 
+    /**
+     * Determines if the player could have missed for their turn end
+     * @return True if they potentially missed, false otherwise
+     */
     boolean showMiss() {
         return !showWin() && !showBreakMiss();
     }
 
+    /**
+     * Determines if the player potentially fouled at the end of their turn
+     * @return True if a foul was possible, false otherwise
+     */
     boolean checkFoul() {
         return tableStatus.getDeadBallsOnBreak() > 0;
     }
 
+    /**
+     * Determines if the player could have missed on the break
+     * @return True if they potentially missed their break shot, false otherwise
+     */
     boolean showBreakMiss() {
         return game.newGame && tableStatus.getBreakBallsMade() == 0;
     }
 
-    TurnEndOptions.Builder createTurnEndOptionsBuilder() {
+    /**
+     * Create a new TurnEndOptions using the status of this TurnEndHelper
+     * @return A new TurnEndOptions with the corresponding options based on the provided input to
+     * this TurnEndHelper
+     */
+    TurnEndOptions getTurnEndOptions() {
         if (game.playerAllowedToBreakAgain) {
-            return new TurnEndOptions.Builder().allowPlayerToChooseWhoBreaks().defaultOption(TurnEnd.CONTINUE_WITH_GAME);
-        } else if (game.gameType == GameType.BCA_EIGHT_BALL && tableStatus.getGameBallMadeOnBreak()  && tableStatus.getShootingBallsMade() == 0 && tableStatus.getDeadBalls() == 0) {
-            return new TurnEndOptions.Builder().allowPlayerToChooseToContinueGame().defaultOption(TurnEnd.MISS);
+            return new TurnEndOptions.Builder().allowPlayerToChooseWhoBreaks().defaultOption(TurnEnd.CONTINUE_WITH_GAME).build();
+        } else if (allowPlayerToContinueGame()) {
+            return new TurnEndOptions.Builder().allowPlayerToChooseToContinueGame().defaultOption(TurnEnd.MISS).build();
         } else {
             return new TurnEndOptions.Builder()
                     .wonGame(showWin())
@@ -102,8 +170,19 @@ public abstract class TurnEndHelper {
                     .checkScratch(checkFoul())
                     .push(showPush())
                     .skipTurn(showTurnSkip())
-                    .defaultOption(selection());
+                    .defaultOption(selection()).build();
         }
+    }
+
+    /**
+     * Convenience method for determining if the player should be allowed to choose to break again
+     * @return True if the player is allowed the choice of breaking again, false otherwise
+     */
+    private boolean allowPlayerToContinueGame() {
+        return game.gameType == GameType.BCA_EIGHT_BALL &&
+                tableStatus.getGameBallMadeOnBreak()  &&
+                tableStatus.getShootingBallsMade() == 0 &&
+                tableStatus.getDeadBalls() == 0;
     }
 
     /**
@@ -116,7 +195,6 @@ public abstract class TurnEndHelper {
      */
     public static TurnEndOptions getTurnEndOptions(GameStatus game, ITableStatus tableStatus) {
         TurnEndHelper turnEndHelper = TurnEndHelper.create(game, tableStatus);
-
-        return turnEndHelper.createTurnEndOptionsBuilder().build();
+        return turnEndHelper.getTurnEndOptions();
     }
 }

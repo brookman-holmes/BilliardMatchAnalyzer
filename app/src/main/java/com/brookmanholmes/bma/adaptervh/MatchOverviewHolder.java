@@ -42,28 +42,9 @@ public class MatchOverviewHolder extends MatchInfoHolder {
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tvTotalFoulsOpponent) TextView tvTotalFoulsOpponent;
 
-    public MatchOverviewHolder(View view, Match.StatsDetail detail) {
+    public MatchOverviewHolder(View view) {
         super(view);
         title.setText(view.getContext().getString(R.string.title_match_overview));
-        setVisibilities(view, detail);
-    }
-
-    @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
-        if (detail == Match.StatsDetail.SIMPLE) {
-            tvAggressivenessRatingOpponent.setVisibility(View.GONE);
-            tvAggressivenessRatingPlayer.setVisibility(View.GONE);
-            view.findViewById(R.id.tvAggressivenessRating).setVisibility(View.GONE);
-            view.findViewById(R.id.tvTotalShotsTitle).setVisibility(View.GONE);
-            tvTotalShotsOpponent.setVisibility(View.GONE);
-            tvTotalShotsPlayer.setVisibility(View.GONE);
-        } else {
-            tvAggressivenessRatingOpponent.setVisibility(View.VISIBLE);
-            tvAggressivenessRatingPlayer.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.tvAggressivenessRating).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.tvTotalShotsTitle).setVisibility(View.VISIBLE);
-            tvTotalShotsOpponent.setVisibility(View.VISIBLE);
-            tvTotalShotsPlayer.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override public void bind(@NonNull AbstractPlayer player, @NonNull AbstractPlayer opponent) {

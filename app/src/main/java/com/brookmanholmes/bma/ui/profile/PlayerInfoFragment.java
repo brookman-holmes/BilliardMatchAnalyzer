@@ -101,7 +101,6 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
         final List<AbstractPlayer> opponents = new ArrayList<>();
         final String playerName;
         final String opponentName;
-        final Match.StatsDetail detail = Match.StatsDetail.NORMAL;
 
         public PlayerInfoAdapter(List<Pair<AbstractPlayer, AbstractPlayer>> pairs, String playerName, String opponentName) {
             splitPlayers(pairs);
@@ -172,15 +171,15 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
         BaseViewHolder getMatchInfoHolderByViewType(View view, int viewType) {
             switch (viewType) {
                 case ITEM_MATCH_OVERVIEW:
-                    return new MatchOverviewHolder(view, detail);
+                    return new MatchOverviewHolder(view);
                 case ITEM_SHOOTING_PCT:
-                    return new ShootingPctHolder(view, detail);
+                    return new ShootingPctHolder(view);
                 case ITEM_BREAKS:
-                    return new BreaksHolder(view, 10, detail);
+                    return new BreaksHolder(view);
                 case ITEM_RUN_OUTS:
-                    return new RunOutsHolder(view, detail);
+                    return new RunOutsHolder(view);
                 case ITEM_SAFETIES:
-                    return new SafetiesHolder(view, detail);
+                    return new SafetiesHolder(view);
                 case ITEM_FOOTER:
                     return new FooterViewHolder(view);
                 default:

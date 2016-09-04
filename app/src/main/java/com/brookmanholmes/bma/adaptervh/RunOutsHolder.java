@@ -27,14 +27,9 @@ public class RunOutsHolder extends MatchInfoHolder {
     @Bind(R.id.tvEarlyWinsPlayer) TextView tvEarlyWinsPlayer;
     @Bind(R.id.tvEarlyWinsOpponent) TextView tvEarlyWinsOpponent;
 
-    public RunOutsHolder(View view, Match.StatsDetail detail) {
+    public RunOutsHolder(View view) {
         super(view);
         title.setText(view.getContext().getString(R.string.title_run_outs));
-        setVisibilities(view, detail);
-    }
-
-    @Override protected void setVisibilities(View view, Match.StatsDetail detail) {
-
     }
 
     @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {

@@ -48,6 +48,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private boolean currentPlayerTurnAndAdvancedStats() {
         PlayerTurn turn = PlayerTurn.valueOf(matchData.getString(MatchDialogHelperUtils.TURN_KEY));
         Match.StatsDetail detail = Match.StatsDetail.valueOf(matchData.getString(STATS_LEVEL_KEY));
+
         if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
             return true;
         else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
@@ -72,9 +73,9 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     public void updatePagesWithTurnInfo() {
-        for (Page page : getCurrentPageSequence()) {
-            if (page instanceof RequiresUpdatedTurnInfo) {
-                ((RequiresUpdatedTurnInfo) page).getNewTurnInfo(this);
+        for (int i = 0; i < getCurrentPageSequence().size(); i++) {
+            if (getCurrentPageSequence().get(i) instanceof RequiresUpdatedTurnInfo) {
+                ((RequiresUpdatedTurnInfo) getCurrentPageSequence().get(i)).getNewTurnInfo(this);
             }
         }
     }

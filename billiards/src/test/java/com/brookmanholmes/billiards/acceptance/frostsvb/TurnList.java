@@ -12,7 +12,7 @@ class TurnList {
      * Game 1 (0-0)
      */
     // Frost breaks and scratches
-    static ITurn turn1 = turn().deadOnBreak(1, 3).scratch().breakMiss();
+    static ITurn turn1 = turn().deadOnBreak(1, 3).fouled().breakMiss();
     // Shane runs outs stripes
     static ITurn turn2 = turn().madeBalls(9, 11, 10, 12, 13, 14, 15, 8).win();
     /**

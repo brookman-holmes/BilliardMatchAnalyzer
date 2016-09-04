@@ -32,7 +32,7 @@ public class TurnList {
     // Hohmann makes the 8 and then plays safe
     private static final ITurn turn7 = turn().offTable(1, 2, 3, 4).madeBalls(8).safety();
     // Shane scratches
-    private static final ITurn turn8 = turn().offTable(1, 2, 3, 4, 8).scratch().safetyMiss();
+    private static final ITurn turn8 = turn().offTable(1, 2, 3, 4, 8).fouled().safetyMiss();
     // Hohmann runs out
     private static final ITurn turn9 = turn().offTable(1, 2, 3, 4, 8).madeBalls(5, 6, 7, 9, 10).win();
     /**
@@ -82,18 +82,18 @@ public class TurnList {
     // Hohmann comes to the table hooked and doesn't get his kick safe
     private static final ITurn turn26 = turn().offTable(1, 2).safetyMiss();
     // Shane scratches on the 4... somehow
-    private static final ITurn turn27 = turn().offTable(1, 2).madeBalls(3).deadBalls(4).scratch().miss();
+    private static final ITurn turn27 = turn().offTable(1, 2).madeBalls(3).deadBalls(4).fouled().miss();
     // Hohmann runs out
     private static final ITurn turn28 = turn().offTable(1, 2, 3, 4).madeBalls(5, 6, 7, 8, 9, 10).win();
     /**
      * Game 7 (5-1)
      */
     // Hohmann scratches on the break
-    private static final ITurn turn29 = turn().deadOnBreak(5).scratch().breakMiss();
+    private static final ITurn turn29 = turn().deadOnBreak(5).fouled().breakMiss();
     // Shane makes a few balls and then plays safe
     private static final ITurn turn30 = turn().offTable(5).madeBalls(1, 2, 3).safety();
     // Hohmann jumps at the 4 and doesn't clear the blocker ball
-    private static final ITurn turn31 = turn().offTable(1, 2, 3, 5).scratch().miss();
+    private static final ITurn turn31 = turn().offTable(1, 2, 3, 5).fouled().miss();
     // Shane better fucking run out
     private static final ITurn turn32 = turn().offTable(1, 2, 3, 5).madeBalls(4, 6, 7, 8, 9, 10).win();
     /**
@@ -117,7 +117,7 @@ public class TurnList {
      * Game 11 (5-5)
      */
     // Hohmann scratches on the break
-    private static final ITurn turn37 = turn().scratch().breakMiss();
+    private static final ITurn turn37 = turn().fouled().breakMiss();
     // Shane runs out to the 8 and misses
     private static final ITurn turn38 = turn().madeBalls(1, 2, 5, 3, 4, 6, 7).miss();
     // Hohmann
@@ -135,7 +135,7 @@ public class TurnList {
     // Shane plays safe
     private static final ITurn turn42 = turn().safety();
     // Hohmann scratches, not sure if it was a safety attempt or going for it
-    private static final ITurn turn43 = turn().scratch().safetyMiss();
+    private static final ITurn turn43 = turn().fouled().safetyMiss();
     // Shane plays like a crazy man and makes an awesome break out
     private static final ITurn turn44 = turn().madeBalls(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).win();
     /**
@@ -162,13 +162,13 @@ public class TurnList {
     // Hohmann plays a safe
     private static final ITurn turn54 = turn().offTable(3, 8).safety();
     // Shane intentionally fouls
-    private static final ITurn turn55 = turn().offTable(3, 8).scratch().safetyMiss();
+    private static final ITurn turn55 = turn().offTable(3, 8).fouled().safetyMiss();
     // Hohmann hooks him again
     private static final ITurn turn56 = turn().offTable(3, 8).safety();
     // Shane kicks and hits it but can't get safe
     private static final ITurn turn57 = turn().offTable(3, 8).safetyMiss();
     // Hohmann fouls on his pre-stroke??!?
-    private static final ITurn turn58 = turn().offTable(3, 8).madeBalls(1).scratch().miss();
+    private static final ITurn turn58 = turn().offTable(3, 8).madeBalls(1).fouled().miss();
     // Shane runs out
     private static final ITurn turn59 = turn().offTable(3, 8, 1).madeBalls(2, 3, 4, 5, 6, 7, 9, 10).win();
     /**

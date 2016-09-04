@@ -28,14 +28,14 @@ public class TurnList {
     // Roberts fails to run out
     private static final ITurn turn5 = turn().offTable(7, 9).madeBalls(1, 2, 3, 8).miss();
     // Shaw scratches on the 5
-    private static final ITurn turn6 = turn().offTable(1, 2, 3, 8, 7, 9).madeBalls(4).deadBalls(5).scratch().miss();
+    private static final ITurn turn6 = turn().offTable(1, 2, 3, 8, 7, 9).madeBalls(4).deadBalls(5).fouled().miss();
     // Roberts wins
     private static final ITurn turn7 = turn().offTable(1, 2, 3, 8, 7, 9, 4, 5).madeBalls(6, 10).win();
     /**
      * GAME 3
      */
     // Roberts scratches on the break
-    private static final ITurn turn8 = turn().deadOnBreak(6).scratch().breakMiss();
+    private static final ITurn turn8 = turn().deadOnBreak(6).fouled().breakMiss();
     // Shaw runs out
     private static final ITurn turn9 = turn().offTable(6).madeBalls(1, 2, 3, 4, 5, 7, 8, 9, 10).win();
     /**
@@ -65,11 +65,11 @@ public class TurnList {
     // Shaw gives the shot back
     private static final ITurn turn16 = turn().skipTurn();
     // Roberts misses
-    private static final ITurn turn17 = turn().scratch().offTable(1, 4, 6).miss();
+    private static final ITurn turn17 = turn().fouled().offTable(1, 4, 6).miss();
     // Shaw locks him up
     private static final ITurn turn18 = turn().offTable(1, 4, 6).safety();
     // Roberts misses his safety attempt
-    private static final ITurn turn19 = turn().deadBalls(2).offTable(1, 4, 6).scratch().safetyMiss();
+    private static final ITurn turn19 = turn().deadBalls(2).offTable(1, 4, 6).fouled().safetyMiss();
     // Shaw runs out
     private static final ITurn turn20 = turn().offTable(1, 4, 6, 2).madeBalls(3, 5, 7, 8, 9, 10).win();
     /**

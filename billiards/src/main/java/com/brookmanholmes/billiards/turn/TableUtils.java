@@ -14,6 +14,8 @@ import static com.brookmanholmes.billiards.game.util.PlayerColor.STRIPES;
 
 /**
  * Created by Brookman Holmes on 11/7/2015.
+ * A utility class providing static methods for figuring out what stripes/solids were made
+ * given a set of ball statuses
  */
 public class TableUtils {
     /**
