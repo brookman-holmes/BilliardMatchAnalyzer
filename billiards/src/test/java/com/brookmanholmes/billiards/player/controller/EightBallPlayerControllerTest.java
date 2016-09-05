@@ -1,9 +1,9 @@
 package com.brookmanholmes.billiards.player.controller;
 
 import com.brookmanholmes.billiards.game.Game;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.player.EightBallPlayer;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;

@@ -1,6 +1,5 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.game.util.GameType;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
@@ -77,7 +76,7 @@ public class ApaNineBallGameTest extends AbstractGameTest {
     }
 
     private ITurn createGameTurn(TurnEnd turnEnd, TableStatus tableStatus) {
-        return new Turn(0, 0L, false, turnEnd, tableStatus, false, null);
+        return new Turn(turnEnd, tableStatus, false, false, null);
     }
 
     private TableStatus createTableStatus() {

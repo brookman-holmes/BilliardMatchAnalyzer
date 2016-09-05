@@ -1,4 +1,4 @@
-package com.brookmanholmes.billiards.game.util;
+package com.brookmanholmes.billiards.game;
 
 /**
  * Created by Brookman Holmes on 10/26/2015.
@@ -15,5 +15,9 @@ public enum PlayerTurn {
         }
     };
 
+    /**
+     * Convenience method for easily determining which player goes after this one
+     * @return returns the opposite of the enum (PLAYER returns OPPONENT, OPPONENT returns PLAYER)
+     */
     public abstract PlayerTurn nextPlayer();
 }

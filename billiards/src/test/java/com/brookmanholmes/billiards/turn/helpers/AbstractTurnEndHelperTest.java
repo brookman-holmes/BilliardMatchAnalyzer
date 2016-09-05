@@ -1,13 +1,9 @@
 package com.brookmanholmes.billiards.turn.helpers;
 
-import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.turn.Turn;
+import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.junit.Before;
 import org.junit.Test;

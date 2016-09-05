@@ -1,8 +1,5 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.turn.ITurn;
 
 import org.junit.Test;

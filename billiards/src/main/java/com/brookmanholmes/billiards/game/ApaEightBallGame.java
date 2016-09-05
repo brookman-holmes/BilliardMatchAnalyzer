@@ -1,14 +1,12 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerColor;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableUtils;
 
 /**
- * Created by Brookman Holmes on 10/27/2015.
+ * Subclass of {@link com.brookmanholmes.billiards.game.EightBallGame} that keeps track of the
+ * status of a game of 8 ball (APA rule set)
+ * <p></p>Created by Brookman Holmes on 10/27/2015.
  */
 class ApaEightBallGame extends EightBallGame {
     ApaEightBallGame() {

@@ -1,16 +1,16 @@
 package com.brookmanholmes.billiards.turn;
 
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.PlayerColor;
+import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.PlayerColor;
 
 import java.util.Collections;
 import java.util.List;
 
-import static com.brookmanholmes.billiards.game.util.BallStatus.MADE;
-import static com.brookmanholmes.billiards.game.util.BallStatus.MADE_ON_BREAK;
-import static com.brookmanholmes.billiards.game.util.BallStatus.ON_TABLE;
-import static com.brookmanholmes.billiards.game.util.PlayerColor.SOLIDS;
-import static com.brookmanholmes.billiards.game.util.PlayerColor.STRIPES;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.ON_TABLE;
+import static com.brookmanholmes.billiards.game.PlayerColor.SOLIDS;
+import static com.brookmanholmes.billiards.game.PlayerColor.STRIPES;
 
 /**
  * Created by Brookman Holmes on 11/7/2015.

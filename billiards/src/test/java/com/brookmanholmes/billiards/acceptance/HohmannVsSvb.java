@@ -4,9 +4,9 @@ import com.brookmanholmes.billiards.acceptance.hohmannsvb.GameStatusList;
 import com.brookmanholmes.billiards.acceptance.hohmannsvb.TurnEndOptionsList;
 import com.brookmanholmes.billiards.acceptance.hohmannsvb.TurnList;
 import com.brookmanholmes.billiards.game.Game;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.PlayerTurn;
 
 /**
  * Created by Brookman Holmes on 11/10/2015.

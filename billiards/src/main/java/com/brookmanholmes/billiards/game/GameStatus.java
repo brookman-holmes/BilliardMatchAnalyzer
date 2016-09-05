@@ -1,16 +1,11 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerColor;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Brookman Holmes on 10/30/2015.
  * A data class to capture the state of a game
+ * <p></p>Created by Brookman Holmes on 10/30/2015.
  */
 public final class GameStatus {
     public final int GAME_BALL;
@@ -154,6 +149,7 @@ public final class GameStatus {
         return result;
     }
 
+    // TODO: 9/4/2016 JavaDoc this class
     public static final class Builder {
         private final GameType gameType;
         private int MAX_BALLS;

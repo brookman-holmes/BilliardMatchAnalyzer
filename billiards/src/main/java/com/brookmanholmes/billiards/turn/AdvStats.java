@@ -9,6 +9,7 @@ import java.util.List;
  * Data class for storing more advanced information for shooting. Provides options for storing what,
  * how and why a player missed
  */
+// TODO: 9/4/2016 Convert a lot of this stuff to enums
 public class AdvStats {
     private final String player;
     private final String shotType;

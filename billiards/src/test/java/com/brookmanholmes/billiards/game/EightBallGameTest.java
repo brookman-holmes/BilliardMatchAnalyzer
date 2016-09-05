@@ -1,10 +1,5 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerColor;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.Turn;
@@ -39,7 +34,7 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
         TableStatus tableStatus = TableStatus.newTable(game.gameType);
         tableStatus.setBallTo(BallStatus.DEAD_ON_BREAK, 1, 8);
 
-        ITurn turn = new Turn(0, 0L, true, TurnEnd.BREAK_MISS, tableStatus, false, null);
+        ITurn turn = new Turn(TurnEnd.BREAK_MISS, tableStatus, true, false, null);
         assertThat(game.setAllowPlayerToBreakAgain(turn), is(true));
 
         game.addTurn(turn);

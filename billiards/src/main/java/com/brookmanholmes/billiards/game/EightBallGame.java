@@ -1,21 +1,19 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerColor;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableUtils;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.Arrays;
 
-import static com.brookmanholmes.billiards.game.util.PlayerColor.OPEN;
-import static com.brookmanholmes.billiards.game.util.PlayerColor.SOLIDS;
-import static com.brookmanholmes.billiards.game.util.PlayerColor.STRIPES;
+import static com.brookmanholmes.billiards.game.PlayerColor.OPEN;
+import static com.brookmanholmes.billiards.game.PlayerColor.SOLIDS;
+import static com.brookmanholmes.billiards.game.PlayerColor.STRIPES;
 
 /**
- * Created by Brookman Holmes on 10/26/2015.
+ * Subclass of {@link com.brookmanholmes.billiards.game.Game} that keeps track of the status of a
+ * game of 8 ball (BCA rule set)
+ * <p></p>Created by Brookman Holmes on 10/26/2015.
  */
 class EightBallGame extends Game {
     private final static int GAME_BALL = 8;
@@ -35,7 +33,6 @@ class EightBallGame extends Game {
     /**
      * Changes the input from a PlayerColor to the correct PlayerColor based on the turn and returns
      * it
-     *
      * @param currentPlayerColor The player color that the current player should be
      * @return The player color of the Player
      */

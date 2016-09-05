@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.turn;
 
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +13,10 @@ public class Turn implements ITurn {
     private final ITableStatus tableStatus;
     private final TurnEnd turnEnd;
     private final boolean scratch;
-    private final long matchId;
-    private final int inningNumber;
     private final boolean gameLost;
     private final AdvStats advStats;
 
-    public Turn(int inningNumber, long matchId, boolean scratch, TurnEnd turnEnd, ITableStatus tableStatus, boolean isGameLost, AdvStats advStats) {
-        this.inningNumber = inningNumber;
-        this.matchId = matchId;
+    public Turn(TurnEnd turnEnd, ITableStatus tableStatus, boolean scratch, boolean isGameLost, AdvStats advStats) {
         this.scratch = scratch;
         this.turnEnd = turnEnd;
         this.tableStatus = tableStatus;
@@ -114,8 +110,6 @@ public class Turn implements ITurn {
         Turn turn = (Turn) o;
 
         if (scratch != turn.scratch) return false;
-        if (matchId != turn.matchId) return false;
-        if (inningNumber != turn.inningNumber) return false;
         if (gameLost != turn.gameLost) return false;
         if (!tableStatus.equals(turn.tableStatus)) return false;
         if (turnEnd != turn.turnEnd) return false;
@@ -127,8 +121,6 @@ public class Turn implements ITurn {
         int result = tableStatus.hashCode();
         result = 31 * result + turnEnd.hashCode();
         result = 31 * result + (scratch ? 1 : 0);
-        result = 31 * result + (int) (matchId ^ (matchId >>> 32));
-        result = 31 * result + inningNumber;
         result = 31 * result + (gameLost ? 1 : 0);
         result = 31 * result + advStats.hashCode();
         return result;
@@ -139,8 +131,6 @@ public class Turn implements ITurn {
                 "tableStatus=" + tableStatus +
                 "\n turnEnd=" + turnEnd +
                 "\n foul=" + scratch +
-                "\n matchId=" + matchId +
-                "\n inningNumber=" + inningNumber +
                 '}';
     }
 }

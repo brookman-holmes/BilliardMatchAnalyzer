@@ -2,10 +2,10 @@ package com.brookmanholmes.billiards.match;
 
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.Players;
@@ -123,7 +123,7 @@ public class Match implements IMatch {
     }
 
     @Override public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost, AdvStats advStats) {
-        ITurn turn = new Turn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost, advStats);
+        ITurn turn = new Turn(turnEnd, tableStatus, scratch, isGameLost, advStats);
         undoneTurns.clear();
         addTurn(turn);
 
@@ -131,7 +131,7 @@ public class Match implements IMatch {
     }
 
     @Override public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean scratch, boolean isGameLost) {
-        ITurn turn = new Turn(turns.size(), matchId, scratch, turnEnd, tableStatus, isGameLost, new AdvStats.Builder("").build());
+        ITurn turn = new Turn(turnEnd, tableStatus, scratch, isGameLost, new AdvStats.Builder("").build());
         undoneTurns.clear();
         addTurn(turn);
 
@@ -162,7 +162,7 @@ public class Match implements IMatch {
         ITableStatus tableStatus = game.getCurrentTableStatus();
         tableStatus.setBallTo(BallStatus.MADE, game.getGhostBallsToWinGame());
 
-        ITurn turn = new Turn(turns.size(), matchId, false, TurnEnd.GAME_WON, tableStatus, false, null);
+        ITurn turn = new Turn(TurnEnd.GAME_WON, tableStatus, false, false, null);
 
         addTurn(turn);
     }

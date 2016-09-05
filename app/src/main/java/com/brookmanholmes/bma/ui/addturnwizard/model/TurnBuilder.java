@@ -1,6 +1,6 @@
 package com.brookmanholmes.bma.ui.addturnwizard.model;
 
-import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;

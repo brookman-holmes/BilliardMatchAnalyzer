@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.turn;
 
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.GameType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.brookmanholmes.billiards.game.util.BallStatus.DEAD;
-import static com.brookmanholmes.billiards.game.util.BallStatus.DEAD_ON_BREAK;
-import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK;
-import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
-import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
-import static com.brookmanholmes.billiards.game.util.BallStatus.MADE;
-import static com.brookmanholmes.billiards.game.util.BallStatus.MADE_ON_BREAK;
-import static com.brookmanholmes.billiards.game.util.BallStatus.OFF_TABLE;
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD;
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.OFF_TABLE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 

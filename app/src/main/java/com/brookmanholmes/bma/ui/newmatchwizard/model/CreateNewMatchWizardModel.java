@@ -1,11 +1,10 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;

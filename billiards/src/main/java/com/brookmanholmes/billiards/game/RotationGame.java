@@ -1,14 +1,12 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerColor;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 /**
- * Created by Brookman Holmes on 10/25/2015.
+ * Abstract subclass of {@link com.brookmanholmes.billiards.game.Game} that keeps track of the status of a
+ * game of rotation (9, 10 ball)
+ * <p></p>Created by Brookman Holmes on 10/25/2015.
  */
 abstract class RotationGame extends Game {
     RotationGame(GameType gameType, PlayerTurn playerTurn, BreakType breakType, int maxBalls, int gameBall) {

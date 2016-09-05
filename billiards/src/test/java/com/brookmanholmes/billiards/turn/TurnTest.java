@@ -1,15 +1,15 @@
 package com.brookmanholmes.billiards.turn;
 
-import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.GameType;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.brookmanholmes.billiards.game.util.BallStatus.DEAD;
-import static com.brookmanholmes.billiards.game.util.BallStatus.DEAD_ON_BREAK;
-import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
-import static com.brookmanholmes.billiards.game.util.BallStatus.MADE;
-import static com.brookmanholmes.billiards.game.util.BallStatus.MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD;
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE_ON_BREAK;
 import static com.brookmanholmes.billiards.turn.TurnEnd.BREAK_MISS;
 import static com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
 import static com.brookmanholmes.billiards.turn.TurnEnd.MISS;
@@ -92,6 +92,6 @@ public class TurnTest {
 
 
     private ITurn createGameTurn(TableStatus table, boolean scratch, TurnEnd turnEnd, boolean isGameLost) {
-        return new Turn(0, 0L, scratch, turnEnd, table, isGameLost, null);
+        return new Turn(turnEnd, table, scratch, isGameLost, null);
     }
 }

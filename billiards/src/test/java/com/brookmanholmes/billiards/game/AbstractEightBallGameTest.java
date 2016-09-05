@@ -1,8 +1,5 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.game.util.PlayerColor;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
-
 import org.junit.Test;
 
 import java.util.Arrays;

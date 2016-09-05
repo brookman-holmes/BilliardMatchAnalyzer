@@ -1,11 +1,9 @@
 package com.brookmanholmes.bma.ui.stats;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.bma.R;
 
 import butterknife.Bind;

@@ -1,15 +1,15 @@
 package com.brookmanholmes.billiards.acceptance.eberlecoates;
 
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerColor;
+import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.PlayerColor;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.brookmanholmes.billiards.game.util.PlayerTurn.OPPONENT;
-import static com.brookmanholmes.billiards.game.util.PlayerTurn.PLAYER;
+import static com.brookmanholmes.billiards.game.PlayerTurn.OPPONENT;
+import static com.brookmanholmes.billiards.game.PlayerTurn.PLAYER;
 
 /**
  * Created by Brookman Holmes on 11/10/2015.

@@ -9,10 +9,10 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.AdvStats;
@@ -578,11 +578,7 @@ public class DatabaseAdapter {
 
     private ITurn buildTurnFromCursor(Cursor cursor, AdvStats advStats) {
         return new Turn(
-                cursor.getInt(cursor.getColumnIndex(COLUMN_TURN_NUMBER)),
-                cursor.getLong(cursor.getColumnIndex(COLUMN_MATCH_ID)),
-                cursor.getInt(cursor.getColumnIndex(COLUMN_SCRATCH)) == 1,
-                TurnEnd.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TURN_END))),
-                stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS))),
+                TurnEnd.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TURN_END))), stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS))), cursor.getInt(cursor.getColumnIndex(COLUMN_SCRATCH)) == 1,
                 cursor.getInt(cursor.getColumnIndex(COLUMN_IS_GAME_LOST)) == 1,
                 advStats
         );

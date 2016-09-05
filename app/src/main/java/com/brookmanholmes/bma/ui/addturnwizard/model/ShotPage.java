@@ -3,9 +3,9 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerColor;
+import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TableUtils;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.ShotFragment;

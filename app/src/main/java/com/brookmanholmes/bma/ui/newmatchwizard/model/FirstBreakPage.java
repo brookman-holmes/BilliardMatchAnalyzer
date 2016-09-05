@@ -1,6 +1,6 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
+import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.SingleFixedChoicePage;
 

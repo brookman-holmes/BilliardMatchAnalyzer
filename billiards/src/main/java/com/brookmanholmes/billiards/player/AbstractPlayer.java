@@ -5,7 +5,9 @@ import java.util.Date;
 
 /**
  * Created by Brookman Holmes on 10/28/2015.
+ * Data class for storing information about player stats
  */
+// TODO: 9/4/2016 JavaDoc this whole package
 public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     // formatter for percentages (e.g. .875)
     private final static DecimalFormat pctf = new DecimalFormat("#.000");

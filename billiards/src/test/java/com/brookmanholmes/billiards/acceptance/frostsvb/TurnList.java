@@ -1,6 +1,6 @@
 package com.brookmanholmes.billiards.acceptance.frostsvb;
 
-import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 

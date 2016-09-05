@@ -2,7 +2,7 @@ package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.support.v4.app.Fragment;
 
-import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Players;
 import com.brookmanholmes.billiards.player.RaceTo;
 import com.brookmanholmes.bma.ui.newmatchwizard.fragments.RaceToFragment;

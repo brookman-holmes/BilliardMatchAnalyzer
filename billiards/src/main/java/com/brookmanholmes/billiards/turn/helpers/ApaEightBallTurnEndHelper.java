@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.util.BallStatus;
+import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 
 /**

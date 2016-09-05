@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.turn;
 
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameType;
 
 /**
  * Created by Brookman Holmes on 11/8/2015.
@@ -41,7 +41,7 @@ public class TurnBuilder {
     }
 
     /**
-     * Sets status of balls to {@link com.brookmanholmes.billiards.game.util.BallStatus#DEAD}
+     * Sets status of balls to {@link BallStatus#DEAD}
      * @param balls the balls which you want to be set to dead
      * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
      */
@@ -51,7 +51,7 @@ public class TurnBuilder {
     }
 
     /**
-     * Sets status of balls to {@link com.brookmanholmes.billiards.game.util.BallStatus#DEAD_ON_BREAK}
+     * Sets status of balls to {@link BallStatus#DEAD_ON_BREAK}
      * @param balls the balls which you want to be set to dead on the break
      * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
      */
@@ -61,7 +61,7 @@ public class TurnBuilder {
     }
 
     /**
-     * Sets status of balls to {@link com.brookmanholmes.billiards.game.util.BallStatus#MADE}
+     * Sets status of balls to {@link BallStatus#MADE}
      * @param balls the balls which you want to be set to made
      * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
      */
@@ -71,7 +71,7 @@ public class TurnBuilder {
     }
 
     /**
-     * Sets status of game ball to {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_MADE}
+     * Sets status of game ball to {@link BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_MADE}
      * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
      */
     public TurnBuilder gameBallMadeOnBreakAndThenMade() {
@@ -80,7 +80,7 @@ public class TurnBuilder {
     }
 
     /**
-     * Sets status of game ball to {@link com.brookmanholmes.billiards.game.util.BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_DEAD}
+     * Sets status of game ball to {@link BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_DEAD}
      * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
      */
     public TurnBuilder gameBallMadeOnBreakAndThenDead() {
@@ -89,7 +89,7 @@ public class TurnBuilder {
     }
 
     /**
-     * Sets status of balls to {@link com.brookmanholmes.billiards.game.util.BallStatus#MADE_ON_BREAK}
+     * Sets status of balls to {@link BallStatus#MADE_ON_BREAK}
      * @param balls the balls which you want to be set to made on the break
      * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
      */
@@ -99,7 +99,7 @@ public class TurnBuilder {
     }
 
     /**
-     * Sets status of balls to {@link com.brookmanholmes.billiards.game.util.BallStatus#OFF_TABLE}
+     * Sets status of balls to {@link BallStatus#OFF_TABLE}
      * @param balls the balls which you want to be set to off the table
      * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
      */
@@ -134,7 +134,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn miss() {
-        return new Turn(0, 0L, scratch, TurnEnd.MISS, status, false, advStats);
+        return new Turn(TurnEnd.MISS, status, scratch, false, advStats);
     }
 
     /**
@@ -143,7 +143,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn win() {
-        return new Turn(0, 0L, scratch, TurnEnd.GAME_WON, status, false, advStats);
+        return new Turn(TurnEnd.GAME_WON, status, scratch, false, advStats);
     }
 
     /**
@@ -153,7 +153,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn lose() {
-        return new Turn(0, 0L, scratch, TurnEnd.MISS, status, true, advStats);
+        return new Turn(TurnEnd.MISS, status, scratch, true, advStats);
     }
 
     /**
@@ -162,7 +162,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn safety() {
-        return new Turn(0, 0L, scratch, TurnEnd.SAFETY, status, false, advStats);
+        return new Turn(TurnEnd.SAFETY, status, scratch, false, advStats);
     }
 
     /**
@@ -171,7 +171,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn safetyMiss() {
-        return new Turn(0, 0L, scratch, TurnEnd.SAFETY_ERROR, status, false, advStats);
+        return new Turn(TurnEnd.SAFETY_ERROR, status, scratch, false, advStats);
     }
 
     /**
@@ -180,7 +180,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn breakMiss() {
-        return new Turn(0, 0L, scratch, TurnEnd.BREAK_MISS, status, false, advStats);
+        return new Turn(TurnEnd.BREAK_MISS, status, scratch, false, advStats);
     }
 
     /**
@@ -189,7 +189,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn push() {
-        return new Turn(0, 0L, scratch, TurnEnd.PUSH_SHOT, status, false, advStats);
+        return new Turn(TurnEnd.PUSH_SHOT, status, scratch, false, advStats);
     }
 
     /**
@@ -198,7 +198,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn skipTurn() {
-        return new Turn(0, 0L, scratch, TurnEnd.SKIP_TURN, status, false, advStats);
+        return new Turn(TurnEnd.SKIP_TURN, status, scratch, false, advStats);
     }
 
     /**
@@ -207,7 +207,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn continueGame() {
-        return new Turn(0, 0L, scratch, TurnEnd.CONTINUE_WITH_GAME, status, false, advStats);
+        return new Turn(TurnEnd.CONTINUE_WITH_GAME, status, scratch, false, advStats);
     }
 
     /**
@@ -216,7 +216,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn currentPlayerBreaks() {
-        return new Turn(0, 0L, scratch, TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, false, advStats);
+        return new Turn(TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, scratch, false, advStats);
     }
 
     /**
@@ -225,6 +225,6 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn opposingPlayerBreaks() {
-        return new Turn(0, 0L, scratch, TurnEnd.OPPONENT_BREAKS_AGAIN, status, false, advStats);
+        return new Turn(TurnEnd.OPPONENT_BREAKS_AGAIN, status, scratch, false, advStats);
     }
 }

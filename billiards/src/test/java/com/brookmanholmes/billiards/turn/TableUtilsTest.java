@@ -1,13 +1,13 @@
 package com.brookmanholmes.billiards.turn;
 
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameType;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.brookmanholmes.billiards.game.util.BallStatus.MADE;
-import static com.brookmanholmes.billiards.game.util.BallStatus.MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE_ON_BREAK;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 

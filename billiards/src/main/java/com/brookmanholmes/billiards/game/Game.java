@@ -1,9 +1,5 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerColor;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
@@ -12,13 +8,14 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.brookmanholmes.billiards.game.util.PlayerColor.OPEN;
-import static com.brookmanholmes.billiards.game.util.PlayerColor.SOLIDS;
-import static com.brookmanholmes.billiards.game.util.PlayerColor.STRIPES;
+import static com.brookmanholmes.billiards.game.PlayerColor.OPEN;
+import static com.brookmanholmes.billiards.game.PlayerColor.SOLIDS;
+import static com.brookmanholmes.billiards.game.PlayerColor.STRIPES;
 
 
 /**
- * Created by Brookman Holmes on 10/26/2015.
+ * Keeps track of the status of a game of pool
+ * <p></p>Created by Brookman Holmes on 10/26/2015.
  */
 public abstract class Game {
     final int GAME_BALL;
@@ -64,6 +61,14 @@ public abstract class Game {
         ballsOnTable = newTable();
     }
 
+    /**
+     * Creates a new game of the correct subclass with the supplied parameters
+     * @param gameType The type of game to create
+     * @param turn Which player starts the game
+     * @param breakType The type of break that will be used throughout the game
+     * @return A new game with the supplied parameters
+     * @throws InvalidGameTypeException
+     */
     public static Game newGame(GameType gameType, PlayerTurn turn, BreakType breakType) throws InvalidGameTypeException {
         // TODO: 10/27/2015 implement straight pool and american rotation games
         switch (gameType) {
@@ -84,7 +89,6 @@ public abstract class Game {
 
     /**
      * Adds a turn to the game and updates it's state based on the turn
-     *
      * @param turn The turn to add to the game
      * @return The new game status of the game
      */
@@ -104,7 +108,8 @@ public abstract class Game {
     }
 
     /**
-     * @param turn
+     * Updates the status of the game based on the incoming turn
+     * @param turn The turn that is being added to the game
      */
     private void updateGameStatus(ITurn turn) {
         setConsecutiveFouls(turn);

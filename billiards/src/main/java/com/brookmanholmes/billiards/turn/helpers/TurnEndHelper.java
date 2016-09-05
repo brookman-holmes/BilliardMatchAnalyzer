@@ -2,8 +2,8 @@ package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
@@ -38,8 +38,8 @@ public abstract class TurnEndHelper {
      * {@link com.brookmanholmes.billiards.turn.TurnEndOptions} for
      * @return A new TurnEndHelper of the correct subclass
      * @throws InvalidGameTypeException when provided with
-     * {@link com.brookmanholmes.billiards.game.util.GameType#AMERICAN_ROTATION} or
-     * {@link com.brookmanholmes.billiards.game.util.GameType#STRAIGHT_POOL} because those games
+     * {@link GameType#AMERICAN_ROTATION} or
+     * {@link GameType#STRAIGHT_POOL} because those games
      * are not yet supported
      */
     static TurnEndHelper create(GameStatus game, ITableStatus tableStatus) throws InvalidGameTypeException {

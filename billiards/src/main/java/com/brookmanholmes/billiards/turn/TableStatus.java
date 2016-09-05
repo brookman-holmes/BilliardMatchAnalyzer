@@ -1,8 +1,8 @@
 package com.brookmanholmes.billiards.turn;
 
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.util.BallStatus;
-import com.brookmanholmes.billiards.game.util.GameType;
+import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,18 +10,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.brookmanholmes.billiards.game.util.BallStatus.DEAD;
-import static com.brookmanholmes.billiards.game.util.BallStatus.DEAD_ON_BREAK;
-import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_DEAD_ON_BREAK;
-import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD;
-import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE;
-import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK;
-import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
-import static com.brookmanholmes.billiards.game.util.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
-import static com.brookmanholmes.billiards.game.util.BallStatus.MADE;
-import static com.brookmanholmes.billiards.game.util.BallStatus.MADE_ON_BREAK;
-import static com.brookmanholmes.billiards.game.util.BallStatus.OFF_TABLE;
-import static com.brookmanholmes.billiards.game.util.BallStatus.ON_TABLE;
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD;
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.OFF_TABLE;
+import static com.brookmanholmes.billiards.game.BallStatus.ON_TABLE;
 
 /**
  * Created by Brookman Holmes on 10/25/2015.
@@ -60,11 +60,11 @@ final public class TableStatus implements ITableStatus {
     /**
      * Creates a new table of the correct size with all balls on the table
      * @param gameType The type of game this table represents
-     * {@link com.brookmanholmes.billiards.game.util.GameType}
+     * {@link GameType}
      * @return A new table with all balls on it
      * @throws InvalidGameTypeException thrown when
-     * {@link com.brookmanholmes.billiards.game.util.GameType#AMERICAN_ROTATION} or
-     * {@link com.brookmanholmes.billiards.game.util.GameType#STRAIGHT_POOL} is selected because
+     * {@link GameType#AMERICAN_ROTATION} or
+     * {@link GameType#STRAIGHT_POOL} is selected because
      * these games are not yet supported
      */
     public static TableStatus newTable(GameType gameType) throws InvalidGameTypeException {
@@ -90,8 +90,8 @@ final public class TableStatus implements ITableStatus {
      * @param ballsOnTable The balls which you want to remain on the table
      * @return A new table with only the balls in {@param ballsOnTable} on it
      * @throws InvalidGameTypeException thrown when
-     * {@link com.brookmanholmes.billiards.game.util.GameType#AMERICAN_ROTATION} or
-     * {@link com.brookmanholmes.billiards.game.util.GameType#STRAIGHT_POOL} is selected because
+     * {@link GameType#AMERICAN_ROTATION} or
+     * {@link GameType#STRAIGHT_POOL} is selected because
      * these games are not yet supported
      */
     public static TableStatus newTable(GameType gameType, List<Integer> ballsOnTable) throws InvalidGameTypeException {

@@ -1,13 +1,12 @@
 package com.brookmanholmes.billiards.game;
 
-import com.brookmanholmes.billiards.game.util.BreakType;
-import com.brookmanholmes.billiards.game.util.GameType;
-import com.brookmanholmes.billiards.game.util.PlayerTurn;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 /**
- * Created by Brookman Holmes on 10/27/2015.
+ * Subclass of {@link com.brookmanholmes.billiards.game.RotationGame} that keeps track of the status
+ * of a game of 10 ball (BCA rule set)
+ * <p></p>Created by Brookman Holmes on 10/27/2015.
  */
 class TenBallGame extends RotationGame {
     private final static int GAME_BALL = 10;

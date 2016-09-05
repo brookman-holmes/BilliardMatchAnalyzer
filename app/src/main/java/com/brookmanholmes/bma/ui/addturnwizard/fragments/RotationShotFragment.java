@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.ShotPage;
-import com.brookmanholmes.billiards.game.util.BallStatus;
+import com.brookmanholmes.billiards.game.BallStatus;
 
 import java.util.List;
 
