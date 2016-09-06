@@ -221,7 +221,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
 
         private void bind(ITurn turn, PlayerTurn playerTurn, AbstractPlayer player) {
             String color = (playerTurn == PlayerTurn.PLAYER ? "#2196F3" : "#FF3D00");
-            TurnStringAdapter turnStringAdapter = new TurnStringAdapter(turn, player, color);
+            TurnStringAdapter turnStringAdapter = new TurnStringAdapter(itemView.getContext(), turn, player, color);
 
             turnString.setText(turnStringAdapter.getTurnString());
 

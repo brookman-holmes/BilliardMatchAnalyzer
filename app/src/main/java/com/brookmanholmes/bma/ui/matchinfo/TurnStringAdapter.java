@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
+import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -7,6 +8,7 @@ import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 /**
  * Created by Brookman Holmes on 4/30/2016.
@@ -15,9 +17,10 @@ class TurnStringAdapter {
     private final ITurn turn;
     private final String playerName;
     private final StringBuilder turnBuilder = new StringBuilder();
-
-    public TurnStringAdapter(ITurn turn, AbstractPlayer player, String color) {
+    private final Context context;
+    public TurnStringAdapter(Context context, ITurn turn, AbstractPlayer player, String color) {
         this.turn = turn;
+        this.context = context;
 
         playerName = "<b><font color='" + color + "'>" + player.getName() + "</font></b>";
     }
@@ -130,27 +133,23 @@ class TurnStringAdapter {
 
     private void buildAdvStats() {
         if (turn.getAdvStats().getShotType() == AdvStats.ShotType.BREAK_SHOT) {
-            for (AdvStats.WhyType item : turn.getAdvStats().getWhyTypes()) {
-                turnBuilder.append(" (")
-                        .append(formatVal(item.name()))
-                        .append(")");
-            }
+            appendHowAndWhy();
         } else if (turn.getAdvStats().getShotType() == AdvStats.ShotType.SAFETY_ERROR) {
             appendHowAndWhy();
         } else if (turn.getAdvStats().getShotType() == AdvStats.ShotType.SAFETY) {
             turnBuilder.append(" (")
-                    .append(formatVal(turn.getAdvStats().getShotSubtype().name()))
+                    .append(formatVal(toString(turn.getAdvStats().getShotSubtype())))
                     .append(")");
         } else { // this should be misses
             if (turn.getTurnEnd() != TurnEnd.GAME_WON)
                 turnBuilder.append(" on a ");
 
             if (turn.getAdvStats().getAngles().size() > 0) {
-                turnBuilder.append(turn.getAdvStats().getAngles().get(0));
+                turnBuilder.append(toString(turn.getAdvStats().getAngles().get(0)));
 
                 for (int i = 1; i < turn.getAdvStats().getAngles().size(); i++) {
                     turnBuilder.append(", ");
-                    turnBuilder.append(turn.getAdvStats().getAngles().get(i));
+                    turnBuilder.append(toString(turn.getAdvStats().getAngles().get(i)));
                 }
                 turnBuilder.append(" ");
             }
@@ -158,9 +157,9 @@ class TurnStringAdapter {
             turnBuilder.append(" ");
 
             if (turn.getAdvStats().getShotSubtype() != AdvStats.SubType.NONE) {
-                turnBuilder.append(formatVal(turn.getAdvStats().getShotSubtype().name()));
+                turnBuilder.append(formatVal(toString(turn.getAdvStats().getShotSubtype())));
             } else {
-                turnBuilder.append(formatVal(turn.getAdvStats().getShotType().name()));
+                turnBuilder.append(formatVal(toString(turn.getAdvStats().getShotType())));
             }
 
             appendHowAndWhy();
@@ -174,7 +173,7 @@ class TurnStringAdapter {
         }
 
         for (int i = 0; i < turn.getAdvStats().getHowTypes().size(); i++) {
-            turnBuilder.append(turn.getAdvStats().getHowTypes().get(i));
+            turnBuilder.append(toString(turn.getAdvStats().getHowTypes().get(i)));
 
             if (i != turn.getAdvStats().getHowTypes().size() - 1)
                 turnBuilder.append(", ");
@@ -186,10 +185,30 @@ class TurnStringAdapter {
         }
 
         for (int i = 0; i < turn.getAdvStats().getWhyTypes().size(); i++) {
-            turnBuilder.append(turn.getAdvStats().getWhyTypes().get(i));
+            turnBuilder.append(toString(turn.getAdvStats().getWhyTypes().get(i)));
 
             if (i != turn.getAdvStats().getWhyTypes().size() - 1)
                 turnBuilder.append(", ");
         }
+    }
+
+    private String toString(AdvStats.ShotType shotType) {
+        return context.getString(MatchDialogHelperUtils.convertShotTypeToStringRes(shotType)).toLowerCase();
+    }
+
+    private String toString(AdvStats.SubType subType) {
+        return context.getString(MatchDialogHelperUtils.convertSubTypeToStringRes(subType)).toLowerCase();
+    }
+
+    private String toString(AdvStats.WhyType whyType) {
+        return context.getString(MatchDialogHelperUtils.convertWhyTypeToStringRes(whyType)).toLowerCase();
+    }
+
+    private String toString(AdvStats.Angle angle) {
+        return context.getString(MatchDialogHelperUtils.convertAngleToStringRes(angle)).toLowerCase();
+    }
+
+    private String toString(AdvStats.HowType howType) {
+        return context.getString(MatchDialogHelperUtils.convertHowToStringRes(howType)).toLowerCase();
     }
 }

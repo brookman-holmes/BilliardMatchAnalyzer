@@ -654,4 +654,39 @@ public class MatchDialogHelperUtils {
                 throw new IllegalArgumentException("No such conversion for " + shotSubtype);
         }
     }
+
+    public static @StringRes int convertHowToStringRes(AdvStats.HowType howType) {
+        switch (howType) {
+            case MISCUE:
+                return R.string.miscue;
+            case TOO_HARD:
+                return R.string.too_hard;
+            case TOO_SOFT:
+                return R.string.too_soft;
+            case AIM_LEFT:
+                return R.string.aim_to_left;
+            case AIM_RIGHT:
+                return R.string.aim_to_right;
+            case KICKED_IN:
+                return R.string.kicked_in;
+            case THIN:
+                return R.string.thin_hit;
+            case THICK:
+                return R.string.thick_hit;
+            case KICK_LONG:
+                return R.string.kick_long;
+            case KICK_SHORT:
+                return R.string.kick_short;
+            case BANK_LONG:
+                return R.string.bank_long;
+            case BANK_SHORT:
+                return R.string.bank_short;
+            case CURVE_EARLY:
+                return R.string.curve_early;
+            case CURVE_LATE:
+                return R.string.curve_late;
+            default:
+                throw new IllegalArgumentException("No conversion for " + howType);
+        }
+    }
 }
