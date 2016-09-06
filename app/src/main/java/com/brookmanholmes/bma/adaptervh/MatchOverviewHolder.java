@@ -8,10 +8,12 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
+import com.brookmanholmes.billiards.player.CompPlayer;
 import com.brookmanholmes.billiards.player.IApa;
 import com.brookmanholmes.bma.R;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by helios on 4/12/2016.
@@ -60,6 +62,10 @@ public class MatchOverviewHolder extends MatchInfoHolder {
             tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), ((ApaEightBallPlayer) player).getPointsNeeded(opponent.getRank())));
             tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), ((ApaEightBallPlayer) opponent).getPointsNeeded(player.getRank())));
         } else if (player instanceof ApaNineBallPlayer && opponent instanceof ApaNineBallPlayer){
+            ((TextView)itemView.findViewById(R.id.tvWinTotalTitle)).setText(itemView.getContext().getString(R.string.title_games_won_apa));
+            tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGamesPlayed()));
+            tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getGamesPlayed()));
+        } else if (player instanceof CompPlayer && opponent instanceof CompPlayer) {
             ((TextView)itemView.findViewById(R.id.tvWinTotalTitle)).setText(itemView.getContext().getString(R.string.title_games_won_apa));
             tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGamesPlayed()));
             tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getGamesPlayed()));
