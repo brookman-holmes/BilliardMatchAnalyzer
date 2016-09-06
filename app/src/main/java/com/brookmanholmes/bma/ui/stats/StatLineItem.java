@@ -2,6 +2,8 @@ package com.brookmanholmes.bma.ui.stats;
 
 import android.support.annotation.NonNull;
 
+import com.brookmanholmes.billiards.turn.AdvStats;
+
 import java.text.NumberFormat;
 
 /**
@@ -10,18 +12,18 @@ import java.text.NumberFormat;
 public class StatLineItem implements Comparable<StatLineItem> {
     final NumberFormat pctf = NumberFormat.getPercentInstance();
 
-    private final String description;
+    private final String shotType;
     private final int total;
     private int count;
 
-    public StatLineItem(String description, int total) {
-        this.description = description;
+    public StatLineItem(String shotType, int total) {
+        this.shotType = shotType;
         this.count = 0;
         this.total = total;
     }
 
     public String getDescription() {
-        return description;
+        return shotType;
     }
 
     public int getCount() {

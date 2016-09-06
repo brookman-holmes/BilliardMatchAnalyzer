@@ -2,6 +2,7 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 
 import android.support.v4.app.Fragment;
 
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.MultipleFixedChoicePage;
 import com.brookmanholmes.bma.wizard.ui.MultipleChoiceFragment;
@@ -15,17 +16,7 @@ public class WhyMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        if (parentKey.equals("break miss why") || parentKey.equals("illegal break why")) {
-            model.getAdvStats().shotType("Break shot");
-            model.getAdvStats().clearHowTypes();
-            model.getAdvStats().clearWhyTypes();
-            model.getAdvStats().clearAngle();
-            model.getAdvStats().clearSubType();
-        }
-
-        model.getAdvStats().clearWhyTypes();
-        if (data.getStringArrayList(SIMPLE_DATA_KEY) != null)
-            model.getAdvStats().whyTypes(data.getStringArrayList(SIMPLE_DATA_KEY));
+        model.setWhys(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
 

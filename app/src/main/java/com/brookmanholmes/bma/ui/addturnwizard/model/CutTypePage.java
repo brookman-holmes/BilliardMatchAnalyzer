@@ -15,7 +15,7 @@ public class CutTypePage extends SingleFixedChoicePage implements UpdatesTurnInf
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        model.getAdvStats().subType(data.getString(SIMPLE_DATA_KEY));
+        model.setSubType(data.getString(SIMPLE_DATA_KEY));
     }
 
     @Override public Fragment createFragment() {

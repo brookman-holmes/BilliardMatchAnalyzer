@@ -29,7 +29,7 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
     List<AdvStats> stats = new ArrayList<>();
     @Bind(R.id.parentView) LinearLayout statsLayout;
     String playerName;
-    List<String> shotTypes;
+    String[] shotTypes;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +39,13 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
 
         DatabaseAdapter db = new DatabaseAdapter(getContext());
         stats = matchId == -1L ?
-                db.getAdvStats(playerName, shotTypes.toArray(new String[shotTypes.size()])) :
-                db.getAdvStats(matchId, playerName, shotTypes.toArray(new String[shotTypes.size()]));
+                db.getAdvStats(playerName, shotTypes) :
+                db.getAdvStats(matchId, playerName, shotTypes);
     }
 
     abstract void updateView();
 
-    abstract List<String> getShotTypes();
+    abstract String[] getShotTypes();
 
     @LayoutRes abstract int getLayoutId();
 
@@ -81,7 +81,7 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
 
     @Override
     public void setFilter(StatFilter filter) {
-        stats = new DatabaseAdapter(getContext()).getAdvStats(playerName, shotTypes.toArray(new String[shotTypes.size()]), filter);
+        stats = new DatabaseAdapter(getContext()).getAdvStats(playerName, shotTypes, filter);
         updateView();
     }
 }

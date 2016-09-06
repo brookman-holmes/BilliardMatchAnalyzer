@@ -18,9 +18,7 @@ public class HowMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        model.getAdvStats().clearHowTypes();
-        if (data.getStringArrayList(SIMPLE_DATA_KEY) != null)
-            model.getAdvStats().howTypes(data.getStringArrayList(SIMPLE_DATA_KEY));
+        model.setHows(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
     @Override public Fragment createFragment() {

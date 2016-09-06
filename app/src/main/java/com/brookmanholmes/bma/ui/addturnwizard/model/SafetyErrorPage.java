@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.addturnwizard.model;
 
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 
 /**
@@ -11,10 +12,7 @@ public class SafetyErrorPage extends HowMissPage {
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        model.getAdvStats().shotType("Safety error");
-        model.getAdvStats().clearAngle();
-        model.getAdvStats().clearSubType();
-        model.getAdvStats().clearWhyTypes();
+        model.setShotType(AdvStats.ShotType.SAFETY_ERROR);
 
         super.updateTurnInfo(model);
     }

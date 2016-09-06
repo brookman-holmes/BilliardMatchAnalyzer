@@ -12,17 +12,17 @@ import java.util.List;
 // TODO: 9/4/2016 Convert a lot of this stuff to enums
 public class AdvStats {
     private final String player;
-    private final String shotType;
-    private final String shotSubtype;
-    private final List<String> howTypes = new ArrayList<>();
-    private final List<String> whyTypes = new ArrayList<>();
-    private final List<String> angles = new ArrayList<>();
+    private final ShotType shotType;
+    private final SubType shotSubtype;
+    private final List<HowType> howTypes = new ArrayList<>();
+    private final List<WhyType> whyTypes = new ArrayList<>();
+    private final List<Angle> angles = new ArrayList<>();
     private final String startingPosition;
     private final boolean use;
 
     private AdvStats(Builder builder) {
         this.shotType = builder.shotType;
-        this.shotSubtype = builder.shotSubtype;
+        this.shotSubtype = builder.subType;
         howTypes.addAll(builder.howTypes);
         whyTypes.addAll(builder.whyTypes);
         angles.addAll(builder.angles);
@@ -63,7 +63,7 @@ public class AdvStats {
      * 2 rail, long rail)
      * @return A list of angles for this shot
      */
-    public List<String> getAngles() {
+    public List<Angle> getAngles() {
         return angles;
     }
 
@@ -71,7 +71,7 @@ public class AdvStats {
      * The type of shot that was missed (cut shot, bank shot, jump shot, etc.)
      * @return A type of shot
      */
-    public String getShotType() {
+    public ShotType getShotType() {
         return shotType;
     }
 
@@ -79,7 +79,7 @@ public class AdvStats {
      * The sub type of the shot (back cut, rail cut, wing cut)
      * @return The sub type of the shot
      */
-    public String getShotSubtype() {
+    public SubType getShotSubtype() {
         return shotSubtype;
     }
 
@@ -87,7 +87,7 @@ public class AdvStats {
      * A list of how the shot was missed (over cut, under cut, miscue, etc.)
      * @return A list of how the shot was missed
      */
-    public List<String> getHowTypes() {
+    public List<HowType> getHowTypes() {
         return howTypes;
     }
 
@@ -95,7 +95,7 @@ public class AdvStats {
      * A list of why the shot was missed (too much outside english, too much draw, etc.)
      * @return A list of reasons why the shot was missed
      */
-    public List<String> getWhyTypes() {
+    public List<WhyType> getWhyTypes() {
         return whyTypes;
     }
 
@@ -116,11 +116,12 @@ public class AdvStats {
      * Builder for creating a new AdvStats object
      */
     public static class Builder {
-        private final List<String> angles = new ArrayList<>();
-        private final List<String> howTypes = new ArrayList<>();
-        private final List<String> whyTypes = new ArrayList<>();
+        private final List<Angle> angles = new ArrayList<>();
+        private final List<HowType> howTypes = new ArrayList<>();
+        private final List<WhyType> whyTypes = new ArrayList<>();
         private String player;
-        private String shotType = "", shotSubtype = "";
+        private ShotType shotType = ShotType.NONE;
+        private SubType subType = SubType.NONE;
         private String startingPosition = "";
         private boolean use;
 
@@ -153,7 +154,7 @@ public class AdvStats {
          * @param shotType The type of shot that was missed
          * @return  An instance of this builder for chaining purposes
          */
-        public Builder shotType(String shotType) {
+        public Builder shotType(ShotType shotType) {
             this.shotType = shotType;
             return this;
         }
@@ -180,11 +181,11 @@ public class AdvStats {
 
         /**
          * The subtype of shot for the player (rail cut, wing cut, etc.)
-         * @param shotSubtype The subtype of shot for the player
+         * @param subType The subtype of shot for the player
          * @return An instance of this builder for chaining purposes
          */
-        public Builder subType(String shotSubtype) {
-            this.shotSubtype = shotSubtype;
+        public Builder subType(SubType subType) {
+            this.subType = subType;
             return this;
         }
 
@@ -193,7 +194,7 @@ public class AdvStats {
          * @param angles An array of angles to add
          * @return An instance of this builder for chaining purposes
          */
-        public Builder angle(String... angles) {
+        public Builder angle(Angle... angles) {
             this.angles.addAll(Arrays.asList(angles));
             return this;
         }
@@ -203,7 +204,7 @@ public class AdvStats {
          * @param angles A list of angles to add
          * @return An instance of this builder for chaining purposes
          */
-        public Builder angle(List<String> angles) {
+        public Builder angle(List<Angle> angles) {
             this.angles.addAll(angles);
             return this;
         }
@@ -213,7 +214,7 @@ public class AdvStats {
          * @param hows A list of hows to add
          * @return An instance of this builder for chaining purposes
          */
-        public Builder howTypes(List<String> hows) {
+        public Builder howTypes(List<HowType> hows) {
             howTypes.addAll(hows);
             return this;
         }
@@ -223,7 +224,7 @@ public class AdvStats {
          * @param hows An array of hows to add
          * @return An instance of this builder for chaining purposes
          */
-        public Builder howTypes(String... hows) {
+        public Builder howTypes(HowType... hows) {
             howTypes.addAll(Arrays.asList(hows));
 
             return this;
@@ -234,7 +235,7 @@ public class AdvStats {
          * @param whys A list of whys to add
          * @return An instance of this builder for chaining purposes
          */
-        public Builder whyTypes(List<String> whys) {
+        public Builder whyTypes(List<WhyType> whys) {
             whyTypes.addAll(whys);
             return this;
         }
@@ -244,7 +245,7 @@ public class AdvStats {
          * @param whys An array of whys to add
          * @return An instance of this builder for chaining purposes
          */
-        public Builder whyTypes(String... whys) {
+        public Builder whyTypes(WhyType... whys) {
             whyTypes.addAll(Arrays.asList(whys));
 
             return this;
@@ -254,7 +255,7 @@ public class AdvStats {
          * Clears the shot subtype (sets it to an empty string)
          */
         public void clearSubType() {
-            shotSubtype = "";
+            subType = SubType.NONE;
         }
 
         /**
@@ -275,7 +276,7 @@ public class AdvStats {
          * Clears the shot type (sets it to an empty string)
          */
         public void clearShotType() {
-            shotType = "";
+            shotType = ShotType.NONE;
         }
 
         /**
@@ -297,7 +298,7 @@ public class AdvStats {
             return "Builder{" +
                     "player='" + player + '\'' +
                     "\n shotType='" + shotType + '\'' +
-                    "\n shotSubtype='" + shotSubtype + '\'' +
+                    "\n shotSubtype='" + subType + '\'' +
                     "\n angles=" + angles +
                     "\n howTypes=" + howTypes +
                     "\n whyTypes=" + whyTypes +
@@ -305,5 +306,129 @@ public class AdvStats {
                     "\n use=" + use +
                     '}';
         }
+    }
+
+    /**
+     * Created by Brookman Holmes on 9/5/2016.
+     */
+    public enum Angle {
+        ONE_RAIL,
+        TWO_RAIL,
+        THREE_RAIL,
+        FOUR_RAIL,
+        FIVE_RAIL,
+        NATURAL,
+        CROSSOVER,
+        LONG_RAIL,
+        SHORT_RAIL,
+        FIVE,
+        TEN,
+        FIFTEEN,
+        TWENTY,
+        TWENTY_FIVE,
+        THIRTY,
+        THIRTY_FIVE,
+        FORTY,
+        FORTY_FIVE,
+        FIFTY,
+        FIFTY_FIVE,
+        SIXTY,
+        SIXTY_FIVE,
+        SEVENTY,
+        SEVENTY_FIVE,
+        EIGHTY
+    }
+
+    /**
+     * Created by Brookman Holmes on 9/5/2016.
+     */
+    public enum ShotType {
+        NONE,
+        CUT,
+        STRAIGHT_SHOT,
+        BANK,
+        KICK,
+        COMBO,
+        CAROM,
+        JUMP,
+        MASSE,
+        SAFETY,
+        SAFETY_ERROR,
+        BREAK_SHOT;
+
+        public static String[] getShots() {
+            return new String[] {CUT.name(),
+                    STRAIGHT_SHOT.name(),
+                    BANK.name(),
+                    KICK.name(),
+                    COMBO.name(),
+                    CAROM.name(),
+                    JUMP.name(),
+                    MASSE.name()};
+        }
+
+        public static String[] getSafeties() {
+            return new String[] {SAFETY.name(), SAFETY_ERROR.name()};
+        }
+
+        public static String[] getBreaks() {
+            return new String[] {BREAK_SHOT.name()};
+        }
+    }
+
+    public enum HowType {
+        MISCUE,
+        TOO_HARD,
+        TOO_SOFT,
+        AIM_LEFT,
+        AIM_RIGHT,
+        KICKED_IN,
+        THIN,
+        THICK,
+        KICK_LONG,
+        KICK_SHORT,
+        BANK_LONG,
+        BANK_SHORT,
+        CURVE_EARLY,
+        CURVE_LATE
+    }
+
+    public enum WhyType {
+        POSITION,
+        LACK_FOCUS,
+        JACK_UP,
+        ENGLISH,
+        TOO_SOFT,
+        TOO_HARD,
+        CURVED,
+        RAIL,
+        FORCING,
+        FORCING_II,
+        TOO_LITTLE_FOLLOW,
+        TOO_LITTLE_DRAW,
+        TOO_LITTLE_INSIDE,
+        TOO_LITTLE_OUTSIDE,
+        TOO_MUCH_FOLLOW,
+        TOO_MUCH_DRAW,
+        TOO_MUCH_INSIDE,
+        TOO_MUCH_OUTSIDE,
+        TABLE,
+        MECHANICS,
+        IMPEDING_BALL,
+        MISJUDGED,
+        PATTERN
+    }
+
+    public enum SubType {
+        FULL_HOOK,
+        PARTIAL_HOOK,
+        LONG_T,
+        SHORT_T,
+        NO_DIRECT_SHOT,
+        OPEN,
+        WING_CUT,
+        BACK_CUT,
+        RAIL_CUT,
+        NONE
     }
 }

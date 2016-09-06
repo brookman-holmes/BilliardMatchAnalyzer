@@ -4,6 +4,7 @@ import android.text.Html;
 import android.text.Spanned;
 
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
@@ -120,7 +121,7 @@ class TurnStringAdapter {
     Spanned getTurnString() {
         buildTurn();
 
-        if (turn.getAdvStats() != null && !turn.getAdvStats().getShotType().equals("")) {
+        if (turn.getAdvStats() != null && turn.getAdvStats().getShotType() != AdvStats.ShotType.NONE ) {
             buildAdvStats();
         }
 
@@ -128,17 +129,17 @@ class TurnStringAdapter {
     }
 
     private void buildAdvStats() {
-        if (turn.getAdvStats().getShotType().equals("Break shot")) {
-            for (String item : turn.getAdvStats().getWhyTypes()) {
+        if (turn.getAdvStats().getShotType() == AdvStats.ShotType.BREAK_SHOT) {
+            for (AdvStats.WhyType item : turn.getAdvStats().getWhyTypes()) {
                 turnBuilder.append(" (")
-                        .append(formatVal(item.toLowerCase()))
+                        .append(formatVal(item.name()))
                         .append(")");
             }
-        } else if (turn.getAdvStats().getShotType().equals("Safety error")) {
+        } else if (turn.getAdvStats().getShotType() == AdvStats.ShotType.SAFETY_ERROR) {
             appendHowAndWhy();
-        } else if (turn.getAdvStats().getShotType().equals("Safety")) {
+        } else if (turn.getAdvStats().getShotType() == AdvStats.ShotType.SAFETY) {
             turnBuilder.append(" (")
-                    .append(formatVal(turn.getAdvStats().getShotSubtype().toLowerCase()))
+                    .append(formatVal(turn.getAdvStats().getShotSubtype().name()))
                     .append(")");
         } else { // this should be misses
             if (turn.getTurnEnd() != TurnEnd.GAME_WON)
@@ -156,10 +157,10 @@ class TurnStringAdapter {
 
             turnBuilder.append(" ");
 
-            if (!turn.getAdvStats().getShotSubtype().equals("")) {
-                turnBuilder.append(formatVal(turn.getAdvStats().getShotSubtype().toLowerCase()));
+            if (turn.getAdvStats().getShotSubtype() != AdvStats.SubType.NONE) {
+                turnBuilder.append(formatVal(turn.getAdvStats().getShotSubtype().name()));
             } else {
-                turnBuilder.append(formatVal(turn.getAdvStats().getShotType().toLowerCase()));
+                turnBuilder.append(formatVal(turn.getAdvStats().getShotType().name()));
             }
 
             appendHowAndWhy();

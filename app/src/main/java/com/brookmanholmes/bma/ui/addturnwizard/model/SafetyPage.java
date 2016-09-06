@@ -2,6 +2,7 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 
 import android.support.v4.app.Fragment;
 
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.SingleFixedChoicePage;
 import com.brookmanholmes.bma.wizard.ui.SingleChoiceFragment;
@@ -15,11 +16,8 @@ public class SafetyPage extends SingleFixedChoicePage implements UpdatesTurnInfo
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        model.getAdvStats().shotType("Safety");
-        model.getAdvStats().subType(data.getString(SIMPLE_DATA_KEY));
-        model.getAdvStats().clearAngle();
-        model.getAdvStats().clearWhyTypes();
-        model.getAdvStats().clearHowTypes();
+        model.setShotType(AdvStats.ShotType.SAFETY);
+        model.setSubType(data.getString(SIMPLE_DATA_KEY));
     }
 
     @Override public Fragment createFragment() {

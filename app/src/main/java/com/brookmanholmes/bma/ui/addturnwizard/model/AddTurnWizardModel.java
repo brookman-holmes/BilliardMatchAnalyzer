@@ -17,6 +17,9 @@ import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.PageList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.STATS_LEVEL_KEY;
 
 /**
@@ -96,11 +99,74 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     void setTurnEnd(String turnEnd, String foul) {
-        turnBuilder.turnEnd = convertStringToTurnEnd(turnEnd);
+        turnBuilder.turnEnd = MatchDialogHelperUtils.convertStringToTurnEnd(context,
+                turnEnd,
+                matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY),
+                matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY));
 
         if (getFoulPossible(turnBuilder.turnEnd)) {
             turnBuilder.foul = (context.getString(R.string.yes).equals(foul) || context.getString(R.string.foul_lost_game).equals(foul));
             turnBuilder.lostGame = context.getString(R.string.foul_lost_game).equals(foul);
+        }
+    }
+
+    void setAngles(List<String> angles) {
+        getAdvStats().clearAngle();
+        List<AdvStats.Angle> list = new ArrayList<>();
+        for (String angle : angles) {
+            list.add(MatchDialogHelperUtils.convertStringToAngle(context, angle));
+        }
+
+        getAdvStats().angle(list);
+    }
+
+    void setAngles(String angle) {
+        getAdvStats().angle(MatchDialogHelperUtils.convertStringToAngle(context, angle));
+    }
+
+    void setShotType(AdvStats.ShotType shotType) {
+        getAdvStats().shotType(shotType);
+        getAdvStats().clearAngle();
+        getAdvStats().clearSubType();
+        getAdvStats().clearHowTypes();
+        getAdvStats().clearWhyTypes();
+    }
+
+    void setShotType(String shotType) {
+        getAdvStats().shotType(MatchDialogHelperUtils.convertStringToShotType(context, shotType));
+        getAdvStats().clearAngle();
+        getAdvStats().clearSubType();
+        getAdvStats().clearHowTypes();
+        getAdvStats().clearWhyTypes();
+    }
+
+    void setSubType(String subType) {
+        getAdvStats().subType(MatchDialogHelperUtils.convertStringToSubType(context, subType));
+    }
+
+    void setWhys(List<String> whys) {
+        getAdvStats().clearWhyTypes();
+
+        if (whys != null) {
+            List<AdvStats.WhyType> list = new ArrayList<>();
+            for (String why : whys) {
+                list.add(MatchDialogHelperUtils.convertStringToWhyType(context, why));
+            }
+
+            getAdvStats().whyTypes(list);
+        }
+    }
+
+    void setHows(List<String> hows) {
+        getAdvStats().clearHowTypes();
+
+        if (hows != null) {
+            List<AdvStats.HowType> list = new ArrayList<>();
+            for (String how : hows) {
+                list.add(MatchDialogHelperUtils.convertStringToHowType(context, how));
+            }
+
+            getAdvStats().howTypes(list);
         }
     }
 
@@ -111,35 +177,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 || turn == TurnEnd.ILLEGAL_BREAK;
     }
 
-    AdvStats.Builder getAdvStats() {
+    private AdvStats.Builder getAdvStats() {
         return turnBuilder.advStats;
-    }
-
-    private TurnEnd convertStringToTurnEnd(String turnEnd) {
-        if (turnEnd.equals(context.getString(R.string.turn_safety)))
-            return TurnEnd.SAFETY;
-        else if (turnEnd.equals(context.getString(R.string.turn_safety_error)))
-            return TurnEnd.SAFETY_ERROR;
-        else if (turnEnd.equals(context.getString(R.string.turn_break_miss)))
-            return TurnEnd.BREAK_MISS;
-        else if (turnEnd.equals(context.getString(R.string.turn_miss)))
-            return TurnEnd.MISS;
-        else if (turnEnd.equals(context.getString(R.string.turn_push)))
-            return TurnEnd.PUSH_SHOT;
-        else if (turnEnd.equals(context.getString(R.string.turn_skip)))
-            return TurnEnd.SKIP_TURN;
-        else if (turnEnd.equals(context.getString(R.string.turn_illegal_break)))
-            return TurnEnd.ILLEGAL_BREAK;
-        else if (turnEnd.equals(context.getString(R.string.turn_won_game)))
-            return TurnEnd.GAME_WON;
-        else if (turnEnd.equals(context.getString(R.string.turn_current_player_breaks, matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY))))
-            return TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN;
-        else if (turnEnd.equals(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY))))
-            return TurnEnd.OPPONENT_BREAKS_AGAIN;
-        else if (turnEnd.equals(context.getString(R.string.turn_continue_game)))
-            return TurnEnd.CONTINUE_WITH_GAME;
-        else
-            throw new IllegalArgumentException("No such conversion between string and StringRes: " + turnEnd);
     }
 
     private Page getGhostBreakPage() {

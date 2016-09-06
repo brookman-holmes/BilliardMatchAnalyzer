@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
 import com.brookmanholmes.billiards.game.GameStatus;
@@ -13,6 +14,7 @@ import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.InvalidBallException;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
@@ -243,7 +245,7 @@ public class MatchDialogHelperUtils {
             view.setImageLevel(0);
     }
 
-    public static String convertTurnEndToStringRes(Context context, TurnEnd end, String currentPlayer, String opposingPlayer) {
+    public static String convertTurnEndToString(Context context, TurnEnd end, String currentPlayer, String opposingPlayer) {
         switch (end) {
             case SAFETY:
                 return context.getString(R.string.turn_safety);
@@ -269,6 +271,387 @@ public class MatchDialogHelperUtils {
                 return context.getString(R.string.turn_illegal_break);
             default:
                 throw new IllegalArgumentException("No such conversion for: " + end.toString());
+        }
+    }
+
+    public static AdvStats.Angle convertStringToAngle(Context context, String angle) {
+        if (angle.equals(context.getString(R.string.one_rail)))
+            return AdvStats.Angle.ONE_RAIL;
+        else if (angle.equals(context.getString(R.string.two_rail)))
+            return AdvStats.Angle.TWO_RAIL;
+        else if (angle.equals(context.getString(R.string.three_rail)))
+            return AdvStats.Angle.THREE_RAIL;
+        else if (angle.equals(context.getString(R.string.four_rail)))
+            return AdvStats.Angle.FOUR_RAIL;
+        else if (angle.equals(context.getString(R.string.five_rail)))
+            return AdvStats.Angle.FIVE_RAIL;
+        else if (angle.equals(context.getString(R.string.angle_five)))
+            return AdvStats.Angle.FIVE;
+        else if (angle.equals(context.getString(R.string.angle_ten)))
+            return AdvStats.Angle.TEN;
+        else if (angle.equals(context.getString(R.string.angle_fifteen)))
+            return AdvStats.Angle.FIFTEEN;
+        else if (angle.equals(context.getString(R.string.angle_twenty)))
+            return AdvStats.Angle.TWENTY;
+        else if (angle.equals(context.getString(R.string.angle_twenty_five)))
+            return AdvStats.Angle.TWENTY_FIVE;
+        else if (angle.equals(context.getString(R.string.angle_thirty)))
+            return AdvStats.Angle.THIRTY;
+        else if (angle.equals(context.getString(R.string.angle_thirty_five)))
+            return AdvStats.Angle.THIRTY_FIVE;
+        else if (angle.equals(context.getString(R.string.angle_forty)))
+            return AdvStats.Angle.FORTY;
+        else if (angle.equals(context.getString(R.string.angle_forty_five)))
+            return AdvStats.Angle.FORTY_FIVE;
+        else if (angle.equals(context.getString(R.string.angle_fifty)))
+            return AdvStats.Angle.FIFTY;
+        else if (angle.equals(context.getString(R.string.angle_fifty_five)))
+            return AdvStats.Angle.FIFTY_FIVE;
+        else if (angle.equals(context.getString(R.string.angle_sixty)))
+            return AdvStats.Angle.SIXTY;
+        else if (angle.equals(context.getString(R.string.angle_sixty_five)))
+            return AdvStats.Angle.SIXTY_FIVE;
+        else if (angle.equals(context.getString(R.string.angle_seventy)))
+            return AdvStats.Angle.SEVENTY;
+        else if (angle.equals(context.getString(R.string.angle_seventy_five)))
+            return AdvStats.Angle.SEVENTY_FIVE;
+        else if (angle.equals(context.getString(R.string.angle_eighty)))
+            return AdvStats.Angle.EIGHTY;
+        else if (angle.equals(context.getString(R.string.bank_natural)))
+            return AdvStats.Angle.NATURAL;
+        else if (angle.equals(context.getString(R.string.bank_crossover)))
+            return AdvStats.Angle.CROSSOVER;
+        else if (angle.equals(context.getString(R.string.bank_long_rail)))
+            return AdvStats.Angle.LONG_RAIL;
+        else if (angle.equals(context.getString(R.string.bank_short_rail)))
+            return AdvStats.Angle.SHORT_RAIL;
+        else
+            throw new IllegalArgumentException("No such conversion between string and AdvStats.Angle: " + angle);
+    }
+
+    public static AdvStats.ShotType convertStringToShotType(Context context, String shot) {
+        if (shot.equals(context.getString(R.string.miss_cut)))
+            return AdvStats.ShotType.CUT;
+        else if (shot.equals(context.getString(R.string.miss_long)))
+            return AdvStats.ShotType.STRAIGHT_SHOT;
+        else if (shot.equals(context.getString(R.string.miss_bank)))
+            return AdvStats.ShotType.BANK;
+        else if (shot.equals(context.getString(R.string.miss_kick)))
+            return AdvStats.ShotType.KICK;
+        else if (shot.equals(context.getString(R.string.miss_combo)))
+            return AdvStats.ShotType.COMBO;
+        else if (shot.equals(context.getString(R.string.miss_carom)))
+            return AdvStats.ShotType.CAROM;
+        else if (shot.equals(context.getString(R.string.miss_jump)))
+            return AdvStats.ShotType.JUMP;
+        else if (shot.equals(context.getString(R.string.miss_masse)))
+            return AdvStats.ShotType.MASSE;
+        else if (shot.equals(context.getString(R.string.turn_safety)))
+            return AdvStats.ShotType.SAFETY;
+        else if (shot.equals(context.getString(R.string.turn_safety_error)))
+            return AdvStats.ShotType.SAFETY_ERROR;
+        else if (shot.equals(context.getString(R.string.turn_break_miss)))
+            return AdvStats.ShotType.BREAK_SHOT;
+        else throw new IllegalArgumentException("No such conversion between string and AdvStats.ShotType: " + shot);
+    }
+
+    public static AdvStats.WhyType convertStringToWhyType(Context context, String whyType) {
+        if (whyType.equals(context.getString(R.string.why_position)))
+            return AdvStats.WhyType.POSITION;
+        else if (whyType.equals(context.getString(R.string.why_focus)))
+            return AdvStats.WhyType.LACK_FOCUS;
+        else if (whyType.equals(context.getString(R.string.why_jacked_up)))
+            return AdvStats.WhyType.JACK_UP;
+        else if (whyType.equals(context.getString(R.string.why_english)))
+            return AdvStats.WhyType.ENGLISH;
+        else if (whyType.equals(context.getString(R.string.why_slow)))
+            return AdvStats.WhyType.TOO_SOFT;
+        else if (whyType.equals(context.getString(R.string.why_fast)))
+            return AdvStats.WhyType.TOO_HARD;
+        else if (whyType.equals(context.getString(R.string.why_curved)))
+            return AdvStats.WhyType.CURVED;
+        else if (whyType.equals(context.getString(R.string.why_rail)))
+            return AdvStats.WhyType.RAIL;
+        else if (whyType.equals(context.getString(R.string.why_forcing)))
+            return AdvStats.WhyType.FORCING;
+        else if (whyType.equals(context.getString(R.string.why_tried_too_hard)))
+            return AdvStats.WhyType.FORCING_II;
+        else if (whyType.equals(context.getString(R.string.why_too_little_draw)))
+            return AdvStats.WhyType.TOO_LITTLE_DRAW;
+        else if (whyType.equals(context.getString(R.string.why_too_little_follow)))
+            return AdvStats.WhyType.TOO_LITTLE_FOLLOW;
+        else if (whyType.equals(context.getString(R.string.why_too_little_inside)))
+            return AdvStats.WhyType.TOO_LITTLE_INSIDE;
+        else if (whyType.equals(context.getString(R.string.why_too_little_outside)))
+            return AdvStats.WhyType.TOO_LITTLE_OUTSIDE;
+        else if (whyType.equals(context.getString(R.string.why_too_much_draw)))
+            return AdvStats.WhyType.TOO_MUCH_DRAW;
+        else if (whyType.equals(context.getString(R.string.why_too_much_follow)))
+            return AdvStats.WhyType.TOO_MUCH_FOLLOW;
+        else if (whyType.equals(context.getString(R.string.why_too_much_inside)))
+            return AdvStats.WhyType.TOO_MUCH_INSIDE;
+        else if (whyType.equals(context.getString(R.string.why_too_much_outside)))
+            return AdvStats.WhyType.TOO_MUCH_OUTSIDE;
+        else if (whyType.equals(context.getString(R.string.why_table_issues)))
+            return AdvStats.WhyType.TABLE;
+        else if (whyType.equals(context.getString(R.string.why_body_mechanics)))
+            return AdvStats.WhyType.MECHANICS;
+        else if (whyType.equals(context.getString(R.string.why_impeding_ball)))
+            return AdvStats.WhyType.IMPEDING_BALL;
+        else if (whyType.equals(context.getString(R.string.why_aim)))
+            return AdvStats.WhyType.MISJUDGED;
+        else if (whyType.equals(context.getString(R.string.why_bad_pattern)))
+            return AdvStats.WhyType.PATTERN;
+        else throw new IllegalArgumentException("no such conversion for " + whyType);
+    }
+
+    public static AdvStats.HowType convertStringToHowType(Context context, String howType) {
+        if (howType.equals(context.getString(R.string.miscue)))
+            return AdvStats.HowType.MISCUE;
+        else if (howType.equals(context.getString(R.string.too_soft)))
+            return AdvStats.HowType.TOO_SOFT;
+        else if (howType.equals(context.getString(R.string.too_hard)))
+            return AdvStats.HowType.TOO_HARD;
+        else if (howType.equals(context.getString(R.string.aim_to_left)))
+            return AdvStats.HowType.AIM_LEFT;
+        else if (howType.equals(context.getString(R.string.aim_to_right)))
+            return AdvStats.HowType.AIM_RIGHT;
+        else if (howType.equals(context.getString(R.string.thick_hit)))
+            return AdvStats.HowType.THICK;
+        else if (howType.equals(context.getString(R.string.thin_hit)))
+            return AdvStats.HowType.THIN;
+        else if (howType.equals(context.getString(R.string.bank_short)))
+            return AdvStats.HowType.BANK_SHORT;
+        else if (howType.equals(context.getString(R.string.bank_long)))
+            return AdvStats.HowType.BANK_LONG;
+        else if (howType.equals(context.getString(R.string.kick_long)))
+            return AdvStats.HowType.KICK_LONG;
+        else if (howType.equals(context.getString(R.string.kick_short)))
+            return AdvStats.HowType.KICK_SHORT;
+        else if (howType.equals(context.getString(R.string.kicked_in)))
+            return AdvStats.HowType.KICKED_IN;
+        else if (howType.equals(context.getString(R.string.curve_early)))
+            return AdvStats.HowType.CURVE_EARLY;
+        else if (howType.equals(context.getString(R.string.curve_late)))
+            return AdvStats.HowType.CURVE_LATE;
+        else throw new IllegalArgumentException("No such conversion for " + howType);
+    }
+
+    public static AdvStats.SubType convertStringToSubType(Context context, String subType) {
+        if (subType.equals(context.getString(R.string.safety_full_hook)))
+            return AdvStats.SubType.FULL_HOOK;
+        else if (subType.equals(context.getString(R.string.safety_partial_hook)))
+            return AdvStats.SubType.PARTIAL_HOOK;
+        else if (subType.equals(context.getString(R.string.safety_long_t)))
+            return AdvStats.SubType.LONG_T;
+        else if (subType.equals(context.getString(R.string.safety_short_t)))
+            return AdvStats.SubType.SHORT_T;
+        else if (subType.equals(context.getString(R.string.safety_no_shot)))
+            return AdvStats.SubType.NO_DIRECT_SHOT;
+        else if (subType.equals(context.getString(R.string.safety_open)))
+            return AdvStats.SubType.OPEN;
+        else if (subType.equals(context.getString(R.string.cut_wing)))
+            return AdvStats.SubType.WING_CUT;
+        else if (subType.equals(context.getString(R.string.cut_back)))
+            return AdvStats.SubType.BACK_CUT;
+        else if (subType.equals(context.getString(R.string.cut_rail)))
+            return AdvStats.SubType.RAIL_CUT;
+        else throw new IllegalArgumentException("no such conversion for " + subType);
+    }
+
+    public static @StringRes int convertWhyTypeToStringRes(AdvStats.WhyType whyType) {
+        switch (whyType) {
+            case POSITION:
+                return R.string.why_position;
+            case LACK_FOCUS:
+                return R.string.why_focus;
+            case JACK_UP:
+                return R.string.why_jacked_up;
+            case ENGLISH:
+                return R.string.why_english;
+            case TOO_SOFT:
+                return R.string.why_slow;
+            case TOO_HARD:
+                return R.string.why_fast;
+            case CURVED:
+                return R.string.why_curved;
+            case RAIL:
+                return R.string.why_rail;
+            case FORCING:
+                return R.string.why_forcing;
+            case FORCING_II:
+                return R.string.why_tried_too_hard;
+            case TOO_LITTLE_DRAW:
+                return R.string.why_too_little_draw;
+            case TOO_LITTLE_FOLLOW:
+                return R.string.why_too_little_follow;
+            case TOO_LITTLE_INSIDE:
+                return R.string.why_too_little_inside;
+            case TOO_LITTLE_OUTSIDE:
+                return R.string.why_too_little_outside;
+            case TOO_MUCH_DRAW:
+                return R.string.why_too_much_draw;
+            case TOO_MUCH_FOLLOW:
+                return R.string.why_too_much_follow;
+            case TOO_MUCH_INSIDE:
+                return R.string.why_too_much_inside;
+            case TOO_MUCH_OUTSIDE:
+                return R.string.why_too_much_outside;
+            case TABLE:
+                return R.string.why_table_issues;
+            case MECHANICS:
+                return R.string.why_body_mechanics;
+            case IMPEDING_BALL:
+                return R.string.why_impeding_ball;
+            case MISJUDGED:
+                return R.string.why_aim;
+            case PATTERN:
+                return R.string.why_bad_pattern;
+            default:
+                throw new IllegalArgumentException("no conversion for " + whyType);
+        }
+    }
+
+    public static TurnEnd convertStringToTurnEnd(Context context, String turnEnd,
+                                                 String currentPlayer, String opposingPlayer) {
+        if (turnEnd.equals(context.getString(R.string.turn_safety)))
+            return TurnEnd.SAFETY;
+        else if (turnEnd.equals(context.getString(R.string.turn_safety_error)))
+            return TurnEnd.SAFETY_ERROR;
+        else if (turnEnd.equals(context.getString(R.string.turn_break_miss)))
+            return TurnEnd.BREAK_MISS;
+        else if (turnEnd.equals(context.getString(R.string.turn_miss)))
+            return TurnEnd.MISS;
+        else if (turnEnd.equals(context.getString(R.string.turn_push)))
+            return TurnEnd.PUSH_SHOT;
+        else if (turnEnd.equals(context.getString(R.string.turn_skip)))
+            return TurnEnd.SKIP_TURN;
+        else if (turnEnd.equals(context.getString(R.string.turn_illegal_break)))
+            return TurnEnd.ILLEGAL_BREAK;
+        else if (turnEnd.equals(context.getString(R.string.turn_won_game)))
+            return TurnEnd.GAME_WON;
+        else if (turnEnd.equals(context.getString(R.string.turn_current_player_breaks, currentPlayer)))
+            return TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN;
+        else if (turnEnd.equals(context.getString(R.string.turn_non_current_player_breaks, opposingPlayer)))
+            return TurnEnd.OPPONENT_BREAKS_AGAIN;
+        else if (turnEnd.equals(context.getString(R.string.turn_continue_game)))
+            return TurnEnd.CONTINUE_WITH_GAME;
+        else
+            throw new IllegalArgumentException("No such conversion between string and StringRes: " + turnEnd);
+    }
+
+    public static @StringRes int convertShotTypeToStringRes(AdvStats.ShotType shotType) {
+        switch (shotType) {
+            case CUT:
+                return R.string.miss_cut;
+            case STRAIGHT_SHOT:
+                return R.string.miss_long;
+            case BANK:
+                return R.string.miss_bank;
+            case KICK:
+                return R.string.miss_kick;
+            case COMBO:
+                return R.string.miss_combo;
+            case CAROM:
+                return R.string.miss_carom;
+            case JUMP:
+                return R.string.miss_jump;
+            case MASSE:
+                return R.string.miss_masse;
+            case SAFETY:
+                return R.string.turn_safety;
+            case SAFETY_ERROR:
+                return R.string.turn_safety_error;
+            case BREAK_SHOT:
+                return R.string.turn_break_miss;
+            case NONE:
+                return R.string.empty_string;
+            default:
+                throw new IllegalArgumentException("no such conversion " + shotType);
+        }
+    }
+
+    public static @StringRes int convertAngleToStringRes(AdvStats.Angle angle) {
+        switch (angle) {
+            case ONE_RAIL:
+                return R.string.one_rail;
+            case TWO_RAIL:
+                return R.string.two_rail;
+            case THREE_RAIL:
+                return R.string.three_rail;
+            case FOUR_RAIL:
+                return R.string.four_rail;
+            case FIVE_RAIL:
+                return R.string.five_rail;
+            case NATURAL:
+                return R.string.bank_natural;
+            case CROSSOVER:
+                return R.string.bank_crossover;
+            case LONG_RAIL:
+                return R.string.bank_long_rail;
+            case SHORT_RAIL:
+                return R.string.bank_short_rail;
+            case FIVE:
+                return R.string.angle_five;
+            case TEN:
+                return R.string.angle_ten;
+            case FIFTEEN:
+                return R.string.angle_fifteen;
+            case TWENTY:
+                return R.string.angle_twenty;
+            case TWENTY_FIVE:
+                return R.string.angle_twenty_five;
+            case THIRTY:
+                return R.string.angle_thirty;
+            case THIRTY_FIVE:
+                return R.string.angle_thirty_five;
+            case FORTY:
+                return R.string.angle_forty;
+            case FORTY_FIVE:
+                return R.string.angle_forty_five;
+            case FIFTY:
+                return R.string.angle_fifty;
+            case FIFTY_FIVE:
+                return R.string.angle_fifty_five;
+            case SIXTY:
+                return R.string.angle_sixty;
+            case SIXTY_FIVE:
+                return R.string.angle_sixty_five;
+            case SEVENTY:
+                return R.string.angle_seventy;
+            case SEVENTY_FIVE:
+                return R.string.angle_seventy_five;
+            case EIGHTY:
+                return R.string.angle_eighty;
+            default:
+                throw new IllegalArgumentException("No such conversion for " + angle);
+        }
+    }
+
+    public static @StringRes int convertSubTypeToStringRes(AdvStats.SubType shotSubtype) {
+        switch (shotSubtype) {
+            case FULL_HOOK:
+                return R.string.safety_full_hook;
+            case PARTIAL_HOOK:
+                return R.string.safety_partial_hook;
+            case LONG_T:
+                return R.string.safety_long_t;
+            case SHORT_T:
+                return R.string.safety_short_t;
+            case NO_DIRECT_SHOT:
+                return R.string.safety_no_shot;
+            case OPEN:
+                return R.string.safety_open;
+            case WING_CUT:
+                return R.string.cut_wing;
+            case BACK_CUT:
+                return R.string.cut_back;
+            case RAIL_CUT:
+                return R.string.cut_rail;
+            case NONE:
+                return R.string.empty_string;
+            default:
+                throw new IllegalArgumentException("No such conversion for " + shotSubtype);
         }
     }
 }

@@ -32,7 +32,6 @@ public class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public AdvStatsRecyclerAdapter(List<AdvStats> stats) {
         advStats = stats;
-        lineItems = StatsUtils.getStats(stats);
     }
 
     @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -61,21 +60,21 @@ public class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         else if (position == 1)
             ((FilterViewHolder) holder).bind();
         else if (position == 2)
-            ((MiscuesViewHolder) holder).bind(StatsUtils.getMiscues(holder.itemView.getContext(), advStats));
+            ((MiscuesViewHolder) holder).bind(StatsUtils.getMiscues(advStats));
         else if (position == 3) {
-            Pair<Integer, Integer> weights = StatsUtils.getHowCutErrors(holder.itemView.getContext(), advStats);
+            Pair<Integer, Integer> weights = StatsUtils.getHowCutErrors(advStats);
             ((BarGraphViewHolder) holder).bind(weights.first, weights.second, R.string.title_cut,
                     R.string.title_cut_under, R.string.title_cut_over);
         } else if (position == 4) {
-            Pair<Integer, Integer> weights = StatsUtils.getHowAimErrors(holder.itemView.getContext(), advStats);
+            Pair<Integer, Integer> weights = StatsUtils.getHowAimErrors(advStats);
             ((BarGraphViewHolder) holder).bind(weights.first, weights.second, R.string.title_aim,
                     R.string.title_aim_left, R.string.title_aim_right);
         } else if (position == 5) {
-            Pair<Integer, Integer> weights = StatsUtils.getHowBankErrors(holder.itemView.getContext(), advStats);
+            Pair<Integer, Integer> weights = StatsUtils.getHowBankErrors(advStats);
             ((BarGraphViewHolder) holder).bind(weights.first, weights.second, R.string.title_bank_error,
                     R.string.title_short, R.string.title_long);
         } else if (position == 6) {
-            Pair<Integer, Integer> weights = StatsUtils.getHowCutErrors(holder.itemView.getContext(), advStats);
+            Pair<Integer, Integer> weights = StatsUtils.getHowCutErrors(advStats);
             ((BarGraphViewHolder) holder).bind(weights.first, weights.second, R.string.title_kick_error,
                     R.string.title_short, R.string.title_long);
         } else {

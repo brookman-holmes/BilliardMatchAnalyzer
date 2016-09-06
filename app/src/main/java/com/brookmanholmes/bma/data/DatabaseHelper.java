@@ -42,7 +42,7 @@ import static com.brookmanholmes.bma.data.DatabaseAdapter.TABLE_WHYS;
  */
 class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 21;
     private static DatabaseHelper sInstance;
 
     /**

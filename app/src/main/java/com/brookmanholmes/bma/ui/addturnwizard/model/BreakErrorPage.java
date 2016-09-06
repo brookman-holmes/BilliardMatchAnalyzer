@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.addturnwizard.model;
 
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 
 /**
@@ -11,10 +12,7 @@ public class BreakErrorPage extends HowMissPage {
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        model.getAdvStats().shotType("Break shot");
-        model.getAdvStats().clearAngle();
-        model.getAdvStats().clearSubType();
-        model.getAdvStats().clearWhyTypes();
+        model.setShotType(AdvStats.ShotType.BREAK_SHOT);
 
         super.updateTurnInfo(model);
     }

@@ -16,8 +16,7 @@ public class AngleTypePage extends SingleFixedChoicePage implements UpdatesTurnI
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        model.getAdvStats().clearAngle();
-        model.getAdvStats().angle(data.getString(SIMPLE_DATA_KEY));
+        model.setAngles(data.getString(SIMPLE_DATA_KEY));
     }
 
     @Override public Fragment createFragment() {

@@ -15,8 +15,7 @@ public class KickPage extends SingleFixedChoicePage implements UpdatesTurnInfo{
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        model.getAdvStats().clearAngle();
-        model.getAdvStats().angle(data.getString(SIMPLE_DATA_KEY));
+        model.setAngles(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
     @Override public Fragment createFragment() {

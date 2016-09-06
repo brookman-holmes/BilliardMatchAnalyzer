@@ -15,9 +15,7 @@ public class MissBranchPage extends BranchPage implements UpdatesTurnInfo{
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        model.getAdvStats().shotType(data.getString(SIMPLE_DATA_KEY));
-        model.getAdvStats().clearSubType();
-
+        model.setShotType(data.getString(SIMPLE_DATA_KEY));
     }
 
     @Override public Fragment createFragment() {

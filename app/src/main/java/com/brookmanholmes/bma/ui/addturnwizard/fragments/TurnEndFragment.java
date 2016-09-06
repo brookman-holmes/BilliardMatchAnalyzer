@@ -247,7 +247,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
     }
 
     private String getString(TurnEnd ending) {
-        return MatchDialogHelperUtils.convertTurnEndToStringRes(getContext(),
+        return MatchDialogHelperUtils.convertTurnEndToString(getContext(),
                 ending,
                 page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY),
                 page.getData().getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY));

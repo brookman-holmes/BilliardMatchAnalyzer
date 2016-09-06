@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -61,8 +61,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return frag;
     }
 
-    @Override List<String> getShotTypes() {
-        return Arrays.asList(getContext().getResources().getStringArray(R.array.shot_types));
+    @Override String[] getShotTypes() {
+        return AdvStats.ShotType.getShots();
     }
 
     private List<AdvStats> getFilteredStats() {
@@ -81,15 +81,18 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private boolean isShotType(AdvStats stat) {
-        return stat.getShotType().equals(shotType) || shotType.equals("All");
+        // all has to go first otherwise it throws an illegal argument exception
+        return shotType.equals(getString(R.string.all)) || stat.getShotType() == MatchDialogHelperUtils.convertStringToShotType(getContext(), shotType);
     }
 
     private boolean isSubType(AdvStats stat) {
-        return stat.getShotSubtype().equals(subType) || subType.equals("All");
+        // all has to go first otherwise it throws an illegal argument exception
+        return subType.equals(getString(R.string.all)) || stat.getShotSubtype() == MatchDialogHelperUtils.convertStringToSubType(getContext(), subType);
     }
 
     private boolean isAngle(AdvStats stat) {
-        return stat.getAngles().contains(angle) || angle.equals("All");
+        // all has to go first otherwise it throws an illegal argument exception
+        return angle.equals(getString(R.string.all)) || stat.getAngles().contains(MatchDialogHelperUtils.convertStringToAngle(getContext(), angle));
     }
 
     private boolean isKickShot() {
@@ -148,9 +151,9 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     private List<String> getPossibleShotTypes() {
         SortedSet<String> shotTypes = new TreeSet<>();
         for (AdvStats stat : stats) {
-            shotTypes.add(stat.getShotType());
+            shotTypes.add(getString(MatchDialogHelperUtils.convertShotTypeToStringRes(stat.getShotType())));
         }
-        shotTypes.add("All");
+        shotTypes.add(getString(R.string.all));
 
         return new ArrayList<>(shotTypes);
     }
@@ -160,10 +163,10 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         SortedSet<String> shotSubTypes = new TreeSet<>();
         for (AdvStats stat : stats) {
             if (isShotType(stat))
-                shotSubTypes.add(stat.getShotSubtype());
+                shotSubTypes.add(getString(MatchDialogHelperUtils.convertSubTypeToStringRes(stat.getShotSubtype())));
         }
-        shotSubTypes.add("All");
-        shotSubTypes.remove("");
+        shotSubTypes.add(getString(R.string.all));
+        shotSubTypes.remove(getString(R.string.empty_string));
 
         return new ArrayList<>(shotSubTypes);
     }
@@ -171,12 +174,14 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     private List<String> getPossibleAngles() {
         SortedSet<String> angles = new TreeSet<>();
         for (AdvStats stat : stats) {
-            if ((isShotType(stat)) && (isSubType(stat)))
-                angles.addAll(stat.getAngles());
+            if ((isShotType(stat)) && (isSubType(stat))) {
+                for (AdvStats.Angle angle : stat.getAngles())
+                    angles.add(getString(MatchDialogHelperUtils.convertAngleToStringRes(angle)));
+            }
         }
 
         List<String> list = new ArrayList<>(angles);
-        list.add(0, "All");
+        list.add(0, getString(R.string.all));
 
         return list;
     }
@@ -203,11 +208,11 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         setItems(shotSubTypeSpinner, getPossibleShotSubTypes());
         setItems(angleSpinner, getPossibleAngles());
 
-        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getContext(), getFilteredStats()), leftOfAim, rightOfAim);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getContext(), getFilteredStats()), overCut, underCut);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowBankErrors(getContext(), getFilteredStats()), bankShort, bankLong);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(getContext(), getFilteredStats()), kickShort, kickLong);
-        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(getContext(), getFilteredStats())));
+        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getFilteredStats()), leftOfAim, rightOfAim);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getFilteredStats()), overCut, underCut);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowBankErrors(getFilteredStats()), bankShort, bankLong);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(getFilteredStats()), kickShort, kickLong);
+        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(getFilteredStats())));
         setVisibilities();
 
         title.setText(getString(R.string.title_shooting_errors, getFilteredStats().size()));

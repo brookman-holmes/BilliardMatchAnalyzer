@@ -15,9 +15,7 @@ public class BankPage extends MultipleFixedChoicePage implements UpdatesTurnInfo
     }
 
     @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        model.getAdvStats().clearAngle();
-        if (data.getStringArrayList(SIMPLE_DATA_KEY) != null)
-            model.getAdvStats().angle(data.getStringArrayList(SIMPLE_DATA_KEY));
+            model.setAngles(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
     @Override public Fragment createFragment() {

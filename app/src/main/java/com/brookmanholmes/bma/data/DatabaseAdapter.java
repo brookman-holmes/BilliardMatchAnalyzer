@@ -508,8 +508,8 @@ public class DatabaseAdapter {
 
         if (turn.getAdvStats() != null && turn.getAdvStats().use()) {
             ContentValues values = new ContentValues();
-            values.put(COLUMN_SHOT_TYPE, turn.getAdvStats().getShotType());
-            values.put(COLUMN_SHOT_SUB_TYPE, turn.getAdvStats().getShotSubtype());
+            values.put(COLUMN_SHOT_TYPE, turn.getAdvStats().getShotType().name());
+            values.put(COLUMN_SHOT_SUB_TYPE, turn.getAdvStats().getShotSubtype().name());
             values.put(COLUMN_NAME, turn.getAdvStats().getPlayer());
             values.put(COLUMN_TURN_NUMBER, turnCount);
             values.put(COLUMN_MATCH_ID, matchId);
@@ -517,20 +517,38 @@ public class DatabaseAdapter {
 
             long advStatsId = database.insert(TABLE_ADV_STATS, null, values);
 
-            insertAdvStatsList(TABLE_HOWS, turn.getAdvStats().getHowTypes(), advStatsId);
-            insertAdvStatsList(TABLE_WHYS, turn.getAdvStats().getWhyTypes(), advStatsId);
-            insertAdvStatsList(TABLE_ANGLES, turn.getAdvStats().getAngles(), advStatsId);
+            insertHowList(turn.getAdvStats().getHowTypes(), advStatsId);
+            insertWhyList(turn.getAdvStats().getWhyTypes(), advStatsId);
+            insertAngleList(turn.getAdvStats().getAngles(), advStatsId);
         }
 
         database.close();
     }
 
-    private void insertAdvStatsList(String table, List<String> values, long advStatsId) {
-        for (String value : values) {
+    private void insertAngleList(List<AdvStats.Angle> values, long advStatsId) {
+        for (AdvStats.Angle value : values) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(COLUMN_STRING, value);
+            contentValues.put(COLUMN_STRING, value.name());
             contentValues.put(COLUMN_ADV_STATS_ID, advStatsId);
-            database.insert(table, null, contentValues);
+            database.insert(TABLE_ANGLES, null, contentValues);
+        }
+    }
+
+    private void insertHowList(List<AdvStats.HowType> values, long advStatsId) {
+        for (AdvStats.HowType value : values) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COLUMN_STRING, value.name());
+            contentValues.put(COLUMN_ADV_STATS_ID, advStatsId);
+            database.insert(TABLE_HOWS, null, contentValues);
+        }
+    }
+
+    private void insertWhyList(List<AdvStats.WhyType> values, long advStatsId) {
+        for (AdvStats.WhyType value : values) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COLUMN_STRING, value.name());
+            contentValues.put(COLUMN_ADV_STATS_ID, advStatsId);
+            database.insert(TABLE_WHYS, null, contentValues);
         }
     }
 
@@ -705,26 +723,62 @@ public class DatabaseAdapter {
 
         AdvStats.Builder builder = new AdvStats.Builder(c.getString(columnName));
         builder.startingPosition(c.getString(c.getColumnIndex(COLUMN_STARTING_POSITION)))
-                .shotType(c.getString(c.getColumnIndex(COLUMN_SHOT_TYPE)))
-                .subType(c.getString(c.getColumnIndex(COLUMN_SHOT_SUB_TYPE)))
-                .angle(getAdvStatList(TABLE_ANGLES, advStatsId))
-                .howTypes(getAdvStatList(TABLE_HOWS, advStatsId))
-                .whyTypes(getAdvStatList(TABLE_WHYS, advStatsId));
+                .shotType(AdvStats.ShotType.valueOf(c.getString(c.getColumnIndex(COLUMN_SHOT_TYPE))))
+                .subType(AdvStats.SubType.valueOf(c.getString(c.getColumnIndex(COLUMN_SHOT_SUB_TYPE))))
+                .angle(getAngleList(advStatsId))
+                .howTypes(getHowList(advStatsId))
+                .whyTypes(getWhyList(advStatsId));
 
         return builder.build();
     }
 
-    private List<String> getAdvStatList(String table, long id) {
-        List<String> list = new ArrayList<>();
+    private List<AdvStats.Angle> getAngleList(long id) {
+        List<AdvStats.Angle> list = new ArrayList<>();
 
-        Cursor c = database.query(table, null, COLUMN_ADV_STATS_ID + "=?",
+        Cursor c = database.query(TABLE_ANGLES, null, COLUMN_ADV_STATS_ID + "=?",
                 new String[]{String.valueOf(id)},
                 null,
                 null,
                 null);
 
         while (c.moveToNext()) {
-            list.add(c.getString(c.getColumnIndex(COLUMN_STRING)));
+            list.add(AdvStats.Angle.valueOf(c.getString(c.getColumnIndex(COLUMN_STRING))));
+        }
+
+        c.close();
+
+        return list;
+    }
+
+    private List<AdvStats.HowType> getHowList(long id) {
+        List<AdvStats.HowType> list = new ArrayList<>();
+
+        Cursor c = database.query(TABLE_HOWS, null, COLUMN_ADV_STATS_ID + "=?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null);
+
+        while (c.moveToNext()) {
+            list.add(AdvStats.HowType.valueOf(c.getString(c.getColumnIndex(COLUMN_STRING))));
+        }
+
+        c.close();
+
+        return list;
+    }
+
+    private List<AdvStats.WhyType> getWhyList(long id) {
+        List<AdvStats.WhyType> list = new ArrayList<>();
+
+        Cursor c = database.query(TABLE_WHYS, null, COLUMN_ADV_STATS_ID + "=?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null);
+
+        while (c.moveToNext()) {
+            list.add(AdvStats.WhyType.valueOf(c.getString(c.getColumnIndex(COLUMN_STRING))));
         }
 
         c.close();

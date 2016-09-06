@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui.stats;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
 
 import java.util.ArrayList;
@@ -43,10 +44,10 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
     }
 
     @Override void updateView() {
-        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getContext(), stats), overCut, underCut);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(getContext(), stats), slow, fast);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(getContext(), stats), kickShort, kickLong);
-        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(getContext(), stats)));
+        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(stats), overCut, underCut);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(stats), slow, fast);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(stats), kickShort, kickLong);
+        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(stats)));
 
         if (statsLayout != null) {
             StatsUtils.setListOfSafetyStats(statsLayout, stats);
@@ -57,11 +58,8 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
         }
     }
 
-    @Override List<String> getShotTypes() {
-        List<String> list = new ArrayList<>();
-        list.add("Safety");
-        list.add("Safety error");
-        return list;
+    @Override String[] getShotTypes() {
+        return AdvStats.ShotType.getSafeties();
     }
 
     @Override int getLayoutId() {

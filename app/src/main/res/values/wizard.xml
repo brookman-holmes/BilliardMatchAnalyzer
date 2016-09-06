@@ -18,6 +18,7 @@
         <item>@string/miss_combo</item>
         <item>@string/miss_carom</item>
         <item>@string/miss_jump</item>
+        <item>@string/miss_masse</item>
     </string-array>
 
     <string name="title_kick_type">What type of kick did %1$s attempt?</string>
@@ -51,6 +52,24 @@
         <item>@string/bank_long_rail</item>
         <item>@string/bank_short_rail</item>
     </string-array>
+
+    <string name="angle_five">5°</string>
+    <string name="angle_ten">10°</string>
+    <string name="angle_fifteen">15°</string>
+    <string name="angle_twenty">20°</string>
+    <string name="angle_twenty_five">25°</string>
+    <string name="angle_thirty">30°</string>
+    <string name="angle_thirty_five">35°</string>
+    <string name="angle_forty">40°</string>
+    <string name="angle_forty_five">45°</string>
+    <string name="angle_fifty">50°</string>
+    <string name="angle_fifty_five">55°</string>
+    <string name="angle_sixty">60°</string>
+    <string name="angle_sixty_five">65°</string>
+    <string name="angle_seventy">70°</string>
+    <string name="angle_seventy_five">75°</string>
+    <string name="angle_eighty">80°</string>
+
 
     <string-array name="angles">
         <item>10°</item>

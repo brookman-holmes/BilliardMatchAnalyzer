@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui.stats;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
 
 import java.util.ArrayList;
@@ -39,19 +40,17 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
     }
 
     @Override void updateView() {
-        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getContext(), stats), leftOfAim, rightOfAim);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(getContext(), stats), slow, fast);
-        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(getContext(), stats)));
+        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(stats), leftOfAim, rightOfAim);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(stats), slow, fast);
+        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(stats)));
 
         title.setText(getString(R.string.title_break_errors, stats.size()));
 
         StatsUtils.setListOfMissReasons(this.statsLayout, stats);
     }
 
-    @Override List<String> getShotTypes() {
-        List<String> list = new ArrayList<>();
-        list.add("Break shot");
-        return list;
+    @Override String[] getShotTypes() {
+        return AdvStats.ShotType.getBreaks();
     }
 
     @Override int getLayoutId() {

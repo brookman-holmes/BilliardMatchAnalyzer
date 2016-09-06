@@ -274,4 +274,6 @@
     <string name="angle_bank_kick">Angle/Bank/Kick</string>
     <string name="toggle_view">Toggle view</string>
     <string name="play_the_ghost">Play the ghost?</string>
+    <string name="empty_string"/>
+    <string name="all">All</string>
 </resources>

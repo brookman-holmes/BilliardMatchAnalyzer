@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,7 +52,7 @@ class StatsUtils {
     }
 
     public static void setListOfMissReasons(LinearLayout parent, List<AdvStats> stats) {
-        List<StatLineItem> items = getStats(stats);
+        List<StatLineItem> items = getStats(parent.getContext(), stats);
         addRows(parent, items);
     }
 
@@ -82,96 +83,108 @@ class StatsUtils {
 
     private static void setTextOfRow(LinearLayout row, StatLineItem item) {
         ((TextView) row.getChildAt(0)).setText(item.getDescription());
-        ((TextView) row.getChildAt(1)).setText(item.getCount());
+        ((TextView) row.getChildAt(1)).setText(String.valueOf(item.getCount()));
         ((TextView) row.getChildAt(2)).setText(item.getPercentage());
     }
 
-    public static Pair<Integer, Integer> getHowCutErrors(Context context, List<AdvStats> stats) {
+    public static Pair<Integer, Integer> getHowCutErrors(List<AdvStats> stats) {
         int over = 0, under = 0;
 
         for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(context.getString(R.string.thin_hit)))
+            if (stat.getHowTypes().contains(AdvStats.HowType.THIN))
                 over++;
-            else if (stat.getHowTypes().contains(context.getString(R.string.thick_hit)))
+            else if (stat.getHowTypes().contains(AdvStats.HowType.THICK))
                 under++;
         }
 
         return new Pair<>(over, under);
     }
 
-    public static Pair<Integer, Integer> getHowAimErrors(Context context, List<AdvStats> stats) {
+    public static Pair<Integer, Integer> getHowAimErrors(List<AdvStats> stats) {
         int left = 0, right = 0;
 
         for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(context.getString(R.string.aim_to_left)))
+            if (stat.getHowTypes().contains(AdvStats.HowType.AIM_LEFT))
                 left++;
-            else if (stat.getHowTypes().contains(context.getString(R.string.aim_to_right)))
+            else if (stat.getHowTypes().contains(AdvStats.HowType.AIM_RIGHT))
                 right++;
         }
 
         return new Pair<>(left, right);
     }
 
-    public static Pair<Integer, Integer> getHowBankErrors(Context context, List<AdvStats> stats) {
+    public static Pair<Integer, Integer> getHowBankErrors(List<AdvStats> stats) {
         int left = 0, right = 0;
 
         for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(context.getString(R.string.bank_long)))
+            if (stat.getHowTypes().contains(AdvStats.HowType.BANK_LONG))
                 right++;
-            else if (stat.getHowTypes().contains(context.getString(R.string.bank_short)))
+            else if (stat.getHowTypes().contains(AdvStats.HowType.BANK_SHORT))
                 left++;
         }
 
         return new Pair<>(left, right);
     }
 
-    public static Pair<Integer, Integer> getHowKickErrors(Context context, List<AdvStats> stats) {
+    public static Pair<Integer, Integer> getHowKickErrors(List<AdvStats> stats) {
         int left = 0, right = 0;
 
         for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(context.getString(R.string.kick_long)))
+            if (stat.getHowTypes().contains(AdvStats.HowType.KICK_LONG))
                 right++;
-            else if (stat.getHowTypes().contains(context.getString(R.string.kick_short)))
+            else if (stat.getHowTypes().contains(AdvStats.HowType.KICK_SHORT))
                 left++;
         }
 
         return new Pair<>(left, right);
     }
 
-    public static Pair<Integer, Integer> getHowSpeedErrors(Context context, List<AdvStats> stats) {
+    public static Pair<Integer, Integer> getHowSpeedErrors(List<AdvStats> stats) {
         int fast = 0, slow = 0;
 
         for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(context.getString(R.string.too_hard)))
+            if (stat.getHowTypes().contains(AdvStats.HowType.TOO_HARD))
                 fast++;
-            else if (stat.getHowTypes().contains(context.getString(R.string.too_soft)))
+            else if (stat.getHowTypes().contains(AdvStats.HowType.TOO_SOFT))
                 slow++;
         }
 
         return new Pair<>(slow, fast);
     }
 
-    public static List<StatLineItem> getStats(List<AdvStats> stats) {
+    public static List<StatLineItem> getStats(Context context, List<AdvStats> stats) {
         List<StatLineItem> list = new ArrayList<>();
-        Set<String> whyTypes = new HashSet<>();
+        Set<AdvStats.WhyType> whyTypes = new HashSet<>();
         int total = stats.size();
 
         for (AdvStats stat : stats) {
             whyTypes.addAll(stat.getWhyTypes());
         }
 
-        for (String string : whyTypes) {
-            list.add(new StatLineItem(string, total));
+        for (AdvStats.WhyType whyType : whyTypes) {
+            list.add(new StatLineItem(
+                    context.getString(MatchDialogHelperUtils.convertWhyTypeToStringRes(whyType)),
+                    total));
         }
 
         for (StatLineItem item : list) {
-            item.setCount(getCountOfWhyItemsInList(stats, item.getDescription()));
+            item.setCount(getCountOfWhyItemsInList(context, stats, item.getDescription()));
         }
 
         Collections.sort(list);
         Collections.reverse(list);
 
         return list;
+    }
+
+    private static int getCountOfWhyItemsInList(Context context, List<AdvStats> stats, String item) {
+        int count = 0;
+        for (AdvStats stat : stats) {
+            if (stat.getWhyTypes().contains(MatchDialogHelperUtils.convertStringToWhyType(context, item)))
+                count++;
+        }
+
+        return count;
     }
 
     public static void setListOfSafetyStats(LinearLayout parent, List<AdvStats> stats) {
@@ -198,42 +211,32 @@ class StatsUtils {
         return list;
     }
 
+    private static int getCountOfSubTypesInList(Context context, List<AdvStats> stats, String item) {
+        int count = 0;
+
+        if (item.equals(context.getString(R.string.safety_open))) {
+            for (AdvStats stat : stats)
+                if (stat.getShotType() == AdvStats.ShotType.SAFETY_ERROR)
+                    count++;
+        } else
+            for (AdvStats stat : stats)
+                if (stat.getShotSubtype() == MatchDialogHelperUtils.convertStringToSubType(context, item))
+                    count++;
+
+        return count;
+    }
+
     public static int getFailedSafeties(Context context, List<AdvStats> stats) {
         List<StatLineItem> safeties = getSafetyStats(context, stats);
 
         return safeties.get(OPEN).getCount();
     }
 
-    public static int getMiscues(Context context, List<AdvStats> stats) {
+    public static int getMiscues(List<AdvStats> stats) {
         int count = 0;
 
         for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(context.getString(R.string.miscue)))
-                count++;
-        }
-
-        return count;
-    }
-
-    private static int getCountOfSubTypesInList(Context context, List<AdvStats> stats, String item) {
-        int count = 0;
-
-        if (item.equals(context.getString(R.string.safety_open))) {
-            for (AdvStats stat : stats)
-                if (stat.getShotType().equals("Safety error"))
-                    count++;
-        } else
-            for (AdvStats stat : stats)
-                if (stat.getShotSubtype().equals(item))
-                    count++;
-
-        return count;
-    }
-
-    private static int getCountOfWhyItemsInList(List<AdvStats> stats, String item) {
-        int count = 0;
-        for (AdvStats stat : stats) {
-            if (stat.getWhyTypes().contains(item))
+            if (stat.getHowTypes().contains(AdvStats.HowType.MISCUE))
                 count++;
         }
 
