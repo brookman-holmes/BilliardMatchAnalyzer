@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.TextViewCompat;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,8 +110,10 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
 
         listView.setDividerHeight(0);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        listView.setItemChecked(adapter.getPosition(getArguments().getString(ARG_SELECTION_KEY)), true);
-
+        TurnEnd turnEnd = TurnEnd.valueOf(getArguments().getString(ARG_SELECTION_KEY));
+        listView.setItemChecked(adapter.getPosition(getString(turnEnd)), true);
+        updateFoulLayout(getString(turnEnd));
+        // TODO: 9/7/2016 figure out why items aren't automatically checked when given the option of: rebreak, opponent rebreak, continue game 
         return rootView;
     }
 

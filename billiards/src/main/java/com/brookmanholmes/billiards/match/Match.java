@@ -47,7 +47,7 @@ public class Match implements IMatch {
         detail = builder.statsDetail;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
-        createdOn = builder.date;
+        createdOn = (builder.date == null ? new Date() : builder.date);
     }
 
     public long getMatchId() {

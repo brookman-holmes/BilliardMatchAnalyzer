@@ -19,8 +19,8 @@ class EightBallTurnEndHelper extends TurnEndHelper {
     }
 
     @Override boolean lostGame() {
-        return (tableStatus.getGameBallMadeIllegally() || tableStatus.getBallStatus(8) == BallStatus.GAME_BALL_DEAD_ON_BREAK)
-                || (currentPlayerBallsRemaining() && tableStatus.isGameBallMade());
+        return tableStatus.getGameBallMadeIllegally() ||
+                (currentPlayerBallsRemaining() && tableStatus.isGameBallMade());
     }
 
     @Override boolean checkFoul() {

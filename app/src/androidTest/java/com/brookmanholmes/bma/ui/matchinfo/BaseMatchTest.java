@@ -71,6 +71,7 @@ public abstract class BaseMatchTest {
 
     @Test
     public void testInputTurn() {
+        onView(withId(R.id.action_match_view)).perform(click());
         for (ITurn turn : getTurns()) {
             insertTurn(turn);
             match.addTurn(turn);
@@ -88,7 +89,7 @@ public abstract class BaseMatchTest {
                 selectBalls(turn);
                 nextPage();
             }
-        } else {
+        } else if (!match.getGameStatus().playerAllowedToBreakAgain) {
             selectBalls(turn);
             nextPage();
         }
@@ -130,8 +131,8 @@ public abstract class BaseMatchTest {
 
     private boolean isMadeOnBreak(BallStatus status) {
         return status == BallStatus.MADE_ON_BREAK ||
-                status == BallStatus.GAME_BALL_MADE_ON_BREAK||
-                status == BallStatus.GAME_BALL_DEAD_ON_BREAK;
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
     }
 
     private boolean isDeadOnBreak(BallStatus status) {
