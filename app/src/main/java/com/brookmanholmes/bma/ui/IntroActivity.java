@@ -17,6 +17,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -189,7 +190,8 @@ public class IntroActivity extends BaseActivity {
             Overlay overlay = new Overlay()
                     .setStyle(Overlay.Style.Circle)
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryTransparent))
-                    .disableClick(true);
+                    .disableClick(true)
+                    .disableClickThroughHole(true);
 
             ChainTourGuide t2 = ChainTourGuide.init(this)
                     .setToolTip(new ToolTip()

@@ -22,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -62,6 +63,7 @@ import tourguide.tourguide.ChainTourGuide;
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
+import tourguide.tourguide.TourGuide;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
     private static final String TAG = "MatchInfoActivity";
@@ -285,7 +287,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                             .disableClick(true)
                             .disableClickThroughHole(true))
                     .playLater(toolbar);
-
             ChainTourGuide t5 = ChainTourGuide.init(this)
                     .setToolTip(new ToolTip()
                             .setTextColor(ContextCompat.getColor(this, R.color.white))
