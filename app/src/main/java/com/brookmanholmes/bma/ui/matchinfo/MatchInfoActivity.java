@@ -220,7 +220,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         firebaseAnalytics.logEvent("add_turn_finished", bundle);
     }
 
-    private void addTurn(ITurn turn) {
+    void addTurn(ITurn turn) {
         db.insertTurn(turn, getMatchId(), match.getTurnCount());
         updateViews();
     }

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by helios on 8/19/2016.
  */
-class SampleMatchProvider {
+public class SampleMatchProvider {
     public static List<ITurn> getHohmannSvbTurns() {
         return HohmannSvbMatch.getTurns();
     }
