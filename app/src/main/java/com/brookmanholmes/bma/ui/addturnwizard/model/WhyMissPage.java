@@ -19,8 +19,6 @@ public class WhyMissPage extends MultipleFixedChoicePage implements UpdatesTurnI
         model.setWhys(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
-
-
     @Override public Fragment createFragment() {
         return MultipleChoiceFragment.create(getKey(), 1);
     }

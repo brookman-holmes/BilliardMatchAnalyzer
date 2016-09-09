@@ -22,6 +22,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.TextViewCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,6 +132,8 @@ public abstract class BaseChoiceFragment extends ListFragment {
 
     protected void setListView(View view) {
         final ListView listView = (ListView) view.findViewById(android.R.id.list);
+        listView.setTag(page.getClass().getSimpleName()); // used for espresso testing
+        Log.i("BaseChoiceFragment", (String) listView.getTag());
         setAdapter();
         listView.setDividerHeight(0);
         listView.setChoiceMode(choiceMode);

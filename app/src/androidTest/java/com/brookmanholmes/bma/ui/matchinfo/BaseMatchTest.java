@@ -9,10 +9,12 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
@@ -31,13 +33,22 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasFocus;
+import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withTagKey;
+import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created by Brookman Holmes on 9/7/2016.
@@ -77,8 +88,12 @@ public abstract class BaseMatchTest {
 
     @Test
     public void testInputTurn() {
+        mainTest(getTurns());
+    }
+
+    public void mainTest(List<ITurn> turns) {
         onView(withId(R.id.action_match_view)).perform(click());
-        for (ITurn turn : getTurns()) {
+        for (ITurn turn : turns) {
             insertTurn(turn);
             match.addTurn(turn);
         }
@@ -241,7 +256,83 @@ public abstract class BaseMatchTest {
     }
 
     private void doAdvancedStats(ITurn turn) {
+        if (turn.getTurnEnd() == TurnEnd.SAFETY) {
+            doAdvancedSafetyStats(turn);
+        } else if (turn.getTurnEnd() == TurnEnd.BREAK_MISS) {
+            doAdvancedBreakStats(turn);
+        }else if (turn.getTurnEnd() == TurnEnd.SAFETY_ERROR) {
+            doAdvancedSafetyErrorStats(turn);
+        } else
+            doAdvancedShootingStats(turn);
+    }
 
+    private void doAdvancedBreakStats(ITurn turn) {
+        checkHows(turn.getAdvStats());
+        nextPage();
+        checkWhys(turn.getAdvStats());
+        nextPage();
+    }
+
+    private void doAdvancedSafetyStats(ITurn turn) {
+        checkSubType(turn.getAdvStats());
+        nextPage();
+    }
+
+    private void doAdvancedSafetyErrorStats(ITurn turn) {
+        checkHows(turn.getAdvStats());
+        nextPage();
+    }
+
+    private void doAdvancedShootingStats(ITurn turn) {
+        onView(allOf(isDisplayed(),
+                withText(MatchDialogHelperUtils.
+                        convertShotTypeToStringRes(turn.getAdvStats().getShotType()))))
+                .perform(click());
+        nextPage();
+        // this switch is allowing fall through to simplify called methods
+        switch (turn.getAdvStats().getShotType()) {
+            case CUT:
+                checkSubType(turn.getAdvStats());
+                nextPage();
+            case BANK:
+            case KICK:
+                checkAngles(turn.getAdvStats());
+                nextPage();
+            default:
+                checkHows(turn.getAdvStats());
+                nextPage();
+                checkWhys(turn.getAdvStats());
+                nextPage();
+        }
+    }
+
+    private void checkSubType(AdvStats stats) {
+        onView(allOf(isDisplayed(),
+                withText(MatchDialogHelperUtils.
+                        convertSubTypeToStringRes(stats.getShotSubtype()))))
+                .perform(click());
+    }
+
+    private void checkHows(AdvStats stats) {
+        for (AdvStats.HowType how : stats.getHowTypes()) {
+            onView(allOf(isDisplayed(),
+                    withText(MatchDialogHelperUtils.convertHowToStringRes(how))))
+                    .perform(click());
+        }
+    }
+
+    private void checkWhys(AdvStats stats) {
+        for (AdvStats.WhyType why : stats.getWhyTypes()) {
+            onView(withText(MatchDialogHelperUtils.convertWhyTypeToStringRes(why)))
+                    .perform(click());
+        }
+    }
+
+    private void checkAngles(AdvStats stats) {
+        for (AdvStats.Angle angle : stats.getAngles()) {
+            onView(withText(MatchDialogHelperUtils.convertAngleToStringRes(angle)))
+                    .perform(click());
+        }
     }
 
     protected abstract Match getMatch();
