@@ -3,20 +3,28 @@ package com.brookmanholmes.bma.ui.matchinfo;
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.TurnEndOptions;
+import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
-import com.brookmanholmes.bma.data.SampleMatchProvider;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,13 +33,22 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasFocus;
+import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withTagKey;
+import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created by Brookman Holmes on 9/7/2016.
@@ -71,8 +88,12 @@ public abstract class BaseMatchTest {
 
     @Test
     public void testInputTurn() {
+        mainTest(getTurns());
+    }
+
+    public void mainTest(List<ITurn> turns) {
         onView(withId(R.id.action_match_view)).perform(click());
-        for (ITurn turn : getTurns()) {
+        for (ITurn turn : turns) {
             insertTurn(turn);
             match.addTurn(turn);
         }
@@ -83,6 +104,7 @@ public abstract class BaseMatchTest {
 
         if (match.getGameStatus().newGame) {
             selectBreakBalls(turn);
+            checkImageLevelsOfBreakBalls(turn);
 
             nextPage();
             if (turn.getBreakBallsMade() > 0) {
@@ -91,20 +113,32 @@ public abstract class BaseMatchTest {
             }
         } else if (!match.getGameStatus().playerAllowedToBreakAgain) {
             selectBalls(turn);
+            checkImageLevelsOfBalls(turn);
             nextPage();
         }
 
-        onView(withText(getTurnEnd(turn))).perform(click());
-
-        selectFoul(turn);
+        checkDisplayedOptions(turn);
 
         nextPage();
+
+        if (turn.getAdvStats() != null)
+            doAdvancedStats(turn);
     }
 
-    private String getTurnEnd(ITurn turn) {
+    private void checkDisplayedOptions(ITurn turn) {
+        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(match.getGameStatus(), turn);
+        for (TurnEnd end : options.possibleEndings) {
+            onView(allOf(isDisplayed(), withText(getTurnEndString(end))));
+        }
+
+        onView(withText(getTurnEndString(turn.getTurnEnd()))).perform(click());
+        selectFoul(turn);
+    }
+
+    private String getTurnEndString(TurnEnd end) {
         return MatchDialogHelperUtils.convertTurnEndToString(
                 activityRule.getActivity(),
-                turn.getTurnEnd(),
+                end,
                 match.getCurrentPlayersName(),
                 match.getNonCurrentPlayersName());
     }
@@ -162,6 +196,54 @@ public abstract class BaseMatchTest {
         }
     }
 
+    private void checkImageLevelsOfBreakBalls(ITurn turn) {
+        for (int ball = 1; ball <= turn.size(); ball++) {
+            int level = 1;
+            if (isMadeOnBreak(turn.getBallStatus(ball)))
+                level = 2;
+            else if (isDeadOnBreak(turn.getBallStatus(ball)))
+                level = 3;
+
+            onView(allOf(isDisplayed(),
+                    withId(MatchDialogHelperUtils.convertBallToId(ball)),
+                    withImageLevel(level)));
+
+        }
+    }
+
+    private void checkImageLevelsOfBalls(ITurn turn) {
+        for (int ball = 1; ball <= turn.size(); ball++) {
+            int level = 1;
+            if (isMade(turn.getBallStatus(ball)))
+                level = 2;
+            else if (isDead(turn.getBallStatus(ball)))
+                level = 3;
+            else if (isMadeOnBreak(turn.getBallStatus(ball)))
+                level = 0;
+            else if (turn.getBallStatus(ball) == BallStatus.OFF_TABLE)
+                level = 0;
+
+            onView(allOf(isDisplayed(),
+                    withId(MatchDialogHelperUtils.convertBallToId(ball)),
+                    withImageLevel(level)));
+
+        }
+    }
+
+    private static Matcher<View> withImageLevel(final int level) {
+        return new BoundedMatcher<View, ImageView>(ImageView.class) {
+            @Override
+            protected boolean matchesSafely(ImageView item) {
+                return item.getDrawable().getLevel() == level;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Expected image level " + level + " is not correct");
+            }
+        };
+    }
+
     private void selectBalls(ITurn turn) {
         for (int ball = 1; ball <= turn.size(); ball++) {
             if (isMade(turn.getBallStatus(ball)))
@@ -170,6 +252,86 @@ public abstract class BaseMatchTest {
                 clickBall(ball);
                 clickBall(ball);
             }
+        }
+    }
+
+    private void doAdvancedStats(ITurn turn) {
+        if (turn.getTurnEnd() == TurnEnd.SAFETY) {
+            doAdvancedSafetyStats(turn);
+        } else if (turn.getTurnEnd() == TurnEnd.BREAK_MISS) {
+            doAdvancedBreakStats(turn);
+        }else if (turn.getTurnEnd() == TurnEnd.SAFETY_ERROR) {
+            doAdvancedSafetyErrorStats(turn);
+        } else
+            doAdvancedShootingStats(turn);
+    }
+
+    private void doAdvancedBreakStats(ITurn turn) {
+        checkHows(turn.getAdvStats());
+        nextPage();
+        checkWhys(turn.getAdvStats());
+        nextPage();
+    }
+
+    private void doAdvancedSafetyStats(ITurn turn) {
+        checkSubType(turn.getAdvStats());
+        nextPage();
+    }
+
+    private void doAdvancedSafetyErrorStats(ITurn turn) {
+        checkHows(turn.getAdvStats());
+        nextPage();
+    }
+
+    private void doAdvancedShootingStats(ITurn turn) {
+        onView(allOf(isDisplayed(),
+                withText(MatchDialogHelperUtils.
+                        convertShotTypeToStringRes(turn.getAdvStats().getShotType()))))
+                .perform(click());
+        nextPage();
+        // this switch is allowing fall through to simplify called methods
+        switch (turn.getAdvStats().getShotType()) {
+            case CUT:
+                checkSubType(turn.getAdvStats());
+                nextPage();
+            case BANK:
+            case KICK:
+                checkAngles(turn.getAdvStats());
+                nextPage();
+            default:
+                checkHows(turn.getAdvStats());
+                nextPage();
+                checkWhys(turn.getAdvStats());
+                nextPage();
+        }
+    }
+
+    private void checkSubType(AdvStats stats) {
+        onView(allOf(isDisplayed(),
+                withText(MatchDialogHelperUtils.
+                        convertSubTypeToStringRes(stats.getShotSubtype()))))
+                .perform(click());
+    }
+
+    private void checkHows(AdvStats stats) {
+        for (AdvStats.HowType how : stats.getHowTypes()) {
+            onView(allOf(isDisplayed(),
+                    withText(MatchDialogHelperUtils.convertHowToStringRes(how))))
+                    .perform(click());
+        }
+    }
+
+    private void checkWhys(AdvStats stats) {
+        for (AdvStats.WhyType why : stats.getWhyTypes()) {
+            onView(withText(MatchDialogHelperUtils.convertWhyTypeToStringRes(why)))
+                    .perform(click());
+        }
+    }
+
+    private void checkAngles(AdvStats stats) {
+        for (AdvStats.Angle angle : stats.getAngles()) {
+            onView(withText(MatchDialogHelperUtils.convertAngleToStringRes(angle)))
+                    .perform(click());
         }
     }
 
