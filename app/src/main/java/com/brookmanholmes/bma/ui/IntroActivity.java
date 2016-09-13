@@ -41,6 +41,8 @@ import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.PreferencesUtil;
 import com.github.pavlospt.roundedletterview.RoundedLetterView;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -141,6 +143,12 @@ public class IntroActivity extends BaseActivity {
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_reset_preferences) {
             PreferencesUtil.resetTutorial(preferences);
+        }
+
+        if (item.getItemId() == R.id.action_about) {
+            new LibsBuilder().withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                    .withActivityTitle(getString(R.string.about))
+                    .start(this);
         }
 
         return super.onOptionsItemSelected(item);

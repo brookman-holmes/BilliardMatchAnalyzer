@@ -596,7 +596,9 @@ public class DatabaseAdapter {
 
     private ITurn buildTurnFromCursor(Cursor cursor, AdvStats advStats) {
         return new Turn(
-                TurnEnd.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TURN_END))), stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS))), cursor.getInt(cursor.getColumnIndex(COLUMN_SCRATCH)) == 1,
+                TurnEnd.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TURN_END))),
+                stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS))),
+                cursor.getInt(cursor.getColumnIndex(COLUMN_SCRATCH)) == 1,
                 cursor.getInt(cursor.getColumnIndex(COLUMN_IS_GAME_LOST)) == 1,
                 advStats
         );

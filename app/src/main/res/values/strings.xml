@@ -276,4 +276,8 @@
     <string name="play_the_ghost">Play the ghost?</string>
     <string name="empty_string"/>
     <string name="all">All</string>
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">Billiard Match Analyzer allows you to accurately track, store and review all of your billiard related stats by just putting in what balls you made and how your turn ended. Record stats for APA 8 and 9 ball and BCA 8, 9 and 10 ball.</string>
+    <string name="about">About</string>
 </resources>

@@ -20,4 +20,9 @@
           android:orderInCategory="500"
           android:title="@string/submit_feedback"
           app:showAsAction="never"/>
+
+    <item android:id="@+id/action_about"
+        android:orderInCategory="501"
+        android:title="@string/about"
+        app:showAsAction="never"/>
 </menu>
