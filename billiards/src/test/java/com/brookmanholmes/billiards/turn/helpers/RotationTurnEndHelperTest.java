@@ -47,7 +47,7 @@ public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
         helper = TurnEndHelper.create(gameBuilder.allowSkip().build(), tableStatus);
         assertThat(helper.showTurnSkip(), is(true));
 
-        TurnEndOptions options = helper.getTurnEndOptions().build();
+        TurnEndOptions options = helper.getTurnEndOptions();
 
         assertThat(options.possibleEndings.contains(TurnEnd.SKIP_TURN), is(true));
     }

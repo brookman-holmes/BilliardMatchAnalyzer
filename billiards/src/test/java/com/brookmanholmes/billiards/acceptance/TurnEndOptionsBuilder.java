@@ -53,7 +53,7 @@ public class TurnEndOptionsBuilder {
     }
 
     public TurnEndOptionsBuilder scratch() {
-        options.checkScratch(true);
+        options.checkFoul(true);
         return this;
     }
 

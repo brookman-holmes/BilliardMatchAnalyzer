@@ -8,9 +8,11 @@ import java.util.List;
  * A data class that contains the possible endings for a turn based on the game status and the
  * status of the balls for the next turn
  */
+// TODO: 9/13/2016 add in tests for foul, lostgame, nofoul getters
 public class TurnEndOptions {
-    public final boolean foul;
-    public final boolean lostGame;
+    private final boolean foul;
+    private final boolean lostGame;
+    private final boolean noFoul;
     public final TurnEnd defaultCheck;
     public final List<TurnEnd> possibleEndings = new ArrayList<>();
 
@@ -21,9 +23,22 @@ public class TurnEndOptions {
      */
     private TurnEndOptions(Builder builder) {
         possibleEndings.addAll(builder.turnEnds);
-        foul = builder.scratch;
+        foul = builder.foul;
         defaultCheck = builder.checked;
         lostGame = builder.lostGame;
+        noFoul = !builder.foul;
+    }
+
+    public boolean showFoul() {
+        return true;
+    }
+
+    public boolean showNotFoul() {
+        return noFoul;
+    }
+
+    public boolean showLostGame() {
+        return lostGame;
     }
 
 
@@ -64,7 +79,7 @@ public class TurnEndOptions {
     public static class Builder {
         private final List<TurnEnd> turnEnds = new ArrayList<>();
         private TurnEnd checked = TurnEnd.MISS;
-        private boolean scratch;
+        private boolean foul;
         private boolean lostGame;
 
         /**
@@ -143,8 +158,8 @@ public class TurnEndOptions {
          * @return an instance of {@link com.brookmanholmes.billiards.turn.TurnEndOptions.Builder} for
          * chaining purposes
          */
-        public Builder checkScratch(boolean checked) {
-            scratch = checked;
+        public Builder checkFoul(boolean checked) {
+            foul = checked;
             return this;
         }
 

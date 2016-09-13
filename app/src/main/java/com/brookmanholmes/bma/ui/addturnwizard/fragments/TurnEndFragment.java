@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.TextViewCompat;
+import android.support.v7.app.AlertDialog;
 import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
 import com.brookmanholmes.bma.MyApplication;
@@ -31,8 +30,6 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
-
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
@@ -113,7 +110,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         TurnEnd turnEnd = TurnEnd.valueOf(getArguments().getString(ARG_SELECTION_KEY));
         listView.setItemChecked(adapter.getPosition(getString(turnEnd)), true);
         updateFoulLayout(getString(turnEnd));
-        // TODO: 9/7/2016 figure out why items aren't automatically checked when given the option of: rebreak, opponent rebreak, continue game 
+        // TODO: 9/7/2016 figure out why items aren't automatically checked when given the option of: rebreak, opponent rebreak, continue game
         return rootView;
     }
 
@@ -178,31 +175,10 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         }
     }
 
-    private void updateFoulChoices(TurnEndOptions options) {
-        if (options.lostGame) {
-            if (GameType.valueOf(page.getData().getString(GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL ||
-                    GameType.valueOf(page.getData().getString(GAME_TYPE_KEY)) == GameType.APA_EIGHT_BALL) {
-                foulGroup.findViewById(R.id.lostGame).setVisibility(View.VISIBLE);
-                foulGroup.findViewById(R.id.no).setVisibility(View.GONE);
-                foulGroup.findViewById(R.id.yes).setVisibility(View.GONE);
-            } else {
-                foulGroup.findViewById(R.id.lostGame).setVisibility(View.GONE);
-                foulGroup.findViewById(R.id.no).setVisibility(View.GONE);
-                foulGroup.findViewById(R.id.yes).setVisibility(View.VISIBLE);
-            }
-
-            if (options.possibleEndings.contains(TurnEnd.SAFETY))
-                foulGroup.findViewById(R.id.no).setVisibility(View.VISIBLE);
-
-        } else if (options.foul) {
-            foulGroup.findViewById(R.id.lostGame).setVisibility(View.GONE);
-            foulGroup.findViewById(R.id.no).setVisibility(View.GONE);
-            foulGroup.findViewById(R.id.yes).setVisibility(View.VISIBLE);
-        } else {
-            foulGroup.findViewById(R.id.lostGame).setVisibility(View.GONE);
-            foulGroup.findViewById(R.id.no).setVisibility(View.VISIBLE);
-            foulGroup.findViewById(R.id.yes).setVisibility(View.VISIBLE);
-        }
+    private void updateFoulOptions(TurnEndOptions options) {
+        foulGroup.findViewById(R.id.no).setVisibility(options.showNotFoul() ? View.VISIBLE : View.GONE);
+        foulGroup.findViewById(R.id.yes).setVisibility(options.showFoul() ? View.VISIBLE : View.GONE);
+        foulGroup.findViewById(R.id.lostGame).setVisibility(options.showLostGame() ? View.VISIBLE : View.GONE);
 
         updateFoulChoice();
     }
@@ -217,9 +193,9 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         else if (!no && !lostGame) // if the only option is foul check it
             foulGroup.check(R.id.yes);
         else {
-            if (getFoulFromPage().equals(getString(R.string.no)))
+            if (getFoulFromPage().equals(getString(R.string.no)) && no)
                 foulGroup.check(R.id.no);
-            else if (getFoulFromPage().equals(getString(R.string.yes)))
+            else if (getFoulFromPage().equals(getString(R.string.yes)) && yes)
                 foulGroup.check(R.id.yes);
             else
                 foulGroup.check(R.id.lostGame);
@@ -228,7 +204,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
 
     public void updateOptions(TurnEndOptions options) {
         repopulateChoicesList(options.possibleEndings);
-        updateFoulChoices(options);
+        updateFoulOptions(options);
 
         if (adapter.contains(getTurnEndFromPage())) {
             listView.setItemChecked(adapter.indexOf(getTurnEndFromPage()), true);

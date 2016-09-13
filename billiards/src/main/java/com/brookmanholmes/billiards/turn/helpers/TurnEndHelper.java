@@ -13,6 +13,7 @@ import com.brookmanholmes.billiards.turn.TurnEndOptions;
  * Created by Brookman Holmes on 10/30/2015.
  * Helper class that creates a TurnEndOptions object based on the status of the table
  */
+// todo set up so that TurnEndOptions gets created with no, yes, lost game options
 public abstract class TurnEndHelper {
     ITableStatus tableStatus;
     GameStatus game;
@@ -167,7 +168,7 @@ public abstract class TurnEndHelper {
                     .safetyError(showSafetyMiss())
                     .miss(showMiss())
                     .missOnBreak(showBreakMiss())
-                    .checkScratch(checkFoul())
+                    .checkFoul(checkFoul())
                     .push(showPush())
                     .skipTurn(showTurnSkip())
                     .defaultOption(selection()).build();
@@ -194,7 +195,7 @@ public abstract class TurnEndHelper {
      * @return A new {@link com.brookmanholmes.billiards.turn.TurnEndOptions} object
      */
     public static TurnEndOptions getTurnEndOptions(GameStatus game, ITableStatus tableStatus) {
-        TurnEndHelper turnEndHelper = TurnEndHelper.create(game, tableStatus);
+        TurnEndHelper turnEndHelper = create(game, tableStatus);
         return turnEndHelper.getTurnEndOptions();
     }
 }
