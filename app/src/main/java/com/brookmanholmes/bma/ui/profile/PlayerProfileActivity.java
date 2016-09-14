@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +44,10 @@ import butterknife.ButterKnife;
  */
 public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     public static final String ARG_PLAYER_NAME = "arg player name";
-    private final List<Filterable> listeners = new ArrayList<>();
+    private static final String ARG_FILTER_OPPONENT = "arg_filter_opponent";
+    private static final String ARG_FILTER_GAME = "arg_filter_game";
+    private static final String ARG_FILTER_DATE = "arg_filter_date";
+    private List<Filterable> listeners = new ArrayList<>();
 
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerName) TextView playerName;
@@ -63,19 +67,14 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_profile);
-        firebaseAnalytics.logEvent("viewed_profile", getIntent().getExtras());
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
+        firebaseAnalytics.logEvent("viewed_profile", getIntent().getExtras());
+        setupFilter(savedInstanceState);
+
         player = getIntent().getExtras().getString(ARG_PLAYER_NAME);
-
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(getString(R.string.title_player_profile, player));
-
-        filter = new StatFilter("All opponents",
-                getGames().toArray(new String[getGames().size()]),
-                new String[]{"All time", "Today", "Last week", "Last month", "Last 3 months", "Last 6 months"});
-
+        setupToolbar();
+        
         playerNameLayout.setVisibility(View.GONE);
         playerName.setText(player);
         opponentName.setText(filter.getOpponent());
@@ -83,6 +82,26 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(this);
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.title_player_profile, player));
+        }
+    }
+
+    private void setupFilter(Bundle savedInstanceState) {
+        filter = new StatFilter("All opponents",
+                getGames().toArray(new String[getGames().size()]),
+                new String[]{"All time", "Today", "Last week", "Last month", "Last 3 months", "Last 6 months"});
+
+        if (savedInstanceState != null) {
+            filter.setDate(savedInstanceState.getString(ARG_FILTER_DATE));
+            filter.setGameType(savedInstanceState.getString(ARG_FILTER_GAME));
+            filter.setOpponent(savedInstanceState.getString(ARG_FILTER_OPPONENT));
+        }
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,6 +116,13 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(ARG_FILTER_DATE, filter.getDate());
+        outState.putString(ARG_FILTER_GAME, filter.getGameType());
+        outState.putString(ARG_FILTER_OPPONENT, filter.getOpponent());
+        super.onSaveInstanceState(outState);
     }
 
     private void displayFilterDialog() {

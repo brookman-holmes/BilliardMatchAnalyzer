@@ -68,10 +68,14 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
         }
 
         adapter = new MatchListRecyclerAdapter(getContext(), new DatabaseAdapter(getContext()).getMatches(player, opponent));
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).addListener(this);
         }
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override public void onResume() {

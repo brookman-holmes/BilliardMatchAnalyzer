@@ -11,6 +11,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,10 +75,15 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         player = getArguments().getString(ARG_PLAYER);
 
         adapter = new PlayerInfoGraphicAdapter(database.getPlayer(player), player, "");
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).addListener(this);
         }
+
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override public void onDestroy() {

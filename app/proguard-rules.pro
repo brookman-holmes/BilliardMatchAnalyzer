@@ -22,13 +22,12 @@
 -dontwarn butterknife.internal.**
 -keep class **$$ViewBinder { *; }
 
--keepclasseswithmembernames class * {
-    @butterknife.* <fields>;
-}
+-keepclasseswithmembernames class * { @butterknife.* <fields>; }
 
--keepclasseswithmembernames class * {
-    @butterknife.* <methods>;
-}
+-keepclasseswithmembernames class * { @butterknife.* <methods>; }
 
 -keep class com.github.mikephil.charting.** { *; }
 -dontwarn com.github.mikephil.charting.data.realm.**
+
+-keep class .R
+-keep class **.R$* { <fields>; }

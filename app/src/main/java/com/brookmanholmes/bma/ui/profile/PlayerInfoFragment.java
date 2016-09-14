@@ -57,10 +57,15 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
         player = getArguments().getString(ARG_PLAYER);
 
         adapter = new PlayerInfoAdapter(database.getPlayer(player), player, getString(R.string.opponents));
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).addListener(this);
         }
+
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override public void onDestroy() {
