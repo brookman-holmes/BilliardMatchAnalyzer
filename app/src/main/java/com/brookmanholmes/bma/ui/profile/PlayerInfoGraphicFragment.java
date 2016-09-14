@@ -417,6 +417,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             final int color2;
             final int color3;
             final int color4;
+            final int grey;
             @Bind(R.id.decoView) DecoView decoView;
             @Bind(R.id.title1) TextView successfulBreak;
             @Bind(R.id.title2) TextView continuationBreak;
@@ -426,7 +427,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             public BreaksGraphViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
-                int grey = Color.parseColor("#F5F5F5");
+                grey = ContextCompat.getColor(itemView.getContext(), R.color.colorBackground);
                 color1 = ContextCompat.getColor(itemView.getContext(), R.color.chart3);
                 color2 = ContextCompat.getColor(itemView.getContext(), R.color.chart2);
                 color3 = ContextCompat.getColor(itemView.getContext(), R.color.chart1);

@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 public abstract class BaseAdvStatsFragment extends Fragment implements Filterable {
     List<AdvStats> stats = new ArrayList<>();
     @Bind(R.id.parentView) LinearLayout statsLayout;
+    @Bind(R.id.baseLayout) LinearLayout baseLayout;
     String playerName;
     String[] shotTypes;
 

@@ -2,6 +2,7 @@ package com.brookmanholmes.bma.ui.stats;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -219,7 +220,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         if (statsLayout != null)
             StatsUtils.setListOfMissReasons(statsLayout, getFilteredStats());
-        else Log.i("ASSF", "View is null");
     }
 
     private void setVisibilities() {

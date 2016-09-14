@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import java.util.ArrayList;
@@ -44,8 +45,13 @@ class StatsUtils {
         else
             rightWeight = (float) integerPair.second / ((float) integerPair.first + (float) integerPair.second);
 
-        leftView.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, leftWeight));
-        rightView.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, rightWeight));
+        LinearLayout.LayoutParams leftParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, leftWeight);
+        leftParams.rightMargin = (int)ConversionUtils.convertDpToPx(leftView.getContext(), 1);
+        leftView.setLayoutParams(leftParams);
+
+        LinearLayout.LayoutParams rightParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, rightWeight);
+        rightParams.leftMargin = (int)ConversionUtils.convertDpToPx(leftView.getContext(), 1);
+        rightView.setLayoutParams(rightParams);
 
         leftView.setText(Integer.toString(integerPair.first));
         rightView.setText(Integer.toString(integerPair.second));
