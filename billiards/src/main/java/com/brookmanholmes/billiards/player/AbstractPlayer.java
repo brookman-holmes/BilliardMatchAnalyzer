@@ -4,10 +4,9 @@ import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
- * Created by Brookman Holmes on 10/28/2015.
  * Data class for storing information about player stats
+ * Created by Brookman Holmes on 10/28/2015.
  */
-// TODO: 9/4/2016 JavaDoc this whole package
 public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     // formatter for percentages (e.g. .875)
     private final static DecimalFormat pctf = new DecimalFormat("#.000");
@@ -34,21 +33,33 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     int gameWins = 0;
     int safetyEscapes = 0;
     int safetyForcedErrors = 0;
-    int runOuts = 0;
-    int runTierOne = 0;
-    int runTierTwo = 0;
+    int breakAndRuns = 0;
+    int tableRuns = 0;
+    int fiveBallRun = 0;
     private String name = "";
 
+    /**
+     * Creates a new player with the specified arguments
+     * @param name The name of the player
+     * @param rank The rank of the player
+     */
     public AbstractPlayer(String name, int rank) {
         this.name = name;
         this.rank = rank;
     }
 
+    /**
+     * Creates a new player with the specified arguments, defaulting the rank to 0
+     * @param name The name of the player
+     */
     public AbstractPlayer(String name) {
-        this.name = name;
-        this.rank = Integer.MAX_VALUE;
+        this(name, 0);
     }
 
+    /**
+     * Takes stats from another player and adds them to the this player
+     * @param player The player whose stats you want to add
+     */
     public void addPlayerStats(AbstractPlayer player) {
         this.safetyAttempts += player.safetyAttempts;
         this.safetyReturns += player.safetyReturns;
@@ -68,63 +79,109 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         shootingMisses += player.shootingMisses;
         shootingFouls += player.shootingFouls;
 
-        runOuts += player.runOuts;
-        runTierOne += player.runTierOne;
-        runTierTwo += player.runTierTwo;
+        breakAndRuns += player.breakAndRuns;
+        tableRuns += player.tableRuns;
+        fiveBallRun += player.fiveBallRun;
 
         gameTotal += player.gameTotal;
         gameWins += player.gameWins;
     }
 
+    /**
+     * Getter for the player name
+     * @return The name of the player
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Setter for the player name
+     * @param name The new name of the player
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Getter for the rank of the player
+     * @return The rank of the player
+     */
     public int getRank() {
         return rank;
     }
 
+    /**
+     * Getter for the date of the match that this player played in
+     * @return A copy of the date, unless the date is null then it returns the current date
+     */
     public Date getMatchDate() {
         return date == null ? new Date() : new Date(date.getTime());
     }
 
+    /**
+     * Sets the date of the match that this player played in
+     * @param date The date this player played in a match
+     */
     public void setMatchDate(Date date) {
-        this.date = date;
+        this.date = new Date(date.getTime());
     }
 
-    public void addSafetyAttempt(boolean scratch) {
+    /**
+     * Adds a safety attempt for the player and a safety foul (if they fouled)
+     * @param foul Whether or not the player fouled on their attempted safety
+     */
+    public void addSafetyAttempt(boolean foul) {
         safetyAttempts++;
 
-        if (scratch)
+        if (foul)
             safetyFouls++;
     }
 
+    /**
+     * Adds a safety for the player and a safety return (if their opponent played a safe on them
+     * in the last turn)
+     * @param opponentPlayedSuccessfulSafe Whether or not they came to the table after their opponent
+     *                                     played a safe
+     */
     public void addSafety(boolean opponentPlayedSuccessfulSafe) {
         addSafetyAttempt(false);
         safetySuccesses++;
         if (opponentPlayedSuccessfulSafe) safetyReturns++;
     }
 
-    public void addShootingBallsMade(int ballsMade, boolean scratch) {
+    /**
+     * Adds balls made for the player and whether or not they fouled, this will also automatically
+     * add in a shooting turn for the player
+     * @param ballsMade The number of balls made
+     * @param foul Whether or not the player fouled
+     */
+    public void addShootingBallsMade(int ballsMade, boolean foul) {
         shootingBallsMade += ballsMade;
         shootingTurns++;
 
-        if (scratch)
+        if (foul)
             shootingFouls++;
     }
 
+    /**
+     * Adds in a shooting miss for the player
+     */
     public void addShootingMiss() {
         shootingMisses++;
     }
 
-    public void addBreakShot(int ballsMade, boolean continuation, boolean scratch) {
+    /**
+     * Adds in a break shot, the number of balls made, whether or not they got continuation and
+     * if they fouled
+     * @param ballsMade The number of balls made
+     * @param continuation True if they continued their play after the break, false otherwise
+     * @param foul True if the player fouled on the break, false otherwise
+     */
+    public void addBreakShot(int ballsMade, boolean continuation, boolean foul) {
         breakAttempts++;
 
-        if (scratch)
+        if (foul)
             breakFouls++;
         else {
             if (ballsMade > 0) {
@@ -137,117 +194,228 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         }
     }
 
+    /**
+     * Increments both {@link com.brookmanholmes.billiards.player.AbstractPlayer#gameTotal} and
+     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#gameWins} by 1
+     */
     public void addGameWon() {
         gameTotal++;
         gameWins++;
     }
 
+    /**
+     * Increments both {@link com.brookmanholmes.billiards.player.AbstractPlayer#gameTotal} by 1
+     */
     public void addGameLost() {
         gameTotal++;
     }
 
+    /**
+     * Getter for gameWins
+     * @return The number of games won
+     */
     public int getWins() {
         return gameWins;
     }
 
-    public int getGamesPlayed() {
+    /**
+     * Getter for gameTotal
+     * @return The number of games played
+     */
+    public int getGameTotal() {
         return gameTotal;
     }
 
+    /**
+     * Getter for the total number of fouls, combines
+     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#shootingFouls},
+     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#safetyFouls} and
+     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#breakFouls}
+     * @return The total number of times the player has fouled
+     */
     public int getTotalFouls() {
         return shootingFouls + safetyFouls + breakFouls;
     }
 
+    /**
+     * Getter for the number of shots made
+     * @return The total number of shooting balls made
+     */
     public int getShootingBallsMade() {
         return shootingBallsMade;
     }
 
+    /**
+     * Getter for the total number of shooting attempts, combines
+     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#shootingMisses} and
+     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#shootingBallsMade}
+     * @return The total number of shooting attempts
+     */
     public int getShootingAttempts() {
         return shootingMisses + shootingBallsMade;
     }
 
+    /**
+     * Getter for shooting fouls
+     * @return Returns the total number of shooting fouls made
+     */
     public int getShootingFouls() {
         return shootingFouls;
     }
 
+    /**
+     * Returns the number of safety attempts made
+     * @return The number of safety attempts made
+     */
     public int getSafetyAttempts() {
         return safetyAttempts;
     }
 
+    /**
+     * Returns the number of successful safeties made
+     * @return The number of successful safeties made
+     */
     public int getSafetySuccesses() {
         return safetySuccesses;
     }
 
+    /**
+     * Returns the number of fouls made during safety attempts
+     * @return The number of fouls made during safety attempts
+     */
     public int getSafetyFouls() {
         return safetyFouls;
     }
 
+    /**
+     * Returns the number of safeties that were made immediately following their opponent playing
+     * a safety
+     * @return The number of safeties returned
+     */
     public int getSafetyReturns() {
         return safetyReturns;
     }
 
+    /**
+     * Returns the number of shots that were made immediately following their opponent playing
+     * a safety
+     * @return The number of safeties escaped
+     */
     public int getSafetyEscapes() {
         return safetyEscapes;
     }
 
+    /**
+     * The number of errors made because the opponent played a safety
+     * @return The number of errors made following an opponent playing a safety
+     */
     public int getSafetyForcedErrors() {
         return safetyForcedErrors;
     }
 
-    public int getRunOuts() {
-        return runOuts;
+    /**
+     * The number of break and runs made
+     * @return The number of break and runs
+     */
+    public int getBreakAndRuns() {
+        return breakAndRuns;
     }
 
-    public int getRunTierOne() {
-        return runTierOne;
+    /**
+     * The number of table runs made (making all the balls on the table in 9/10 ball, or all 8 of
+     * your balls in 8 ball)
+     * @return The number of table runs
+     */
+    public int getTableRuns() {
+        return tableRuns;
     }
 
-    public int getRunTierTwo() {
-        return runTierTwo;
+    /**
+     * The number of games won that involved making 5 or fewer balls
+     * @return The number of games won that involved making 5 or fewer balls
+     */
+    public int getFiveBallRun() {
+        return fiveBallRun;
     }
 
+    /**
+     * The number of breaks that made a ball
+     * @return The number of breaks that made a ball
+     */
     public int getBreakSuccesses() {
         return breakSuccesses;
     }
 
+    /**
+     * The number of break shots attempted
+     * @return The number of break shots attempted
+     */
     public int getBreakAttempts() {
         return breakAttempts;
     }
 
+    /**
+     * The number of breaks that the player made a ball immediately after the break
+     * @return The number of breaks that the player 'continued' shooting afterwards
+     */
     public int getBreakContinuations() {
         return breakContinuations;
     }
 
+    /**
+     * The number of breaks that were fouls
+     * @return The number of fouls on break shots
+     */
     public int getBreakFouls() {
         return breakFouls;
     }
 
+    /**
+     * The number of balls made in all break shots combined
+     * @return The total number of balls made during all break shots
+     */
     public int getBreakBallsMade() {
         return breakBallsMade;
     }
 
+    /**
+     * Adds a break and run to the player
+     */
     public void addBreakAndRun() {
-        runOuts++;
+        breakAndRuns++;
     }
 
+    /**
+     * Adds a table run to the player
+     */
     public void addTableRun() {
-        runTierOne++;
+        tableRuns++;
     }
 
-    public void addFourBallRun() {
-        runTierTwo++;
+    /**
+     * Adds a five (or fewer) ball run to the player
+     */
+    public void addFiveBallRun() {
+        fiveBallRun++;
     }
 
+    /**
+     * Adds a safety escape to the player (opponent played a safe and the player makes a ball)
+     */
     public void addSafetyEscape() {
         safetyEscapes++;
     }
 
+    /**
+     * Adds a forced error to the player (opponent played a safe and the player fouls)
+     */
     public void addSafetyForcedError() {
         safetyForcedErrors++;
     }
 
     /**
-     * Combined stats functions
+     * Retrieves the win percentage for the player, formatted as #.000
+     * @return The win percentage for the player
      */
     public String getWinPct() {
         if (gameTotal > 0) {
@@ -255,44 +423,79 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         } else return ZERO_PERCENT;
     }
 
+    /**
+     * The average number of balls made per turn, formatted as ##.##
+     * @return The average number of balls made per turn
+     */
     public String getAvgBallsTurn() {
         if (shootingTurns > 0) {
             return avgf.format(((double) shootingBallsMade) / (double) shootingTurns);
         } else return ZERO;
     }
 
+    /**
+     * Retrieves the safety percentage for the player, formatted as #.000
+     * @return The safety percentage for the player
+     */
     public String getSafetyPct() {
         if (safetyAttempts > 0) {
             return pctf.format((double) safetySuccesses / (double) safetyAttempts);
         } else return ZERO_PERCENT;
     }
 
+    /**
+     * Retrieves the shooting percentage for the player, formatted as #.000
+     * @return The shooting percentage for the player
+     */
     public String getShootingPct() {
         if (getShootingAttempts() > 0) {
             return pctf.format((double) shootingBallsMade / ((double) getShootingAttempts()));
         } else return ZERO_PERCENT;
     }
 
+    /**
+     * Retrieves the successful percentage for the player, formatted as #.000
+     * @return The successful breaking percentage for the player
+     */
     public String getBreakPct() {
         if (getBreakAttempts() > 0) {
             return pctf.format((double) breakSuccesses / (double) breakAttempts);
         } else return ZERO_PERCENT;
     }
 
+    /**
+     * The total number of shots attempted (shooting, breaking and safeties)
+     * @return The total number of shots attempted
+     */
     public int getShotAttemptsOfAllTypes() {
         return getShootingAttempts() + getBreakAttempts() + getSafetyAttempts();
     }
 
+    /**
+     * The total number of successful shots (shooting, breaking, safeties)
+     * @return The total number of successful shots
+     */
     public int getShotsSucceededOfAllTypes() {
         return getShootingBallsMade() + getBreakSuccesses() + getSafetySuccesses();
     }
 
+    /**
+     * The average number of balls made on the break, formatted as ##.##
+     * @return The average number of balls made on the break
+     */
     public String getAvgBallsBreak() {
         if (breakAttempts > 0) {
             return avgf.format(((double) breakBallsMade / (double) breakAttempts));
         } else return ZERO;
     }
 
+    /**
+     * The aggressiveness of the player
+     * {@link AbstractPlayer#getShootingAttempts()} / (
+     * {@link AbstractPlayer#getShootingAttempts()} + {@link AbstractPlayer#getSafetyAttempts()})
+     * formatted as #.000
+     * @return The aggressiveness of the player
+     */
     public String getAggressivenessRating() {
         if (shootingBallsMade + shootingMisses + safetyAttempts > 0) {
             return pctf.format((((double) getShootingAttempts()) / ((double) getShootingAttempts() + (double) safetyAttempts)));
@@ -300,6 +503,12 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
 
     }
 
+    /**
+     * The player's true shooting percentage, which is determined by
+     * {@link AbstractPlayer#getShotsSucceededOfAllTypes()} /
+     * {@link AbstractPlayer#getShotAttemptsOfAllTypes()} formatted as #.000
+     * @return The player's true shooting percentage
+     */
     public String getTrueShootingPct() {
         if (getShotAttemptsOfAllTypes() > 0) {
             return pctf.format((double) getShotsSucceededOfAllTypes() / (double) getShotAttemptsOfAllTypes());
@@ -331,9 +540,9 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         if (shootingTurns != that.shootingTurns) return false;
         if (shootingMisses != that.shootingMisses) return false;
         if (shootingFouls != that.shootingFouls) return false;
-        if (runOuts != that.runOuts) return false;
-        if (runTierOne != that.runTierOne) return false;
-        if (runTierTwo != that.runTierTwo) return false;
+        if (breakAndRuns != that.breakAndRuns) return false;
+        if (tableRuns != that.tableRuns) return false;
+        if (fiveBallRun != that.fiveBallRun) return false;
         if (gameTotal != that.gameTotal) return false;
         if (gameWins != that.gameWins) return false;
         return name.equals(that.name);
@@ -357,9 +566,9 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         result = 31 * result + shootingTurns;
         result = 31 * result + shootingMisses;
         result = 31 * result + shootingFouls;
-        result = 31 * result + runOuts;
-        result = 31 * result + runTierOne;
-        result = 31 * result + runTierTwo;
+        result = 31 * result + breakAndRuns;
+        result = 31 * result + tableRuns;
+        result = 31 * result + fiveBallRun;
         result = 31 * result + gameTotal;
         result = 31 * result + gameWins;
         return result;
@@ -383,9 +592,9 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
                 "\n shootingTurns=" + shootingTurns +
                 "\n shootingMisses=" + shootingMisses +
                 "\n shootingFouls=" + shootingFouls +
-                "\n runOuts=" + runOuts +
-                "\n runTierOne=" + runTierOne +
-                "\n runTierTwo=" + runTierTwo +
+                "\n breakAndRuns=" + breakAndRuns +
+                "\n tableRuns=" + tableRuns +
+                "\n fiveBallRun=" + fiveBallRun +
                 "\n gameTotal=" + gameTotal +
                 "\n gameWins=" + gameWins +
                 '}';

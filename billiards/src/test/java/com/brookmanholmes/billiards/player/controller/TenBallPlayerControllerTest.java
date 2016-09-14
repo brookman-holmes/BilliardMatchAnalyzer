@@ -53,7 +53,7 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<Te
         TenBallPlayer player = new TenBallPlayer("");
         player.addShootingBallsMade(4, false);
         player.addGameWon();
-        player.addFourBallRun();
+        player.addFiveBallRun();
 
         return player;
     }

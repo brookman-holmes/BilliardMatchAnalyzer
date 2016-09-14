@@ -27,15 +27,15 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
         }
     }
 
-    @Override public void addBreakShot(int ballsMade, boolean continuation, boolean scratch) {
-        super.addBreakShot(ballsMade, continuation, scratch);
+    @Override public void addBreakShot(int ballsMade, boolean continuation, boolean foul) {
+        super.addBreakShot(ballsMade, continuation, foul);
 
-        if (!scratch)
+        if (!foul)
             points += ballsMade;
     }
 
-    @Override public void addShootingBallsMade(int ballsMade, boolean scratch) {
-        super.addShootingBallsMade(ballsMade, scratch);
+    @Override public void addShootingBallsMade(int ballsMade, boolean foul) {
+        super.addShootingBallsMade(ballsMade, foul);
         points += ballsMade;
     }
 
@@ -76,10 +76,16 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
     }
 
     @Override public void addWinsOnBreak(int wins) {
+        if (wins < 0)
+            throw new IllegalArgumentException("Wins must be greater than or equal to 0");
+
         winsOnBreak += wins;
     }
 
     @Override public void addEarlyWins(int wins) {
+        if (wins < 0)
+            throw new IllegalArgumentException("Wins must be greater than or equal to 0");
+
         earlyWins += wins;
     }
 

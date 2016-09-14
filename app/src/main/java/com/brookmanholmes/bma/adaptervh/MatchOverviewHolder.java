@@ -4,16 +4,13 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
 import com.brookmanholmes.billiards.player.CompPlayer;
-import com.brookmanholmes.billiards.player.IApa;
 import com.brookmanholmes.bma.R;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by helios on 4/12/2016.
@@ -63,12 +60,12 @@ public class MatchOverviewHolder extends MatchInfoHolder {
             tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), ((ApaEightBallPlayer) opponent).getPointsNeeded(player.getRank())));
         } else if (player instanceof ApaNineBallPlayer && opponent instanceof ApaNineBallPlayer){
             ((TextView)itemView.findViewById(R.id.tvWinTotalTitle)).setText(itemView.getContext().getString(R.string.title_games_won_apa));
-            tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGamesPlayed()));
-            tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getGamesPlayed()));
+            tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGameTotal()));
+            tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getGameTotal()));
         } else if (player instanceof CompPlayer && opponent instanceof CompPlayer) {
             ((TextView)itemView.findViewById(R.id.tvWinTotalTitle)).setText(itemView.getContext().getString(R.string.title_games_won_apa));
-            tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGamesPlayed()));
-            tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getGamesPlayed()));
+            tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGameTotal()));
+            tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getGameTotal()));
         } else {
             tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getRank()));
             tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getRank()));

@@ -34,7 +34,7 @@ public class ApaNineBallPlayerControllerTest extends AbstractNineBallPlayerContr
     @Test public void foulOnBreakAdds2DeadBalls() {
         expectedPlayer.addDeadBalls(2);
 
-        actualPlayer = playerController.updatePlayerStats(game.getGameStatus(), turnBuilder.deadOnBreak(2, 3).fouled().breakMiss()).getPlayer();
+        actualPlayer = playerController.addTurn(game.getGameStatus(), turnBuilder.deadOnBreak(2, 3).fouled().breakMiss()).getPlayer();
 
         assertThat(actualPlayer.getDeadBalls(), is(2));
     }
@@ -42,7 +42,7 @@ public class ApaNineBallPlayerControllerTest extends AbstractNineBallPlayerContr
     @Test public void foulOnShotAdds1DeadBall() {
         expectedPlayer.addDeadBalls(1);
 
-        actualPlayer = playerController.updatePlayerStats(game.getGameStatus(), turnBuilder.breakBalls(1).madeBalls(2, 3).deadBalls(4).fouled().miss()).getPlayer();
+        actualPlayer = playerController.addTurn(game.getGameStatus(), turnBuilder.breakBalls(1).madeBalls(2, 3).deadBalls(4).fouled().miss()).getPlayer();
 
         assertThat(actualPlayer.getDeadBalls(), is(1));
     }
@@ -50,7 +50,7 @@ public class ApaNineBallPlayerControllerTest extends AbstractNineBallPlayerContr
     @Test public void nineBallOnBreakGives7DeadBalls() {
         expectedPlayer.addDeadBalls(7);
 
-        actualPlayer = playerController.updatePlayerStats(game.getGameStatus(), turnBuilder.breakBalls(7, 9).win()).getPlayer();
+        actualPlayer = playerController.addTurn(game.getGameStatus(), turnBuilder.breakBalls(7, 9).win()).getPlayer();
 
         assertThat(actualPlayer.getDeadBalls(), is(7));
     }

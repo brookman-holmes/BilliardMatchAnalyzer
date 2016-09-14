@@ -406,8 +406,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
             @Override
             public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
-                float breakRunPct = (float) getPlayerFromList(players).getRunOuts() / (float) getPlayerFromList(players).getBreakAttempts();
-                item1.setText(String.format(Locale.getDefault(), "%1$d", getPlayerFromList(players).getRunOuts()));
+                float breakRunPct = (float) getPlayerFromList(players).getBreakAndRuns() / (float) getPlayerFromList(players).getBreakAttempts();
+                item1.setText(String.format(Locale.getDefault(), "%1$d", getPlayerFromList(players).getBreakAndRuns()));
                 item2.setText(String.format(Locale.getDefault(), "%1$s", convertFloatToPercent(breakRunPct)));
             }
         }

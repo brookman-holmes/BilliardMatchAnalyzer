@@ -84,7 +84,7 @@ public class PlayerList {
 
         roberts.addShootingBallsMade(2, false);
         roberts.addGameWon();
-        roberts.addFourBallRun();
+        roberts.addFiveBallRun();
 
         shaw.addGameLost();
 
@@ -320,7 +320,7 @@ public class PlayerList {
 
         roberts.addShootingBallsMade(1, false);
         roberts.addEarlyWin();
-        roberts.addFourBallRun();
+        roberts.addFiveBallRun();
         roberts.addGameWon();
 
         shaw.addGameLost();

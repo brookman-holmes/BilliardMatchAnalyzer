@@ -55,7 +55,7 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<
         EightBallPlayer player = new EightBallPlayer("");
         player.addShootingBallsMade(5, false);
         player.addGameWon();
-        player.addFourBallRun();
+        player.addFiveBallRun();
 
         return player;
     }

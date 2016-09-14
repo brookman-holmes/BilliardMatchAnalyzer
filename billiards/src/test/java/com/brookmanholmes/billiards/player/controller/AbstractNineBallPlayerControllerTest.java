@@ -54,7 +54,7 @@ public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPla
         T player = getBlankPlayer();
         player.addShootingBallsMade(6, false);
         player.addGameWon();
-        player.addFourBallRun();
+        player.addFiveBallRun();
 
         return player;
     }

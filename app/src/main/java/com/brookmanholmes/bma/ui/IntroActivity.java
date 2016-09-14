@@ -17,7 +17,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -316,7 +315,7 @@ public class IntroActivity extends BaseActivity {
                 gridLayout.setColumnCount(2);
                 gridLayout.setRowCount(3);
                 Context context = itemView.getContext();
-                gamesPlayed.setText(context.getResources().getQuantityString(R.plurals.num_games, player.getGamesPlayed(), player.getGamesPlayed()));
+                gamesPlayed.setText(context.getResources().getQuantityString(R.plurals.num_games, player.getGameTotal(), player.getGameTotal()));
                 DatabaseAdapter db = new DatabaseAdapter(itemView.getContext());
                 List<Match> matches = db.getMatches(player.getName(), null);
                 matchesPlayed.setText(context.getResources().getQuantityString(R.plurals.num_matches, matches.size(), matches.size()));

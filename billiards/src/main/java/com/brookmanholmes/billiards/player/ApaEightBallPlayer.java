@@ -45,10 +45,14 @@ public class ApaEightBallPlayer extends AbstractPlayer implements IApa {
     }
 
     @Override public void addWinsOnBreak(int wins) {
+        if (wins < 0)
+            throw new IllegalArgumentException("Wins must be greater than or equal to 0");
         winsOnBreak += wins;
     }
 
     @Override public void addEarlyWins(int wins) {
+        if (wins < 0)
+            throw new IllegalArgumentException("Wins must be greater than or equal to 0");
         earlyWins += wins;
     }
 

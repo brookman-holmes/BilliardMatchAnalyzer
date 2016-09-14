@@ -4,6 +4,7 @@ import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
+ * A controller for adding up player stats for APA 8 ball
  */
 class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
     ApaEightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {

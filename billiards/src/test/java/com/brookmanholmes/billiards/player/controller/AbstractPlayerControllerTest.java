@@ -88,12 +88,12 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
         // made a few balls and then play a safe
         playerController.turn = turnBuilder.madeBalls(1).safety();
 
-        assertThat(playerController.setAddTurnToPlayer(), is(true));
+        assertThat(playerController.addTurnToPlayer(), is(true));
 
         // miss your shot and make no balls
         playerController.turn = turnBuilder.miss();
 
-        assertThat(playerController.setAddTurnToPlayer(), is(true));
+        assertThat(playerController.addTurnToPlayer(), is(true));
     }
 
     @Test
@@ -202,7 +202,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
 
         playerController.addRunOutStats(actualPlayer);
 
-        expectedPlayer.addFourBallRun();
+        expectedPlayer.addFiveBallRun();
 
         testPlayerEquality();
     }
@@ -250,7 +250,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
 
     @Test
     public void test1() {
-        Pair<T> players = playerController.updatePlayerStats(game.getGameStatus(), breakAndRunTurn());
+        Pair<T> players = playerController.addTurn(game.getGameStatus(), breakAndRunTurn());
         game.addTurn(breakAndRunTurn());
 
 
@@ -269,12 +269,12 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
 
     @Test(expected = AssertionError.class)
     public void updatePlayerStatsThrowsIllegalStateExceptionOnNullInput() {
-        playerController.updatePlayerStats(game.getGameStatus(), null);
+        playerController.addTurn(game.getGameStatus(), null);
     }
 
     @Test(expected = AssertionError.class)
     public void updatePlayerStatsThrowsIllegalStateExceptionOnNullInput2() {
-        playerController.updatePlayerStats(null, turnBuilder.miss());
+        playerController.addTurn(null, turnBuilder.miss());
     }
 
     abstract ITurn breakAndRunTurn();

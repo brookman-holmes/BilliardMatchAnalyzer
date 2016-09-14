@@ -4,6 +4,7 @@ import com.brookmanholmes.billiards.player.NineBallPlayer;
 
 /**
  * Created by Brookman Holmes on 10/28/2015.
+ * A controller for adding up player stats for BCA 9 ball
  */
 class NineBallController extends PlayerController<NineBallPlayer> {
     NineBallController(String playerName, String opponentName, int playerRank, int opponentRank) {

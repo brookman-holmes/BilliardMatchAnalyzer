@@ -3,7 +3,6 @@ package com.brookmanholmes.bma.adaptervh;
 import android.view.View;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.IEarlyWins;
 import com.brookmanholmes.bma.R;
@@ -34,25 +33,25 @@ public class RunOutsHolder extends MatchInfoHolder {
 
     @Override public void bind(AbstractPlayer player, AbstractPlayer opponent) {
         // Break and runs
-        tvBreakAndRunPlayer.setText(String.format(Locale.getDefault(), "%d", player.getRunOuts()));
-        tvBreakAndRunOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getRunOuts()));
+        tvBreakAndRunPlayer.setText(String.format(Locale.getDefault(), "%d", player.getBreakAndRuns()));
+        tvBreakAndRunOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getBreakAndRuns()));
 
         // highlighting of the player who's doing better in this stat
-        highlightBetterPlayerStats(tvBreakAndRunPlayer, tvBreakAndRunOpponent, player.getRunOuts(), opponent.getRunOuts());
+        highlightBetterPlayerStats(tvBreakAndRunPlayer, tvBreakAndRunOpponent, player.getBreakAndRuns(), opponent.getBreakAndRuns());
 
         // table runs
-        tvMaxRunPlayer.setText(String.format(Locale.getDefault(), "%d", player.getRunTierOne()));
-        tvMaxRunOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getRunTierOne()));
+        tvMaxRunPlayer.setText(String.format(Locale.getDefault(), "%d", player.getTableRuns()));
+        tvMaxRunOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getTableRuns()));
 
         // highlighting of the player who's doing better in this stat
-        highlightBetterPlayerStats(tvMaxRunPlayer, tvMaxRunOpponent, player.getRunTierOne(), opponent.getRunTierOne());
+        highlightBetterPlayerStats(tvMaxRunPlayer, tvMaxRunOpponent, player.getTableRuns(), opponent.getTableRuns());
 
         // 5+ ball runs
-        tvFiveBallRunsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getRunTierTwo()));
-        tvFiveBallRunsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getRunTierTwo()));
+        tvFiveBallRunsPlayer.setText(String.format(Locale.getDefault(), "%d", player.getFiveBallRun()));
+        tvFiveBallRunsOpponent.setText(String.format(Locale.getDefault(), "%d", opponent.getFiveBallRun()));
 
         // highlighting of the player who's doing better in this stat
-        highlightBetterPlayerStats(tvFiveBallRunsPlayer, tvFiveBallRunsOpponent, player.getRunTierTwo(), opponent.getRunTierTwo());
+        highlightBetterPlayerStats(tvFiveBallRunsPlayer, tvFiveBallRunsOpponent, player.getFiveBallRun(), opponent.getFiveBallRun());
 
         if (player instanceof IEarlyWins && opponent instanceof IEarlyWins) {
             tvEarlyWins.setVisibility(View.VISIBLE);

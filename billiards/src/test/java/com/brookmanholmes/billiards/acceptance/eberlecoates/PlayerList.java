@@ -242,7 +242,7 @@ public class PlayerList {
 
         jeff.addShootingBallsMade(1, false);
         jeff.addGameWon();
-        jeff.addFourBallRun();
+        jeff.addFiveBallRun();
 
         max.addGameLost();
 
@@ -316,7 +316,7 @@ public class PlayerList {
 
         jeff.addShootingBallsMade(5, false);
         jeff.addGameWon();
-        jeff.addFourBallRun();
+        jeff.addFiveBallRun();
 
         max.addGameLost();
 
@@ -360,7 +360,7 @@ public class PlayerList {
 
         jeff.addShootingBallsMade(3, false);
         jeff.addGameWon();
-        jeff.addFourBallRun();
+        jeff.addFiveBallRun();
         max.addGameLost();
 
         return new Pair<AbstractPlayer>(max, jeff);
@@ -411,7 +411,7 @@ public class PlayerList {
         NineBallPlayer jeff = jeff();
 
         jeff.addShootingBallsMade(5, false);
-        jeff.addFourBallRun();
+        jeff.addFiveBallRun();
         jeff.addGameWon();
 
         max.addGameLost();
@@ -485,7 +485,7 @@ public class PlayerList {
 
         max.addShootingBallsMade(3, false);
         max.addGameWon();
-        max.addFourBallRun();
+        max.addFiveBallRun();
 
         jeff.addGameLost();
 
@@ -580,7 +580,7 @@ public class PlayerList {
 
         max.addShootingBallsMade(4, false);
         max.addGameWon();
-        max.addFourBallRun();
+        max.addFiveBallRun();
 
         jeff.addGameLost();
 

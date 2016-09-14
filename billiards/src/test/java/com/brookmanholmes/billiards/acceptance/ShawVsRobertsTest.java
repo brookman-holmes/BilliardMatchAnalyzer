@@ -40,7 +40,7 @@ public class ShawVsRobertsTest extends MatchTester {
     public void verifyPlayerPairsWithList() {
         Pair<TenBallPlayer> actualPair;
         for (int i = 0; i < turns.size(); i++) {
-            actualPair = controller.updatePlayerStats(expectedGameStatusList.get(i), turns.get(i));
+            actualPair = controller.addTurn(expectedGameStatusList.get(i), turns.get(i));
             assertThat("afterTurn" + i, actualPair.getPlayer(), is(expectedPairs.get(i).getPlayer()));
             assertThat("afterTurn" + i, actualPair.getOpponent(), is(expectedPairs.get(i).getOpponent()));
         }

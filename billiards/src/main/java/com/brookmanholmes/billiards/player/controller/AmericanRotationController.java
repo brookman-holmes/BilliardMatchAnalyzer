@@ -4,6 +4,7 @@ import com.brookmanholmes.billiards.player.AmericanRotationPlayer;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
+ * A controller for adding up player stats for American Rotation
  */
 class AmericanRotationController extends PlayerController<AmericanRotationPlayer> {
     AmericanRotationController(String playerName, String opponentName, int playerRank, int opponentRank) {
