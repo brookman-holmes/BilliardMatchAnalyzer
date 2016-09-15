@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -91,19 +92,31 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
     }
 
     @Override public void setFilter(StatFilter filter) {
-        List<Match> filteredMatches = new ArrayList<>();
-        String opponent = filter.getOpponent();
-        if (opponent.equals("All opponents"))
-            opponent = null;
+        new FilterPlayers().execute(filter);
+    }
 
-        List<Match> matches = new DatabaseAdapter(getContext()).getMatches(player, opponent);
-        for (Match match : matches) {
-            if (filter.isMatchQualified(match)) {
-                filteredMatches.add(match);
-            }
+    private class FilterPlayers extends AsyncTask<StatFilter, Void, List<Match>> {
+        @Override protected void onPostExecute(List<Match> matches) {
+            if (isAdded() && !isCancelled())
+                ((MatchListRecyclerAdapter) adapter).update(matches);
         }
 
-        ((MatchListRecyclerAdapter) adapter).update(filteredMatches);
+        @Override protected List<Match> doInBackground(StatFilter... filter) {
+            List<Match> filteredMatches = new ArrayList<>();
+
+            String opponent = filter[0].getOpponent();
+            if (opponent.equals("All opponents"))
+                opponent = null;
+
+            List<Match> matches = new DatabaseAdapter(getContext()).getMatches(player, opponent);
+            for (Match match : matches) {
+                if (filter[0].isMatchQualified(match)) {
+                    filteredMatches.add(match);
+                }
+            }
+
+            return filteredMatches;
+        }
     }
 
     @Override protected RecyclerView.LayoutManager getLayoutManager() {

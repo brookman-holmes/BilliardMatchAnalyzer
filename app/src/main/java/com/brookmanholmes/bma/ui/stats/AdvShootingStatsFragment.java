@@ -1,6 +1,8 @@
 package com.brookmanholmes.bma.ui.stats;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.transition.TransitionManager;
 import android.util.Log;
@@ -208,18 +210,22 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         setItems(shotTypeSpinner, getPossibleShotTypes());
         setItems(shotSubTypeSpinner, getPossibleShotSubTypes());
         setItems(angleSpinner, getPossibleAngles());
-
-        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(getFilteredStats()), leftOfAim, rightOfAim);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(getFilteredStats()), overCut, underCut);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowBankErrors(getFilteredStats()), bankShort, bankLong);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(getFilteredStats()), kickShort, kickLong);
-        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(getFilteredStats())));
         setVisibilities();
 
-        title.setText(getString(R.string.title_shooting_errors, getFilteredStats().size()));
+        new GetFilteredStatsAsync().execute(); // filter the stats and update the view
+    }
+
+    private void updateView(List<AdvStats> filteredStats) {
+        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(filteredStats), leftOfAim, rightOfAim);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(filteredStats), overCut, underCut);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowBankErrors(filteredStats), bankShort, bankLong);
+        StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(filteredStats), kickShort, kickLong);
+        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(filteredStats)));
+
+        title.setText(getString(R.string.title_shooting_errors, filteredStats.size()));
 
         if (statsLayout != null)
-            StatsUtils.setListOfMissReasons(statsLayout, getFilteredStats());
+            StatsUtils.setListOfMissReasons(statsLayout, filteredStats);
     }
 
     private void setVisibilities() {
@@ -252,5 +258,16 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
     @Override int getLayoutId() {
         return R.layout.fragment_adv_shooting_stats;
+    }
+
+    private class GetFilteredStatsAsync extends AsyncTask<Void, Void, List<AdvStats>> {
+        @Override protected void onPostExecute(List<AdvStats> statses) {
+            if (isAdded() && !isCancelled())
+            updateView(statses);
+        }
+
+        @Override protected List<AdvStats> doInBackground(Void... params) {
+            return getFilteredStats();
+        }
     }
 }

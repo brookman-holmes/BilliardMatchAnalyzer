@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.profile;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -76,19 +77,30 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
     }
 
     @Override public void setFilter(StatFilter filter) {
-        List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
-        List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
-
-        for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
-            if (filter.isPlayerQualified(pair.getRight()))
-                filteredPlayers.add(pair);
-        }
-
-        ((PlayerInfoAdapter) adapter).updatePlayers(filteredPlayers);
+        new UpdatePlayersAsync().execute(filter);
     }
 
     @Override protected RecyclerView.LayoutManager getLayoutManager() {
         return new LinearLayoutManager(getContext());
+    }
+
+    private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {
+        @Override
+        protected List<Pair<AbstractPlayer, AbstractPlayer>> doInBackground(StatFilter... filter) {
+            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
+            List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
+
+            for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
+                if (filter[0].isPlayerQualified(pair.getRight()))
+                    filteredPlayers.add(pair);
+            }
+
+            return filteredPlayers;
+        }
+
+        @Override protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
+            ((PlayerInfoAdapter) adapter).updatePlayers(pairs);
+        }
     }
 
     /**

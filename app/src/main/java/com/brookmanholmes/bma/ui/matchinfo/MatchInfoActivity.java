@@ -220,15 +220,23 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         firebaseAnalytics.logEvent("add_turn_finished", bundle);
     }
 
-    void addTurn(ITurn turn) {
-        db.insertTurn(turn, getMatchId(), match.getTurnCount());
+    void addTurn(final ITurn turn) {
+        new Thread(new Runnable() {
+            @Override public void run() {
+                db.insertTurn(turn, getMatchId(), match.getTurnCount());
+            }
+        }).start();
         updateViews();
     }
 
     private void undoTurn() {
         firebaseAnalytics.logEvent("turn_undone", null);
         match.undoTurn();
-        db.undoTurn(getMatchId(), match.getTurnCount() + 1);
+        new Thread(new Runnable() {
+            @Override public void run() {
+                db.undoTurn(getMatchId(), match.getTurnCount() + 1);
+            }
+        }).start();
         updateViews();
     }
 
@@ -554,7 +562,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
         @Override void onPositiveButton() {
             ((MatchInfoActivity)getActivity()).updatePlayerNames(preText, input.getText().toString());
-            db.editPlayerName(matchId, preText, input.getText().toString());
+            new Thread(new Runnable() {
+                @Override public void run() {
+                    db.editPlayerName(matchId, preText, input.getText().toString());
+                }
+            }).start();
         }
 
     }
@@ -577,7 +589,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         @Override void onPositiveButton() {
             match.setLocation(input.getText().toString());
-            db.updateMatchLocation(input.getText().toString(), matchId);
+            new Thread(new Runnable() {
+                @Override public void run() {
+                    db.updateMatchLocation(input.getText().toString(), matchId);
+                }
+            }).start();
         }
     }
 
@@ -598,7 +614,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         @Override void onPositiveButton() {
             match.setNotes(input.getText().toString());
-            db.updateMatchNotes(input.getText().toString(), matchId);
+            new Thread(new Runnable() {
+                @Override public void run() {
+                    db.updateMatchNotes(input.getText().toString(), matchId);
+                }
+            });
         }
     }
 

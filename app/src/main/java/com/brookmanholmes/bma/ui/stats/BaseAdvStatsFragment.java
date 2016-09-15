@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.stats;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -82,7 +83,22 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
 
     @Override
     public void setFilter(StatFilter filter) {
-        stats = new DatabaseAdapter(getContext()).getAdvStats(playerName, shotTypes, filter);
-        updateView();
+        AsyncTask task = new FilterStats().execute(filter);
+    }
+
+
+
+    private class FilterStats extends AsyncTask<StatFilter, Void, List<AdvStats>> {
+        @Override protected void onPostExecute(List<AdvStats> list) {
+            if (!isCancelled() && isAdded())
+                stats = list;
+
+            if (!isCancelled() && isAdded())
+                updateView();
+        }
+
+        @Override protected List<AdvStats> doInBackground(StatFilter... params) {
+            return new DatabaseAdapter(getContext()).getAdvStats(playerName, shotTypes, params[0]);
+        }
     }
 }

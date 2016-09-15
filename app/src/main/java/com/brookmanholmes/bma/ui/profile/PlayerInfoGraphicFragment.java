@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui.profile;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
@@ -94,15 +95,26 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
     }
 
     @Override public void setFilter(StatFilter filter) {
-        List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
-        List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
+        new UpdatePlayersAsync().execute(filter);
+    }
 
-        for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
-            if (filter.isPlayerQualified(pair.getRight()))
-                filteredPlayers.add(pair);
+    private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {
+        @Override
+        protected List<Pair<AbstractPlayer, AbstractPlayer>> doInBackground(StatFilter... filter) {
+            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
+            List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
+
+            for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
+                if (filter[0].isPlayerQualified(pair.getRight()))
+                    filteredPlayers.add(pair);
+            }
+
+            return filteredPlayers;
         }
 
-        ((PlayerInfoGraphicAdapter) adapter).updatePlayers(filteredPlayers);
+        @Override protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
+            ((PlayerInfoGraphicAdapter) adapter).updatePlayers(pairs);
+        }
     }
 
     @Override protected RecyclerView.LayoutManager getLayoutManager() {

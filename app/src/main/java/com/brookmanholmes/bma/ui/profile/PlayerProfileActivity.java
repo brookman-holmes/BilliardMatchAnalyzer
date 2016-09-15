@@ -74,7 +74,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
         player = getIntent().getExtras().getString(ARG_PLAYER_NAME);
         setupToolbar();
-        
+
         playerNameLayout.setVisibility(View.GONE);
         playerName.setText(player);
         opponentName.setText(filter.getOpponent());
