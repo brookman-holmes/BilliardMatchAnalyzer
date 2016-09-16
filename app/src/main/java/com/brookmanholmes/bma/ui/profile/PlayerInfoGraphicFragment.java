@@ -9,7 +9,11 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -50,9 +54,9 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
     private static final String ARG_PLAYER = "arg player";
     private DatabaseAdapter database;
     private String player;
+    private UpdatePlayersAsync task;
 
-    public PlayerInfoGraphicFragment() {
-    }
+    public PlayerInfoGraphicFragment() {}
 
     public static PlayerInfoGraphicFragment create(String player) {
         PlayerInfoGraphicFragment fragment = new PlayerInfoGraphicFragment();
@@ -75,7 +79,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         database = new DatabaseAdapter(getContext());
         player = getArguments().getString(ARG_PLAYER);
 
-        adapter = new PlayerInfoGraphicAdapter(database.getPlayer(player), player, "");
+        adapter = new PlayerInfoGraphicAdapter(new ArrayList<Pair<AbstractPlayer, AbstractPlayer>>(), player, "");
     }
 
     @Override
@@ -91,11 +95,21 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).removeListener(this);
         }
+        task.cancel(true);
         super.onDestroy();
     }
 
     @Override public void setFilter(StatFilter filter) {
-        new UpdatePlayersAsync().execute(filter);
+        if (task == null) {
+            task = new UpdatePlayersAsync();
+            task.execute(filter);
+        }
+
+        if (task.getStatus() != AsyncTask.Status.RUNNING) {
+            task.cancel(true);
+            task = new UpdatePlayersAsync();
+            task.execute(filter);
+        }
     }
 
     private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {

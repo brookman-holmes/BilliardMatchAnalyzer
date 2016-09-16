@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,7 +68,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         setContentView(R.layout.activity_player_profile);
         ButterKnife.bind(this);
 
-        firebaseAnalytics.logEvent("viewed_profile", getIntent().getExtras());
+        analytics.logEvent("viewed_profile", getIntent().getExtras());
         setupFilter(savedInstanceState);
 
         player = getIntent().getExtras().getString(ARG_PLAYER_NAME);

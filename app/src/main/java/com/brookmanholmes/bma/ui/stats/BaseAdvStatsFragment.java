@@ -32,6 +32,7 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
     @Bind(R.id.baseLayout) LinearLayout baseLayout;
     String playerName;
     String[] shotTypes;
+    protected FilterStats task;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,16 +78,23 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
     @Override public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
-
+        task.cancel(true);
         super.onDestroy();
     }
 
     @Override
     public void setFilter(StatFilter filter) {
-        AsyncTask task = new FilterStats().execute(filter);
+        if (task == null) {
+            task = new FilterStats();
+            task.execute(filter);
+        }
+
+        if (task.getStatus() != AsyncTask.Status.RUNNING) {
+            task.cancel(true);
+            task = new FilterStats();
+            task.execute(filter);
+        }
     }
-
-
 
     private class FilterStats extends AsyncTask<StatFilter, Void, List<AdvStats>> {
         @Override protected void onPostExecute(List<AdvStats> list) {

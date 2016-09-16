@@ -30,6 +30,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -75,7 +77,15 @@ public class DatabaseAdapter {
     private SQLiteDatabase database;
 
     public DatabaseAdapter(Context context) {
-        database = DatabaseHelper.getInstance(context).getReadableDatabase();
+        if (database == null || !database.isOpen()) {
+            database = DatabaseHelper.getInstance(context).getReadableDatabase();
+
+            //database.execSQL("PRAGMA temp_store = MEMORY", null); // test performance of this compared to FILE
+            database.execSQL("PRAGMA temp_store = FILE;");
+            database.execSQL("PRAGMA temp_store_directory = \"" +
+                    context.getDatabasePath(DatabaseHelper.DATABASE_NAME).getParentFile().toString()
+                    + "\";");
+        }
     }
 
     private static String tableStatusToString(ITurn table) {
@@ -155,6 +165,12 @@ public class DatabaseAdapter {
             if (match.getGameStatus().breakType != BreakType.GHOST)
                 combinePlayerInList(players, match.getOpponent());
         }
+
+        Collections.sort(players, new Comparator<AbstractPlayer>() {
+            @Override public int compare(AbstractPlayer o1, AbstractPlayer o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
 
         return players;
     }
@@ -242,6 +258,8 @@ public class DatabaseAdapter {
             }
             matches.add(match);
         }
+
+        c.close();
 
         return matches;
     }
@@ -413,8 +431,8 @@ public class DatabaseAdapter {
             database.delete(TABLE_WHYS, where, whereArgs);
             database.delete(TABLE_HOWS, where, whereArgs);
             database.delete(TABLE_ANGLES, where, whereArgs);
-            c.close();
         }
+        c.close();
     }
 
     public long insertMatch(Match match) {
@@ -540,6 +558,7 @@ public class DatabaseAdapter {
     }
 
     private AdvStats getAdvStat(long matchId, long turnNumber) {
+        AdvStats stat = null;
         Cursor c = database.query(TABLE_ADV_STATS,
                 null,
                 COLUMN_MATCH_ID + "=? AND " + COLUMN_TURN_NUMBER + "=?",
@@ -549,9 +568,11 @@ public class DatabaseAdapter {
                 null);
 
         if (c.moveToFirst()) {
-            return buildAdvStatsFromCursor(c);
-        } else
-            return null;
+            stat =  buildAdvStatsFromCursor(c);
+        }
+
+        c.close();
+        return stat;
     }
 
     private List<ITurn> getMatchTurns(long id) {

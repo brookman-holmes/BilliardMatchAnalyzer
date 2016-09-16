@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -43,6 +44,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -76,7 +78,7 @@ public class IntroActivity extends BaseActivity {
             preferences.edit().putBoolean("first_run2", false).apply();
         }
 
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null);
+        analytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null);
 
         setSupportActionBar(toolbar);
 
@@ -121,10 +123,10 @@ public class IntroActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 1) {
                     replaceFragment(getPlayerListFragment(), PLAYER_LIST_FRAGMENT);
-                    firebaseAnalytics.logEvent("view_player_list", null);
+                    analytics.logEvent("view_player_list", null);
                 } else {
                     replaceFragment(getMatchListFragment(), MATCH_LIST_FRAGMENT);
-                    firebaseAnalytics.logEvent("view_match_list", null);
+                    analytics.logEvent("view_match_list", null);
                 }
             }
 
@@ -245,8 +247,8 @@ public class IntroActivity extends BaseActivity {
             View view = inflater.inflate(R.layout.fragment_list_view, container, false);
             ButterKnife.bind(this, view);
 
-            adapter = new RecyclerAdapter(new DatabaseAdapter(getContext()).getPlayers());
-
+            adapter = new RecyclerAdapter(new ArrayList<AbstractPlayer>());
+            new GetPlayersTask().execute();
             if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 layoutManager = new GridLayoutManager(getContext(), 2);
             else {
@@ -258,8 +260,21 @@ public class IntroActivity extends BaseActivity {
             return view;
         }
 
+        private class GetPlayersTask extends AsyncTask<Void, Void, List<AbstractPlayer>> {
+            @Override protected List<AbstractPlayer> doInBackground(Void... params) {
+                if (isAdded() && !isCancelled())
+                    return new DatabaseAdapter(getContext()).getPlayers();
+                else return new ArrayList<>();
+            }
+
+            @Override protected void onPostExecute(List<AbstractPlayer> abstractPlayers) {
+                if (adapter != null)
+                    adapter.update(abstractPlayers);
+            }
+        }
+
         private static class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
-            final List<AbstractPlayer> players;
+            List<AbstractPlayer> players;
             final int[] colors = new int[]{Color.parseColor("#f44336"), Color.parseColor("#9C27B0"),
                     Color.parseColor("#3F51B5"), Color.parseColor("#2196F3"), Color.parseColor("#00BCD4"),
                     Color.parseColor("#4CAF50"), Color.parseColor("#CDDC39"), Color.parseColor("#FF9800"),
@@ -271,8 +286,12 @@ public class IntroActivity extends BaseActivity {
                 this.players = players;
             }
 
-            @Override
-            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            public void update(List<AbstractPlayer> players) {
+                this.players = players;
+                notifyDataSetChanged();
+            }
+
+            @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_player, parent, false);
                 return new ViewHolder(view);
             }

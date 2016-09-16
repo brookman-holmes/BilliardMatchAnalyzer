@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.*;
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
@@ -40,8 +40,8 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
     }
 
     @Override void updateView() {
-        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(stats), leftOfAim, rightOfAim);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(stats), slow, fast);
+        StatsUtils.setLayoutWeights(stats, AIM_LEFT, AIM_RIGHT, leftOfAim, rightOfAim);
+        StatsUtils.setLayoutWeights(stats, TOO_SOFT, TOO_HARD, slow, fast);
         miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(stats)));
 
         title.setText(getString(R.string.title_break_errors, stats.size()));

@@ -41,7 +41,7 @@ import static com.brookmanholmes.bma.data.DatabaseAdapter.TABLE_WHYS;
  * Created by Brookman Holmes on 1/12/2016.
  */
 class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "matches_db";
+    static final String DATABASE_NAME = "matches_db";
     private static final int DATABASE_VERSION = 21;
     private static DatabaseHelper sInstance;
 

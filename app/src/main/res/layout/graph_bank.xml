@@ -39,20 +39,21 @@
                 android:id="@+id/bankShort"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".6"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:textColor="@color/white"
+                android:textColor="@color/primary_text"
                 android:textSize="12sp"
-                android:backgroundTint="@color/colorAccent"
+                android:backgroundTint="@color/dead_ball"
                 android:background="@drawable/graph_background"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:text="@string/no_data"/>
 
             <TextView
                 android:id="@+id/bankLong"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".40"
+                android:layout_weight="0"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:textColor="@color/white"

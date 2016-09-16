@@ -38,7 +38,7 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
     private static final String ARG_PLAYER = "arg player";
     private DatabaseAdapter database;
     private String player;
-
+    private UpdatePlayersAsync task;
     public PlayerInfoFragment() {
     }
 
@@ -73,11 +73,21 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).removeListener(this);
         }
+        task.cancel(true);
         super.onDestroy();
     }
 
     @Override public void setFilter(StatFilter filter) {
-        new UpdatePlayersAsync().execute(filter);
+        if (task == null) {
+            task = new UpdatePlayersAsync();
+            task.execute(filter);
+        }
+
+        if (task.getStatus() != AsyncTask.Status.RUNNING) {
+            task.cancel(true);
+            task = new UpdatePlayersAsync();
+            task.execute(filter);
+        }
     }
 
     @Override protected RecyclerView.LayoutManager getLayoutManager() {
@@ -91,7 +101,7 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
             List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
 
             for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
-                if (filter[0].isPlayerQualified(pair.getRight()))
+                if (filter[0].isPlayerQualified(pair.getRight()) && !isCancelled())
                     filteredPlayers.add(pair);
             }
 
@@ -99,7 +109,8 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
         }
 
         @Override protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
-            ((PlayerInfoAdapter) adapter).updatePlayers(pairs);
+            if (!isCancelled() && isAdded())
+                ((PlayerInfoAdapter) adapter).updatePlayers(pairs);
         }
     }
 

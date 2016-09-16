@@ -20,12 +20,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     public final static String ARG_MATCH_ID = "matchId";
     private final static String TAG = "BaseActivity";
 
-    protected FirebaseAnalytics firebaseAnalytics;
+    protected FirebaseAnalytics analytics;
     protected SharedPreferences preferences;
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        preferences = getPreferences();
+        new Thread(new Runnable() {
+            @Override public void run() {
+                analytics = FirebaseAnalytics.getInstance(BaseActivity.this);
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override public void run() {
+                preferences = getPreferences();
+            }
+        }).start();
     }
 
     @Override public void onDestroy() {

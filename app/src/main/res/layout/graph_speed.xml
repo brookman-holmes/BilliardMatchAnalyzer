@@ -41,17 +41,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".23"
                 android:gravity="center"
-                android:textColor="@color/white"
+                android:textColor="@color/primary_text"
                 android:textSize="12sp"
-                android:backgroundTint="@color/colorAccent"
+                android:backgroundTint="@color/dead_ball"
                 android:background="@drawable/graph_background"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:text="@string/no_data"/>
 
             <TextView
                 android:id="@+id/fast"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".77"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="12sp"

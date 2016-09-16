@@ -3,6 +3,8 @@ package com.brookmanholmes.bma.ui.stats;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
+import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +33,12 @@ class StatsUtils {
     private StatsUtils() {
     }
 
-    static void setLayoutWeights(Pair<Integer, Integer> integerPair, TextView leftView, TextView rightView) {
+    static void setLayoutWeights(List<AdvStats> stats, AdvStats.HowType left, AdvStats.HowType right,
+                                 TextView leftView, TextView rightView) {
+        if (leftView.getParent() instanceof ViewGroup)
+            TransitionManager.beginDelayedTransition((ViewGroup)leftView.getParent());
+
+        Pair<Integer, Integer> integerPair = getHowError(stats, left, right);
         float leftWeight;
         float rightWeight;
 
@@ -45,16 +52,33 @@ class StatsUtils {
         else
             rightWeight = (float) integerPair.second / ((float) integerPair.first + (float) integerPair.second);
 
-        LinearLayout.LayoutParams leftParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, leftWeight);
-        leftParams.rightMargin = (int)ConversionUtils.convertDpToPx(leftView.getContext(), 1);
-        leftView.setLayoutParams(leftParams);
+        if (integerPair.first + integerPair.second > 0) {
+            leftView.getBackground().setTint(ContextCompat.getColor(leftView.getContext(), R.color.colorAccent));
+            leftView.setTextColor(ContextCompat.getColor(leftView.getContext(), R.color.white));
 
-        LinearLayout.LayoutParams rightParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, rightWeight);
-        rightParams.leftMargin = (int)ConversionUtils.convertDpToPx(leftView.getContext(), 1);
-        rightView.setLayoutParams(rightParams);
+            LinearLayout.LayoutParams leftParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, leftWeight);
+            leftParams.rightMargin = (int) ConversionUtils.convertDpToPx(leftView.getContext(), 1);
+            leftView.setLayoutParams(leftParams);
 
-        leftView.setText(Integer.toString(integerPair.first));
-        rightView.setText(Integer.toString(integerPair.second));
+            LinearLayout.LayoutParams rightParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, rightWeight);
+            rightParams.leftMargin = (int) ConversionUtils.convertDpToPx(leftView.getContext(), 1);
+            rightView.setLayoutParams(rightParams);
+
+            leftView.setText(Integer.toString(integerPair.first));
+            rightView.setText(Integer.toString(integerPair.second));
+        } else {
+            LinearLayout.LayoutParams leftParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+            leftParams.rightMargin = (int) ConversionUtils.convertDpToPx(leftView.getContext(), 1);
+            leftView.setLayoutParams(leftParams);
+
+            LinearLayout.LayoutParams rightParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 0);
+            rightParams.leftMargin = (int) ConversionUtils.convertDpToPx(leftView.getContext(), 1);
+            rightView.setLayoutParams(rightParams);
+
+            leftView.setText("No data");
+            leftView.getBackground().setTint(ContextCompat.getColor(leftView.getContext(), R.color.dead_ball));
+            leftView.setTextColor(ContextCompat.getColor(leftView.getContext(), R.color.primary_text));
+        }
     }
 
     public static void setListOfMissReasons(LinearLayout parent, List<AdvStats> stats) {
@@ -93,65 +117,13 @@ class StatsUtils {
         ((TextView) row.getChildAt(2)).setText(item.getPercentage());
     }
 
-    public static Pair<Integer, Integer> getHowCutErrors(List<AdvStats> stats) {
-        int over = 0, under = 0;
-
-        for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(AdvStats.HowType.THIN))
-                over++;
-            else if (stat.getHowTypes().contains(AdvStats.HowType.THICK))
-                under++;
-        }
-
-        return new Pair<>(over, under);
-    }
-
-    public static Pair<Integer, Integer> getHowAimErrors(List<AdvStats> stats) {
-        int left = 0, right = 0;
-
-        for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(AdvStats.HowType.AIM_LEFT))
-                left++;
-            else if (stat.getHowTypes().contains(AdvStats.HowType.AIM_RIGHT))
-                right++;
-        }
-
-        return new Pair<>(left, right);
-    }
-
-    public static Pair<Integer, Integer> getHowBankErrors(List<AdvStats> stats) {
-        int left = 0, right = 0;
-
-        for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(AdvStats.HowType.BANK_LONG))
-                right++;
-            else if (stat.getHowTypes().contains(AdvStats.HowType.BANK_SHORT))
-                left++;
-        }
-
-        return new Pair<>(left, right);
-    }
-
-    public static Pair<Integer, Integer> getHowKickErrors(List<AdvStats> stats) {
-        int left = 0, right = 0;
-
-        for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(AdvStats.HowType.KICK_LONG))
-                right++;
-            else if (stat.getHowTypes().contains(AdvStats.HowType.KICK_SHORT))
-                left++;
-        }
-
-        return new Pair<>(left, right);
-    }
-
-    public static Pair<Integer, Integer> getHowSpeedErrors(List<AdvStats> stats) {
+    public static Pair<Integer, Integer> getHowError(List<AdvStats> stats, AdvStats.HowType left, AdvStats.HowType right) {
         int fast = 0, slow = 0;
 
         for (AdvStats stat : stats) {
-            if (stat.getHowTypes().contains(AdvStats.HowType.TOO_HARD))
+            if (stat.getHowTypes().contains(right))
                 fast++;
-            else if (stat.getHowTypes().contains(AdvStats.HowType.TOO_SOFT))
+            else if (stat.getHowTypes().contains(left))
                 slow++;
         }
 

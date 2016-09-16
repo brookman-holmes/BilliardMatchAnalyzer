@@ -22,7 +22,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -63,7 +62,6 @@ import tourguide.tourguide.ChainTourGuide;
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
-import tourguide.tourguide.TourGuide;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
     private static final String TAG = "MatchInfoActivity";
@@ -217,7 +215,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         bundle.putBoolean("foul", turnBuilder.foul);
         bundle.putBoolean("lost_game", turnBuilder.lostGame);
         bundle.putString("ball_statuses", turnBuilder.tableStatus.getBallStatuses().toString());
-        firebaseAnalytics.logEvent("add_turn_finished", bundle);
+        analytics.logEvent("add_turn_finished", bundle);
     }
 
     void addTurn(final ITurn turn) {
@@ -230,7 +228,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void undoTurn() {
-        firebaseAnalytics.logEvent("turn_undone", null);
+        analytics.logEvent("turn_undone", null);
         match.undoTurn();
         new Thread(new Runnable() {
             @Override public void run() {
@@ -326,12 +324,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         if (id == R.id.action_notes) {
             showEditMatchNotesDialog();
-            firebaseAnalytics.logEvent("show_edit_match_notes", null);
+            analytics.logEvent("show_edit_match_notes", null);
         }
 
         if (id == R.id.action_location) {
             showEditMatchLocationDialog();
-            firebaseAnalytics.logEvent("show_edit_match_location", null);
+            analytics.logEvent("show_edit_match_location", null);
         }
 
         if (id == R.id.action_game_status) {
@@ -346,7 +344,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                     })
                     .create().show();
 
-            firebaseAnalytics.logEvent("show_game_status", null);
+            analytics.logEvent("show_game_status", null);
         }
 
         if (id == R.id.action_undo) {
@@ -365,11 +363,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 }
             }).show();
             addTurn(match.redoTurn());
-            firebaseAnalytics.logEvent("redid_turn", null);
+            analytics.logEvent("redid_turn", null);
         }
 
         if (item.getItemId() == R.id.action_match_view) {
-            firebaseAnalytics.logEvent("changed_match_view", null);
+            analytics.logEvent("changed_match_view", null);
             if (pager.getCurrentItem() == 0) {
                 pager.setCurrentItem(1);
                 item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_stream));

@@ -11,6 +11,7 @@ import java.util.List;
 
 import butterknife.Bind;
 
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.*;
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
@@ -44,9 +45,9 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
     }
 
     @Override void updateView() {
-        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(stats), overCut, underCut);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowSpeedErrors(stats), slow, fast);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(stats), kickShort, kickLong);
+        StatsUtils.setLayoutWeights(stats, THIN, THICK, overCut, underCut);
+        StatsUtils.setLayoutWeights(stats, TOO_SOFT, TOO_HARD, slow, fast);
+        StatsUtils.setLayoutWeights(stats, KICK_SHORT, KICK_LONG, kickShort, kickLong);
         miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(stats)));
 
         if (statsLayout != null) {

@@ -4,8 +4,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.transition.ChangeBounds;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +30,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import butterknife.Bind;
+
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.*;
 
 /**
  * Created by Brookman Holmes on 3/12/2016.
@@ -47,6 +55,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.angleSpinner) Spinner angleSpinner;
     @Bind(R.id.miscues) TextView miscues;
     private String shotType = "All", subType = "All", angle = "All";
+    private GetFilteredStatsAsync task2;
 
     public static AdvShootingStatsFragment create(Bundle args) {
         AdvShootingStatsFragment frag = new AdvShootingStatsFragment();
@@ -151,6 +160,11 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return view;
     }
 
+    @Override public void onDestroy() {
+        task2.cancel(true);
+        super.onDestroy();
+    }
+
     private List<String> getPossibleShotTypes() {
         SortedSet<String> shotTypes = new TreeSet<>();
         for (AdvStats stat : stats) {
@@ -212,25 +226,36 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         setItems(angleSpinner, getPossibleAngles());
         setVisibilities();
 
-        new GetFilteredStatsAsync().execute(); // filter the stats and update the view
+        if (task2 == null) {
+            task2 = new GetFilteredStatsAsync();
+            task2.execute();
+        }
+
+        if (task2.getStatus() != AsyncTask.Status.PENDING) {
+            task2.cancel(true);
+            task2 = new GetFilteredStatsAsync();
+            task2.execute();
+        }
     }
 
     private void updateView(List<AdvStats> filteredStats) {
-        StatsUtils.setLayoutWeights(StatsUtils.getHowAimErrors(filteredStats), leftOfAim, rightOfAim);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowCutErrors(filteredStats), overCut, underCut);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowBankErrors(filteredStats), bankShort, bankLong);
-        StatsUtils.setLayoutWeights(StatsUtils.getHowKickErrors(filteredStats), kickShort, kickLong);
+        StatsUtils.setLayoutWeights(filteredStats, AIM_LEFT, AIM_RIGHT, leftOfAim, rightOfAim);
+        StatsUtils.setLayoutWeights(filteredStats, THIN, THICK, overCut, underCut);
+        StatsUtils.setLayoutWeights(filteredStats, BANK_SHORT, BANK_LONG, bankShort, bankLong);
+        StatsUtils.setLayoutWeights(filteredStats, KICK_SHORT, KICK_LONG, kickShort, kickLong);
         miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(filteredStats)));
 
         title.setText(getString(R.string.title_shooting_errors, filteredStats.size()));
 
-        if (statsLayout != null)
+        if (statsLayout != null) {
+            TransitionManager.beginDelayedTransition(statsLayout, new Explode());
             StatsUtils.setListOfMissReasons(statsLayout, filteredStats);
+        }
     }
 
     private void setVisibilities() {
-        showKickGraph();
-        showBankGraph();
+        //showKickGraph();
+        //showBankGraph();
         showShotSubTypeSpinner();
     }
 
@@ -263,7 +288,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     private class GetFilteredStatsAsync extends AsyncTask<Void, Void, List<AdvStats>> {
         @Override protected void onPostExecute(List<AdvStats> statses) {
             if (isAdded() && !isCancelled())
-            updateView(statses);
+                updateView(statses);
         }
 
         @Override protected List<AdvStats> doInBackground(Void... params) {
