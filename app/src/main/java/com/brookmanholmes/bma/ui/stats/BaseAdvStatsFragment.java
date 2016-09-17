@@ -27,12 +27,12 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 6/3/2016.
  */
 public abstract class BaseAdvStatsFragment extends Fragment implements Filterable {
+    protected FilterStats task;
     List<AdvStats> stats = new ArrayList<>();
     @Bind(R.id.parentView) LinearLayout statsLayout;
     @Bind(R.id.baseLayout) LinearLayout baseLayout;
     String playerName;
     String[] shotTypes;
-    protected FilterStats task;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +78,8 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
     @Override public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
-        task.cancel(true);
+        if(task != null)
+            task.cancel(true);
         super.onDestroy();
     }
 

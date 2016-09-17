@@ -9,14 +9,9 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +90,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).removeListener(this);
         }
-        task.cancel(true);
+        if (task != null)
+            task.cancel(true);
         super.onDestroy();
     }
 
@@ -109,25 +105,6 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             task.cancel(true);
             task = new UpdatePlayersAsync();
             task.execute(filter);
-        }
-    }
-
-    private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {
-        @Override
-        protected List<Pair<AbstractPlayer, AbstractPlayer>> doInBackground(StatFilter... filter) {
-            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
-            List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
-
-            for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
-                if (filter[0].isPlayerQualified(pair.getRight()))
-                    filteredPlayers.add(pair);
-            }
-
-            return filteredPlayers;
-        }
-
-        @Override protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
-            ((PlayerInfoGraphicAdapter) adapter).updatePlayers(pairs);
         }
     }
 
@@ -600,6 +577,25 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 safetyEscapes.setText(itemView.getContext().getString(R.string.legend_made_ball, player.getSafetyEscapes(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyEscapes() / (float) opponent.getSafetySuccesses())));
             }
 
+        }
+    }
+
+    private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {
+        @Override
+        protected List<Pair<AbstractPlayer, AbstractPlayer>> doInBackground(StatFilter... filter) {
+            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
+            List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
+
+            for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
+                if (filter[0].isPlayerQualified(pair.getRight()))
+                    filteredPlayers.add(pair);
+            }
+
+            return filteredPlayers;
+        }
+
+        @Override protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
+            ((PlayerInfoGraphicAdapter) adapter).updatePlayers(pairs);
         }
     }
 }

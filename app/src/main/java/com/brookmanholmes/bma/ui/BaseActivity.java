@@ -24,17 +24,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected SharedPreferences preferences;
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new Thread(new Runnable() {
-            @Override public void run() {
-                analytics = FirebaseAnalytics.getInstance(BaseActivity.this);
-            }
-        }).start();
-
-        new Thread(new Runnable() {
-            @Override public void run() {
-                preferences = getPreferences();
-            }
-        }).start();
+        analytics = FirebaseAnalytics.getInstance(BaseActivity.this);
+        preferences = getPreferences();
     }
 
     @Override public void onDestroy() {

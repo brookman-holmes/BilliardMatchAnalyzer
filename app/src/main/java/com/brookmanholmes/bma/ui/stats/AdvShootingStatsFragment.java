@@ -2,16 +2,9 @@ package com.brookmanholmes.bma.ui.stats;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.transition.ChangeBounds;
 import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.transition.TransitionManager;
-import android.transition.TransitionSet;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +24,14 @@ import java.util.TreeSet;
 
 import butterknife.Bind;
 
-import static com.brookmanholmes.billiards.turn.AdvStats.HowType.*;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_LEFT;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_RIGHT;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.BANK_LONG;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.BANK_SHORT;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICK_LONG;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICK_SHORT;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THICK;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THIN;
 
 /**
  * Created by Brookman Holmes on 3/12/2016.
@@ -161,7 +161,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     @Override public void onDestroy() {
-        task2.cancel(true);
+        if (task2 != null)
+            task2.cancel(true);
         super.onDestroy();
     }
 

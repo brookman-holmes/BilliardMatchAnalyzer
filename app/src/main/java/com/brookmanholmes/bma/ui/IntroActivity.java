@@ -73,8 +73,13 @@ public class IntroActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         if (preferences.getBoolean("first_run2", true)) {
-            DatabaseAdapter db = new DatabaseAdapter(this);
-            db.createSampleMatches();
+            new Thread(new Runnable() {
+                @Override public void run() {
+                    DatabaseAdapter db = new DatabaseAdapter(IntroActivity.this);
+                    db.createSampleMatches();
+                }
+            }).start();
+
             preferences.edit().putBoolean("first_run2", false).apply();
         }
 
@@ -233,53 +238,43 @@ public class IntroActivity extends BaseActivity {
         }
     }
 
-    public static class PlayerListFragment extends Fragment {
-        @Bind(R.id.scrollView) RecyclerView recyclerView;
-        private RecyclerAdapter adapter;
-        private RecyclerView.LayoutManager layoutManager;
-
+    public static class PlayerListFragment extends BaseRecyclerFragment {
+        private GetPlayersTask task;
         public PlayerListFragment() {
 
         }
 
-        @Nullable @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-            ButterKnife.bind(this, view);
-
+        @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
             adapter = new RecyclerAdapter(new ArrayList<AbstractPlayer>());
-            new GetPlayersTask().execute();
-            if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                layoutManager = new GridLayoutManager(getContext(), 2);
-            else {
-                layoutManager = new LinearLayoutManager(getContext());
-            }
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
 
-            return view;
+            if (task == null || task.getStatus() != AsyncTask.Status.RUNNING) {
+                task = new GetPlayersTask();
+                task.execute();
+            }
         }
 
-        private class GetPlayersTask extends AsyncTask<Void, Void, List<AbstractPlayer>> {
-            @Override protected List<AbstractPlayer> doInBackground(Void... params) {
-                if (isAdded() && !isCancelled())
-                    return new DatabaseAdapter(getContext()).getPlayers();
-                else return new ArrayList<>();
+        @Override protected RecyclerView.LayoutManager getLayoutManager() {
+            if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                return new GridLayoutManager(getContext(), 2);
+            else {
+                return new LinearLayoutManager(getContext());
             }
+        }
 
-            @Override protected void onPostExecute(List<AbstractPlayer> abstractPlayers) {
-                if (adapter != null)
-                    adapter.update(abstractPlayers);
-            }
+        @Override public void onDestroy() {
+            if (task.getStatus() != AsyncTask.Status.FINISHED)
+                task.cancel(true);
+            super.onDestroy();
         }
 
         private static class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
-            List<AbstractPlayer> players;
             final int[] colors = new int[]{Color.parseColor("#f44336"), Color.parseColor("#9C27B0"),
                     Color.parseColor("#3F51B5"), Color.parseColor("#2196F3"), Color.parseColor("#00BCD4"),
                     Color.parseColor("#4CAF50"), Color.parseColor("#CDDC39"), Color.parseColor("#FF9800"),
                     Color.parseColor("#FF5722"), Color.parseColor("#795548"), Color.parseColor("#9E9E9E"),
                     Color.parseColor("#607D8B")};
+            List<AbstractPlayer> players;
 
             public RecyclerAdapter(List<AbstractPlayer> players) {
                 Collections.sort(players);
@@ -351,6 +346,19 @@ public class IntroActivity extends BaseActivity {
                 Intent intent = new Intent(itemView.getContext(), PlayerProfileActivity.class);
                 intent.putExtra(PlayerProfileActivity.ARG_PLAYER_NAME, playerName.getText().toString());
                 itemView.getContext().startActivity(intent);
+            }
+        }
+
+        private class GetPlayersTask extends AsyncTask<Void, Void, List<AbstractPlayer>> {
+            @Override protected List<AbstractPlayer> doInBackground(Void... params) {
+                if (isAdded() && !isCancelled())
+                    return new DatabaseAdapter(getContext()).getPlayers();
+                else return new ArrayList<>();
+            }
+
+            @Override protected void onPostExecute(List<AbstractPlayer> abstractPlayers) {
+                if (adapter != null)
+                    ((RecyclerAdapter) adapter).update(abstractPlayers);
             }
         }
     }

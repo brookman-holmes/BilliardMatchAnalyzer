@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.CompPlayer;
 import com.brookmanholmes.bma.R;
@@ -73,7 +72,8 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).removeListener(this);
         }
-        task.cancel(true);
+        if (task != null)
+            task.cancel(true);
         super.onDestroy();
     }
 
@@ -92,26 +92,6 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
 
     @Override protected RecyclerView.LayoutManager getLayoutManager() {
         return new LinearLayoutManager(getContext());
-    }
-
-    private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {
-        @Override
-        protected List<Pair<AbstractPlayer, AbstractPlayer>> doInBackground(StatFilter... filter) {
-            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
-            List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
-
-            for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
-                if (filter[0].isPlayerQualified(pair.getRight()) && !isCancelled())
-                    filteredPlayers.add(pair);
-            }
-
-            return filteredPlayers;
-        }
-
-        @Override protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
-            if (!isCancelled() && isAdded())
-                ((PlayerInfoAdapter) adapter).updatePlayers(pairs);
-        }
     }
 
     /**
@@ -221,6 +201,26 @@ public class PlayerInfoFragment extends BaseRecyclerFragment implements Filterab
 
         @Override public int getItemViewType(int position) {
             return position;
+        }
+    }
+
+    private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {
+        @Override
+        protected List<Pair<AbstractPlayer, AbstractPlayer>> doInBackground(StatFilter... filter) {
+            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
+            List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
+
+            for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
+                if (filter[0].isPlayerQualified(pair.getRight()) && !isCancelled())
+                    filteredPlayers.add(pair);
+            }
+
+            return filteredPlayers;
+        }
+
+        @Override protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
+            if (!isCancelled() && isAdded())
+                ((PlayerInfoAdapter) adapter).updatePlayers(pairs);
         }
     }
 }
