@@ -351,9 +351,11 @@ public class IntroActivity extends BaseActivity {
 
         private class GetPlayersTask extends AsyncTask<Void, Void, List<AbstractPlayer>> {
             @Override protected List<AbstractPlayer> doInBackground(Void... params) {
-                if (isAdded() && !isCancelled())
+                if (!isCancelled()) {
                     return new DatabaseAdapter(getContext()).getPlayers();
-                else return new ArrayList<>();
+                } else {
+                    return new ArrayList<>();
+                }
             }
 
             @Override protected void onPostExecute(List<AbstractPlayer> abstractPlayers) {
