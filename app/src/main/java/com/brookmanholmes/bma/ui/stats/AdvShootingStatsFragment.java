@@ -3,8 +3,6 @@ package com.brookmanholmes.bma.ui.stats;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.transition.Explode;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -249,7 +247,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         title.setText(getString(R.string.title_shooting_errors, filteredStats.size()));
 
         if (statsLayout != null) {
-            TransitionManager.beginDelayedTransition(statsLayout, new Explode());
             StatsUtils.setListOfMissReasons(statsLayout, filteredStats);
         }
     }

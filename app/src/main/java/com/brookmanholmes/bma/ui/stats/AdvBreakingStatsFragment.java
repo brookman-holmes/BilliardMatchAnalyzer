@@ -6,11 +6,12 @@ import android.widget.TextView;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
-import static com.brookmanholmes.billiards.turn.AdvStats.HowType.*;
+
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_LEFT;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_RIGHT;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.TOO_HARD;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.TOO_SOFT;
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
@@ -46,7 +47,7 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
 
         title.setText(getString(R.string.title_break_errors, stats.size()));
 
-        StatsUtils.setListOfMissReasons(this.statsLayout, stats);
+        StatsUtils.setListOfMissReasons(statsLayout, stats);
     }
 
     @Override String[] getShotTypes() {

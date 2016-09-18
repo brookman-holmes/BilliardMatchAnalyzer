@@ -3,8 +3,9 @@ package com.brookmanholmes.bma.ui.stats;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
+import android.transition.Slide;
 import android.transition.TransitionManager;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -87,15 +88,25 @@ class StatsUtils {
     }
 
     private static void addRows(LinearLayout parent, List<StatLineItem> items) {
-        parent.removeAllViews();
+        TransitionManager.beginDelayedTransition(parent, new Slide(Gravity.BOTTOM));
         for (int i = 0; i < items.size(); i++) {
-            LinearLayout row = inflateRow(parent.getContext());
+            LinearLayout row;
+            if (i < parent.getChildCount()) // reuse the row if possible
+                row = (LinearLayout) parent.getChildAt(i);
+            else { // otherwise create a new row
+                row = inflateRow(parent.getContext());
+                parent.addView(row);
+            }
+
+
             setTextOfRow(row, items.get(i));
             row.setLayoutParams(parent.getLayoutParams());
             if (i % 2 == 0)
                 setTextColorOfRow(row); // highlight every other row
+        }
 
-            parent.addView(row);
+        while (parent.getChildCount() > items.size()) {
+            parent.removeViewAt(parent.getChildCount() - 1); // remove views that aren't needed anymore
         }
     }
 

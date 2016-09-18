@@ -285,8 +285,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
 
                 chart.setData(data);
-                chart.invalidate();
-                chart.animateX(750);
+                chart.animateX(1750);
             }
 
             private List<Entry> getTspDataSet(List<AbstractPlayer> players) {
@@ -367,7 +366,6 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             public abstract void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents);
 
             abstract void setItemDesc();
-
         }
 
         static class SafetyTwoItemHolder extends TwoItemHolder {
@@ -441,7 +439,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 color3 = ContextCompat.getColor(itemView.getContext(), R.color.chart1);
                 color4 = ContextCompat.getColor(itemView.getContext(), R.color.chart);
                 grey = ContextCompat.getColor(itemView.getContext(), R.color.chart4);
-
+                decoView.deleteAll();
                 decoView.addSeries(new SeriesItem.Builder(grey)
                         .setRange(0, 100, 100)
                         .setLineWidth(32f)
@@ -465,47 +463,59 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                         .setCapRounded(false)
                         .setInset(new PointF(96, 96))
                         .build());
+
                 decoView.configureAngles(300, 0);
             }
 
             void bind(CompPlayer player) {
                 float attempts = player.getBreakAttempts();
 
-                float continuation = attempts != 0 ? (float) player.getBreakContinuations() / attempts : 0;
-                float successes = attempts != 0 ? (float) player.getBreakSuccesses() / attempts : 0;
-                float wins = attempts != 0 ? (float) player.getWinsOnBreak() / attempts : 0;
-                float fouls = attempts != 0 ? (float) player.getBreakFouls() / attempts : 0;
+                float continuation = attempts != 0 ? (float) player.getBreakContinuations() / attempts * 100 : 0;
+                float successes = attempts != 0 ? (float) player.getBreakSuccesses() / attempts * 100 : 0;
+                float wins = attempts != 0 ? (float) player.getWinsOnBreak() / attempts * 100 : 0;
+                float fouls = attempts != 0 ? (float) player.getBreakFouls() / attempts * 100 : 0;
 
                 decoView.addSeries(new SeriesItem.Builder(color1)
-                        .setRange(0, 100, successes * 100)
+                        .setRange(0, 100, successes)
                         .setInset(new PointF(0, 0))
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(color2)
-                        .setRange(0, 100, continuation * 100)
+                        .setRange(0, 100, continuation)
                         .setInset(new PointF(32, 32))
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(color4)
-                        .setRange(0, 100, wins * 100)
+                        .setRange(0, 100, wins)
                         .setInset(new PointF(64, 64))
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(color3)
-                        .setRange(0, 100, fouls * 100)
+                        .setRange(0, 100, fouls)
                         .setInset(new PointF(96, 96))
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .build());
 
-
-                successfulBreak.setText(getString(R.string.successful_breaks, player.getBreakSuccesses(), player.getBreakAttempts(), convertFloatToPercent((float) player.getBreakSuccesses() / (float) player.getBreakAttempts())));
-                continuationBreak.setText(getString(R.string.continuation_after_the_break, player.getBreakContinuations(), player.getBreakAttempts(), convertFloatToPercent((float) player.getBreakContinuations() / (float) player.getBreakAttempts())));
-                winBreak.setText(getString(R.string._8_9_on_the_break, player.getWinsOnBreak(), player.getBreakAttempts(), convertFloatToPercent((float) player.getWinsOnBreak() / (float) player.getBreakAttempts())));
-                foulBreak.setText(getString(R.string.fouls_on_the_break, player.getBreakFouls(), player.getBreakAttempts(), convertFloatToPercent((float) player.getBreakFouls() / (float) player.getBreakAttempts())));
+                successfulBreak.setText(getString(R.string.successful_breaks,
+                        player.getBreakSuccesses(),
+                        player.getBreakAttempts(),
+                        convertFloatToPercent((float) player.getBreakSuccesses() / (float) player.getBreakAttempts())));
+                continuationBreak.setText(getString(R.string.continuation_after_the_break,
+                        player.getBreakContinuations(),
+                        player.getBreakAttempts(),
+                        convertFloatToPercent((float) player.getBreakContinuations() / (float) player.getBreakAttempts())));
+                winBreak.setText(getString(R.string._8_9_on_the_break,
+                        player.getWinsOnBreak(),
+                        player.getBreakAttempts(),
+                        convertFloatToPercent((float) player.getWinsOnBreak() / (float) player.getBreakAttempts())));
+                foulBreak.setText(getString(R.string.fouls_on_the_break,
+                        player.getBreakFouls(),
+                        player.getBreakAttempts(),
+                        convertFloatToPercent((float) player.getBreakFouls() / (float) player.getBreakAttempts())));
             }
 
             private String getString(@StringRes int res, Object... formatArgs) {
@@ -526,7 +536,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             public SafetyGraphViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
-
+                decoView.deleteAll();
                 title.setText(R.string.title_after_opponent_safety);
                 notValid.setVisibility(View.GONE);
                 color1 = ContextCompat.getColor(itemView.getContext(), R.color.chart3);
@@ -548,27 +558,23 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                             .setRange(0, 100, 100)
                             .setCapRounded(false)
                             .setLineWidth(128f)
-                            .build()
-                    );
+                            .build());
                     decoView.addSeries(new SeriesItem.Builder(color1)
                             .setRange(0, 100, returns + escapes)
                             .setCapRounded(false)
                             .setLineWidth(128f)
-                            .build()
-                    );
+                            .build());
                     decoView.addSeries(new SeriesItem.Builder(color2)
                             .setRange(0, 100, escapes)
                             .setCapRounded(false)
                             .setLineWidth(128f)
-                            .build()
-                    );
+                            .build());
                 } else {
                     decoView.addSeries(new SeriesItem.Builder(Color.parseColor("#F5F5F5"))
                             .setRange(0, 100, 100)
                             .setCapRounded(false)
                             .setLineWidth(128f)
-                            .build()
-                    );
+                            .build());
                 }
 
                 int missed = opponent.getSafetySuccesses() - player.getSafetyEscapes() - player.getSafetyReturns();
