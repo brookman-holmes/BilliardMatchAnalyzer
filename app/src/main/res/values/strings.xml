@@ -16,7 +16,7 @@
     <string name="title_ar">Aggressiveness rating</string>
     <string name="title_break_continuations">Continuation on break</string>
     <string name="title_break_fouls">Breaking fouls</string>
-    <string name="title_break_wins">8/9 ball on the break</string>
+    <string name="title_break_wins">%1$s ball on the break</string>
     <string name="title_avg_break_balls">Average balls / break</string>
     <string name="title_successful_break">Ball on break / breaks</string>
     <string name="title_early_wins">Early wins</string>

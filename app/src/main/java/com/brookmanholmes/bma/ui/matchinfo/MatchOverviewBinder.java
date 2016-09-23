@@ -2,34 +2,50 @@ package com.brookmanholmes.bma.ui.matchinfo;
 
 
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
+import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
+import com.brookmanholmes.billiards.player.CompPlayer;
+import com.brookmanholmes.bma.R;
 
 /**
  * Created by Brookman Holmes on 9/21/2016.
  */
 
 public class MatchOverviewBinder extends BindingAdapter {
-    String playerWinPct, opponentWinPct;
+    public String playerWinPct, opponentWinPct;
 
-    int playerGamesWon, opponentGamesWon;
-    int playerGamesPlayed, opponentGamesPlayed;
+    public int playerGamesWon, opponentGamesWon;
+    public int playerGamesPlayed, opponentGamesPlayed;
 
-    String playerTsp, opponentTsp;
+    public String playerTsp, opponentTsp;
 
-    int playerShotsSuccess, opponentShotsSuccess;
-    int playerTotalShots, opponentTotalShots;
+    public int playerShotsSuccess, opponentShotsSuccess;
+    public int playerTotalShots, opponentTotalShots;
 
-    String playerTotalFouls, opponentTotalFouls;
+    public String playerTotalFouls, opponentTotalFouls;
 
-    String playerAggRating, opponentAggRating;
+    public String playerAggRating, opponentAggRating;
+
+    public boolean apaTitle = false;
 
     public MatchOverviewBinder(AbstractPlayer player, AbstractPlayer opponent, String title) {
+        if (useGameTotal(player, opponent)) {
+            apaTitle = true;
+        }
+
         playerWinPct = player.getWinPct();
         opponentWinPct = opponent.getWinPct();
 
         playerGamesWon = player.getWins();
         opponentGamesWon = opponent.getWins();
-        playerGamesPlayed = player.getGameTotal();
-        opponentGamesPlayed = opponent.getGameTotal();
+
+        if (useGameTotal(player, opponent)) {
+            playerGamesPlayed = player.getGameTotal();
+            opponentGamesPlayed = opponent.getGameTotal();
+        } else {
+            playerGamesPlayed = player.getRank();
+            opponentGamesPlayed = opponent.getRank();
+        }
 
         playerTsp = player.getTrueShootingPct();
         opponentTsp = opponent.getTrueShootingPct();
@@ -46,6 +62,8 @@ public class MatchOverviewBinder extends BindingAdapter {
         opponentAggRating = opponent.getAggressivenessRating();
 
         this.title = title;
+        helpLayout = R.layout.dialog_help_match_overview;
+
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent) {
@@ -54,8 +72,14 @@ public class MatchOverviewBinder extends BindingAdapter {
 
         playerGamesWon = player.getWins();
         opponentGamesWon = opponent.getWins();
-        playerGamesPlayed = player.getGameTotal();
-        opponentGamesPlayed = opponent.getGameTotal();
+
+        if (useGameTotal(player, opponent)) {
+            playerGamesPlayed = player.getGameTotal();
+            opponentGamesPlayed = opponent.getGameTotal();
+        } else {
+            playerGamesPlayed = player.getRank();
+            opponentGamesPlayed = opponent.getRank();
+        }
 
         playerTsp = player.getTrueShootingPct();
         opponentTsp = opponent.getTrueShootingPct();
@@ -72,74 +96,6 @@ public class MatchOverviewBinder extends BindingAdapter {
         opponentAggRating = opponent.getAggressivenessRating();
 
         notifyChange();
-    }
-
-    public String getPlayerWinPct() {
-        return playerWinPct;
-    }
-
-    public String getOpponentWinPct() {
-        return opponentWinPct;
-    }
-
-    public int getPlayerGamesWon() {
-        return playerGamesWon;
-    }
-
-    public int getOpponentGamesWon() {
-        return opponentGamesWon;
-    }
-
-    public int getPlayerGamesPlayed() {
-        return playerGamesPlayed;
-    }
-
-    public int getOpponentGamesPlayed() {
-        return opponentGamesPlayed;
-    }
-
-    public String getPlayerTsp() {
-        return playerTsp;
-    }
-
-    public String getOpponentTsp() {
-        return opponentTsp;
-    }
-
-    public int getPlayerShotsSuccess() {
-        return playerShotsSuccess;
-    }
-
-    public int getOpponentShotsSuccess() {
-        return opponentShotsSuccess;
-    }
-
-    public int getPlayerTotalShots() {
-        return playerTotalShots;
-    }
-
-    public int getOpponentTotalShots() {
-        return opponentTotalShots;
-    }
-
-    public String getPlayerTotalFouls() {
-        return playerTotalFouls;
-    }
-
-    public String getOpponentTotalFouls() {
-        return opponentTotalFouls;
-    }
-
-    public String getPlayerAggRating() {
-        return playerAggRating;
-    }
-
-    public String getOpponentAggRating() {
-        return opponentAggRating;
-    }
-
-    public String getBold() {
-        return "bold";
     }
 
     public boolean playerShootingBetter() {
@@ -162,5 +118,11 @@ public class MatchOverviewBinder extends BindingAdapter {
 
     public boolean playerFoulsMore() {
         return Integer.parseInt(playerTotalFouls) < Integer.parseInt(opponentTotalFouls);
+    }
+
+    private boolean useGameTotal(AbstractPlayer player, AbstractPlayer opponent) {
+        return (player instanceof ApaEightBallPlayer && opponent instanceof ApaEightBallPlayer) ||
+                (player instanceof ApaNineBallPlayer && opponent instanceof ApaNineBallPlayer) ||
+                (player instanceof CompPlayer && opponent instanceof CompPlayer);
     }
 }

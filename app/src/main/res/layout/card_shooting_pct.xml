@@ -33,7 +33,8 @@
             <include
                 layout="@layout/layout_bottom_row"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                bind:binder="@{shooting}" />
         </LinearLayout>
     </view>
 </layout>

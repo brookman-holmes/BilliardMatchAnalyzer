@@ -1,133 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="overview"
             type="com.brookmanholmes.bma.ui.matchinfo.MatchOverviewBinder" />
     </data>
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/container"
         style="@style/match_info_grid"
-            android:rowCount="5"
-            tools:showIn="@layout/card_match_overview">
+        android:rowCount="5"
+        tools:showIn="@layout/card_match_overview">
 
-    <TextView
-        style="@style/player_stats"
-        android:text="@{overview.playerWinPct}"
-        android:textColor="@color/primary_text"
-        android:typeface="@{overview.playerGamesWon > overview.opponentGamesWon ? `bold` : `normal`}" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{overview.playerWinPct}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{overview.playerGamesWon > overview.opponentGamesWon ? `bold` : `normal`}" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_columnWeight="1"
-        android:text="@string/title_win_pct"
-        android:textColor="@color/primary_text"/>
+        <TextView
+            style="@style/player_stats"
+            android:layout_columnWeight="1"
+            android:text="@string/title_win_pct"
+            android:textColor="@color/primary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:text="@{overview.opponentWinPct}"
-        android:textColor="@color/primary_text"
-        android:typeface="@{overview.opponentGamesWon > overview.playerGamesWon ? `bold` : `normal`}" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{overview.opponentWinPct}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{overview.opponentGamesWon > overview.playerGamesWon ? `bold` : `normal`}" />
 
-    <TextView
-        style="@style/player_stats"
-        android:tag="disappearable"
-        android:text="@{@string/out_of(overview.playerGamesWon, overview.playerGamesPlayed)}"
-        android:textColor="@color/secondary_text" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{@string/out_of(overview.playerGamesWon, overview.playerGamesPlayed)}"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_columnWeight="1"
-        android:tag="disappearable"
-        android:text="@string/title_games_won"
-        android:textColor="@color/secondary_text" />
+        <TextView
+            style="@style/player_stats"
+            android:layout_columnWeight="1"
+            android:text="@{overview.apaTitle ? @string/title_games_won_apa : @string/title_games_won}"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:tag="disappearable"
-        android:text="@{@string/out_of(overview.opponentGamesWon, overview.opponentGamesPlayed)}"
-        android:textColor="@color/secondary_text" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{@string/out_of(overview.opponentGamesWon, overview.opponentGamesPlayed)}"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:text="@{overview.playerTsp}"
-        android:textColor="@color/primary_text"
-        android:typeface="@{overview.playerShootingBetter() ? `bold` : `normal`}" />
+        <TextView
+            style="@style/player_stats"
+            android:layout_gravity="center"
+            android:text="@{overview.playerTsp}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{overview.playerShootingBetter() ? `bold` : `normal`}" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_columnWeight="1"
-        android:text="@string/title_tsp"
-        android:textColor="@color/primary_text"/>
+        <TextView
+            style="@style/player_stats"
+            android:layout_columnWeight="1"
+            android:text="@string/title_tsp"
+            android:textColor="@color/primary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:text="@{overview.opponentTsp}"
-        android:textColor="@color/primary_text"
-        android:typeface="@{overview.opponentShootingBetter() ? `bold` : `normal`}" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{overview.opponentTsp}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{overview.opponentShootingBetter() ? `bold` : `normal`}" />
 
-    <TextView
-        style="@style/player_stats"
-        android:tag="disappearable"
-        android:text="@{@string/out_of(overview.playerShotsSuccess, overview.playerTotalShots)}"
-        android:textColor="@color/secondary_text" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{@string/out_of(overview.playerShotsSuccess, overview.playerTotalShots)}"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_columnWeight="1"
-        android:tag="disappearable"
-        android:text="@string/title_true_shots_made"
-        android:textColor="@color/secondary_text" />
+        <TextView
+            style="@style/player_stats"
+            android:layout_columnWeight="1"
+            android:text="@string/title_true_shots_made"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:tag="disappearable"
-        android:text="@{@string/out_of(overview.opponentShotsSuccess, overview.opponentTotalShots)}"
-        android:textColor="@color/secondary_text" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{@string/out_of(overview.opponentShotsSuccess, overview.opponentTotalShots)}"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:tag="disappearable"
-        android:text="@{overview.playerTotalFouls}"
-        android:textColor="@color/primary_text"
-        android:typeface="@{overview.playerFoulsMore() ? `bold` : `normal`}" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{overview.playerTotalFouls}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{overview.playerFoulsMore() ? `bold` : `normal`}" />
 
-    <TextView
-        style="@style/player_stats"
-        android:tag="disappearable"
-        android:text="@string/total_fouls"
-        android:textColor="@color/primary_text" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@string/total_fouls"
+            android:textColor="@color/primary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:tag="disappearable"
-        android:text="@{overview.opponentTotalFouls}"
-        android:textColor="@color/primary_text"
-        android:typeface="@{overview.opponentFoulsMore() ? `bold` : `normal`}" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{overview.opponentTotalFouls}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{overview.opponentFoulsMore() ? `bold` : `normal`}" />
 
-    <TextView
-        style="@style/player_stats"
-        android:tag="disappearable"
-        android:text="@{overview.playerAggRating}"
-        android:textColor="@color/secondary_text" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{overview.playerAggRating}"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_columnWeight="1"
-        android:tag="disappearable"
-        android:text="@string/title_ar"
-        android:textColor="@color/secondary_text" />
+        <TextView
+            style="@style/player_stats"
+            android:layout_columnWeight="1"
+            android:text="@string/title_ar"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:tag="disappearable"
-        android:text="@{overview.opponentAggRating}"
-        android:textColor="@color/secondary_text" />
+        <TextView
+            style="@style/player_stats"
+            android:text="@{overview.opponentAggRating}"
+            android:textColor="@color/secondary_text" />
 
-</GridLayout>
+    </GridLayout>
 </layout>

@@ -8,17 +8,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.Turn;
-import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
 
@@ -191,7 +191,7 @@ public class DatabaseAdapter {
         }
     }
 
-    public List<Pair<AbstractPlayer, AbstractPlayer>> getPlayer(String playerName) {
+    public List<Pair<AbstractPlayer, AbstractPlayer>> getPlayerPairs(String playerName) {
         List<Pair<AbstractPlayer, AbstractPlayer>> players = new ArrayList<>();
 
         Cursor c = database.query(TABLE_PLAYERS,
@@ -491,7 +491,6 @@ public class DatabaseAdapter {
                 values,
                 COLUMN_NAME + "=? AND " + COLUMN_MATCH_ID + "=?",
                 new String[]{name, Long.toString(matchId)});
-        ;
     }
 
     public void insertTurn(ITurn turn, long matchId, int turnCount) {

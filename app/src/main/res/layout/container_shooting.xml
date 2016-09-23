@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="shooting"
             type="com.brookmanholmes.bma.ui.matchinfo.ShootingBinder" />
@@ -34,58 +32,49 @@
 
         <TextView
             style="@style/player_stats"
-            android:tag="disappearable"
             android:text="@{@string/out_of(shooting.playerShotsMade, shooting.playerShots)}"
             android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
-            android:tag="disappearable"
             android:text="@string/title_shots_made"
             android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
-            android:tag="disappearable"
             android:text="@{@string/out_of(shooting.opponentShotsMade, shooting.opponentShots)}"
             android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
-            android:tag="disappearable"
             android:text="@{shooting.playerAvg}"
             android:textColor="@color/primary_text"
             android:typeface="@{shooting.playerAvgBetter() ? `bold` : `normal`}" />
 
         <TextView
             style="@style/player_stats"
-            android:tag="disappearable"
             android:text="@string/title_avg_balls_turn"
             android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
-            android:tag="disappearable"
             android:text="@{shooting.opponentAvg}"
             android:textColor="@color/primary_text"
             android:typeface="@{shooting.opponentAvgBetter() ? `bold` : `normal`}" />
 
         <TextView
             style="@style/player_stats"
-            android:tag="disappearable"
             android:text="@{shooting.playerFouls}"
             android:textColor="@color/secondary_text"
             android:typeface="@{shooting.playerFoulsBetter() ? `bold` : `normal`}" />
 
         <TextView
             style="@style/player_stats"
-            android:tag="disappearable"
             android:text="@string/title_shooting_fouls"
             android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
-            android:tag="disappearable"
             android:text="@{shooting.opponentFouls}"
             android:textColor="@color/secondary_text"
             android:typeface="@{shooting.opponentFoulsBetter() ? `bold` : `normal`}" />

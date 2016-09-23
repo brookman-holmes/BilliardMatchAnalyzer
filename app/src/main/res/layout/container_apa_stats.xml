@@ -1,183 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:showIn="@layout/card_apa_stats">
+<layout>
 
-    <include
-        android:id="@+id/title"
-        layout="@layout/layout_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <data>
 
-    <GridLayout
+        <variable
+            name="apa"
+            type="com.brookmanholmes.bma.ui.matchinfo.ApaBinder" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/container"
         style="@style/match_info_grid"
         android:rowCount="7">
 
         <TextView
-            android:id="@+id/tvRankPlayer"
             style="@style/player_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_row="0"
+            android:text="@{apa.playerRank}"
             android:textColor="@color/primary_text"/>
 
         <TextView
             style="@style/player_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_row="0"
+            android:layout_columnWeight="1"
             android:text="@string/rank"
             android:textColor="@color/primary_text"/>
 
         <TextView
-            android:id="@+id/tvRankOpponent"
             style="@style/player_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_row="0"
+            android:text="@{apa.opponentRank}"
             android:textColor="@color/primary_text"/>
 
         <TextView
-            android:id="@+id/tvDefensiveShotsOpponent"
             style="@style/player_stats"
-            android:layout_column="2"
-            android:layout_gravity="center"
-            android:layout_row="3"
-            android:textColor="@color/secondary_text"/>
-
-        <TextView
-            android:id="@+id/tvDefensiveShotsPlayer"
-            style="@style/player_stats"
-            android:layout_column="0"
-            android:layout_gravity="center"
-            android:layout_row="3"
+            android:text="@{@string/out_of(apa.playerPoints, apa.playerPointsNeeded)}"
             android:textColor="@color/secondary_text"/>
 
         <TextView
             style="@style/player_stats"
-            android:layout_column="1"
-            android:layout_gravity="center"
-            android:layout_row="3"
-            android:text="@string/defensive_shots"
-            android:textColor="@color/secondary_text"/>
-
-        <TextView
-            android:id="@+id/tvPlayerPoints"
-            style="@style/player_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_gravity="center"
-            android:layout_row="1"
-            android:textColor="@color/secondary_text"/>
-
-        <TextView
-            android:id="@+id/tvPointsTitle"
-            style="@style/player_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="center"
-            android:layout_row="1"
-            android:text="@string/points"
+            android:text="@{apa.apa8Ball ? @string/title_games_needed : @string/points}"
             android:textColor="@color/secondary_text"/>
 
         <TextView
-            android:id="@+id/tvOpponentPoints"
             style="@style/player_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_gravity="center"
-            android:layout_row="1"
+            android:text="@{@string/out_of(apa.opponentPoints, apa.opponentPointsNeeded)}"
             android:textColor="@color/secondary_text"/>
 
         <TextView
-            android:id="@+id/tvMatchPointsPlayer"
             style="@style/player_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_gravity="center"
-            android:layout_row="2"
-            android:textColor="@color/primary_text"/>
+            android:text="@{apa.playerMatchPoints}"
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_gravity="center"
-            android:layout_row="2"
+            android:layout_columnWeight="1"
             android:text="@string/match_points"
-            android:textColor="@color/primary_text"/>
-
-        <TextView
-            android:id="@+id/tvMatchPointsOpponent"
-            style="@style/player_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_row="2"
-            android:textColor="@color/primary_text"/>
-
-    </GridLayout>
-
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:paddingTop="8dp"
-        android:useDefaultMargins="true">
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
-            android:layout_column="0"
-            android:layout_row="1"
+            android:text="@{apa.opponentMatchPoints}"
+            android:textColor="@color/primary_text" />
+
+        <TextView
+            style="@style/player_stats"
+            android:text="@{apa.playerDefenses}"
+            android:textColor="@color/secondary_text" />
+
+        <TextView
+            style="@style/player_stats"
+            android:text="@string/defensive_shots"
+            android:textColor="@color/secondary_text" />
+
+        <TextView
+            style="@style/player_stats"
+            android:text="@{apa.opponentDefenses}"
+            android:textColor="@color/secondary_text" />
+
+        <TextView
+            style="@style/player_stats"
+            android:layout_gravity="start"
+            android:layout_marginTop="8dp"
             android:text="@string/innings"
             android:textColor="@color/primary_text"/>
 
         <TextView
-            android:id="@+id/tvInningsOpponent"
             style="@style/player_stats"
-            android:layout_row="1"
-            android:textColor="@color/primary_text"
-            android:layout_gravity="left"/>
+            android:layout_columnSpan="2"
+            android:layout_gravity="start"
+            android:layout_marginTop="8dp"
+            android:text="@{apa.innings}"
+            android:textColor="@color/primary_text" />
 
         <TextView
-            android:id="@+id/tvDeadBallsTitle"
             style="@style/player_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="2"
+            android:layout_gravity="start"
             android:text="@string/dead_balls"
             android:textColor="@color/secondary_text"
-            android:visibility="gone"/>
-
+            android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}" />
         <TextView
-            android:id="@+id/tvDeadBallsOpponent"
             style="@style/player_stats"
-            android:layout_row="2"
+            android:layout_columnSpan="2"
+            android:layout_gravity="start"
+            android:text="@{apa.deadBalls}"
             android:textColor="@color/secondary_text"
-            android:visibility="gone"
-            android:layout_gravity="left"/>
-
+            android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}" />
     </GridLayout>
-
-    <include
-        layout="@layout/layout_bottom_row"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-</LinearLayout>
+</layout>

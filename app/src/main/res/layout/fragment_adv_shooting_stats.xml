@@ -43,12 +43,13 @@
         <include layout="@layout/graph_aim"/>
 
         <include
+            android:id="@+id/kickGraph"
+            layout="@layout/graph_kick" />
+
+        <include
             android:id="@+id/bankGraph"
             layout="@layout/graph_bank"/>
 
-        <include
-            android:id="@+id/kickGraph"
-            layout="@layout/graph_kick"/>
 
         <LinearLayout
             android:id="@+id/parentView"

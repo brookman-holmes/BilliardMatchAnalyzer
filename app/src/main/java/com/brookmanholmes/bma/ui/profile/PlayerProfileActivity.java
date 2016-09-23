@@ -24,6 +24,7 @@ import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.MatchListFragment;
+import com.brookmanholmes.bma.ui.matchinfo.MatchInfoFragment;
 import com.brookmanholmes.bma.ui.stats.AdvBreakingStatsFragment;
 import com.brookmanholmes.bma.ui.stats.AdvSafetyStatsFragment;
 import com.brookmanholmes.bma.ui.stats.AdvShootingStatsFragment;
@@ -46,8 +47,6 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     private static final String ARG_FILTER_OPPONENT = "arg_filter_opponent";
     private static final String ARG_FILTER_GAME = "arg_filter_game";
     private static final String ARG_FILTER_DATE = "arg_filter_date";
-    private List<Filterable> listeners = new ArrayList<>();
-
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerName) TextView playerName;
     @SuppressWarnings("WeakerAccess")
@@ -60,6 +59,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     @Bind(R.id.pager) ViewPager pager;
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tabs) TabLayout tabLayout;
+    private List<Filterable> listeners = new ArrayList<>();
     private StatFilter filter;
     private String player;
 
@@ -221,7 +221,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
                 case 0:
                     return PlayerInfoGraphicFragment.create(player);
                 case 1:
-                    return PlayerInfoFragment.create(player);
+                    return MatchInfoFragment.create(player);
                 case 2:
                     return MatchListFragment.create(player, null);
                 case 3:

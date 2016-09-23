@@ -589,7 +589,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
     private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {
         @Override
         protected List<Pair<AbstractPlayer, AbstractPlayer>> doInBackground(StatFilter... filter) {
-            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
+            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayerPairs(player);
             List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
 
             for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="runs"
             type="com.brookmanholmes.bma.ui.matchinfo.RunsBinder" />
+
+        <import type="android.view.View" />
     </data>
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,90 +16,80 @@
         tools:showIn="@layout/card_run_outs">
 
         <TextView
-            android:id="@+id/tvMaxBallRunsPlayer"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:textColor="@color/primary_text" />
+            android:text="@{runs.playerBreakRuns}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{runs.playerBreakRunsMore() ? `bold` : `normal`}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
-            android:layout_gravity="center"
             android:text="@string/title_break_runs"
             android:textColor="@color/primary_text" />
 
         <TextView
-            android:id="@+id/tvMaxBallRunsOpponent"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:textColor="@color/primary_text" />
+            android:text="@{runs.opponentBreakRuns}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{runs.opponentBreakRunsMore() ? `bold` : `normal`}" />
 
         <TextView
-            android:id="@+id/tvTierOneRunsPlayer"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/secondary_text" />
+            android:text="@{runs.playerTableRuns}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{runs.playerTableRunsMore() ? `bold` : `normal`}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
-            android:layout_gravity="center"
-            android:tag="disappearable"
             android:text="@string/title_table_runs"
             android:textColor="@color/secondary_text" />
 
         <TextView
-            android:id="@+id/tvTierOneRunsOpponent"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/secondary_text" />
+            android:text="@{runs.opponentTableRuns}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{runs.opponentTableRunsMore() ? `bold` : `normal`}" />
 
         <TextView
-            android:id="@+id/tvFiveBallRunsPlayer"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/primary_text" />
+            android:text="@{runs.playerFiveBallRuns}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{runs.playerFiveBallRunsMore() ? `bold` : `normal`}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:layout_gravity="center"
-            android:tag="disappearable"
             android:text="@string/title_five_ball_outs"
             android:textColor="@color/primary_text" />
 
         <TextView
-            android:id="@+id/tvFiveBallRunsOpponent"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/primary_text" />
+            android:text="@{runs.opponentFiveBallRuns}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{runs.opponentFiveBallRunsMore() ? `bold` : `normal`}" />
 
         <TextView
-            android:id="@+id/tvEarlyWinsPlayer"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/secondary_text" />
+            android:text="@{runs.playerEarlyWins}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{runs.playerEarlyWinsMore() ? `bold` : `normal`}"
+            android:visibility="@{runs.showEarlyWins ? View.VISIBLE : View.GONE}" />
 
         <TextView
-            android:id="@+id/tvEarlyWinsTitle"
             style="@style/player_stats"
             android:layout_columnWeight="1"
-            android:layout_gravity="center"
-            android:tag="disappearable"
             android:text="@string/title_early_wins"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{runs.showEarlyWins ? View.VISIBLE : View.GONE}" />
 
         <TextView
-            android:id="@+id/tvEarlyWinsOpponent"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/secondary_text" />
+            android:text="@{runs.opponentEarlyWins}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{runs.opponentEarlyWinsMore() ? `bold` : `normal`}"
+            android:visibility="@{runs.showEarlyWins ? View.VISIBLE : View.GONE}" />
 
     </GridLayout>
 </layout>

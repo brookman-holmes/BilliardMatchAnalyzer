@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.bma.R;
 
 /**
  * Created by Brookman Holmes on 9/22/2016.
@@ -22,6 +23,7 @@ public class SafetiesBinder extends BindingAdapter {
 
     public SafetiesBinder(AbstractPlayer player, AbstractPlayer opponent, String title) {
         this.title = title;
+        helpLayout = R.layout.dialog_help_safeties;
 
         playerSafetyPct = player.getSafetyPct();
         opponentSafetyPct = opponent.getSafetyPct();

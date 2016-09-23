@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="breaks"
             type="com.brookmanholmes.bma.ui.matchinfo.BreaksBinder" />
+
+        <import type="android.view.View" />
     </data>
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,113 +15,95 @@
         tools:showIn="@layout/card_breaks">
 
         <TextView
-            android:id="@+id/tvBreakTotalPlayer"
             style="@style/player_stats"
-            android:layout_gravity="center"
+            android:text="@{@string/out_of(breaks.playerBallOnBreak, breaks.playerBreaks)}"
             android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
-            android:layout_gravity="center"
             android:text="@string/title_successful_break"
             android:textColor="@color/primary_text" />
 
         <TextView
-            android:id="@+id/tvBreakTotalOpponent"
             style="@style/player_stats"
-            android:layout_gravity="center"
+            android:text="@{@string/out_of(breaks.opponentBallOnBreak, breaks.opponentBreaks)}"
             android:textColor="@color/primary_text" />
 
         <TextView
-            android:id="@+id/tvAvgBreakBallsPlayer"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/secondary_text" />
+            android:text="@{breaks.playerAvg}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{breaks.playerAvgHigher() ? `bold` : `normal`}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
-            android:layout_gravity="center"
-            android:tag="disappearable"
             android:text="@string/title_avg_break_balls"
             android:textColor="@color/secondary_text" />
 
         <TextView
-            android:id="@+id/tvAvgBreakBallsOpponent"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/secondary_text" />
+            android:text="@{breaks.opponentAvg}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{breaks.opponentAvgHigher() ? `bold` : `normal`}" />
 
         <TextView
-            android:id="@+id/tvBreakContinuationsPlayer"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/primary_text" />
+            android:text="@{breaks.playerContinuation}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{breaks.playerContinuationsHigher() ? `bold` : `normal`}" />
 
         <TextView
-            android:id="@+id/tvBreakContinuationsTitle"
             style="@style/player_stats"
             android:layout_columnWeight="1"
-            android:layout_gravity="center"
-            android:tag="disappearable"
             android:text="@string/title_break_continuations"
             android:textColor="@color/primary_text" />
 
         <TextView
-            android:id="@+id/tvBreakContinuationsOpponent"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/primary_text" />
+            android:text="@{breaks.opponentContinuation}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{breaks.opponentContinuationsHigher() ? `bold` : `normal`}" />
 
         <TextView
-            android:id="@+id/tvBreakFoulsPlayer"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/secondary_text" />
+            android:text="@{breaks.playerFouls}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{breaks.playerFoulsLower() ? `bold` : `normal`}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
-            android:layout_gravity="center"
-            android:tag="disappearable"
             android:text="@string/title_break_fouls"
             android:textColor="@color/secondary_text" />
 
         <TextView
-            android:id="@+id/tvBreakFoulsOpponent"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/secondary_text" />
+            android:text="@{breaks.opponentFouls}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{breaks.opponentFoulsLower() ? `bold` : `normal`}" />
 
         <TextView
-            android:id="@+id/tvBreakWinsPlayer"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/primary_text" />
+            android:text="@{breaks.playerWinOnBreak}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{breaks.playerWinsOnBreakMore() ? `bold` : `normal`}"
+            android:visibility="@{breaks.showWinOnBreak ? View.VISIBLE : View.GONE}" />
 
         <TextView
-            android:id="@+id/tvBreakWinsTitle"
             style="@style/player_stats"
             android:layout_columnWeight="1"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:text="@string/title_break_wins"
-            android:textColor="@color/primary_text" />
+            android:text="@{@string/title_break_wins(breaks.breakBall)}"
+            android:textColor="@color/primary_text"
+            android:visibility="@{breaks.showWinOnBreak ? View.VISIBLE : View.GONE}" />
 
         <TextView
-            android:id="@+id/tvBreakWinsOpponent"
             style="@style/player_stats"
-            android:layout_gravity="center"
-            android:tag="disappearable"
-            android:textColor="@color/primary_text" />
+            android:text="@{breaks.opponentWinOnBreak}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{breaks.opponentWinsOnBreakMore() ? `bold` : `normal`}"
+            android:visibility="@{breaks.showWinOnBreak ? View.VISIBLE : View.GONE}" />
 
     </GridLayout>
 </layout>
