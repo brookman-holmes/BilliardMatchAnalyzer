@@ -122,7 +122,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
         playerController.gameStatus = game.getGameStatus();
         playerController.addSafetyStats(actualPlayer);
 
-        expectedPlayer.addSafety(false);
+        expectedPlayer.addSafety(false, 0);
 
         testPlayerEquality();
     }
@@ -133,7 +133,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
         playerController.gameStatus = new GameStatus.Builder(GameType.BCA_NINE_BALL).safetyLastTurn().build();
         playerController.addSafetyStats(actualPlayer);
 
-        expectedPlayer.addSafety(true);
+        expectedPlayer.addSafety(true, 0);
 
         testPlayerEquality();
     }

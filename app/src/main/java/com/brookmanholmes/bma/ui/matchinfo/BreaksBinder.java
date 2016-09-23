@@ -22,10 +22,8 @@ public class BreaksBinder extends BindingAdapter {
     public String playerFouls, opponentFouls;
 
     public String playerWinOnBreak = "0", opponentWinOnBreak = "0";
-
-    public boolean showWinOnBreak = false;
-
     public String breakBall;
+    boolean showWinOnBreak = false;
 
     public BreaksBinder(AbstractPlayer player, AbstractPlayer opponent, String title) {
         this.title = title;
@@ -81,6 +79,10 @@ public class BreaksBinder extends BindingAdapter {
             opponentWinOnBreak = ((IWinsOnBreak) opponent).getWinsOnBreak() + "";
         }
         notifyChange();
+    }
+
+    public boolean isShowWinOnBreak() {
+        return showWinOnBreak && visible;
     }
 
     public boolean playerAvgHigher() {

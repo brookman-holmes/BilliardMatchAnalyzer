@@ -143,11 +143,13 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
      * in the last turn)
      * @param opponentPlayedSuccessfulSafe Whether or not they came to the table after their opponent
      *                                     played a safe
+     * @param shootingBallsMade
      */
-    public void addSafety(boolean opponentPlayedSuccessfulSafe) {
+    public void addSafety(boolean opponentPlayedSuccessfulSafe, int shootingBallsMade) {
         addSafetyAttempt(false);
         safetySuccesses++;
-        if (opponentPlayedSuccessfulSafe) safetyReturns++;
+        if (opponentPlayedSuccessfulSafe && shootingBallsMade == 0)
+            safetyReturns++;
     }
 
     /**

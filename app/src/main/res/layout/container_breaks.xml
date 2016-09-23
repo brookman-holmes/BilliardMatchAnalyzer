@@ -17,18 +17,21 @@
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(breaks.playerBallOnBreak, breaks.playerBreaks)}"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_successful_break"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(breaks.opponentBallOnBreak, breaks.opponentBreaks)}"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
@@ -52,37 +55,43 @@
             style="@style/player_stats"
             android:text="@{breaks.playerContinuation}"
             android:textColor="@color/primary_text"
-            android:typeface="@{breaks.playerContinuationsHigher() ? `bold` : `normal`}" />
+            android:typeface="@{breaks.playerContinuationsHigher() ? `bold` : `normal`}"
+            android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_break_continuations"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{breaks.opponentContinuation}"
             android:textColor="@color/primary_text"
-            android:typeface="@{breaks.opponentContinuationsHigher() ? `bold` : `normal`}" />
+            android:typeface="@{breaks.opponentContinuationsHigher() ? `bold` : `normal`}"
+            android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{breaks.playerFouls}"
             android:textColor="@color/secondary_text"
-            android:typeface="@{breaks.playerFoulsLower() ? `bold` : `normal`}" />
+            android:typeface="@{breaks.playerFoulsLower() ? `bold` : `normal`}"
+            android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_break_fouls"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{breaks.opponentFouls}"
             android:textColor="@color/secondary_text"
-            android:typeface="@{breaks.opponentFoulsLower() ? `bold` : `normal`}" />
+            android:typeface="@{breaks.opponentFoulsLower() ? `bold` : `normal`}"
+            android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"

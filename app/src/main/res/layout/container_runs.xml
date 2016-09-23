@@ -37,38 +37,44 @@
             style="@style/player_stats"
             android:text="@{runs.playerTableRuns}"
             android:textColor="@color/secondary_text"
-            android:typeface="@{runs.playerTableRunsMore() ? `bold` : `normal`}" />
+            android:typeface="@{runs.playerTableRunsMore() ? `bold` : `normal`}"
+            android:visibility="@{runs.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_table_runs"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{runs.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{runs.opponentTableRuns}"
             android:textColor="@color/secondary_text"
-            android:typeface="@{runs.opponentTableRunsMore() ? `bold` : `normal`}" />
+            android:typeface="@{runs.opponentTableRunsMore() ? `bold` : `normal`}"
+            android:visibility="@{runs.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{runs.playerFiveBallRuns}"
             android:textColor="@color/primary_text"
-            android:typeface="@{runs.playerFiveBallRunsMore() ? `bold` : `normal`}" />
+            android:typeface="@{runs.playerFiveBallRunsMore() ? `bold` : `normal`}"
+            android:visibility="@{runs.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:layout_gravity="center"
             android:text="@string/title_five_ball_outs"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:visibility="@{runs.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{runs.opponentFiveBallRuns}"
             android:textColor="@color/primary_text"
-            android:typeface="@{runs.opponentFiveBallRunsMore() ? `bold` : `normal`}" />
+            android:typeface="@{runs.opponentFiveBallRunsMore() ? `bold` : `normal`}"
+            android:visibility="@{runs.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"

@@ -1,9 +1,9 @@
 package com.brookmanholmes.billiards.player.controller;
 
+import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.EightBallPlayer;
@@ -256,7 +256,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      */
     void addSafetyStats(T player) {
         if (turn.getTurnEnd() == SAFETY)
-            player.addSafety(gameStatus.opponentPlayedSuccessfulSafe);
+            player.addSafety(gameStatus.opponentPlayedSuccessfulSafe, turn.getShootingBallsMade());
         else if (turn.getTurnEnd() == SAFETY_ERROR)
             player.addSafetyAttempt(turn.isFoul());
 

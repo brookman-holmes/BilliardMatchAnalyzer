@@ -4,6 +4,8 @@
         <variable
             name="shooting"
             type="com.brookmanholmes.bma.ui.matchinfo.ShootingBinder" />
+
+        <import type="android.view.View" />
     </data>
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -33,51 +35,60 @@
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(shooting.playerShotsMade, shooting.playerShots)}"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/title_shots_made"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(shooting.opponentShotsMade, shooting.opponentShots)}"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{shooting.playerAvg}"
             android:textColor="@color/primary_text"
-            android:typeface="@{shooting.playerAvgBetter() ? `bold` : `normal`}" />
+            android:typeface="@{shooting.playerAvgBetter() ? `bold` : `normal`}"
+            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/title_avg_balls_turn"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{shooting.opponentAvg}"
             android:textColor="@color/primary_text"
-            android:typeface="@{shooting.opponentAvgBetter() ? `bold` : `normal`}" />
+            android:typeface="@{shooting.opponentAvgBetter() ? `bold` : `normal`}"
+            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{shooting.playerFouls}"
             android:textColor="@color/secondary_text"
-            android:typeface="@{shooting.playerFoulsBetter() ? `bold` : `normal`}" />
+            android:typeface="@{shooting.playerFoulsBetter() ? `bold` : `normal`}"
+            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/title_shooting_fouls"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{shooting.opponentFouls}"
             android:textColor="@color/secondary_text"
-            android:typeface="@{shooting.opponentFoulsBetter() ? `bold` : `normal`}" />
+            android:typeface="@{shooting.opponentFoulsBetter() ? `bold` : `normal`}"
+            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
 
     </GridLayout>
 </layout>

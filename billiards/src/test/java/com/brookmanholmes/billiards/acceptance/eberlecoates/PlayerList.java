@@ -155,7 +155,7 @@ public class PlayerList {
         NineBallPlayer max = max();
         NineBallPlayer jeff = jeff();
 
-        jeff.addSafety(false);
+        jeff.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(max, jeff);
     }
@@ -206,7 +206,7 @@ public class PlayerList {
         NineBallPlayer max = max();
         NineBallPlayer jeff = jeff();
 
-        jeff.addSafety(false);
+        jeff.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(max, jeff);
     }
@@ -254,7 +254,7 @@ public class PlayerList {
         NineBallPlayer jeff = jeff();
 
         jeff.addBreakShot(2, false, false);
-        jeff.addSafety(false);
+        jeff.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(max, jeff);
     }
@@ -294,7 +294,7 @@ public class PlayerList {
         NineBallPlayer jeff = jeff();
 
         jeff.addShootingBallsMade(2, false);
-        jeff.addSafety(false);
+        jeff.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(max, jeff);
     }
@@ -339,7 +339,7 @@ public class PlayerList {
         NineBallPlayer jeff = jeff();
 
         jeff.addShootingBallsMade(4, false);
-        jeff.addSafety(false);
+        jeff.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(max, jeff);
     }
@@ -391,7 +391,7 @@ public class PlayerList {
         NineBallPlayer jeff = jeff();
 
         jeff.addShootingBallsMade(2, false);
-        jeff.addSafety(false);
+        jeff.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(max, jeff);
     }
@@ -424,7 +424,7 @@ public class PlayerList {
         NineBallPlayer jeff = jeff();
 
         max.addBreakShot(1, false, false);
-        max.addSafety(false);
+        max.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(max, jeff);
     }
@@ -433,7 +433,7 @@ public class PlayerList {
         NineBallPlayer max = max();
         NineBallPlayer jeff = jeff();
 
-        jeff.addSafety(true);
+        jeff.addSafety(true, 0);
 
         return new Pair<AbstractPlayer>(max, jeff);
     }
@@ -442,7 +442,7 @@ public class PlayerList {
         NineBallPlayer max = max();
         NineBallPlayer jeff = jeff();
 
-        max.addSafety(true);
+        max.addSafety(true, 0);
 
         return new Pair<AbstractPlayer>(max, jeff);
     }
@@ -540,7 +540,7 @@ public class PlayerList {
         NineBallPlayer max = max();
         NineBallPlayer jeff = jeff();
 
-        max.addSafety(false);
+        max.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(max, jeff);
     }

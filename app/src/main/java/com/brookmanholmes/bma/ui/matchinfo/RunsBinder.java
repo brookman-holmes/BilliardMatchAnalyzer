@@ -17,7 +17,7 @@ public class RunsBinder extends BindingAdapter {
 
     public String playerEarlyWins = "0", opponentEarlyWins = "0";
 
-    public boolean showEarlyWins = false;
+    boolean showEarlyWins = false;
 
     public RunsBinder(AbstractPlayer player, AbstractPlayer opponent, String title) {
         this.title = title;
@@ -55,6 +55,10 @@ public class RunsBinder extends BindingAdapter {
         }
 
         notifyChange();
+    }
+
+    public boolean isShowEarlyWins() {
+        return showEarlyWins && visible;
     }
 
     public boolean playerBreakRunsMore() {

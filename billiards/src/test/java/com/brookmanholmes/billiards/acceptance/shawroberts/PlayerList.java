@@ -146,7 +146,7 @@ public class PlayerList {
 
         shaw.addBreakShot(1, true, false);
         shaw.addShootingBallsMade(2, false);
-        shaw.addSafety(false);
+        shaw.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(shaw, roberts);
     }
@@ -203,7 +203,7 @@ public class PlayerList {
         TenBallPlayer shaw = shaw();
         TenBallPlayer roberts = roberts();
 
-        shaw.addSafety(false);
+        shaw.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(shaw, roberts);
     }
@@ -236,7 +236,7 @@ public class PlayerList {
 
         shaw.addBreakShot(1, true, false);
         shaw.addShootingBallsMade(1, false);
-        shaw.addSafety(false);
+        shaw.addSafety(false, 0);
 
         return new Pair<AbstractPlayer>(shaw, roberts);
     }

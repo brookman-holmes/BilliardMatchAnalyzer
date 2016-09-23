@@ -34,7 +34,11 @@ import com.hookedonplay.decoviewlib.charts.SeriesItem;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -47,6 +51,7 @@ import butterknife.ButterKnife;
  */
 public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements Filterable {
     private static final String ARG_PLAYER = "arg player";
+    DecimalFormat df = new DecimalFormat("#.###");
     private DatabaseAdapter database;
     private String player;
     private UpdatePlayersAsync task;
@@ -71,6 +76,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        df.setRoundingMode(RoundingMode.FLOOR);
         database = new DatabaseAdapter(getContext());
         player = getArguments().getString(ARG_PLAYER);
 
@@ -157,6 +163,11 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
                 return player;
             } else return new CompPlayer("");
+        }
+
+        private static float roundNumber(int top, int bottom) {
+            BigDecimal decimal = new BigDecimal((float) top / (float) bottom).round(new MathContext(4, RoundingMode.HALF_EVEN));
+            return decimal.floatValue();
         }
 
         private void splitPlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
@@ -441,24 +452,24 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 grey = ContextCompat.getColor(itemView.getContext(), R.color.chart4);
                 decoView.deleteAll();
                 decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 100, 100)
+                        .setRange(0, 1, 1)
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 100, 100)
+                        .setRange(0, 1, 1)
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .setInset(new PointF(32, 32))
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 100, 100)
+                        .setRange(0, 1, 1)
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .setInset(new PointF(64, 64))
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 100, 100)
+                        .setRange(0, 1, 1)
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .setInset(new PointF(96, 96))
@@ -468,33 +479,33 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             }
 
             void bind(CompPlayer player) {
-                float attempts = player.getBreakAttempts();
+                int attempts = player.getBreakAttempts();
 
-                float continuation = attempts != 0 ? (float) player.getBreakContinuations() / attempts * 100 : 0;
-                float successes = attempts != 0 ? (float) player.getBreakSuccesses() / attempts * 100 : 0;
-                float wins = attempts != 0 ? (float) player.getWinsOnBreak() / attempts * 100 : 0;
-                float fouls = attempts != 0 ? (float) player.getBreakFouls() / attempts * 100 : 0;
+                float continuation = attempts != 0 ? roundNumber(player.getBreakContinuations(), attempts) : 0;
+                float successes = attempts != 0 ? roundNumber(player.getBreakSuccesses(), attempts) : 0;
+                float wins = attempts != 0 ? roundNumber(player.getWinsOnBreak(), attempts) : 0;
+                float fouls = attempts != 0 ? roundNumber(player.getBreakFouls(), attempts) : 0;
 
                 decoView.addSeries(new SeriesItem.Builder(color1)
-                        .setRange(0, 100, successes)
+                        .setRange(0, 1, successes)
                         .setInset(new PointF(0, 0))
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(color2)
-                        .setRange(0, 100, continuation)
+                        .setRange(0, 1, continuation)
                         .setInset(new PointF(32, 32))
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(color4)
-                        .setRange(0, 100, wins)
+                        .setRange(0, 1, wins)
                         .setInset(new PointF(64, 64))
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(color3)
-                        .setRange(0, 100, fouls)
+                        .setRange(0, 1, fouls)
                         .setInset(new PointF(96, 96))
                         .setLineWidth(32f)
                         .setCapRounded(false)
@@ -548,30 +559,35 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
                 CompPlayer player = getPlayerFromList(players);
                 CompPlayer opponent = getPlayerFromList(opponents);
-                float total = (float) opponent.getSafetySuccesses();
+                int total = opponent.getSafetySuccesses();
 
                 if (opponent.getSafetySuccesses() > 0) {
-                    float returns = (float) player.getSafetyReturns() / total * 100;
-                    float escapes = (float) player.getSafetyEscapes() / total * 100;
+                    float returns = roundNumber(player.getSafetyReturns(), total);
+                    float escapes = roundNumber(player.getSafetyEscapes(), total);
+
+                    if (returns < 0)
+                        returns = 0;
+                    if (escapes < 0)
+                        escapes = 0;
 
                     decoView.addSeries(new SeriesItem.Builder(color3)
-                            .setRange(0, 100, 100)
+                            .setRange(0, 1, 1)
                             .setCapRounded(false)
                             .setLineWidth(128f)
                             .build());
                     decoView.addSeries(new SeriesItem.Builder(color1)
-                            .setRange(0, 100, returns + escapes)
+                            .setRange(0, 1, returns + escapes)
                             .setCapRounded(false)
                             .setLineWidth(128f)
                             .build());
                     decoView.addSeries(new SeriesItem.Builder(color2)
-                            .setRange(0, 100, escapes)
+                            .setRange(0, 1, escapes)
                             .setCapRounded(false)
                             .setLineWidth(128f)
                             .build());
                 } else {
                     decoView.addSeries(new SeriesItem.Builder(Color.parseColor("#F5F5F5"))
-                            .setRange(0, 100, 100)
+                            .setRange(0, 1, 1)
                             .setCapRounded(false)
                             .setLineWidth(128f)
                             .build());

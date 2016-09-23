@@ -4,9 +4,9 @@ import android.databinding.BaseObservable;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.transition.TransitionManager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,9 +18,9 @@ import com.brookmanholmes.bma.R;
 
 public class BindingAdapter extends BaseObservable {
     private static final String TAG = "BindingAdapter";
+    public boolean visible = false;
     String title;
     int helpLayout;
-    boolean visible = true;
 
     @android.databinding.BindingAdapter("android:typeface")
     public static void setTextStyle(TextView view, String style) {
@@ -31,6 +31,11 @@ public class BindingAdapter extends BaseObservable {
             default:
                 view.setTypeface(null, Typeface.NORMAL);
         }
+    }
+
+    @android.databinding.BindingAdapter("android:typeface")
+    public static void setTextSize(TextView view, int size) {
+        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
     }
 
     public String getTitle() {
@@ -48,17 +53,15 @@ public class BindingAdapter extends BaseObservable {
     }
 
     public void onCollapse(View view) {
-        View layoutContainer = (View) view.getParent().getParent();
-        // find the grid that contains the items to set to visible/gone
-        GridLayout grid = (GridLayout) layoutContainer.findViewById(R.id.container);
+        View grid = (View) view.getParent().getParent();
         // find the linear layout above this
-        LinearLayout scrollView = (LinearLayout) layoutContainer.getParent().getParent();
+        LinearLayout container = (LinearLayout) grid.getParent().getParent();
         // animate the collapse/expand button
         view.animate().rotationXBy(180f);
 
         // toggle the visibility
-        TransitionManager.beginDelayedTransition(scrollView);
-        grid.setVisibility(visible ? View.GONE : View.VISIBLE);
+        TransitionManager.beginDelayedTransition(container);
         visible = !visible;
+        notifyChange();
     }
 }

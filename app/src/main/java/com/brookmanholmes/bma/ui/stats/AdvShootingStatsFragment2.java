@@ -20,6 +20,9 @@ import java.util.List;
  */
 @SuppressWarnings("WeakerAccess")
 public class AdvShootingStatsFragment2 extends BaseRecyclerFragment implements FilterListener {
+    long matchId;
+    String playerName;
+    String[] shotTypes = AdvStats.ShotType.getShots();
     private GetFilteredStatsAsync task;
     private String shotType = "All", subType = "All", angle = "All";
 
@@ -42,10 +45,15 @@ public class AdvShootingStatsFragment2 extends BaseRecyclerFragment implements F
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID, -1L);
+        playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
+
+        DatabaseAdapter db = new DatabaseAdapter(getContext());
+        List<AdvStats> stats = db.getAdvStats(matchId, playerName, shotTypes);
 
         adapter = new AdvStatsRecyclerAdapter(getContext(),
-                new ArrayList<AdvStats>(),
-                new ArrayList<StatLineItem>(),
+                stats,
+                StatsUtils.getStats(getContext(), stats),
                 this);
     }
 
@@ -103,12 +111,10 @@ public class AdvShootingStatsFragment2 extends BaseRecyclerFragment implements F
     }
 
     private void updateView() {
-        long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID, -1L);
-        String playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
-        String[] shotTypes = AdvStats.ShotType.getShots();
+
         task = new GetFilteredStatsAsync();
         DatabaseAdapter db = new DatabaseAdapter(getContext());
-        task.execute(db.getAdvStats(matchId, playerName, shotTypes).toArray(new AdvStats[0]));
+        //task.execute(db.getAdvStats(matchId, playerName, shotTypes).toArray(new AdvStats[0]));
     }
 
     private class GetFilteredStatsAsync extends AsyncTask<AdvStats, Void, List[]> {

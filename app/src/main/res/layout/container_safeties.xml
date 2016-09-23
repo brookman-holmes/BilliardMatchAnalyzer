@@ -4,6 +4,8 @@
         <variable
             name="safeties"
             type="com.brookmanholmes.bma.ui.matchinfo.SafetiesBinder" />
+
+        <import type="android.view.View" />
     </data>
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -35,89 +37,104 @@
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(safeties.playerSafetiesMade, safeties.playerSafeties)}"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_safeties_made"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(safeties.opponentSafetiesMade, safeties.opponentSafeties)}"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.playerSafetyFouls}"
             android:textColor="@color/primary_text"
-            android:typeface="@{safeties.playerFoulsLess() ? `bold` : `normal`}" />
+            android:typeface="@{safeties.playerFoulsLess() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_safety_fouls"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.opponentSafetyFouls}"
             android:textColor="@color/primary_text"
-            android:typeface="@{safeties.opponentFoulsLess() ? `bold` : `normal`}" />
+            android:typeface="@{safeties.opponentFoulsLess() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.playerSafetyEscapes}"
             android:textColor="@color/secondary_text"
-            android:typeface="@{safeties.playerEscapesMore() ? `bold` : `normal`}" />
+            android:typeface="@{safeties.playerEscapesMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_safety_escapes"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.opponentSafetyEscapes}"
             android:textColor="@color/secondary_text"
-            android:typeface="@{safeties.opponentEscapesMore() ? `bold` : `normal`}" />
+            android:typeface="@{safeties.opponentEscapesMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.playerSafetyReturns}"
             android:textColor="@color/primary_text"
-            android:typeface="@{safeties.playerReturnsMore() ? `bold` : `normal`}" />
+            android:typeface="@{safeties.playerReturnsMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_safeties_returned"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.opponentSafetiesReturns}"
             android:textColor="@color/primary_text"
-            android:typeface="@{safeties.opponentReturnsMore() ? `bold` : `normal`}" />
+            android:typeface="@{safeties.opponentReturnsMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.playerForcedFouls}"
             android:textColor="@color/secondary_text"
-            android:typeface="@{safeties.playerForcedMore() ? `bold` : `normal`}" />
+            android:typeface="@{safeties.playerForcedMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_forced_fouls"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.opponentForcedFouls}"
             android:textColor="@color/secondary_text"
-            android:typeface="@{safeties.opponentForcedMore() ? `bold` : `normal`}" />
+            android:typeface="@{safeties.opponentForcedMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
     </GridLayout>
 </layout>

@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.player.controller;
 
-import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.player.TenBallPlayer;
@@ -44,7 +44,7 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest<Te
         TenBallPlayer player = new TenBallPlayer("");
         player.addBreakShot(2, true, false);
         player.addShootingBallsMade(1, false);
-        player.addSafety(false);
+        player.addSafety(false, 0);
 
         return player;
     }

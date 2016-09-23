@@ -2,12 +2,12 @@ package com.brookmanholmes.bma.ui.stats;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -58,7 +58,7 @@ class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = getViewByViewType(parent.getContext(), viewType);
+        View view = getViewByViewType(parent, viewType);
         switch (viewType) {
             case GRAPH_AIM:
                 return new GraphViewHolder(view, R.string.title_aim, R.string.title_aim_left, R.string.title_aim_right);
@@ -81,18 +81,22 @@ class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    private View getViewByViewType(Context context, int viewType) {
+    private View getViewByViewType(ViewGroup parent, int viewType) {
         if (viewType >= 0 && viewType <= 3)
-            return LayoutInflater.from(context).inflate(R.layout.graph_item, null);
+            return inflateView(parent, R.layout.graph_item);
         else if (viewType == FILTER)
-            return LayoutInflater.from(context).inflate(R.layout.container_adv_shot_filter, null);
+            return inflateView(parent, R.layout.container_adv_shot_filter);
         else if (viewType == LINE_ITEM)
-            return LayoutInflater.from(context).inflate(R.layout.container_adv_stat_row, null);
+            return inflateView(parent, R.layout.container_adv_stat_row);
         else if (viewType == MISCUES)
-            return LayoutInflater.from(context).inflate(R.layout.container_miscues, null);
+            return inflateView(parent, R.layout.container_miscues);
         else if (viewType == TITLE)
-            return LayoutInflater.from(context).inflate(R.layout.container_adv_stat_title, null);
+            return inflateView(parent, R.layout.container_adv_stat_title);
         else throw new IllegalArgumentException("No viewType: " + viewType);
+    }
+
+    private View inflateView(ViewGroup parent, @LayoutRes int res) {
+        return LayoutInflater.from(parent.getContext()).inflate(res, parent, false);
     }
 
     @Override
@@ -179,6 +183,8 @@ class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     void update(List<AdvStats> stats, List<StatLineItem> items) {
         this.stats = stats;
         this.items = items;
+
+        notifyDataSetChanged();
     }
 
     static class GraphViewHolder extends RecyclerView.ViewHolder {
@@ -207,8 +213,7 @@ class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    static class FilterViewHolder extends RecyclerView.ViewHolder
-            implements AdapterView.OnItemSelectedListener {
+    static class FilterViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.shotTypeSpinner)
         Spinner shotTypeSpinner;
         @Bind(R.id.shotSubTypeSpinner)
@@ -284,27 +289,6 @@ class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         private ArrayAdapter<String> getAdapter(Spinner spinner) {
             return (ArrayAdapter<String>) spinner.getAdapter();
-        }
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            String selection = (String) parent.getItemAtPosition(position);
-            if (parent.getId() == shotTypeSpinner.getId()) {
-                listener.updateShotType(selection);
-            } else if (parent.getId() == shotSubTypeSpinner.getId()) {
-                listener.updateSubType(selection);
-            } else if (parent.getId() == angleSpinner.getId()) {
-                listener.updateAngle(selection);
-            }
-
-            setItems(shotTypeSpinner, getPossibleShotTypes(stats));
-            setItems(shotSubTypeSpinner, getPossibleShotSubTypes(stats));
-            setItems(angleSpinner, getPossibleAngles(stats));
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
         }
 
         public void bind(List<AdvStats> stats) {

@@ -30,6 +30,6 @@
             android:layout_height="wrap_content"
             android:onClick="@{(view) -> title.onCollapse(view)}"
             android:padding="8dp"
-            android:src="@drawable/ic_action_collapse" />
+            android:src="@drawable/ic_action_expand" />
     </LinearLayout>
 </layout>
