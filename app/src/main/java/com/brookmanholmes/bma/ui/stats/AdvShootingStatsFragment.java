@@ -271,10 +271,10 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
     private void showShotSubTypeSpinner() {
         if (shotType.equals(getString(R.string.miss_cut))) {
-            shotSubTypeLayout.setVisibility(View.VISIBLE);
+            //shotSubTypeLayout.setVisibility(View.VISIBLE);
         } else {
             shotSubTypeSpinner.setSelection(0);
-            shotSubTypeLayout.setVisibility(View.GONE);
+            //shotSubTypeLayout.setVisibility(View.GONE);
             subType = "All";
         }
     }

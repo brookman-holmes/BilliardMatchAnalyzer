@@ -3,31 +3,28 @@ package com.brookmanholmes.bma.adaptervh;
 import android.view.View;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.bma.R;
 
 import java.util.Locale;
-
-import butterknife.Bind;
 
 /**
  * Created by helios on 4/12/2016.
  */
 @SuppressWarnings("WeakerAccess")
 public class SafetiesHolder extends MatchInfoHolder {
-    @Bind(R.id.tvSafetiesAttemptedPlayer) TextView tvSafetiesAttemptedPlayer;
-    @Bind(R.id.tvSafetiesAttemptedOpponent) TextView tvSafetiesAttemptedOpponent;
-    @Bind(R.id.tvSafetyPctPlayer) TextView tvSafetyPctPlayer;
-    @Bind(R.id.tvSafetyPctOpponent) TextView tvSafetyPctOpponent;
-    @Bind(R.id.tvSafetyScratchesPlayer) TextView tvSafetyScratchesPlayer;
-    @Bind(R.id.tvSafetyScratchesOpponent) TextView tvSafetyScratchesOpponent;
-    @Bind(R.id.tvSafetyReturnsPlayer) TextView tvSafetyReturnsPlayer;
-    @Bind(R.id.tvSafetyReturnsOpponent) TextView tvSafetyReturnsOpponent;
-    @Bind(R.id.tvSafetyEscapesPlayer) TextView tvSafetyEscapesPlayer;
-    @Bind(R.id.tvSafetyEscapesOpponent) TextView tvSafetyEscapesOpponent;
-    @Bind(R.id.tvForcedErrorsPlayer) TextView tvForcedErrorsPlayer;
-    @Bind(R.id.tvForcedErrorsOpponent) TextView tvForcedErrorsOpponent;
+    TextView tvSafetiesAttemptedPlayer;
+    TextView tvSafetiesAttemptedOpponent;
+    TextView tvSafetyPctPlayer;
+    TextView tvSafetyPctOpponent;
+    TextView tvSafetyScratchesPlayer;
+    TextView tvSafetyScratchesOpponent;
+    TextView tvSafetyReturnsPlayer;
+    TextView tvSafetyReturnsOpponent;
+    TextView tvSafetyEscapesPlayer;
+    TextView tvSafetyEscapesOpponent;
+    TextView tvForcedErrorsPlayer;
+    TextView tvForcedErrorsOpponent;
 
     public SafetiesHolder(View view) {
         super(view);

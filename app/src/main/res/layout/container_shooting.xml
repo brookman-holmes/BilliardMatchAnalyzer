@@ -1,99 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout android:id="@+id/container"
-            style="@style/match_info_grid"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            tools:showIn="@layout/card_shooting_pct">
+<layout>
 
-    <TextView
-        android:id="@+id/tvShootingPctPlayer"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"
-        />
+    <data>
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
-        android:layout_gravity="center"
-        android:text="@string/title_shooting_pct"
-        android:textColor="@color/primary_text"/>
+        <variable
+            name="shooting"
+            type="com.brookmanholmes.bma.ui.matchinfo.ShootingBinder" />
+    </data>
 
-    <TextView
-        android:id="@+id/tvShootingPctOpponent"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"
-        />
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        style="@style/match_info_grid"
+        tools:showIn="@layout/card_shooting_pct">
 
-    <TextView
-        android:id="@+id/tvBallTotalPlayer"
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{shooting.playerShootingPct}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{shooting.playerShootingBetter() ? `bold` : `normal`}" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/title_shots_made"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:layout_columnWeight="1"
+            android:text="@string/title_shooting_pct"
+            android:textColor="@color/primary_text" />
 
-    <TextView
-        android:id="@+id/tvBallTotalOpponent"
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{shooting.opponentShootingPct}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{shooting.opponentShootingBetter() ? `bold` : `normal`}" />
 
-    <TextView
-        android:id="@+id/tvAvgBallsTurnPlayer"
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:tag="disappearable"
+            android:text="@{@string/out_of(shooting.playerShotsMade, shooting.playerShots)}"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:text="@string/title_avg_balls_turn"
-        android:textColor="@color/primary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:tag="disappearable"
+            android:text="@string/title_shots_made"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        android:id="@+id/tvAvgBallsTurnOpponent"
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:tag="disappearable"
+            android:text="@{@string/out_of(shooting.opponentShotsMade, shooting.opponentShots)}"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        android:id="@+id/tvScratchesPlayer"
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:tag="disappearable"
+            android:text="@{shooting.playerAvg}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{shooting.playerAvgBetter() ? `bold` : `normal`}" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:text="@string/title_shooting_fouls"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:tag="disappearable"
+            android:text="@string/title_avg_balls_turn"
+            android:textColor="@color/primary_text" />
 
-    <TextView
-        android:id="@+id/tvScratchesOpponent"
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:tag="disappearable"
+            android:text="@{shooting.opponentAvg}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{shooting.opponentAvgBetter() ? `bold` : `normal`}" />
 
-</GridLayout>
+        <TextView
+            style="@style/player_stats"
+            android:tag="disappearable"
+            android:text="@{shooting.playerFouls}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{shooting.playerFoulsBetter() ? `bold` : `normal`}" />
+
+        <TextView
+            style="@style/player_stats"
+            android:tag="disappearable"
+            android:text="@string/title_shooting_fouls"
+            android:textColor="@color/secondary_text" />
+
+        <TextView
+            style="@style/player_stats"
+            android:tag="disappearable"
+            android:text="@{shooting.opponentFouls}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{shooting.opponentFoulsBetter() ? `bold` : `normal`}" />
+
+    </GridLayout>
+</layout>

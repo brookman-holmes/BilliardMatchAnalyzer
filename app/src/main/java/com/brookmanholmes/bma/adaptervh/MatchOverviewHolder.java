@@ -10,36 +10,34 @@ import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
 import com.brookmanholmes.billiards.player.CompPlayer;
 import com.brookmanholmes.bma.R;
 
-import butterknife.Bind;
-
 /**
  * Created by helios on 4/12/2016.
  */
 public class MatchOverviewHolder extends MatchInfoHolder {
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvWinPercentPlayer) TextView tvWinPctPlayer;
+    TextView tvWinPctPlayer;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvWinPercentOpponent) TextView tvWinPctOpponent;
+    TextView tvWinPctOpponent;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvWinTotalsPlayer) TextView tvWinTotalPlayer;
+    TextView tvWinTotalPlayer;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvWinTotalsOpponent) TextView tvWinTotalOpponent;
+    TextView tvWinTotalOpponent;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvAggressivenessRatingPlayer) TextView tvAggressivenessRatingPlayer;
+    TextView tvAggressivenessRatingPlayer;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvAggressivenessRatingOpponent) TextView tvAggressivenessRatingOpponent;
+    TextView tvAggressivenessRatingOpponent;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvTrueShootingPctPlayer) TextView tvTSPPlayer;
+    TextView tvTSPPlayer;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvTrueShootingPctOpponent) TextView tvTSPOpponent;
+    TextView tvTSPOpponent;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvTotalShotsPlayer) TextView tvTotalShotsPlayer;
+    TextView tvTotalShotsPlayer;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvTotalShotsOpponent) TextView tvTotalShotsOpponent;
+    TextView tvTotalShotsOpponent;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvTotalFoulsPlayer) TextView tvTotalFoulsPlayer;
+    TextView tvTotalFoulsPlayer;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tvTotalFoulsOpponent) TextView tvTotalFoulsOpponent;
+    TextView tvTotalFoulsOpponent;
 
     public MatchOverviewHolder(View view) {
         super(view);
@@ -59,11 +57,11 @@ public class MatchOverviewHolder extends MatchInfoHolder {
             tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), ((ApaEightBallPlayer) player).getPointsNeeded(opponent.getRank())));
             tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), ((ApaEightBallPlayer) opponent).getPointsNeeded(player.getRank())));
         } else if (player instanceof ApaNineBallPlayer && opponent instanceof ApaNineBallPlayer){
-            ((TextView)itemView.findViewById(R.id.tvWinTotalTitle)).setText(itemView.getContext().getString(R.string.title_games_won_apa));
+            ((TextView) itemView.findViewById(R.id.container)).setText(itemView.getContext().getString(R.string.title_games_won_apa));
             tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGameTotal()));
             tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getGameTotal()));
         } else if (player instanceof CompPlayer && opponent instanceof CompPlayer) {
-            ((TextView)itemView.findViewById(R.id.tvWinTotalTitle)).setText(itemView.getContext().getString(R.string.title_games_won_apa));
+            ((TextView) itemView.findViewById(R.id.container)).setText(itemView.getContext().getString(R.string.title_games_won_apa));
             tvWinTotalPlayer.setText(itemView.getContext().getString(R.string.out_of, player.getWins(), player.getGameTotal()));
             tvWinTotalOpponent.setText(itemView.getContext().getString(R.string.out_of, opponent.getWins(), opponent.getGameTotal()));
         } else {

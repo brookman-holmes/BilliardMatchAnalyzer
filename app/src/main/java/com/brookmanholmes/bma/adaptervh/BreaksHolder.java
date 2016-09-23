@@ -3,7 +3,6 @@ package com.brookmanholmes.bma.adaptervh;
 import android.view.View;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.IWinsOnBreak;
 import com.brookmanholmes.bma.R;
@@ -25,8 +24,10 @@ public class BreaksHolder extends MatchInfoHolder {
     @Bind(R.id.tvBreakContinuationsOpponent) TextView tvBreakContinuationsOpponent;
     @Bind(R.id.tvBreakTotalPlayer) TextView tvBreakTotalPlayer;
     @Bind(R.id.tvBreakTotalOpponent) TextView tvBreakTotalOpponent;
-    @Bind(R.id.tvBreakScratchesPlayer) TextView tvBreakScratchesPlayer;
-    @Bind(R.id.tvBreakScratchesOpponent) TextView tvBreakScratchesOpponent;
+    @Bind(R.id.tvBreakFoulsPlayer)
+    TextView tvBreakScratchesPlayer;
+    @Bind(R.id.tvBreakFoulsOpponent)
+    TextView tvBreakScratchesOpponent;
     @Bind(R.id.tvBreakWinsTitle) TextView breakWinsTitle;
 
     public BreaksHolder(View view, int gameBall) {

@@ -67,7 +67,7 @@
     <string name="title_break_errors">Break errors (%1$s)</string>
     <string name="title_safety_errors">Safety errors (%1$s)</string>
     <string name="title_safety_results">Safety results (%1$s)</string>
-    <string name="title_shooting_errors">Shooting errors (%1$s)</string>
+    <string name="title_shooting_errors">Shooting errors (%1$d)</string>
     <string name="title_aim">Aim</string>
     <string name="title_aim_right">right</string>
     <string name="title_aim_left">left</string>

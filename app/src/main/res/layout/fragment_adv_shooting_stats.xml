@@ -15,11 +15,28 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp">
 
-        <include layout="@layout/container_adv_stat_title"/>
-
         <include layout="@layout/container_adv_shot_filter"/>
 
-        <include layout="@layout/container_miscues"/>
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/line_divider" />
+
+        <include
+            layout="@layout/container_adv_stat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp" />
+
+        <include
+            layout="@layout/container_miscues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp" />
 
         <include layout="@layout/graph_cut"/>
 

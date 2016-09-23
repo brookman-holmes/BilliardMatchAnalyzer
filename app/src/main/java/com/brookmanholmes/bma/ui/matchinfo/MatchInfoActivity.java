@@ -18,8 +18,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Gravity;
@@ -43,7 +41,6 @@ import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseActivity;
-import com.brookmanholmes.bma.ui.BaseRecyclerFragment;
 import com.brookmanholmes.bma.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.bma.ui.dialog.GameStatusViewBuilder;
@@ -617,62 +614,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                     db.updateMatchNotes(input.getText().toString(), matchId);
                 }
             });
-        }
-    }
-
-    public static class MatchInfoFragment extends BaseRecyclerFragment implements UpdateMatchInfo {
-        private static final String TAG = "MatchInfoFragment";
-
-        /**
-         * Mandatory empty constructor for the fragment manager to instantiate the
-         * fragment (e.g. upon screen orientation changes).
-         */
-        public MatchInfoFragment() {
-        }
-
-
-        public static MatchInfoFragment create(long matchId) {
-            MatchInfoFragment fragment = new MatchInfoFragment();
-
-            Bundle args = new Bundle();
-            args.putLong(ARG_MATCH_ID, matchId);
-
-            fragment.setArguments(args);
-
-            return fragment;
-        }
-
-        @Override public void onAttach(Context context) {
-            super.onAttach(context);
-            ((MatchInfoActivity)getActivity()).registerFragment(this);
-        }
-
-        @Override public void onDetach() {
-            ((MatchInfoActivity)getActivity()).removeFragment(this);
-            super.onDetach();
-        }
-
-        @Override public void update(Match match) {
-            ((MatchInfoRecyclerAdapter) adapter).updatePlayers(match);
-        }
-
-        @Override public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            long matchId;
-
-            if (getArguments().getLong(ARG_MATCH_ID, -1L) != -1L) {
-                matchId = getArguments().getLong(ARG_MATCH_ID);
-            } else {
-                throw new IllegalArgumentException("This fragment must be created with a match ID passed into it");
-            }
-
-            DatabaseAdapter db = new DatabaseAdapter(getContext());
-            Match match = db.getMatch(matchId);
-            adapter = MatchInfoRecyclerAdapter.createMatchAdapter(match);
-        }
-
-        @Override protected RecyclerView.LayoutManager getLayoutManager() {
-            return new LinearLayoutManager(getContext());
         }
     }
 
