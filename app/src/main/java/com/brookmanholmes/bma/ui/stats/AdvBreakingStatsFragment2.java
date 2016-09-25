@@ -7,20 +7,20 @@ import com.brookmanholmes.billiards.turn.AdvStats;
 import java.util.List;
 
 /**
- * Created by Brookman Holmes on 3/12/2016.
+ * Created by Brookman Holmes on 9/24/2016.
  */
-@SuppressWarnings("WeakerAccess")
-public class AdvShootingStatsFragment2 extends BaseAdvStatsFragment2 {
 
-    public static AdvShootingStatsFragment2 create(Bundle args) {
-        AdvShootingStatsFragment2 frag = new AdvShootingStatsFragment2();
+public class AdvBreakingStatsFragment2 extends BaseAdvStatsFragment2 {
+
+    public static AdvBreakingStatsFragment2 create(Bundle args) {
+        AdvBreakingStatsFragment2 frag = new AdvBreakingStatsFragment2();
         frag.setArguments(args);
 
         return frag;
     }
 
-    public static AdvShootingStatsFragment2 create(String name) {
-        AdvShootingStatsFragment2 frag = new AdvShootingStatsFragment2();
+    public static AdvBreakingStatsFragment2 create(String name) {
+        AdvBreakingStatsFragment2 frag = new AdvBreakingStatsFragment2();
         Bundle args = new Bundle();
         args.putString(AdvStatsDialog.ARG_PLAYER_NAME, name);
         frag.setArguments(args);
@@ -30,7 +30,7 @@ public class AdvShootingStatsFragment2 extends BaseAdvStatsFragment2 {
 
     @Override
     String[] getShotTypes() {
-        return AdvStats.ShotType.getShots();
+        return AdvStats.ShotType.getBreaks();
     }
 
     @Override

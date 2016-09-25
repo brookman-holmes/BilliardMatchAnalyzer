@@ -148,7 +148,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         final String playerName;
         final String opponentName;
 
-        public PlayerInfoGraphicAdapter(List<Pair<AbstractPlayer, AbstractPlayer>> pairs, String playerName, String opponentName) {
+        PlayerInfoGraphicAdapter(List<Pair<AbstractPlayer, AbstractPlayer>> pairs, String playerName, String opponentName) {
             splitPlayers(pairs);
             this.playerName = playerName;
             this.opponentName = opponentName;

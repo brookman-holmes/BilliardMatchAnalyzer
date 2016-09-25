@@ -4,7 +4,6 @@
         <variable
             name="safeties"
             type="com.brookmanholmes.bma.ui.matchinfo.SafetiesBinder" />
-
         <import type="android.view.View" />
     </data>
 
@@ -37,21 +36,18 @@
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(safeties.playerSafetiesMade, safeties.playerSafeties)}"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_safeties_made"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(safeties.opponentSafetiesMade, safeties.opponentSafeties)}"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"

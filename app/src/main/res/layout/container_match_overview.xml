@@ -4,7 +4,6 @@
         <variable
             name="overview"
             type="com.brookmanholmes.bma.ui.matchinfo.MatchOverviewBinder" />
-
         <import type="android.view.View" />
     </data>
 
@@ -36,21 +35,18 @@
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(overview.playerGamesWon, overview.playerGamesPlayed)}"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@{overview.apaTitle ? @string/title_games_won_apa : @string/title_games_won}"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(overview.opponentGamesWon, overview.opponentGamesPlayed)}"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
@@ -74,21 +70,18 @@
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(overview.playerShotsSuccess, overview.playerTotalShots)}"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/title_true_shots_made"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(overview.opponentShotsSuccess, overview.opponentTotalShots)}"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"

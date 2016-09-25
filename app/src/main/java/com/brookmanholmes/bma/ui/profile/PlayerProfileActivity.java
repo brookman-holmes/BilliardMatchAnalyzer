@@ -211,7 +211,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     static class ViewPagerAdapter extends FragmentPagerAdapter {
         final String player;
 
-        public ViewPagerAdapter(FragmentManager fm, String player) {
+        ViewPagerAdapter(FragmentManager fm, String player) {
             super(fm);
             this.player = player;
         }

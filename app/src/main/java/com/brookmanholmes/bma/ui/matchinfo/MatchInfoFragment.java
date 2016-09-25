@@ -96,7 +96,6 @@ public class MatchInfoFragment extends BaseFragment
         AbstractPlayer player = pair.getLeft();
         AbstractPlayer opponent = pair.getRight();
 
-
         overview.update(player, opponent);
         shooting.update(player, opponent);
         safeties.update(player, opponent);
@@ -125,25 +124,27 @@ public class MatchInfoFragment extends BaseFragment
 
         AbstractPlayer player;
         AbstractPlayer opponent;
-
+        boolean expanded;
         if (getArguments().getLong(BaseActivity.ARG_MATCH_ID, -1L) != -1L) {
             Match match = db.getMatch(getArguments().getLong(BaseActivity.ARG_MATCH_ID));
             player = match.getPlayer();
             opponent = match.getOpponent();
+            expanded = false;
         } else {
             playerName = getArguments().getString(ARG_PLAYER);
             List<Pair<AbstractPlayer, AbstractPlayer>> pairs = db.getPlayerPairs(playerName);
             Pair<CompPlayer, CompPlayer> pair = splitPlayers(pairs);
             player = pair.getLeft();
             opponent = pair.getRight();
+            expanded = true;
         }
 
-        apa = new ApaBinder(player, opponent, getString(R.string.title_apa_stats));
-        overview = new MatchOverviewBinder(player, opponent, getString(R.string.title_match_overview));
-        shooting = new ShootingBinder(player, opponent, getString(R.string.title_shooting));
-        safeties = new SafetiesBinder(player, opponent, getString(R.string.title_safeties));
-        breaks = new BreaksBinder(player, opponent, getString(R.string.title_breaks));
-        runs = new RunsBinder(player, opponent, getString(R.string.title_run_outs));
+        apa = new ApaBinder(player, opponent, getString(R.string.title_apa_stats), expanded);
+        overview = new MatchOverviewBinder(player, opponent, getString(R.string.title_match_overview), expanded);
+        shooting = new ShootingBinder(player, opponent, getString(R.string.title_shooting), expanded);
+        safeties = new SafetiesBinder(player, opponent, getString(R.string.title_safeties), expanded);
+        breaks = new BreaksBinder(player, opponent, getString(R.string.title_breaks), expanded);
+        runs = new RunsBinder(player, opponent, getString(R.string.title_run_outs), expanded);
     }
 
     private Pair<CompPlayer, CompPlayer> splitPlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {

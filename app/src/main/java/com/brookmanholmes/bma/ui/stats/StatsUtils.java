@@ -182,7 +182,7 @@ class StatsUtils {
         addRows(parent, items);
     }
 
-    private static List<StatLineItem> getSafetyStats(Context context, List<AdvStats> stats) {
+    public static List<StatLineItem> getSafetyStats(Context context, List<AdvStats> stats) {
         int total = stats.size();
 
         List<StatLineItem> list = new ArrayList<>();

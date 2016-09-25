@@ -1,10 +1,12 @@
 package com.brookmanholmes.bma.ui.stats;
 
-import android.content.Context;
-import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,69 +32,69 @@ import butterknife.ButterKnife;
  */
 
 class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final static int GRAPH_CUT = 0;
-    private final static int GRAPH_AIM = 1;
-    private final static int GRAPH_BANK = 2;
-    private final static int GRAPH_KICK = 3;
+    private final static int GRAPH = 0;
     private final static int FILTER = 4;
     private final static int TITLE = 5;
-    private final static int MISCUES = 6;
     private final static int LINE_ITEM = 7;
 
-    List<AdvStats> stats;
-    List<StatLineItem> items;
-    Context context;
-    FilterListener listener;
-    private String shotType, subType, angle;
+    private List<ViewHolderDelegate> delegates = new ArrayList<>();
+    private List<AdvStats> stats;
 
-    AdvStatsRecyclerAdapter(Context context, List<AdvStats> stats, List<StatLineItem> items, FilterListener listener) {
+    private ViewHolderDelegate title = new TitleHolderDelegate();
+    private ViewHolderDelegate miscues = new MiscueHolderDelegate();
+    private ViewHolderDelegate aim = new GraphHolderDelegate(R.string.title_aim, R.string.title_aim_left, R.string.title_aim_right, AdvStats.HowType.AIM_LEFT, AdvStats.HowType.AIM_RIGHT);
+    private ViewHolderDelegate cut = new GraphHolderDelegate(R.string.title_cut, R.string.title_cut_over, R.string.title_cut_under, AdvStats.HowType.THIN, AdvStats.HowType.THICK);
+    private ViewHolderDelegate bank = new GraphHolderDelegate(R.string.miss_bank, R.string.title_short, R.string.title_long, AdvStats.HowType.BANK_SHORT, AdvStats.HowType.BANK_LONG);
+    private ViewHolderDelegate kick = new GraphHolderDelegate(R.string.miss_kick, R.string.title_short, R.string.title_long, AdvStats.HowType.KICK_SHORT, AdvStats.HowType.KICK_LONG);
+
+
+    AdvStatsRecyclerAdapter(List<AdvStats> stats, List<StatLineItem> items) {
         this.stats = stats;
-        this.items = items;
-        this.listener = listener;
-        this.context = context;
 
-        shotType = context.getString(R.string.all);
-        subType = context.getString(R.string.all);
-        angle = context.getString(R.string.all);
+        delegates.add(title);
+        delegates.add(miscues);
+        delegates.add(aim);
+        delegates.add(cut);
+        delegates.add(bank);
+        delegates.add(kick);
+
+        int count = 0;
+        for (StatLineItem item : items) {
+            delegates.add(new LineItemDelegate(item, count++));
+        }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = getViewByViewType(parent, viewType);
+        View view = createViewByViewType(parent, viewType);
+
         switch (viewType) {
-            case GRAPH_AIM:
-                return new GraphViewHolder(view, R.string.title_aim, R.string.title_aim_left, R.string.title_aim_right);
-            case GRAPH_CUT:
-                return new GraphViewHolder(view, R.string.title_cut, R.string.title_cut_over, R.string.title_cut_under);
-            case GRAPH_BANK:
-                return new GraphViewHolder(view, R.string.miss_bank, R.string.title_short, R.string.title_long);
-            case GRAPH_KICK:
-                return new GraphViewHolder(view, R.string.miss_kick, R.string.title_short, R.string.title_long);
-            case FILTER:
-                return new FilterViewHolder(view, stats, listener);
-            case LINE_ITEM:
-                return new TitleViewHolder(view);
+            case GRAPH:
+                return new GraphViewHolder(view);
             case TITLE:
                 return new TitleViewHolder(view);
-            case MISCUES:
-                return new MiscuesViewHolder(view);
+            case LINE_ITEM:
+                return new LineItemViewHolder(view);
+            case FILTER:
+                return new FilterViewHolder(view, stats, null);
             default:
-                throw new IllegalArgumentException("No viewType: " + viewType);
+                throw new IllegalArgumentException("No such view type: " + viewType);
         }
     }
 
-    private View getViewByViewType(ViewGroup parent, int viewType) {
-        if (viewType >= 0 && viewType <= 3)
-            return inflateView(parent, R.layout.graph_item);
-        else if (viewType == FILTER)
-            return inflateView(parent, R.layout.container_adv_shot_filter);
-        else if (viewType == LINE_ITEM)
-            return inflateView(parent, R.layout.container_adv_stat_row);
-        else if (viewType == MISCUES)
-            return inflateView(parent, R.layout.container_miscues);
-        else if (viewType == TITLE)
-            return inflateView(parent, R.layout.container_adv_stat_title);
-        else throw new IllegalArgumentException("No viewType: " + viewType);
+    private View createViewByViewType(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case GRAPH:
+                return inflateView(parent, R.layout.graph_item);
+            case TITLE:
+                return inflateView(parent, R.layout.container_adv_stat_title);
+            case LINE_ITEM:
+                return inflateView(parent, R.layout.container_adv_stat_row);
+            case FILTER:
+                return inflateView(parent, R.layout.container_adv_shot_filter);
+            default:
+                throw new IllegalArgumentException("No such view type: " + viewType);
+        }
     }
 
     private View inflateView(ViewGroup parent, @LayoutRes int res) {
@@ -101,90 +103,41 @@ class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        switch (getItemViewType(position)) {
-            case GRAPH_AIM:
-                ((GraphViewHolder) holder).bind(stats, AdvStats.HowType.AIM_LEFT, AdvStats.HowType.AIM_RIGHT);
-                break;
-            case GRAPH_CUT:
-                ((GraphViewHolder) holder).bind(stats, AdvStats.HowType.THIN, AdvStats.HowType.THICK);
-                break;
-            case GRAPH_BANK:
-                ((GraphViewHolder) holder).bind(stats, AdvStats.HowType.BANK_SHORT, AdvStats.HowType.BANK_LONG);
-                break;
-            case GRAPH_KICK:
-                ((GraphViewHolder) holder).bind(stats, AdvStats.HowType.KICK_SHORT, AdvStats.HowType.KICK_LONG);
-                break;
-            case FILTER:
-                ((FilterViewHolder) holder).bind(stats);
-                break;
-            case LINE_ITEM:
-                @ColorInt int color = position - getInitialItems() % 2 == 0 ? R.color.primary_text : R.color.secondary_text;
-                ((LineItemViewHolder) holder).bind(items.get(position - getInitialItems()), color);
-                break;
-            case TITLE:
-                ((TitleViewHolder) holder).bind(stats.size());
-                break;
-            case MISCUES:
-                ((MiscuesViewHolder) holder).bind(StatsUtils.getMiscues(stats));
-                break;
-        }
+        delegates.get(position).bind(holder, stats);
     }
 
     @Override
     public int getItemCount() {
-        return getInitialItems() + items.size();
-    }
-
-    private int getInitialItems() {
-        int staticItems = 3;
-        int dynamicItems = 0;
-
-        if (isKickShot())
-            dynamicItems++;
-        if (isBankShot())
-            dynamicItems++;
-
-        return staticItems + dynamicItems;
+        return delegates.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return FILTER;
-        } else if (position == 1) {
-            return TITLE;
-        } else if (position == 2) {
-            return MISCUES;
-        } else if (position == 3) {
-            return GRAPH_CUT;
-        } else if (position == 4) {
-            return GRAPH_AIM;
-        } else if (position == 5) {
-            if (isKickShot())
-                return GRAPH_KICK;
-            else if (isBankShot())
-                return GRAPH_BANK;
-            else return LINE_ITEM;
-        } else if (position == 6) {
-            if (isKickShot() && isBankShot())
-                return GRAPH_BANK;
-            else return LINE_ITEM;
-        } else return LINE_ITEM;
+        return delegates.get(position).getViewType();
     }
 
-    private boolean isKickShot() {
-        return shotType.equals(context.getString(R.string.miss_kick)) || shotType.equals(context.getString(R.string.all));
-    }
 
-    private boolean isBankShot() {
-        return shotType.equals(context.getString(R.string.miss_bank)) || shotType.equals(context.getString(R.string.all));
-    }
-
-    void update(List<AdvStats> stats, List<StatLineItem> items) {
+    public void update(List<AdvStats> stats, List<StatLineItem> items) {
         this.stats = stats;
-        this.items = items;
 
-        notifyDataSetChanged();
+        List<ViewHolderDelegate> oldList = new ArrayList<>(delegates);
+        delegates = new ArrayList<>();
+        delegates.add(title);
+        delegates.add(miscues);
+        delegates.add(aim);
+        delegates.add(cut);
+        delegates.add(bank);
+        delegates.add(kick);
+
+        int count = 0;
+        for (StatLineItem item : items) {
+            delegates.add(new LineItemDelegate(item, count++));
+        }
+
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                new AdvStatsDiffCallback(oldList, delegates)
+        );
+        diffResult.dispatchUpdatesTo(this);
     }
 
     static class GraphViewHolder extends RecyclerView.ViewHolder {
@@ -199,16 +152,16 @@ class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @Bind(R.id.right)
         TextView rightText;
 
-        GraphViewHolder(View itemView, @StringRes int title, @StringRes int leftLabel, @StringRes int rightLabel) {
+        GraphViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
 
+        private void bind(@StringRes int title, @StringRes int leftLabel, @StringRes int rightLabel, List<AdvStats> stats, AdvStats.HowType left, AdvStats.HowType right) {
+            TransitionManager.beginDelayedTransition((ViewGroup) itemView);
             this.title.setText(title);
             this.leftLabel.setText(leftLabel);
             this.rightLabel.setText(rightLabel);
-        }
-
-        private void bind(List<AdvStats> stats, AdvStats.HowType left, AdvStats.HowType right) {
             StatsUtils.setLayoutWeights(stats, left, right, leftText, rightText);
         }
     }
@@ -309,10 +262,10 @@ class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(StatLineItem statLineItem, @ColorInt int color) {
-            title.setTextColor(color);
-            count.setTextColor(color);
-            pct.setTextColor(color);
+        public void bind(StatLineItem statLineItem, @ColorRes int color) {
+            title.setTextColor(ContextCompat.getColor(itemView.getContext(), color));
+            count.setTextColor(ContextCompat.getColor(itemView.getContext(), color));
+            pct.setTextColor(ContextCompat.getColor(itemView.getContext(), color));
 
             title.setText(statLineItem.getDescription());
             count.setText(String.format(Locale.getDefault(), "%1$d", statLineItem.getCount()));
@@ -329,22 +282,219 @@ class AdvStatsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(int size) {
-            this.title.setText(itemView.getContext().getString(R.string.title_shooting_errors, size));
+        public void bind(@StringRes int res, int size) {
+            this.title.setText(itemView.getContext().getString(res, size));
         }
     }
 
-    static class MiscuesViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.miscues)
-        TextView miscues;
+    private abstract static class ViewHolderDelegate {
+        int viewType;
 
-        MiscuesViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
+        private ViewHolderDelegate(int viewType) {
+            this.viewType = viewType;
         }
 
-        public void bind(int miscues) {
-            this.miscues.setText(itemView.getContext().getString(R.string.title_miscues, miscues));
+        private int getViewType() {
+            return viewType;
+        }
+
+        abstract void bind(RecyclerView.ViewHolder holder, List<AdvStats> stats);
+    }
+
+    private static class TitleHolderDelegate extends ViewHolderDelegate {
+        @StringRes
+        int title = R.string.title_shooting_errors;
+        int size = 0;
+
+        private TitleHolderDelegate() {
+            super(TITLE);
+        }
+
+        @Override
+        void bind(RecyclerView.ViewHolder holder, List<AdvStats> stats) {
+            if (holder instanceof TitleViewHolder) {
+                size = stats.size();
+                ((TitleViewHolder) holder).bind(title, size);
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TitleHolderDelegate that = (TitleHolderDelegate) o;
+
+            if (title != that.title) return false;
+            return size == that.size;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = title;
+            result = 31 * result + size;
+            return result;
+        }
+    }
+
+    private static class MiscueHolderDelegate extends ViewHolderDelegate {
+        @StringRes
+        int title = R.string.title_miscues;
+        int size = 0;
+
+        private MiscueHolderDelegate() {
+            super(TITLE);
+        }
+
+        @Override
+        void bind(RecyclerView.ViewHolder holder, List<AdvStats> stats) {
+            if (holder instanceof TitleViewHolder) {
+                int size = StatsUtils.getMiscues(stats);
+                ((TitleViewHolder) holder).bind(title, size);
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            MiscueHolderDelegate that = (MiscueHolderDelegate) o;
+
+            if (title != that.title) return false;
+            return size == that.size;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = title;
+            result = 31 * result + size;
+            return result;
+        }
+    }
+
+    private static class GraphHolderDelegate extends ViewHolderDelegate {
+        private
+        @StringRes
+        int title, leftLabel, rightLabel;
+        private AdvStats.HowType left, right;
+        private List<AdvStats> stats;
+
+        private GraphHolderDelegate(int title, int leftLabel, int rightLabel,
+                                    AdvStats.HowType left, AdvStats.HowType right) {
+            super(GRAPH);
+            this.title = title;
+            this.leftLabel = leftLabel;
+            this.rightLabel = rightLabel;
+            this.left = left;
+            this.right = right;
+        }
+
+        @Override
+        void bind(RecyclerView.ViewHolder holder, List<AdvStats> stats) {
+            if (holder instanceof GraphViewHolder) {
+                this.stats = stats;
+                ((GraphViewHolder) holder).bind(title, leftLabel, rightLabel, stats, left, right);
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            GraphHolderDelegate that = (GraphHolderDelegate) o;
+
+            if (title != that.title) return false;
+            if (leftLabel != that.leftLabel) return false;
+            if (rightLabel != that.rightLabel) return false;
+            if (left != that.left) return false;
+            if (right != that.right) return false;
+            return stats.equals(that.stats);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = title;
+            result = 31 * result + leftLabel;
+            result = 31 * result + rightLabel;
+            result = 31 * result + left.hashCode();
+            result = 31 * result + right.hashCode();
+            result = 31 * result + stats.hashCode();
+            return result;
+        }
+    }
+
+    private static class LineItemDelegate extends ViewHolderDelegate {
+        StatLineItem item;
+        @ColorRes
+        int color;
+
+        private LineItemDelegate(StatLineItem item, int position) {
+            super(LINE_ITEM);
+
+            this.item = item;
+
+            color = position % 2 == 0 ? R.color.primary_text : R.color.secondary_text;
+        }
+
+        @Override
+        void bind(RecyclerView.ViewHolder holder, List<AdvStats> stats) {
+            if (holder instanceof LineItemViewHolder) {
+                ((LineItemViewHolder) holder).bind(item, color);
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            LineItemDelegate that = (LineItemDelegate) o;
+
+            if (color != that.color) return false;
+            return item.equals(that.item);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = item.hashCode();
+            result = 31 * result + color;
+            return result;
+        }
+    }
+
+    private static class AdvStatsDiffCallback extends DiffUtil.Callback {
+        private List<ViewHolderDelegate> oldList;
+        private List<ViewHolderDelegate> newList;
+
+        AdvStatsDiffCallback(List<ViewHolderDelegate> oldList, List<ViewHolderDelegate> newList) {
+            this.oldList = oldList;
+            this.newList = newList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldList != null ? oldList.size() : 0;
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newList != null ? newList.size() : 0;
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return oldList.get(oldItemPosition).getViewType() == newList.get(newItemPosition).getViewType();
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
         }
     }
 }

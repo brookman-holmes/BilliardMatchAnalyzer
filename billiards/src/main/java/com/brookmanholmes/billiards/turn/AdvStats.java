@@ -98,6 +98,37 @@ public class AdvStats {
         return whyTypes;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AdvStats advStats = (AdvStats) o;
+
+        if (use != advStats.use) return false;
+        if (!player.equals(advStats.player)) return false;
+        if (shotType != advStats.shotType) return false;
+        if (shotSubtype != advStats.shotSubtype) return false;
+        if (!howTypes.equals(advStats.howTypes)) return false;
+        if (!whyTypes.equals(advStats.whyTypes)) return false;
+        if (!angles.equals(advStats.angles)) return false;
+        return startingPosition.equals(advStats.startingPosition);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = player.hashCode();
+        result = 31 * result + shotType.hashCode();
+        result = 31 * result + shotSubtype.hashCode();
+        result = 31 * result + howTypes.hashCode();
+        result = 31 * result + whyTypes.hashCode();
+        result = 31 * result + angles.hashCode();
+        result = 31 * result + startingPosition.hashCode();
+        result = 31 * result + (use ? 1 : 0);
+        return result;
+    }
+
     @Override public String toString() {
         return "AdvStats{" +
                 "player='" + player + '\'' +
@@ -109,6 +140,130 @@ public class AdvStats {
                 "\n startingPosition='" + startingPosition + '\'' +
                 "\n use=" + use +
                 '}';
+    }
+
+    /**
+     * Created by Brookman Holmes on 9/5/2016.
+     */
+    public enum Angle {
+        ONE_RAIL,
+        TWO_RAIL,
+        THREE_RAIL,
+        FOUR_RAIL,
+        FIVE_RAIL,
+        NATURAL,
+        CROSSOVER,
+        LONG_RAIL,
+        SHORT_RAIL,
+        FIVE,
+        TEN,
+        FIFTEEN,
+        TWENTY,
+        TWENTY_FIVE,
+        THIRTY,
+        THIRTY_FIVE,
+        FORTY,
+        FORTY_FIVE,
+        FIFTY,
+        FIFTY_FIVE,
+        SIXTY,
+        SIXTY_FIVE,
+        SEVENTY,
+        SEVENTY_FIVE,
+        EIGHTY
+    }
+
+    /**
+     * Created by Brookman Holmes on 9/5/2016.
+     */
+    public enum ShotType {
+        NONE,
+        CUT,
+        STRAIGHT_SHOT,
+        BANK,
+        KICK,
+        COMBO,
+        CAROM,
+        JUMP,
+        MASSE,
+        SAFETY,
+        SAFETY_ERROR,
+        BREAK_SHOT;
+
+        public static String[] getShots() {
+            return new String[]{CUT.name(),
+                    STRAIGHT_SHOT.name(),
+                    BANK.name(),
+                    KICK.name(),
+                    COMBO.name(),
+                    CAROM.name(),
+                    JUMP.name(),
+                    MASSE.name()};
+        }
+
+        public static String[] getSafeties() {
+            return new String[]{SAFETY.name(), SAFETY_ERROR.name()};
+        }
+
+        public static String[] getBreaks() {
+            return new String[]{BREAK_SHOT.name()};
+        }
+    }
+
+    public enum HowType {
+        MISCUE,
+        TOO_HARD,
+        TOO_SOFT,
+        AIM_LEFT,
+        AIM_RIGHT,
+        KICKED_IN,
+        THIN,
+        THICK,
+        KICK_LONG,
+        KICK_SHORT,
+        BANK_LONG,
+        BANK_SHORT,
+        CURVE_EARLY,
+        CURVE_LATE
+    }
+
+    public enum WhyType {
+        POSITION,
+        LACK_FOCUS,
+        JACK_UP,
+        ENGLISH,
+        TOO_SOFT,
+        TOO_HARD,
+        CURVED,
+        RAIL,
+        FORCING,
+        FORCING_II,
+        TOO_LITTLE_FOLLOW,
+        TOO_LITTLE_DRAW,
+        TOO_LITTLE_INSIDE,
+        TOO_LITTLE_OUTSIDE,
+        TOO_MUCH_FOLLOW,
+        TOO_MUCH_DRAW,
+        TOO_MUCH_INSIDE,
+        TOO_MUCH_OUTSIDE,
+        TABLE,
+        MECHANICS,
+        IMPEDING_BALL,
+        MISJUDGED,
+        PATTERN
+    }
+
+    public enum SubType {
+        FULL_HOOK,
+        PARTIAL_HOOK,
+        LONG_T,
+        SHORT_T,
+        NO_DIRECT_SHOT,
+        OPEN,
+        WING_CUT,
+        BACK_CUT,
+        RAIL_CUT,
+        NONE
     }
 
     /**
@@ -305,129 +460,5 @@ public class AdvStats {
                     "\n use=" + use +
                     '}';
         }
-    }
-
-    /**
-     * Created by Brookman Holmes on 9/5/2016.
-     */
-    public enum Angle {
-        ONE_RAIL,
-        TWO_RAIL,
-        THREE_RAIL,
-        FOUR_RAIL,
-        FIVE_RAIL,
-        NATURAL,
-        CROSSOVER,
-        LONG_RAIL,
-        SHORT_RAIL,
-        FIVE,
-        TEN,
-        FIFTEEN,
-        TWENTY,
-        TWENTY_FIVE,
-        THIRTY,
-        THIRTY_FIVE,
-        FORTY,
-        FORTY_FIVE,
-        FIFTY,
-        FIFTY_FIVE,
-        SIXTY,
-        SIXTY_FIVE,
-        SEVENTY,
-        SEVENTY_FIVE,
-        EIGHTY
-    }
-
-    /**
-     * Created by Brookman Holmes on 9/5/2016.
-     */
-    public enum ShotType {
-        NONE,
-        CUT,
-        STRAIGHT_SHOT,
-        BANK,
-        KICK,
-        COMBO,
-        CAROM,
-        JUMP,
-        MASSE,
-        SAFETY,
-        SAFETY_ERROR,
-        BREAK_SHOT;
-
-        public static String[] getShots() {
-            return new String[] {CUT.name(),
-                    STRAIGHT_SHOT.name(),
-                    BANK.name(),
-                    KICK.name(),
-                    COMBO.name(),
-                    CAROM.name(),
-                    JUMP.name(),
-                    MASSE.name()};
-        }
-
-        public static String[] getSafeties() {
-            return new String[] {SAFETY.name(), SAFETY_ERROR.name()};
-        }
-
-        public static String[] getBreaks() {
-            return new String[] {BREAK_SHOT.name()};
-        }
-    }
-
-    public enum HowType {
-        MISCUE,
-        TOO_HARD,
-        TOO_SOFT,
-        AIM_LEFT,
-        AIM_RIGHT,
-        KICKED_IN,
-        THIN,
-        THICK,
-        KICK_LONG,
-        KICK_SHORT,
-        BANK_LONG,
-        BANK_SHORT,
-        CURVE_EARLY,
-        CURVE_LATE
-    }
-
-    public enum WhyType {
-        POSITION,
-        LACK_FOCUS,
-        JACK_UP,
-        ENGLISH,
-        TOO_SOFT,
-        TOO_HARD,
-        CURVED,
-        RAIL,
-        FORCING,
-        FORCING_II,
-        TOO_LITTLE_FOLLOW,
-        TOO_LITTLE_DRAW,
-        TOO_LITTLE_INSIDE,
-        TOO_LITTLE_OUTSIDE,
-        TOO_MUCH_FOLLOW,
-        TOO_MUCH_DRAW,
-        TOO_MUCH_INSIDE,
-        TOO_MUCH_OUTSIDE,
-        TABLE,
-        MECHANICS,
-        IMPEDING_BALL,
-        MISJUDGED,
-        PATTERN
-    }
-
-    public enum SubType {
-        FULL_HOOK,
-        PARTIAL_HOOK,
-        LONG_T,
-        SHORT_T,
-        NO_DIRECT_SHOT,
-        OPEN,
-        WING_CUT,
-        BACK_CUT,
-        RAIL_CUT,
-        NONE
     }
 }

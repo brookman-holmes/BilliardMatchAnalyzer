@@ -8,20 +8,20 @@ import com.brookmanholmes.bma.R;
  */
 
 public class SafetiesBinder extends BindingAdapter {
-    String playerSafetyPct, opponentSafetyPct;
+    public String playerSafetyPct, opponentSafetyPct;
 
-    int playerSafetiesMade, opponentSafetiesMade;
-    int playerSafeties, opponentSafeties;
+    public int playerSafetiesMade, opponentSafetiesMade;
+    public int playerSafeties, opponentSafeties;
 
-    String playerSafetyFouls, opponentSafetyFouls;
+    public String playerSafetyFouls, opponentSafetyFouls;
 
-    String playerSafetyEscapes, opponentSafetyEscapes;
+    public String playerSafetyEscapes, opponentSafetyEscapes;
 
-    String playerSafetyReturns, opponentSafetiesReturns;
+    public String playerSafetyReturns, opponentSafetiesReturns;
 
-    String playerForcedFouls, opponentForcedFouls;
+    public String playerForcedFouls, opponentForcedFouls;
 
-    public SafetiesBinder(AbstractPlayer player, AbstractPlayer opponent, String title) {
+    public SafetiesBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
         this.title = title;
         helpLayout = R.layout.dialog_help_safeties;
 
@@ -44,6 +44,8 @@ public class SafetiesBinder extends BindingAdapter {
 
         playerForcedFouls = player.getSafetyForcedErrors() + "";
         opponentForcedFouls = opponent.getSafetyForcedErrors() + "";
+
+        visible = expanded;
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent) {
@@ -68,62 +70,6 @@ public class SafetiesBinder extends BindingAdapter {
         opponentForcedFouls = opponent.getSafetyForcedErrors() + "";
 
         notifyChange();
-    }
-
-    public String getPlayerSafetyPct() {
-        return playerSafetyPct;
-    }
-
-    public String getOpponentSafetyPct() {
-        return opponentSafetyPct;
-    }
-
-    public int getPlayerSafetiesMade() {
-        return playerSafetiesMade;
-    }
-
-    public int getOpponentSafetiesMade() {
-        return opponentSafetiesMade;
-    }
-
-    public int getPlayerSafeties() {
-        return playerSafeties;
-    }
-
-    public int getOpponentSafeties() {
-        return opponentSafeties;
-    }
-
-    public String getPlayerSafetyFouls() {
-        return playerSafetyFouls;
-    }
-
-    public String getOpponentSafetyFouls() {
-        return opponentSafetyFouls;
-    }
-
-    public String getPlayerSafetyEscapes() {
-        return playerSafetyEscapes;
-    }
-
-    public String getOpponentSafetyEscapes() {
-        return opponentSafetyEscapes;
-    }
-
-    public String getPlayerSafetyReturns() {
-        return playerSafetyReturns;
-    }
-
-    public String getOpponentSafetiesReturns() {
-        return opponentSafetiesReturns;
-    }
-
-    public String getPlayerForcedFouls() {
-        return playerForcedFouls;
-    }
-
-    public String getOpponentForcedFouls() {
-        return opponentForcedFouls;
     }
 
     public boolean playerShootingBetter() {
