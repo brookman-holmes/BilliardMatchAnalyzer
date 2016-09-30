@@ -12,17 +12,23 @@ import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_LEFT;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_RIGHT;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.TOO_HARD;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.TOO_SOFT;
+
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
-@SuppressWarnings("WeakerAccess")
 public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
-    @Bind(R.id.tvBreakErrorsTitle) TextView title;
-    @Bind(R.id.left) TextView leftOfAim;
-    @Bind(R.id.right) TextView rightOfAim;
-    @Bind(R.id.fast) TextView fast;
-    @Bind(R.id.slow) TextView slow;
-    @Bind(R.id.miscues) TextView miscues;
+    @Bind(R.id.tvBreakErrorsTitle)
+    TextView title;
+    @Bind(R.id.left)
+    TextView leftOfAim;
+    @Bind(R.id.right)
+    TextView rightOfAim;
+    @Bind(R.id.fast)
+    TextView fast;
+    @Bind(R.id.slow)
+    TextView slow;
+    @Bind(R.id.miscues)
+    TextView miscues;
 
     public static AdvBreakingStatsFragment create(Bundle args) {
         AdvBreakingStatsFragment frag = new AdvBreakingStatsFragment();
@@ -40,7 +46,8 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
         return frag;
     }
 
-    @Override void updateView() {
+    @Override
+    void updateView() {
         StatsUtils.setLayoutWeights(stats, AIM_LEFT, AIM_RIGHT, leftOfAim, rightOfAim);
         StatsUtils.setLayoutWeights(stats, TOO_SOFT, TOO_HARD, slow, fast);
         miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(stats)));
@@ -48,11 +55,13 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
         title.setText(getString(R.string.title_break_errors, stats.size()));
     }
 
-    @Override String[] getShotTypes() {
+    @Override
+    String[] getShotTypes() {
         return AdvStats.ShotType.getBreaks();
     }
 
-    @Override int getLayoutId() {
+    @Override
+    int getLayoutId() {
         return R.layout.fragment_adv_break_stats;
     }
 }

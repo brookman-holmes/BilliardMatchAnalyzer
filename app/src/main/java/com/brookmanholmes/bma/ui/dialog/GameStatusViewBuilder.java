@@ -12,8 +12,6 @@ import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
 
-import java.util.Locale;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -24,22 +22,22 @@ import static com.brookmanholmes.bma.utils.ConversionUtils.getGameTypeString;
  * Created by Brookman Holmes on 3/23/2016.
  */
 public class GameStatusViewBuilder {
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.gameStatus) TextView gameStatus;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.breakInfo) TextView breakInfo;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.turnInfo) TextView turnInfo;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.playerFoulInfo) TextView playerFoulInfo;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.opponentFoulInfo) TextView opponentFoulInfo;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.colorInfo) TextView colorInfo;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.ballContainer) GridLayout ballContainer;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.pushStatus) TextView pushStatus;
+    @Bind(R.id.gameStatus)
+    TextView gameStatus;
+    @Bind(R.id.breakInfo)
+    TextView breakInfo;
+    @Bind(R.id.turnInfo)
+    TextView turnInfo;
+    @Bind(R.id.playerFoulInfo)
+    TextView playerFoulInfo;
+    @Bind(R.id.opponentFoulInfo)
+    TextView opponentFoulInfo;
+    @Bind(R.id.colorInfo)
+    TextView colorInfo;
+    @Bind(R.id.ballContainer)
+    GridLayout ballContainer;
+    @Bind(R.id.pushStatus)
+    TextView pushStatus;
 
     private GameStatusViewBuilder(Match match, View view) {
         ButterKnife.bind(this, view);
@@ -47,13 +45,15 @@ public class GameStatusViewBuilder {
         String playerName = match.getPlayer().getName();
         String opponentName = match.getOpponent().getName();
 
-        gameStatus.setText(
-                String.format(Locale.getDefault(), "Game: %1$s",
-                        getGameTypeString(context, match.getGameStatus().gameType)));
-        breakInfo.setText(String.format(Locale.getDefault(), "%1$s / %2$s",
+        gameStatus.setText(context.getString(R.string.label_game,
+                getGameTypeString(context, match.getGameStatus().gameType)));
+
+        breakInfo.setText(context.getString(R.string.out_of_strings,
                 getBreakType(context, match.getGameStatus().breakType, playerName, opponentName),
-                getLastBreaker(match)));
-        turnInfo.setText(getPlayerTurnString(match));
+                getLastBreaker(context, match)));
+
+        turnInfo.setText(getPlayerTurnString(context, match));
+
         if (match.getGameStatus().gameType == GameType.APA_EIGHT_BALL ||
                 match.getGameStatus().gameType == GameType.BCA_EIGHT_BALL) {
             playerFoulInfo.setVisibility(View.GONE);
@@ -64,21 +64,21 @@ public class GameStatusViewBuilder {
             pushStatus.setText(getPushStatusString(context, match));
             colorInfo.setVisibility(View.GONE);
             playerFoulInfo.setText(
-                    getPlayerFoulsString(playerName, match.getGameStatus().consecutivePlayerFouls));
+                    getPlayerFoulsString(context, playerName, match.getGameStatus().consecutivePlayerFouls));
             opponentFoulInfo.setText(
-                    getPlayerFoulsString(opponentName, match.getGameStatus().consecutiveOpponentFouls));
+                    getPlayerFoulsString(context, opponentName, match.getGameStatus().consecutiveOpponentFouls));
         }
 
         setBallsOnTable(match, ballContainer);
     }
 
-    private static String getLastBreaker(Match match) {
+    private static String getLastBreaker(Context context, Match match) {
         GameStatus gameStatus = match.getGameStatus();
         String playerName = getPlayerName(match, gameStatus.breaker);
         if (gameStatus.newGame) {
-            return String.format(Locale.getDefault(), "%1$s is breaking", playerName);
+            return context.getString(R.string.label_breaker, playerName);
         } else {
-            return String.format(Locale.getDefault(), "%1$s broke last", playerName);
+            return context.getString(R.string.label_broke, playerName);
         }
     }
 
@@ -88,20 +88,21 @@ public class GameStatusViewBuilder {
         else return match.getOpponent().getName();
     }
 
-    private static String getPlayerTurnString(Match match) {
+    private static String getPlayerTurnString(Context context, Match match) {
         if (match.getGameStatus().newGame)
-            return "Start of new game";
-        else return String.format(Locale.getDefault(), "%1$s\'s turn", getPlayerName(match, match.getGameStatus().turn));
+            return context.getString(R.string.label_start_new_game);
+        else
+            return context.getString(R.string.label_turn, getPlayerName(match, match.getGameStatus().turn));
     }
 
-    private static String getPlayerFoulsString(String name, int fouls) {
-        return String.format(Locale.getDefault(), "%1$s is on %2$d fouls", name, fouls);
+    private static String getPlayerFoulsString(Context context, String name, int fouls) {
+        return context.getString(R.string.label_fouls, name, fouls);
     }
 
     private static String getColorInfo(Context context, Match match) {
         if (match.getGameStatus().playerColor == PlayerColor.OPEN)
             return context.getString(R.string.open_table);
-        else return String.format(Locale.getDefault(), "%1$s and %2$s",
+        else return context.getString(R.string.out_of_strings,
                 getPlayerColorString(context, match), getOpponentColorString(context, match));
     }
 

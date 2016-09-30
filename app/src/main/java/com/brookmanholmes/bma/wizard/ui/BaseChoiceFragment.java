@@ -82,7 +82,7 @@ public abstract class BaseChoiceFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         setupChoices();
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         setTitle(view);
@@ -151,5 +151,6 @@ public abstract class BaseChoiceFragment extends ListFragment {
     }
 
     protected abstract void preSelectItems();
+
     protected abstract void setListTypeArgs();
 }

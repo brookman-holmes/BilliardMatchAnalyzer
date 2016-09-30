@@ -22,19 +22,23 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected FirebaseAnalytics analytics;
     protected SharedPreferences preferences;
-    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         analytics = FirebaseAnalytics.getInstance(BaseActivity.this);
         preferences = getPreferences();
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(this);
         refWatcher.watch(this);
         super.onDestroy();
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_submit_feedback) {
             EmailIntentBuilder.from(this)
                     .to("brookman.holmes@gmail.com")

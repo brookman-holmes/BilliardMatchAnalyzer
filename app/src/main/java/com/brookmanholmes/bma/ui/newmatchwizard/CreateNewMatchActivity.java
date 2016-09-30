@@ -56,13 +56,17 @@ public class CreateNewMatchActivity extends BaseActivity implements
     private static final String TAG = "CreateNewMatchAct";
 
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.pager) ViewPager pager;
+    @Bind(R.id.pager)
+    ViewPager pager;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.next_button) Button nextButton;
+    @Bind(R.id.next_button)
+    Button nextButton;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.prev_button) Button prevButton;
+    @Bind(R.id.prev_button)
+    Button prevButton;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.strip) StepPagerStrip pagerStrip;
+    @Bind(R.id.strip)
+    StepPagerStrip pagerStrip;
 
     private MyPagerAdapter pagerAdapter;
     private boolean editingAfterReview;
@@ -87,7 +91,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
         pagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
-            @Override public void onPageStripSelected(int position) {
+            @Override
+            public void onPageStripSelected(int position) {
                 position = Math.min(pagerAdapter.getCount() - 1, position);
                 if (pager.getCurrentItem() != position)
                     pager.setCurrentItem(position);
@@ -95,7 +100,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         });
 
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override public void onPageSelected(int position) {
+            @Override
+            public void onPageSelected(int position) {
                 pagerStrip.setCurrentPage(position);
 
                 if (consumePageSelectedEvent) {
@@ -133,7 +139,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         finish();
     }
 
-    @Override public void onPageTreeChanged() {
+    @Override
+    public void onPageTreeChanged() {
         currentPageSequence = wizardModel.getCurrentPageSequence();
         recalculateCutOffPage();
         pagerStrip.setPageCount(currentPageSequence.size() + 1); // + 1 = review step
@@ -155,21 +162,25 @@ public class CreateNewMatchActivity extends BaseActivity implements
         prevButton.setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         super.onDestroy();
         wizardModel.unregisterListener(this);
     }
 
-    @Override protected void onSaveInstanceState(Bundle outState) {
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBundle("model", wizardModel.save());
     }
 
-    @Override public AbstractWizardModel onGetModel() {
+    @Override
+    public AbstractWizardModel onGetModel() {
         return wizardModel;
     }
 
-    @Override public void onEditScreenAfterReview(String key) {
+    @Override
+    public void onEditScreenAfterReview(String key) {
         for (int i = currentPageSequence.size() - 1; i >= 0; i--) {
             if (currentPageSequence.get(i).getKey().equals(key)) {
                 consumePageSelectedEvent = true;
@@ -181,7 +192,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
     }
 
-    @Override public void onPageDataChanged(Page page) {
+    @Override
+    public void onPageDataChanged(Page page) {
         if (page.isRequired()) {
             if (recalculateCutOffPage()) {
                 pagerAdapter.notifyDataSetChanged();
@@ -190,11 +202,13 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
     }
 
-    @Override public Page onGetPage(String key) {
+    @Override
+    public Page onGetPage(String key) {
         return wizardModel.findByKey(key);
     }
 
-    @OnClick(R.id.next_button) public void nextPage() {
+    @OnClick(R.id.next_button)
+    public void nextPage() {
         if (pager.getCurrentItem() == currentPageSequence.size()) {
             if (pagerAdapter.getPrimaryItem() instanceof ReviewFragment) {
                 createMatchAndLaunchMatchInfoActivity();
@@ -208,7 +222,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
     }
 
-    @OnClick(R.id.prev_button) public void prevPage() {
+    @OnClick(R.id.prev_button)
+    public void prevPage() {
         pager.setCurrentItem(pager.getCurrentItem() - 1);
         showKeyboard();
     }
@@ -247,7 +262,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
             super(fm);
         }
 
-        @Override public Fragment getItem(int i) {
+        @Override
+        public Fragment getItem(int i) {
             if (i >= currentPageSequence.size()) {
                 return new ReviewFragment();
             }
@@ -255,7 +271,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
             return currentPageSequence.get(i).createFragment();
         }
 
-        @Override public int getItemPosition(Object object) {
+        @Override
+        public int getItemPosition(Object object) {
             if (object == mPrimaryItem) {
                 // Re-use the current fragment (its position never changes)
                 return POSITION_UNCHANGED;
@@ -264,7 +281,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
             return POSITION_NONE;
         }
 
-        @Override public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
             mPrimaryItem = (Fragment) object;
         }
@@ -273,7 +291,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
             return mPrimaryItem;
         }
 
-        @Override public int getCount() {
+        @Override
+        public int getCount() {
             if (currentPageSequence == null) {
                 return 0;
             }

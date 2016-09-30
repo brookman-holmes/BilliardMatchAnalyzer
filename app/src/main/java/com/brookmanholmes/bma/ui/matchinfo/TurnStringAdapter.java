@@ -125,7 +125,7 @@ class TurnStringAdapter {
     Spanned getTurnString() {
         buildTurn();
 
-        if (turn.getAdvStats() != null && turn.getAdvStats().getShotType() != AdvStats.ShotType.NONE ) {
+        if (turn.getAdvStats() != null && turn.getAdvStats().getShotType() != AdvStats.ShotType.NONE) {
             buildAdvStats();
         }
 

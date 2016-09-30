@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout
-    android:id="@+id/ballContainer"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ballContainer"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="horizontal"
@@ -14,136 +13,121 @@
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/one_ball_text"
         android:background="@drawable/ball_background"
         android:backgroundTint="@color/one_ball"
-        />
+        android:foreground="@drawable/one_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/two_ball_text"
         android:background="@drawable/ball_background"
         android:backgroundTint="@color/two_ball"
-        />
+        android:foreground="@drawable/two_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/three_ball_text"
         android:background="@drawable/ball_background"
         android:backgroundTint="@color/three_ball"
-        />
+        android:foreground="@drawable/three_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/four_ball_text"
         android:background="@drawable/ball_background"
         android:backgroundTint="@color/four_ball"
-        />
+        android:foreground="@drawable/four_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/five_ball_text"
         android:background="@drawable/ball_background"
         android:backgroundTint="@color/five_ball"
-        />
+        android:foreground="@drawable/five_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/six_ball_text"
         android:background="@drawable/ball_background"
         android:backgroundTint="@color/six_ball"
-        />
+        android:foreground="@drawable/six_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/seven_ball_text"
         android:background="@drawable/ball_background"
         android:backgroundTint="@color/seven_ball"
-        />
+        android:foreground="@drawable/seven_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/eight_ball_text"
         android:background="@drawable/ball_background"
         android:backgroundTint="@color/eight_ball"
-        />
+        android:foreground="@drawable/eight_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/nine_ball_text"
         android:background="@drawable/stripe_overlay"
         android:backgroundTint="@color/one_ball"
-        />
+        android:foreground="@drawable/nine_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/ten_ball_text"
         android:background="@drawable/stripe_overlay"
         android:backgroundTint="@color/two_ball"
-        />
+        android:foreground="@drawable/ten_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/eleven_ball_text"
         android:background="@drawable/stripe_overlay"
         android:backgroundTint="@color/three_ball"
-        />
+        android:foreground="@drawable/eleven_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/twelve_ball_text"
         android:background="@drawable/stripe_overlay"
         android:backgroundTint="@color/four_ball"
-        />
+        android:foreground="@drawable/twelve_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/thirteen_ball_text"
         android:background="@drawable/stripe_overlay"
         android:backgroundTint="@color/five_ball"
-        />
+        android:foreground="@drawable/thirteen_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/fourteen_ball_text"
         android:background="@drawable/stripe_overlay"
         android:backgroundTint="@color/six_ball"
-        />
+        android:foreground="@drawable/fourteen_ball_text"
+        android:src="@drawable/ball" />
 
     <ImageView
         style="@style/stroked_text"
         android:layout_gravity="center"
-        android:src="@drawable/ball"
-        android:foreground="@drawable/fifteen_ball_text"
         android:background="@drawable/stripe_overlay"
         android:backgroundTint="@color/seven_ball"
-        />
+        android:foreground="@drawable/fifteen_ball_text"
+        android:src="@drawable/ball" />
 
 </GridLayout>

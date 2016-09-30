@@ -7,10 +7,10 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
-import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
@@ -113,7 +113,8 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    @LayoutRes public static int getLayoutByGameType(GameType gameType) {
+    @LayoutRes
+    public static int getLayoutByGameType(GameType gameType) {
         switch (gameType) {
             case APA_EIGHT_BALL:
                 return R.layout.select_eight_ball_dialog;
@@ -187,7 +188,8 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    @IdRes public static int convertBallToId(int ball) {
+    @IdRes
+    public static int convertBallToId(int ball) {
         switch (ball) {
             case 1:
                 return R.id.one_ball;
@@ -352,7 +354,8 @@ public class MatchDialogHelperUtils {
             return AdvStats.ShotType.SAFETY_ERROR;
         else if (shot.equals(context.getString(R.string.turn_break_miss)))
             return AdvStats.ShotType.BREAK_SHOT;
-        else throw new IllegalArgumentException("No such conversion between string and AdvStats.ShotType: " + shot);
+        else
+            throw new IllegalArgumentException("No such conversion between string and AdvStats.ShotType: " + shot);
     }
 
     public static AdvStats.WhyType convertStringToWhyType(Context context, String whyType) {
@@ -459,7 +462,9 @@ public class MatchDialogHelperUtils {
         else throw new IllegalArgumentException("no such conversion for " + subType);
     }
 
-    public static @StringRes int convertWhyTypeToStringRes(AdvStats.WhyType whyType) {
+    public static
+    @StringRes
+    int convertWhyTypeToStringRes(AdvStats.WhyType whyType) {
         switch (whyType) {
             case POSITION:
                 return R.string.why_position;
@@ -540,7 +545,9 @@ public class MatchDialogHelperUtils {
             throw new IllegalArgumentException("No such conversion between string and StringRes: " + turnEnd);
     }
 
-    public static @StringRes int convertShotTypeToStringRes(AdvStats.ShotType shotType) {
+    public static
+    @StringRes
+    int convertShotTypeToStringRes(AdvStats.ShotType shotType) {
         switch (shotType) {
             case CUT:
                 return R.string.miss_cut;
@@ -571,7 +578,9 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    public static @StringRes int convertAngleToStringRes(AdvStats.Angle angle) {
+    public static
+    @StringRes
+    int convertAngleToStringRes(AdvStats.Angle angle) {
         switch (angle) {
             case ONE_RAIL:
                 return R.string.one_rail;
@@ -628,7 +637,9 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    public static @StringRes int convertSubTypeToStringRes(AdvStats.SubType shotSubtype) {
+    public static
+    @StringRes
+    int convertSubTypeToStringRes(AdvStats.SubType shotSubtype) {
         switch (shotSubtype) {
             case FULL_HOOK:
                 return R.string.safety_full_hook;
@@ -655,7 +666,9 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    public static @StringRes int convertHowToStringRes(AdvStats.HowType howType) {
+    public static
+    @StringRes
+    int convertHowToStringRes(AdvStats.HowType howType) {
         switch (howType) {
             case MISCUE:
                 return R.string.miscue;

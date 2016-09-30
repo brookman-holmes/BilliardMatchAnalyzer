@@ -14,11 +14,13 @@ class WhyMissPage extends MultipleFixedChoicePage implements UpdatesTurnInfo {
         super(callbacks, title);
     }
 
-    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+    @Override
+    public void updateTurnInfo(AddTurnWizardModel model) {
         model.setWhys(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
-    @Override public Fragment createFragment() {
+    @Override
+    public Fragment createFragment() {
         return MultipleChoiceFragment.create(getKey(), 1);
     }
 }

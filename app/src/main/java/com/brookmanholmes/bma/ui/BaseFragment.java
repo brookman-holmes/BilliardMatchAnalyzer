@@ -12,12 +12,14 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseFragment extends Fragment {
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         ButterKnife.unbind(this);
         super.onDestroyView();
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
         super.onDestroy();

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="0dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="0dp">
 
     <TextView
         android:id="@+id/title"
@@ -115,7 +115,7 @@
         android:layout_alignLeft="@+id/ballGrid"
         android:layout_below="@+id/ballGrid"
         android:padding="16dp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/buttonRunOut"
@@ -127,5 +127,5 @@
         android:padding="16dp"
         android:textAllCaps="true"
         android:textColor="@color/colorPrimary"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </RelativeLayout>

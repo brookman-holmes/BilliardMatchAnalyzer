@@ -30,9 +30,12 @@ public class AdvStatsDialog extends DialogFragment {
     static final String ARG_PLAYER_NAME = "player name";
     static final String ARG_PLAYER_TURN = "player turn";
 
-    @Bind(R.id.pager) ViewPager pager;
-    @Bind(R.id.tabs) TabLayout tabLayout;
-    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.pager)
+    ViewPager pager;
+    @Bind(R.id.tabs)
+    TabLayout tabLayout;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     public AdvStatsDialog() {
     }
@@ -50,7 +53,8 @@ public class AdvStatsDialog extends DialogFragment {
         return dialog;
     }
 
-    @Override public void onActivityCreated(Bundle savedInstanceState) {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (getArguments().getString(ARG_PLAYER_TURN, "").equals(PlayerTurn.PLAYER.toString()))
             getDialog().getWindow().setWindowAnimations(R.style.SlideInFromLeftDialogTransitionTheme);
@@ -59,7 +63,8 @@ public class AdvStatsDialog extends DialogFragment {
     }
 
     @Nullable
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_adv_stats, container, false);
         ButterKnife.bind(this, view);
 
@@ -67,7 +72,8 @@ public class AdvStatsDialog extends DialogFragment {
         toolbar.setTitleTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 dismiss();
             }
         });
@@ -92,7 +98,8 @@ public class AdvStatsDialog extends DialogFragment {
             this.args.putBundle(ARGS_BUNDLE, args);
         }
 
-        @Override public Fragment getItem(int position) {
+        @Override
+        public Fragment getItem(int position) {
             switch (position) {
                 case 1:
                     return AdvSafetyStatsFragment.create(args.getBundle(ARGS_BUNDLE));
@@ -105,11 +112,13 @@ public class AdvStatsDialog extends DialogFragment {
             }
         }
 
-        @Override public int getCount() {
+        @Override
+        public int getCount() {
             return 3;
         }
 
-        @Override public CharSequence getPageTitle(int position) {
+        @Override
+        public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
                     return shooting;

@@ -17,11 +17,13 @@ class HowMissPage extends MultipleFixedChoicePage implements UpdatesTurnInfo {
         data.putStringArrayList(SIMPLE_DATA_KEY, new ArrayList<String>());
     }
 
-    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+    @Override
+    public void updateTurnInfo(AddTurnWizardModel model) {
         model.setHows(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
-    @Override public Fragment createFragment() {
+    @Override
+    public Fragment createFragment() {
         return MultipleChoiceFragment.create(getKey(), 1);
     }
 }

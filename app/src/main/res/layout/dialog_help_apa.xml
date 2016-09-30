@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              style="@style/alert_dialog_padding">
+    style="@style/alert_dialog_padding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/rank"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/rank" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/description_rank"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/description_rank" />
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/points"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/points" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/description_points"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/description_points" />
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/match_points"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/match_points" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/description_match_points"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/description_match_points" />
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/defensive_shots"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/defensive_shots" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/description_safeties_made"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/description_safeties_made" />
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/innings"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/innings" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/description_innings"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/description_innings" />
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/dead_balls"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/dead_balls" />
 
     <TextView
         style="@style/help_dialog_text"
-        android:text="@string/description_dead_balls"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/description_dead_balls" />
 </LinearLayout>

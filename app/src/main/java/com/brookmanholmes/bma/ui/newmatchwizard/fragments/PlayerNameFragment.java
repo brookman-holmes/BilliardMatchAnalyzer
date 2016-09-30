@@ -88,7 +88,7 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         page = (PlayerNamePage) callbacks.onGetPage(key);
         View rootView = inflater.inflate(R.layout.fragment_player_names, container, false);
         ButterKnife.bind(this, rootView);
@@ -148,7 +148,7 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
         location.addTextChangedListener(textWatcher(PlayerNamePage.LOCATION_KEY));
         extra.addTextChangedListener(textWatcher(PlayerNamePage.EXTRA_INFO_KEY));
 
-        ((CreateNewMatchActivity)getActivity()).showKeyboard();
+        ((CreateNewMatchActivity) getActivity()).showKeyboard();
     }
 
     private TextWatcher textWatcher(final String key) {

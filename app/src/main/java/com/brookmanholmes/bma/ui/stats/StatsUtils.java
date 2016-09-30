@@ -31,13 +31,14 @@ class StatsUtils {
             SHORT_T = 3,
             NO_DIRECT_SHOT = 4,
             OPEN = 5;
+
     private StatsUtils() {
     }
 
     static void setLayoutWeights(List<AdvStats> stats, AdvStats.HowType left, AdvStats.HowType right,
                                  TextView leftView, TextView rightView) {
         if (leftView.getParent() instanceof ViewGroup)
-            TransitionManager.beginDelayedTransition((ViewGroup)leftView.getParent());
+            TransitionManager.beginDelayedTransition((ViewGroup) leftView.getParent());
 
         Pair<Integer, Integer> integerPair = getHowError(stats, left, right);
         float leftWeight;

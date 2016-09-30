@@ -12,7 +12,8 @@ class GhostBreakPage extends BreakPage {
         super(callbacks, title, title2, matchData);
     }
 
-    @Override String showShotPage() {
+    @Override
+    String showShotPage() {
         return "";
     }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true">
@@ -15,7 +14,7 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp">
 
-        <include layout="@layout/container_adv_shot_filter"/>
+        <include layout="@layout/container_adv_shot_filter" />
 
         <View
             android:layout_width="match_parent"
@@ -37,9 +36,9 @@
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp" />
 
-        <include layout="@layout/graph_cut"/>
+        <include layout="@layout/graph_cut" />
 
-        <include layout="@layout/graph_aim"/>
+        <include layout="@layout/graph_aim" />
 
         <include
             android:id="@+id/kickGraph"
@@ -47,10 +46,15 @@
 
         <include
             android:id="@+id/bankGraph"
-            layout="@layout/graph_bank"/>
+            layout="@layout/graph_bank" />
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChart"
+            android:id="@+id/speedChart"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/distanceChart"
             android:layout_width="match_parent"
             android:layout_height="250dp" />
 

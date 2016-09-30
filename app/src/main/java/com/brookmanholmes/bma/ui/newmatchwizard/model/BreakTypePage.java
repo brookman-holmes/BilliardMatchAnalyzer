@@ -25,7 +25,8 @@ class BreakTypePage extends BranchPage implements RequiresPlayerNames, UpdatesMa
         firstBreak = context.getString(R.string.title_page_first_break);
     }
 
-    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
         super.getReviewItems(dest);
 
         if (data.getString(SIMPLE_DATA_KEY, "").equals(String.format(valueEnding, playerName))) {
@@ -35,7 +36,8 @@ class BreakTypePage extends BranchPage implements RequiresPlayerNames, UpdatesMa
         }
     }
 
-    @Override public void setPlayerNames(String playerName, String opponentName) {
+    @Override
+    public void setPlayerNames(String playerName, String opponentName) {
         for (Branch branch : branches) {
             for (Page page : branch.childPageList) {
                 if (page instanceof RequiresPlayerNames) {
@@ -56,7 +58,8 @@ class BreakTypePage extends BranchPage implements RequiresPlayerNames, UpdatesMa
         branches.get(4).choice = String.format(valueEnding, opponentName);
     }
 
-    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+    @Override
+    public void updateMatchBuilder(CreateNewMatchWizardModel model) {
         model.setBreakType(data.getString(SIMPLE_DATA_KEY));
     }
 }

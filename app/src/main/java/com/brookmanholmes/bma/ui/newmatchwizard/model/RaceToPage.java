@@ -46,15 +46,18 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
         return this;
     }
 
-    @Override public Fragment createFragment() {
+    @Override
+    public Fragment createFragment() {
         return RaceToFragment.create(getKey(), lower, upper, defaultChoice, columns);
     }
 
-    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
         dest.add(new ReviewItem(reviewTitle, getReviewString(), getKey()));
     }
 
-    @Override public void setPlayerNames(String playerName, String opponentName) {
+    @Override
+    public void setPlayerNames(String playerName, String opponentName) {
         this.playerName = playerName;
         this.opponentName = opponentName;
 
@@ -63,7 +66,8 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
         }
     }
 
-    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+    @Override
+    public void updateMatchBuilder(CreateNewMatchWizardModel model) {
         model.setPlayerRanks(getPlayerRank(), getOpponentRank());
     }
 

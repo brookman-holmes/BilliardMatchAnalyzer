@@ -23,7 +23,8 @@ import butterknife.OnClick;
  */
 public class EightBallShotFragment extends ShotFragment {
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.playerColor) TextView tvPlayerColor;
+    @Bind(R.id.playerColor)
+    TextView tvPlayerColor;
     private PlayerColor playerColor;
 
     public static EightBallShotFragment create(String key, Bundle matchData) {
@@ -37,7 +38,8 @@ public class EightBallShotFragment extends ShotFragment {
         return fragment;
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         page = (ShotPage) callbacks.onGetPage(key);
 
@@ -47,7 +49,8 @@ public class EightBallShotFragment extends ShotFragment {
         return view;
     }
 
-    @Override public void updateView(List<BallStatus> ballStatuses, PlayerColor playerColor) {
+    @Override
+    public void updateView(List<BallStatus> ballStatuses, PlayerColor playerColor) {
         super.updateView(ballStatuses, playerColor);
         this.playerColor = playerColor;
 
@@ -61,7 +64,9 @@ public class EightBallShotFragment extends ShotFragment {
         setButtonRunOut();
     }
 
-    @OnClick(R.id.buttonRunOut) @Override void runOut() {
+    @OnClick(R.id.buttonRunOut)
+    @Override
+    void runOut() {
         if (playerColor == PlayerColor.SOLIDS) {
             selectAllSolids();
         } else if (playerColor == PlayerColor.STRIPES) {

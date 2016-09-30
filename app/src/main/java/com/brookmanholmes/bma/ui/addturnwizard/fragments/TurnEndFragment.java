@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.TextViewCompat;
-import android.support.v7.app.AlertDialog;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +59,8 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         return fragment;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getParentFragment() instanceof PageFragmentCallbacks)) {
@@ -70,7 +70,8 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         callbacks = (PageFragmentCallbacks) getParentFragment();
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         key = getArguments().getString(ARG_KEY);
@@ -82,8 +83,9 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
 
     }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         page = (TurnEndPage) callbacks.onGetPage(key);
         List<String> options = getArguments().getStringArrayList(ARG_OPTIONS_KEY);
         if (options == null)
@@ -99,7 +101,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         foulGroup = (RadioGroup) rootView.findViewById(R.id.foulGroup);
         foulGroup.setOnCheckedChangeListener(this);
         foulGroup.check(R.id.no);
-        ((TextView)rootView.findViewById(R.id.subTitle)).setText(getString(R.string.title_foul, page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
+        ((TextView) rootView.findViewById(R.id.subTitle)).setText(getString(R.string.title_foul, page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
         listView = (ListView) rootView.findViewById(android.R.id.list);
 
@@ -114,39 +116,46 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         return rootView;
     }
 
-    @Override public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
         page.registerListener(this);
     }
 
-    @Override public void onPause() {
+    @Override
+    public void onPause() {
         page.unregisterListener();
         super.onPause();
     }
 
-    @Override public void onDetach() {
+    @Override
+    public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         ButterKnife.unbind(this);
         super.onDestroyView();
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
         super.onDestroy();
     }
 
-    @Override public void onListItemClick(ListView l, View v, int position, long id) {
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
         String selection = adapter.getItem(position);
         updateFoulLayout(selection);
         updatePage(position);
     }
 
-    @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
         if (checkedId == R.id.yes)
             page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.yes));
         else if (checkedId == R.id.no)
@@ -219,7 +228,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
     private void repopulateChoicesList(List<TurnEnd> options) {
         adapter.clear();
         for (TurnEnd ending : options) {
-                adapter.add(getString(ending));
+            adapter.add(getString(ending));
         }
         adapter.sort();
         adapter.notifyDataSetChanged();
@@ -249,7 +258,8 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
 
     private static class CustomAdapter extends ArrayAdapter<String> {
         final List<String> objects;
-        public CustomAdapter(Context context, int resource, int textViewResourceId, List<String> objects) {
+
+        CustomAdapter(Context context, int resource, int textViewResourceId, List<String> objects) {
             super(context, resource, textViewResourceId, objects);
             this.objects = objects;
         }

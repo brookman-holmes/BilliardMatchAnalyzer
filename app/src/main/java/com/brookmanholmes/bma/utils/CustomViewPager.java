@@ -19,14 +19,16 @@ public class CustomViewPager extends ViewPager {
         super(context, attrs);
     }
 
-    @Override public boolean onInterceptTouchEvent(MotionEvent ev) {
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (swipeable)
             return super.onInterceptTouchEvent(ev);
 
         return false;
     }
 
-    @Override public boolean onTouchEvent(MotionEvent ev) {
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
         if (swipeable)
             return super.onTouchEvent(ev);
 

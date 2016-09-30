@@ -35,7 +35,8 @@ public class BranchPage extends SingleFixedChoicePage {
         super(callbacks, title);
     }
 
-    @Override public Page findByKey(String key) {
+    @Override
+    public Page findByKey(String key) {
         if (getKey().equals(key)) {
             return this;
         }
@@ -50,7 +51,8 @@ public class BranchPage extends SingleFixedChoicePage {
         return null;
     }
 
-    @Override public void flattenCurrentPageSequence(ArrayList<Page> destination) {
+    @Override
+    public void flattenCurrentPageSequence(ArrayList<Page> destination) {
         super.flattenCurrentPageSequence(destination);
         for (Branch branch : branches) {
             if (branch.choice.equals(data.getString(Page.SIMPLE_DATA_KEY))) {
@@ -74,7 +76,8 @@ public class BranchPage extends SingleFixedChoicePage {
         return this;
     }
 
-    @Override public Fragment createFragment() {
+    @Override
+    public Fragment createFragment() {
         return SingleChoiceFragment.create(getKey());
     }
 
@@ -86,15 +89,18 @@ public class BranchPage extends SingleFixedChoicePage {
         return branches.size();
     }
 
-    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
         dest.add(new ReviewItem(getTitle(), data.getString(SIMPLE_DATA_KEY), getKey()));
     }
 
-    @Override public boolean isCompleted() {
+    @Override
+    public boolean isCompleted() {
         return !TextUtils.isEmpty(data.getString(SIMPLE_DATA_KEY));
     }
 
-    @Override public void notifyDataChanged() {
+    @Override
+    public void notifyDataChanged() {
         modelCallbacks.onPageTreeChanged();
         super.notifyDataChanged();
     }

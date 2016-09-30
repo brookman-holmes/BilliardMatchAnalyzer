@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="safeties"
             type="com.brookmanholmes.bma.ui.matchinfo.SafetiesBinder" />
+
         <import type="android.view.View" />
     </data>
 

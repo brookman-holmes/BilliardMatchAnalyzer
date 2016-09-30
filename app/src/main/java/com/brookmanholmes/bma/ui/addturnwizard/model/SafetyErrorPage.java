@@ -11,7 +11,8 @@ class SafetyErrorPage extends HowMissPage {
         super(callbacks, title);
     }
 
-    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+    @Override
+    public void updateTurnInfo(AddTurnWizardModel model) {
         model.setShotType(AdvStats.ShotType.SAFETY_ERROR);
 
         super.updateTurnInfo(model);

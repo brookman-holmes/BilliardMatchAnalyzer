@@ -18,34 +18,34 @@
         <TextView
             style="@style/player_stats"
             android:text="@{apa.playerRank}"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@string/rank"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{apa.opponentRank}"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(apa.playerPoints, apa.playerPointsNeeded)}"
-            android:textColor="@color/secondary_text"/>
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
             android:layout_columnWeight="1"
             android:text="@{apa.apa8Ball ? @string/title_games_needed : @string/points}"
-            android:textColor="@color/secondary_text"/>
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{@string/out_of(apa.opponentPoints, apa.opponentPointsNeeded)}"
-            android:textColor="@color/secondary_text"/>
+            android:textColor="@color/secondary_text" />
 
         <TextView
             style="@style/player_stats"
@@ -83,7 +83,7 @@
             android:layout_gravity="start"
             android:layout_marginTop="8dp"
             android:text="@string/innings"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
@@ -99,6 +99,7 @@
             android:text="@string/dead_balls"
             android:textColor="@color/secondary_text"
             android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}" />
+
         <TextView
             style="@style/player_stats"
             android:layout_columnSpan="2"

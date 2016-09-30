@@ -28,7 +28,8 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         setRequired(true);
     }
 
-    @Override public Fragment createFragment() {
+    @Override
+    public Fragment createFragment() {
         TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.createGameStatusFromBundle(data),
                 TableStatus.newTable(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)),
                         data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY)));
@@ -40,13 +41,15 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         return TurnEndFragment.create(getKey(), stringList, options.defaultCheck.name());
     }
 
-    @Override public void getNewTurnInfo(AddTurnWizardModel model) {
+    @Override
+    public void getNewTurnInfo(AddTurnWizardModel model) {
         TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.createGameStatusFromBundle(data),
                 model.getTableStatus());
         updateFragment(options);
     }
 
-    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+    @Override
+    public void updateTurnInfo(AddTurnWizardModel model) {
         model.setTurnEnd(data.getString(SIMPLE_DATA_KEY), data.getString(FOUL_KEY));
     }
 
@@ -57,9 +60,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
             return true;
         else if (turnEnd.equals(branches.get(2).choice))
             return true;
-        else if (turnEnd.equals(branches.get(3).choice))
-            return true;
-        else return false;
+        else return turnEnd.equals(branches.get(3).choice);
     }
 
     public void registerListener(TurnEndFragment fragment) {

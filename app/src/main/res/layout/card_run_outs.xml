@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--suppress AndroidUnknownAttribute -->
 <layout xmlns:bind="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="runs"
             type="com.brookmanholmes.bma.ui.matchinfo.RunsBinder" />

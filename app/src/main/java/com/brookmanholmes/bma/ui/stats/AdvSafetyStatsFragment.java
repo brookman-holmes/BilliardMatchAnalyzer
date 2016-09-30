@@ -15,6 +15,7 @@ import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THICK;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THIN;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.TOO_HARD;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.TOO_SOFT;
+
 /**
  * Created by Brookman Holmes on 3/12/2016.
  */
@@ -57,7 +58,8 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
         return frag;
     }
 
-    @Override void updateView() {
+    @Override
+    void updateView() {
         StatsUtils.setLayoutWeights(stats, THIN, THICK, overCut, underCut);
         StatsUtils.setLayoutWeights(stats, TOO_SOFT, TOO_HARD, slow, fast);
         StatsUtils.setLayoutWeights(stats, KICK_SHORT, KICK_LONG, kickShort, kickLong);
@@ -72,11 +74,13 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
         }
     }
 
-    @Override String[] getShotTypes() {
+    @Override
+    String[] getShotTypes() {
         return AdvStats.ShotType.getSafeties();
     }
 
-    @Override int getLayoutId() {
+    @Override
+    int getLayoutId() {
         return R.layout.fragment_adv_safety_stats;
     }
 }

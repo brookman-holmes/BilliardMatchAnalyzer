@@ -16,11 +16,13 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseRecyclerFragment extends BaseFragment {
     protected RecyclerView.LayoutManager layoutManager;
-    @Bind(R.id.scrollView) protected RecyclerView recyclerView;
+    @Bind(R.id.scrollView)
+    protected RecyclerView recyclerView;
     protected RecyclerView.Adapter adapter;
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
 
@@ -31,7 +33,8 @@ public abstract class BaseRecyclerFragment extends BaseFragment {
         return view;
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         recyclerView.setAdapter(null);
         recyclerView = null;
         layoutManager = null;

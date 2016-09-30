@@ -18,11 +18,13 @@ class FirstBreakPage extends SingleFixedChoicePage implements RequiresPlayerName
         this.parentPage = parentPage;
     }
 
-    @Override public String getKey() {
+    @Override
+    public String getKey() {
         return parentPage + ":" + super.getKey();
     }
 
-    @Override public void setPlayerNames(String playerName, String opponentName) {
+    @Override
+    public void setPlayerNames(String playerName, String opponentName) {
         if (data.getString(SIMPLE_DATA_KEY, "").equals(this.playerName))
             data.putString(SIMPLE_DATA_KEY, playerName);
         else if (data.getString(SIMPLE_DATA_KEY, "").equals(this.opponentName))
@@ -35,7 +37,8 @@ class FirstBreakPage extends SingleFixedChoicePage implements RequiresPlayerName
         choices.set(1, opponentName);
     }
 
-    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+    @Override
+    public void updateMatchBuilder(CreateNewMatchWizardModel model) {
         if (playerName.equals(data.getString(SIMPLE_DATA_KEY)))
             model.setFirstBreaker(PlayerTurn.PLAYER);
         else if (opponentName.equals(data.getString(SIMPLE_DATA_KEY)))

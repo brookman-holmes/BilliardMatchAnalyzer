@@ -26,8 +26,7 @@
             android:paddingEnd="8dp"
             android:text="@string/title_aim_left"
             android:textAllCaps="true"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
         <LinearLayout
             android:id="@+id/ll"
@@ -62,7 +61,7 @@
                 android:orientation="horizontal"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <TextView
@@ -73,8 +72,7 @@
             android:paddingStart="8dp"
             android:text="@string/title_aim_right"
             android:textAllCaps="true"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
     </LinearLayout>
 </merge>

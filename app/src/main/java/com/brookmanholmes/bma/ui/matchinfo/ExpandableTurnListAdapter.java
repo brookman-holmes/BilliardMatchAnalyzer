@@ -77,19 +77,23 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         return data;
     }
 
-    @Override public int getGroupCount() {
+    @Override
+    public int getGroupCount() {
         return data.size();
     }
 
-    @Override public int getChildCount(int groupPosition) {
+    @Override
+    public int getChildCount(int groupPosition) {
         return data.get(groupPosition).size();
     }
 
-    @Override public long getGroupId(int groupPosition) {
+    @Override
+    public long getGroupId(int groupPosition) {
         return groupPosition;
     }
 
-    @Override public long getChildId(int groupPosition, int childPosition) {
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
         return Integer.valueOf(String.valueOf(groupPosition) + String.valueOf(childPosition));
     }
 
@@ -147,7 +151,8 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         else params.bottomMargin = 0;
     }
 
-    @Override public int getChildItemViewType(int groupPosition, int childPosition) {
+    @Override
+    public int getChildItemViewType(int groupPosition, int childPosition) {
         return match.getGameStatus(getTurnNumber(groupPosition, childPosition)).turn == PlayerTurn.PLAYER ? 1 : 0;
     }
 
@@ -176,8 +181,10 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     }
 
     static class GameViewHolder extends AbstractExpandableItemViewHolder {
-        @Bind(R.id.row_game) TextView game;
-        @Bind(R.id.imageView) ImageView expandIndicator;
+        @Bind(R.id.row_game)
+        TextView game;
+        @Bind(R.id.imageView)
+        ImageView expandIndicator;
 
         public GameViewHolder(View itemView) {
             super(itemView);
@@ -200,19 +207,28 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 expandIndicator.setImageResource(resId);
             }
 
+            //noinspection ResourceType
             itemView.setElevation((isExpanded ? ConversionUtils.convertDpToPx(itemView.getContext(), 2) : 0));
         }
     }
 
     static class TurnViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.turn) TextView turnString;
-        @Bind(R.id.tvSafetyPct) TextView safetyPct;
-        @Bind(R.id.tvBreakPct) TextView breakPct;
-        @Bind(R.id.tvShootingPct) TextView shootingPct;
-        @Bind(R.id.ballContainer) ViewGroup ballContainer;
-        @Bind(R.id.shootingLine) ImageView shootingLine;
-        @Bind(R.id.safetyLine) ImageView safetyLine;
-        @Bind(R.id.breakingLine) ImageView breakingLine;
+        @Bind(R.id.turn)
+        TextView turnString;
+        @Bind(R.id.tvSafetyPct)
+        TextView safetyPct;
+        @Bind(R.id.tvBreakPct)
+        TextView breakPct;
+        @Bind(R.id.tvShootingPct)
+        TextView shootingPct;
+        @Bind(R.id.ballContainer)
+        ViewGroup ballContainer;
+        @Bind(R.id.shootingLine)
+        ImageView shootingLine;
+        @Bind(R.id.safetyLine)
+        ImageView safetyLine;
+        @Bind(R.id.breakingLine)
+        ImageView breakingLine;
 
         public TurnViewHolder(View itemView) {
             super(itemView);
@@ -249,7 +265,8 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             }
         }
 
-        @ColorRes private int getBallColorTint(int ball) {
+        @ColorRes
+        private int getBallColorTint(int ball) {
             switch (ball) {
                 case 1:
                     return R.color.one_ball;

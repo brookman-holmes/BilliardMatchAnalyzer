@@ -48,22 +48,29 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     private static final String ARG_FILTER_GAME = "arg_filter_game";
     private static final String ARG_FILTER_DATE = "arg_filter_date";
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.playerName) TextView playerName;
+    @Bind(R.id.playerName)
+    TextView playerName;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.opponentName) TextView opponentName;
+    @Bind(R.id.opponentName)
+    TextView opponentName;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.playerNameLayout) ViewGroup playerNameLayout;
+    @Bind(R.id.playerNameLayout)
+    ViewGroup playerNameLayout;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.pager) ViewPager pager;
+    @Bind(R.id.pager)
+    ViewPager pager;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tabs) TabLayout tabLayout;
+    @Bind(R.id.tabs)
+    TabLayout tabLayout;
     private List<Filterable> listeners = new ArrayList<>();
     private StatFilter filter;
     private String player;
 
-    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_profile);
         ButterKnife.bind(this);
@@ -103,13 +110,15 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         }
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_player_profile, menu);
         return true;
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_filter) {
             displayFilterDialog();
         }
@@ -117,7 +126,8 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         return super.onOptionsItemSelected(item);
     }
 
-    @Override protected void onSaveInstanceState(Bundle outState) {
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
         outState.putString(ARG_FILTER_DATE, filter.getDate());
         outState.putString(ARG_FILTER_GAME, filter.getGameType());
         outState.putString(ARG_FILTER_OPPONENT, filter.getOpponent());
@@ -143,7 +153,8 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         dialog.setTitle("Filter by")
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         filter.setOpponent((String) opponentSpinner.getSelectedItem());
                         opponentName.setText(filter.getOpponent());
                         filter.setDate((String) dateSpinner.getSelectedItem());
@@ -216,7 +227,8 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
             this.player = player;
         }
 
-        @Override public Fragment getItem(int position) {
+        @Override
+        public Fragment getItem(int position) {
             switch (position) {
                 case 0:
                     return PlayerInfoGraphicFragment.create(player);
@@ -235,11 +247,13 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
             }
         }
 
-        @Override public int getCount() {
+        @Override
+        public int getCount() {
             return 6;
         }
 
-        @Override public CharSequence getPageTitle(int position) {
+        @Override
+        public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
                     return player;

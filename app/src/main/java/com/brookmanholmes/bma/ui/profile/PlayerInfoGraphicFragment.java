@@ -56,7 +56,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
     private String player;
     private UpdatePlayersAsync task;
 
-    public PlayerInfoGraphicFragment() {}
+    public PlayerInfoGraphicFragment() {
+    }
 
     public static PlayerInfoGraphicFragment create(String player) {
         PlayerInfoGraphicFragment fragment = new PlayerInfoGraphicFragment();
@@ -74,7 +75,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             return String.format(Locale.getDefault(), "%.0f%%", val * 100);
     }
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         df.setRoundingMode(RoundingMode.FLOOR);
         database = new DatabaseAdapter(getContext());
@@ -92,7 +94,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).removeListener(this);
         }
@@ -101,7 +104,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         super.onDestroy();
     }
 
-    @Override public void setFilter(StatFilter filter) {
+    @Override
+    public void setFilter(StatFilter filter) {
         if (task == null) {
             task = new UpdatePlayersAsync();
             task.execute(filter);
@@ -114,10 +118,12 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         }
     }
 
-    @Override protected RecyclerView.LayoutManager getLayoutManager() {
+    @Override
+    protected RecyclerView.LayoutManager getLayoutManager() {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override public int getSpanSize(int position) {
+            @Override
+            public int getSpanSize(int position) {
                 switch (adapter.getItemViewType(position)) {
                     case PlayerInfoGraphicAdapter.ITEM_GRAPH:
                         return 3;
@@ -220,7 +226,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             return position;
         }
 
-        @LayoutRes int getLayoutResource(int viewType) {
+        @LayoutRes
+        int getLayoutResource(int viewType) {
             switch (viewType) {
                 case ITEM_GRAPH:
                     return R.layout.card_graph;
@@ -363,10 +370,14 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         }
 
         abstract static class TwoItemHolder extends RecyclerView.ViewHolder {
-            @Bind(R.id.item1) TextView item1;
-            @Bind(R.id.item1Desc) TextView item1Desc;
-            @Bind(R.id.item2) TextView item2;
-            @Bind(R.id.item2Desc) TextView item2Desc;
+            @Bind(R.id.item1)
+            TextView item1;
+            @Bind(R.id.item1Desc)
+            TextView item1Desc;
+            @Bind(R.id.item2)
+            TextView item2;
+            @Bind(R.id.item2Desc)
+            TextView item2Desc;
 
             public TwoItemHolder(View itemView) {
                 super(itemView);
@@ -384,7 +395,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 super(itemView);
             }
 
-            @Override void setItemDesc() {
+            @Override
+            void setItemDesc() {
                 item1Desc.setText(R.string.title_forced_opponent_foul);
                 item2Desc.setText(R.string.title_effect_safety_rate);
             }
@@ -417,7 +429,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 super(itemView);
             }
 
-            @Override void setItemDesc() {
+            @Override
+            void setItemDesc() {
                 item1Desc.setText(R.string.title_break_runs);
                 item2Desc.setText(R.string.title_break_run_pct);
             }
@@ -436,11 +449,16 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             final int color3;
             final int color4;
             final int grey;
-            @Bind(R.id.decoView) DecoView decoView;
-            @Bind(R.id.title1) TextView successfulBreak;
-            @Bind(R.id.title2) TextView continuationBreak;
-            @Bind(R.id.title3) TextView foulBreak;
-            @Bind(R.id.title4) TextView winBreak;
+            @Bind(R.id.decoView)
+            DecoView decoView;
+            @Bind(R.id.title1)
+            TextView successfulBreak;
+            @Bind(R.id.title2)
+            TextView continuationBreak;
+            @Bind(R.id.title3)
+            TextView foulBreak;
+            @Bind(R.id.title4)
+            TextView winBreak;
 
             public BreaksGraphViewHolder(View itemView) {
                 super(itemView);
@@ -538,12 +556,19 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             final int color1;
             final int color2;
             final int color3;
-            @Bind(R.id.decoView) DecoView decoView;
-            @Bind(R.id.title) TextView title;
-            @Bind(R.id.title1) TextView safetyReturns;
-            @Bind(R.id.title2) TextView safetyEscapes;
-            @Bind(R.id.title3) TextView misses;
-            @Bind(R.id.toDisappear) ViewGroup notValid;
+            @Bind(R.id.decoView)
+            DecoView decoView;
+            @Bind(R.id.title)
+            TextView title;
+            @Bind(R.id.title1)
+            TextView safetyReturns;
+            @Bind(R.id.title2)
+            TextView safetyEscapes;
+            @Bind(R.id.title3)
+            TextView misses;
+            @Bind(R.id.toDisappear)
+            ViewGroup notValid;
+
             public SafetyGraphViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
@@ -616,7 +641,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             return filteredPlayers;
         }
 
-        @Override protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
+        @Override
+        protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
             ((PlayerInfoGraphicAdapter) adapter).updatePlayers(pairs);
         }
     }

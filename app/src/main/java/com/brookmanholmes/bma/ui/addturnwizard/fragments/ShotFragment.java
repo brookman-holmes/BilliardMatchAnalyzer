@@ -41,9 +41,11 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
 public abstract class ShotFragment extends BaseFragment {
     static final String ARG_KEY = "key";
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.title) TextView title;
+    @Bind(R.id.title)
+    TextView title;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.buttonRunOut) Button btnRunOut;
+    @Bind(R.id.buttonRunOut)
+    Button btnRunOut;
 
     ShotPage page;
     PageFragmentCallbacks callbacks;
@@ -69,7 +71,8 @@ public abstract class ShotFragment extends BaseFragment {
         return fragment;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getParentFragment() instanceof PageFragmentCallbacks)) {
@@ -79,7 +82,8 @@ public abstract class ShotFragment extends BaseFragment {
         callbacks = (PageFragmentCallbacks) getParentFragment();
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
@@ -87,12 +91,15 @@ public abstract class ShotFragment extends BaseFragment {
         gameType = GameType.valueOf(getArguments().getString(MatchDialogHelperUtils.GAME_TYPE_KEY));
     }
 
-    @Override public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
         page.registerListener(this);
     }
 
-    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         page = (ShotPage) callbacks.onGetPage(key);
 
         View view = inflater.inflate(getLayoutByGameType(gameType), container, false);
@@ -102,17 +109,20 @@ public abstract class ShotFragment extends BaseFragment {
         return view;
     }
 
-    @Override public void onPause() {
+    @Override
+    public void onPause() {
         page.unregisterListener();
         super.onPause();
     }
 
-    @Override public void onDetach() {
+    @Override
+    public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Nullable @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
+    @Nullable
+    @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
             R.id.nine_ball, R.id.ten_ball, R.id.eleven_ball, R.id.twelve_ball,
             R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball})

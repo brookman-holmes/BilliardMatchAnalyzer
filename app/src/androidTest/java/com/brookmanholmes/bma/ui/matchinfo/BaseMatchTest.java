@@ -9,7 +9,6 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.brookmanholmes.billiards.game.BallStatus;
@@ -33,22 +32,13 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasFocus;
-import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withTagKey;
-import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.is;
 
 /**
  * Created by Brookman Holmes on 9/7/2016.
@@ -57,12 +47,25 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public abstract class BaseMatchTest {
-    Match match;
-    DatabaseAdapter database;
-
     @Rule
     public ActivityTestRule<MatchInfoActivity> activityRule =
             new ActivityTestRule<>(MatchInfoActivity.class, true, false);
+    Match match;
+    DatabaseAdapter database;
+
+    private static Matcher<View> withImageLevel(final int level) {
+        return new BoundedMatcher<View, ImageView>(ImageView.class) {
+            @Override
+            protected boolean matchesSafely(ImageView item) {
+                return item.getDrawable().getLevel() == level;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Expected image level " + level + " is not correct");
+            }
+        };
+    }
 
     @Before
     public void setup() {
@@ -230,20 +233,6 @@ public abstract class BaseMatchTest {
         }
     }
 
-    private static Matcher<View> withImageLevel(final int level) {
-        return new BoundedMatcher<View, ImageView>(ImageView.class) {
-            @Override
-            protected boolean matchesSafely(ImageView item) {
-                return item.getDrawable().getLevel() == level;
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Expected image level " + level + " is not correct");
-            }
-        };
-    }
-
     private void selectBalls(ITurn turn) {
         for (int ball = 1; ball <= turn.size(); ball++) {
             if (isMade(turn.getBallStatus(ball)))
@@ -260,7 +249,7 @@ public abstract class BaseMatchTest {
             doAdvancedSafetyStats(turn);
         } else if (turn.getTurnEnd() == TurnEnd.BREAK_MISS) {
             doAdvancedBreakStats(turn);
-        }else if (turn.getTurnEnd() == TurnEnd.SAFETY_ERROR) {
+        } else if (turn.getTurnEnd() == TurnEnd.SAFETY_ERROR) {
             doAdvancedSafetyErrorStats(turn);
         } else
             doAdvancedShootingStats(turn);
@@ -336,5 +325,6 @@ public abstract class BaseMatchTest {
     }
 
     protected abstract Match getMatch();
+
     protected abstract List<ITurn> getTurns();
 }

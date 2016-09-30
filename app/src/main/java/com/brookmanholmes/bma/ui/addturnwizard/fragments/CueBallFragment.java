@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.TextViewCompat;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +107,6 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
         hit.addOnCueBueTouchedListener(new OnCueBallTouched() {
             @Override
             public void onTouch(int x, int y) {
-                Log.i(TAG, String.format("onTouch: x: %1$d y: %2$d", x, y));
                 page.getData().putInt(CueBallPage.CB_X_KEY, x);
                 page.getData().putInt(CueBallPage.CB_Y_KEY, y);
                 page.notifyDataChanged();
@@ -158,17 +156,17 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
 
         if (rangeBar.getId() == obRange.getId()) {
             textView = obText;
-            stringToFormat = "From <b>object ball</b> to <b>pocket</b> was <b>%1$s</b>";
+            stringToFormat = getString(R.string.html_object_pocket);
             page.getData().putFloat(CueBallPage.OB_DISTANCE_KEY, getPinValueFromIndex(rightPinIndex));
             page.notifyDataChanged();
         } else if (rangeBar.getId() == cbRange.getId()) {
             textView = cbText;
-            stringToFormat = "From <b>cue ball</b> to <b>object ball</b> was <b>%1$s</b>";
+            stringToFormat = getString(R.string.html_cue_object_ball);
             page.getData().putFloat(CueBallPage.CB_DISTANCE_KEY, getPinValueFromIndex(rightPinIndex));
             page.notifyDataChanged();
         } else {
             textView = speedText;
-            stringToFormat = "<b>%1$s</b> on a scale of 0 (soft) to 10 (hard)";
+            stringToFormat = getString(R.string.html_speed_range);
             page.getData().putInt(CueBallPage.SPEED_KEY, rightPinIndex);
             page.notifyDataChanged();
         }

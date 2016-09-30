@@ -29,10 +29,14 @@ public class RaceToFragment extends BaseFragment {
     private static final String ARG_COLUMNS = "column_count";
     private static final String ARG_PLAYER_INDEX = "player_index";
     private static final String ARG_OPP_INDEX = "opp_index";
-    @Bind(R.id.playerName) TextView playerName;
-    @Bind(R.id.opponentName) TextView opponentName;
-    @Bind(R.id.playerRankGrid) GridLayout playerGrid;
-    @Bind(R.id.opponentRankGrid) GridLayout opponentGrid;
+    @Bind(R.id.playerName)
+    TextView playerName;
+    @Bind(R.id.opponentName)
+    TextView opponentName;
+    @Bind(R.id.playerRankGrid)
+    GridLayout playerGrid;
+    @Bind(R.id.opponentRankGrid)
+    GridLayout opponentGrid;
     RaceController playerController, opponentController;
     private PageFragmentCallbacks callbacks;
     private String key;
@@ -54,7 +58,8 @@ public class RaceToFragment extends BaseFragment {
         return fragment;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getActivity() instanceof PageFragmentCallbacks)) {
@@ -64,15 +69,17 @@ public class RaceToFragment extends BaseFragment {
         callbacks = (PageFragmentCallbacks) getActivity();
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
     }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         page = (RaceToPage) callbacks.onGetPage(key);
         int min = getArguments().getInt(ARG_LOWER_BOUND_KEY);
         int max = getArguments().getInt(ARG_UPPER_BOUND_KEY);
@@ -89,17 +96,20 @@ public class RaceToFragment extends BaseFragment {
         return view;
     }
 
-    @Override public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
         page.registerListener(this);
     }
 
-    @Override public void onPause() {
+    @Override
+    public void onPause() {
         page.unregisterListener();
         super.onPause();
     }
 
-    @Override public void onDetach() {
+    @Override
+    public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
@@ -138,15 +148,16 @@ public class RaceToFragment extends BaseFragment {
 
         private TextView createTextView(int num) {
             TextView textView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.item_selection, null);
-            textView.setHeight((int)ConversionUtils.convertDpToPx(getContext(), 30));
-            textView.setWidth((int)ConversionUtils.convertDpToPx(getContext(), 30));
+            textView.setHeight((int) ConversionUtils.convertDpToPx(getContext(), 30));
+            textView.setWidth((int) ConversionUtils.convertDpToPx(getContext(), 30));
             textView.setText(String.valueOf(num));
             textView.setOnClickListener(this);
             textView.getBackground().setTint(ContextCompat.getColor(getContext(), R.color.white));
             return textView;
         }
 
-        @Override public void onClick(View view) {
+        @Override
+        public void onClick(View view) {
             selectView(grid.indexOfChild(view), selection);
 
             updatePage();
@@ -154,7 +165,7 @@ public class RaceToFragment extends BaseFragment {
 
         private void deselectView(int selection) {
             grid.getChildAt(selection).getBackground().setTint(ContextCompat.getColor(getContext(), R.color.white));
-            ((TextView)grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.primary_text));
+            ((TextView) grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.primary_text));
         }
 
         private void selectView(int selection, int oldSelection) {
@@ -164,12 +175,12 @@ public class RaceToFragment extends BaseFragment {
 
         private void selectView(int selection) {
             grid.getChildAt(selection).getBackground().setTint(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            ((TextView)grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            ((TextView) grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             this.selection = selection;
         }
 
         private int getSelection() {
-            return Integer.valueOf(((TextView)grid.getChildAt(selection)).getText().toString());
+            return Integer.valueOf(((TextView) grid.getChildAt(selection)).getText().toString());
         }
 
         private int getIndex() {

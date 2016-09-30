@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/alert_dialog_padding"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -12,12 +11,12 @@
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:text="@string/title_help_kicks"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/colorPrimary" />
 
     <TextView
         style="@style/help_dialog_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="4dp"
-        android:text="@string/description_help_kicks"/>
+        android:text="@string/description_help_kicks" />
 </LinearLayout>

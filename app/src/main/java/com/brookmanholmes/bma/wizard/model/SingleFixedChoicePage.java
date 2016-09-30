@@ -34,7 +34,8 @@ public class SingleFixedChoicePage extends Page {
         super(callbacks, title);
     }
 
-    @Override public Fragment createFragment() {
+    @Override
+    public Fragment createFragment() {
         return SingleChoiceFragment.create(getKey());
     }
 
@@ -46,11 +47,13 @@ public class SingleFixedChoicePage extends Page {
         return choices.size();
     }
 
-    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
         dest.add(new ReviewItem(getTitle(), data.getString(SIMPLE_DATA_KEY), getKey()));
     }
 
-    @Override public boolean isCompleted() {
+    @Override
+    public boolean isCompleted() {
         return !TextUtils.isEmpty(data.getString(SIMPLE_DATA_KEY));
     }
 

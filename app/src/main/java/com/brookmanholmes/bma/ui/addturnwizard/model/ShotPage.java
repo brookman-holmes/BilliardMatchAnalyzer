@@ -35,20 +35,24 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
         playerColor = PlayerColor.valueOf(data.getString(MatchDialogHelperUtils.CURRENT_PLAYER_COLOR_KEY));
     }
 
-    @Override public Fragment createFragment() {
+    @Override
+    public Fragment createFragment() {
         return ShotFragment.create(getKey(), getData());
     }
 
-    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
     }
 
-    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+    @Override
+    public void updateTurnInfo(AddTurnWizardModel model) {
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
             model.getTableStatus().setBallTo(tableStatus.getBallStatus(ball), ball);
         }
     }
 
-    @Override public void getNewTurnInfo(AddTurnWizardModel model) {
+    @Override
+    public void getNewTurnInfo(AddTurnWizardModel model) {
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
             tableStatus.setBallTo(model.getTableStatus().getBallStatus(ball), ball);
         }

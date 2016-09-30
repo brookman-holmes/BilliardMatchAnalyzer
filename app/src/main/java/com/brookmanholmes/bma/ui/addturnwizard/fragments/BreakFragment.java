@@ -38,7 +38,9 @@ public class BreakFragment extends BaseFragment {
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
             R.id.nine_ball, R.id.ten_ball, R.id.eleven_ball, R.id.twelve_ball,
             R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball};
-    @SuppressWarnings("WeakerAccess") @Bind(R.id.title) TextView title;
+    @SuppressWarnings("WeakerAccess")
+    @Bind(R.id.title)
+    TextView title;
     private PageFragmentCallbacks callbacks;
     private String key;
     private BreakPage page;
@@ -57,7 +59,8 @@ public class BreakFragment extends BaseFragment {
         return fragment;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getParentFragment() instanceof PageFragmentCallbacks)) {
@@ -67,7 +70,8 @@ public class BreakFragment extends BaseFragment {
         callbacks = (PageFragmentCallbacks) getParentFragment();
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
@@ -75,7 +79,8 @@ public class BreakFragment extends BaseFragment {
     }
 
     @Nullable
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         page = (BreakPage) callbacks.onGetPage(key);
 
         View view = inflater.inflate(getLayoutByGameType(getGameType()), container, false);
@@ -93,12 +98,14 @@ public class BreakFragment extends BaseFragment {
         return view;
     }
 
-    @Override public void onDetach() {
+    @Override
+    public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Nullable @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
+    @Nullable
+    @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
             R.id.nine_ball, R.id.ten_ball, R.id.eleven_ball, R.id.twelve_ball,
             R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball})

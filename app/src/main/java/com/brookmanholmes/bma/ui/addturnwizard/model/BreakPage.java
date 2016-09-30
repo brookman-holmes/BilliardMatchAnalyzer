@@ -33,14 +33,17 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
         addBranch(showShotPage, new ShotPage(callbacks, title2, matchData));
     }
 
-    @Override public Fragment createFragment() {
+    @Override
+    public Fragment createFragment() {
         return BreakFragment.create(getKey(), getData());
     }
 
-    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
     }
 
-    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+    @Override
+    public void updateTurnInfo(AddTurnWizardModel model) {
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
             model.getTableStatus().setBallTo(tableStatus.getBallStatus(ball), ball);
         }

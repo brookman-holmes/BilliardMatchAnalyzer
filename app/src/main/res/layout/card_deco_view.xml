@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/card_view_style"
-      class="android.support.v7.widget.CardView"
-      app:cardElevation="2dp"
-      app:cardUseCompatPadding="true">
+    class="android.support.v7.widget.CardView"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:text="@string/title_breaks"
             android:textColor="@color/primary_text"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <com.hookedonplay.decoviewlib.DecoView
             android:id="@+id/decoView"
@@ -27,7 +27,7 @@
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/color_indicator"
-                android:tint="@color/chart3"/>
+                android:tint="@color/chart3" />
 
             <TextView
                 android:id="@+id/title1"
@@ -49,7 +49,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
                 android:text="@string/successful_breaks"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +63,7 @@
                 android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/color_indicator"
-                android:tint="@color/chart2"/>
+                android:tint="@color/chart2" />
 
             <TextView
                 android:id="@+id/title2"
@@ -72,7 +72,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
                 android:text="@string/continuation_after_the_break"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -87,7 +87,7 @@
                 android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/color_indicator"
-                android:tint="@color/chart"/>
+                android:tint="@color/chart" />
 
             <TextView
                 android:id="@+id/title4"
@@ -96,7 +96,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
                 android:text="@string/_8_9_on_the_break"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -110,7 +110,7 @@
                 android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/color_indicator"
-                android:tint="@color/chart1"/>
+                android:tint="@color/chart1" />
 
             <TextView
                 android:id="@+id/title3"
@@ -119,7 +119,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
                 android:text="@string/fouls_on_the_break"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -30,7 +30,7 @@ public class SampleMatchProvider {
                 .setBreakType(BreakType.ALTERNATE)
                 .setPlayerTurn(PlayerTurn.PLAYER)
                 .setDate(cal.getTime())
-                .setPlayerRanks(9,9)
+                .setPlayerRanks(9, 9)
                 .build(GameType.BCA_TEN_BALL);
     }
 
@@ -47,7 +47,7 @@ public class SampleMatchProvider {
                 .setBreakType(BreakType.ALTERNATE)
                 .setPlayerTurn(PlayerTurn.OPPONENT)
                 .setDate(cal.getTime())
-                .setPlayerRanks(7,7)
+                .setPlayerRanks(7, 7)
                 .build(GameType.BCA_TEN_BALL);
     }
 

@@ -8,8 +8,8 @@ android {
         applicationId "com.brookmanholmes.bma"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 12
-        versionName "1.0.0.14"
+        versionCode 13
+        versionName "1.1.0.14"
     }
 
     buildTypes {
@@ -38,17 +38,17 @@ android {
 repositories {
     maven { url "https://jitpack.io" }
     mavenCentral()
-    maven(){
+    maven() {
         url "https://oss.sonatype.org/content/repositories/snapshots"
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile ('com.android.support.test:runner:0.5') {
+    androidTestCompile('com.android.support.test:runner:0.5') {
         exclude group: 'com.android.support'
     }
-    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.2') {
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2') {
         exclude group: 'com.android.support'
     }
     testCompile 'junit:junit:4.12'
@@ -66,10 +66,10 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
-    compile'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.3@aar'
+    compile 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.3@aar'
     compile 'de.cketti.mailto:email-intent-builder:1.0.0'
-    compile ('com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar'){
-        transitive=true
+    compile('com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar') {
+        transitive = true
     }
     compile('com.mikepenz:aboutlibraries:5.8.1@aar') {
         transitive = true
@@ -79,7 +79,6 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
 }
 
 apply plugin: 'com.google.gms.google-services'

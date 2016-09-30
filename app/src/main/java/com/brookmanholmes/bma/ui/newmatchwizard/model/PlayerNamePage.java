@@ -44,23 +44,27 @@ public class PlayerNamePage extends Page implements UpdatesMatchBuilder, Updates
         data.putString(PLAY_THE_GHOST_KEY, Boolean.FALSE.toString());
     }
 
-    @Override public Fragment createFragment() {
+    @Override
+    public Fragment createFragment() {
         return PlayerNameFragment.create(getKey());
     }
 
-    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
         dest.add(new ReviewItem(String.format(reviewPlayer, 1), getPlayerName(), getKey()));
         dest.add(new ReviewItem(String.format(reviewPlayer, 2), getOpponentName(), getKey()));
         if (!data.getString(LOCATION_KEY, "").equals(""))
             dest.add(new ReviewItem(reviewLocation, data.getString(LOCATION_KEY), getKey()));
     }
 
-    @Override public boolean isCompleted() {
+    @Override
+    public boolean isCompleted() {
         return !TextUtils.isEmpty(getPlayerName()) && !TextUtils.isEmpty(getOpponentName())
                 && !TextUtils.equals(getPlayerName(), getOpponentName());
     }
 
-    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+    @Override
+    public void updateMatchBuilder(CreateNewMatchWizardModel model) {
         model.setPlayerName(getPlayerName(),
                 getOpponentName(),
                 data.getString(LOCATION_KEY, ""),
@@ -68,11 +72,13 @@ public class PlayerNamePage extends Page implements UpdatesMatchBuilder, Updates
                 Boolean.parseBoolean(data.getString(PLAY_THE_GHOST_KEY, "false")));
     }
 
-    @Override public String getPlayerName() {
+    @Override
+    public String getPlayerName() {
         return data.getString(PLAYER_NAME_KEY, "");
     }
 
-    @Override public String getOpponentName() {
+    @Override
+    public String getOpponentName() {
         return data.getString(OPPONENT_NAME_KEY, "");
     }
 

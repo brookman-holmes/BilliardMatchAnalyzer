@@ -7,10 +7,10 @@ import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-import com.brookmanholmes.bma.R;
-import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.InvalidGameTypeException;
+import com.brookmanholmes.bma.R;
 
 /**
  * Created by Brookman Holmes on 8/2/2016.

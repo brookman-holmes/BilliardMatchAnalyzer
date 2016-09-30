@@ -20,7 +20,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -66,20 +65,22 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     private final List<UpdateMatchInfo> listeners = new ArrayList<>();
 
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.playerName) TextView playerName;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.opponentName) TextView opponentName;
-    @Bind(R.id.playerNameLayout) View playerNameLayout;
-    @Bind(R.id.opponentNameLayout) View opponentNameLayout;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.pager) CustomViewPager pager;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.coordinatorLayout) CoordinatorLayout layout;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.buttonAddTurn) FloatingActionButton fabAddTurn;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.playerName)
+    TextView playerName;
+    @Bind(R.id.opponentName)
+    TextView opponentName;
+    @Bind(R.id.playerNameLayout)
+    View playerNameLayout;
+    @Bind(R.id.opponentNameLayout)
+    View opponentNameLayout;
+    @Bind(R.id.pager)
+    CustomViewPager pager;
+    @Bind(R.id.coordinatorLayout)
+    CoordinatorLayout layout;
+    @Bind(R.id.buttonAddTurn)
+    FloatingActionButton fabAddTurn;
     private DatabaseAdapter db;
     private Match match;
     private Menu mMenu;
@@ -111,7 +112,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         matchOverSnackbar = makeSnackbar(R.string.match_over, Snackbar.LENGTH_INDEFINITE)
                 .setAction(android.R.string.ok, new View.OnClickListener() {
-                    @Override public void onClick(View view) {
+                    @Override
+                    public void onClick(View view) {
                         matchOverSnackbar.dismiss();
                     }
                 });
@@ -126,7 +128,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             getSupportActionBar().setTitle(getString(R.string.title_match_info, ConversionUtils.getGameTypeString(this, gameType)));
     }
 
-    @Override protected void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         updateViews();
     }
@@ -200,15 +203,14 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         mMenu.findItem(R.id.action_redo).getIcon().setAlpha(this.mMenu.findItem(R.id.action_redo).isEnabled() ? 255 : 97);
     }
 
-    @Override public void addTurn(TurnBuilder turnBuilder) {
+    @Override
+    public void addTurn(TurnBuilder turnBuilder) {
         addTurn(match.createAndAddTurn(
                 turnBuilder.tableStatus,
                 turnBuilder.turnEnd,
                 turnBuilder.foul,
                 turnBuilder.lostGame,
                 turnBuilder.advStats.build()));
-
-        Log.i(TAG, "addTurn: " + turnBuilder.advStats.build().toString());
 
         Bundle bundle = new Bundle();
         bundle.putString("turn_end", turnBuilder.turnEnd.name());
@@ -220,7 +222,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     void addTurn(final ITurn turn) {
         new Thread(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 db.insertTurn(turn, getMatchId(), match.getTurnCount());
             }
         }).start();
@@ -231,19 +234,21 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         analytics.logEvent("turn_undone", null);
         match.undoTurn();
         new Thread(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 db.undoTurn(getMatchId(), match.getTurnCount() + 1);
             }
         }).start();
         updateViews();
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_match_info, menu);
         this.mMenu = menu;
         updateMenuItems();
 
-        createGuide();
+        // createGuide(); todo this needs more work so I'm going to not show it until I get it where I want it
 
         return true;
     }
@@ -286,7 +291,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                                     "undo turns, change the way the match is viewed, " +
                                     "view the status of the current game and more")
                             .setGravity(Gravity.CENTER)
-                    .setShadow(true))
+                            .setShadow(true))
                     .setOverlay(new Overlay()
                             .setStyle(Overlay.Style.Rectangle)
                             .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryTransparent))
@@ -316,7 +321,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -338,7 +344,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             GameStatusViewBuilder.bindView(match, view);
             builder.setView(view)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override public void onClick(DialogInterface dialog, int which) {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
                         }
                     })
@@ -349,7 +356,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         if (id == R.id.action_undo) {
             makeSnackbar(R.string.undid_turn, Snackbar.LENGTH_SHORT).setAction(R.string.redo_turn, new View.OnClickListener() {
-                @Override public void onClick(View view) {
+                @Override
+                public void onClick(View view) {
                     addTurn(match.redoTurn());
                 }
             }).show();
@@ -358,7 +366,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         if (id == R.id.action_redo) {
             makeSnackbar(R.string.redid_turn, Snackbar.LENGTH_SHORT).setAction(R.string.undo, new View.OnClickListener() {
-                @Override public void onClick(View view) {
+                @Override
+                public void onClick(View view) {
                     undoTurn();
                 }
             }).show();
@@ -476,7 +485,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         long matchId;
         private InputMethodManager inputMethodManager;
 
-        @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             title = getArguments().getString(ARG_TITLE);
@@ -486,7 +496,9 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             match = ((MatchInfoActivity) getActivity()).match;
         }
 
-        @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
             final View view = LayoutInflater.from(getContext()).inflate(R.layout.edit_text, null, false);
             input = (EditText) view.findViewById(R.id.editText);
@@ -495,7 +507,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             input.requestFocus();
             showKeyboard();
             input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (EditorInfo.IME_ACTION_DONE == actionId) {
                         onPositiveButton();
                         hideKeyboard();
@@ -512,20 +525,23 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             return builder.setTitle(title)
                     .setView(view)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override public void onClick(DialogInterface dialog, int which) {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
                             onPositiveButton();
                             hideKeyboard();
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override public void onClick(DialogInterface dialog, int which) {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                         }
                     })
                     .create();
         }
 
-        @Override public void onCancel(DialogInterface dialog) {
+        @Override
+        public void onCancel(DialogInterface dialog) {
             hideKeyboard();
             super.onCancel(dialog);
         }
@@ -539,6 +555,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         abstract void setupInput(EditText input);
+
         abstract void onPositiveButton();
     }
 
@@ -555,13 +572,17 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             return dialog;
         }
 
-        @Override void setupInput(EditText input) {
+        @Override
+        void setupInput(EditText input) {
             input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         }
-        @Override void onPositiveButton() {
-            ((MatchInfoActivity)getActivity()).updatePlayerNames(preText, input.getText().toString());
+
+        @Override
+        void onPositiveButton() {
+            ((MatchInfoActivity) getActivity()).updatePlayerNames(preText, input.getText().toString());
             new Thread(new Runnable() {
-                @Override public void run() {
+                @Override
+                public void run() {
                     db.editPlayerName(matchId, preText, input.getText().toString());
                 }
             }).start();
@@ -581,14 +602,17 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             return dialog;
         }
 
-        @Override void setupInput(EditText input) {
+        @Override
+        void setupInput(EditText input) {
             input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         }
 
-        @Override void onPositiveButton() {
+        @Override
+        void onPositiveButton() {
             match.setLocation(input.getText().toString());
             new Thread(new Runnable() {
-                @Override public void run() {
+                @Override
+                public void run() {
                     db.updateMatchLocation(input.getText().toString(), matchId);
                 }
             }).start();
@@ -606,14 +630,18 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             dialog.setArguments(args);
             return dialog;
         }
-        @Override void setupInput(EditText input) {
+
+        @Override
+        void setupInput(EditText input) {
 
         }
 
-        @Override void onPositiveButton() {
+        @Override
+        void onPositiveButton() {
             match.setNotes(input.getText().toString());
             new Thread(new Runnable() {
-                @Override public void run() {
+                @Override
+                public void run() {
                     db.updateMatchNotes(input.getText().toString(), matchId);
                 }
             });
@@ -628,7 +656,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             this.matchId = matchId;
         }
 
-        @Override public Fragment getItem(int position) {
+        @Override
+        public Fragment getItem(int position) {
             switch (position) {
                 case 0:
                     return MatchInfoFragment.create(matchId);
@@ -637,7 +666,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             }
         }
 
-        @Override public int getCount() {
+        @Override
+        public int getCount() {
             return 2;
         }
     }

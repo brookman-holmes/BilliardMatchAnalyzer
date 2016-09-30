@@ -121,7 +121,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull private static String getCreateMatchTableQuery() {
+    @NonNull
+    private static String getCreateMatchTableQuery() {
         return "CREATE TABLE " + TABLE_MATCHES + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_GAME_TYPE + " TEXT COLLATE NOCASE NOT NULL DEFAULT BCA_EIGHT_BALL, "
@@ -136,7 +137,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @NonNull private static String getCreatePlayerTableQuery() {
+    @NonNull
+    private static String getCreatePlayerTableQuery() {
         return "CREATE TABLE " + TABLE_PLAYERS + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_NAME + " TEXT COLLATE NOCASE DEFAULT NULL, "
@@ -144,7 +146,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + ");";
     }
 
-    @Override public void onCreate(SQLiteDatabase db) {
+    @Override
+    public void onCreate(SQLiteDatabase db) {
         db.execSQL(getCreateTurnsTableQuery());
         db.execSQL(getCreateMatchTableQuery());
         db.execSQL(getCreatePlayerTableQuery());
@@ -154,7 +157,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(getCreateWhyTable());
     }
 
-    @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TURNS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);

@@ -13,9 +13,9 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              style="@style/WizardPageContainer"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/WizardPageContainer"
+    android:orientation="vertical">
 
     <TextView style="@style/WizardPageTitle" />
 
@@ -31,46 +31,46 @@
         tools:ignore="InefficientWeight" />
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/foulLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/foulLayout"
-        android:paddingStart="?android:attr/listPreferredItemPaddingLeft"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
         android:paddingEnd="?android:attr/listPreferredItemPaddingLeft"
-        android:layout_marginTop="16dp">
+        android:paddingStart="?android:attr/listPreferredItemPaddingLeft">
 
         <TextView
+            android:id="@+id/subTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/subTitle"/>
+            android:layout_height="wrap_content" />
 
         <RadioGroup
+            android:id="@+id/foulGroup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
-            android:id="@+id/foulGroup">
+            android:orientation="vertical">
 
             <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no"
                 android:id="@+id/no"
-                android:layout_weight="1"/>
-
-            <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/yes"
+                android:layout_weight="1"
+                android:text="@string/no" />
+
+            <RadioButton
                 android:id="@+id/yes"
-                android:layout_weight="1"/>
-
-            <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/foul_lost_game"
+                android:layout_weight="1"
+                android:text="@string/yes" />
+
+            <RadioButton
                 android:id="@+id/lostGame"
-                android:layout_weight="1"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/foul_lost_game" />
         </RadioGroup>
     </LinearLayout>
 

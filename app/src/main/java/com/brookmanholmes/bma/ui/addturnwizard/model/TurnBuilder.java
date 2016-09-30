@@ -24,17 +24,4 @@ public class TurnBuilder {
     TurnBuilder(GameType gameType, List<Integer> ballsOnTable) {
         this.tableStatus = TableStatus.newTable(gameType, ballsOnTable);
     }
-
-    public String advData() {
-        return advStats.toString();
-    }
-
-    @Override public String toString() {
-        return "TurnBuilder{" +
-                "tableStatus=" + tableStatus.toString() +
-                ", turnEnd=" + (turnEnd == null ? "null" : turnEnd) +
-                ", lostGame=" + lostGame +
-                ", foul=" + foul +
-                '}';
-    }
 }

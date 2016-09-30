@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".ui.matchinfo.MatchInfoActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.matchinfo.MatchInfoActivity">
     <item
         android:id="@+id/action_notes"
         android:orderInCategory="100"
@@ -40,10 +40,11 @@
         android:icon="@drawable/ic_view_list"
         android:orderInCategory="0"
         android:title="@string/toggle_view"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_submit_feedback"
-          android:orderInCategory="500"
-          android:title="@string/submit_feedback"
-          app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_submit_feedback"
+        android:orderInCategory="500"
+        android:title="@string/submit_feedback"
+        app:showAsAction="never" />
 </menu>

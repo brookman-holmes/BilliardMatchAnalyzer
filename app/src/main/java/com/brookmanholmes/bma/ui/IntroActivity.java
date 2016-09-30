@@ -62,23 +62,23 @@ public class IntroActivity extends BaseActivity {
     private static final String PLAYER_LIST_FRAGMENT = "player list fragment";
 
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.createMatch) FloatingActionButton fab;
+    @Bind(R.id.createMatch)
+    FloatingActionButton fab;
 
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
 
         if (preferences.getBoolean("first_run2", true)) {
-            new Thread(new Runnable() {
-                @Override public void run() {
-                    DatabaseAdapter db = new DatabaseAdapter(IntroActivity.this);
-                    db.createSampleMatches();
-                }
-            }).start();
+            DatabaseAdapter db = new DatabaseAdapter(IntroActivity.this);
+            db.createSampleMatches();
+            getMatchListFragment().update();
 
             preferences.edit().putBoolean("first_run2", false).apply();
         }
@@ -92,18 +92,21 @@ public class IntroActivity extends BaseActivity {
         }
     }
 
-    @Override protected void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
 
         final int animationDelay = 250; // .25 seconds
         new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 fab.show();
             }
         }, animationDelay); // display fab after activity starts
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_intro, menu);
         MenuItem item = menu.findItem(R.id.spinner);
 
@@ -135,7 +138,8 @@ public class IntroActivity extends BaseActivity {
                 }
             }
 
-            @Override public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -146,7 +150,8 @@ public class IntroActivity extends BaseActivity {
     }
 
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_reset_preferences) {
             PreferencesUtil.resetTutorial(preferences);
         }
@@ -160,9 +165,11 @@ public class IntroActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.createMatch) public void createNewMatch() {
+    @OnClick(R.id.createMatch)
+    public void createNewMatch() {
         fab.hide(new FloatingActionButton.OnVisibilityChangedListener() {
-            @Override public void onHidden(FloatingActionButton fab) {
+            @Override
+            public void onHidden(FloatingActionButton fab) {
                 super.onHidden(fab);
                 Intent intent = new Intent(IntroActivity.this, CreateNewMatchActivity.class);
                 startActivity(intent);
@@ -179,16 +186,16 @@ public class IntroActivity extends BaseActivity {
                 .commitAllowingStateLoss();
     }
 
-    private Fragment getPlayerListFragment() {
+    private PlayerListFragment getPlayerListFragment() {
         return findFragmentByTag(PLAYER_LIST_FRAGMENT) == null ?
                 new PlayerListFragment() :
-                findFragmentByTag(PLAYER_LIST_FRAGMENT);
+                (PlayerListFragment) findFragmentByTag(PLAYER_LIST_FRAGMENT);
     }
 
-    private Fragment getMatchListFragment() {
+    private MatchListFragment getMatchListFragment() {
         return findFragmentByTag(MATCH_LIST_FRAGMENT) == null ?
                 MatchListFragment.create(null, null) :
-                findFragmentByTag(MATCH_LIST_FRAGMENT);
+                (MatchListFragment) findFragmentByTag(MATCH_LIST_FRAGMENT);
     }
 
     private Fragment findFragmentByTag(String tag) {
@@ -211,18 +218,18 @@ public class IntroActivity extends BaseActivity {
                     .setToolTip(new ToolTip()
                             .setTextColor(ContextCompat.getColor(this, R.color.white))
                             .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
-                            .setDescription("Click here to change the view between matches and players")
-                            .setGravity(Gravity.LEFT|Gravity.BOTTOM))
+                            .setDescription(getString(R.string.tutorial_change_view_player_matches))
+                            .setGravity(Gravity.LEFT | Gravity.BOTTOM))
                     .setOverlay(overlay)
                     .playLater(view);
 
             ChainTourGuide t1 = ChainTourGuide.init(this)
                     .setToolTip(new ToolTip()
-                            .setTitle("Welcome")
+                            .setTitle(getString(R.string.tutorial_welcome))
                             .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
                             .setTextColor(ContextCompat.getColor(this, R.color.white))
-                            .setDescription("You can create a new match by clicking on this button")
-                            .setGravity(Gravity.TOP|Gravity.LEFT))
+                            .setDescription(getString(R.string.tutorial_create_match))
+                            .setGravity(Gravity.TOP | Gravity.LEFT))
                     .setOverlay(overlay)
                     .playLater(fab);
 
@@ -240,11 +247,13 @@ public class IntroActivity extends BaseActivity {
 
     public static class PlayerListFragment extends BaseRecyclerFragment {
         private GetPlayersTask task;
+
         public PlayerListFragment() {
 
         }
 
-        @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             adapter = new RecyclerAdapter(new ArrayList<AbstractPlayer>());
 
@@ -254,7 +263,8 @@ public class IntroActivity extends BaseActivity {
             }
         }
 
-        @Override protected RecyclerView.LayoutManager getLayoutManager() {
+        @Override
+        protected RecyclerView.LayoutManager getLayoutManager() {
             if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 return new GridLayoutManager(getContext(), 2);
             else {
@@ -262,7 +272,8 @@ public class IntroActivity extends BaseActivity {
             }
         }
 
-        @Override public void onDestroy() {
+        @Override
+        public void onDestroy() {
             if (task.getStatus() != AsyncTask.Status.FINISHED)
                 task.cancel(true);
             super.onDestroy();
@@ -286,16 +297,19 @@ public class IntroActivity extends BaseActivity {
                 notifyDataSetChanged();
             }
 
-            @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            @Override
+            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_player, parent, false);
                 return new ViewHolder(view);
             }
 
-            @Override public void onBindViewHolder(ViewHolder holder, int position) {
+            @Override
+            public void onBindViewHolder(ViewHolder holder, int position) {
                 holder.bind(players.get(position), getColor(position));
             }
 
-            @Override public int getItemCount() {
+            @Override
+            public int getItemCount() {
                 return players.size();
             }
 
@@ -305,17 +319,28 @@ public class IntroActivity extends BaseActivity {
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            @Bind(R.id.playerIndicator) RoundedLetterView playerIcon;
-            @Bind(R.id.playerName) TextView playerName;
-            @Bind(R.id.gamesPlayed) TextView gamesPlayed;
-            @Bind(R.id.shootingPctGrid) GridLayout gridLayout;
-            @Bind(R.id.shootingLine) ImageView shootingLine;
-            @Bind(R.id.safetyLine) ImageView safetyLine;
-            @Bind(R.id.breakingLine) ImageView breakingLine;
-            @Bind(R.id.tvSafetyPct) TextView safetyPct;
-            @Bind(R.id.tvBreakPct) TextView breakPct;
-            @Bind(R.id.tvShootingPct) TextView shootingPct;
-            @Bind(R.id.matchesPlayed) TextView matchesPlayed;
+            @Bind(R.id.playerIndicator)
+            RoundedLetterView playerIcon;
+            @Bind(R.id.playerName)
+            TextView playerName;
+            @Bind(R.id.gamesPlayed)
+            TextView gamesPlayed;
+            @Bind(R.id.shootingPctGrid)
+            GridLayout gridLayout;
+            @Bind(R.id.shootingLine)
+            ImageView shootingLine;
+            @Bind(R.id.safetyLine)
+            ImageView safetyLine;
+            @Bind(R.id.breakingLine)
+            ImageView breakingLine;
+            @Bind(R.id.tvSafetyPct)
+            TextView safetyPct;
+            @Bind(R.id.tvBreakPct)
+            TextView breakPct;
+            @Bind(R.id.tvShootingPct)
+            TextView shootingPct;
+            @Bind(R.id.matchesPlayed)
+            TextView matchesPlayed;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -342,7 +367,8 @@ public class IntroActivity extends BaseActivity {
                 breakingLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
             }
 
-            @OnClick(R.id.container) void launchPlayerProfileActivity() {
+            @OnClick(R.id.container)
+            void launchPlayerProfileActivity() {
                 Intent intent = new Intent(itemView.getContext(), PlayerProfileActivity.class);
                 intent.putExtra(PlayerProfileActivity.ARG_PLAYER_NAME, playerName.getText().toString());
                 itemView.getContext().startActivity(intent);
@@ -350,7 +376,8 @@ public class IntroActivity extends BaseActivity {
         }
 
         private class GetPlayersTask extends AsyncTask<Void, Void, List<AbstractPlayer>> {
-            @Override protected List<AbstractPlayer> doInBackground(Void... params) {
+            @Override
+            protected List<AbstractPlayer> doInBackground(Void... params) {
                 if (!isCancelled()) {
                     return new DatabaseAdapter(getContext()).getPlayers();
                 } else {
@@ -358,7 +385,8 @@ public class IntroActivity extends BaseActivity {
                 }
             }
 
-            @Override protected void onPostExecute(List<AbstractPlayer> abstractPlayers) {
+            @Override
+            protected void onPostExecute(List<AbstractPlayer> abstractPlayers) {
                 if (adapter != null)
                     ((RecyclerAdapter) adapter).update(abstractPlayers);
             }
