@@ -21,7 +21,7 @@ public class SafetiesBinder extends BindingAdapter {
 
     public String playerForcedFouls, opponentForcedFouls;
 
-    public SafetiesBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+    SafetiesBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
         this.title = title;
         helpLayout = R.layout.dialog_help_safeties;
 

@@ -22,7 +22,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.TextViewCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,14 +51,16 @@ public abstract class BaseChoiceFragment extends ListFragment {
     protected List<String> choices;
     protected Page page;
 
-    @LayoutRes protected int layoutRes;
+    @LayoutRes
+    protected int layoutRes;
     protected int choiceMode;
 
     public BaseChoiceFragment() {
 
     }
 
-    @Override public void onAttach(Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
 
         if (getParentFragment() instanceof PageFragmentCallbacks) {
@@ -71,14 +72,16 @@ public abstract class BaseChoiceFragment extends ListFragment {
         }
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
     }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
         setupChoices();
         View view = inflater.inflate(R.layout.fragment_page, container, false);
@@ -90,17 +93,20 @@ public abstract class BaseChoiceFragment extends ListFragment {
         return view;
     }
 
-    @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         preSelectItems();
     }
 
-    @Override public void onDetach() {
+    @Override
+    public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
         super.onDestroy();
@@ -132,8 +138,6 @@ public abstract class BaseChoiceFragment extends ListFragment {
 
     protected void setListView(View view) {
         final ListView listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setTag(page.getClass().getSimpleName()); // used for espresso testing
-        Log.i("BaseChoiceFragment", (String) listView.getTag());
         setAdapter();
         listView.setDividerHeight(0);
         listView.setChoiceMode(choiceMode);

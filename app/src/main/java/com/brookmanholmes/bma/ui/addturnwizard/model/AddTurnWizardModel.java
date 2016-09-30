@@ -214,9 +214,9 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private Page getAdvTurnEndPage() {
         return new TurnEndPage(this, context.getString(R.string.title_turn_end, playerName), matchData)
                 .addBranch(context.getString(R.string.turn_safety_error), getSafetyErrorBranch())
-                .addBranch(context.getString(R.string.turn_miss), getMissBranchPage(), getWhyMissPage())
-                .addBranch(context.getString(R.string.turn_break_miss), getBreakErrorHow(), getBreakErrorWhy())
-                .addBranch(context.getString(R.string.turn_illegal_break), getIllegalBreakHow(), getIllegalBreakWhy())
+                .addBranch(context.getString(R.string.turn_miss), getMissBranchPage(), getCueingPage())
+                .addBranch(context.getString(R.string.turn_break_miss), getBreakErrorHow())
+                .addBranch(context.getString(R.string.turn_illegal_break), getIllegalBreakHow())
                 .addBranch(context.getString(R.string.turn_safety), getSafetyPage())
                 .addBranch(context.getString(R.string.turn_won_game))
                 .addBranch(context.getString(R.string.turn_push))
@@ -224,6 +224,10 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)))
                 .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)))
                 .setValue(context.getString(R.string.turn_miss));
+    }
+
+    private Page getCueingPage() {
+        return new CueBallPage(this, "Cue/object ball information");
     }
 
     private Page getSafetyErrorBranch() {
@@ -266,11 +270,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 .setParentKey("Miss");
     }
 
-    private Page getWhyMissPage() {
-        return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.why_choices));
-    }
-
     private Page getCutTypePage() {
         return new CutTypePage(this, context.getString(R.string.title_cut_type, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.cut_types))
@@ -302,19 +301,9 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 .setChoices(context.getResources().getStringArray(R.array.how_choices_break));
     }
 
-    private Page getBreakErrorWhy() {
-        return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.why_choices_break));
-    }
-
     private Page getIllegalBreakHow() {
         return new BreakErrorPage(this, context.getString(R.string.title_how_miss, playerName))
                 .setChoices(context.getResources().getStringArray(R.array.how_choices_break));
-    }
-
-    private Page getIllegalBreakWhy() {
-        return new WhyMissPage(this, context.getString(R.string.title_why_miss, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.why_choices_illegal_break));
     }
 
     private Page getSafetyPage() {
@@ -337,5 +326,21 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
         turnBuilder.advStats.startingPosition(matchData.getBoolean(MatchDialogHelperUtils.SUCCESSFUL_SAFE_KEY) ? "Safe" : "Open");
         return turnBuilder;
+    }
+
+    void setObDistance(float dist) {
+        turnBuilder.advStats.obDistance(dist);
+    }
+
+    void setCbDistance(float dist) {
+        turnBuilder.advStats.cbDistance(dist);
+    }
+
+    void setSpeed(int speed) {
+        turnBuilder.advStats.speed(speed);
+    }
+
+    void setCueing(int x, int y) {
+        turnBuilder.advStats.cueing(x, y);
     }
 }

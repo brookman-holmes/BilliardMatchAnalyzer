@@ -36,7 +36,7 @@ public class PlayerNamePage extends Page implements UpdatesMatchBuilder, Updates
     private final String reviewPlayer;
     private final String reviewLocation;
 
-    public PlayerNamePage(ModelCallbacks callbacks, String title, String reviewPlayer, String reviewLocation) {
+    PlayerNamePage(ModelCallbacks callbacks, String title, String reviewPlayer, String reviewLocation) {
         super(callbacks, title);
 
         this.reviewLocation = reviewLocation;

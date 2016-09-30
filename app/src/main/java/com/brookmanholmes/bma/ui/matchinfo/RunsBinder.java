@@ -19,7 +19,7 @@ public class RunsBinder extends BindingAdapter {
 
     boolean showEarlyWins = false;
 
-    public RunsBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+    RunsBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
         this.title = title;
         helpLayout = R.layout.dialog_help_runs;
 

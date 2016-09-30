@@ -9,9 +9,9 @@ import com.brookmanholmes.bma.wizard.ui.SingleChoiceFragment;
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class AngleTypePage extends SingleFixedChoicePage implements UpdatesTurnInfo {
+class AngleTypePage extends SingleFixedChoicePage implements UpdatesTurnInfo {
 
-    public AngleTypePage(ModelCallbacks callbacks, String title) {
+    AngleTypePage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 

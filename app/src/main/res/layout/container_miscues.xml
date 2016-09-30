@@ -5,7 +5,6 @@
     android:id="@+id/miscues"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/title_miscues"
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:textColor="@color/primary_text"
     tools:showIn="@layout/fragment_adv_shooting_stats"/>

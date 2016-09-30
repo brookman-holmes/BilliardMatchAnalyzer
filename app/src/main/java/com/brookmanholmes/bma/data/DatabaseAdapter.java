@@ -42,37 +42,42 @@ import java.util.Set;
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class DatabaseAdapter {
-    // column names
-    public static final String TABLE_MATCHES = "matches";
-    public static final String COLUMN_BREAK_TYPE = "break_type";
-    public static final String COLUMN_GAME_TYPE = "game_type";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_STATS_DETAIL = "stats_detail";
     public static final String COLUMN_LOCATION = "location";
-    public static final String COLUMN_NOTES = "notes";
-    public static final String COLUMN_PLAYER_TURN = "player_turn";
-    public static final String COLUMN_CREATED_ON = "created_on";
-    public static final String COLUMN_PLAYER_RANK = "player_rank";
-    public static final String COLUMN_OPPONENT_RANK = "opponent_rank";
-    public static final String TABLE_TURNS = "turns_table";
-    public static final String COLUMN_TABLE_STATUS = "table_status";
-    public static final String COLUMN_TURN_END = "turn_end";
-    public static final String COLUMN_SCRATCH = "foul";
-    public static final String COLUMN_MATCH_ID = "match_id";
-    public static final String COLUMN_TURN_NUMBER = "turn_number";
-    public static final String COLUMN_IS_GAME_LOST = "is_game_lost";
-    public static final String TABLE_PLAYERS = "players";
-    public static final String COLUMN_NAME = "name";
-    public static final String TABLE_ADV_STATS = "adv_stats";
-    public static final String COLUMN_SHOT_TYPE = "shot_type";
-    public static final String COLUMN_SHOT_SUB_TYPE = "shot_sub_type";
-    public static final String TABLE_HOWS = "how_table";
-    public static final String TABLE_WHYS = "why_table";
-    public static final String COLUMN_ADV_STATS_ID = "adv_stats_id";
-    public static final String TABLE_ANGLES = "angle_table";
-    public static final String COLUMN_STRING = "string";
-    public static final String COLUMN_STARTING_POSITION = "starting_position";
     public static final String EMPTY = "";
+    // column names
+    static final String TABLE_MATCHES = "matches";
+    static final String COLUMN_BREAK_TYPE = "break_type";
+    static final String COLUMN_GAME_TYPE = "game_type";
+    static final String COLUMN_ID = "_id";
+    static final String COLUMN_STATS_DETAIL = "stats_detail";
+    static final String COLUMN_NOTES = "notes";
+    static final String COLUMN_PLAYER_TURN = "player_turn";
+    static final String COLUMN_CREATED_ON = "created_on";
+    static final String COLUMN_PLAYER_RANK = "player_rank";
+    static final String COLUMN_OPPONENT_RANK = "opponent_rank";
+    static final String TABLE_TURNS = "turns_table";
+    static final String COLUMN_TABLE_STATUS = "table_status";
+    static final String COLUMN_TURN_END = "turn_end";
+    static final String COLUMN_SCRATCH = "foul";
+    static final String COLUMN_MATCH_ID = "match_id";
+    static final String COLUMN_TURN_NUMBER = "turn_number";
+    static final String COLUMN_IS_GAME_LOST = "is_game_lost";
+    static final String TABLE_PLAYERS = "players";
+    static final String COLUMN_NAME = "name";
+    static final String TABLE_ADV_STATS = "adv_stats";
+    static final String COLUMN_SHOT_TYPE = "shot_type";
+    static final String COLUMN_SHOT_SUB_TYPE = "shot_sub_type";
+    static final String TABLE_HOWS = "how_table";
+    static final String TABLE_WHYS = "why_table";
+    static final String COLUMN_ADV_STATS_ID = "adv_stats_id";
+    static final String TABLE_ANGLES = "angle_table";
+    static final String COLUMN_STRING = "string";
+    static final String COLUMN_STARTING_POSITION = "starting_position";
+    static final String COLUMN_OB_TO_POCKET = "ob_to_pocket";
+    static final String COLUMN_SPEED = "speed";
+    static final String COLUMN_CUE_X = "cue_x";
+    static final String COLUMN_CUE_Y = "cue_y";
+    static final String COLUMN_CB_TO_OB = "cb_to_ob";
     private static final String TAG = "DatabaseAdapter";
     private SQLiteDatabase database;
 
@@ -519,6 +524,11 @@ public class DatabaseAdapter {
             values.put(COLUMN_NAME, turn.getAdvStats().getPlayer());
             values.put(COLUMN_TURN_NUMBER, turnCount);
             values.put(COLUMN_MATCH_ID, matchId);
+            values.put(COLUMN_CUE_X, turn.getAdvStats().getCueX());
+            values.put(COLUMN_CUE_Y, turn.getAdvStats().getCueY());
+            values.put(COLUMN_SPEED, turn.getAdvStats().getSpeed());
+            values.put(COLUMN_OB_TO_POCKET, turn.getAdvStats().getObToPocket());
+            values.put(COLUMN_CB_TO_OB, turn.getAdvStats().getCbToOb());
             values.put(COLUMN_STARTING_POSITION, turn.getAdvStats().getStartingPosition());
 
             long advStatsId = database.insert(TABLE_ADV_STATS, null, values);
@@ -730,6 +740,10 @@ public class DatabaseAdapter {
         builder.startingPosition(c.getString(c.getColumnIndex(COLUMN_STARTING_POSITION)))
                 .shotType(AdvStats.ShotType.valueOf(c.getString(c.getColumnIndex(COLUMN_SHOT_TYPE))))
                 .subType(AdvStats.SubType.valueOf(c.getString(c.getColumnIndex(COLUMN_SHOT_SUB_TYPE))))
+                .speed(c.getInt(c.getColumnIndex(COLUMN_SPEED)))
+                .cueing(c.getInt(c.getColumnIndex(COLUMN_CUE_X)), c.getInt(c.getColumnIndex(COLUMN_CUE_Y)))
+                .cbDistance(c.getFloat(c.getColumnIndex(COLUMN_CB_TO_OB)))
+                .obDistance(c.getFloat(c.getColumnIndex(COLUMN_OB_TO_POCKET)))
                 .angle(getAngleList(advStatsId))
                 .howTypes(getHowList(advStatsId))
                 .whyTypes(getWhyList(advStatsId));

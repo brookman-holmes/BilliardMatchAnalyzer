@@ -17,7 +17,7 @@ public class ShootingBinder extends BindingAdapter {
 
     public String playerFouls, opponentFouls;
 
-    public ShootingBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+    ShootingBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
         playerShootingPct = player.getShootingPct();
         opponentShootingPct = opponent.getShootingPct();
 

@@ -22,7 +22,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     public static final String FOUL_KEY = "foul_key";
     private TurnEndFragment fragment;
 
-    public TurnEndPage(ModelCallbacks callbacks, String title, Bundle matchData) {
+    TurnEndPage(ModelCallbacks callbacks, String title, Bundle matchData) {
         super(callbacks, title);
         data.putAll(matchData);
         setRequired(true);

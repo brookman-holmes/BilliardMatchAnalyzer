@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by Brookman Holmes on 1/8/2016.
  */
-public class GameChoicePage extends BranchPage implements RequiresPlayerNames, UpdatesMatchBuilder {
+class GameChoicePage extends BranchPage implements RequiresPlayerNames, UpdatesMatchBuilder {
     private final String theBreak;
     private final String alternateBreak;
     private final String winnerBreak;
@@ -21,7 +21,7 @@ public class GameChoicePage extends BranchPage implements RequiresPlayerNames, U
     private final String apa8Ball;
     private final String apa9Ball;
 
-    public GameChoicePage(ModelCallbacks callbacks, String title, Context context) {
+    GameChoicePage(ModelCallbacks callbacks, String title, Context context) {
         super(callbacks, title);
 
         theBreak = context.getString(R.string.title_page_break);

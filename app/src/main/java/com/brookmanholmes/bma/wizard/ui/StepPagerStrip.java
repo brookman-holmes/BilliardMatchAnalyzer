@@ -70,13 +70,13 @@ public class StepPagerStrip extends View {
         radius = 14;
         nonCurrentRadius = 10;
 
-        nextTabPaint = new Paint();
+        nextTabPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nextTabPaint.setColor(ContextCompat.getColor(getContext(), R.color.step_pager_next_tab_color));
 
-        selectedTabPaint = new Paint();
+        selectedTabPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         selectedTabPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
 
-        prevTabPaint = new Paint();
+        prevTabPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         prevTabPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryLight));
     }
 

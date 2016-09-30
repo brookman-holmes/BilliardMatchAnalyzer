@@ -46,8 +46,6 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
         miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(stats)));
 
         title.setText(getString(R.string.title_break_errors, stats.size()));
-
-        StatsUtils.setListOfMissReasons(statsLayout, stats);
     }
 
     @Override String[] getShotTypes() {

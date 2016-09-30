@@ -1,8 +1,10 @@
 package com.brookmanholmes.bma.ui.stats;
 
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,13 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.ui.view.HeatGraph;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,22 +44,47 @@ import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THIN;
  */
 @SuppressWarnings("WeakerAccess")
 public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
-    @Bind(R.id.over) TextView overCut;
-    @Bind(R.id.under) TextView underCut;
-    @Bind(R.id.left) TextView leftOfAim;
-    @Bind(R.id.right) TextView rightOfAim;
-    @Bind(R.id.bankLong) TextView bankLong;
-    @Bind(R.id.bankShort) TextView bankShort;
-    @Bind(R.id.kickLong) TextView kickLong;
-    @Bind(R.id.kickShort) TextView kickShort;
-    @Bind(R.id.kickGraph) View kickGraph;
-    @Bind(R.id.bankGraph) View bankGraph;
-    @Bind(R.id.shootingErrorTitle) TextView title;
-    @Bind(R.id.shotTypeSpinner) Spinner shotTypeSpinner;
-    @Bind(R.id.shotSubTypeSpinner) Spinner shotSubTypeSpinner;
-    @Bind(R.id.shotSubTypeLayout) View shotSubTypeLayout;
-    @Bind(R.id.angleSpinner) Spinner angleSpinner;
-    @Bind(R.id.miscues) TextView miscues;
+    private static final String TAG = "AdvShootingStatsFrag";
+
+    @Bind(R.id.over)
+    TextView overCut;
+    @Bind(R.id.under)
+    TextView underCut;
+    @Bind(R.id.left)
+    TextView leftOfAim;
+    @Bind(R.id.right)
+    TextView rightOfAim;
+    @Bind(R.id.bankLong)
+    TextView bankLong;
+    @Bind(R.id.bankShort)
+    TextView bankShort;
+    @Bind(R.id.kickLong)
+    TextView kickLong;
+    @Bind(R.id.kickShort)
+    TextView kickShort;
+    @Bind(R.id.kickGraph)
+    View kickGraph;
+    @Bind(R.id.bankGraph)
+    View bankGraph;
+    @Bind(R.id.barChart)
+    BarChart chart;
+    @Bind(R.id.shootingErrorTitle)
+    TextView title;
+    @Bind(R.id.shotTypeSpinner)
+    Spinner shotTypeSpinner;
+    @Bind(R.id.shotSubTypeSpinner)
+    Spinner shotSubTypeSpinner;
+    @Bind(R.id.shotSubTypeLayout)
+    View shotSubTypeLayout;
+    @Bind(R.id.angleSpinner)
+    Spinner angleSpinner;
+    @Bind(R.id.miscues)
+    TextView miscues;
+    @Bind(R.id.heatGraph)
+    HeatGraph cueBallHeatGraph;
+    List<BarEntry> obEntries = new ArrayList<>();
+    List<BarEntry> cbEntries = new ArrayList<>();
+    BarData barData = new BarData(new String[]{"6\"", "1'", "2'", "3'", "4'", "5'", "6'", "7'", "8'", "9'"});
     private String shotType = "All", subType = "All", angle = "All";
     private GetFilteredStatsAsync task2;
 
@@ -71,7 +104,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return frag;
     }
 
-    @Override String[] getShotTypes() {
+    @Override
+    String[] getShotTypes() {
         return AdvStats.ShotType.getShots();
     }
 
@@ -113,9 +147,55 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return shotType.equals(getString(R.string.miss_bank)) || shotType.equals("All");
     }
 
-    @Nullable @Override
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        cbEntries.add(new BarEntry(0, 0));
+        cbEntries.add(new BarEntry(0, 1));
+        cbEntries.add(new BarEntry(0, 2));
+        cbEntries.add(new BarEntry(0, 3));
+        cbEntries.add(new BarEntry(0, 4));
+        cbEntries.add(new BarEntry(0, 5));
+        cbEntries.add(new BarEntry(0, 6));
+        cbEntries.add(new BarEntry(0, 7));
+        cbEntries.add(new BarEntry(0, 8));
+        cbEntries.add(new BarEntry(0, 9));
+
+        obEntries.add(new BarEntry(0, 0));
+        obEntries.add(new BarEntry(0, 1));
+        obEntries.add(new BarEntry(0, 2));
+        obEntries.add(new BarEntry(0, 3));
+        obEntries.add(new BarEntry(0, 4));
+        obEntries.add(new BarEntry(0, 5));
+        obEntries.add(new BarEntry(0, 6));
+        obEntries.add(new BarEntry(0, 7));
+        obEntries.add(new BarEntry(0, 8));
+        obEntries.add(new BarEntry(0, 9));
+
+        BarDataSet obDataSet = new BarDataSet(obEntries, "Cue ball to object distance");
+        BarDataSet cbDataSet = new BarDataSet(cbEntries, "Object ball to pocket distance");
+
+        obDataSet.setDrawValues(false);
+        obDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+
+        cbDataSet.setDrawValues(false);
+        cbDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+
+        barData.addDataSet(obDataSet);
+        barData.addDataSet(cbDataSet);
+    }
+
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        chart.setData(barData);
+        chart.getAxisLeft().setDrawLabels(false);
+        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
+        chart.setDescription("");
+        chart.invalidate();
 
         shotTypeSpinner.setAdapter(createAdapter(getPossibleShotTypes()));
         shotSubTypeSpinner.setAdapter(createAdapter(getPossibleShotSubTypes()));
@@ -129,7 +209,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
                 updateView();
             }
 
-            @Override public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -140,7 +221,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
                 updateView();
             }
 
-            @Override public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -151,14 +233,16 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
                 updateView();
             }
 
-            @Override public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
         return view;
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         if (task2 != null)
             task2.cancel(true);
         super.onDestroy();
@@ -219,7 +303,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return (ArrayAdapter<String>) spinner.getAdapter();
     }
 
-    @Override void updateView() {
+    @Override
+    void updateView() {
         setItems(shotTypeSpinner, getPossibleShotTypes());
         setItems(shotSubTypeSpinner, getPossibleShotSubTypes());
         setItems(angleSpinner, getPossibleAngles());
@@ -246,9 +331,33 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         title.setText(getString(R.string.title_shooting_errors, filteredStats.size()));
 
-        if (statsLayout != null) {
-            StatsUtils.setListOfMissReasons(statsLayout, filteredStats);
+        // clear values
+        for (BarEntry entry : obEntries)
+            entry.setVal(0f);
+        for (BarEntry entry : cbEntries)
+            entry.setVal(0f);
+
+        for (AdvStats stat : filteredStats) {
+            BarEntry obEntry = obEntries.get(getIndex(stat.getObToPocket()));
+            float obCount = obEntry.getVal();
+            obEntry.setVal(obCount + 1);
+
+            BarEntry cbEntry = cbEntries.get(getIndex(stat.getCbToOb()));
+            float cbCount = cbEntry.getVal();
+            cbEntry.setVal(cbCount + 1);
+
+            cueBallHeatGraph.addDataPoint(new Point(stat.getCueX(), stat.getCueY()));
         }
+        cueBallHeatGraph.reDraw();
+
+
+        barData.calcMinMax(0, barData.getYValCount());
+        chart.notifyDataSetChanged();
+        chart.invalidate();
+    }
+
+    private int getIndex(float val) {
+        return (int) Math.floor(val);
     }
 
     private void setVisibilities() {
@@ -279,17 +388,20 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         }
     }
 
-    @Override int getLayoutId() {
+    @Override
+    int getLayoutId() {
         return R.layout.fragment_adv_shooting_stats;
     }
 
     private class GetFilteredStatsAsync extends AsyncTask<Void, Void, List<AdvStats>> {
-        @Override protected void onPostExecute(List<AdvStats> statses) {
+        @Override
+        protected void onPostExecute(List<AdvStats> stats) {
             if (isAdded() && !isCancelled())
-                updateView(statses);
+                updateView(stats);
         }
 
-        @Override protected List<AdvStats> doInBackground(Void... params) {
+        @Override
+        protected List<AdvStats> doInBackground(Void... params) {
             return getFilteredStats();
         }
     }

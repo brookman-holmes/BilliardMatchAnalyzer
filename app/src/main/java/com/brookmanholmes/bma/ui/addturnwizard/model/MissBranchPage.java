@@ -9,8 +9,8 @@ import com.brookmanholmes.bma.wizard.ui.SingleChoiceFragment;
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class MissBranchPage extends BranchPage implements UpdatesTurnInfo{
-    public MissBranchPage(ModelCallbacks callbacks, String title) {
+class MissBranchPage extends BranchPage implements UpdatesTurnInfo {
+    MissBranchPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 

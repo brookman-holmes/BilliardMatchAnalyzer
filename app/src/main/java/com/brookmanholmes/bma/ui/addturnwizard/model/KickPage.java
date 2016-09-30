@@ -9,8 +9,8 @@ import com.brookmanholmes.bma.wizard.ui.SingleChoiceFragment;
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class KickPage extends SingleFixedChoicePage implements UpdatesTurnInfo{
-    public KickPage(ModelCallbacks callbacks, String title) {
+class KickPage extends SingleFixedChoicePage implements UpdatesTurnInfo {
+    KickPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 

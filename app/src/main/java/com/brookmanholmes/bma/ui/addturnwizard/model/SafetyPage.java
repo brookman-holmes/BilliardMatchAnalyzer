@@ -10,8 +10,8 @@ import com.brookmanholmes.bma.wizard.ui.SingleChoiceFragment;
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class SafetyPage extends SingleFixedChoicePage implements UpdatesTurnInfo {
-    public SafetyPage(ModelCallbacks callbacks, String title) {
+class SafetyPage extends SingleFixedChoicePage implements UpdatesTurnInfo {
+    SafetyPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 

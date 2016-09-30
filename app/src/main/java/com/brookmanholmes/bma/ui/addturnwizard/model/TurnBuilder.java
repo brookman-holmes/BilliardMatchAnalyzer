@@ -21,7 +21,7 @@ public class TurnBuilder {
         this.tableStatus = TableStatus.newTable(gameType);
     }
 
-    public TurnBuilder(GameType gameType, List<Integer> ballsOnTable) {
+    TurnBuilder(GameType gameType, List<Integer> ballsOnTable) {
         this.tableStatus = TableStatus.newTable(gameType, ballsOnTable);
     }
 

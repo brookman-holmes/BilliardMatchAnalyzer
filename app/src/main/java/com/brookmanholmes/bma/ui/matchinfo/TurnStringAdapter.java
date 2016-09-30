@@ -18,7 +18,8 @@ class TurnStringAdapter {
     private final String playerName;
     private final StringBuilder turnBuilder = new StringBuilder();
     private final Context context;
-    public TurnStringAdapter(Context context, ITurn turn, AbstractPlayer player, String color) {
+
+    TurnStringAdapter(Context context, ITurn turn, AbstractPlayer player, String color) {
         this.turn = turn;
         this.context = context;
 

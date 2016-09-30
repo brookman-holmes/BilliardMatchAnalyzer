@@ -6,8 +6,8 @@ import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 /**
  * Created by Brookman Holmes on 4/1/2016.
  */
-public class BreakErrorPage extends HowMissPage {
-    public BreakErrorPage(ModelCallbacks callbacks, String title) {
+class BreakErrorPage extends HowMissPage {
+    BreakErrorPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 

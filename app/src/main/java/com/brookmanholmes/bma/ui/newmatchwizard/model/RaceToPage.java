@@ -19,26 +19,26 @@ import java.util.Locale;
 public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatchBuilder {
     public static final String PLAYER_RANK_KEY = "player_rank";
     public static final String OPPONENT_RANK_KEY = "opponent_rank";
+    int lower, upper, defaultChoice, columns;
     private RaceToFragment fragment;
     private String playerName = "Player 1", opponentName = "Player 2";
     private String reviewString, reviewTitle;
     private GameType gameType = GameType.BCA_NINE_BALL;
-    int lower, upper, defaultChoice, columns;
 
-    protected RaceToPage(ModelCallbacks callbacks, String title, String reviewString, GameType gameType, String reviewTitle) {
+    RaceToPage(ModelCallbacks callbacks, String title, String reviewString, GameType gameType, String reviewTitle) {
         super(callbacks, title);
         this.reviewString = reviewString;
         this.reviewTitle = reviewTitle;
         this.gameType = gameType;
     }
 
-    protected RaceToPage(ModelCallbacks callbacks, String title, String reviewString) {
+    RaceToPage(ModelCallbacks callbacks, String title, String reviewString) {
         super(callbacks, title);
         this.reviewString = reviewString;
         this.reviewTitle = title;
     }
 
-    public RaceToPage setRaceToChoices(int lower, int upper, int defaultChoice, int columns) {
+    RaceToPage setRaceToChoices(int lower, int upper, int defaultChoice, int columns) {
         this.lower = lower;
         this.upper = upper;
         this.defaultChoice = defaultChoice;

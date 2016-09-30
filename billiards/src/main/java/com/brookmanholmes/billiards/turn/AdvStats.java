@@ -16,6 +16,11 @@ public class AdvStats {
     private final List<HowType> howTypes = new ArrayList<>();
     private final List<WhyType> whyTypes = new ArrayList<>();
     private final List<Angle> angles = new ArrayList<>();
+    private final float cbToOb;
+    private final float obToPocket;
+    private final int speed;
+    private final int cueX;
+    private final int cueY;
     private final String startingPosition;
     private final boolean use;
 
@@ -28,6 +33,11 @@ public class AdvStats {
         this.startingPosition = builder.startingPosition;
         player = builder.player;
         use = builder.use;
+        cbToOb = builder.cbToOb;
+        obToPocket = builder.obToPocket;
+        speed = builder.speed;
+        cueX = builder.cueX;
+        cueY = builder.cueY;
     }
 
     /**
@@ -98,6 +108,53 @@ public class AdvStats {
         return whyTypes;
     }
 
+    /**
+     * Distance from the cue ball to the object ball
+     *
+     * @return the distance from the cue ball to the object ball
+     */
+    public float getCbToOb() {
+        return cbToOb;
+    }
+
+    /**
+     * Distance from the object ball to the pocket
+     *
+     * @return the distance from the object ball to the pocket
+     */
+    public float getObToPocket() {
+        return obToPocket;
+    }
+
+    /**
+     * The speed of the shot taken (should be on a scale of 1 - 10)
+     *
+     * @return the speed of the shot taken
+     */
+    public int getSpeed() {
+        return speed;
+    }
+
+    /**
+     * The x-axis position of the hit from the cue to the cue ball, 0 being the left most and 100
+     * being the right most
+     *
+     * @return integer between 0 and 100, 0 (left) and 100 (right)
+     */
+    public int getCueX() {
+        return cueX;
+    }
+
+    /**
+     * The x-axis position of the hit from the cue to the cue ball, 0 being the top most and 100
+     * being the bottom most
+     *
+     * @return integer between 0 and 100, 0 (top) and 100 (bottom)
+     */
+    public int getCueY() {
+        return cueY;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,6 +162,11 @@ public class AdvStats {
 
         AdvStats advStats = (AdvStats) o;
 
+        if (Float.compare(advStats.cbToOb, cbToOb) != 0) return false;
+        if (Float.compare(advStats.obToPocket, obToPocket) != 0) return false;
+        if (speed != advStats.speed) return false;
+        if (cueX != advStats.cueX) return false;
+        if (cueY != advStats.cueY) return false;
         if (use != advStats.use) return false;
         if (!player.equals(advStats.player)) return false;
         if (shotType != advStats.shotType) return false;
@@ -124,21 +186,32 @@ public class AdvStats {
         result = 31 * result + howTypes.hashCode();
         result = 31 * result + whyTypes.hashCode();
         result = 31 * result + angles.hashCode();
+        result = 31 * result + (cbToOb != +0.0f ? Float.floatToIntBits(cbToOb) : 0);
+        result = 31 * result + (obToPocket != +0.0f ? Float.floatToIntBits(obToPocket) : 0);
+        result = 31 * result + speed;
+        result = 31 * result + cueX;
+        result = 31 * result + cueY;
         result = 31 * result + startingPosition.hashCode();
         result = 31 * result + (use ? 1 : 0);
         return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "AdvStats{" +
                 "player='" + player + '\'' +
-                "\n shotType='" + shotType + '\'' +
-                "\n shotSubtype='" + shotSubtype + '\'' +
-                "\n howTypes=" + howTypes +
-                "\n whyTypes=" + whyTypes +
-                "\n angles=" + angles +
-                "\n startingPosition='" + startingPosition + '\'' +
-                "\n use=" + use +
+                ", shotType=" + shotType +
+                ", shotSubtype=" + shotSubtype +
+                ", howTypes=" + howTypes +
+                ", whyTypes=" + whyTypes +
+                ", angles=" + angles +
+                ", cbToOb=" + cbToOb +
+                ", obToPocket=" + obToPocket +
+                ", speed=" + speed +
+                ", cueX=" + cueX +
+                ", cueY=" + cueY +
+                ", startingPosition='" + startingPosition + '\'' +
+                ", use=" + use +
                 '}';
     }
 
@@ -277,6 +350,11 @@ public class AdvStats {
         private ShotType shotType = ShotType.NONE;
         private SubType subType = SubType.NONE;
         private String startingPosition = "";
+        private float cbToOb;
+        private float obToPocket;
+        private int speed;
+        private int cueX;
+        private int cueY;
         private boolean use;
 
 
@@ -381,6 +459,52 @@ public class AdvStats {
         public Builder howTypes(HowType... hows) {
             howTypes.addAll(Arrays.asList(hows));
 
+            return this;
+        }
+
+        /**
+         * The x, y coordinates of the cueing on the cue ball
+         *
+         * @param x value between 0 and 100, 0 being left most, 100 being right most
+         * @param y value between 0 and 100, 0 being top most, 100 being bottom most
+         * @return An instance of this builder for chaining purposes
+         */
+        public Builder cueing(int x, int y) {
+            cueX = x;
+            cueY = y;
+            return this;
+        }
+
+        /**
+         * The speed of the shot, 0 being the slowest, 10 being the hardest hit possible
+         *
+         * @param speed The speed of the shot, 0 being the slowest, 10 being the hardest hit possible
+         * @return An instance of this builder for chaining purposes
+         */
+        public Builder speed(int speed) {
+            this.speed = speed;
+            return this;
+        }
+
+        /**
+         * The distance from the cue ball to the object ball
+         *
+         * @param dist float value (probably should be in feet?)
+         * @return An instance of this builder for chaining purposes
+         */
+        public Builder cbDistance(float dist) {
+            this.cbToOb = dist;
+            return this;
+        }
+
+        /**
+         * The distance from the object ball to the pocket
+         *
+         * @param dist float value (probably should be in feet?)
+         * @return An instance of this builder for chaining purposes
+         */
+        public Builder obDistance(float dist) {
+            this.obToPocket = dist;
             return this;
         }
 

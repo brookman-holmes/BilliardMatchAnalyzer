@@ -9,8 +9,8 @@ import com.brookmanholmes.bma.wizard.ui.SingleChoiceFragment;
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class CutTypePage extends SingleFixedChoicePage implements UpdatesTurnInfo {
-    public CutTypePage(ModelCallbacks callbacks, String title) {
+class CutTypePage extends SingleFixedChoicePage implements UpdatesTurnInfo {
+    CutTypePage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 

@@ -17,8 +17,7 @@
 
         <include layout="@layout/container_adv_shot_filter"/>
 
-        <ImageView
-            android:id="@+id/imageView2"
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_gravity="center_horizontal"
@@ -50,15 +49,33 @@
             android:id="@+id/bankGraph"
             layout="@layout/graph_bank"/>
 
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
 
         <LinearLayout
-            android:id="@+id/parentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="Where the cue struck the cue ball when a shot was missed" />
+
+            <com.brookmanholmes.bma.ui.view.HeatGraph
+                android:id="@+id/heatGraph"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/circle"
+                android:outlineProvider="background" />
         </LinearLayout>
+
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

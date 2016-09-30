@@ -42,7 +42,7 @@ import static com.brookmanholmes.bma.data.DatabaseAdapter.TABLE_WHYS;
  */
 class DatabaseHelper extends SQLiteOpenHelper {
     static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION = 22;
     private static DatabaseHelper sInstance;
 
     /**
@@ -71,6 +71,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_SHOT_SUB_TYPE + " TEXT COLLATE NOCASE DEFAULT NULL, "
                 + COLUMN_NAME + " TEXT COLLATE NOCASE DEFAULT NULL, "
                 + COLUMN_TURN_NUMBER + " INTEGER NOT NULL, "
+                + DatabaseAdapter.COLUMN_CB_TO_OB + " REAL NOT NULL DEFAULT 0, "
+                + DatabaseAdapter.COLUMN_OB_TO_POCKET + " REAL NOT NULL DEFAULT 0, "
+                + DatabaseAdapter.COLUMN_SPEED + " INTEGER NOT NULL DEFAULT 0, "
+                + DatabaseAdapter.COLUMN_CUE_X + " INTEGER NOT NULL DEFAULT 0, "
+                + DatabaseAdapter.COLUMN_CUE_Y + " INTEGER NOT NULL DEFAULT 0, "
                 + COLUMN_STARTING_POSITION + " TEXT COLLATE NOCASE DEFAULT OPEN, "
                 + COLUMN_MATCH_ID + " INTEGER NOT NULL"
                 + ");";

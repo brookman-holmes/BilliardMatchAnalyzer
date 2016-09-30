@@ -9,8 +9,8 @@ import com.brookmanholmes.bma.wizard.ui.MultipleChoiceFragment;
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class BankPage extends MultipleFixedChoicePage implements UpdatesTurnInfo{
-    public BankPage(ModelCallbacks callbacks, String title) {
+class BankPage extends MultipleFixedChoicePage implements UpdatesTurnInfo {
+    BankPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 

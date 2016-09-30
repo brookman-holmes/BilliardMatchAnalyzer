@@ -1,7 +1,6 @@
 package com.brookmanholmes.bma.ui.addturnwizard;
 
 import android.animation.Animator;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -260,7 +259,10 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
 
     @OnClick(R.id.imgHelp) public void help() {
         new HelpDialogCreator(getContext(),
-                wizardModel.getCurrentPageSequence().get(pager.getCurrentItem()).getTitle(), getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY))
+                wizardModel.getCurrentPageSequence()
+                        .get(pager.getCurrentItem())
+                        .getTitle(), getArguments()
+                .getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY))
                 .create()
                 .show();
     }

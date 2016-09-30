@@ -25,7 +25,7 @@ public class ApaBinder extends BindingAdapter {
     public boolean showCard = false;
     public boolean apa8Ball;
 
-    public ApaBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+    ApaBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
         this.title = title;
         this.helpLayout = R.layout.dialog_help_apa;
 

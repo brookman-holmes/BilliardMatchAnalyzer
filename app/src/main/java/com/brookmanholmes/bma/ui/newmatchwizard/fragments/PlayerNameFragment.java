@@ -46,16 +46,16 @@ import butterknife.ButterKnife;
 
 public class PlayerNameFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener {
     private static final String ARG_KEY = "key";
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.playerName) MaterialAutoCompleteTextView playerName;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.opponentName) MaterialAutoCompleteTextView opponentName;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.location) MaterialEditText location;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.extra) MaterialEditText extra;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.cbGhost) CheckBox playTheGhost;
+    @Bind(R.id.playerName)
+    MaterialAutoCompleteTextView playerName;
+    @Bind(R.id.opponentName)
+    MaterialAutoCompleteTextView opponentName;
+    @Bind(R.id.location)
+    MaterialEditText location;
+    @Bind(R.id.extra)
+    MaterialEditText extra;
+    @Bind(R.id.cbGhost)
+    CheckBox playTheGhost;
 
     private PageFragmentCallbacks callbacks;
     private String key;
@@ -74,7 +74,8 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
         return fragment;
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
@@ -85,7 +86,8 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
         names = database.getPlayerNames();
     }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
         page = (PlayerNamePage) callbacks.onGetPage(key);
         View rootView = inflater.inflate(R.layout.fragment_player_names, container, false);
@@ -109,7 +111,8 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
         return rootView;
     }
 
-    @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         page.setPlayTheGhost(isChecked);
         opponentName.setEnabled(!isChecked);
 
@@ -119,7 +122,8 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
             opponentName.setText("");
     }
 
-    @Override public void onAttach(Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getActivity() instanceof PageFragmentCallbacks)) {
@@ -129,12 +133,14 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
         callbacks = (PageFragmentCallbacks) getActivity();
     }
 
-    @Override public void onDetach() {
+    @Override
+    public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         playerName.addTextChangedListener(textWatcher(PlayerNamePage.PLAYER_NAME_KEY));
@@ -148,13 +154,16 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
     private TextWatcher textWatcher(final String key) {
         return new TextWatcher() {
 
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
 
-            @Override public void afterTextChanged(final Editable editable) {
+            @Override
+            public void afterTextChanged(final Editable editable) {
                 if (key.equals(PlayerNamePage.PLAYER_NAME_KEY)) {
                     if (TextUtils.equals(editable.toString(), opponentName.getText().toString())) {
                         playerName.setError(getString(R.string.error_same_name));
@@ -171,7 +180,8 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
         };
     }
 
-    @Override public void setMenuVisibility(boolean menuVisible) {
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
 
         // In a future update to the support library, this should override setUserVisibleHint

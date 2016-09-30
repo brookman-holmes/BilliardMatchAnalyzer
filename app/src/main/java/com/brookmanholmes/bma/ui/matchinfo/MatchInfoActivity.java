@@ -20,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -206,6 +207,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 turnBuilder.foul,
                 turnBuilder.lostGame,
                 turnBuilder.advStats.build()));
+
+        Log.i(TAG, "addTurn: " + turnBuilder.advStats.build().toString());
 
         Bundle bundle = new Bundle();
         bundle.putString("turn_end", turnBuilder.turnEnd.name());

@@ -28,7 +28,7 @@ public class MatchOverviewBinder extends BindingAdapter {
 
     public boolean apaTitle = false;
 
-    public MatchOverviewBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+    MatchOverviewBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
         if (useGameTotal(player, opponent)) {
             apaTitle = true;
         }

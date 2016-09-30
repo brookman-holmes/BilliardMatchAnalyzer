@@ -25,7 +25,7 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
     private ShotFragment fragment;
     private PlayerColor playerColor = PlayerColor.OPEN;
 
-    public ShotPage(ModelCallbacks callbacks, String title, Bundle matchData) {
+    ShotPage(ModelCallbacks callbacks, String title, Bundle matchData) {
         super(callbacks, title);
 
         data.putAll(matchData);

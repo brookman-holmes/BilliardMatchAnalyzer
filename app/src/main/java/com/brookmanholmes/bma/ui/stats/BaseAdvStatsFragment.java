@@ -27,9 +27,9 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 6/3/2016.
  */
 public abstract class BaseAdvStatsFragment extends Fragment implements Filterable {
+    private static final String TAG = "BaseAdvStatsFrag";
     protected FilterStats task;
     List<AdvStats> stats = new ArrayList<>();
-    @Bind(R.id.parentView) LinearLayout statsLayout;
     @Bind(R.id.baseLayout) LinearLayout baseLayout;
     String playerName;
     String[] shotTypes;
