@@ -79,9 +79,9 @@ public class CueBallHitView extends View {
                 if (inRadius(eventX, eventY)) {
                     // snap to x/y axis if within 20 pixels
                     if (Math.abs(eventX - ((float) getWidth() / 2)) < 20)
-                        eventX = 0;
+                        eventX = (float) getWidth() / 2;
                     if (Math.abs(eventY - ((float) getHeight() / 2)) < 20)
-                        eventY = 0;
+                        eventY = (float) getHeight() / 2;
 
                     hitPoint.x = eventX;
                     hitPoint.y = eventY;

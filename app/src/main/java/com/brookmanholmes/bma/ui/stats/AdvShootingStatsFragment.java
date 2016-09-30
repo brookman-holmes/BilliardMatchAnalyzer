@@ -17,11 +17,15 @@ import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.view.HeatGraph;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.data.BubbleDataSet;
+import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,9 +71,9 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.bankGraph)
     View bankGraph;
     @Bind(R.id.speedChart)
-    BarChart speedChart;
+    BubbleChart speedChart;
     @Bind(R.id.distanceChart)
-    BarChart distanceChart;
+    BubbleChart distanceChart;
     @Bind(R.id.shootingErrorTitle)
     TextView title;
     @Bind(R.id.shotTypeSpinner)
@@ -84,11 +88,11 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     TextView miscues;
     @Bind(R.id.heatGraph)
     HeatGraph cueBallHeatGraph;
-    List<BarEntry> obEntries = new ArrayList<>();
-    List<BarEntry> cbEntries = new ArrayList<>();
-    List<BarEntry> speedEntries = new ArrayList<>();
-    BarData speedData = new BarData(new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
-    BarData distanceData = new BarData(new String[]{"6\"", "1'", "2'", "3'", "4'", "5'", "6'", "7'", "8'", "9'"});
+    List<BubbleEntry> obEntries = new ArrayList<>();
+    List<BubbleEntry> cbEntries = new ArrayList<>();
+    List<BubbleEntry> speedEntries = new ArrayList<>();
+    BubbleData speedData = new BubbleData(new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
+    BubbleData distanceData = new BubbleData(new String[]{"6\"", "1'", "2'", "3'", "4'", "5'", "6'", "7'", "8'", "9'"});
     private String shotType, subType, angle;
     private GetFilteredStatsAsync task2;
 
@@ -168,29 +172,49 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
     private void setupSpeedDataSeries() {
         for (int i = 0; i < 11; i++)
-            speedEntries.add(new BarEntry(0, i));
+            speedEntries.add(new BubbleEntry(i, 0f, 0f));
 
-        BarDataSet speedDataSet = new BarDataSet(speedEntries, getString(R.string.chart_speed_legend));
-        speedDataSet.setDrawValues(false);
-        speedDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        BubbleDataSet speedDataSet = new BubbleDataSet(speedEntries, getString(R.string.chart_speed_legend));
+        speedDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAccentTransparent));
+        speedDataSet.setValueTextSize(12);
+        //speedDataSet.setValueTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        speedDataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                if (value != 0f)
+                    return ((int) value) + "";
+                else return "";
+            }
+        });
 
         speedData.addDataSet(speedDataSet);
     }
 
     private void setupDistanceDataSeries() {
         for (int i = 0; i < 10; i++) {
-            cbEntries.add(new BarEntry(0, i));
-            obEntries.add(new BarEntry(0, i));
+            cbEntries.add(new BubbleEntry(i, 1, 0));
+            obEntries.add(new BubbleEntry(i, 2, 0));
         }
 
-        BarDataSet obDataSet = new BarDataSet(obEntries, getString(R.string.chart_cue_legend));
-        BarDataSet cbDataSet = new BarDataSet(cbEntries, getString(R.string.chart_object_legend));
+        final ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                if (value != 0f)
+                    return ((int) value) + "";
+                else return "";
+            }
+        };
 
-        obDataSet.setDrawValues(false);
-        obDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        BubbleDataSet obDataSet = new BubbleDataSet(obEntries, getString(R.string.chart_cue_legend));
+        obDataSet.setValueTextSize(12);
+        obDataSet.setValueFormatter(formatter);
+        BubbleDataSet cbDataSet = new BubbleDataSet(cbEntries, getString(R.string.chart_object_legend));
+        cbDataSet.setValueTextSize(12);
+        cbDataSet.setValueFormatter(formatter);
 
-        cbDataSet.setDrawValues(false);
-        cbDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        obDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryTransparent));
+
+        cbDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAccentTransparent));
 
         distanceData.addDataSet(obDataSet);
         distanceData.addDataSet(cbDataSet);
@@ -204,8 +228,13 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         setupChart(distanceChart);
         distanceChart.setData(distanceData);
+        YAxis left = distanceChart.getAxisLeft();
+        left.setAxisMinValue(0f);
+        left.setAxisMaxValue(4f);
+
         setupChart(speedChart);
         speedChart.setData(speedData);
+        speedChart.getAxisLeft().setDrawZeroLine(true);
 
         shotTypeSpinner.setAdapter(createAdapter(getPossibleShotTypes()));
         shotSubTypeSpinner.setAdapter(createAdapter(getPossibleShotSubTypes()));
@@ -250,11 +279,22 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return view;
     }
 
-    private void setupChart(BarChart barChart) {
-        barChart.getAxisLeft().setDrawLabels(false);
-        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        barChart.setDescription("");
-        barChart.invalidate();
+    private void setupChart(BubbleChart chart) {
+        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
+        chart.setDescription("");
+        chart.invalidate();
+        YAxis left = chart.getAxisLeft();
+        left.setAxisMinValue(-1f);
+        left.setAxisMaxValue(1f);
+        left.setDrawLabels(false); // no axis labels
+        left.setDrawAxisLine(false); // no axis line
+        left.setDrawGridLines(false); // no grid lines
+        left.setDrawZeroLine(false); // draw a zero line
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawGridLines(false);
+        xAxis.setLabelsToSkip(0);
+        chart.getAxisRight().setEnabled(false); // no right axis
     }
 
     @Override
@@ -348,17 +388,17 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         title.setText(getString(R.string.title_shooting_errors, filteredStats.size()));
 
         // clear values
-        for (BarEntry entry : obEntries)
-            entry.setVal(0f);
-        for (BarEntry entry : cbEntries)
-            entry.setVal(0f);
-        for (BarEntry entry : speedEntries)
-            entry.setVal(0f);
+        for (BubbleEntry entry : obEntries)
+            entry.setSize(0f);
+        for (BubbleEntry entry : cbEntries)
+            entry.setSize(0f);
+        for (BubbleEntry entry : speedEntries)
+            entry.setSize(0f);
 
         for (AdvStats stat : filteredStats) {
-            updateEntryCount(obEntries.get(getIndex(stat.getObToPocket())));
-            updateEntryCount(cbEntries.get(getIndex(stat.getCbToOb())));
-            updateEntryCount(speedEntries.get(getIndex(stat.getSpeed())));
+            updateEntrySize(obEntries.get(getIndex(stat.getObToPocket())));
+            updateEntrySize(cbEntries.get(getIndex(stat.getCbToOb())));
+            updateEntrySize(speedEntries.get(stat.getSpeed()));
 
             cueBallHeatGraph.addDataPoint(new Point(stat.getCueX(), stat.getCueY()));
         }
@@ -373,9 +413,9 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         distanceChart.invalidate();
     }
 
-    private void updateEntryCount(BarEntry entry) {
-        float count = entry.getVal();
-        entry.setVal(count + 1);
+    private void updateEntrySize(BubbleEntry entry) {
+        float count = entry.getSize();
+        entry.setSize(count + 1);
     }
 
     private int getIndex(float val) {
