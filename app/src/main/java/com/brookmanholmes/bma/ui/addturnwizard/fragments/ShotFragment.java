@@ -29,7 +29,7 @@ import butterknife.OnClick;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.BREAK_TYPE_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertBallToId;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertIdToBall;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayoutByGameType;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayout;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallDead;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallMade;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallOffTable;
@@ -102,7 +102,7 @@ public abstract class ShotFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         page = (ShotPage) callbacks.onGetPage(key);
 
-        View view = inflater.inflate(getLayoutByGameType(gameType), container, false);
+        View view = inflater.inflate(getLayout(gameType), container, false);
         ButterKnife.bind(this, view);
         title.setText(page.getTitle());
 
@@ -145,7 +145,7 @@ public abstract class ShotFragment extends BaseFragment {
 
     private void setBallView(BallStatus status, ImageView ballImage) {
         if (BreakType.valueOf(getArguments().getString(BREAK_TYPE_KEY)) == BreakType.GHOST &&
-                convertIdToBall(ballImage.getId()) == MatchDialogHelperUtils.createGameStatusFromBundle(getArguments()).GAME_BALL) {
+                convertIdToBall(ballImage.getId()) == MatchDialogHelperUtils.getGameStatus(getArguments()).GAME_BALL) {
             if (status == BallStatus.GAME_BALL_DEAD_ON_BREAK || ballIsOnTable(status))
                 setViewToBallOnTable(ballImage);
             else if (status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE || ballIsMade(status))

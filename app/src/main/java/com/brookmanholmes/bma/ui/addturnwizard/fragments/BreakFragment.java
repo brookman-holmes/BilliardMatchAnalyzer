@@ -16,6 +16,8 @@ import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.addturnwizard.model.BreakPage;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,7 +25,7 @@ import butterknife.OnClick;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertBallToId;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertIdToBall;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayoutByGameType;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayout;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallDead;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallMade;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallOnTable;
@@ -78,12 +80,18 @@ public class BreakFragment extends BaseFragment {
         key = args.getString(ARG_KEY);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        page.registerListener(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         page = (BreakPage) callbacks.onGetPage(key);
 
-        View view = inflater.inflate(getLayoutByGameType(getGameType()), container, false);
+        View view = inflater.inflate(getLayout(getGameType()), container, false);
         ButterKnife.bind(this, view);
         title.setText(page.getTitle());
 
@@ -99,9 +107,25 @@ public class BreakFragment extends BaseFragment {
     }
 
     @Override
+    public void onPause() {
+        page.unregisterListener();
+        super.onPause();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         callbacks = null;
+    }
+
+    public void updateView(List<BallStatus> ballStatuses) {
+        View view = getView();
+        if (view != null) {
+            for (int i = 0; i < ballStatuses.size(); i++) {
+                ImageView ballImage = ButterKnife.findById(view, convertBallToId(i + 1));
+                setBallView(ballStatuses.get(i), ballImage);
+            }
+        }
     }
 
     @Nullable
@@ -112,8 +136,13 @@ public class BreakFragment extends BaseFragment {
     public void onClick(ImageView view) {
         int ball = convertIdToBall(view.getId());
 
-        BallStatus ballStatus = page.updateBallStatus(ball);
-
+        BallStatus ballStatus = page.getBallStatus(ball);
+        if (ballIsDead(ballStatus) || ballIsMade(ballStatus)) // if the ball has not been modified by ShotPage
+            ballStatus = page.updateBallStatus(ball);
+        else { // if the ball has been modified by ShotPage then it needs to be treated like it's on table
+            ballStatus = BallStatus.MADE_ON_BREAK;
+            page.setBallStatus(BallStatus.MADE_ON_BREAK, ball);
+        }
         setBallView(ballStatus, view);
     }
 
@@ -132,7 +161,7 @@ public class BreakFragment extends BaseFragment {
     }
 
     private boolean ballIsOnTable(BallStatus status) {
-        return status == BallStatus.ON_TABLE;
+        return !ballIsDead(status) && !ballIsMade(status);
     }
 
     private boolean ballIsDead(BallStatus status) {

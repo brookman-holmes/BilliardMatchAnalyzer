@@ -135,7 +135,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         intent.putExtra(ARG_MATCH_ID, matchId);
 
         startActivity(intent);
-        analytics.logEvent("match_created", MatchDialogHelperUtils.createBundleFromMatch(match));
+        analytics.logEvent("match_created", MatchDialogHelperUtils.getBundle(match));
         finish();
     }
 

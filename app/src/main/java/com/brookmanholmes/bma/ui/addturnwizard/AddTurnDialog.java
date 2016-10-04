@@ -64,7 +64,7 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     public static AddTurnDialog create(Match match) {
         Bundle args = new Bundle();
 
-        args.putAll(MatchDialogHelperUtils.createBundleFromMatch(match));
+        args.putAll(MatchDialogHelperUtils.getBundle(match));
         AddTurnDialog addTurnDialog = new AddTurnDialog();
 
         addTurnDialog.setArguments(args);

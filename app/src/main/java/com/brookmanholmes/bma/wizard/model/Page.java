@@ -30,7 +30,7 @@ public abstract class Page implements PageTreeNode {
      */
     public static final String SIMPLE_DATA_KEY = "_";
 
-    final ModelCallbacks modelCallbacks;
+    protected final ModelCallbacks modelCallbacks;
 
     /**
      * Current wizard values/selections.

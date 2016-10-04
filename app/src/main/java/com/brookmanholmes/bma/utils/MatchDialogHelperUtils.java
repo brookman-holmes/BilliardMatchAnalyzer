@@ -49,7 +49,7 @@ public class MatchDialogHelperUtils {
     private MatchDialogHelperUtils() {
     }
 
-    public static Bundle createBundleFromMatch(Match match) {
+    public static Bundle getBundle(Match match) {
         Bundle args = new Bundle();
 
         args.putBoolean(ALLOW_TURN_SKIP_KEY, match.getGameStatus().allowTurnSkip);
@@ -114,7 +114,7 @@ public class MatchDialogHelperUtils {
     }
 
     @LayoutRes
-    public static int getLayoutByGameType(GameType gameType) {
+    public static int getLayout(GameType gameType) {
         switch (gameType) {
             case APA_EIGHT_BALL:
                 return R.layout.select_eight_ball_dialog;
@@ -131,7 +131,7 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    public static GameStatus createGameStatusFromBundle(Bundle args) {
+    public static GameStatus getGameStatus(Bundle args) {
         GameStatus.Builder gameStatus = new GameStatus.Builder(GameType.valueOf(args.getString(GAME_TYPE_KEY)));
 
         if (args.getBoolean(NEW_GAME_KEY)) gameStatus.newGame();
