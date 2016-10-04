@@ -285,7 +285,7 @@
     <string name="tutorial_create_match">You can create a new match by clicking on this button</string>
     <string name="tutorial_welcome">Welcome</string>
     <string name="chart_speed_legend">How hard the ball was hit 0 (soft) to 10 (hard)</string>
-    <string name="chart_cue_legend">Cue ball to object distance</string>
+    <string name="chart_cue_legend">Cue ball to object ball distance</string>
     <string name="chart_object_legend">Object ball to pocket distance</string>
     <string name="html_object_pocket"><![CDATA[From <b>object ball</b> to <b>pocket</b> was <b>%1$s</b>]]></string>
     <string name="html_cue_object_ball"><![CDATA[From <b>cue ball</b> to <b>object ball</b> was <b>%1$s</b>]]></string>

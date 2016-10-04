@@ -19,13 +19,12 @@ import java.util.List;
  * Created by Brookman Holmes on 9/27/2016.
  */
 
-public class HeatGraph extends View {
+public class HeatGraph extends CueBallView {
     private static final String TAG = "HeatGraph";
 
     List<Point> data = new ArrayList<>();
 
     private Paint paint;
-    private Paint linePaint;
 
     public HeatGraph(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -33,32 +32,17 @@ public class HeatGraph extends View {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        paint.setAlpha(64);
-
-        linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        linePaint.setStyle(Paint.Style.STROKE);
-        linePaint.setStrokeWidth(ConversionUtils.convertDpToPx(getContext(), 2));
-        linePaint.setColor(ContextCompat.getColor(getContext(), R.color.dead_ball));
-
-        setClipToOutline(true);
+        paint.setAlpha(16);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        float centerX = (float) getWidth() / 2;
-        float centerY = (float) getHeight() / 2;
-
-        canvas.drawLine(centerX, 0, centerX, getHeight(), linePaint);
-        canvas.drawLine(0, centerY, getWidth(), centerY, linePaint);
-        canvas.drawCircle(centerX, centerY, Math.min(getWidth(), getHeight() / 2 - ConversionUtils.convertDpToPx(getContext(), 1)), linePaint);
-
-
         for (Point point : data) {
             canvas.drawCircle(convertPointXToFloat(point.x),
                     convertPointYToFloat(point.y),
-                    ConversionUtils.convertDpToPx(getContext(), 15),
+                    getPixels(15),
                     paint);
         }
     }
@@ -68,6 +52,13 @@ public class HeatGraph extends View {
         data.addAll(Arrays.asList(points));
 
         // redraw
+        invalidate();
+    }
+
+    public void setData(List<Point> points) {
+        data.clear();
+        data.addAll(points);
+
         invalidate();
     }
 
