@@ -256,7 +256,11 @@ public class IntroActivity extends BaseActivity {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             adapter = new RecyclerAdapter(new ArrayList<AbstractPlayer>());
+        }
 
+        @Override
+        public void onResume() {
+            super.onResume();
             if (task == null || task.getStatus() != AsyncTask.Status.RUNNING) {
                 task = new GetPlayersTask();
                 task.execute();
