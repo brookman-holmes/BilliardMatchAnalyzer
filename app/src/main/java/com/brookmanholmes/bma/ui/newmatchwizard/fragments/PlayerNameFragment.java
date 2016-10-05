@@ -106,7 +106,7 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
 
         playTheGhost.setOnCheckedChangeListener(this);
 
-        playTheGhost.setChecked(Boolean.parseBoolean(page.getData().getString(PlayerNamePage.PLAY_THE_GHOST_KEY)));
+        playTheGhost.setChecked(Boolean.parseBoolean(page.getData().getString(PlayerNamePage.SIMPLE_DATA_KEY)));
 
         return rootView;
     }

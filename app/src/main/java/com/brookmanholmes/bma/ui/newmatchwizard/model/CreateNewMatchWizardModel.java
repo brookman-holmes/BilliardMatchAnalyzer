@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
@@ -17,6 +18,7 @@ import java.util.Date;
  * Created by Brookman Holmes on 1/7/2016.
  */
 public class CreateNewMatchWizardModel extends AbstractWizardModel {
+    private static final String TAG = "CreateNewMatchModel";
     private final Match.Builder builder = new Match.Builder();
     private String playerName = "Player 1";
     private String opponentName = "Player 2";
@@ -66,16 +68,31 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
 
     @Override
     protected PageList onNewRootPageList() {
-        return new PageList(
-                getPlayerNamePage(),
-                getGameChoicePage(),
-                getStatDetailPage()
-        );
+        return new PageList(getPlayerNamePage(), getStatDetailPage());
     }
 
     private Page getPlayerNamePage() {
         return new PlayerNamePage(this, context.getString(R.string.title_page_players),
                 context.getString(R.string.player_number), context.getString(R.string.location))
+                .addBranch(Boolean.TRUE.toString(), getGhostGameChoicePage())
+                .addBranch(Boolean.FALSE.toString(), getGameChoicePage())
+                .setValue(Boolean.FALSE.toString())
+                .setRequired(true);
+    }
+
+    private Page getGhostGameChoicePage() {
+        String reviewString = context.getString(R.string.bca_review);
+        return new GameChoicePage(this, context.getString(R.string.title_page_games), context)
+                .addBranch(context.getString(R.string.game_bca_eight),
+                        new RaceToPage(this, context.getString(R.string.race), reviewString)
+                                .setRaceToChoices(1, 22, 5, 7))
+                .addBranch(context.getString(R.string.game_bca_nine),
+                        new RaceToPage(this, context.getString(R.string.race), reviewString)
+                                .setRaceToChoices(1, 22, 5, 7))
+                .addBranch(context.getString(R.string.game_bca_ten),
+                        new RaceToPage(this, context.getString(R.string.race), reviewString)
+                                .setRaceToChoices(1, 22, 5, 7))
+                .setValue(context.getString(R.string.game_bca_nine))
                 .setRequired(true);
     }
 
@@ -147,6 +164,9 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
                 .setNotes(notes);
 
         playTheGhost = playGhost;
+        if (playTheGhost) { // shim to set the breakType since the break page doesn't exist to set it
+            setBreakType(context.getString(R.string.break_player, playerName));
+        }
     }
 
     void setBreakType(String value) {

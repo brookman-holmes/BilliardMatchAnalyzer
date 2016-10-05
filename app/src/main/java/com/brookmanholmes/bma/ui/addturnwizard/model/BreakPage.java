@@ -2,7 +2,6 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.BreakType;
@@ -24,7 +23,7 @@ import static com.brookmanholmes.billiards.game.BallStatus.*;
 public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     private static final String TAG = "BreakPage";
     private static final String showShotPage = "show shot page";
-    private final TableStatus tableStatus;
+    private TableStatus tableStatus;
     private final GameType gameType;
     private BreakFragment fragment;
 
@@ -41,7 +40,7 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     public void registerListener(BreakFragment fragment) {
         this.fragment = fragment;
         if (modelCallbacks instanceof AddTurnWizardModel) {
-            fragment.updateView(((AddTurnWizardModel) modelCallbacks).getTableStatus().getBallStatuses());
+            this.fragment.updateView(((AddTurnWizardModel) modelCallbacks).getTableStatus().getBallStatuses());
         }
     }
 
@@ -71,8 +70,7 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
 
     public void setBallStatus(BallStatus ballStatus, int ball) {
         tableStatus.setBallTo(ballStatus, ball);
-        data.putString(SIMPLE_DATA_KEY, showShotPage());
-        notifyDataChanged();
+        ballStatusUpdated();
     }
 
     public BallStatus updateBallStatus(int ball) {
@@ -80,10 +78,14 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
 
         BallStatus newBallStatus = incrementBallStatus(ballStatus, ball);
         tableStatus.setBallTo(newBallStatus, ball);
-        data.putString(SIMPLE_DATA_KEY, showShotPage());
-        notifyDataChanged();
+        ballStatusUpdated();
 
         return newBallStatus;
+    }
+
+    private void ballStatusUpdated() {
+        data.putString(SIMPLE_DATA_KEY, showShotPage());
+        notifyDataChanged();
     }
 
     private BallStatus incrementBallStatus(BallStatus ballStatus, int ball) {

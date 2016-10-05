@@ -12,15 +12,16 @@ import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.PageList;
 
+
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.STATS_LEVEL_KEY;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
@@ -34,10 +35,10 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         super(context);
         this.matchData = matchData;
 
-        playerName = matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY);
+        playerName = matchData.getString(CURRENT_PLAYER_NAME_KEY);
 
-        turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)),
-                matchData.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY));
+        turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(GAME_TYPE_KEY)),
+                matchData.getIntegerArrayList(BALLS_ON_TABLE_KEY));
 
         turnBuilder.foul = false;
         turnBuilder.lostGame = false;
@@ -49,7 +50,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private boolean currentPlayerTurnAndAdvancedStats() {
-        PlayerTurn turn = PlayerTurn.valueOf(matchData.getString(MatchDialogHelperUtils.TURN_KEY));
+        PlayerTurn turn = PlayerTurn.valueOf(matchData.getString(TURN_KEY));
         Match.StatsDetail detail = Match.StatsDetail.valueOf(matchData.getString(STATS_LEVEL_KEY));
 
         if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
@@ -87,11 +88,11 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     @Override
     protected PageList onNewRootPageList() {
-        if (matchData.getBoolean(MatchDialogHelperUtils.ALLOW_BREAK_AGAIN_KEY))
+        if (matchData.getBoolean(ALLOW_BREAK_AGAIN_KEY))
             return new PageList(getTurnEndPage());
-        else if (BreakType.valueOf(matchData.getString(MatchDialogHelperUtils.BREAK_TYPE_KEY)).equals(BreakType.GHOST))
+        else if (BreakType.valueOf(matchData.getString(BREAK_TYPE_KEY)).equals(BreakType.GHOST))
             return new PageList(getGhostBreakPage(), getShotPage(), getTurnEndPage());
-        else if (matchData.getBoolean(MatchDialogHelperUtils.NEW_GAME_KEY))
+        else if (matchData.getBoolean(NEW_GAME_KEY))
             return new PageList(getBreakPage(), getTurnEndPage());
         else
             return new PageList(getShotPage(), getTurnEndPage());
@@ -102,10 +103,10 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     void setTurnEnd(String turnEnd, String foul) {
-        turnBuilder.turnEnd = MatchDialogHelperUtils.convertStringToTurnEnd(context,
+        turnBuilder.turnEnd = convertStringToTurnEnd(context,
                 turnEnd,
-                matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY),
-                matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY));
+                matchData.getString(CURRENT_PLAYER_NAME_KEY),
+                matchData.getString(OPPOSING_PLAYER_NAME_KEY));
 
         if (getFoulPossible(turnBuilder.turnEnd)) {
             turnBuilder.foul = (context.getString(R.string.yes).equals(foul) || context.getString(R.string.foul_lost_game).equals(foul));
@@ -117,14 +118,14 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         getAdvStats().clearAngle();
         List<AdvStats.Angle> list = new ArrayList<>();
         for (String angle : angles) {
-            list.add(MatchDialogHelperUtils.convertStringToAngle(context, angle));
+            list.add(convertStringToAngle(context, angle));
         }
 
         getAdvStats().angle(list);
     }
 
     void setAngles(String angle) {
-        getAdvStats().angle(MatchDialogHelperUtils.convertStringToAngle(context, angle));
+        getAdvStats().angle(convertStringToAngle(context, angle));
     }
 
     void setShotType(AdvStats.ShotType shotType) {
@@ -136,7 +137,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     void setShotType(String shotType) {
-        getAdvStats().shotType(MatchDialogHelperUtils.convertStringToShotType(context, shotType));
+        getAdvStats().shotType(convertStringToShotType(context, shotType));
         getAdvStats().clearAngle();
         getAdvStats().clearSubType();
         getAdvStats().clearHowTypes();
@@ -144,7 +145,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     void setSubType(String subType) {
-        getAdvStats().subType(MatchDialogHelperUtils.convertStringToSubType(context, subType));
+        getAdvStats().subType(convertStringToSubType(context, subType));
     }
 
     void setWhys(List<String> whys) {
@@ -153,7 +154,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         if (whys != null) {
             List<AdvStats.WhyType> list = new ArrayList<>();
             for (String why : whys) {
-                list.add(MatchDialogHelperUtils.convertStringToWhyType(context, why));
+                list.add(convertStringToWhyType(context, why));
             }
 
             getAdvStats().whyTypes(list);
@@ -166,7 +167,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         if (hows != null) {
             List<AdvStats.HowType> list = new ArrayList<>();
             for (String how : hows) {
-                list.add(MatchDialogHelperUtils.convertStringToHowType(context, how));
+                list.add(convertStringToHowType(context, how));
             }
 
             getAdvStats().howTypes(list);
@@ -209,8 +210,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                     .addBranch(context.getString(R.string.turn_won_game))
                     .addBranch(context.getString(R.string.turn_push))
                     .addBranch(context.getString(R.string.turn_skip))
-                    .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)))
-                    .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)))
+                    .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(CURRENT_PLAYER_NAME_KEY)))
+                    .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(OPPOSING_PLAYER_NAME_KEY)))
                     .setValue(context.getString(R.string.turn_miss));
     }
 
@@ -224,8 +225,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 .addBranch(context.getString(R.string.turn_won_game))
                 .addBranch(context.getString(R.string.turn_push))
                 .addBranch(context.getString(R.string.turn_skip))
-                .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)))
-                .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY)))
+                .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(CURRENT_PLAYER_NAME_KEY)))
+                .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(OPPOSING_PLAYER_NAME_KEY)))
                 .setValue(context.getString(R.string.turn_miss));
     }
 
@@ -327,7 +328,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
             if (page instanceof UpdatesTurnInfo)
                 ((UpdatesTurnInfo) page).updateTurnInfo(this);
 
-        turnBuilder.advStats.startingPosition(matchData.getBoolean(MatchDialogHelperUtils.SUCCESSFUL_SAFE_KEY) ? "Safe" : "Open");
+        turnBuilder.advStats.startingPosition(matchData.getBoolean(SUCCESSFUL_SAFE_KEY) ? "Safe" : "Open");
         return turnBuilder;
     }
 

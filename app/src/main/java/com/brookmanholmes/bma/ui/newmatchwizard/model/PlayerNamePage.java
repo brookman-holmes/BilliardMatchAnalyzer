@@ -18,20 +18,21 @@ package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.brookmanholmes.bma.ui.newmatchwizard.fragments.PlayerNameFragment;
+import com.brookmanholmes.bma.wizard.model.BranchPage;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
-import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
 
-public class PlayerNamePage extends Page implements UpdatesMatchBuilder, UpdatesPlayerNames {
+public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, UpdatesPlayerNames {
+    private static final String TAG = "PlayerNamePage";
     public static final String PLAYER_NAME_KEY = "player name";
     public static final String OPPONENT_NAME_KEY = "opponent name";
     public static final String LOCATION_KEY = "location";
     public static final String EXTRA_INFO_KEY = "extras";
-    public static final String PLAY_THE_GHOST_KEY = "ghost";
 
     private final String reviewPlayer;
     private final String reviewLocation;
@@ -41,7 +42,7 @@ public class PlayerNamePage extends Page implements UpdatesMatchBuilder, Updates
 
         this.reviewLocation = reviewLocation;
         this.reviewPlayer = reviewPlayer;
-        data.putString(PLAY_THE_GHOST_KEY, Boolean.FALSE.toString());
+        data.putString(SIMPLE_DATA_KEY, Boolean.FALSE.toString());
     }
 
     @Override
@@ -69,7 +70,7 @@ public class PlayerNamePage extends Page implements UpdatesMatchBuilder, Updates
                 getOpponentName(),
                 data.getString(LOCATION_KEY, ""),
                 data.getString(EXTRA_INFO_KEY, ""),
-                Boolean.parseBoolean(data.getString(PLAY_THE_GHOST_KEY, "false")));
+                Boolean.parseBoolean(data.getString(SIMPLE_DATA_KEY, "false")));
     }
 
     @Override
@@ -83,11 +84,21 @@ public class PlayerNamePage extends Page implements UpdatesMatchBuilder, Updates
     }
 
     public void setPlayTheGhost(boolean value) {
-        if (value)
-            data.putString(PLAY_THE_GHOST_KEY, Boolean.TRUE.toString());
-        else
-            data.putString(PLAY_THE_GHOST_KEY, Boolean.FALSE.toString());
+        boolean notifyTree = value != isPlayTheGhost();
 
+        data.putString(SIMPLE_DATA_KEY, Boolean.valueOf(value).toString());
+
+        if (notifyTree) // this guards against recursive entry executePendingTransactions
+            modelCallbacks.onPageTreeChanged();
         notifyDataChanged();
+    }
+
+    @Override
+    public void notifyDataChanged() {
+        modelCallbacks.onPageDataChanged(this);
+    }
+
+    private boolean isPlayTheGhost() {
+        return Boolean.TRUE.toString().equals(data.getString(SIMPLE_DATA_KEY));
     }
 }
