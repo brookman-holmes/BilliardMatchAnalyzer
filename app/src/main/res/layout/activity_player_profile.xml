@@ -8,6 +8,19 @@
     android:animateLayoutChanges="true"
     tools:context=".ui.matchinfo.MatchInfoActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/createMatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:elevation="12dp"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@color/white"
+        android:visibility="invisible"
+        app:borderWidth="0dp"
+        app:layout_behavior="com.brookmanholmes.bma.utils.ScrollAwareFABBehavior" />
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

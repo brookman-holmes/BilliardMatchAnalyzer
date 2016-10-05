@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.brookmanholmes.billiards.game.BreakType;

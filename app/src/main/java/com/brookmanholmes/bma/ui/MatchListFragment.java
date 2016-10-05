@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ import butterknife.OnLongClick;
  * A placeholder fragment containing a simple view.
  */
 public class MatchListFragment extends BaseRecyclerFragment implements Filterable {
+    private static final String TAG = "MatchListFragment";
     private static final String ARG_PLAYER = "arg player";
     private static final String ARG_OPPONENT = "arg opponent";
     private String player, opponent;
@@ -325,23 +327,27 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
 
             @OnLongClick(R.id.container)
             public boolean onLongClick() {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-                builder.setMessage(getString(R.string.delete_match))
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                new DatabaseAdapter(getContext()).deleteMatch(id); // remove from the database
-                                // update recyclerView
-                                matches.remove(getAdapterPosition());
-                                notifyItemRemoved(getAdapterPosition());
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
+                // only display delete dialog from IntroActivity otherwise the user can wrap
+                // around to deleting all their matches and then going back to a nonexistent match
+                if (getContext() instanceof IntroActivity) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                    builder.setMessage(getString(R.string.delete_match))
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    new DatabaseAdapter(getContext()).deleteMatch(id); // remove from the database
+                                    // update recyclerView
+                                    matches.remove(getAdapterPosition());
+                                    notifyItemRemoved(getAdapterPosition());
+                                }
+                            })
+                            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
+                }
                 return true;
             }
 

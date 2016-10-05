@@ -1,8 +1,10 @@
 package com.brookmanholmes.bma.ui.profile;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,8 +25,10 @@ import android.widget.TextView;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseActivity;
+import com.brookmanholmes.bma.ui.IntroActivity;
 import com.brookmanholmes.bma.ui.MatchListFragment;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoFragment;
+import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.stats.AdvBreakingStatsFragment;
 import com.brookmanholmes.bma.ui.stats.AdvSafetyStatsFragment;
 import com.brookmanholmes.bma.ui.stats.AdvShootingStatsFragment;
@@ -38,6 +42,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Brookman Holmes on 4/13/2016.
@@ -47,24 +52,21 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     private static final String ARG_FILTER_OPPONENT = "arg_filter_opponent";
     private static final String ARG_FILTER_GAME = "arg_filter_game";
     private static final String ARG_FILTER_DATE = "arg_filter_date";
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerName)
     TextView playerName;
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.opponentName)
     TextView opponentName;
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerNameLayout)
     ViewGroup playerNameLayout;
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.pager)
     ViewPager pager;
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.tabs)
     TabLayout tabLayout;
+    @Bind(R.id.createMatch)
+    FloatingActionButton fab;
+
     private List<Filterable> listeners = new ArrayList<>();
     private StatFilter filter;
     private String player;
@@ -132,6 +134,18 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         outState.putString(ARG_FILTER_GAME, filter.getGameType());
         outState.putString(ARG_FILTER_OPPONENT, filter.getOpponent());
         super.onSaveInstanceState(outState);
+    }
+
+    @OnClick(R.id.createMatch)
+    public void createNewMatch() {
+        fab.hide(new FloatingActionButton.OnVisibilityChangedListener() {
+            @Override
+            public void onHidden(FloatingActionButton fab) {
+                super.onHidden(fab);
+                Intent intent = new Intent(PlayerProfileActivity.this, CreateNewMatchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void displayFilterDialog() {
@@ -210,8 +224,9 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     @Override
     public void onPageSelected(int position) {
         playerNameLayout.setVisibility((position == 1 ? View.VISIBLE : View.GONE));
-
-
+        if (position == 2)
+            fab.show();
+        else fab.hide();
     }
 
     @Override
