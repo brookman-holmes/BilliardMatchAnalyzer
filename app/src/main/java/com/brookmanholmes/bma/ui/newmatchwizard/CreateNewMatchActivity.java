@@ -24,6 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -123,11 +124,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
     private void createMatchAndLaunchMatchInfoActivity() {
         Match match = wizardModel.createMatch();
-
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
-
         long matchId = databaseAdapter.insertMatch(match);
-
         Intent intent = new Intent(this, MatchInfoActivity.class);
         intent.putExtra(ARG_MATCH_ID, matchId);
 

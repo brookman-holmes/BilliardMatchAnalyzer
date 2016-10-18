@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui.newmatchwizard.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,14 @@ import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.brookmanholmes.bma.ui.newmatchwizard.model.RaceToPage.OPPONENT_RANK_KEY;
+import static com.brookmanholmes.bma.ui.newmatchwizard.model.RaceToPage.PLAYER_RANK_KEY;
+
 /**
  * Created by Brookman Holmes on 8/23/2016.
  */
 public class RaceToFragment extends BaseFragment {
+    private static final String TAG = "RaceToFragment";
     private static final String ARG_KEY = "key";
     private static final String ARG_LOWER_BOUND_KEY = "lower_bound";
     private static final String ARG_UPPER_BOUND_KEY = "upper_bound";
@@ -62,11 +67,11 @@ public class RaceToFragment extends BaseFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (!(getActivity() instanceof PageFragmentCallbacks)) {
+        if (getActivity() instanceof PageFragmentCallbacks) {
+            callbacks = (PageFragmentCallbacks) getActivity();
+        } else {
             throw new ClassCastException("Activity must implement PageFragmentCallbacks");
         }
-
-        callbacks = (PageFragmentCallbacks) getActivity();
     }
 
     @Override
@@ -89,6 +94,8 @@ public class RaceToFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_race_page, container, false);
         ((TextView) view.findViewById(android.R.id.title)).setText(page.getTitle());
         ButterKnife.bind(this, view);
+
+        setPlayerNames(page.getPlayerName(), page.getOpponentName());
 
         playerController = new RaceController(playerGrid, min, max, columns, page.getData().getInt(ARG_PLAYER_INDEX, choice));
         opponentController = new RaceController(opponentGrid, min, max, columns, page.getData().getInt(ARG_OPP_INDEX, choice));
@@ -127,15 +134,16 @@ public class RaceToFragment extends BaseFragment {
     private void updatePage() {
         page.getData().putInt(ARG_PLAYER_INDEX, playerController.getIndex());
         page.getData().putInt(ARG_OPP_INDEX, opponentController.getIndex());
-        page.getData().putInt(RaceToPage.PLAYER_RANK_KEY, playerController.getSelection());
-        page.getData().putInt(RaceToPage.OPPONENT_RANK_KEY, opponentController.getSelection());
+        page.getData().putInt(PLAYER_RANK_KEY, playerController.getSelection());
+        page.getData().putInt(OPPONENT_RANK_KEY, opponentController.getSelection());
+        page.notifyDataChanged();
     }
 
     private class RaceController implements View.OnClickListener {
         private GridLayout grid;
         private int selection;
 
-        public RaceController(GridLayout grid, int min, int max, int columns, int selection) {
+        RaceController(GridLayout grid, int min, int max, int columns, int selection) {
             this.grid = grid;
             grid.setColumnCount(columns);
 

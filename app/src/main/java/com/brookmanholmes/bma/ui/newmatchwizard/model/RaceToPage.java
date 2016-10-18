@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Players;
@@ -13,15 +14,18 @@ import com.brookmanholmes.bma.wizard.model.ReviewItem;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.OPPONENT_NAME_KEY;
+import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.PLAYER_NAME_KEY;
+
 /**
  * Created by Brookman Holmes on 8/23/2016.
  */
 public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatchBuilder {
+    private static final String TAG = "RaceToPage";
     public static final String PLAYER_RANK_KEY = "player_rank";
     public static final String OPPONENT_RANK_KEY = "opponent_rank";
-    int lower, upper, defaultChoice, columns;
+    private int lower, upper, defaultChoice, columns;
     private RaceToFragment fragment;
-    private String playerName = "Player 1", opponentName = "Player 2";
     private String reviewString, reviewTitle;
     private GameType gameType = GameType.BCA_NINE_BALL;
 
@@ -30,12 +34,6 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
         this.reviewString = reviewString;
         this.reviewTitle = reviewTitle;
         this.gameType = gameType;
-    }
-
-    RaceToPage(ModelCallbacks callbacks, String title, String reviewString) {
-        super(callbacks, title);
-        this.reviewString = reviewString;
-        this.reviewTitle = title;
     }
 
     RaceToPage setRaceToChoices(int lower, int upper, int defaultChoice, int columns) {
@@ -58,8 +56,8 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
 
     @Override
     public void setPlayerNames(String playerName, String opponentName) {
-        this.playerName = playerName;
-        this.opponentName = opponentName;
+        data.putString(PLAYER_NAME_KEY, playerName);
+        data.putString(OPPONENT_NAME_KEY, opponentName);
 
         if (fragment != null) {
             updateFragment();
@@ -73,20 +71,20 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
 
     private String getReviewString() {
         if (gameType == GameType.APA_NINE_BALL) {
-            return String.format(Locale.getDefault(), reviewString, playerName, Players.apa9BallRaceTo(getPlayerRank()), opponentName, Players.apa9BallRaceTo(getOpponentRank()));
+            return String.format(Locale.getDefault(), reviewString, getPlayerName(), Players.apa9BallRaceTo(getPlayerRank()), getOpponentName(), Players.apa9BallRaceTo(getOpponentRank()));
         } else if (gameType == GameType.APA_EIGHT_BALL) {
             RaceTo raceTo = Players.apa8BallRaceTo(getPlayerRank(), getOpponentRank());
-            return String.format(Locale.getDefault(), reviewString, playerName, raceTo.getPlayerRaceTo(), opponentName, raceTo.getOpponentRaceTo());
+            return String.format(Locale.getDefault(), reviewString, getPlayerName(), raceTo.getPlayerRaceTo(), getOpponentName(), raceTo.getOpponentRaceTo());
         } else
-            return String.format(Locale.getDefault(), reviewString, playerName, getPlayerRank(), opponentName, getOpponentRank());
+            return String.format(Locale.getDefault(), reviewString, getPlayerName(), getPlayerRank(), getOpponentName(), getOpponentRank());
     }
 
     private int getPlayerRank() {
-        return data.getInt(PLAYER_RANK_KEY, 101);
+        return data.getInt(PLAYER_RANK_KEY);
     }
 
     private int getOpponentRank() {
-        return data.getInt(OPPONENT_RANK_KEY, 101);
+        return data.getInt(OPPONENT_RANK_KEY);
     }
 
     public void registerListener(RaceToFragment fragment) {
@@ -94,11 +92,19 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
         updateFragment();
     }
 
+    public String getPlayerName() {
+        return data.getString(PLAYER_NAME_KEY, "Player 1");
+    }
+
+    public String getOpponentName() {
+        return data.getString(OPPONENT_NAME_KEY, "Player 2");
+    }
+
     public void unregisterListener() {
         this.fragment = null;
     }
 
     private void updateFragment() {
-        fragment.setPlayerNames(playerName, opponentName);
+        fragment.setPlayerNames(getPlayerName(), getOpponentName());
     }
 }

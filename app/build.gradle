@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
         applicationId "com.brookmanholmes.bma"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 13
-        versionName "1.1.0.14"
+        versionCode 15
+        versionName "1.1.2"
     }
 
     buildTypes {

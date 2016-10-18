@@ -297,4 +297,8 @@
     <string name="label_turn">%1$s\'s turn</string>
     <string name="label_start_new_game">Start of new game</string>
     <string name="label_fouls">%1$s is on %2$d fouls</string>
+    <string name="game_bca_eight_ghost">BCA 8 Ball vs. The Ghost</string>
+    <string name="game_bca_nine_ghost">BCA 9 Ball vs. The Ghost</string>
+    <string name="game_bca_ten_ghost">BCA 10 Ball vs. The Ghost</string>
+    <string name="player_name">Player</string>
 </resources>

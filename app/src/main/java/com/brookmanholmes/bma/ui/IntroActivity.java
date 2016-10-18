@@ -61,10 +61,8 @@ public class IntroActivity extends BaseActivity {
     private static final String MATCH_LIST_FRAGMENT = "match list fragment";
     private static final String PLAYER_LIST_FRAGMENT = "player list fragment";
 
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.createMatch)
     FloatingActionButton fab;
 
@@ -75,12 +73,11 @@ public class IntroActivity extends BaseActivity {
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
 
-        if (preferences.getBoolean("first_run2", true)) {
+        if (preferences.getBoolean("first_run", true)) {
             DatabaseAdapter db = new DatabaseAdapter(IntroActivity.this);
             db.createSampleMatches();
-            getMatchListFragment().update();
 
-            preferences.edit().putBoolean("first_run2", false).apply();
+            preferences.edit().putBoolean("first_run", false).apply();
         }
 
         analytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null);

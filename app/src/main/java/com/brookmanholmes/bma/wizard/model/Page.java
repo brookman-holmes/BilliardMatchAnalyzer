@@ -123,6 +123,6 @@ public abstract class Page implements PageTreeNode {
 
     @Override
     public String toString() {
-        return title;
+        return getKey();
     }
 }

@@ -8,19 +8,12 @@ import com.brookmanholmes.bma.wizard.model.SingleFixedChoicePage;
  * Created by Brookman Holmes on 1/7/2016.
  */
 class FirstBreakPage extends SingleFixedChoicePage implements RequiresPlayerNames, UpdatesMatchBuilder {
-    private final String parentPage;
     private String playerName = "Player 1";
     private String opponentName = "Player 2";
 
-    FirstBreakPage(ModelCallbacks callbacks, String title, String parentPage) {
+    FirstBreakPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
 
-        this.parentPage = parentPage;
-    }
-
-    @Override
-    public String getKey() {
-        return parentPage + ":" + super.getKey();
     }
 
     @Override

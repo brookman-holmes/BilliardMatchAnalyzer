@@ -16,10 +16,12 @@
 
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.newmatchwizard.fragments.PlayerNameFragment;
 import com.brookmanholmes.bma.wizard.model.BranchPage;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
@@ -34,14 +36,18 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, U
     public static final String LOCATION_KEY = "location";
     public static final String EXTRA_INFO_KEY = "extras";
 
+    private final String reviewTitle;
+    private final String reviewTitleAlt;
     private final String reviewPlayer;
     private final String reviewLocation;
 
-    PlayerNamePage(ModelCallbacks callbacks, String title, String reviewPlayer, String reviewLocation) {
+    PlayerNamePage(ModelCallbacks callbacks, String title, Context context) {
         super(callbacks, title);
 
-        this.reviewLocation = reviewLocation;
-        this.reviewPlayer = reviewPlayer;
+        this.reviewLocation = context.getString(R.string.location);
+        this.reviewPlayer = context.getString(R.string.and);
+        reviewTitle = context.getString(R.string.players);
+        reviewTitleAlt = context.getString(R.string.player_name);
         data.putString(SIMPLE_DATA_KEY, Boolean.FALSE.toString());
     }
 
@@ -52,8 +58,10 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, U
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> dest) {
-        dest.add(new ReviewItem(String.format(reviewPlayer, 1), getPlayerName(), getKey()));
-        dest.add(new ReviewItem(String.format(reviewPlayer, 2), getOpponentName(), getKey()));
+        if (isPlayTheGhost())
+            dest.add(new ReviewItem(reviewTitleAlt, getPlayerName(), getKey()));
+        else
+            dest.add(new ReviewItem(reviewTitle, String.format(reviewPlayer, getPlayerName(), getOpponentName()), getKey()));
         if (!data.getString(LOCATION_KEY, "").equals(""))
             dest.add(new ReviewItem(reviewLocation, data.getString(LOCATION_KEY), getKey()));
     }

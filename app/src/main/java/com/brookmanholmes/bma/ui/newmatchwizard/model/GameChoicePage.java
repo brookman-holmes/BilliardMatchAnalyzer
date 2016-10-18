@@ -20,6 +20,7 @@ class GameChoicePage extends BranchPage implements RequiresPlayerNames, UpdatesM
     private final String americanRotation;
     private final String apa8Ball;
     private final String apa9Ball;
+    private final String game;
 
     GameChoicePage(ModelCallbacks callbacks, String title, Context context) {
         super(callbacks, title);
@@ -30,12 +31,12 @@ class GameChoicePage extends BranchPage implements RequiresPlayerNames, UpdatesM
         americanRotation = context.getString(R.string.game_american_rotation);
         apa8Ball = context.getString(R.string.game_apa_eight);
         apa9Ball = context.getString(R.string.game_apa_nine);
+        game = context.getString(R.string.prompt_game);
     }
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> dest) {
-        super.getReviewItems(dest);
-
+        dest.add(new ReviewItem(game, data.getString(SIMPLE_DATA_KEY), getKey()));
         if (data.getString(SIMPLE_DATA_KEY, "").equals(americanRotation))
             dest.add(new ReviewItem(theBreak, alternateBreak, getKey()));
         else if (data.getString(SIMPLE_DATA_KEY, "").equals(apa8Ball) || data.getString(SIMPLE_DATA_KEY, "").equals(apa9Ball))
