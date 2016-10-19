@@ -95,8 +95,11 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     List<BubbleEntry> obEntries = new ArrayList<>();
     List<BubbleEntry> cbEntries = new ArrayList<>();
     List<BubbleEntry> speedEntries = new ArrayList<>();
-    BubbleData speedData = new BubbleData(new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
-    BubbleData distanceData = new BubbleData(new String[]{"6\"", "1'", "2'", "3'", "4'", "5'", "6'", "7'", "8'", "9'"});
+    BubbleData speedData = new BubbleData(
+            new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
+    BubbleData distanceData = new BubbleData(
+            new String[]{"<.5'", ".5'", "1'", "1.5'", "2'", "2.5'", "3'", "3.5'", "4'", "4.5'", "5'",
+                    "5.5'", "6'", "6.5'", "7'", "7.5'", "8'", "8.5'", "9'", "9.5'"});
     private String shotType, subType, angle;
     private GetFilteredStatsAsync task2;
 
@@ -177,7 +180,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private void setupSpeedDataSeries() {
-        for (int i = 0; i < 11; i++)
+        for (int i = 0; i < 10; i++)
             speedEntries.add(new BubbleEntry(i, 0f, 0f));
 
         BubbleDataSet speedDataSet = new BubbleDataSet(speedEntries, getString(R.string.chart_speed_legend));
@@ -187,7 +190,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private void setupDistanceDataSeries() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             cbEntries.add(new BubbleEntry(i, 0, 0));
             obEntries.add(new BubbleEntry(i, 1, 0));
         }
@@ -236,6 +239,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         left.addLimitLine(line1);
 
         setupChart(speedChart);
+        speedChart.getXAxis().setLabelsToSkip(0);
         speedChart.setData(speedData);
         speedChart.getAxisLeft().addLimitLine(line0);
 
@@ -295,7 +299,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         XAxis xAxis = chart.getXAxis();
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
-        xAxis.setLabelsToSkip(0);
+        xAxis.setLabelsToSkip(1);
         chart.getAxisRight().setEnabled(false); // no right axis
     }
 
@@ -402,7 +406,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         for (AdvStats stat : filteredStats) {
             updateEntrySize(obEntries.get(getIndex(stat.getObToPocket())));
             updateEntrySize(cbEntries.get(getIndex(stat.getCbToOb())));
-            updateEntrySize(speedEntries.get(stat.getSpeed()));
+            updateEntrySize(speedEntries.get(stat.getSpeed() - 1));
 
             points.add(new Point(stat.getCueX(), stat.getCueY()));
         }
@@ -423,7 +427,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private int getIndex(float val) {
-        return (int) Math.floor(val);
+        return (int) ((val - .5f) * 2);
     }
 
     private void setVisibilities() {

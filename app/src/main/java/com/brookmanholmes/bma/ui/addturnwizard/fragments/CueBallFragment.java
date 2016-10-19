@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.TextViewCompat;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,9 +100,9 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
         cbRange.setOnRangeBarChangeListener(this);
         speedRange.setOnRangeBarChangeListener(this);
 
-        obRange.setSeekPinByIndex(getIndexFromPinValue(page.getData().getFloat(CueBallPage.OB_DISTANCE_KEY, 4f)));
-        cbRange.setSeekPinByIndex(getIndexFromPinValue(page.getData().getFloat(CueBallPage.CB_DISTANCE_KEY, 4f)));
-        speedRange.setSeekPinByIndex(page.getData().getInt(CueBallPage.SPEED_KEY, 5));
+        obRange.setSeekPinByIndex(getIndexFromPinValue(page.getData().getFloat(CueBallPage.OB_DISTANCE_KEY, 8f)));
+        cbRange.setSeekPinByIndex(getIndexFromPinValue(page.getData().getFloat(CueBallPage.CB_DISTANCE_KEY, 8f)));
+        speedRange.setSeekPinByIndex(page.getData().getInt(CueBallPage.SPEED_KEY, 4));
 
 
         hit.addOnCueBueTouchedListener(new OnCueBallTouched() {
@@ -126,25 +127,45 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
     public String getPinValue(RangeBar rangeBar, int tickIndex) {
         switch (tickIndex) {
             case 0:
-                return "6\"";
+                return "<.5'";
             case 1:
-                return "1'";
+                return ".5'";
             case 2:
-                return "2'";
+                return "1'";
             case 3:
-                return "3'";
+                return "1.5'";
             case 4:
-                return "4'";
+                return "2'";
             case 5:
-                return "5'";
+                return "2.5'";
             case 6:
-                return "6'";
+                return "3'";
             case 7:
-                return "7'";
+                return "3.5'";
             case 8:
+                return "4'";
+            case 9:
+                return "4.5'";
+            case 10:
+                return "5'";
+            case 11:
+                return "5.5'";
+            case 12:
+                return "6'";
+            case 13:
+                return "6.5'";
+            case 14:
+                return "7'";
+            case 15:
+                return "7.5'";
+            case 16:
                 return "8'";
-            default:
+            case 17:
+                return "8.5'";
+            case 18:
                 return "9'";
+            default:
+                return "9.5'";
         }
     }
 
@@ -170,19 +191,17 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
             page.getData().putInt(CueBallPage.SPEED_KEY, rightPinIndex);
             page.notifyDataChanged();
         }
-        textView.setText(Html.fromHtml(String.format(Locale.getDefault(), stringToFormat, rightPinValue)));
+        if (rightPinIndex == 0)
+            textView.setText(Html.fromHtml(String.format(Locale.getDefault(), stringToFormat, "less than .5'"))); // TODO: 10/19/2016 change this to a string resource 
+        else
+            textView.setText(Html.fromHtml(String.format(Locale.getDefault(), stringToFormat, rightPinValue)));
     }
 
     private float getPinValueFromIndex(int index) {
-        if (index == 0)
-            return .5f;
-        else
-            return index;
+        return ((float) index / 2);
     }
 
     private int getIndexFromPinValue(float value) {
-        if (value == .5f)
-            return 0;
-        else return (int) value;
+        return (int) ((value - .5f));
     }
 }

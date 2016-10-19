@@ -284,12 +284,12 @@
     <string name="tutorial_change_view_player_matches">Click here to change the view between matches and players</string>
     <string name="tutorial_create_match">You can create a new match by clicking on this button</string>
     <string name="tutorial_welcome">Welcome</string>
-    <string name="chart_speed_legend">How hard the ball was hit 0 (soft) to 10 (hard)</string>
+    <string name="chart_speed_legend">How hard the ball was hit 1 (soft) to 10 (hard)</string>
     <string name="chart_cue_legend">Cue ball to object ball distance</string>
     <string name="chart_object_legend">Object ball to pocket distance</string>
     <string name="html_object_pocket"><![CDATA[From <b>object ball</b> to <b>pocket</b> was <b>%1$s</b>]]></string>
     <string name="html_cue_object_ball"><![CDATA[From <b>cue ball</b> to <b>object ball</b> was <b>%1$s</b>]]></string>
-    <string name="html_speed_range"><![CDATA[<b>%1$s</b> on a scale of 0 (soft) to 10 (hard)]]></string>
+    <string name="html_speed_range"><![CDATA[<b>%1$s</b> on a scale of 1 (soft) to 10 (hard)]]></string>
     <string name="label_game">Game: %1$s</string>
     <string name="out_of_strings">%1$s / %2$s</string>
     <string name="label_breaker">%1$s is breaking</string>

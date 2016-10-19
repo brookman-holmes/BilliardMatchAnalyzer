@@ -24,7 +24,7 @@
             custom:rangeBar="false"
             custom:selectorColor="@color/colorAccent"
             custom:tickColor="@android:color/black"
-            custom:tickEnd="9"
+            custom:tickEnd="19"
             custom:tickInterval="1"
             custom:tickStart="0" />
 
@@ -45,7 +45,7 @@
             custom:rangeBar="false"
             custom:selectorColor="@color/colorAccent"
             custom:tickColor="@android:color/black"
-            custom:tickEnd="9"
+            custom:tickEnd="19"
             custom:tickInterval="1"
             custom:tickStart="0" />
 
@@ -99,7 +99,7 @@
             custom:tickColor="@android:color/black"
             custom:tickEnd="10"
             custom:tickInterval="1"
-            custom:tickStart="0" />
+            custom:tickStart="1" />
 
         <TextView
             android:id="@+id/speedText"
