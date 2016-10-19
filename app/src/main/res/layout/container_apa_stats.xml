@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-
         <variable
             name="apa"
             type="com.brookmanholmes.bma.ui.matchinfo.ApaBinder" />
-
         <import type="android.view.View" />
     </data>
 
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/container"
-        style="@style/match_info_grid"
-        android:rowCount="7">
+    <android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/match_info_grid">
 
         <TextView
             style="@style/player_stats"
@@ -22,7 +17,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/rank"
             android:textColor="@color/primary_text" />
 
@@ -38,7 +32,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@{apa.apa8Ball ? @string/title_games_needed : @string/points}"
             android:textColor="@color/secondary_text" />
 
@@ -54,7 +47,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/match_points"
             android:textColor="@color/primary_text" />
 
@@ -80,32 +72,32 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_gravity="start"
+            app:layout_gravity="start"
             android:layout_marginTop="8dp"
             android:text="@string/innings"
             android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnSpan="2"
-            android:layout_gravity="start"
+            app:layout_columnSpan="2"
+            app:layout_gravity="start"
             android:layout_marginTop="8dp"
             android:text="@{apa.innings}"
             android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
-            android:layout_gravity="start"
+            app:layout_gravity="start"
             android:text="@string/dead_balls"
             android:textColor="@color/secondary_text"
             android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}" />
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnSpan="2"
-            android:layout_gravity="start"
+            app:layout_columnSpan="2"
+            app:layout_gravity="start"
             android:text="@{apa.deadBalls}"
             android:textColor="@color/secondary_text"
             android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}" />
-    </GridLayout>
+    </android.support.v7.widget.GridLayout>
 </layout>

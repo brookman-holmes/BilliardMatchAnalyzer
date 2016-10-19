@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="shooting"
             type="com.brookmanholmes.bma.ui.matchinfo.ShootingBinder" />
-
         <import type="android.view.View" />
     </data>
 
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
         style="@style/match_info_grid"
         tools:showIn="@layout/card_shooting_pct">
 
@@ -24,7 +20,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_shooting_pct"
             android:textColor="@color/primary_text" />
 
@@ -41,7 +36,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_shots_made"
             android:textColor="@color/secondary_text" />
 
@@ -59,7 +53,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_avg_balls_turn"
             android:textColor="@color/primary_text"
             android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
@@ -80,7 +73,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_shooting_fouls"
             android:textColor="@color/secondary_text"
             android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
@@ -92,5 +84,5 @@
             android:typeface="@{shooting.opponentFoulsBetter() ? `bold` : `normal`}"
             android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
 
-    </GridLayout>
+    </android.support.v7.widget.GridLayout>
 </layout>

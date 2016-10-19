@@ -1,32 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="safeties"
             type="com.brookmanholmes.bma.ui.matchinfo.SafetiesBinder" />
-
         <import type="android.view.View" />
     </data>
 
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
         style="@style/match_info_grid"
-        android:rowCount="6"
         tools:showIn="@layout/card_safeties">
 
         <TextView
             style="@style/player_stats"
-            android:layout_gravity="center"
             android:text="@{safeties.playerSafetyPct}"
             android:textColor="@color/primary_text"
             android:typeface="@{safeties.playerShootingBetter() ? `bold` : `normal`}" />
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_safety_pct"
             android:textColor="@color/primary_text" />
 
@@ -43,7 +36,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_safeties_made"
             android:textColor="@color/secondary_text" />
 
@@ -61,7 +53,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_safety_fouls"
             android:textColor="@color/primary_text"
             android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
@@ -82,7 +73,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_safety_escapes"
             android:textColor="@color/secondary_text"
             android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
@@ -103,7 +93,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_safeties_returned"
             android:textColor="@color/primary_text"
             android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
@@ -124,7 +113,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_forced_fouls"
             android:textColor="@color/secondary_text"
             android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
@@ -135,5 +123,5 @@
             android:textColor="@color/secondary_text"
             android:typeface="@{safeties.opponentForcedMore() ? `bold` : `normal`}"
             android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
-    </GridLayout>
+    </android.support.v7.widget.GridLayout>
 </layout>

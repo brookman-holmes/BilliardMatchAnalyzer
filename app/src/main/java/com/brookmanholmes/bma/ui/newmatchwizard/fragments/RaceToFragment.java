@@ -1,13 +1,13 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import android.support.v7.widget.GridLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.brookmanholmes.bma.R;
@@ -142,9 +142,14 @@ public class RaceToFragment extends BaseFragment {
     private class RaceController implements View.OnClickListener {
         private GridLayout grid;
         private int selection;
+        private Drawable selectedBackground;
+        private Drawable unselectedBackground;
 
         RaceController(GridLayout grid, int min, int max, int columns, int selection) {
             this.grid = grid;
+            unselectedBackground = ContextCompat.getDrawable(grid.getContext(), R.drawable.white_circle);
+            selectedBackground = ContextCompat.getDrawable(grid.getContext(), R.drawable.blue_circle);
+
             grid.setColumnCount(columns);
 
             for (int i = min; i < max; i++) {
@@ -160,7 +165,7 @@ public class RaceToFragment extends BaseFragment {
             textView.setWidth((int) ConversionUtils.convertDpToPx(getContext(), 30));
             textView.setText(String.valueOf(num));
             textView.setOnClickListener(this);
-            textView.getBackground().setTint(ContextCompat.getColor(getContext(), R.color.white));
+            textView.setBackground(unselectedBackground);
             return textView;
         }
 
@@ -171,18 +176,18 @@ public class RaceToFragment extends BaseFragment {
             updatePage();
         }
 
-        private void deselectView(int selection) {
-            grid.getChildAt(selection).getBackground().setTint(ContextCompat.getColor(getContext(), R.color.white));
-            ((TextView) grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.primary_text));
-        }
-
         private void selectView(int selection, int oldSelection) {
             selectView(selection);
             deselectView(oldSelection);
         }
 
+        private void deselectView(int selection) {
+            grid.getChildAt(selection).setBackground(unselectedBackground);
+            ((TextView) grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.primary_text));
+        }
+
         private void selectView(int selection) {
-            grid.getChildAt(selection).getBackground().setTint(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            grid.getChildAt(selection).setBackground(selectedBackground);
             ((TextView) grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             this.selection = selection;
         }

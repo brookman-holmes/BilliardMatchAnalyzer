@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="breaks"
             type="com.brookmanholmes.bma.ui.matchinfo.BreaksBinder" />
-
         <import type="android.view.View" />
     </data>
 
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
         style="@style/match_info_grid"
         tools:showIn="@layout/card_breaks">
 
@@ -23,7 +19,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_successful_break"
             android:textColor="@color/primary_text" />
 
@@ -40,7 +35,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_avg_break_balls"
             android:textColor="@color/secondary_text" />
 
@@ -59,7 +53,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_break_continuations"
             android:textColor="@color/primary_text"
             android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
@@ -80,7 +73,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_break_fouls"
             android:textColor="@color/secondary_text"
             android:visibility="@{breaks.visible ? View.VISIBLE : View.GONE}" />
@@ -101,7 +93,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@{@string/title_break_wins(breaks.breakBall)}"
             android:textColor="@color/primary_text"
             android:visibility="@{breaks.showWinOnBreak ? View.VISIBLE : View.GONE}" />
@@ -113,5 +104,5 @@
             android:typeface="@{breaks.opponentWinsOnBreakMore() ? `bold` : `normal`}"
             android:visibility="@{breaks.showWinOnBreak ? View.VISIBLE : View.GONE}" />
 
-    </GridLayout>
+    </android.support.v7.widget.GridLayout>
 </layout>

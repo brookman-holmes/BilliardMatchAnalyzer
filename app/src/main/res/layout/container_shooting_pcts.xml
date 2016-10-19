@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/shootingPctGrid"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:useDefaultMargins="false"
+    app:useDefaultMargins="false"
     tools:showIn="@layout/row_turn">
 
     <ImageView
         android:id="@+id/shootingLine"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:layout_columnWeight="1"
-        android:layout_gravity="center"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center"
         android:layout_marginRight="5dp"
         android:src="@drawable/ball_background"
         android:tint="@color/almost_good" />
@@ -21,7 +22,7 @@
         android:id="@+id/tvShootingPct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
+        app:layout_columnWeight="1"
         android:text=""
         android:textColor="@color/primary_text" />
 
@@ -29,8 +30,8 @@
         android:id="@+id/safetyLine"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:layout_columnWeight="1"
-        android:layout_gravity="center"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center"
         android:layout_marginRight="5dp"
         android:src="@drawable/ball_background"
         android:tint="@color/almost_good" />
@@ -39,15 +40,15 @@
         android:id="@+id/tvSafetyPct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
+        app:layout_columnWeight="1"
         android:textColor="@color/primary_text" />
 
     <ImageView
         android:id="@+id/breakingLine"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:layout_columnWeight="1"
-        android:layout_gravity="center"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center"
         android:layout_marginRight="5dp"
         android:src="@drawable/ball_background"
         android:tint="@color/almost_good" />
@@ -56,7 +57,7 @@
         android:id="@+id/tvBreakPct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
+        app:layout_columnWeight="1"
         android:textColor="@color/primary_text" />
 
-</GridLayout>
+</android.support.v7.widget.GridLayout>

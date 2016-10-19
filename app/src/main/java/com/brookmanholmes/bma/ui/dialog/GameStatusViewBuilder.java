@@ -1,8 +1,8 @@
 package com.brookmanholmes.bma.ui.dialog;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayout;
 import android.view.View;
-import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.GameStatus;

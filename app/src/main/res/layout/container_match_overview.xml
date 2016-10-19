@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="overview"
             type="com.brookmanholmes.bma.ui.matchinfo.MatchOverviewBinder" />
@@ -10,11 +8,9 @@
         <import type="android.view.View" />
     </data>
 
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
         style="@style/match_info_grid"
-        android:rowCount="5"
         tools:showIn="@layout/card_match_overview">
 
         <TextView
@@ -25,7 +21,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_win_pct"
             android:textColor="@color/primary_text" />
 
@@ -42,7 +37,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@{overview.apaTitle ? @string/title_games_won_apa : @string/title_games_won}"
             android:textColor="@color/secondary_text" />
 
@@ -53,14 +47,12 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_gravity="center"
             android:text="@{overview.playerTsp}"
             android:textColor="@color/primary_text"
             android:typeface="@{overview.playerShootingBetter() ? `bold` : `normal`}" />
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_tsp"
             android:textColor="@color/primary_text" />
 
@@ -77,7 +69,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_true_shots_made"
             android:textColor="@color/secondary_text" />
 
@@ -114,7 +105,6 @@
 
         <TextView
             style="@style/player_stats"
-            android:layout_columnWeight="1"
             android:text="@string/title_ar"
             android:textColor="@color/secondary_text"
             android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
@@ -125,5 +115,5 @@
             android:textColor="@color/secondary_text"
             android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
 
-    </GridLayout>
+    </android.support.v7.widget.GridLayout>
 </layout>
