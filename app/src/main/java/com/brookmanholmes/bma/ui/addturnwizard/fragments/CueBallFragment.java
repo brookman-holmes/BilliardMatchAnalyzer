@@ -21,6 +21,7 @@ import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -125,47 +126,12 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
 
     @Override
     public String getPinValue(RangeBar rangeBar, int tickIndex) {
+        DecimalFormat formatter = new DecimalFormat("#.#");
         switch (tickIndex) {
             case 0:
                 return "<.5'";
-            case 1:
-                return ".5'";
-            case 2:
-                return "1'";
-            case 3:
-                return "1.5'";
-            case 4:
-                return "2'";
-            case 5:
-                return "2.5'";
-            case 6:
-                return "3'";
-            case 7:
-                return "3.5'";
-            case 8:
-                return "4'";
-            case 9:
-                return "4.5'";
-            case 10:
-                return "5'";
-            case 11:
-                return "5.5'";
-            case 12:
-                return "6'";
-            case 13:
-                return "6.5'";
-            case 14:
-                return "7'";
-            case 15:
-                return "7.5'";
-            case 16:
-                return "8'";
-            case 17:
-                return "8.5'";
-            case 18:
-                return "9'";
             default:
-                return "9.5'";
+                return formatter.format(((float) tickIndex / 2)) + "'";
         }
     }
 
@@ -192,7 +158,7 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
             page.notifyDataChanged();
         }
         if (rightPinIndex == 0)
-            textView.setText(Html.fromHtml(String.format(Locale.getDefault(), stringToFormat, "less than .5'"))); // TODO: 10/19/2016 change this to a string resource 
+            textView.setText(Html.fromHtml(String.format(Locale.getDefault(), stringToFormat, "less than .5'"))); // TODO: 10/19/2016 change this to a string resource
         else
             textView.setText(Html.fromHtml(String.format(Locale.getDefault(), stringToFormat, rightPinValue)));
     }
