@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -69,10 +70,12 @@ public class SubmitFeedbackDialog extends DialogFragment {
     }
 
     private void onPositiveButton() {
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, input.getText().toString());
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, bundle);
+        if (!BuildConfig.DEBUG) {
+            FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, input.getText().toString());
+            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, bundle);
+        }
     }
 
     private void hideKeyboard() {

@@ -72,6 +72,34 @@ public class MatchDialogHelperUtils {
         return args;
     }
 
+    /**
+     * Used to report analytics to Firebase, strips the player name's from the match to protect
+     * user privacy
+     *
+     * @param match match to be reported
+     * @return bundle with all the data of the match
+     */
+    public static Bundle getStrippedBundle(Match match) {
+        Bundle args = new Bundle();
+
+        args.putBoolean(ALLOW_TURN_SKIP_KEY, match.getGameStatus().allowTurnSkip);
+        args.putBoolean(NEW_GAME_KEY, match.getGameStatus().newGame);
+        args.putBoolean(ALLOW_PUSH_KEY, match.getGameStatus().allowPush);
+        args.putString(GAME_TYPE_KEY, match.getGameStatus().gameType.name());
+        args.putIntegerArrayList(BALLS_ON_TABLE_KEY, new ArrayList<>(match.getGameStatus().ballsOnTable));
+        args.putString(TURN_KEY, match.getGameStatus().turn.name());
+        args.putString(CURRENT_PLAYER_COLOR_KEY, match.getGameStatus().currentPlayerColor.name());
+        args.putString(BREAKER_KEY, match.getGameStatus().breaker.name());
+        args.putInt(CONSECUTIVE_FOULS_KEY, match.getGameStatus().currentPlayerConsecutiveFouls);
+        args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.name());
+        args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
+        args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
+        args.putString(STATS_LEVEL_KEY, match.getStatDetailLevel().name());
+        args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
+        args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
+        return args;
+    }
+
     public static String getCurrentPlayersName(Match match) {
         switch (match.getGameStatus().turn) {
             case OPPONENT:

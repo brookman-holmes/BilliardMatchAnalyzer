@@ -22,7 +22,7 @@ class GameChoicePage extends BranchPage implements RequiresPlayerNames, UpdatesM
     private final String apa9Ball;
     private final String game;
 
-    GameChoicePage(ModelCallbacks callbacks, String title, Context context) {
+    GameChoicePage(ModelCallbacks callbacks, String title, Context context, String parentKey) {
         super(callbacks, title);
 
         theBreak = context.getString(R.string.title_page_break);
@@ -32,6 +32,7 @@ class GameChoicePage extends BranchPage implements RequiresPlayerNames, UpdatesM
         apa8Ball = context.getString(R.string.game_apa_eight);
         apa9Ball = context.getString(R.string.game_apa_nine);
         game = context.getString(R.string.prompt_game);
+        this.parentKey = parentKey;
     }
 
     @Override

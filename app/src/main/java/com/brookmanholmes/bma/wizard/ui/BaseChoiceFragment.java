@@ -84,7 +84,7 @@ public abstract class BaseChoiceFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setupChoices();
-        View view = inflater.inflate(R.layout.fragment_page, container, false);
+        View view = inflateView(inflater, container);
         setTitle(view);
 
         setListTypeArgs();
@@ -148,6 +148,10 @@ public abstract class BaseChoiceFragment extends ListFragment {
                 layoutRes,
                 android.R.id.text1,
                 choices));
+    }
+
+    protected View inflateView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_page, container, false);
     }
 
     protected abstract void preSelectItems();

@@ -1,7 +1,6 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Players;
@@ -21,19 +20,20 @@ import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.PLAY
  * Created by Brookman Holmes on 8/23/2016.
  */
 public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatchBuilder {
-    private static final String TAG = "RaceToPage";
     public static final String PLAYER_RANK_KEY = "player_rank";
     public static final String OPPONENT_RANK_KEY = "opponent_rank";
+    private static final String TAG = "RaceToPage";
     private int lower, upper, defaultChoice, columns;
     private RaceToFragment fragment;
     private String reviewString, reviewTitle;
     private GameType gameType = GameType.BCA_NINE_BALL;
 
-    RaceToPage(ModelCallbacks callbacks, String title, String reviewString, GameType gameType, String reviewTitle) {
+    RaceToPage(ModelCallbacks callbacks, String title, String reviewString, GameType gameType, String reviewTitle, String parentKey) {
         super(callbacks, title);
         this.reviewString = reviewString;
         this.reviewTitle = reviewTitle;
         this.gameType = gameType;
+        this.parentKey = parentKey;
     }
 
     RaceToPage setRaceToChoices(int lower, int upper, int defaultChoice, int columns) {

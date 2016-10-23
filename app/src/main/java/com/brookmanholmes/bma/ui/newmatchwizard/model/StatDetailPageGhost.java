@@ -10,8 +10,9 @@ import java.util.ArrayList;
  * Created by Brookman Holmes on 3/9/2016.
  */
 class StatDetailPageGhost extends SingleFixedChoicePage implements UpdatesMatchBuilder {
-    StatDetailPageGhost(ModelCallbacks callbacks, String title) {
+    StatDetailPageGhost(ModelCallbacks callbacks, String title, String parentKey) {
         super(callbacks, title);
+        this.parentKey = parentKey;
     }
 
     @Override

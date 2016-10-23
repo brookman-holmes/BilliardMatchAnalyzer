@@ -65,7 +65,7 @@ public class BranchPage extends SingleFixedChoicePage {
     public BranchPage addBranch(String choice, Page... childPages) {
         PageList childPageList = new PageList(childPages);
         for (Page page : childPageList) {
-            page.setParentKey(choice);
+            page.setParentKey(getKey() + ":" + choice);
         }
         branches.add(new Branch(choice, childPageList));
         return this;
@@ -114,7 +114,7 @@ public class BranchPage extends SingleFixedChoicePage {
         public final PageList childPageList;
         public String choice;
 
-        private Branch(String choice, PageList childPageList) {
+        public Branch(String choice, PageList childPageList) {
             this.choice = choice;
             this.childPageList = childPageList;
         }

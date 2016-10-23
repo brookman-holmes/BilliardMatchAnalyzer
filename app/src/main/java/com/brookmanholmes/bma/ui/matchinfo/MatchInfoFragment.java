@@ -32,7 +32,7 @@ import java.util.List;
 public class MatchInfoFragment extends BaseFragment
         implements MatchInfoActivity.UpdateMatchInfo, Filterable {
     private static final String TAG = "MatchInfoFragment";
-    private static final String ARG_PLAYER = "arg playerName";
+    private static final String ARG_PLAYER = "arg_playerName";
     String playerName;
     ApaBinder apa;
     MatchOverviewBinder overview;

@@ -19,7 +19,6 @@ package com.brookmanholmes.bma.ui.newmatchwizard.model;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.newmatchwizard.fragments.PlayerNameFragment;
@@ -30,18 +29,17 @@ import com.brookmanholmes.bma.wizard.model.ReviewItem;
 import java.util.ArrayList;
 
 public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, UpdatesPlayerNames {
-    private static final String TAG = "PlayerNamePage";
     public static final String PLAYER_NAME_KEY = "player name";
     public static final String OPPONENT_NAME_KEY = "opponent name";
     public static final String LOCATION_KEY = "location";
     public static final String EXTRA_INFO_KEY = "extras";
-
+    private static final String TAG = "PlayerNamePage";
     private final String reviewTitle;
     private final String reviewTitleAlt;
     private final String reviewPlayer;
     private final String reviewLocation;
 
-    PlayerNamePage(ModelCallbacks callbacks, String title, Context context) {
+    PlayerNamePage(ModelCallbacks callbacks, String title, Context context, String parentKey) {
         super(callbacks, title);
 
         this.reviewLocation = context.getString(R.string.location);
@@ -49,6 +47,7 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, U
         reviewTitle = context.getString(R.string.players);
         reviewTitleAlt = context.getString(R.string.player_name);
         data.putString(SIMPLE_DATA_KEY, Boolean.FALSE.toString());
+        this.parentKey = parentKey;
     }
 
     @Override
@@ -91,6 +90,15 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, U
         return data.getString(OPPONENT_NAME_KEY, "");
     }
 
+    @Override
+    public void notifyDataChanged() {
+        modelCallbacks.onPageDataChanged(this);
+    }
+
+    private boolean isPlayTheGhost() {
+        return Boolean.TRUE.toString().equals(data.getString(SIMPLE_DATA_KEY));
+    }
+
     public void setPlayTheGhost(boolean value) {
         boolean notifyTree = value != isPlayTheGhost();
 
@@ -99,14 +107,5 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, U
         if (notifyTree) // this guards against recursive entry executePendingTransactions
             modelCallbacks.onPageTreeChanged();
         notifyDataChanged();
-    }
-
-    @Override
-    public void notifyDataChanged() {
-        modelCallbacks.onPageDataChanged(this);
-    }
-
-    private boolean isPlayTheGhost() {
-        return Boolean.TRUE.toString().equals(data.getString(SIMPLE_DATA_KEY));
     }
 }

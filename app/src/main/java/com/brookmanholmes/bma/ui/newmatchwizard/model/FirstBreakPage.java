@@ -1,6 +1,9 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
+import android.support.v4.app.Fragment;
+
 import com.brookmanholmes.billiards.game.PlayerTurn;
+import com.brookmanholmes.bma.ui.newmatchwizard.fragments.FirstBreakFragment;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.SingleFixedChoicePage;
 
@@ -11,9 +14,9 @@ class FirstBreakPage extends SingleFixedChoicePage implements RequiresPlayerName
     private String playerName = "Player 1";
     private String opponentName = "Player 2";
 
-    FirstBreakPage(ModelCallbacks callbacks, String title) {
+    FirstBreakPage(ModelCallbacks callbacks, String title, String parentKey) {
         super(callbacks, title);
-
+        this.parentKey = parentKey;
     }
 
     @Override
@@ -36,5 +39,10 @@ class FirstBreakPage extends SingleFixedChoicePage implements RequiresPlayerName
             model.setFirstBreaker(PlayerTurn.PLAYER);
         else if (opponentName.equals(data.getString(SIMPLE_DATA_KEY)))
             model.setFirstBreaker(PlayerTurn.OPPONENT);
+    }
+
+    @Override
+    public Fragment createFragment() {
+        return FirstBreakFragment.create(getKey());
     }
 }

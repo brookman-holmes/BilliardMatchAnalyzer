@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -27,6 +28,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         analytics = FirebaseAnalytics.getInstance(BaseActivity.this);
+
+        if (BuildConfig.DEBUG)
+            analytics.setAnalyticsCollectionEnabled(false);
+
         preferences = getPreferences();
     }
 

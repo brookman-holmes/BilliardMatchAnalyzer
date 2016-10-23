@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.AddTurnWizardModel;
@@ -90,8 +91,10 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
 
         listener = (AddTurnListener) getActivity();
 
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-        firebaseAnalytics.logEvent("add_turn_started", null);
+        if (!BuildConfig.DEBUG) {
+            FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+            firebaseAnalytics.logEvent("add_turn_started", null);
+        }
     }
 
     @Override

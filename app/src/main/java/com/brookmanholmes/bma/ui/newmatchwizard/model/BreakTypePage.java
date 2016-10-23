@@ -19,10 +19,11 @@ class BreakTypePage extends BranchPage implements RequiresPlayerNames, UpdatesMa
     private String playerName = "Player 1";
     private String opponentName = "Player 2";
 
-    BreakTypePage(ModelCallbacks callbacks, String title, Context context) {
+    BreakTypePage(ModelCallbacks callbacks, String title, Context context, String parentKey) {
         super(callbacks, title);
         valueEnding = context.getString(R.string.break_player);
         firstBreak = context.getString(R.string.title_page_first_break);
+        this.parentKey = parentKey;
     }
 
     @Override

@@ -50,7 +50,7 @@ import butterknife.ButterKnife;
  * Created by helios on 5/15/2016.
  */
 public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements Filterable {
-    private static final String ARG_PLAYER = "arg player";
+    private static final String ARG_PLAYER = "arg_player";
     DecimalFormat df = new DecimalFormat("#.###");
     private DatabaseAdapter database;
     private String player;

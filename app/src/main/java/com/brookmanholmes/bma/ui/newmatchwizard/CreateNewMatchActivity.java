@@ -24,7 +24,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -54,9 +53,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         PageFragmentCallbacks,
         ReviewFragment.Callbacks,
         ModelCallbacks {
-    private static final String TAG = "CreateNewMatchAct";
     public static final String PLAYER_EXTRA = "player";
-
+    private static final String TAG = "CreateNewMatchAct";
     @Bind(R.id.pager)
     ViewPager pager;
     @Bind(R.id.next_button)
@@ -130,7 +128,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         intent.putExtra(ARG_MATCH_ID, matchId);
 
         startActivity(intent);
-        analytics.logEvent("match_created", MatchDialogHelperUtils.getBundle(match));
+        analytics.logEvent("match_created", MatchDialogHelperUtils.getStrippedBundle(match));
         finish();
     }
 

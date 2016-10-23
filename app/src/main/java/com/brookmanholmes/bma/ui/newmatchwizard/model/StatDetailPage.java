@@ -14,8 +14,9 @@ class StatDetailPage extends SingleFixedChoicePage implements RequiresPlayerName
     private String opponentName = "Player 2-";
     private String startValue;
 
-    StatDetailPage(ModelCallbacks callbacks, String title) {
+    StatDetailPage(ModelCallbacks callbacks, String title, String parentKey) {
         super(callbacks, title);
+        this.parentKey = parentKey;
     }
 
     @Override

@@ -11,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +42,8 @@ import butterknife.OnLongClick;
  */
 public class MatchListFragment extends BaseRecyclerFragment implements Filterable {
     private static final String TAG = "MatchListFragment";
-    private static final String ARG_PLAYER = "arg player";
-    private static final String ARG_OPPONENT = "arg opponent";
+    private static final String ARG_PLAYER = "arg_player";
+    private static final String ARG_OPPONENT = "arg_opponent";
     private String player, opponent;
     private DatabaseAdapter database;
 
