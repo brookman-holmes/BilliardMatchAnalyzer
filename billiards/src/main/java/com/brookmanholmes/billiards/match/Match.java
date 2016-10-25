@@ -1,9 +1,9 @@
 package com.brookmanholmes.billiards.match;
 
-import com.brookmanholmes.billiards.game.Game;
-import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.Game;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
@@ -148,7 +148,7 @@ public class Match implements IMatch {
         updateGameState(turn);
         turns.addLast(turn);
 
-        if (game.getGameStatus().breakType == BreakType.GHOST && turn.getTurnEnd() != TurnEnd.GAME_WON) {
+        if (getGameStatus().gameType.isGhostGame() && turn.getTurnEnd() != TurnEnd.GAME_WON) {
             insertGameWonForGhost();
         }
 
@@ -233,6 +233,18 @@ public class Match implements IMatch {
 
             undoneTurns.addLast(turns.removeLast());
             matchOver = isPlayersRaceFinished();
+
+            if (game.getGameStatus().gameType.isGhostGame()) {
+                if (isUndoTurn()) {
+                    player1.removeLast();
+                    player2.removeLast();
+
+                    game.setGameStatus(games.removeLast());
+
+                    undoneTurns.addLast(turns.removeLast());
+                    matchOver = isPlayersRaceFinished();
+                }
+            }
         }
     }
 

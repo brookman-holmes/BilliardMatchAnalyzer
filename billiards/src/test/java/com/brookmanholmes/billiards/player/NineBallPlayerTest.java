@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class NineBallPlayerTest extends AbstractPlayerTest<NineBallPlayer> {
     @Override public void setUp() {
-        rank = Integer.MAX_VALUE;
+        rank = 0;
         expected = new NineBallPlayer(testName);
         actual = new NineBallPlayer(testName);
     }

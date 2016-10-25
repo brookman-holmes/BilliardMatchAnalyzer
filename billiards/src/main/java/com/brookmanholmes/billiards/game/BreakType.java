@@ -8,6 +8,5 @@ public enum BreakType {
     ALTERNATE,
     WINNER,
     PLAYER,
-    OPPONENT,
-    GHOST
+    OPPONENT
 }

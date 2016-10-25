@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.BallStatus;
-import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.bma.R;
@@ -26,7 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.BREAK_TYPE_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertBallToId;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertIdToBall;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayout;
@@ -40,10 +39,8 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
  */
 public abstract class ShotFragment extends BaseFragment {
     static final String ARG_KEY = "key";
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.title)
     TextView title;
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.buttonRunOut)
     Button btnRunOut;
 
@@ -62,13 +59,20 @@ public abstract class ShotFragment extends BaseFragment {
 
         ShotFragment fragment;
 
-        GameType gameType = GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY));
-        if (gameType == GameType.APA_EIGHT_BALL || gameType == GameType.BCA_EIGHT_BALL)
+        GameType gameType = GameType.valueOf(matchData.getString(GAME_TYPE_KEY));
+        if (isEightBall(gameType))
             fragment = new EightBallShotFragment();
         else fragment = new RotationShotFragment();
 
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private static boolean isEightBall(GameType gameType) {
+        return gameType == GameType.APA_GHOST_EIGHT_BALL ||
+                gameType == GameType.APA_EIGHT_BALL ||
+                gameType == GameType.BCA_EIGHT_BALL ||
+                gameType == GameType.BCA_GHOST_EIGHT_BALL;
     }
 
     @Override
@@ -88,7 +92,7 @@ public abstract class ShotFragment extends BaseFragment {
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
-        gameType = GameType.valueOf(getArguments().getString(MatchDialogHelperUtils.GAME_TYPE_KEY));
+        gameType = GameType.valueOf(getArguments().getString(GAME_TYPE_KEY));
     }
 
     @Override
@@ -144,7 +148,7 @@ public abstract class ShotFragment extends BaseFragment {
     }
 
     private void setBallView(BallStatus status, ImageView ballImage) {
-        if (BreakType.valueOf(getArguments().getString(BREAK_TYPE_KEY)) == BreakType.GHOST &&
+        if (gameType.isGhostGame() &&
                 convertIdToBall(ballImage.getId()) == MatchDialogHelperUtils.getGameStatus(getArguments()).GAME_BALL) {
             if (status == BallStatus.GAME_BALL_DEAD_ON_BREAK || ballIsOnTable(status))
                 setViewToBallOnTable(ballImage);

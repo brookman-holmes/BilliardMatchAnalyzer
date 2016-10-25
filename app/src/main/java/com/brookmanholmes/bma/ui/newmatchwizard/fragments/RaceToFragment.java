@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.RaceToPage;
@@ -19,6 +21,7 @@ import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.brookmanholmes.bma.ui.newmatchwizard.model.RaceToPage.OPPONENT_RANK_KEY;
 import static com.brookmanholmes.bma.ui.newmatchwizard.model.RaceToPage.PLAYER_RANK_KEY;
 
@@ -88,7 +91,8 @@ public class RaceToFragment extends BaseFragment {
         page = (RaceToPage) callbacks.onGetPage(key);
         int min = getArguments().getInt(ARG_LOWER_BOUND_KEY);
         int max = getArguments().getInt(ARG_UPPER_BOUND_KEY);
-        int choice = getArguments().getInt(ARG_DEFAULT_CHOICE_KEY);
+        int playerChoice = getArguments().getInt(ARG_DEFAULT_CHOICE_KEY);
+        int opponentChoice = getArguments().getInt(ARG_DEFAULT_CHOICE_KEY);
         int columns = getArguments().getInt(ARG_COLUMNS);
 
         View view = inflater.inflate(R.layout.fragment_race_page, container, false);
@@ -96,9 +100,20 @@ public class RaceToFragment extends BaseFragment {
         ButterKnife.bind(this, view);
 
         setPlayerNames(page.getPlayerName(), page.getOpponentName());
+        // find stored rank if it's available
+        SharedPreferences preferences = getActivity().getSharedPreferences("com.brookmanholmes.bma", MODE_PRIVATE);
+        if (page.getGameType().isApa()) {
+            if (page.getGameType() == GameType.APA_EIGHT_BALL || page.getGameType() == GameType.APA_GHOST_EIGHT_BALL) {
+                playerChoice = preferences.getInt("apa8" + page.getPlayerName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY)) - 2;
+                opponentChoice = preferences.getInt("apa8" + page.getOpponentName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY)) - 2;
+            } else if (page.getGameType() == GameType.APA_NINE_BALL || page.getGameType() == GameType.APA_GHOST_NINE_BALL) {
+                playerChoice = preferences.getInt("apa9" + page.getPlayerName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY)) - 1;
+                opponentChoice = preferences.getInt("apa9" + page.getOpponentName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY)) - 1;
+            }
+        }
 
-        playerController = new RaceController(playerGrid, min, max, columns, page.getData().getInt(ARG_PLAYER_INDEX, choice));
-        opponentController = new RaceController(opponentGrid, min, max, columns, page.getData().getInt(ARG_OPP_INDEX, choice));
+        playerController = new RaceController(playerGrid, min, max, columns, page.getData().getInt(ARG_PLAYER_INDEX, playerChoice));
+        opponentController = new RaceController(opponentGrid, min, max, columns, page.getData().getInt(ARG_OPP_INDEX, opponentChoice));
         updatePage();
         return view;
     }

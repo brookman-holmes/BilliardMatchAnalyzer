@@ -201,6 +201,31 @@ public final class GameStatus {
                     GAME_BALL = 9;
                     winOnBreak = true;
                     break;
+                case BCA_GHOST_NINE_BALL:
+                    MAX_BALLS = 9;
+                    GAME_BALL = 9;
+                    winOnBreak = true;
+                    break;
+                case BCA_GHOST_EIGHT_BALL:
+                    MAX_BALLS = 15;
+                    GAME_BALL = 8;
+                    winOnBreak = false;
+                    break;
+                case BCA_GHOST_TEN_BALL:
+                    MAX_BALLS = 10;
+                    GAME_BALL = 10;
+                    winOnBreak = false;
+                    break;
+                case APA_GHOST_EIGHT_BALL:
+                    MAX_BALLS = 15;
+                    GAME_BALL = 8;
+                    winOnBreak = true;
+                    break;
+                case APA_GHOST_NINE_BALL:
+                    MAX_BALLS = 9;
+                    GAME_BALL = 9;
+                    winOnBreak = true;
+                    break;
                 default:
                     throw new InvalidGameTypeException(gameType.name());
             }

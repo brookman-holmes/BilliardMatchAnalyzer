@@ -16,6 +16,10 @@ class TenBallGame extends RotationGame {
         super(GameType.BCA_TEN_BALL, playerTurn, breakType, MAX_BALLS, GAME_BALL);
     }
 
+    TenBallGame(GameType gameType, PlayerTurn playerTurn, BreakType breakType) {
+        super(gameType, playerTurn, breakType, MAX_BALLS, GAME_BALL);
+    }
+
     @Override boolean setAllowTurnSkip(ITurn turn) {
         return super.setAllowTurnSkip(turn) ||
                 (turn.getTurnEnd() == TurnEnd.MISS || turn.getTurnEnd() == TurnEnd.SAFETY_ERROR) &&

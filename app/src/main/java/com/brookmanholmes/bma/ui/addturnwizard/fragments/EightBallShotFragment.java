@@ -22,7 +22,6 @@ import butterknife.OnClick;
  * Created by Brookman Holmes on 4/18/2016.
  */
 public class EightBallShotFragment extends ShotFragment {
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.playerColor)
     TextView tvPlayerColor;
     private PlayerColor playerColor;

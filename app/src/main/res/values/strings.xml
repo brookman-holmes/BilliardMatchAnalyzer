@@ -299,6 +299,8 @@
     <string name="label_fouls">%1$s is on %2$d fouls</string>
     <string name="game_bca_eight_ghost">BCA 8 Ball vs. The Ghost</string>
     <string name="game_bca_nine_ghost">BCA 9 Ball vs. The Ghost</string>
+    <string name="game_apa_eight_ghost">APA 8 Ball vs. The Ghost</string>
+    <string name="game_apa_nine_ghost">APA 9 Ball vs. The Ghost</string>
     <string name="game_bca_ten_ghost">BCA 10 Ball vs. The Ghost</string>
     <string name="player_name">Player</string>
 </resources>

@@ -25,7 +25,7 @@ public class ApaBinder extends BindingAdapter {
     public boolean showCard = false;
     public boolean apa8Ball;
 
-    ApaBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+    ApaBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded, int innings) {
         this.title = title;
         this.helpLayout = R.layout.dialog_help_apa;
 
@@ -45,7 +45,7 @@ public class ApaBinder extends BindingAdapter {
             playerDefenses = player.getSafetyAttempts() + "";
             opponentDefenses = opponent.getSafetyAttempts() + "";
 
-            innings = "0";
+            this.innings = innings + "";
         }
 
         if (player instanceof ApaEightBallPlayer) {

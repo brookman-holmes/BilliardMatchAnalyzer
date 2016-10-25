@@ -1,9 +1,8 @@
 package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
@@ -13,7 +12,6 @@ import com.brookmanholmes.billiards.turn.TurnEndOptions;
  * Created by Brookman Holmes on 10/30/2015.
  * Helper class that creates a TurnEndOptions object based on the status of the table
  */
-// todo set up so that TurnEndOptions gets created with no, yes, lost game options
 public abstract class TurnEndHelper {
     ITableStatus tableStatus;
     GameStatus game;
@@ -44,9 +42,6 @@ public abstract class TurnEndHelper {
      * are not yet supported
      */
     static TurnEndHelper create(GameStatus game, ITableStatus tableStatus) throws InvalidGameTypeException {
-        if (game.breakType == BreakType.GHOST)
-            return new GhostTurnEndHelper(game, tableStatus);
-
         switch (game.gameType) {
             case APA_EIGHT_BALL:
                 return new ApaEightBallTurnEndHelper(game, tableStatus);
@@ -58,9 +53,32 @@ public abstract class TurnEndHelper {
                 return new RotationTurnEndHelper(game, tableStatus);
             case BCA_TEN_BALL:
                 return new TenBallTurnEndHelper(game, tableStatus);
+            case BCA_GHOST_EIGHT_BALL:
+                return new GhostEightBallTurnEndHelper(game, tableStatus);
+            case BCA_GHOST_NINE_BALL:
+                return new GhostTurnEndHelper(game, tableStatus);
+            case BCA_GHOST_TEN_BALL:
+                return new GhostTurnEndHelper(game, tableStatus);
+            case APA_GHOST_EIGHT_BALL:
+                return new ApaGhostEightBallTurnEndHelper(game, tableStatus);
+            case APA_GHOST_NINE_BALL:
+                return new GhostTurnEndHelper(game, tableStatus);
             default:
                 throw new InvalidGameTypeException();
         }
+    }
+
+    /**
+     * Creates a new {@link com.brookmanholmes.billiards.turn.TurnEndOptions} object with a list of
+     * the possible turn endings based on the current status of the game and the status of the table
+     * for the next turn
+     * @param game The current status of the game
+     * @param tableStatus The status of the table for the next turn
+     * @return A new {@link com.brookmanholmes.billiards.turn.TurnEndOptions} object
+     */
+    public static TurnEndOptions getTurnEndOptions(GameStatus game, ITableStatus tableStatus) {
+        TurnEndHelper turnEndHelper = create(game, tableStatus);
+        return turnEndHelper.getTurnEndOptions();
     }
 
     /**
@@ -184,18 +202,5 @@ public abstract class TurnEndHelper {
                 tableStatus.getGameBallMadeOnBreak()  &&
                 tableStatus.getShootingBallsMade() == 0 &&
                 tableStatus.getDeadBalls() == 0;
-    }
-
-    /**
-     * Creates a new {@link com.brookmanholmes.billiards.turn.TurnEndOptions} object with a list of
-     * the possible turn endings based on the current status of the game and the status of the table
-     * for the next turn
-     * @param game The current status of the game
-     * @param tableStatus The status of the table for the next turn
-     * @return A new {@link com.brookmanholmes.billiards.turn.TurnEndOptions} object
-     */
-    public static TurnEndOptions getTurnEndOptions(GameStatus game, ITableStatus tableStatus) {
-        TurnEndHelper turnEndHelper = create(game, tableStatus);
-        return turnEndHelper.getTurnEndOptions();
     }
 }

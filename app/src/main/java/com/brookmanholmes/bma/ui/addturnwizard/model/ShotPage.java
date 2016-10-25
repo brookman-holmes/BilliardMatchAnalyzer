@@ -12,12 +12,27 @@ import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.*;
-import static com.brookmanholmes.billiards.turn.TableUtils.*;
-import static com.brookmanholmes.billiards.game.BallStatus.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE;
+import static com.brookmanholmes.billiards.game.BallStatus.ON_TABLE;
+import static com.brookmanholmes.billiards.turn.TableUtils.getSolidsMade;
+import static com.brookmanholmes.billiards.turn.TableUtils.getSolidsMadeOnBreak;
+import static com.brookmanholmes.billiards.turn.TableUtils.getStripesMade;
+import static com.brookmanholmes.billiards.turn.TableUtils.getStripesMadeOnBreak;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.BALLS_ON_TABLE_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.CURRENT_PLAYER_COLOR_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.NEW_GAME_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
@@ -164,19 +179,23 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
     }
 
     private void updateFragment() {
+        PlayerColor currentPlayerColor = PlayerColor.valueOf(data.getString(CURRENT_PLAYER_COLOR_KEY));
         if (fragment != null) {
-            if (GameType.valueOf(data.getString(GAME_TYPE_KEY)) == GameType.BCA_EIGHT_BALL) {
+            GameType gameType = GameType.valueOf(data.getString(GAME_TYPE_KEY));
 
-                if (PlayerColor.valueOf(data.getString(CURRENT_PLAYER_COLOR_KEY)) == PlayerColor.OPEN)
+            if (gameType == GameType.BCA_EIGHT_BALL || gameType == GameType.BCA_GHOST_EIGHT_BALL) {
+
+                if (currentPlayerColor == PlayerColor.OPEN)
                     playerColor = setPlayerColorFromBallsMade();
 
-            } else if (GameType.valueOf(data.getString(GAME_TYPE_KEY)) == GameType.APA_EIGHT_BALL) {
+            } else if (gameType == GameType.APA_EIGHT_BALL || gameType == GameType.APA_GHOST_EIGHT_BALL) {
 
-                if (data.getBoolean(NEW_GAME_KEY) && setPlayerColorFromBreakBallsMade() != PlayerColor.OPEN)
-                    playerColor = setPlayerColorFromBreakBallsMade();
-                else
-                    playerColor = setPlayerColorFromBallsMade();
-
+                if (currentPlayerColor == PlayerColor.OPEN) {
+                    if (data.getBoolean(NEW_GAME_KEY) && setPlayerColorFromBreakBallsMade() != PlayerColor.OPEN)
+                        playerColor = setPlayerColorFromBreakBallsMade();
+                    else
+                        playerColor = setPlayerColorFromBallsMade();
+                }
             }
 
             fragment.updateView(tableStatus.getBallStatuses(), playerColor);

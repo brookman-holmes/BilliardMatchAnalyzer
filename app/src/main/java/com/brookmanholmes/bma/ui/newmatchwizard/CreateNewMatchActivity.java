@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
@@ -122,6 +123,12 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
     private void createMatchAndLaunchMatchInfoActivity() {
         Match match = wizardModel.createMatch();
+        if (match.getGameStatus().gameType.isApa()) {
+            if (match.getGameStatus().gameType == GameType.APA_EIGHT_BALL || match.getGameStatus().gameType == GameType.APA_GHOST_EIGHT_BALL)
+                preferences.edit().putInt("apa8" + match.getPlayer().getName(), match.getPlayer().getRank()).putInt("apa8" + match.getOpponent().getName(), match.getOpponent().getRank()).apply();
+            else if (match.getGameStatus().gameType == GameType.APA_NINE_BALL || match.getGameStatus().gameType == GameType.APA_GHOST_NINE_BALL)
+                preferences.edit().putInt("apa9" + match.getPlayer().getName(), match.getPlayer().getRank()).putInt("apa9" + match.getOpponent().getName(), match.getOpponent().getRank()).apply();
+        }
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
         long matchId = databaseAdapter.insertMatch(match);
         Intent intent = new Intent(this, MatchInfoActivity.class);

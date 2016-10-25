@@ -1,10 +1,13 @@
 package com.brookmanholmes.bma.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_ADV_STATS_ID;
@@ -42,7 +45,7 @@ import static com.brookmanholmes.bma.data.DatabaseAdapter.TABLE_WHYS;
  */
 class DatabaseHelper extends SQLiteOpenHelper {
     static final String DATABASE_NAME = "matches_db";
-    private static final int DATABASE_VERSION = 22;
+    private static final int DATABASE_VERSION = 23;
     private static DatabaseHelper sInstance;
 
     /**
@@ -53,7 +56,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static synchronized DatabaseHelper getInstance(Context context) {
+    static synchronized DatabaseHelper getInstance(Context context) {
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
@@ -157,15 +160,51 @@ class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(getCreateWhyTable());
     }
 
+    private ContentValues getEightBallCV() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_GAME_TYPE, GameType.BCA_GHOST_EIGHT_BALL.name());
+        contentValues.put(COLUMN_BREAK_TYPE, PlayerTurn.PLAYER.name());
+        return contentValues;
+    }
+
+    private ContentValues getNineBallCV() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_GAME_TYPE, GameType.BCA_GHOST_NINE_BALL.name());
+        contentValues.put(COLUMN_BREAK_TYPE, PlayerTurn.PLAYER.name());
+        return contentValues;
+    }
+
+    private ContentValues getTenBallCV() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_GAME_TYPE, GameType.BCA_GHOST_TEN_BALL.name());
+        contentValues.put(COLUMN_BREAK_TYPE, PlayerTurn.PLAYER.name());
+        return contentValues;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TURNS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADV_STATS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOWS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WHYS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANGLES);
-        onCreate(db);
+        if (oldVersion == 22 && newVersion == 23) {
+            db.update(TABLE_MATCHES, getEightBallCV(),
+                    COLUMN_GAME_TYPE + "=? AND " + COLUMN_BREAK_TYPE + "=?",
+                    new String[]{GameType.BCA_EIGHT_BALL.name(), "GHOST"});
+
+            db.update(TABLE_MATCHES, getNineBallCV(),
+                    COLUMN_GAME_TYPE + "=? AND " + COLUMN_BREAK_TYPE + "=?",
+                    new String[]{GameType.BCA_NINE_BALL.name(), "GHOST"});
+
+            db.update(TABLE_MATCHES, getTenBallCV(),
+                    COLUMN_GAME_TYPE + "=? AND " + COLUMN_BREAK_TYPE + "=?",
+                    new String[]{GameType.BCA_TEN_BALL.name(), "GHOST"});
+
+        } else {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_TURNS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADV_STATS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOWS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_WHYS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANGLES);
+            onCreate(db);
+        }
     }
 }

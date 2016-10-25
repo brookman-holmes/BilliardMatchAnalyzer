@@ -1,6 +1,5 @@
 package com.brookmanholmes.billiards.player.controller;
 
-import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
@@ -102,6 +101,16 @@ public abstract class PlayerController<T extends AbstractPlayer> {
                 return new ApaNineBallController(playerName, opponentName, playerRank, opponentRank);
             case BCA_EIGHT_BALL:
                 return new EightBallController(playerName, opponentName, playerRank, opponentRank);
+            case BCA_GHOST_EIGHT_BALL:
+                return new EightBallController(playerName, opponentName, playerRank, opponentRank);
+            case BCA_GHOST_NINE_BALL:
+                return new NineBallController(playerName, opponentName, playerRank, opponentRank);
+            case BCA_GHOST_TEN_BALL:
+                return new TenBallController(playerName, opponentName, playerRank, opponentRank);
+            case APA_GHOST_EIGHT_BALL:
+                return new ApaEightBallController(playerName, opponentName, playerRank, opponentRank);
+            case APA_GHOST_NINE_BALL:
+                return new ApaNineBallController(playerName, opponentName, playerRank, opponentRank);
             default:
                 throw new InvalidGameTypeException(game.getGameType().name());
         }
@@ -294,9 +303,9 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * @param player The player to add breaking stats to
      */
     void addBreakingStats(T player) {
-        if (gameStatus.breakType == BreakType.GHOST) {
+        if (gameStatus.gameType.isGhostGame()) {
             player.addBreakShot(turn.getBreakBallsMade(),
-                    turn.getShootingBallsMade() > 0,
+                    turn.getShootingBallsMade() > 0 && turn.getBreakBallsMade() > 0,
                     turn.getDeadBallsOnBreak() > 0);
         } else
             player.addBreakShot(

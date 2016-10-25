@@ -25,9 +25,6 @@ class EightBallGame extends Game {
 
     EightBallGame(GameType gameType, PlayerTurn turn, BreakType breakType) throws InvalidGameTypeException {
         super(gameType, turn, breakType, MAX_BALLS, GAME_BALL);
-
-        if (gameType != GameType.APA_EIGHT_BALL)
-            throw new InvalidGameTypeException(gameType.name());
     }
 
     /**
@@ -49,15 +46,18 @@ class EightBallGame extends Game {
         }
     }
 
-    @Override boolean setAllowPush(ITurn turn) {
+    @Override
+    boolean setAllowPush(ITurn turn) {
         return false;
     }
 
-    @Override boolean setAllowTurnSkip(ITurn turn) {
+    @Override
+    boolean setAllowTurnSkip(ITurn turn) {
         return false;
     }
 
-    @Override PlayerColor setPlayerColor(ITurn turn) {
+    @Override
+    PlayerColor setPlayerColor(ITurn turn) {
         if (playerColor == OPEN) {
             if (TableUtils.getSolidsMade(turn.getBallStatuses()) > 0) {
                 return convertCurrentPlayerColorToPlayerColor(SOLIDS);
@@ -69,13 +69,15 @@ class EightBallGame extends Game {
             return playerColor;
     }
 
-    @Override boolean setAllowPlayerToBreakAgain(ITurn turn) {
+    @Override
+    boolean setAllowPlayerToBreakAgain(ITurn turn) {
         return turn.getTurnEnd() == TurnEnd.BREAK_MISS
                 && turn.isFoul()
                 && turn.getBallsToRemoveFromTable().contains(GAME_BALL);
     }
 
-    @Override public int[] getGhostBallsToWinGame() {
+    @Override
+    public int[] getGhostBallsToWinGame() {
         if (playerColor == SOLIDS) {
             ballsOnTable.removeAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
         } else {
@@ -91,7 +93,8 @@ class EightBallGame extends Game {
         return ballsToWin;
     }
 
-    @Override int getCurrentPlayersConsecutiveFouls() {
+    @Override
+    int getCurrentPlayersConsecutiveFouls() {
         return 0;
     }
 }

@@ -156,6 +156,8 @@ public class IntroActivity extends BaseActivity {
         if (item.getItemId() == R.id.action_about) {
             new LibsBuilder().withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
                     .withActivityTitle(getString(R.string.about))
+                    .withAutoDetect(false)
+                    .withLibraries("Butterknife", "LeakCanary", "MPAndroidChart", "materialrangebar")
                     .start(this);
         }
 

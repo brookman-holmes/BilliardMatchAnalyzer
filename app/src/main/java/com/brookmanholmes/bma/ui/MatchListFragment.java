@@ -176,8 +176,6 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
                     return getString(R.string.break_player, playerName);
                 case OPPONENT:
                     return getString(R.string.break_player, opponentName);
-                case GHOST:
-                    return getString(R.string.break_player, playerName);
                 default:
                     throw new IllegalArgumentException();
             }
@@ -194,6 +192,16 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
                 case APA_EIGHT_BALL:
                     return R.drawable.eight_ball;
                 case APA_NINE_BALL:
+                    return R.drawable.nine_ball;
+                case BCA_GHOST_EIGHT_BALL:
+                    return R.drawable.eight_ball;
+                case BCA_GHOST_NINE_BALL:
+                    return R.drawable.nine_ball;
+                case BCA_GHOST_TEN_BALL:
+                    return R.drawable.ten_ball;
+                case APA_GHOST_EIGHT_BALL:
+                    return R.drawable.eight_ball;
+                case APA_GHOST_NINE_BALL:
                     return R.drawable.nine_ball;
                 case STRAIGHT_POOL:
                     return R.drawable.fourteen_ball;
@@ -215,6 +223,16 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
                 case APA_EIGHT_BALL:
                     return getString(R.string.apa_rules);
                 case APA_NINE_BALL:
+                    return getString(R.string.apa_rules);
+                case BCA_GHOST_EIGHT_BALL:
+                    return getString(R.string.bca_rules);
+                case BCA_GHOST_NINE_BALL:
+                    return getString(R.string.bca_rules);
+                case BCA_GHOST_TEN_BALL:
+                    return getString(R.string.bca_rules);
+                case APA_GHOST_EIGHT_BALL:
+                    return getString(R.string.apa_rules);
+                case APA_GHOST_NINE_BALL:
                     return getString(R.string.apa_rules);
                 default:
                     return "";

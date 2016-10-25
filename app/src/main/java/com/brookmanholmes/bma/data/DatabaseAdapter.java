@@ -155,7 +155,7 @@ public class DatabaseAdapter {
         for (Match match : matches) {
             if (!names.contains(match.getPlayer().getName()))
                 names.add(match.getPlayer().getName());
-            if (match.getGameStatus().breakType != BreakType.GHOST && !names.contains(match.getOpponent().getName()))
+            if (match.getGameStatus().gameType.isGhostGame() && !names.contains(match.getOpponent().getName()))
                 names.add(match.getOpponent().getName());
         }
 
@@ -167,7 +167,7 @@ public class DatabaseAdapter {
 
         for (Match match : getMatches()) {
             combinePlayerInList(players, match.getPlayer());
-            if (match.getGameStatus().breakType != BreakType.GHOST)
+            if (match.getGameStatus().gameType.isGhostGame())
                 combinePlayerInList(players, match.getOpponent());
         }
 
@@ -807,7 +807,6 @@ public class DatabaseAdapter {
     }
 
     public void deleteMatch(long id) {
-
         database.delete(TABLE_PLAYERS, COLUMN_MATCH_ID + "=" + id, null);
         database.delete(TABLE_TURNS, COLUMN_MATCH_ID + "=" + id, null);
         database.delete(TABLE_MATCHES, COLUMN_ID + "=" + id, null);

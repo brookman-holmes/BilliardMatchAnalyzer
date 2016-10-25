@@ -38,6 +38,16 @@ public class ConversionUtils {
                 return context.getString(R.string.game_bca_nine);
             case BCA_TEN_BALL:
                 return context.getString(R.string.game_bca_ten);
+            case APA_GHOST_EIGHT_BALL:
+                return context.getString(R.string.game_apa_eight_ghost);
+            case APA_GHOST_NINE_BALL:
+                return context.getString(R.string.game_apa_nine_ghost);
+            case BCA_GHOST_EIGHT_BALL:
+                return context.getString(R.string.game_bca_eight_ghost);
+            case BCA_GHOST_NINE_BALL:
+                return context.getString(R.string.game_bca_nine_ghost);
+            case BCA_GHOST_TEN_BALL:
+                return context.getString(R.string.game_bca_ten_ghost);
             case AMERICAN_ROTATION:
                 return context.getString(R.string.game_american_rotation);
             case STRAIGHT_POOL:
@@ -59,8 +69,6 @@ public class ConversionUtils {
                 return context.getString(R.string.break_player, playerName);
             case OPPONENT:
                 return context.getString(R.string.break_player, opponentName);
-            case GHOST:
-                return context.getString(R.string.break_player, playerName);
             default:
                 throw new IllegalArgumentException();
         }

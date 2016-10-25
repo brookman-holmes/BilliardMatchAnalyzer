@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
 
-import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
@@ -16,11 +15,24 @@ import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.PageList;
 
-
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.ALLOW_BREAK_AGAIN_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.BALLS_ON_TABLE_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.NEW_GAME_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.STATS_LEVEL_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.SUCCESSFUL_SAFE_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.TURN_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringToAngle;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringToHowType;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringToShotType;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringToSubType;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringToTurnEnd;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringToWhyType;
 
 
 /**
@@ -90,7 +102,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     protected PageList onNewRootPageList() {
         if (matchData.getBoolean(ALLOW_BREAK_AGAIN_KEY))
             return new PageList(getTurnEndPage());
-        else if (BreakType.valueOf(matchData.getString(BREAK_TYPE_KEY)).equals(BreakType.GHOST))
+        else if (GameType.valueOf(matchData.getString(GAME_TYPE_KEY)).isGhostGame())
             return new PageList(getGhostBreakPage(), getShotPage(), getTurnEndPage());
         else if (matchData.getBoolean(NEW_GAME_KEY))
             return new PageList(getBreakPage(), getTurnEndPage());

@@ -15,9 +15,6 @@ class NineBallGame extends RotationGame {
 
     NineBallGame(GameType gameType, PlayerTurn playerTurn, BreakType breakType) throws InvalidGameTypeException {
         super(gameType, playerTurn, breakType, MAX_BALLS, GAME_BALL);
-
-        if (gameType != GameType.APA_NINE_BALL)
-            throw new InvalidGameTypeException(gameType.name());
     }
 
     @Override boolean winOnBreak() {

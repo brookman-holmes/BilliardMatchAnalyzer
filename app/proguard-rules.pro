@@ -28,6 +28,3 @@
 
 -keep class com.github.mikephil.charting.** { *; }
 -dontwarn com.github.mikephil.charting.data.realm.**
-
--keep class .R
--keep class **.R$* { <fields>; }

@@ -136,6 +136,16 @@ public class MatchDialogHelperUtils {
                 return 10;
             case BCA_NINE_BALL:
                 return 9;
+            case BCA_GHOST_EIGHT_BALL:
+                return 8;
+            case BCA_GHOST_NINE_BALL:
+                return 9;
+            case BCA_GHOST_TEN_BALL:
+                return 10;
+            case APA_GHOST_EIGHT_BALL:
+                return 8;
+            case APA_GHOST_NINE_BALL:
+                return 9;
             default:
                 throw new InvalidGameTypeException("That game is probably not implemented yet: " + match.getGameStatus().gameType.toString());
         }
@@ -153,6 +163,16 @@ public class MatchDialogHelperUtils {
             case BCA_TEN_BALL:
                 return R.layout.select_ten_ball_dialog;
             case BCA_NINE_BALL:
+                return R.layout.select_nine_ball_dialog;
+            case APA_GHOST_EIGHT_BALL:
+                return R.layout.select_eight_ball_dialog;
+            case APA_GHOST_NINE_BALL:
+                return R.layout.select_nine_ball_dialog;
+            case BCA_GHOST_EIGHT_BALL:
+                return R.layout.select_eight_ball_dialog;
+            case BCA_GHOST_TEN_BALL:
+                return R.layout.select_ten_ball_dialog;
+            case BCA_GHOST_NINE_BALL:
                 return R.layout.select_nine_ball_dialog;
             default:
                 throw new InvalidGameTypeException("Game type not implemented yet: " + gameType.toString());

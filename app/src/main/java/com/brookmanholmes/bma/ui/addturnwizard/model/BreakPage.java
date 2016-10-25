@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.brookmanholmes.billiards.game.BallStatus;
-import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.BreakFragment;
@@ -14,8 +13,13 @@ import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
 
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.*;
-import static com.brookmanholmes.billiards.game.BallStatus.*;
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.ON_TABLE;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
@@ -23,8 +27,8 @@ import static com.brookmanholmes.billiards.game.BallStatus.*;
 public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     private static final String TAG = "BreakPage";
     private static final String showShotPage = "show shot page";
-    private TableStatus tableStatus;
     private final GameType gameType;
+    private TableStatus tableStatus;
     private BreakFragment fragment;
 
     BreakPage(ModelCallbacks callbacks, String title, String title2, Bundle matchData) {
@@ -121,7 +125,7 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     }
 
     String showShotPage() {
-        if ((tableStatus.getBreakBallsMade() > 0 && gameNotWonOnBreak()) || BreakType.valueOf(data.getString(BREAK_TYPE_KEY)) == BreakType.GHOST) {
+        if ((tableStatus.getBreakBallsMade() > 0 && gameNotWonOnBreak()) || GameType.valueOf(data.getString(GAME_TYPE_KEY)).isGhostGame()) {
             return showShotPage;
         } else return "";
     }
@@ -135,6 +139,10 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     }
 
     private boolean canWinOnBreak() {
-        return gameType == GameType.APA_EIGHT_BALL || gameType == GameType.APA_NINE_BALL || gameType == GameType.BCA_NINE_BALL;
+        return gameType == GameType.APA_EIGHT_BALL ||
+                gameType == GameType.APA_NINE_BALL ||
+                gameType == GameType.BCA_NINE_BALL ||
+                gameType == GameType.APA_GHOST_EIGHT_BALL ||
+                gameType == GameType.APA_GHOST_NINE_BALL;
     }
 }

@@ -33,7 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
@@ -107,7 +106,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, inactiveArrow, null);
 
         // no reason to click on The Ghost
-        if (match.getGameStatus().breakType == BreakType.GHOST)
+        if (match.getGameStatus().gameType.isGhostGame())
             opponentNameLayout.setEnabled(false);
 
         matchOverSnackbar = makeSnackbar(R.string.match_over, Snackbar.LENGTH_INDEFINITE)

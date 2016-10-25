@@ -2,18 +2,22 @@ package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.turn.ITableStatus;
+import com.brookmanholmes.billiards.turn.TableUtils;
 
 /**
- * Created by Brookman Holmes on 4/27/2016.
+ * Created by Brookman Holmes on 10/24/2016.
  */
-class GhostTurnEndHelper extends TurnEndHelper {
-    GhostTurnEndHelper(GameStatus game, ITableStatus tableStatus) {
+
+public class GhostEightBallTurnEndHelper extends GhostTurnEndHelper {
+    GhostEightBallTurnEndHelper(GameStatus game, ITableStatus tableStatus) {
         super(game, tableStatus);
     }
 
     @Override
     boolean showWin() {
-        return tableStatus.getShootingBallsMade() + tableStatus.getBreakBallsMade() >= game.MAX_BALLS && tableStatus.isGameBallMade();
+        return (TableUtils.getSolidsRemaining(tableStatus.getBallStatuses()) == 0 ||
+                TableUtils.getStripesRemaining(tableStatus.getBallStatuses()) == 0)
+                && tableStatus.isGameBallMade();
     }
 
     @Override

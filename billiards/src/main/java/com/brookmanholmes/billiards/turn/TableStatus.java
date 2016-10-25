@@ -1,8 +1,8 @@
 package com.brookmanholmes.billiards.turn;
 
-import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,6 +79,16 @@ final public class TableStatus implements ITableStatus {
                 return new TableStatus(9, 9, gameType);
             case BCA_TEN_BALL:
                 return new TableStatus(10, 10, gameType);
+            case BCA_GHOST_EIGHT_BALL:
+                return new TableStatus(15, 8, gameType);
+            case BCA_GHOST_NINE_BALL:
+                return new TableStatus(9, 9, gameType);
+            case BCA_GHOST_TEN_BALL:
+                return new TableStatus(10, 10, gameType);
+            case APA_GHOST_EIGHT_BALL:
+                return new TableStatus(15, 8, gameType);
+            case APA_GHOST_NINE_BALL:
+                return new TableStatus(9, 9, gameType);
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }
@@ -106,6 +116,16 @@ final public class TableStatus implements ITableStatus {
                 return new TableStatus(9, 9, gameType, ballsOnTable);
             case BCA_TEN_BALL:
                 return new TableStatus(10, 10, gameType, ballsOnTable);
+            case BCA_GHOST_EIGHT_BALL:
+                return new TableStatus(15, 8, gameType, ballsOnTable);
+            case BCA_GHOST_NINE_BALL:
+                return new TableStatus(9, 9, gameType, ballsOnTable);
+            case BCA_GHOST_TEN_BALL:
+                return new TableStatus(10, 10, gameType, ballsOnTable);
+            case APA_GHOST_EIGHT_BALL:
+                return new TableStatus(15, 8, gameType, ballsOnTable);
+            case APA_GHOST_NINE_BALL:
+                return new TableStatus(9, 9, gameType, ballsOnTable);
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }

@@ -100,6 +100,10 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
         return data.getString(OPPONENT_NAME_KEY, "Player 2");
     }
 
+    public GameType getGameType() {
+        return gameType;
+    }
+
     public void unregisterListener() {
         this.fragment = null;
     }
