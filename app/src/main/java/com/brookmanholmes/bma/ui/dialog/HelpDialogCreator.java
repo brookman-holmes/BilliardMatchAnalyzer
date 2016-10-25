@@ -52,7 +52,7 @@ public class HelpDialogCreator {
         else if (pageTitle.equals(getSafetyPageTitle()))
             return R.layout.dialog_help_safety;
         else if (pageTitle.equals(getShotPageTitle()))
-            return R.layout.dialog_help_shot;
+            return R.layout.dialog_help_break;
         else if (pageTitle.equals(getTurnEndPageTitle()))
             return R.layout.dialog_help_turn_end;
         else if (pageTitle.equals(getWhatMissPageTitle()))
