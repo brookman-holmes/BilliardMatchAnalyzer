@@ -2,6 +2,7 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 
 import android.os.Bundle;
 
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 
 /**
@@ -14,6 +15,11 @@ class GhostBreakPage extends BreakPage {
 
     @Override
     String showShotPage() {
-        return "";
+        if ((gameType == GameType.APA_GHOST_NINE_BALL || gameType == GameType.APA_GHOST_EIGHT_BALL) && gameBallMadeOnBreak())
+            return "";
+        else if (gameType == GameType.APA_GHOST_EIGHT_BALL && tableStatus.isGameBallMadeIllegally())
+            return "";
+        else
+            return showShotPage;
     }
 }

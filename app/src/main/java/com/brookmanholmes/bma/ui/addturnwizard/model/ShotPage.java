@@ -38,6 +38,7 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
+    private static final String TAG = "ShotPage";
     private final TableStatus tableStatus;
     private ShotFragment fragment;
     private PlayerColor playerColor = PlayerColor.OPEN;
@@ -85,16 +86,16 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
         if (playerColor == PlayerColor.SOLIDS)
             if (ball >= 1 && ball <= 8)
-                ballStatus = incrementBallStatus(ballStatus);
+                ballStatus = incrementBallStatus(ballStatus, ball);
             else
                 ballStatus = incrementOtherPlayersBallStatus(ballStatus);
         else if (playerColor == PlayerColor.STRIPES)
             if (ball >= 8 && ball <= 15)
-                ballStatus = incrementBallStatus(ballStatus);
+                ballStatus = incrementBallStatus(ballStatus, ball);
             else
                 ballStatus = incrementOtherPlayersBallStatus(ballStatus);
         else
-            ballStatus = incrementBallStatus(ballStatus);
+            ballStatus = incrementBallStatus(ballStatus, ball);
 
         tableStatus.setBallTo(ballStatus, ball);
 
@@ -119,7 +120,7 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
         else return PlayerColor.OPEN;
     }
 
-    private BallStatus incrementBallStatus(BallStatus ballStatus) {
+    private BallStatus incrementBallStatus(BallStatus ballStatus, int ball) {
         switch (ballStatus) {
             case ON_TABLE:
                 return MADE;
@@ -127,6 +128,8 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
                 return DEAD;
             case DEAD:
                 return ON_TABLE;
+            case MADE_ON_BREAK:
+                return ballStatus;
             // game ball for 8/10 ball
             case GAME_BALL_MADE_ON_BREAK:
                 return GAME_BALL_MADE_ON_BREAK_THEN_MADE;
@@ -169,6 +172,10 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
         }
     }
 
+    public BallStatus getGameBallStatus() {
+        return tableStatus.getBallStatus(tableStatus.getGameBall());
+    }
+
     public void registerListener(ShotFragment fragment) {
         this.fragment = fragment;
         updateFragment();
@@ -200,5 +207,13 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
             fragment.updateView(tableStatus.getBallStatuses(), playerColor);
         }
+    }
+
+    public int getGameBall() {
+        return tableStatus.getGameBall();
+    }
+
+    public BallStatus getBallStatus(int ball) {
+        return tableStatus.getBallStatus(ball);
     }
 }

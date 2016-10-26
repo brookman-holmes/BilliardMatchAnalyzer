@@ -8,8 +8,8 @@ android {
         applicationId "com.brookmanholmes.bma"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 21
-        versionName "1.1.8"
+        versionCode 23
+        versionName "1.1.10"
     }
 
     buildTypes {

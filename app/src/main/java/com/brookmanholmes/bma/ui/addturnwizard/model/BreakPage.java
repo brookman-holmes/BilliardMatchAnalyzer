@@ -18,18 +18,17 @@ import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_DEAD_ON_BRE
 import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK;
 import static com.brookmanholmes.billiards.game.BallStatus.MADE_ON_BREAK;
 import static com.brookmanholmes.billiards.game.BallStatus.ON_TABLE;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class BreakPage extends BranchPage implements UpdatesTurnInfo {
+    static final String showShotPage = "show shot page";
     private static final String TAG = "BreakPage";
-    private static final String showShotPage = "show shot page";
-    private final GameType gameType;
-    private TableStatus tableStatus;
-    private BreakFragment fragment;
+    final GameType gameType;
+    TableStatus tableStatus;
+    BreakFragment fragment;
 
     BreakPage(ModelCallbacks callbacks, String title, String title2, Bundle matchData) {
         super(callbacks, title);
@@ -93,14 +92,7 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     }
 
     private BallStatus incrementBallStatus(BallStatus ballStatus, int ball) {
-        int gameBall = 0;
-        if (gameType == GameType.BCA_EIGHT_BALL) {
-            gameBall = 8;
-        } else if (gameType == GameType.BCA_TEN_BALL) {
-            gameBall = 10;
-        } else if (gameType == GameType.BCA_NINE_BALL) {
-            gameBall = 9;
-        }
+        int gameBall = tableStatus.getGameBall();
 
         switch (ballStatus) {
             case ON_TABLE:
@@ -113,10 +105,7 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
             case DEAD_ON_BREAK:
                 return ON_TABLE;
             case GAME_BALL_MADE_ON_BREAK:
-                if (ball == gameBall)
-                    return GAME_BALL_DEAD_ON_BREAK;
-                else
-                    return DEAD_ON_BREAK;
+                return GAME_BALL_DEAD_ON_BREAK;
             case GAME_BALL_DEAD_ON_BREAK:
                 return ON_TABLE;
             default:
@@ -125,24 +114,28 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     }
 
     String showShotPage() {
-        if ((tableStatus.getBreakBallsMade() > 0 && gameNotWonOnBreak()) || GameType.valueOf(data.getString(GAME_TYPE_KEY)).isGhostGame()) {
+        if (tableStatus.getBreakBallsMade() > 0 && gameNotWonOnBreak()) {
             return showShotPage;
         } else return "";
     }
 
-    private boolean gameNotWonOnBreak() {
+    boolean gameNotWonOnBreak() {
         return !(gameBallMadeOnBreak() && canWinOnBreak());
     }
 
-    private boolean gameBallMadeOnBreak() {
-        return tableStatus.getGameBallMadeOnBreak();
+    boolean gameBallMadeOnBreak() {
+        return tableStatus.isGameBallMadeOnBreak();
     }
 
-    private boolean canWinOnBreak() {
+    boolean canWinOnBreak() {
         return gameType == GameType.APA_EIGHT_BALL ||
                 gameType == GameType.APA_NINE_BALL ||
                 gameType == GameType.BCA_NINE_BALL ||
                 gameType == GameType.APA_GHOST_EIGHT_BALL ||
                 gameType == GameType.APA_GHOST_NINE_BALL;
+    }
+
+    public int getGameBall() {
+        return tableStatus.getGameBall();
     }
 }

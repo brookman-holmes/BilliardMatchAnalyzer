@@ -1,7 +1,6 @@
 package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.TableUtils;
@@ -19,7 +18,7 @@ class EightBallTurnEndHelper extends TurnEndHelper {
     }
 
     @Override boolean lostGame() {
-        return tableStatus.getGameBallMadeIllegally() ||
+        return tableStatus.isGameBallMadeIllegally() ||
                 (currentPlayerBallsRemaining() && tableStatus.isGameBallMade());
     }
 

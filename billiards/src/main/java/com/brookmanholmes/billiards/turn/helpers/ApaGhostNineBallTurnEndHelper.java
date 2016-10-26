@@ -2,22 +2,18 @@ package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.turn.ITableStatus;
-import com.brookmanholmes.billiards.turn.TableUtils;
 
 /**
- * Created by Brookman Holmes on 10/24/2016.
+ * Created by Brookman Holmes on 4/27/2016.
  */
-
-class ApaGhostEightBallTurnEndHelper extends ApaEightBallTurnEndHelper {
-    ApaGhostEightBallTurnEndHelper(GameStatus game, ITableStatus tableStatus) {
+class ApaGhostNineBallTurnEndHelper extends TurnEndHelper {
+    ApaGhostNineBallTurnEndHelper(GameStatus game, ITableStatus tableStatus) {
         super(game, tableStatus);
     }
 
     @Override
     boolean showWin() {
-        return ((TableUtils.getSolidsRemaining(tableStatus.getBallStatuses()) == 0 ||
-                TableUtils.getStripesRemaining(tableStatus.getBallStatuses()) == 0) &&
-                tableStatus.isGameBallMade()) || tableStatus.isGameBallMadeOnBreak();
+        return tableStatus.isGameBallMade() || tableStatus.isGameBallMadeOnBreak();
     }
 
     @Override

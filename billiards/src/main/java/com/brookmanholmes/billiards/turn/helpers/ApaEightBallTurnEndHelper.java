@@ -1,6 +1,5 @@
 package com.brookmanholmes.billiards.turn.helpers;
 
-import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 
@@ -13,11 +12,11 @@ class ApaEightBallTurnEndHelper extends EightBallTurnEndHelper {
     }
 
     @Override boolean showWin() {
-        return super.showWin() || tableStatus.getGameBallMadeOnBreak();
+        return super.showWin() || tableStatus.isGameBallMadeOnBreak();
     }
 
     @Override boolean lostGame() {
-        return super.lostGame() || tableStatus.getBallStatus(game.GAME_BALL) == BallStatus.DEAD_ON_BREAK;
+        return super.lostGame() || tableStatus.isGameBallMadeIllegally();
     }
 
     @Override boolean showSafety() {

@@ -62,7 +62,7 @@ public abstract class TurnEndHelper {
             case APA_GHOST_EIGHT_BALL:
                 return new ApaGhostEightBallTurnEndHelper(game, tableStatus);
             case APA_GHOST_NINE_BALL:
-                return new GhostTurnEndHelper(game, tableStatus);
+                return new ApaGhostNineBallTurnEndHelper(game, tableStatus);
             default:
                 throw new InvalidGameTypeException();
         }
@@ -199,7 +199,7 @@ public abstract class TurnEndHelper {
      */
     private boolean allowPlayerToContinueGame() {
         return game.gameType == GameType.BCA_EIGHT_BALL &&
-                tableStatus.getGameBallMadeOnBreak()  &&
+                tableStatus.isGameBallMadeOnBreak() &&
                 tableStatus.getShootingBallsMade() == 0 &&
                 tableStatus.getDeadBalls() == 0;
     }

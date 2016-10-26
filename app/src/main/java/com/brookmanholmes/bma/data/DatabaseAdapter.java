@@ -155,7 +155,7 @@ public class DatabaseAdapter {
         for (Match match : matches) {
             if (!names.contains(match.getPlayer().getName()))
                 names.add(match.getPlayer().getName());
-            if (match.getGameStatus().gameType.isGhostGame() && !names.contains(match.getOpponent().getName()))
+            if (!match.getGameStatus().gameType.isGhostGame() && !names.contains(match.getOpponent().getName()))
                 names.add(match.getOpponent().getName());
         }
 

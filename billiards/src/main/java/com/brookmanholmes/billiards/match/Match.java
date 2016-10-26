@@ -235,15 +235,8 @@ public class Match implements IMatch {
             matchOver = isPlayersRaceFinished();
 
             if (game.getGameStatus().gameType.isGhostGame()) {
-                if (isUndoTurn()) {
-                    player1.removeLast();
-                    player2.removeLast();
-
-                    game.setGameStatus(games.removeLast());
-
-                    undoneTurns.addLast(turns.removeLast());
-                    matchOver = isPlayersRaceFinished();
-                }
+                if (game.getGameStatus().turn == PlayerTurn.OPPONENT)
+                    undoTurn(); // repeat undoing the turn if it's the ghost's turn
             }
         }
     }

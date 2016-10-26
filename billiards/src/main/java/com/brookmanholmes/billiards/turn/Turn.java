@@ -24,64 +24,79 @@ public class Turn implements ITurn {
         this.advStats = advStats;
     }
 
-    @Override public int getShootingBallsMade() {
+    @Override
+    public int getShootingBallsMade() {
         return tableStatus.getShootingBallsMade();
     }
 
-    @Override public int getDeadBalls() {
+    @Override
+    public int getDeadBalls() {
         return tableStatus.getDeadBalls();
     }
 
-    @Override public int getDeadBallsOnBreak() {
+    @Override
+    public int getDeadBallsOnBreak() {
         return tableStatus.getDeadBallsOnBreak();
     }
 
-    @Override public int getBreakBallsMade() {
+    @Override
+    public int getBreakBallsMade() {
         return tableStatus.getBreakBallsMade();
     }
 
-    @Override public boolean isFoul() {
+    @Override
+    public boolean isFoul() {
         return scratch;
     }
 
-    @Override public List<Integer> getBallsToRemoveFromTable() {
+    @Override
+    public List<Integer> getBallsToRemoveFromTable() {
         return tableStatus.getBallsToRemoveFromTable();
     }
 
-    @Override public TurnEnd getTurnEnd() {
+    @Override
+    public TurnEnd getTurnEnd() {
         return turnEnd;
     }
 
-    @Override public boolean getGameBallMadeOnBreak() {
-        return tableStatus.getGameBallMadeOnBreak();
+    @Override
+    public boolean isGameBallMadeOnBreak() {
+        return tableStatus.isGameBallMadeOnBreak();
     }
 
-    @Override public boolean isGameBallMade() {
+    @Override
+    public boolean isGameBallMade() {
         return tableStatus.isGameBallMade();
     }
 
-    @Override public int getBallsRemaining() {
+    @Override
+    public int getBallsRemaining() {
         return tableStatus.getBallsRemaining();
     }
 
-    @Override public BallStatus getBallStatus(int ball) {
+    @Override
+    public BallStatus getBallStatus(int ball) {
         return tableStatus.getBallStatus(ball);
     }
 
-    @Override public boolean getGameBallMadeIllegally() {
-        return tableStatus.getGameBallMadeIllegally();
+    @Override
+    public boolean isGameBallMadeIllegally() {
+        return tableStatus.isGameBallMadeIllegally();
     }
 
     // TODO: 8/26/2016 add test for this method
-    @Override public void setBallTo(BallStatus status, int... balls) {
+    @Override
+    public void setBallTo(BallStatus status, int... balls) {
         tableStatus.setBallTo(status, balls);
     }
 
-    @Override public boolean isGameLost() {
+    @Override
+    public boolean isGameLost() {
         return gameLost;
     }
 
-    @Override public List<BallStatus> getBallStatuses() {
+    @Override
+    public List<BallStatus> getBallStatuses() {
         List<BallStatus> ballStatuses = new ArrayList<>();
 
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
@@ -91,19 +106,28 @@ public class Turn implements ITurn {
         return ballStatuses;
     }
 
-    @Override public AdvStats getAdvStats() {
+    @Override
+    public AdvStats getAdvStats() {
         return advStats;
     }
 
-    @Override public int size() {
+    @Override
+    public int size() {
         return tableStatus.size();
     }
 
-    @Override public GameType getGameType() {
+    @Override
+    public GameType getGameType() {
         return tableStatus.getGameType();
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public int getGameBall() {
+        return tableStatus.getGameBall();
+    }
+
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -117,7 +141,8 @@ public class Turn implements ITurn {
 
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = tableStatus.hashCode();
         result = 31 * result + turnEnd.hashCode();
         result = 31 * result + (scratch ? 1 : 0);
@@ -126,7 +151,8 @@ public class Turn implements ITurn {
         return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Turn{" +
                 "tableStatus=" + tableStatus +
                 "\n turnEnd=" + turnEnd +

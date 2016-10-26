@@ -103,7 +103,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         if (matchData.getBoolean(ALLOW_BREAK_AGAIN_KEY))
             return new PageList(getTurnEndPage());
         else if (GameType.valueOf(matchData.getString(GAME_TYPE_KEY)).isGhostGame())
-            return new PageList(getGhostBreakPage(), getShotPage(), getTurnEndPage());
+            return new PageList(getGhostBreakPage(), getTurnEndPage());
         else if (matchData.getBoolean(NEW_GAME_KEY))
             return new PageList(getBreakPage(), getTurnEndPage());
         else

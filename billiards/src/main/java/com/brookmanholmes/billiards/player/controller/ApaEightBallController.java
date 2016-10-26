@@ -14,7 +14,7 @@ class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
     @Override void addBreakingStats(ApaEightBallPlayer player) {
         super.addBreakingStats(player);
 
-        if (turn.getGameBallMadeOnBreak()) {
+        if (turn.isGameBallMadeOnBreak()) {
             player.addWinOnBreak();
             player.addEarlyWin();
         }

@@ -27,7 +27,7 @@ import static com.brookmanholmes.billiards.game.BallStatus.ON_TABLE;
  * Created by Brookman Holmes on 10/25/2015.
  */
 final public class TableStatus implements ITableStatus {
-    final int GAME_BALL;
+    private final int GAME_BALL;
     private final GameType gameType;
     final private Map<Integer, BallStatus> table;
 
@@ -131,7 +131,8 @@ final public class TableStatus implements ITableStatus {
         }
     }
 
-    @Override public List<Integer> getBallsToRemoveFromTable() {
+    @Override
+    public List<Integer> getBallsToRemoveFromTable() {
         List<Integer> ballsOffTable = new ArrayList<>();
 
         for (int ball : table.keySet()) {
@@ -142,7 +143,8 @@ final public class TableStatus implements ITableStatus {
         return ballsOffTable;
     }
 
-    @Override public List<BallStatus> getBallStatuses() {
+    @Override
+    public List<BallStatus> getBallStatuses() {
         List<BallStatus> ballStatuses = new ArrayList<>();
         for (int i = 1; i <= size(); i++) {
             ballStatuses.add(table.get(i));
@@ -162,7 +164,13 @@ final public class TableStatus implements ITableStatus {
         }
     }
 
-    @Override public void setBallTo(BallStatus status, int... balls) throws InvalidBallException {
+    @Override
+    public int getGameBall() {
+        return GAME_BALL;
+    }
+
+    @Override
+    public void setBallTo(BallStatus status, int... balls) throws InvalidBallException {
         for (int ball : balls) {
             if (table.get(ball) == null) {
                 throw new InvalidBallException();
@@ -171,64 +179,76 @@ final public class TableStatus implements ITableStatus {
         }
     }
 
-    @Override public int getDeadBalls() {
+    @Override
+    public int getDeadBalls() {
         return Collections.frequency(table.values(), DEAD)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_DEAD ? 1 : 0);
     }
 
-    @Override public int getDeadBallsOnBreak() {
+    @Override
+    public int getDeadBallsOnBreak() {
         return Collections.frequency(table.values(), DEAD_ON_BREAK)
                 + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_MADE ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_DEAD ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK ? 1 : 0);
     }
 
-    @Override public int getBallsRemaining() {
+    @Override
+    public int getBallsRemaining() {
         return Collections.frequency(table.values(), ON_TABLE);
     }
 
-    @Override public int getBreakBallsMade() {
+    @Override
+    public int getBreakBallsMade() {
         return Collections.frequency(table.values(), MADE_ON_BREAK)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_DEAD ? 1 : 0);
     }
 
-    @Override public int getShootingBallsMade() {
+    @Override
+    public int getShootingBallsMade() {
         return Collections.frequency(table.values(), MADE)
                 + (table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE ? 1 : 0)
                 + (table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_MADE ? 1 : 0);
     }
 
-    @Override public boolean isGameBallMade() {
+    @Override
+    public boolean isGameBallMade() {
         return table.get(GAME_BALL) == MADE ||
                 table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE ||
                 table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK_THEN_MADE;
     }
 
-    @Override public boolean getGameBallMadeOnBreak() {
+    @Override
+    public boolean isGameBallMadeOnBreak() {
         return table.get(GAME_BALL) == MADE_ON_BREAK
                 || table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK
                 || table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_DEAD
                 || table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_MADE;
     }
 
-    @Override public boolean getGameBallMadeIllegally() {
+    @Override
+    public boolean isGameBallMadeIllegally() {
         return table.get(GAME_BALL) == DEAD ||
-                table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
+                table.get(GAME_BALL) == GAME_BALL_MADE_ON_BREAK_THEN_DEAD ||
+                table.get(GAME_BALL) == GAME_BALL_DEAD_ON_BREAK;
     }
 
-    @Override public BallStatus getBallStatus(int ball) throws InvalidBallException {
+    @Override
+    public BallStatus getBallStatus(int ball) throws InvalidBallException {
         if (table.get(ball) != null)
             return table.get(ball);
         else throw new InvalidBallException();
     }
 
-    @Override public GameType getGameType() {
+    @Override
+    public GameType getGameType() {
         return gameType;
     }
 
-    @Override public int size() {
+    @Override
+    public int size() {
         return table.size();
     }
 
@@ -243,7 +263,8 @@ final public class TableStatus implements ITableStatus {
         }
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -254,13 +275,15 @@ final public class TableStatus implements ITableStatus {
 
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = table.hashCode();
         result = 31 * result + GAME_BALL;
         return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "TableStatus{" +
                 "table=" + table.toString() +
                 ", GAME_BALL=" + GAME_BALL +

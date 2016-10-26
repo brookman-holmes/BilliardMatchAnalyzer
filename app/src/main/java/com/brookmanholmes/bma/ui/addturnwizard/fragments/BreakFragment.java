@@ -35,6 +35,7 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
  */
 @SuppressWarnings("WeakerAccess")
 public class BreakFragment extends BaseFragment {
+    private static final String TAG = "BreakFragment";
     private static final String ARG_KEY = "key";
     private static final int ballIds[] = {R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
@@ -96,7 +97,7 @@ public class BreakFragment extends BaseFragment {
         title.setText(page.getTitle());
 
         for (int i = 1; i <= ballIds.length; i++) {
-            ImageView ballImage = (ImageView) view.findViewById(convertBallToId(i));
+            ImageView ballImage = ButterKnife.findById(view, convertBallToId(i));
 
             if (ballImage != null) {
                 ballImage.setImageLevel(1);
@@ -137,10 +138,13 @@ public class BreakFragment extends BaseFragment {
         int ball = convertIdToBall(view.getId());
 
         BallStatus ballStatus = page.getBallStatus(ball);
-        if (ballIsDead(ballStatus) || ballIsMade(ballStatus)) // if the ball has not been modified by ShotPage
+        if (!modifiedByShotPage(ballStatus)) {// if the ball has not been modified by ShotPage
             ballStatus = page.updateBallStatus(ball);
-        else { // if the ball has been modified by ShotPage then it needs to be treated like it's on table
-            ballStatus = BallStatus.MADE_ON_BREAK;
+        } else { // if the ball has been modified by ShotPage then it needs to be treated like it's on table
+            if (ball == page.getGameBall())
+                ballStatus = BallStatus.GAME_BALL_MADE_ON_BREAK;
+            else
+                ballStatus = BallStatus.MADE_ON_BREAK;
             page.setBallStatus(BallStatus.MADE_ON_BREAK, ball);
         }
         setBallView(ballStatus, view);
@@ -165,10 +169,25 @@ public class BreakFragment extends BaseFragment {
     }
 
     private boolean ballIsDead(BallStatus status) {
-        return status == BallStatus.DEAD_ON_BREAK || status == BallStatus.GAME_BALL_DEAD_ON_BREAK;
+        return status == BallStatus.DEAD_ON_BREAK ||
+                status == BallStatus.GAME_BALL_DEAD_ON_BREAK ||
+                status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE ||
+                status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD;
     }
 
     private boolean ballIsMade(BallStatus status) {
-        return status == BallStatus.MADE_ON_BREAK || status == BallStatus.GAME_BALL_MADE_ON_BREAK;
+        return status == BallStatus.MADE_ON_BREAK ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
+    }
+
+    private boolean modifiedByShotPage(BallStatus status) {
+        return BallStatus.MADE == status ||
+                BallStatus.DEAD == status ||
+                status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD ||
+                status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
     }
 }

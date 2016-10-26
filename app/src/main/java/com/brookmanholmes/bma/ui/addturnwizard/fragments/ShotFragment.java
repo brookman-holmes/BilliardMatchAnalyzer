@@ -39,6 +39,7 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
  */
 public abstract class ShotFragment extends BaseFragment {
     static final String ARG_KEY = "key";
+    private static final String TAG = "ShotFragment";
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.buttonRunOut)

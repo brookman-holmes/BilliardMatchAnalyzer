@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.turn;
 
-import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -138,13 +138,13 @@ public class TableStatusTest {
     @Test
     public void testGetGameBallMadeOnBreak() {
         tableStatus.setBallTo(MADE_ON_BREAK, 8);
-        assertThat(tableStatus.getGameBallMadeOnBreak(), is(true));
+        assertThat(tableStatus.isGameBallMadeOnBreak(), is(true));
 
         tableStatus.setBallTo(GAME_BALL_MADE_ON_BREAK_THEN_MADE, 8);
-        assertThat(tableStatus.getGameBallMadeOnBreak(), is(true));
+        assertThat(tableStatus.isGameBallMadeOnBreak(), is(true));
 
         tableStatus.setBallTo(GAME_BALL_MADE_ON_BREAK_THEN_DEAD, 8);
-        assertThat(tableStatus.getGameBallMadeOnBreak(), is(true));
+        assertThat(tableStatus.isGameBallMadeOnBreak(), is(true));
     }
 
     @Test
