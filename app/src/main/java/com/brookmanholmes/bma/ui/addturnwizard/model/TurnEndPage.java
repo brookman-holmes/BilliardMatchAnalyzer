@@ -76,4 +76,14 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
             fragment.updateOptions(options);
         }
     }
+
+    public TurnEndOptions getTurnEndOptions() {
+        return TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.getGameStatus(data), ((AddTurnWizardModel) modelCallbacks).getTableStatus());
+    }
+
+    @Override
+    public void resetData(Bundle data) {
+        super.resetData(data);
+        updateFragment(getTurnEndOptions());
+    }
 }

@@ -4,6 +4,10 @@ import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,7 +30,7 @@ import static com.brookmanholmes.billiards.game.BallStatus.ON_TABLE;
 /**
  * Created by Brookman Holmes on 10/25/2015.
  */
-final public class TableStatus implements ITableStatus {
+final public class TableStatus implements ITableStatus, Serializable {
     private final int GAME_BALL;
     private final GameType gameType;
     final private Map<Integer, BallStatus> table;
@@ -261,6 +265,15 @@ final public class TableStatus implements ITableStatus {
         for (int i = 1; i <= size; i++) {
             table.put(i, statusOfBalls);
         }
+    }
+
+
+    private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
+        inputStream.defaultReadObject();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream) throws IOException {
+        outputStream.defaultWriteObject();
     }
 
     @Override

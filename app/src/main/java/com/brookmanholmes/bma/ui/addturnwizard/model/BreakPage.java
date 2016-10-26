@@ -26,6 +26,7 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
 public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     static final String showShotPage = "show shot page";
     private static final String TAG = "BreakPage";
+    private static final String TABLE_STATUS_KEY = "table_status";
     final GameType gameType;
     TableStatus tableStatus;
     BreakFragment fragment;
@@ -87,8 +88,15 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
     }
 
     private void ballStatusUpdated() {
+        data.putSerializable(TABLE_STATUS_KEY, tableStatus);
         data.putString(SIMPLE_DATA_KEY, showShotPage());
         notifyDataChanged();
+    }
+
+    @Override
+    public void resetData(Bundle data) {
+        tableStatus = (TableStatus) data.getSerializable(TABLE_STATUS_KEY);
+        super.resetData(data);
     }
 
     private BallStatus incrementBallStatus(BallStatus ballStatus, int ball) {

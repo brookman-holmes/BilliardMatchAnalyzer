@@ -39,7 +39,8 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
  */
 public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
     private static final String TAG = "ShotPage";
-    private final TableStatus tableStatus;
+    private static final String TABLE_STATUS_KEY = "table_status";
+    private TableStatus tableStatus;
     private ShotFragment fragment;
     private PlayerColor playerColor = PlayerColor.OPEN;
 
@@ -99,8 +100,15 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
         tableStatus.setBallTo(ballStatus, ball);
 
+        data.putSerializable(TABLE_STATUS_KEY, tableStatus);
         notifyDataChanged();
         updateFragment();
+    }
+
+    @Override
+    public void resetData(Bundle data) {
+        tableStatus = (TableStatus) data.getSerializable(TABLE_STATUS_KEY);
+        super.resetData(data);
     }
 
     private PlayerColor setPlayerColorFromBallsMade() {

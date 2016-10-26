@@ -2,6 +2,7 @@ package com.brookmanholmes.bma.ui.addturnwizard.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.TextViewCompat;
 import android.transition.TransitionManager;
@@ -112,8 +113,24 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         TurnEnd turnEnd = TurnEnd.valueOf(getArguments().getString(ARG_SELECTION_KEY));
         listView.setItemChecked(adapter.getPosition(getString(turnEnd)), true);
         updateFoulLayout(getString(turnEnd));
-        // TODO: 9/7/2016 figure out why items aren't automatically checked when given the option of: rebreak, opponent rebreak, continue game
+
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        TurnEndOptions options = page.getTurnEndOptions();
+        repopulateChoicesList(options.possibleEndings);
+        updateFoulOptions(options);
+
+        if (adapter.contains(getTurnEndFromPage())) {
+            listView.setItemChecked(adapter.indexOf(getTurnEndFromPage()), true);
+        } else {
+            listView.setItemChecked(adapter.indexOf(getString(options.defaultCheck)), true);
+        }
+
+        updateFoulLayout(getTurnEndFromPage());
     }
 
     @Override
