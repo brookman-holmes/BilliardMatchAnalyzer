@@ -11,8 +11,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/WizardPageContainer"
     android:orientation="vertical">
@@ -75,3 +78,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

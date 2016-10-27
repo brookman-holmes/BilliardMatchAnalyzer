@@ -37,6 +37,7 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
         data.putAll(matchData);
         gameType = getGameStatus(matchData).gameType;
         tableStatus = TableStatus.newTable(gameType);
+        data.putSerializable(TABLE_STATUS_KEY, tableStatus);
 
         addBranch(showShotPage, new ShotPage(callbacks, title2, matchData));
     }
@@ -63,7 +64,7 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
 
     @Override
     public void updateTurnInfo(AddTurnWizardModel model) {
-        for (int ball = 1; ball <= tableStatus.size(); ball++) {
+        for (int ball = 1; ball <= model.getTableStatus().size(); ball++) {
             model.getTableStatus().setBallTo(tableStatus.getBallStatus(ball), ball);
         }
     }

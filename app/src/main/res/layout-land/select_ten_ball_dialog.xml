@@ -18,9 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            app:columnCount="3"
+            app:columnCount="5"
             app:useDefaultMargins="true">
-
 
             <ImageView
                 android:id="@+id/one_ball"
@@ -76,6 +75,11 @@
                 android:layout_height="54dp"
                 android:src="@drawable/nine_ball_level" />
 
+            <ImageView
+                android:id="@+id/ten_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/ten_ball_level" />
         </android.support.v7.widget.GridLayout>
 
         <Button

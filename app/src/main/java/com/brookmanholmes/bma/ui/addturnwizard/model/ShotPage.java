@@ -51,6 +51,7 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
         tableStatus = TableStatus.newTable(getGameStatus(matchData).gameType,
                 data.getIntegerArrayList(BALLS_ON_TABLE_KEY));
+        data.putSerializable(TABLE_STATUS_KEY, tableStatus);
         playerColor = PlayerColor.valueOf(data.getString(CURRENT_PLAYER_COLOR_KEY));
     }
 
@@ -65,14 +66,14 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
 
     @Override
     public void updateTurnInfo(AddTurnWizardModel model) {
-        for (int ball = 1; ball <= tableStatus.size(); ball++) {
+        for (int ball = 1; ball <= model.getTableStatus().size(); ball++) {
             model.getTableStatus().setBallTo(tableStatus.getBallStatus(ball), ball);
         }
     }
 
     @Override
     public void getNewTurnInfo(AddTurnWizardModel model) {
-        for (int ball = 1; ball <= tableStatus.size(); ball++) {
+        for (int ball = 1; ball <= model.getTableStatus().size(); ball++) {
             tableStatus.setBallTo(model.getTableStatus().getBallStatus(ball), ball);
         }
         updateFragment();

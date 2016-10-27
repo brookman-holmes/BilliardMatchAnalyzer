@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            app:columnCount="3"
+            app:columnCount="5"
             app:useDefaultMargins="true">
 
 
@@ -47,6 +47,14 @@
                 android:src="@drawable/four_ball_level" />
 
             <ImageView
+                android:id="@+id/nine_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/nine_ball_level"
+                app:layout_gravity="center"
+                app:layout_rowSpan="2" />
+
+            <ImageView
                 android:id="@+id/five_ball"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
@@ -69,12 +77,6 @@
                 android:layout_width="54dp"
                 android:layout_height="54dp"
                 android:src="@drawable/eight_ball_level" />
-
-            <ImageView
-                android:id="@+id/nine_ball"
-                android:layout_width="54dp"
-                android:layout_height="54dp"
-                android:src="@drawable/nine_ball_level" />
 
         </android.support.v7.widget.GridLayout>
 
