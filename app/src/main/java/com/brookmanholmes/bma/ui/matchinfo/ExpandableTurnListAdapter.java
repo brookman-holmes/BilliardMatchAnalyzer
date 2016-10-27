@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
+import android.graphics.Typeface;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
@@ -199,6 +200,17 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             game.setText(itemView.getContext().getString(R.string.row_game, gameTotal));
             playerWins.setText(itemView.getContext().getString(R.string.player_wins, playerName, playerScore));
             opponentWins.setText(itemView.getContext().getString(R.string.player_wins, opponentName, opponentScore));
+
+            if (playerScore > opponentScore) {
+                playerWins.setTypeface(null, Typeface.BOLD);
+                opponentWins.setTypeface(null, Typeface.NORMAL);
+            } else if (playerScore < opponentScore) {
+                playerWins.setTypeface(null, Typeface.NORMAL);
+                opponentWins.setTypeface(null, Typeface.BOLD);
+            } else {
+                playerWins.setTypeface(null, Typeface.NORMAL);
+                opponentWins.setTypeface(null, Typeface.NORMAL);
+            }
         }
 
         private void setIconState(boolean isExpanded, boolean animate) {

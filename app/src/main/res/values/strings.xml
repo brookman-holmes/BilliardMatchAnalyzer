@@ -303,5 +303,5 @@
     <string name="game_apa_nine_ghost">APA 9 Ball vs. The Ghost</string>
     <string name="game_bca_ten_ghost">BCA 10 Ball vs. The Ghost</string>
     <string name="player_name">Player</string>
-    <string name="player_wins">%1$s %2$d wins</string>
+    <string name="player_wins">%1$s has %2$d wins</string>
 </resources>
