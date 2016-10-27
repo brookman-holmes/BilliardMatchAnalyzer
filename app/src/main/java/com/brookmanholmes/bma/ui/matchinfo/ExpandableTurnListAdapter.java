@@ -36,14 +36,14 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     private List<List<ITurn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
     private Match match;
 
-    public ExpandableTurnListAdapter(Match match) {
+    ExpandableTurnListAdapter(Match match) {
         this.match = match;
         setHasStableIds(true);
         data = buildDataSource(match.getTurns());
         // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
     }
 
-    public void updateMatch(Match match) {
+    void updateMatch(Match match) {
         this.match = match;
         data = buildDataSource(match.getTurns());
         notifyDataSetChanged(); // there is a bug thrown by the library this is based on so neat
@@ -115,7 +115,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         } else {
             holder.itemView.setVisibility(View.VISIBLE);
             holder.itemView.setEnabled(true);
-            holder.bind(groupPosition + 1,
+            holder.bind(match.getPlayer().getName(), match.getOpponent().getName(), groupPosition + 1,
                     match.getPlayer(0, getTurnNumber(groupPosition)).getWins(),
                     match.getOpponent(0, getTurnNumber(groupPosition)).getWins());
 
@@ -183,20 +183,22 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     static class GameViewHolder extends AbstractExpandableItemViewHolder {
         @Bind(R.id.row_game)
         TextView game;
+        @Bind(R.id.playerWins)
+        TextView playerWins;
+        @Bind(R.id.opponentWins)
+        TextView opponentWins;
         @Bind(R.id.imageView)
         ImageView expandIndicator;
 
-        public GameViewHolder(View itemView) {
+        GameViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        private void bind(int gameTotal, int playerScore, int opponentScore) {
-            setText(gameTotal, playerScore, opponentScore);
-        }
-
-        private void setText(int games, int playerGamesWon, int oppGamesWon) {
-            game.setText(itemView.getContext().getString(R.string.row_game, games, playerGamesWon, oppGamesWon));
+        private void bind(String playerName, String opponentName, int gameTotal, int playerScore, int opponentScore) {
+            game.setText(itemView.getContext().getString(R.string.row_game, gameTotal));
+            playerWins.setText(itemView.getContext().getString(R.string.player_wins, playerName, playerScore));
+            opponentWins.setText(itemView.getContext().getString(R.string.player_wins, opponentName, opponentScore));
         }
 
         private void setIconState(boolean isExpanded, boolean animate) {
@@ -230,7 +232,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         @Bind(R.id.breakingLine)
         ImageView breakingLine;
 
-        public TurnViewHolder(View itemView) {
+        TurnViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

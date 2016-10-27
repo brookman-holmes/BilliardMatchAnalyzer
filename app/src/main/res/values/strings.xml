@@ -130,7 +130,7 @@
     <string name="select_balls">Select remaining balls</string>
     <string name="select_solids">Select all remaining solids</string>
     <string name="select_stripes">Select all remaining stripes</string>
-    <string name="row_game">Game %1$d (%2$d - %3$d)</string>
+    <string name="row_game">Game %1$d</string>
     <string name="opponents">Opponents</string>
     <string name="title_player_profile">%1$s\'s Profile</string>
     <string name="action_filter">Filter</string>
@@ -303,4 +303,5 @@
     <string name="game_apa_nine_ghost">APA 9 Ball vs. The Ghost</string>
     <string name="game_bca_ten_ghost">BCA 10 Ball vs. The Ghost</string>
     <string name="player_name">Player</string>
+    <string name="player_wins">%1$s %2$d wins</string>
 </resources>
