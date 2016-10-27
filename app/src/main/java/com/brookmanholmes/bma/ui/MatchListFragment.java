@@ -3,12 +3,14 @@ package com.brookmanholmes.bma.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -106,14 +108,30 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
 
     @Override
     protected RecyclerView.LayoutManager getLayoutManager() {
-        return new LinearLayoutManager(getContext());
+        if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                && isTablet()) {
+            return new GridLayoutManager(getContext(), 3);
+        } else if (isTablet()) {
+            return new GridLayoutManager(getContext(), 2);
+        } else if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            return new GridLayoutManager(getContext(), 2);
+        else {
+            return new LinearLayoutManager(getContext());
+        }
+    }
+
+    private boolean isTablet() {
+        return (getContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                (getContext().getResources().getConfiguration().screenLayout &
+                        Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
     static class MatchListRecyclerAdapter extends RecyclerView.Adapter<MatchListRecyclerAdapter.ListItemHolder> {
         List<Match> matches;
         Context context;
 
-        public MatchListRecyclerAdapter(Context context, List<Match> matches) {
+        MatchListRecyclerAdapter(Context context, List<Match> matches) {
             this.matches = matches;
             this.context = context;
         }
@@ -251,7 +269,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
             private List<Match> oldList;
             private List<Match> newList;
 
-            public MatchListDiffCallback(List<Match> oldList, List<Match> newList) {
+            MatchListDiffCallback(List<Match> oldList, List<Match> newList) {
                 this.oldList = oldList;
                 this.newList = newList;
             }
@@ -321,7 +339,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
             @Bind(R.id.ruleSet)
             TextView ruleSet;
 
-            public ListItemHolder(View itemView) {
+            ListItemHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
             }
@@ -343,7 +361,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
             }
 
             @OnLongClick(R.id.container)
-            public boolean onLongClick() {
+            boolean onLongClick() {
                 // only display delete dialog from IntroActivity otherwise the user can wrap
                 // around to deleting all their matches and then going back to a nonexistent match
                 if (getContext() instanceof IntroActivity) {
