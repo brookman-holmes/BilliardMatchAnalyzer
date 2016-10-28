@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -390,7 +391,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     private void showAddTurnDialog() {
         AddTurnDialog addTurnDialog = AddTurnDialog.create(match);
-        addTurnDialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.MyAppTheme);
+        if (!isTablet())
+            addTurnDialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.MyAppTheme);
         addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
@@ -402,8 +404,17 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private void showAdvancedStatsDialog(String name, PlayerTurn turn) {
         DialogFragment dialogFragment =
                 AdvStatsDialog.create(getMatchId(), name, turn);
-        dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
+        if (!isTablet())
+            dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
+
         dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
+    }
+
+    private boolean isTablet() {
+        return (getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                (getResources().getConfiguration().screenLayout &
+                        Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
     private void showEditMatchNotesDialog() {
