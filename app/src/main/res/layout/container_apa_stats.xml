@@ -72,32 +72,30 @@
 
         <TextView
             style="@style/player_stats"
-            app:layout_gravity="start"
             android:layout_marginTop="8dp"
             android:text="@string/innings"
             android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/player_stats"
-            app:layout_columnSpan="2"
-            app:layout_gravity="start"
             android:layout_marginTop="8dp"
             android:text="@{apa.innings}"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            app:layout_columnSpan="2"
+            app:layout_gravity="start" />
 
         <TextView
             style="@style/player_stats"
-            app:layout_gravity="start"
             android:text="@string/dead_balls"
             android:textColor="@color/secondary_text"
             android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}" />
 
         <TextView
             style="@style/player_stats"
-            app:layout_columnSpan="2"
-            app:layout_gravity="start"
             android:text="@{apa.deadBalls}"
             android:textColor="@color/secondary_text"
-            android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}"
+            app:layout_columnSpan="2"
+            app:layout_gravity="start" />
     </android.support.v7.widget.GridLayout>
 </layout>
