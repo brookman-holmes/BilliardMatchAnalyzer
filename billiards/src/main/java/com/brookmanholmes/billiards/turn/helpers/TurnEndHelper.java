@@ -169,6 +169,15 @@ public abstract class TurnEndHelper {
     }
 
     /**
+     * Determines if the player really lost the game (APA/BCA 8 ball), generally from making the 8
+     * ball early
+     * @return true if the player really lost the game, false otherwise
+     */
+    boolean reallyLostGame() {
+        return false;
+    }
+
+    /**
      * Create a new TurnEndOptions using the status of this TurnEndHelper
      * @return A new TurnEndOptions with the corresponding options based on the provided input to
      * this TurnEndHelper
@@ -181,7 +190,7 @@ public abstract class TurnEndHelper {
         } else {
             return new TurnEndOptions.Builder()
                     .wonGame(showWin())
-                    .lostGame(lostGame())
+                    .lostGame(lostGame(), reallyLostGame())
                     .safety(showSafety())
                     .safetyError(showSafetyMiss())
                     .miss(showMiss())

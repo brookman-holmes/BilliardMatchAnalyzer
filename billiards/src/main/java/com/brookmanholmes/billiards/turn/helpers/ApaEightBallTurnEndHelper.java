@@ -11,15 +11,18 @@ class ApaEightBallTurnEndHelper extends EightBallTurnEndHelper {
         super(game, tableStatus);
     }
 
-    @Override boolean showWin() {
+    @Override
+    boolean showWin() {
         return super.showWin() || tableStatus.isGameBallMadeOnBreak();
     }
 
-    @Override boolean lostGame() {
+    @Override
+    boolean lostGame() {
         return super.lostGame() || tableStatus.isGameBallMadeIllegally();
     }
 
-    @Override boolean showSafety() {
+    @Override
+    boolean showSafety() {
         return super.showSafety() && tableStatus.getDeadBalls() == 0;
     }
 }

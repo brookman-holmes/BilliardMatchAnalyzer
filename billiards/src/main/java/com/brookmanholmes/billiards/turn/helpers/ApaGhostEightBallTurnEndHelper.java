@@ -47,6 +47,6 @@ class ApaGhostEightBallTurnEndHelper extends ApaEightBallTurnEndHelper {
 
     @Override
     boolean showBreakMiss() {
-        return false;
+        return game.newGame && tableStatus.getBreakBallsMade() == 0;
     }
 }

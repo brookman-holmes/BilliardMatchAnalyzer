@@ -13,29 +13,40 @@ class EightBallTurnEndHelper extends TurnEndHelper {
         super(game, tableStatus);
     }
 
-    @Override boolean showWin() {
+    @Override
+    boolean showWin() {
         return !currentPlayerBallsRemaining() && tableStatus.isGameBallMade();
     }
 
-    @Override boolean lostGame() {
+    @Override
+    boolean lostGame() {
         return tableStatus.isGameBallMadeIllegally() ||
                 (currentPlayerBallsRemaining() && tableStatus.isGameBallMade());
     }
 
-    @Override boolean checkFoul() {
+    @Override
+    boolean checkFoul() {
         return super.checkFoul() || lostGame();
     }
 
-    @Override boolean showSafety() {
+    @Override
+    boolean showSafety() {
         return super.showSafety() && !lostGame();
     }
 
-    @Override boolean showPush() {
+    @Override
+    boolean showPush() {
         return false;
     }
 
-    @Override boolean showTurnSkip() {
+    @Override
+    boolean showTurnSkip() {
         return false;
+    }
+
+    @Override
+    boolean reallyLostGame() {
+        return lostGame();
     }
 
     /**

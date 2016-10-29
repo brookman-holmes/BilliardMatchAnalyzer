@@ -428,7 +428,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void showChoiceDialog(final String name, final PlayerTurn turn, final View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view, Gravity.CENTER);
+        PopupMenu popupMenu = new PopupMenu(this, view, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
 
         if (playerHasAdvancedStats(turn, match.getStatDetailLevel()))
             popupMenu.inflate(R.menu.menu_player_adv);
