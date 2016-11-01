@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -48,6 +47,7 @@ import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.CustomViewPager;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +63,7 @@ import tourguide.tourguide.ToolTip;
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
     private static final String TAG = "MatchInfoActivity";
     private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
+    private static final String KEY_UNDONE_TURNS = "key_undone_turns";
     private final List<UpdateMatchInfo> listeners = new ArrayList<>();
 
     @Bind(R.id.toolbar)
@@ -101,6 +102,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         db = new DatabaseAdapter(this);
 
         match = db.getMatch(getMatchId());
+
+        if (savedInstanceState != null) {
+            match.setUndoneTurns((ArrayList) savedInstanceState.getSerializable(KEY_UNDONE_TURNS));
+        }
+
         playerName.setText(match.getPlayer().getName());
         playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
         opponentName.setText(match.getOpponent().getName());
@@ -126,6 +132,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private void setToolbarTitle(GameType gameType) {
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(getString(R.string.title_match_info, ConversionUtils.getGameTypeString(this, gameType)));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(KEY_UNDONE_TURNS, match.getUndoneTurns());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -391,8 +403,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     private void showAddTurnDialog() {
         AddTurnDialog addTurnDialog = AddTurnDialog.create(match);
-        if (!isTablet())
-            addTurnDialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.MyAppTheme);
         addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
@@ -404,17 +414,10 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private void showAdvancedStatsDialog(String name, PlayerTurn turn) {
         DialogFragment dialogFragment =
                 AdvStatsDialog.create(getMatchId(), name, turn);
-        if (!isTablet())
+        if (!MatchDialogHelperUtils.isTablet(this))
             dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
 
         dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
-    }
-
-    private boolean isTablet() {
-        return (getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE ||
-                (getResources().getConfiguration().screenLayout &
-                        Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
     private void showEditMatchNotesDialog() {

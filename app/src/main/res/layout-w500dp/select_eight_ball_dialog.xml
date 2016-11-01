@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            app:columnCount="5"
+            app:columnCount="8"
             app:useDefaultMargins="true">
 
             <ImageView
@@ -67,7 +67,9 @@
                 android:id="@+id/eight_ball"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
-                android:src="@drawable/eight_ball_level" />
+                android:src="@drawable/eight_ball_level"
+                app:layout_gravity="center"
+                app:layout_rowSpan="2" />
 
             <ImageView
                 android:id="@+id/nine_ball"
@@ -80,7 +82,47 @@
                 android:layout_width="54dp"
                 android:layout_height="54dp"
                 android:src="@drawable/ten_ball_level" />
+
+            <ImageView
+                android:id="@+id/eleven_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/eleven_ball_level" />
+
+            <ImageView
+                android:id="@+id/twelve_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/twelve_ball_level" />
+
+            <ImageView
+                android:id="@+id/thirteen_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/thirteen_ball_level" />
+
+            <ImageView
+                android:id="@+id/fourteen_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/fourteen_ball_level" />
+
+            <ImageView
+                android:id="@+id/fifteen_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/fifteen_ball_level" />
+
+
         </android.support.v7.widget.GridLayout>
+
+        <TextView
+            android:id="@+id/playerColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="16dp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/buttonRunOut"

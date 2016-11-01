@@ -7,95 +7,116 @@
         <import type="android.view.View" />
     </data>
 
-    <android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/match_info_grid">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@{apa.playerRank}"
-            android:textColor="@color/primary_text" />
+        <android.support.v7.widget.GridLayout style="@style/match_info_grid">
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@string/rank"
-            android:textColor="@color/primary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@{apa.playerRank}"
+                android:textColor="@color/primary_text"
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@{apa.opponentRank}"
-            android:textColor="@color/primary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@string/rank"
+                android:textColor="@color/primary_text"
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@{@string/out_of(apa.playerPoints, apa.playerPointsNeeded)}"
-            android:textColor="@color/secondary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@{apa.opponentRank}"
+                android:textColor="@color/primary_text"
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@{apa.apa8Ball ? @string/title_games_needed : @string/points}"
-            android:textColor="@color/secondary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@{@string/out_of(apa.playerPoints, apa.playerPointsNeeded)}"
+                android:textColor="@{apa.visible ? @color/secondary_text : @color/primary_text}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@{@string/out_of(apa.opponentPoints, apa.opponentPointsNeeded)}"
-            android:textColor="@color/secondary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@{apa.apa8Ball ? @string/title_games_needed : @string/points}"
+                android:textColor="@{apa.visible ? @color/secondary_text : @color/primary_text}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@{apa.playerMatchPoints}"
-            android:textColor="@color/primary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@{@string/out_of(apa.opponentPoints, apa.opponentPointsNeeded)}"
+                android:textColor="@{apa.visible ? @color/secondary_text : @color/primary_text}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@string/match_points"
-            android:textColor="@color/primary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@{apa.playerMatchPoints}"
+                android:textColor="@color/primary_text"
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@{apa.opponentMatchPoints}"
-            android:textColor="@color/primary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@string/match_points"
+                android:textColor="@color/primary_text"
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@{apa.playerDefenses}"
-            android:textColor="@color/secondary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@{apa.opponentMatchPoints}"
+                android:textColor="@color/primary_text"
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@string/defensive_shots"
-            android:textColor="@color/secondary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@{apa.playerDefenses}"
+                android:textColor="@color/secondary_text"
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@{apa.opponentDefenses}"
-            android:textColor="@color/secondary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@string/defensive_shots"
+                android:textColor="@color/secondary_text"
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
 
-        <TextView
-            style="@style/player_stats"
-            android:layout_marginTop="8dp"
-            android:text="@string/innings"
-            android:textColor="@color/primary_text" />
+            <TextView
+                style="@style/player_stats"
+                android:text="@{apa.opponentDefenses}"
+                android:textColor="@color/secondary_text"
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
+        </android.support.v7.widget.GridLayout>
 
-        <TextView
-            style="@style/player_stats"
-            android:layout_marginTop="8dp"
-            android:text="@{apa.innings}"
-            android:textColor="@color/primary_text"
-            app:layout_columnSpan="2"
-            app:layout_gravity="start" />
+        <android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/match_info_grid"
+            app:columnCount="2">
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@string/dead_balls"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}" />
+            <TextView
+                style="@style/player_stats"
+                android:layout_marginTop="16dp"
+                android:text="@string/innings"
+                android:textColor="@color/primary_text"
+                app:layout_columnWeight=".1" />
 
-        <TextView
-            style="@style/player_stats"
-            android:text="@{apa.deadBalls}"
-            android:textColor="@color/secondary_text"
-            android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}"
-            app:layout_columnSpan="2"
-            app:layout_gravity="start" />
-    </android.support.v7.widget.GridLayout>
+            <TextView
+                style="@style/player_stats"
+                android:layout_marginTop="16dp"
+                android:text="@{apa.innings}"
+                android:textColor="@color/primary_text"
+                app:layout_columnWeight="1"
+                app:layout_gravity="start" />
+
+            <TextView
+                style="@style/player_stats"
+                android:text="@string/dead_balls"
+                android:textColor="@color/secondary_text"
+                android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}"
+                app:layout_columnWeight=".1" />
+
+            <TextView
+                style="@style/player_stats"
+                android:text="@{apa.deadBalls}"
+                android:textColor="@color/secondary_text"
+                android:visibility="@{apa.apa8Ball ? View.GONE : View.VISIBLE}"
+                app:layout_columnWeight="1"
+                app:layout_gravity="start" />
+        </android.support.v7.widget.GridLayout>
+    </LinearLayout>
 </layout>

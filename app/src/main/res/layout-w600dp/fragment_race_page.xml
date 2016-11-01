@@ -32,17 +32,21 @@
                     android:id="@+id/playerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New Text"
+                    android:lines="2"
                     android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
                 <include
                     android:id="@+id/playerRankGrid"
                     layout="@layout/grid_number_picker"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal" />
 
             </LinearLayout>
+
+            <Space
+                android:layout_width="16dp"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -54,13 +58,13 @@
                     android:id="@+id/opponentName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New Text"
+                    android:lines="2"
                     android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
                 <include
                     android:id="@+id/opponentRankGrid"
                     layout="@layout/grid_number_picker"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal" />
 

@@ -16,10 +16,11 @@ public class RunsBinder extends BindingAdapter {
     public String playerFiveBallRuns, opponentFiveBallRuns;
 
     public String playerEarlyWins = "0", opponentEarlyWins = "0";
-
+    public boolean showCard = true;
     boolean showEarlyWins = false;
 
-    RunsBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+    RunsBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded, boolean showCard) {
+        super(expanded);
         this.title = title;
         helpLayout = R.layout.dialog_help_runs;
 
@@ -38,7 +39,7 @@ public class RunsBinder extends BindingAdapter {
             showEarlyWins = true;
         }
 
-        visible = expanded;
+        this.showCard = showCard;
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent) {

@@ -26,6 +26,7 @@ public class ApaBinder extends BindingAdapter {
     public boolean apa8Ball;
 
     ApaBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded, int innings) {
+        super(expanded);
         this.title = title;
         this.helpLayout = R.layout.dialog_help_apa;
 
@@ -53,8 +54,6 @@ public class ApaBinder extends BindingAdapter {
         } else if (player instanceof ApaNineBallPlayer) {
             deadBalls = ((ApaNineBallPlayer) player).getDeadBalls() + "";
         }
-
-        visible = expanded;
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent, int innings) {

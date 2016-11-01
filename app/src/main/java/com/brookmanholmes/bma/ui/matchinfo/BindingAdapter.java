@@ -2,11 +2,13 @@ package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.databinding.BaseObservable;
 import android.graphics.Typeface;
+import android.support.annotation.DrawableRes;
 import android.support.v7.app.AlertDialog;
 import android.transition.TransitionManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,8 +21,17 @@ import com.brookmanholmes.bma.R;
 public class BindingAdapter extends BaseObservable {
     private static final String TAG = "BindingAdapter";
     public boolean visible = false;
+    public
+    @DrawableRes
+    int imageResource;
     String title;
     int helpLayout;
+
+    public BindingAdapter(boolean visible) {
+        this.visible = visible;
+
+        imageResource = (visible ? R.drawable.ic_action_collapse : R.drawable.ic_action_expand);
+    }
 
     @android.databinding.BindingAdapter("android:typeface")
     public static void setTextStyle(TextView view, String style) {
@@ -36,6 +47,11 @@ public class BindingAdapter extends BaseObservable {
     @android.databinding.BindingAdapter("android:typeface")
     public static void setTextSize(TextView view, int size) {
         view.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
+    }
+
+    @android.databinding.BindingAdapter("imageResource")
+    public static void setImageResource(ImageView imageView, int resource) {
+        imageView.setImageResource(resource);
     }
 
     public String getTitle() {

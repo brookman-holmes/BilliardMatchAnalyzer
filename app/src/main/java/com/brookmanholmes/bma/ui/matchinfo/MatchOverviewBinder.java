@@ -29,6 +29,7 @@ public class MatchOverviewBinder extends BindingAdapter {
     public boolean apaTitle = false;
 
     MatchOverviewBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+        super(expanded);
         if (useGameTotal(player, opponent)) {
             apaTitle = true;
         }
@@ -63,8 +64,6 @@ public class MatchOverviewBinder extends BindingAdapter {
 
         this.title = title;
         helpLayout = R.layout.dialog_help_match_overview;
-
-        visible = expanded;
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent) {

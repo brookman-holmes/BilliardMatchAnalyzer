@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?><!--suppress AndroidUnknownAttribute, AndroidUnknownAttribute, AndroidUnknownAttribute, AndroidUnknownAttribute, AndroidUnknownAttribute, AndroidUnknownAttribute, AndroidUnknownAttribute, AndroidUnknownAttribute -->
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:bind="http://schemas.android.com/tools">
-
     <data>
-
         <variable
             name="breaks"
             type="com.brookmanholmes.bma.ui.matchinfo.BreaksBinder" />
+
+        <import type="android.view.View" />
     </data>
 
     <view xmlns:android="http://schemas.android.com/apk/res/android"

@@ -26,6 +26,12 @@ public class ConversionUtils {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
     }
 
+    public static float convertPxToDp(Context context, int px) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+
+        return px / metrics.density;
+    }
+
     public static String getGameTypeString(Context context, GameType gameType) {
         switch (gameType) {
             case APA_EIGHT_BALL:

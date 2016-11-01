@@ -38,6 +38,7 @@ import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.utils.ConversionUtils;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.utils.PreferencesUtil;
 import com.github.pavlospt.roundedletterview.RoundedLetterView;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -269,22 +270,15 @@ public class IntroActivity extends BaseActivity {
         @Override
         protected RecyclerView.LayoutManager getLayoutManager() {
             if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
-                    && isTablet()) {
+                    && MatchDialogHelperUtils.isTablet(getContext())) {
                 return new GridLayoutManager(getContext(), 3);
-            } else if (isTablet()) {
+            } else if (MatchDialogHelperUtils.isTablet(getContext())) {
                 return new GridLayoutManager(getContext(), 2);
             } else if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 return new GridLayoutManager(getContext(), 2);
             else {
                 return new LinearLayoutManager(getContext());
             }
-        }
-
-        private boolean isTablet() {
-            return (getContext().getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE ||
-                    (getContext().getResources().getConfiguration().screenLayout &
-                            Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
         }
 
         @Override

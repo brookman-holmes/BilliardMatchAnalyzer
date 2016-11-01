@@ -33,6 +33,12 @@ public class MatchInfoFragment extends BaseFragment
         implements MatchInfoActivity.UpdateMatchInfo, Filterable {
     private static final String TAG = "MatchInfoFragment";
     private static final String ARG_PLAYER = "arg_playerName";
+    private static final String KEY_APA_EXPANDED = "key_apa_expanded";
+    private static final String KEY_OVERVIEW_EXPANDED = "key_overview_expanded";
+    private static final String KEY_SHOOTING_EXPANDED = "key_shooting_expanded";
+    private static final String KEY_SAFETIES_EXPANDED = "key_safeties_expanded";
+    private static final String KEY_BREAKS_EXPANDED = "key_breaks_expanded";
+    private static final String KEY_RUNS_EXPANDED = "key_runs_expanded";
     String playerName;
     ApaBinder apa;
     MatchOverviewBinder overview;
@@ -124,6 +130,7 @@ public class MatchInfoFragment extends BaseFragment
 
         AbstractPlayer player;
         AbstractPlayer opponent;
+        boolean isGhostGame = true;
         boolean expanded;
         int innings = 0;
         if (getArguments().getLong(BaseActivity.ARG_MATCH_ID, -1L) != -1L) {
@@ -132,6 +139,7 @@ public class MatchInfoFragment extends BaseFragment
             opponent = match.getOpponent();
             expanded = false;
             innings = match.getGameStatus().innings;
+            isGhostGame = match.getGameStatus().gameType.isGhostGame(); // don't show safeties if it's a game against the ghost
         } else {
             playerName = getArguments().getString(ARG_PLAYER);
             List<Pair<AbstractPlayer, AbstractPlayer>> pairs = db.getPlayerPairs(playerName);
@@ -141,12 +149,16 @@ public class MatchInfoFragment extends BaseFragment
             expanded = true;
         }
 
-        apa = new ApaBinder(player, opponent, getString(R.string.title_apa_stats), expanded, innings);
-        overview = new MatchOverviewBinder(player, opponent, getString(R.string.title_match_overview), expanded);
-        shooting = new ShootingBinder(player, opponent, getString(R.string.title_shooting), expanded);
-        safeties = new SafetiesBinder(player, opponent, getString(R.string.title_safeties), expanded);
-        breaks = new BreaksBinder(player, opponent, getString(R.string.title_breaks), expanded);
-        runs = new RunsBinder(player, opponent, getString(R.string.title_run_outs), expanded);
+        if (savedInstanceState != null) {
+            getArguments().putAll(savedInstanceState);
+        }
+
+        apa = new ApaBinder(player, opponent, getString(R.string.title_apa_stats), getArguments().getBoolean(KEY_APA_EXPANDED, expanded), innings);
+        overview = new MatchOverviewBinder(player, opponent, getString(R.string.title_match_overview), getArguments().getBoolean(KEY_OVERVIEW_EXPANDED, expanded));
+        shooting = new ShootingBinder(player, opponent, getString(R.string.title_shooting), getArguments().getBoolean(KEY_SHOOTING_EXPANDED, expanded));
+        safeties = new SafetiesBinder(player, opponent, getString(R.string.title_safeties), getArguments().getBoolean(KEY_SAFETIES_EXPANDED, expanded), !isGhostGame);
+        breaks = new BreaksBinder(player, opponent, getString(R.string.title_breaks), getArguments().getBoolean(KEY_BREAKS_EXPANDED, expanded));
+        runs = new RunsBinder(player, opponent, getString(R.string.title_run_outs), getArguments().getBoolean(KEY_RUNS_EXPANDED, expanded), !isGhostGame);
     }
 
     private Pair<CompPlayer, CompPlayer> splitPlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
@@ -181,6 +193,17 @@ public class MatchInfoFragment extends BaseFragment
             ((MatchInfoActivity) getActivity()).registerFragment(this);
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(KEY_APA_EXPANDED, apa.visible);
+        outState.putBoolean(KEY_OVERVIEW_EXPANDED, overview.visible);
+        outState.putBoolean(KEY_BREAKS_EXPANDED, breaks.visible);
+        outState.putBoolean(KEY_RUNS_EXPANDED, runs.visible);
+        outState.putBoolean(KEY_SHOOTING_EXPANDED, shooting.visible);
+        outState.putBoolean(KEY_SAFETIES_EXPANDED, safeties.visible);
+        super.onSaveInstanceState(outState);
     }
 
     private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {

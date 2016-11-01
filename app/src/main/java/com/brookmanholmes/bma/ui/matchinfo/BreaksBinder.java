@@ -26,6 +26,7 @@ public class BreaksBinder extends BindingAdapter {
     boolean showWinOnBreak = false;
 
     BreaksBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+        super(expanded);
         this.title = title;
         helpLayout = R.layout.dialog_help_breaks;
 
@@ -56,8 +57,6 @@ public class BreaksBinder extends BindingAdapter {
         } else {
             breakBall = "8/9";
         }
-
-        visible = expanded;
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent) {

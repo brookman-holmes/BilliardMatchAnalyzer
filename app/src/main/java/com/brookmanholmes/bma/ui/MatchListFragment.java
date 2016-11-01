@@ -28,6 +28,7 @@ import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.Filterable;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -109,22 +110,15 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
     @Override
     protected RecyclerView.LayoutManager getLayoutManager() {
         if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
-                && isTablet()) {
+                && MatchDialogHelperUtils.isTablet(getContext())) {
             return new GridLayoutManager(getContext(), 3);
-        } else if (isTablet()) {
+        } else if (MatchDialogHelperUtils.isTablet(getContext())) {
             return new GridLayoutManager(getContext(), 2);
         } else if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             return new GridLayoutManager(getContext(), 2);
         else {
             return new LinearLayoutManager(getContext());
         }
-    }
-
-    private boolean isTablet() {
-        return (getContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE ||
-                (getContext().getResources().getConfiguration().screenLayout &
-                        Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
     static class MatchListRecyclerAdapter extends RecyclerView.Adapter<MatchListRecyclerAdapter.ListItemHolder> {

@@ -34,7 +34,6 @@ public class RaceToFragment extends BaseFragment {
     private static final String ARG_LOWER_BOUND_KEY = "lower_bound";
     private static final String ARG_UPPER_BOUND_KEY = "upper_bound";
     private static final String ARG_DEFAULT_CHOICE_KEY = "default_choice";
-    private static final String ARG_COLUMNS = "column_count";
     private static final String ARG_PLAYER_INDEX = "player_index";
     private static final String ARG_OPP_INDEX = "opp_index";
     @Bind(R.id.playerName)
@@ -53,13 +52,12 @@ public class RaceToFragment extends BaseFragment {
     public RaceToFragment() {
     }
 
-    public static RaceToFragment create(String key, int lowerBound, int upperBound, int defaultChoice, int columns) {
+    public static RaceToFragment create(String key, int lowerBound, int upperBound, int defaultChoice) {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
         args.putInt(ARG_DEFAULT_CHOICE_KEY, defaultChoice);
         args.putInt(ARG_LOWER_BOUND_KEY, lowerBound);
         args.putInt(ARG_UPPER_BOUND_KEY, upperBound);
-        args.putInt(ARG_COLUMNS, columns);
 
         RaceToFragment fragment = new RaceToFragment();
         fragment.setArguments(args);
@@ -93,7 +91,7 @@ public class RaceToFragment extends BaseFragment {
         int max = getArguments().getInt(ARG_UPPER_BOUND_KEY);
         int playerChoice = getArguments().getInt(ARG_DEFAULT_CHOICE_KEY);
         int opponentChoice = getArguments().getInt(ARG_DEFAULT_CHOICE_KEY);
-        int columns = getArguments().getInt(ARG_COLUMNS);
+        int columns = 5;
 
         View view = inflater.inflate(R.layout.fragment_race_page, container, false);
         ((TextView) view.findViewById(android.R.id.title)).setText(page.getTitle());

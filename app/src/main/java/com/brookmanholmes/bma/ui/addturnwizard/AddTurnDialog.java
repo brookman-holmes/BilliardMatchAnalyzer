@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.MyApplication;
@@ -22,6 +24,7 @@ import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.AddTurnWizardModel;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.bma.ui.dialog.HelpDialogCreator;
+import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.utils.PreferencesUtil;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
@@ -37,11 +40,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.STATS_LEVEL_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.TURN_KEY;
+
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
 @SuppressWarnings("WeakerAccess")
 public class AddTurnDialog extends DialogFragment implements PageFragmentCallbacks, ModelCallbacks, View.OnLayoutChangeListener {
+    private static final String TAG = "AddTurnDialog";
     @Bind(R.id.imgHelp)
     public ImageView help;
     @Bind(R.id.pager)
@@ -75,7 +82,12 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (!MatchDialogHelperUtils.isTablet(getContext()) ||
+                getNecessaryHeight() > getContext().getResources().getDisplayMetrics().heightPixels) {// if the screen is really small then we remove the frame to make it 'bigger'
+            setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
+        } else {
+            setStyle(DialogFragment.STYLE_NORMAL, R.style.AlertDialogTheme);
+        }
         wizardModel = new AddTurnWizardModel(getContext(), getArguments());
 
         if (savedInstanceState != null) {
@@ -95,6 +107,17 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
             FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
             firebaseAnalytics.logEvent("add_turn_started", null);
         }
+    }
+
+    private boolean currentPlayerTurnAndAdvancedStats() {
+        PlayerTurn turn = PlayerTurn.valueOf(getArguments().getString(TURN_KEY));
+        Match.StatsDetail detail = Match.StatsDetail.valueOf(getArguments().getString(STATS_LEVEL_KEY));
+
+        if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
+            return true;
+        else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
+            return true;
+        else return detail == Match.StatsDetail.ADVANCED;
     }
 
     @Override
@@ -143,9 +166,44 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     @Override
     public void onResume() {
         super.onResume();
+        if (MatchDialogHelperUtils.isTablet(getContext())) { // make the window a little bit smaller for large+ layouts
+            ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+            params.height = getDialogHeight();
+            getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+        }
+
+
         if (PreferencesUtil.getSharedPreferences(getActivity()).getBoolean("first_run_tutorial_add_turn_balls", true)) {
             help();
             PreferencesUtil.getSharedPreferences(getActivity()).edit().putBoolean("first_run_tutorial_add_turn_balls", false).apply();
+        }
+    }
+
+    /**
+     * Set the dialog height to something smaller if we're not using advanced data
+     * or if we're on a tablet
+     *
+     * @return the new height of the dialog in pixels
+     */
+    private int getDialogHeight() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getDialog().getWindow().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int necessaryHeight = getNecessaryHeight();
+
+        if (necessaryHeight > metrics.heightPixels) {// if the screen is really small then set the max height to it's normal height
+            return getDialog().getWindow().getAttributes().height;
+        } else return necessaryHeight;
+    }
+
+    private int getNecessaryHeight() {
+        if (currentPlayerTurnAndAdvancedStats()) {
+            return (int) ConversionUtils.convertDpToPx(getContext(), 700);
+        } else if (MatchDialogHelperUtils.getLayout(MatchDialogHelperUtils.getGameStatus(getArguments()).gameType) == R.layout.select_eight_ball_dialog) {
+            return (int) ConversionUtils.convertDpToPx(getContext(), 600);
+        } else if (MatchDialogHelperUtils.getLayout(MatchDialogHelperUtils.getGameStatus(getArguments()).gameType) == R.layout.select_ten_ball_dialog) {
+            return (int) ConversionUtils.convertDpToPx(getContext(), 500);
+        } else {
+            return (int) ConversionUtils.convertDpToPx(getContext(), 420);
         }
     }
 

@@ -18,6 +18,7 @@ public class ShootingBinder extends BindingAdapter {
     public String playerFouls, opponentFouls;
 
     ShootingBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+        super(expanded);
         playerShootingPct = player.getShootingPct();
         opponentShootingPct = opponent.getShootingPct();
 
@@ -34,8 +35,6 @@ public class ShootingBinder extends BindingAdapter {
 
         this.title = title;
         helpLayout = R.layout.dialog_help_shooting;
-
-        visible = expanded;
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent) {
