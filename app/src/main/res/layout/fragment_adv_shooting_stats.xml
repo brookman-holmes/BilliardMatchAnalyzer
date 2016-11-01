@@ -51,12 +51,24 @@
         <com.github.mikephil.charting.charts.BubbleChart
             android:id="@+id/speedChart"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:visibility="gone" />
 
         <com.github.mikephil.charting.charts.BubbleChart
             android:id="@+id/distanceChart"
             android:layout_width="match_parent"
-            android:layout_height="150dp" />
+            android:layout_height="150dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/description_no_data"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="Where the cue struck the cue ball when a shot was missed" />
+                android:text="@string/description_heat_graph" />
 
             <com.brookmanholmes.bma.ui.view.HeatGraph
                 android:id="@+id/heatGraph"

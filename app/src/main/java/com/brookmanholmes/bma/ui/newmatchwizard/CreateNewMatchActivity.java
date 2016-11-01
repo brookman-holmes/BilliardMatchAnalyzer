@@ -16,7 +16,6 @@
 
 package com.brookmanholmes.bma.ui.newmatchwizard;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -24,9 +23,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.brookmanholmes.billiards.game.GameType;
@@ -36,6 +35,7 @@ import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.CreateNewMatchWizardModel;
+import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
@@ -54,7 +54,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         PageFragmentCallbacks,
         ReviewFragment.Callbacks,
         ModelCallbacks {
-    public static final String PLAYER_EXTRA = "player";
+    public static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     private static final String TAG = "CreateNewMatchAct";
     @Bind(R.id.pager)
     ViewPager pager;
@@ -76,7 +76,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         setContentView(R.layout.activity_create_new_match);
 
         analytics.logEvent("create_match", null);
-        wizardModel = new CreateNewMatchWizardModel(this);
+        Log.i(TAG, "onCreate: " + getIntent().getExtras().getString(ARG_PLAYER_NAME, "no player name in extra"));
+        wizardModel = new CreateNewMatchWizardModel(this, getIntent().getExtras().getString(ARG_PLAYER_NAME, ""));
 
         ButterKnife.bind(this);
         if (savedInstanceState != null) {
@@ -225,7 +226,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
     @OnClick(R.id.prev_button)
     public void prevPage() {
         pager.setCurrentItem(pager.getCurrentItem() - 1);
-        showKeyboard();
     }
 
     private boolean recalculateCutOffPage() {
@@ -245,13 +245,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
 
         return false;
-    }
-
-    public void showKeyboard() {
-        if (pager.getCurrentItem() == 0) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-        }
     }
 
     public class MyPagerAdapter extends FragmentStatePagerAdapter {

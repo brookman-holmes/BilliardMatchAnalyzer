@@ -304,4 +304,6 @@
     <string name="game_bca_ten_ghost">BCA 10 Ball vs. The Ghost</string>
     <string name="player_name">Player</string>
     <string name="player_wins">%1$s has %2$d wins</string>
+    <string name="description_heat_graph">Where the cue struck the cue ball when a shot was missed</string>
+    <string name="description_no_data">No advanced shot data available</string>
 </resources>

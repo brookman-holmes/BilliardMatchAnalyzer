@@ -36,14 +36,11 @@ public class SubmitFeedbackDialog extends DialogFragment {
         input.setHint(getString(R.string.submit_feedback));
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        input.requestFocus();
-        showKeyboard();
         input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (EditorInfo.IME_ACTION_DONE == actionId) {
                     onPositiveButton();
-                    hideKeyboard();
                     dismiss();
                     return true;
                 }
@@ -56,17 +53,21 @@ public class SubmitFeedbackDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onPositiveButton();
-                        hideKeyboard();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        hideKeyboard();
                         dialog.cancel();
                     }
                 })
                 .create();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        input.requestFocus();
     }
 
     private void onPositiveButton() {
@@ -76,13 +77,5 @@ public class SubmitFeedbackDialog extends DialogFragment {
             bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, input.getText().toString());
             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, bundle);
         }
-    }
-
-    private void hideKeyboard() {
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-    }
-
-    private void showKeyboard() {
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 }

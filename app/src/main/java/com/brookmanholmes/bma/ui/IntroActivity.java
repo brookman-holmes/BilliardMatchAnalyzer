@@ -172,6 +172,7 @@ public class IntroActivity extends BaseActivity {
             public void onHidden(FloatingActionButton fab) {
                 super.onHidden(fab);
                 Intent intent = new Intent(IntroActivity.this, CreateNewMatchActivity.class);
+                intent.putExtra(PlayerProfileActivity.ARG_PLAYER_NAME, "");
                 startActivity(intent);
             }
         });

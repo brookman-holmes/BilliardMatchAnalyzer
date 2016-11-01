@@ -19,6 +19,7 @@ package com.brookmanholmes.bma.ui.newmatchwizard.model;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.newmatchwizard.fragments.PlayerNameFragment;
@@ -38,8 +39,9 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, U
     private final String reviewTitleAlt;
     private final String reviewPlayer;
     private final String reviewLocation;
+    private String name;
 
-    PlayerNamePage(ModelCallbacks callbacks, String title, Context context, String parentKey) {
+    PlayerNamePage(ModelCallbacks callbacks, String title, Context context, String parentKey, String name) {
         super(callbacks, title);
 
         this.reviewLocation = context.getString(R.string.location);
@@ -48,11 +50,13 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, U
         reviewTitleAlt = context.getString(R.string.player_name);
         data.putString(SIMPLE_DATA_KEY, Boolean.FALSE.toString());
         this.parentKey = parentKey;
+        this.name = name;
+        Log.i(TAG, "PlayerNamePage: " + name);
     }
 
     @Override
     public Fragment createFragment() {
-        return PlayerNameFragment.create(getKey());
+        return PlayerNameFragment.create(getKey(), name);
     }
 
     @Override

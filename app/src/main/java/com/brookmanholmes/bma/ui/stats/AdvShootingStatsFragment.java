@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.view.HeatGraph;
@@ -92,6 +91,9 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     TextView miscues;
     @Bind(R.id.heatGraph)
     HeatGraph cueBallHeatGraph;
+    @Bind(R.id.no_data)
+    TextView noData;
+
     List<BubbleEntry> obEntries = new ArrayList<>();
     List<BubbleEntry> cbEntries = new ArrayList<>();
     List<BubbleEntry> speedEntries = new ArrayList<>();
@@ -412,13 +414,24 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         }
         cueBallHeatGraph.setData(points);
 
-        speedData.calcMinMax(0, speedData.getYValCount());
-        speedChart.notifyDataSetChanged();
-        speedChart.invalidate();
+        if (filteredStats.size() > 0) {
+            speedChart.setVisibility(View.VISIBLE);
+            distanceChart.setVisibility(View.VISIBLE);
+            noData.setVisibility(View.GONE);
 
-        distanceData.calcMinMax(0, distanceData.getYValCount());
-        distanceChart.notifyDataSetChanged();
-        distanceChart.invalidate();
+            speedData.calcMinMax(0, speedData.getYValCount());
+            speedChart.notifyDataSetChanged();
+            speedChart.invalidate();
+
+            distanceData.calcMinMax(0, distanceData.getYValCount());
+            distanceChart.notifyDataSetChanged();
+            distanceChart.invalidate();
+        } else {
+            // prevents the charts from showing with no data, which has a small bug with the entries being dumb
+            speedChart.setVisibility(View.GONE);
+            distanceChart.setVisibility(View.GONE);
+            noData.setVisibility(View.VISIBLE);
+        }
     }
 
     private void updateEntrySize(BubbleEntry entry) {

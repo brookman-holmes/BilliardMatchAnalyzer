@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    tools:context=".ui.matchinfo.MatchInfoActivity">
+    android:animateLayoutChanges="true">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/createMatch"
@@ -18,8 +16,7 @@
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/white"
         android:visibility="invisible"
-        app:borderWidth="0dp"
-        app:layout_behavior="com.brookmanholmes.bma.utils.ScrollAwareFABBehavior" />
+        app:borderWidth="0dp" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

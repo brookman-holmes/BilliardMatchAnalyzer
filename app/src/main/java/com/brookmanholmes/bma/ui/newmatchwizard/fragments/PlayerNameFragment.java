@@ -18,9 +18,11 @@ package com.brookmanholmes.bma.ui.newmatchwizard.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +35,8 @@ import android.widget.TextView;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseFragment;
-import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage;
+import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -45,7 +47,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class PlayerNameFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener {
+    private static final String TAG = "PlayerNameFragment";
     private static final String ARG_KEY = "key";
+    private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     @Bind(R.id.playerName)
     MaterialAutoCompleteTextView playerName;
     @Bind(R.id.opponentName)
@@ -65,9 +69,14 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
     public PlayerNameFragment() {
     }
 
-    public static PlayerNameFragment create(String key) {
+    public static PlayerNameFragment create(String key, @Nullable String playerName) {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
+
+        Log.i(TAG, "create: " + playerName);
+        if (playerName != null) {
+            args.putString(ARG_PLAYER_NAME, playerName);
+        }
 
         PlayerNameFragment fragment = new PlayerNameFragment();
         fragment.setArguments(args);
@@ -99,7 +108,7 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
                 android.R.layout.select_dialog_item, names);
 
         playerName.setAdapter(autoCompleteAdapter);
-        playerName.setText(page.getData().getString(PlayerNamePage.PLAYER_NAME_KEY));
+        playerName.setText(page.getData().getString(PlayerNamePage.PLAYER_NAME_KEY, getArguments().getString(ARG_PLAYER_NAME, "")));
 
         opponentName.setAdapter(autoCompleteAdapter);
         opponentName.setText(page.getData().getString(PlayerNamePage.OPPONENT_NAME_KEY));
@@ -147,8 +156,18 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
         opponentName.addTextChangedListener(textWatcher(PlayerNamePage.OPPONENT_NAME_KEY));
         location.addTextChangedListener(textWatcher(PlayerNamePage.LOCATION_KEY));
         extra.addTextChangedListener(textWatcher(PlayerNamePage.EXTRA_INFO_KEY));
+    }
 
-        ((CreateNewMatchActivity) getActivity()).showKeyboard();
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (!getArguments().getString(ARG_PLAYER_NAME, "").isEmpty()) {
+            opponentName.setFocusableInTouchMode(true);
+            opponentName.requestFocus();
+        } else {
+            playerName.setFocusableInTouchMode(true);
+            playerName.requestFocus();
+        }
     }
 
     private TextWatcher textWatcher(final String key) {

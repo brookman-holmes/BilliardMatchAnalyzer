@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +26,6 @@ import android.widget.TextView;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseActivity;
-import com.brookmanholmes.bma.ui.IntroActivity;
 import com.brookmanholmes.bma.ui.MatchListFragment;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoFragment;
 import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
@@ -48,7 +48,8 @@ import butterknife.OnClick;
  * Created by Brookman Holmes on 4/13/2016.
  */
 public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
-    public static final String ARG_PLAYER_NAME = "arg player name";
+    public static final String ARG_PLAYER_NAME = "arg_player_name";
+    private static final String TAG = "PlayerProfileAct";
     private static final String ARG_FILTER_OPPONENT = "arg_filter_opponent";
     private static final String ARG_FILTER_GAME = "arg_filter_game";
     private static final String ARG_FILTER_DATE = "arg_filter_date";
@@ -143,6 +144,8 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
             public void onHidden(FloatingActionButton fab) {
                 super.onHidden(fab);
                 Intent intent = new Intent(PlayerProfileActivity.this, CreateNewMatchActivity.class);
+                Log.i(TAG, "onHidden: " + player);
+                intent.putExtra(ARG_PLAYER_NAME, player);
                 startActivity(intent);
             }
         });

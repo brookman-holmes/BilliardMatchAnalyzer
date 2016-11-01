@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
@@ -23,10 +24,13 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     private String opponentName = "Player 2";
     private GameType gameType;
     private boolean playTheGhost;
+    private String prePopulatePlayerName;
 
-    public CreateNewMatchWizardModel(Context context) {
+    public CreateNewMatchWizardModel(Context context, String playerName) {
         super(context);
+        prePopulatePlayerName = playerName;
         rootPageList = onNewRootPageList();
+        Log.i(TAG, "CreateNewMatchWizardModel: " + playerName);
     }
 
     @Override
@@ -71,7 +75,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     }
 
     private Page getPlayerNamePage() {
-        return new PlayerNamePage(this, context.getString(R.string.title_page_players), context, "PNG")
+        return new PlayerNamePage(this, context.getString(R.string.title_page_players), context, "PNG", prePopulatePlayerName)
                 .addBranch(Boolean.TRUE.toString(), getGhostGameChoicePage(), getStatDetailPageGhost())
                 .addBranch(Boolean.FALSE.toString(), getGameChoicePage(), getStatDetailPage())
                 .setValue(Boolean.FALSE.toString())
