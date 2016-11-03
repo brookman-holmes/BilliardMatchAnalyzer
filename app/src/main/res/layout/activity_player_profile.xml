@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/createMatch"
@@ -59,7 +58,8 @@
         android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
         android:elevation="8dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:translationY="48dp">
 
         <TextView
             android:id="@+id/playerName"

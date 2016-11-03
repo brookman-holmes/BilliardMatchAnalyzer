@@ -84,7 +84,6 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         player = getIntent().getExtras().getString(ARG_PLAYER_NAME);
         setupToolbar();
 
-        playerNameLayout.setVisibility(View.GONE);
         playerName.setText(player);
         opponentName.setText(filter.getOpponent());
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), player);
@@ -226,15 +225,24 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
     @Override
     public void onPageSelected(int position) {
-        playerNameLayout.setVisibility((position == 1 ? View.VISIBLE : View.GONE));
-        if (position == 2)
-            fab.show();
-        else fab.hide();
+
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
+        switch (state) {
+            case ViewPager.SCROLL_STATE_IDLE:
+                if (pager.getCurrentItem() == 1)
+                    playerNameLayout.animate().translationY(0).start();
+                else if (pager.getCurrentItem() == 2)
+                    fab.show();
+                break;
+            case ViewPager.SCROLL_STATE_DRAGGING:
+            case ViewPager.SCROLL_STATE_SETTLING:
+                fab.hide();
+                playerNameLayout.animate().translationY(playerNameLayout.getHeight()).start();
+                break;
+        }
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {

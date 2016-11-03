@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:bind="http://schemas.android.com/apk/res-auto">
-
     <data>
-
         <variable
             name="apa"
             type="com.brookmanholmes.bma.ui.matchinfo.ApaBinder" />
-
         <variable
             name="overview"
             type="com.brookmanholmes.bma.ui.matchinfo.MatchOverviewBinder" />
-
         <variable
             name="shooting"
             type="com.brookmanholmes.bma.ui.matchinfo.ShootingBinder" />
-
         <variable
             name="safeties"
             type="com.brookmanholmes.bma.ui.matchinfo.SafetiesBinder" />
-
         <variable
             name="breaks"
             type="com.brookmanholmes.bma.ui.matchinfo.BreaksBinder" />
-
         <variable
             name="runs"
             type="com.brookmanholmes.bma.ui.matchinfo.RunsBinder" />
@@ -66,7 +59,6 @@
             <include
                 layout="@layout/card_run_outs"
                 bind:runs="@{runs}" />
-
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
