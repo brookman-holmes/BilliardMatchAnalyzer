@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -143,7 +142,6 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
             public void onHidden(FloatingActionButton fab) {
                 super.onHidden(fab);
                 Intent intent = new Intent(PlayerProfileActivity.this, CreateNewMatchActivity.class);
-                Log.i(TAG, "onHidden: " + player);
                 intent.putExtra(ARG_PLAYER_NAME, player);
                 startActivity(intent);
             }

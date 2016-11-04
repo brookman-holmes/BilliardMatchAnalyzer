@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    app:columnCount="3"
+    app:useDefaultMargins="true">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Player 1"
+        app:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Data collection"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Player 2"
+        app:layout_gravity="center_horizontal" />
+
+    <CheckBox
+        android:checked="true"
+        android:enabled="false"
+        app:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Balls made and turn endings"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center" />
+
+    <CheckBox
+        android:checked="true"
+        android:enabled="false"
+        app:layout_gravity="center_horizontal" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Shot types of misses"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Aiming\n(Left of ball, Right of ball, etc.)"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Cue tip placement"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Ball distance"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Ball speed"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Track safeties\n(full/partial hooks, etc.)"
+        app:layout_columnWeight="1"
+        app:layout_gravity="center" />
+
+    <CheckBox app:layout_gravity="center_horizontal" />
+
+    <Space />
+
+    <Space />
+
+    <Space />
+
+</android.support.v7.widget.GridLayout>
