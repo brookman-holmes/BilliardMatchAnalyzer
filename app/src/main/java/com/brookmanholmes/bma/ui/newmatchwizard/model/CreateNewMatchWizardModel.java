@@ -13,6 +13,7 @@ import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.PageList;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Brookman Holmes on 1/7/2016.
@@ -30,7 +31,6 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         super(context);
         prePopulatePlayerName = playerName;
         rootPageList = onNewRootPageList();
-        Log.i(TAG, "CreateNewMatchWizardModel: " + playerName);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
 
     @Override
     protected PageList onNewRootPageList() {
-        return new PageList(getPlayerNamePage());
+        return new PageList(getPlayerNamePage(), getDataCollectPage());
     }
 
     private Page getPlayerNamePage() {
@@ -141,6 +141,11 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         return new StatDetailPageGhost(this, context.getString(R.string.title_page_stats), "SDPG")
                 .setChoices(context.getString(R.string.detail_advanced), context.getString(R.string.detail_normal))
                 .setValue(context.getString(R.string.detail_normal))
+                .setRequired(true);
+    }
+
+    private Page getDataCollectPage() {
+        return new DataCollectionPage(this, context.getString(R.string.title_page_stats), "DCP")
                 .setRequired(true);
     }
 
@@ -248,6 +253,11 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         else throw new IllegalArgumentException("No such stat detail level for: " + value);
 
         builder.setStatsDetail(detail);
+    }
+
+    void setStatDetail(List<Match.StatsDetail> details) {
+        Log.i(TAG, "setStatDetail: " + details);
+        builder.setDetails(details.toArray(new Match.StatsDetail[details.size()]));
     }
 
     public Match createMatch() {

@@ -19,7 +19,6 @@ package com.brookmanholmes.bma.ui.newmatchwizard.model;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.newmatchwizard.fragments.PlayerNameFragment;
@@ -51,7 +50,6 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, U
         data.putString(SIMPLE_DATA_KEY, Boolean.FALSE.toString());
         this.parentKey = parentKey;
         this.name = name;
-        Log.i(TAG, "PlayerNamePage: " + name);
     }
 
     @Override

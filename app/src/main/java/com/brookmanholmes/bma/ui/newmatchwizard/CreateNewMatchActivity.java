@@ -23,7 +23,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -76,7 +75,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
         setContentView(R.layout.activity_create_new_match);
 
         analytics.logEvent("create_match", null);
-        Log.i(TAG, "onCreate: " + getIntent().getExtras().getString(ARG_PLAYER_NAME, "no player name in extra"));
         wizardModel = new CreateNewMatchWizardModel(this, getIntent().getExtras().getString(ARG_PLAYER_NAME, ""));
 
         ButterKnife.bind(this);

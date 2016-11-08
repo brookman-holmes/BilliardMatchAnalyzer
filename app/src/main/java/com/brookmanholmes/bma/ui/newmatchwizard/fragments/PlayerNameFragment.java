@@ -22,7 +22,6 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +72,6 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
 
-        Log.i(TAG, "create: " + playerName);
         if (playerName != null) {
             args.putString(ARG_PLAYER_NAME, playerName);
         }

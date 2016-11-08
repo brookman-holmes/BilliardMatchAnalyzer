@@ -17,7 +17,9 @@ import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class Match implements IMatch {
     private final LinkedList<ITurn> undoneTurns = new LinkedList<>();
     private final LinkedList<GameStatus> games = new LinkedList<>();
     private final StatsDetail detail;
+    private final EnumSet<StatsDetail> details;
     private long matchId;
     private String location;
     private String notes;
@@ -49,6 +52,7 @@ public class Match implements IMatch {
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
         createdOn = (builder.date == null ? new Date() : builder.date);
+        details = EnumSet.copyOf(builder.details);
     }
 
     @Override
@@ -290,6 +294,10 @@ public class Match implements IMatch {
         return detail;
     }
 
+    public EnumSet<StatsDetail> getDetails() {
+        return details;
+    }
+
     @Override
     public Date getCreatedOn() {
         return new Date(createdOn.getTime());
@@ -308,10 +316,26 @@ public class Match implements IMatch {
     }
 
     public enum StatsDetail {
+        @Deprecated
         NORMAL,
+        @Deprecated
         ADVANCED,
+        @Deprecated
         ADVANCED_PLAYER,
-        ADVANCED_OPPONENT
+        @Deprecated
+        ADVANCED_OPPONENT,
+        SHOT_TYPE_PLAYER,
+        SHOT_TYPE_OPPONENT,
+        CUEING_PLAYER,
+        CUEING_OPPONENT,
+        HOW_MISS_PLAYER,
+        HOW_MISS_OPPONENT,
+        SAFETIES_PLAYER,
+        SAFETIES_OPPONENT,
+        SPEED_PLAYER,
+        SPEED_OPPONENT,
+        BALL_DISTANCES_PLAYER,
+        BALL_DISTANCES_OPPONENT
     }
 
     public static class Builder {
@@ -325,6 +349,7 @@ public class Match implements IMatch {
         private long id;
         private StatsDetail statsDetail = StatsDetail.NORMAL;
         private Date date;
+        private EnumSet<StatsDetail> details = EnumSet.noneOf(StatsDetail.class);
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;
@@ -391,6 +416,7 @@ public class Match implements IMatch {
             return this;
         }
 
+        @Deprecated
         public Builder setStatsDetail(StatsDetail detail) {
             statsDetail = detail;
             return this;
@@ -398,6 +424,12 @@ public class Match implements IMatch {
 
         public Builder setDate(Date date) {
             this.date = date;
+            return this;
+        }
+
+        public Builder setDetails(StatsDetail... details) {
+            this.details.clear();
+            this.details.addAll(Arrays.asList(details));
             return this;
         }
 

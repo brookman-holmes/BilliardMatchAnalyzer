@@ -45,7 +45,7 @@ public class MatchDialogHelperUtils {
     public static final String OPPONENT_FOULS_KEY = "opponent_fouls";
     public static final String PLAYER_FOULS_KEY = "player_fouls";
     public static final String PLAYER_COLOR_KEY = "player_color";
-
+    public static final String DATA_COLLECTION_KEY = "data_collection_key";
 
     private MatchDialogHelperUtils() {
     }
@@ -70,6 +70,7 @@ public class MatchDialogHelperUtils {
         args.putString(STATS_LEVEL_KEY, match.getStatDetailLevel().name());
         args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
         args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
+        args.putSerializable(DATA_COLLECTION_KEY, match.getDetails());
         return args;
     }
 
