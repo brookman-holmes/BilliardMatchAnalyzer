@@ -264,7 +264,9 @@ public class AdvStats {
         BREAK_SHOT;
 
         public static String[] getShots() {
-            return new String[]{CUT.name(),
+            return new String[]{
+                    NONE.name(),
+                    CUT.name(),
                     STRAIGHT_SHOT.name(),
                     BANK.name(),
                     KICK.name(),
@@ -275,11 +277,14 @@ public class AdvStats {
         }
 
         public static String[] getSafeties() {
-            return new String[]{SAFETY.name(), SAFETY_ERROR.name()};
+            return new String[]{
+                    SAFETY.name(),
+                    SAFETY_ERROR.name()};
         }
 
         public static String[] getBreaks() {
-            return new String[]{BREAK_SHOT.name()};
+            return new String[]{
+                    BREAK_SHOT.name()};
         }
     }
 
@@ -350,11 +355,12 @@ public class AdvStats {
         private ShotType shotType = ShotType.NONE;
         private SubType subType = SubType.NONE;
         private String startingPosition = "";
-        private float cbToOb;
-        private float obToPocket;
-        private int speed;
-        private int cueX;
-        private int cueY;
+        // set these to -1 as default because that will signify that it's not to be used
+        private float cbToOb = -1f;
+        private float obToPocket = -1f;
+        private int speed = -1;
+        private int cueX = -200;
+        private int cueY = -200;
         private boolean use;
 
 

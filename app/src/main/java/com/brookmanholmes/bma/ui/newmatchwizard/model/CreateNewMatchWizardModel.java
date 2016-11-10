@@ -1,7 +1,6 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
@@ -71,13 +70,13 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
 
     @Override
     protected PageList onNewRootPageList() {
-        return new PageList(getPlayerNamePage(), getDataCollectPage());
+        return new PageList(getPlayerNamePage());
     }
 
     private Page getPlayerNamePage() {
         return new PlayerNamePage(this, context.getString(R.string.title_page_players), context, "PNG", prePopulatePlayerName)
-                .addBranch(Boolean.TRUE.toString(), getGhostGameChoicePage(), getStatDetailPageGhost())
-                .addBranch(Boolean.FALSE.toString(), getGameChoicePage(), getStatDetailPage())
+                .addBranch(Boolean.TRUE.toString(), getGhostGameChoicePage(), getDataCollectPage("GDCP", true))
+                .addBranch(Boolean.FALSE.toString(), getGameChoicePage(), getDataCollectPage("DCP", false))
                 .setValue(Boolean.FALSE.toString())
                 .setRequired(true);
     }
@@ -130,22 +129,9 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
                 .setRequired(true);
     }
 
-    private Page getStatDetailPage() {
-        return new StatDetailPage(this, context.getString(R.string.title_page_stats), "SDP")
-                .setChoices(context.getResources().getStringArray(R.array.stat_levels))
-                .setValue(context.getString(R.string.detail_normal))
-                .setRequired(true);
-    }
-
-    private Page getStatDetailPageGhost() {
-        return new StatDetailPageGhost(this, context.getString(R.string.title_page_stats), "SDPG")
-                .setChoices(context.getString(R.string.detail_advanced), context.getString(R.string.detail_normal))
-                .setValue(context.getString(R.string.detail_normal))
-                .setRequired(true);
-    }
-
-    private Page getDataCollectPage() {
-        return new DataCollectionPage(this, context.getString(R.string.title_page_stats), "DCP")
+    private Page getDataCollectPage(String parentKey, boolean isGhost) {
+        return new DataCollectionPage(this, context.getString(R.string.title_page_stats), context.getString(R.string.title_data_collection), parentKey)
+                .setGhost(isGhost)
                 .setRequired(true);
     }
 
@@ -239,24 +225,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         else throw new IllegalArgumentException("No such game type: " + value);
     }
 
-    void setStatDetail(String value) {
-        Match.StatsDetail detail;
-
-        if (value.equals(context.getString(R.string.detail_normal)))
-            detail = Match.StatsDetail.NORMAL;
-        else if (value.equals(context.getString(R.string.detail_advanced)))
-            detail = Match.StatsDetail.ADVANCED;
-        else if (value.equals(context.getString(R.string.detail_player, playerName)))
-            detail = Match.StatsDetail.ADVANCED_PLAYER;
-        else if (value.equals(context.getString(R.string.detail_player, opponentName)))
-            detail = Match.StatsDetail.ADVANCED_OPPONENT;
-        else throw new IllegalArgumentException("No such stat detail level for: " + value);
-
-        builder.setStatsDetail(detail);
-    }
-
     void setStatDetail(List<Match.StatsDetail> details) {
-        Log.i(TAG, "setStatDetail: " + details);
         builder.setDetails(details.toArray(new Match.StatsDetail[details.size()]));
     }
 

@@ -21,6 +21,24 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.BALL_DISTANCES_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.BALL_DISTANCES_PLAYER;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.CUEING_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.CUEING_PLAYER;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.HOW_MISS_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.HOW_MISS_PLAYER;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SAFETIES_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SAFETIES_PLAYER;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SHOT_TYPE_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SHOT_TYPE_PLAYER;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SPEED_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SPEED_PLAYER;
 
 /**
  * Created by Brookman Holmes on 1/27/2016.
@@ -67,7 +85,6 @@ public class MatchDialogHelperUtils {
         args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.name());
         args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
         args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
-        args.putString(STATS_LEVEL_KEY, match.getStatDetailLevel().name());
         args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
         args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
         args.putSerializable(DATA_COLLECTION_KEY, match.getDetails());
@@ -96,9 +113,9 @@ public class MatchDialogHelperUtils {
         args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.name());
         args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
         args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
-        args.putString(STATS_LEVEL_KEY, match.getStatDetailLevel().name());
         args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
         args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
+        args.putSerializable(DATA_COLLECTION_KEY, match.getDetails());
         return args;
     }
 
@@ -382,7 +399,9 @@ public class MatchDialogHelperUtils {
     }
 
     public static AdvStats.ShotType convertStringToShotType(Context context, String shot) {
-        if (shot.equals(context.getString(R.string.miss_cut)))
+        if (shot.equals(context.getString(R.string.none)))
+            return AdvStats.ShotType.NONE;
+        else if (shot.equals(context.getString(R.string.miss_cut)))
             return AdvStats.ShotType.CUT;
         else if (shot.equals(context.getString(R.string.miss_long)))
             return AdvStats.ShotType.STRAIGHT_SHOT;
@@ -622,7 +641,7 @@ public class MatchDialogHelperUtils {
             case BREAK_SHOT:
                 return R.string.turn_break_miss;
             case NONE:
-                return R.string.empty_string;
+                return R.string.none;
             default:
                 throw new IllegalArgumentException("no such conversion " + shotType);
         }
@@ -753,10 +772,39 @@ public class MatchDialogHelperUtils {
         }
     }
 
+    public static boolean containsAdvancedStatsForPlayer(Collection<Match.StatsDetail> details) {
+        List<Match.StatsDetail> playerDetails = Arrays.asList(SHOT_TYPE_PLAYER,
+                CUEING_PLAYER,
+                HOW_MISS_PLAYER,
+                SAFETIES_PLAYER,
+                SPEED_PLAYER,
+                BALL_DISTANCES_PLAYER);
+        return !Collections.disjoint(details, playerDetails);
+    }
+
+    public static boolean containsAdvancedStatsForOpponent(Collection<Match.StatsDetail> details) {
+        List<Match.StatsDetail> oppDetails = Arrays.asList(SHOT_TYPE_OPPONENT,
+                CUEING_OPPONENT,
+                HOW_MISS_OPPONENT,
+                SAFETIES_OPPONENT,
+                SPEED_OPPONENT,
+                BALL_DISTANCES_OPPONENT);
+        return !Collections.disjoint(details, oppDetails);
+    }
+
     public static boolean isTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout &
                 Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE ||
                 (context.getResources().getConfiguration().screenLayout &
                         Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
+
+    public static boolean currentPlayerTurnAndAdvancedStats(PlayerTurn turn, EnumSet<Match.StatsDetail> details) {
+        if (turn == PlayerTurn.PLAYER)
+            return containsAdvancedStatsForPlayer(details);
+        else if (turn == PlayerTurn.OPPONENT)
+            return containsAdvancedStatsForOpponent(details);
+        else
+            return false;
     }
 }

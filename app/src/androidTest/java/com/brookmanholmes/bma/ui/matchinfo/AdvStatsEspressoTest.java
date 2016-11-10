@@ -113,7 +113,7 @@ public abstract class AdvStatsEspressoTest extends BaseMatchTest {
     @Override
     protected Match getMatch() {
         return new Match.Builder("Test 1", "Test 2")
-                .setStatsDetail(Match.StatsDetail.ADVANCED)
+                .setDetails(Match.StatsDetail.values())
                 .build(GameType.BCA_NINE_BALL);
     }
 

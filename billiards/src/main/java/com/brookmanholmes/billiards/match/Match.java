@@ -18,6 +18,7 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.LinkedList;
@@ -37,7 +38,6 @@ public class Match implements IMatch {
     private final LinkedList<ITurn> turns = new LinkedList<>();
     private final LinkedList<ITurn> undoneTurns = new LinkedList<>();
     private final LinkedList<GameStatus> games = new LinkedList<>();
-    private final StatsDetail detail;
     private final EnumSet<StatsDetail> details;
     private long matchId;
     private String location;
@@ -48,7 +48,6 @@ public class Match implements IMatch {
         location = builder.location;
         notes = builder.notes;
         matchId = builder.id;
-        detail = builder.statsDetail;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
         createdOn = (builder.date == null ? new Date() : builder.date);
@@ -290,10 +289,6 @@ public class Match implements IMatch {
     }
 
     @Override
-    public StatsDetail getStatDetailLevel() {
-        return detail;
-    }
-
     public EnumSet<StatsDetail> getDetails() {
         return details;
     }
@@ -308,7 +303,7 @@ public class Match implements IMatch {
         return "Match{" +
                 "createdOn=" + createdOn +
                 "\n game=" + game +
-                "\n detail=" + detail +
+                "\n details=" + details +
                 "\n matchId=" + matchId +
                 "\n location='" + location + '\'' +
                 "\n notes='" + notes + '\'' +
@@ -347,7 +342,6 @@ public class Match implements IMatch {
         private String location = "";
         private String notes = "";
         private long id;
-        private StatsDetail statsDetail = StatsDetail.NORMAL;
         private Date date;
         private EnumSet<StatsDetail> details = EnumSet.noneOf(StatsDetail.class);
 
@@ -416,12 +410,6 @@ public class Match implements IMatch {
             return this;
         }
 
-        @Deprecated
-        public Builder setStatsDetail(StatsDetail detail) {
-            statsDetail = detail;
-            return this;
-        }
-
         public Builder setDate(Date date) {
             this.date = date;
             return this;
@@ -430,6 +418,12 @@ public class Match implements IMatch {
         public Builder setDetails(StatsDetail... details) {
             this.details.clear();
             this.details.addAll(Arrays.asList(details));
+            return this;
+        }
+
+        public Builder setDetails(Collection<StatsDetail> details) {
+            this.details.clear();
+            this.details.addAll(details);
             return this;
         }
 
@@ -445,7 +439,6 @@ public class Match implements IMatch {
                     ", location='" + location + '\'' +
                     ", notes='" + notes + '\'' +
                     ", id=" + id +
-                    ", statsDetail=" + statsDetail +
                     '}';
         }
     }

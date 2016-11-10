@@ -9,9 +9,9 @@
 
     <ImageView
         android:id="@+id/shootingLine"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginLeft="16dp"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="4dp"
         android:src="@drawable/ball_background"
         android:tint="@color/almost_good"
@@ -27,9 +27,9 @@
 
     <ImageView
         android:id="@+id/safetyLine"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginLeft="16dp"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="4dp"
         android:src="@drawable/ball_background"
         android:tint="@color/almost_good"
@@ -44,9 +44,9 @@
 
     <ImageView
         android:id="@+id/breakingLine"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginLeft="16dp"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="4dp"
         android:src="@drawable/ball_background"
         android:tint="@color/almost_good"

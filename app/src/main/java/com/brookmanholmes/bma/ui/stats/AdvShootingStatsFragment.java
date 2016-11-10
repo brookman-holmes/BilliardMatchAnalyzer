@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,10 +70,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     TextView kickLong;
     @Bind(R.id.kickShort)
     TextView kickShort;
-    @Bind(R.id.kickGraph)
-    View kickGraph;
-    @Bind(R.id.bankGraph)
-    View bankGraph;
     @Bind(R.id.speedChart)
     BubbleChart speedChart;
     @Bind(R.id.distanceChart)
@@ -91,8 +88,11 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     TextView miscues;
     @Bind(R.id.heatGraph)
     HeatGraph cueBallHeatGraph;
-    @Bind(R.id.no_data)
-    TextView noData;
+    @Bind(R.id.noSpeedData)
+    TextView noSpeedData;
+    @Bind(R.id.noDistanceData)
+    TextView noDistanceData;
+
 
     List<BubbleEntry> obEntries = new ArrayList<>();
     List<BubbleEntry> cbEntries = new ArrayList<>();
@@ -372,7 +372,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         setItems(shotTypeSpinner, getPossibleShotTypes());
         setItems(shotSubTypeSpinner, getPossibleShotSubTypes());
         setItems(angleSpinner, getPossibleAngles());
-        setVisibilities();
+        setShotSubType();
 
         if (task2 == null) {
             task2 = new GetFilteredStatsAsync();
@@ -387,6 +387,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private void updateView(List<AdvStats> filteredStats) {
+        TransitionManager.beginDelayedTransition(baseLayout);
         StatsUtils.setLayoutWeights(filteredStats, AIM_LEFT, AIM_RIGHT, leftOfAim, rightOfAim);
         StatsUtils.setLayoutWeights(filteredStats, THIN, THICK, overCut, underCut);
         StatsUtils.setLayoutWeights(filteredStats, BANK_SHORT, BANK_LONG, bankShort, bankLong);
@@ -406,32 +407,56 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         List<Point> points = new ArrayList<>();
 
         for (AdvStats stat : filteredStats) {
-            updateEntrySize(obEntries.get(getIndex(stat.getObToPocket())));
-            updateEntrySize(cbEntries.get(getIndex(stat.getCbToOb())));
-            updateEntrySize(speedEntries.get(stat.getSpeed() - 1));
+            if (getIndex(stat.getObToPocket()) >= 0) {// make sure it's a valid index
+                updateEntrySize(obEntries.get(getIndex(stat.getObToPocket())));
+            }
+            if (getIndex(stat.getCbToOb()) >= 0) {// make sure it's a valid index
+                updateEntrySize(cbEntries.get(getIndex(stat.getCbToOb())));
+            }
+            if (stat.getSpeed() - 1 >= 0) {// make sure it's a valid index
+                updateEntrySize(speedEntries.get(stat.getSpeed() - 1));
+            }
 
-            points.add(new Point(stat.getCueX(), stat.getCueY()));
+            if (stat.getCueX() > -200 && stat.getCueY() > -200) // make sure it's a valid point
+                points.add(new Point(stat.getCueX(), stat.getCueY()));
         }
         cueBallHeatGraph.setData(points);
 
-        if (filteredStats.size() > 0) {
+        float speedDataSize = 0;
+        float distanceDataSize = 0;
+
+        for (BubbleEntry entry : speedEntries)
+            speedDataSize += entry.getSize();
+        for (BubbleEntry entry : obEntries)
+            distanceDataSize += entry.getSize();
+        for (BubbleEntry entry : cbEntries)
+            distanceDataSize += entry.getSize();
+
+
+        if (speedDataSize > 0) {
             speedChart.setVisibility(View.VISIBLE);
-            distanceChart.setVisibility(View.VISIBLE);
-            noData.setVisibility(View.GONE);
-
-            speedData.calcMinMax(0, speedData.getYValCount());
-            speedChart.notifyDataSetChanged();
-            speedChart.invalidate();
-
-            distanceData.calcMinMax(0, distanceData.getYValCount());
-            distanceChart.notifyDataSetChanged();
-            distanceChart.invalidate();
+            noSpeedData.setVisibility(View.GONE);
         } else {
-            // prevents the charts from showing with no data, which has a small bug with the entries being dumb
             speedChart.setVisibility(View.GONE);
-            distanceChart.setVisibility(View.GONE);
-            noData.setVisibility(View.VISIBLE);
+            noSpeedData.setVisibility(View.VISIBLE);
         }
+
+        if (distanceDataSize > 0) {
+            distanceChart.setVisibility(View.VISIBLE);
+            noDistanceData.setVisibility(View.GONE);
+        } else {
+            distanceChart.setVisibility(View.GONE);
+            noDistanceData.setVisibility(View.VISIBLE);
+        }
+
+        speedData.calcMinMax(0, speedData.getYValCount());
+        speedChart.notifyDataSetChanged();
+        speedChart.invalidate();
+
+        distanceData.calcMinMax(0, distanceData.getYValCount());
+        distanceChart.notifyDataSetChanged();
+        distanceChart.invalidate();
+
     }
 
     private void updateEntrySize(BubbleEntry entry) {
@@ -440,34 +465,13 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private int getIndex(float val) {
-        return (int) ((val - .5f) * 2);
+        return (int) (val * 2);
     }
 
-    private void setVisibilities() {
-        //showKickGraph();
-        //showBankGraph();
-        showShotSubTypeSpinner();
-    }
-
-    private void showKickGraph() {
-        if (isKickShot())
-            kickGraph.setVisibility(View.VISIBLE);
-        else kickGraph.setVisibility(View.GONE);
-    }
-
-    private void showBankGraph() {
-        if (isBankShot())
-            bankGraph.setVisibility(View.VISIBLE);
-        else bankGraph.setVisibility(View.GONE);
-    }
-
-    private void showShotSubTypeSpinner() {
-        if (shotType.equals(getString(R.string.miss_cut))) {
-            //shotSubTypeLayout.setVisibility(View.VISIBLE);
-        } else {
+    private void setShotSubType() {
+        if (!shotType.equals(getString(R.string.miss_cut))) {
             shotSubTypeSpinner.setSelection(0);
-            //shotSubTypeLayout.setVisibility(View.GONE);
-            subType = "All";
+            subType = getString(R.string.all);
         }
     }
 

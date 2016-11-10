@@ -17,8 +17,6 @@ import com.brookmanholmes.bma.wizard.model.BranchPage;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.PageList;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -29,7 +27,6 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.CURRENT_PLAYER
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.NEW_GAME_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.STATS_LEVEL_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.SUCCESSFUL_SAFE_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.TURN_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringToAngle;
@@ -44,6 +41,7 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringT
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class AddTurnWizardModel extends AbstractWizardModel {
+    private static final String TAG = "AddTurnWizardModel";
     private final Bundle matchData;
     private final TurnBuilder turnBuilder;
     private final String playerName;
@@ -63,20 +61,11 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         turnBuilder.foul = false;
         turnBuilder.lostGame = false;
         turnBuilder.advStats.name(playerName);
+        turnBuilder.advStats.shotType(AdvStats.ShotType.NONE);
 
-        turnBuilder.advStats.use(currentPlayerTurnAndAdvancedStats());
+        turnBuilder.advStats.use(MatchDialogHelperUtils.currentPlayerTurnAndAdvancedStats(turn, dataCollection));
 
         rootPageList = onNewRootPageList();
-    }
-
-    private boolean currentPlayerTurnAndAdvancedStats() {
-        Match.StatsDetail detail = Match.StatsDetail.valueOf(matchData.getString(STATS_LEVEL_KEY));
-
-        if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
-            return true;
-        else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
-            return true;
-        else return detail == Match.StatsDetail.ADVANCED;
     }
 
     @Override
@@ -211,7 +200,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private Page getTurnEndPage() {
         return new TurnEndPage(this, context.getString(R.string.title_turn_end, playerName), matchData)
                 .addBranch(context.getString(R.string.turn_safety_error), getSafetyErrorBranch())
-                .addBranch(context.getString(R.string.turn_miss), (Page[]) ArrayUtils.add(getMissBranchPage(), getCueingPage()))
+                .addBranch(context.getString(R.string.turn_miss), combineArrays(getHowMissPageAll(), getMissBranchPage(), getCueingPage()))
                 .addBranch(context.getString(R.string.turn_break_miss), getBreakErrorHow())
                 .addBranch(context.getString(R.string.turn_illegal_break), getIllegalBreakHow())
                 .addBranch(context.getString(R.string.turn_safety), getSafetyPage())
@@ -224,7 +213,12 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page[] getCueingPage() {
-        return new Page[]{new CueBallPage(this, "Cue/object ball information")};
+        if (isCueing() || isSpeed() || isDistances()) {
+            return new Page[]{new CueBallPage(this, "Cue/object ball information")
+                    .setCueing(isCueing())
+                    .setDistances(isDistances())
+                    .setSpeed(isSpeed())};
+        } else return new Page[]{};
     }
 
     private Page[] getSafetyErrorBranch() {
@@ -238,11 +232,11 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private Page[] getMissBranchPage() {
         if (isShotType()) {
             BranchPage page = new MissBranchPage(this, context.getString(R.string.title_miss, playerName))
-                    .addBranch(context.getString(R.string.miss_cut), (Page[]) ArrayUtils.add(ArrayUtils.add(getCutTypePage(), getAnglePage()),
+                    .addBranch(context.getString(R.string.miss_cut), combineArrays(getCutTypePage(), getAnglePage(),
                             getHowMissPage(R.array.how_choices)))
                     .addBranch(context.getString(R.string.miss_long), getHowMissPage(R.array.how_choices))
-                    .addBranch(context.getString(R.string.miss_bank), (Page[]) ArrayUtils.add(getBankPage(), getHowMissPage(R.array.how_choices_bank)))
-                    .addBranch(context.getString(R.string.miss_kick), (Page[]) ArrayUtils.add(getKickPage(), getHowMissPage(R.array.how_choices_kick)))
+                    .addBranch(context.getString(R.string.miss_bank), combineArrays(getBankPage(), getHowMissPage(R.array.how_choices_bank)))
+                    .addBranch(context.getString(R.string.miss_kick), combineArrays(getKickPage(), getHowMissPage(R.array.how_choices_kick)))
                     .addBranch(context.getString(R.string.miss_combo), getHowMissPage(R.array.how_choices))
                     .addBranch(context.getString(R.string.miss_carom), getHowMissPage(R.array.how_choices))
                     .addBranch(context.getString(R.string.miss_jump), getHowMissPage(R.array.how_choices))
@@ -250,6 +244,24 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
             return new Page[]{page.setValue(context.getString(R.string.miss_cut)).setRequired(true)};
         } else return new Page[]{};
+    }
+
+    private Page[] combineArrays(Page[]... pages) {
+        int length = 0;
+        for (Page[] page : pages) {
+            length += page.length;
+        }
+
+        Page[] result = new Page[length];
+        int count = 0;
+        for (Page[] page : pages) {
+            for (Page subPage : page) {
+                result[count] = subPage;
+                count += 1;
+            }
+        }
+
+        return result;
     }
 
     private Page[] getCutTypePage() {
@@ -279,20 +291,24 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page[] getBreakErrorHow() {
-        return new Page[]{new BreakErrorPage(this, context.getString(R.string.title_how_miss, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.how_choices_break))};
+        if (isHowMiss())
+            return new Page[]{new BreakErrorPage(this, context.getString(R.string.title_how_miss, playerName))
+                    .setChoices(context.getResources().getStringArray(R.array.how_choices_break))};
+        else return new Page[]{};
     }
 
     private Page[] getIllegalBreakHow() {
-        return new Page[]{new BreakErrorPage(this, context.getString(R.string.title_how_miss, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.how_choices_break))};
+        if (isHowMiss())
+            return new Page[]{new BreakErrorPage(this, context.getString(R.string.title_how_miss, playerName))
+                    .setChoices(context.getResources().getStringArray(R.array.how_choices_break))};
+        else return new Page[]{};
     }
 
     private Page[] getSafetyPage() {
         if (isSafeties())
             return new Page[]{new SafetyPage(this, context.getString(R.string.title_safety, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.safety_types))
-                .setValue(context.getString(R.string.safety_full_hook))
+                    .setChoices(context.getResources().getStringArray(R.array.safety_types))
+                    .setValue(context.getString(R.string.safety_full_hook))
                     .setRequired(true)};
         else return new Page[]{};
     }
@@ -301,6 +317,13 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         if (isHowMiss())
             return new Page[]{new HowMissPage(this, context.getString(R.string.title_how_miss, playerName))
                     .setChoices(context.getResources().getStringArray(choices))};
+        else return new Page[]{};
+    }
+
+    private Page[] getHowMissPageAll() {
+        if (isHowMiss() && !isShotType())
+            return new Page[]{new HowMissPage(this, context.getString(R.string.title_how_miss, playerName))
+                    .setChoices(context.getResources().getStringArray(R.array.how_choices_all))};
         else return new Page[]{};
     }
 

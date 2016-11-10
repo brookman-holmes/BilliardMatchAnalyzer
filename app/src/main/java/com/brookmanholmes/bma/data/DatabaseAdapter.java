@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -114,6 +115,27 @@ public class DatabaseAdapter {
         }
 
         return table;
+    }
+
+    static int encodeEnumSet(EnumSet<Match.StatsDetail> set) {
+        int ret = 0;
+
+        for (Match.StatsDetail val : set)
+            ret |= 1 << val.ordinal();
+
+        return ret;
+    }
+
+    private static EnumSet<Match.StatsDetail> decodeEnumSet(int code) {
+        EnumSet<Match.StatsDetail> result = EnumSet.noneOf(Match.StatsDetail.class);
+        Match.StatsDetail[] values = Match.StatsDetail.values();
+        while (code != 0) {
+            int ordinal = Integer.numberOfTrailingZeros(code);
+            code ^= Integer.lowestOneBit(code);
+            result.add(values[ordinal]);
+        }
+
+        return result;
     }
 
     public void createSampleMatches() {
@@ -319,7 +341,7 @@ public class DatabaseAdapter {
                 .setLocation(c.getString(c.getColumnIndex(COLUMN_LOCATION)))
                 .setMatchId(c.getLong(c.getColumnIndex("_id")))
                 .setNotes(c.getString(c.getColumnIndex(COLUMN_NOTES)))
-                .setStatsDetail(getStatDetail(c))
+                .setDetails(getStatDetail(c))
                 .build(getGameType(c));
     }
 
@@ -345,8 +367,8 @@ public class DatabaseAdapter {
         return BreakType.valueOf(c.getString(c.getColumnIndex(COLUMN_BREAK_TYPE)));
     }
 
-    private Match.StatsDetail getStatDetail(Cursor c) {
-        return Match.StatsDetail.valueOf(c.getString(c.getColumnIndex(COLUMN_STATS_DETAIL)));
+    private EnumSet<Match.StatsDetail> getStatDetail(Cursor c) {
+        return decodeEnumSet(c.getInt(c.getColumnIndex(COLUMN_STATS_DETAIL)));
     }
 
     private GameType getGameType(Cursor c) {
@@ -442,28 +464,24 @@ public class DatabaseAdapter {
     }
 
     public long insertMatch(Match match) {
+        ContentValues matchValues = new ContentValues();
 
-        if (match.getMatchId() == 0) {
-            ContentValues matchValues = new ContentValues();
+        GameStatus status = match.getGameStatus();
 
-            GameStatus status = match.getGameStatus();
+        matchValues.put(COLUMN_PLAYER_TURN, status.turn.name());
+        matchValues.put(COLUMN_GAME_TYPE, status.gameType.name());
+        matchValues.put(COLUMN_CREATED_ON, formatDate(match.getCreatedOn()));
+        matchValues.put(COLUMN_BREAK_TYPE, status.breakType.name());
+        matchValues.put(COLUMN_LOCATION, match.getLocation());
+        matchValues.put(COLUMN_STATS_DETAIL, encodeEnumSet(match.getDetails()));
+        matchValues.put(COLUMN_NOTES, match.getNotes());
+        matchValues.put(COLUMN_PLAYER_RANK, match.getPlayer().getRank());
+        matchValues.put(COLUMN_OPPONENT_RANK, match.getOpponent().getRank());
 
-            matchValues.put(COLUMN_PLAYER_TURN, status.turn.name());
-            matchValues.put(COLUMN_GAME_TYPE, status.gameType.name());
-            matchValues.put(COLUMN_CREATED_ON, formatDate(match.getCreatedOn()));
-            matchValues.put(COLUMN_BREAK_TYPE, status.breakType.name());
-            matchValues.put(COLUMN_LOCATION, match.getLocation());
-            matchValues.put(COLUMN_STATS_DETAIL, match.getStatDetailLevel().name());
-            matchValues.put(COLUMN_NOTES, match.getNotes());
-            matchValues.put(COLUMN_PLAYER_RANK, match.getPlayer().getRank());
-            matchValues.put(COLUMN_OPPONENT_RANK, match.getOpponent().getRank());
-
-
-            long matchId = database.insert(TABLE_MATCHES, null, matchValues);
-            match.setMatchId(matchId);
-            insertPlayer(match.getPlayer(), matchId);
-            insertPlayer(match.getOpponent(), matchId);
-        }
+        long matchId = database.insert(TABLE_MATCHES, null, matchValues);
+        match.setMatchId(matchId);
+        insertPlayer(match.getPlayer(), matchId);
+        insertPlayer(match.getOpponent(), matchId);
 
         return match.getMatchId();
     }
@@ -813,7 +831,6 @@ public class DatabaseAdapter {
     }
 
     public void logDatabase(String table) {
-
         Log.i(TAG, DatabaseUtils.dumpCursorToString(database.query(table, null, null, null, null, null, null)));
     }
 }

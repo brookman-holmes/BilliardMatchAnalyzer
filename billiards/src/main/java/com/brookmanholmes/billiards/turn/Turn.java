@@ -3,13 +3,17 @@ package com.brookmanholmes.billiards.turn;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.GameType;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Brookman Holmes on 10/30/2015.
  */
-public class Turn implements ITurn {
+public class Turn implements ITurn, Serializable {
     private final ITableStatus tableStatus;
     private final TurnEnd turnEnd;
     private final boolean scratch;
@@ -158,5 +162,13 @@ public class Turn implements ITurn {
                 "\n turnEnd=" + turnEnd +
                 "\n foul=" + scratch +
                 '}';
+    }
+
+    private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
+        inputStream.defaultReadObject();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream) throws IOException {
+        outputStream.defaultWriteObject();
     }
 }

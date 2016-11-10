@@ -88,6 +88,7 @@ public class StatFilter {
     public void setDate(String date) {
         Calendar cal = Calendar.getInstance();
         if (date.equals(dates[1])) {
+            cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) - 1);
             selectedDate = 1;
         } else if (date.equals(dates[2])) {
             cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) - 7);

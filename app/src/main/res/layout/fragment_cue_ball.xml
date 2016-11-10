@@ -14,99 +14,122 @@
 
         <TextView style="@style/WizardPageTitle" />
 
-        <com.appyvet.rangebar.RangeBar
-            android:id="@+id/rangeCb"
+        <LinearLayout
+            android:id="@+id/distanceLayout"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            custom:connectingLineColor="@android:color/transparent"
-            custom:pinColor="@color/colorAccent"
-            custom:pinMaxFont="16sp"
-            custom:rangeBar="false"
-            custom:selectorColor="@color/colorAccent"
-            custom:tickColor="@android:color/black"
-            custom:tickEnd="19"
-            custom:tickInterval="1"
-            custom:tickStart="0" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/cbText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/primary_text"
-            android:textSize="14sp" />
+            <com.appyvet.rangebar.RangeBar
+                android:id="@+id/rangeCb"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                custom:connectingLineColor="@android:color/transparent"
+                custom:pinColor="@color/colorAccent"
+                custom:pinMaxFont="16sp"
+                custom:rangeBar="false"
+                custom:selectorColor="@color/colorAccent"
+                custom:tickColor="@android:color/black"
+                custom:tickEnd="19"
+                custom:tickInterval="1"
+                custom:tickStart="0" />
 
-        <com.appyvet.rangebar.RangeBar
-            android:id="@+id/rangeOb"
+            <TextView
+                android:id="@+id/cbText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <com.appyvet.rangebar.RangeBar
+                android:id="@+id/rangeOb"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                custom:connectingLineColor="@android:color/transparent"
+                custom:pinColor="@color/colorAccent"
+                custom:pinMaxFont="16sp"
+                custom:rangeBar="false"
+                custom:selectorColor="@color/colorAccent"
+                custom:tickColor="@android:color/black"
+                custom:tickEnd="19"
+                custom:tickInterval="1"
+                custom:tickStart="0" />
+
+            <TextView
+                android:id="@+id/obText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/distanceDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/line_divider" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cueLayout"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            custom:connectingLineColor="@android:color/transparent"
-            custom:pinColor="@color/colorAccent"
-            custom:pinMaxFont="16sp"
-            custom:rangeBar="false"
-            custom:selectorColor="@color/colorAccent"
-            custom:tickColor="@android:color/black"
-            custom:tickEnd="19"
-            custom:tickInterval="1"
-            custom:tickStart="0" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/obText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/primary_text"
-            android:textSize="14sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Where on the cue ball did you hit?"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
 
-        <ImageView
+            <com.brookmanholmes.bma.ui.view.CueBallHitView
+                android:id="@+id/hit"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle"
+                android:outlineProvider="background" />
+
+            <ImageView
+                android:id="@+id/cueDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/line_divider" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/speedLayout"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/line_divider" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Where on the cue ball did you hit?"
-            android:textColor="@color/primary_text"
-            android:textSize="14sp" />
+            <com.appyvet.rangebar.RangeBar
+                android:id="@+id/rangeSpeed"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                custom:connectingLineColor="@android:color/transparent"
+                custom:pinColor="@color/colorAccent"
+                custom:pinMaxFont="16sp"
+                custom:rangeBar="false"
+                custom:selectorColor="@color/colorAccent"
+                custom:tickColor="@android:color/black"
+                custom:tickEnd="10"
+                custom:tickInterval="1"
+                custom:tickStart="1" />
 
-        <com.brookmanholmes.bma.ui.view.CueBallHitView
-            android:id="@+id/hit"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/circle"
-            android:outlineProvider="background" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/line_divider" />
-
-        <com.appyvet.rangebar.RangeBar
-            android:id="@+id/rangeSpeed"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            custom:connectingLineColor="@android:color/transparent"
-            custom:pinColor="@color/colorAccent"
-            custom:pinMaxFont="16sp"
-            custom:rangeBar="false"
-            custom:selectorColor="@color/colorAccent"
-            custom:tickColor="@android:color/black"
-            custom:tickEnd="10"
-            custom:tickInterval="1"
-            custom:tickStart="1" />
-
-        <TextView
-            android:id="@+id/speedText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/primary_text"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/speedText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+        </LinearLayout>
 
     </LinearLayout>
 

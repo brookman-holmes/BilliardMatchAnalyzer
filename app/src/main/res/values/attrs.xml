@@ -10,4 +10,11 @@
 
     <attr name="grid_item_description" format="reference" />
     <attr name="grid_item_count" format="reference" />
+
+    <declare-styleable name="ObjectBall">
+        <attr name="ob_ball_number" format="string" />
+        <attr name="ob_color" format="color" />
+        <attr name="ob_dead" format="boolean" />
+        <attr name="ob_text_size" format="dimension" />
+    </declare-styleable>
 </resources>

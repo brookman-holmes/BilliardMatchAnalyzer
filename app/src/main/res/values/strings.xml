@@ -111,7 +111,7 @@
     <string name="location">Location</string>
     <string name="title_page_games">Select a game</string>
     <string name="title_page_break">The break</string>
-    <string name="title_page_stats">Select stat collection method</string>
+    <string name="title_page_stats">Select data to collect</string>
     <string name="title_page_first_break">Who breaks first?</string>
     <string name="title_page_rank">Select %1$s\'s rank</string>
     <string name="ghost_name">The Ghost</string>
@@ -306,4 +306,12 @@
     <string name="player_wins">%1$s has %2$d wins</string>
     <string name="description_heat_graph">Where the cue struck the cue ball when a shot was missed</string>
     <string name="description_no_data">No advanced shot data available</string>
+    <string name="none">None</string>
+    <string name="no_distance_data">No data for distances available</string>
+    <string name="no_speed_data">No data for cue ball speed available</string>
+    <string name="cueing">Cue tip placement</string>
+    <string name="how_miss">How shot is missed</string>
+    <string name="cb_speed">Speed of shot</string>
+    <string name="ball_distances">CB/OB distances</string>
+    <string name="title_data_collection">%1$s data collection</string>
 </resources>

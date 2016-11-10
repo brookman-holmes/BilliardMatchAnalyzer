@@ -146,6 +146,7 @@ public class MatchInfoFragment extends BaseFragment
             Pair<CompPlayer, CompPlayer> pair = splitPlayers(pairs);
             player = pair.getLeft();
             opponent = pair.getRight();
+            isGhostGame = false;
             expanded = true;
         }
 

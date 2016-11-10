@@ -28,3 +28,9 @@
 
 -keep class com.github.mikephil.charting.** { *; }
 -dontwarn com.github.mikephil.charting.data.realm.**
+
+# for the about libaries to include the libraries it needs
+-keep class .R
+-keep class **.R$* {
+    <fields>;
+}

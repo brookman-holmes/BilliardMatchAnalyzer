@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.brookmanholmes.billiards.game.PlayerTurn;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.MyApplication;
@@ -34,14 +34,12 @@ import com.brookmanholmes.bma.wizard.ui.StepPagerStrip;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.STATS_LEVEL_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.TURN_KEY;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
@@ -107,17 +105,6 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
             FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
             firebaseAnalytics.logEvent("add_turn_started", null);
         }
-    }
-
-    private boolean currentPlayerTurnAndAdvancedStats() {
-        PlayerTurn turn = PlayerTurn.valueOf(getArguments().getString(TURN_KEY));
-        Match.StatsDetail detail = Match.StatsDetail.valueOf(getArguments().getString(STATS_LEVEL_KEY));
-
-        if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
-            return true;
-        else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
-            return true;
-        else return detail == Match.StatsDetail.ADVANCED;
     }
 
     @Override
@@ -196,14 +183,15 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     }
 
     private int getNecessaryHeight() {
-        if (currentPlayerTurnAndAdvancedStats()) {
+        GameStatus gameStatus = MatchDialogHelperUtils.getGameStatus(getArguments());
+        if (MatchDialogHelperUtils.currentPlayerTurnAndAdvancedStats(gameStatus.turn, EnumSet.copyOf((EnumSet<Match.StatsDetail>) getArguments().getSerializable(MatchDialogHelperUtils.DATA_COLLECTION_KEY)))) {
             return (int) ConversionUtils.convertDpToPx(getContext(), 700);
-        } else if (MatchDialogHelperUtils.getLayout(MatchDialogHelperUtils.getGameStatus(getArguments()).gameType) == R.layout.select_eight_ball_dialog) {
+        } else if (MatchDialogHelperUtils.getLayout(gameStatus.gameType) == R.layout.select_eight_ball_dialog) {
             return (int) ConversionUtils.convertDpToPx(getContext(), 600);
-        } else if (MatchDialogHelperUtils.getLayout(MatchDialogHelperUtils.getGameStatus(getArguments()).gameType) == R.layout.select_ten_ball_dialog) {
+        } else if (MatchDialogHelperUtils.getLayout(gameStatus.gameType) == R.layout.select_ten_ball_dialog) {
             return (int) ConversionUtils.convertDpToPx(getContext(), 500);
         } else {
-            return (int) ConversionUtils.convertDpToPx(getContext(), 420);
+            return (int) ConversionUtils.convertDpToPx(getContext(), 470);
         }
     }
 

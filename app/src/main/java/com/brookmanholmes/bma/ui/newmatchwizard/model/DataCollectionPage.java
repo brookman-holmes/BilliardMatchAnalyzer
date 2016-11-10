@@ -10,6 +10,7 @@ import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.OPPONENT_NAME_KEY;
 import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.PLAYER_NAME_KEY;
@@ -19,11 +20,17 @@ import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.PLAY
  */
 
 public class DataCollectionPage extends Page implements RequiresPlayerNames, UpdatesMatchBuilder {
+    public static final String PLAYER_DESC_KEY = "player_key";
+    public static final String OPP_DESC_KEY = "opp_key";
+    String reviewTitle;
     private DataCollectionFragment fragment;
+    private boolean isGhost = false;
 
-    protected DataCollectionPage(ModelCallbacks callbacks, String title, String parentKey) {
+
+    DataCollectionPage(ModelCallbacks callbacks, String title, String reviewTitle, String parentKey) {
         super(callbacks, title);
         this.parentKey = parentKey;
+        this.reviewTitle = reviewTitle;
     }
 
     @Override
@@ -62,13 +69,38 @@ public class DataCollectionPage extends Page implements RequiresPlayerNames, Upd
         }
     }
 
+    DataCollectionPage setGhost(boolean isGhost) {
+        this.isGhost = isGhost;
+        return this;
+    }
+
     @Override
     public Fragment createFragment() {
-        return DataCollectionFragment.create(getKey());
+        return DataCollectionFragment.create(getKey(), isGhost);
     }
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> dest) {
+        ArrayList<String> playerItems = data.getStringArrayList(PLAYER_DESC_KEY);
+        ArrayList<String> opponentItems = data.getStringArrayList(OPP_DESC_KEY);
 
+        dest.add(new ReviewItem(String.format(Locale.getDefault(), reviewTitle, data.getString(PLAYER_NAME_KEY)), formatAdvShotData(playerItems), getKey()));
+        if (!isGhost)
+            dest.add(new ReviewItem(String.format(Locale.getDefault(), reviewTitle, data.getString(OPPONENT_NAME_KEY)), formatAdvShotData(opponentItems), getKey()));
+    }
+
+    private String formatAdvShotData(List<String> advShotData) {
+        String result = "";
+
+        if (advShotData != null) {
+
+            for (int i = 0; i < advShotData.size(); i++) {
+                result += advShotData.get(i);
+
+                if (i + 1 < advShotData.size())
+                    result += "\n";
+            }
+        }
+        return result;
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.TextViewCompat;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.brookmanholmes.bma.ui.addturnwizard.model.CueBallPage;
 import com.brookmanholmes.bma.ui.view.CueBallHitView;
 import com.brookmanholmes.bma.ui.view.OnCueBallTouched;
 import com.brookmanholmes.bma.utils.ConversionUtils;
-import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 
 import java.text.DecimalFormat;
@@ -34,6 +32,16 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
         RangeBar.OnRangeBarChangeListener {
     private static final String TAG = "CueBallFragment";
     private static final String ARG_KEY = "key";
+    @Bind(R.id.distanceLayout)
+    ViewGroup distanceLayout;
+    @Bind(R.id.speedLayout)
+    ViewGroup speedLayout;
+    @Bind(R.id.cueLayout)
+    ViewGroup cueLayout;
+    @Bind(R.id.distanceDivider)
+    View distanceDivider;
+    @Bind(R.id.cueDivider)
+    View cueDivider;
     @Bind(R.id.rangeCb)
     RangeBar cbRange;
     @Bind(R.id.rangeOb)
@@ -49,7 +57,7 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
     @Bind(R.id.hit)
     CueBallHitView hit;
     private String key;
-    private Page page;
+    private CueBallPage page;
     private PageFragmentCallbacks callbacks;
 
     public static CueBallFragment create(String key) {
@@ -81,7 +89,7 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        page = callbacks.onGetPage(key);
+        page = (CueBallPage) callbacks.onGetPage(key);
         View view = inflater.inflate(R.layout.fragment_cue_ball, container, false);
         ButterKnife.bind(this, view);
 
@@ -90,30 +98,45 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
         title.setPadding(0, 0, 0, 0);
         title.setText(page.getTitle());
 
-        speedRange.setBarWeight(ConversionUtils.convertDpToPx(getContext(), 2));
-        cbRange.setBarWeight(ConversionUtils.convertDpToPx(getContext(), 2));
-        obRange.setBarWeight(ConversionUtils.convertDpToPx(getContext(), 2));
+        if (page.isSpeed()) {
+            speedRange.setBarWeight(ConversionUtils.convertDpToPx(getContext(), 2));
+            speedRange.setOnRangeBarChangeListener(this);
+            speedRange.setSeekPinByIndex(page.getData().getInt(CueBallPage.SPEED_KEY, 4));
+        } else {
+            speedLayout.setVisibility(View.GONE);
+        }
 
-        cbRange.setPinTextListener(this);
-        obRange.setPinTextListener(this);
+        if (page.isDistances()) {
+            cbRange.setBarWeight(ConversionUtils.convertDpToPx(getContext(), 2));
+            obRange.setBarWeight(ConversionUtils.convertDpToPx(getContext(), 2));
+            cbRange.setPinTextListener(this);
+            obRange.setPinTextListener(this);
+            obRange.setOnRangeBarChangeListener(this);
+            cbRange.setOnRangeBarChangeListener(this);
+            obRange.setSeekPinByIndex(getIndexFromPinValue(page.getData().getFloat(CueBallPage.OB_DISTANCE_KEY, 8f)));
+            cbRange.setSeekPinByIndex(getIndexFromPinValue(page.getData().getFloat(CueBallPage.CB_DISTANCE_KEY, 8f)));
+        } else {
+            distanceLayout.setVisibility(View.GONE);
+        }
 
-        obRange.setOnRangeBarChangeListener(this);
-        cbRange.setOnRangeBarChangeListener(this);
-        speedRange.setOnRangeBarChangeListener(this);
+        if (page.isCueing()) {
+            hit.addOnCueBueTouchedListener(new OnCueBallTouched() {
+                @Override
+                public void onTouch(int x, int y) {
+                    page.getData().putInt(CueBallPage.CB_X_KEY, x);
+                    page.getData().putInt(CueBallPage.CB_Y_KEY, y);
+                    page.notifyDataChanged();
+                }
+            });
+        } else {
+            cueLayout.setVisibility(View.GONE);
+        }
 
-        obRange.setSeekPinByIndex(getIndexFromPinValue(page.getData().getFloat(CueBallPage.OB_DISTANCE_KEY, 8f)));
-        cbRange.setSeekPinByIndex(getIndexFromPinValue(page.getData().getFloat(CueBallPage.CB_DISTANCE_KEY, 8f)));
-        speedRange.setSeekPinByIndex(page.getData().getInt(CueBallPage.SPEED_KEY, 4));
+        if (!page.isCueing() && !page.isSpeed())
+            distanceDivider.setVisibility(View.GONE);
 
-
-        hit.addOnCueBueTouchedListener(new OnCueBallTouched() {
-            @Override
-            public void onTouch(int x, int y) {
-                page.getData().putInt(CueBallPage.CB_X_KEY, x);
-                page.getData().putInt(CueBallPage.CB_Y_KEY, y);
-                page.notifyDataChanged();
-            }
-        });
+        if (!page.isSpeed())
+            cueDivider.setVisibility(View.GONE);
 
         return view;
     }
@@ -145,22 +168,22 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
             textView = obText;
             stringToFormat = getString(R.string.html_object_pocket);
             page.getData().putFloat(CueBallPage.OB_DISTANCE_KEY, getPinValueFromIndex(rightPinIndex));
-            page.notifyDataChanged();
         } else if (rangeBar.getId() == cbRange.getId()) {
             textView = cbText;
             stringToFormat = getString(R.string.html_cue_object_ball);
             page.getData().putFloat(CueBallPage.CB_DISTANCE_KEY, getPinValueFromIndex(rightPinIndex));
-            page.notifyDataChanged();
         } else {
             textView = speedText;
             stringToFormat = getString(R.string.html_speed_range);
-            page.getData().putInt(CueBallPage.SPEED_KEY, rightPinIndex);
-            page.notifyDataChanged();
+            page.getData().putInt(CueBallPage.SPEED_KEY, rightPinIndex + 1);
         }
-        if (rightPinIndex == 0)
+        if (rightPinIndex == 0 && rangeBar.getId() != speedRange.getId()) // exclude the speed bar from using this
             textView.setText(Html.fromHtml(String.format(Locale.getDefault(), stringToFormat, "less than .5'"))); // TODO: 10/19/2016 change this to a string resource
         else
             textView.setText(Html.fromHtml(String.format(Locale.getDefault(), stringToFormat, rightPinValue)));
+
+        if (isVisible()) // prevents a concurrent modification exception from being thrown
+            page.notifyDataChanged();
     }
 
     private float getPinValueFromIndex(int index) {

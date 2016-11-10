@@ -7,10 +7,8 @@ import android.graphics.PointF;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.utils.ConversionUtils;
 
 /**
  * Created by Brookman Holmes on 9/26/2016.

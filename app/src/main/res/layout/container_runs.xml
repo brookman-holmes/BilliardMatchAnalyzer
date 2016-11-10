@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="runs"
@@ -22,7 +22,8 @@
         <TextView
             style="@style/player_stats"
             android:text="@string/title_break_runs"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            app:layout_columnWeight="0" />
 
         <TextView
             style="@style/player_stats"
@@ -41,7 +42,8 @@
             style="@style/player_stats"
             android:text="@string/title_table_runs"
             android:textColor="@color/secondary_text"
-            android:visibility="@{runs.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{runs.visible ? View.VISIBLE : View.GONE}"
+            app:layout_columnWeight="0" />
 
         <TextView
             style="@style/player_stats"
@@ -61,7 +63,8 @@
             style="@style/player_stats"
             android:text="@string/title_five_ball_outs"
             android:textColor="@color/primary_text"
-            android:visibility="@{runs.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{runs.visible ? View.VISIBLE : View.GONE}"
+            app:layout_columnWeight="0" />
 
         <TextView
             style="@style/player_stats"
@@ -81,7 +84,8 @@
             style="@style/player_stats"
             android:text="@string/title_early_wins"
             android:textColor="@color/secondary_text"
-            android:visibility="@{runs.showEarlyWins ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{runs.showEarlyWins ? View.VISIBLE : View.GONE}"
+            app:layout_columnWeight="0" />
 
         <TextView
             style="@style/player_stats"

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,6 +55,15 @@ public class AdvStatsDialog extends DialogFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!MatchDialogHelperUtils.isTablet(getContext()))
+            setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
+        else
+            setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AlertDialogTheme);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (getArguments().getString(ARG_PLAYER_TURN, "").equals(PlayerTurn.PLAYER.toString()))
@@ -84,7 +94,7 @@ public class AdvStatsDialog extends DialogFragment {
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
-        private static final String ARGS_BUNDLE = "args bundle";
+        private static final String ARGS_BUNDLE = "args_bundle";
         final String shooting;
         final String safeties;
         final String breaks;

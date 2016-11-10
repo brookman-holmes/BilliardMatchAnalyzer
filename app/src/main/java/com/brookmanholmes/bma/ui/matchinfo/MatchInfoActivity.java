@@ -412,11 +412,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void showAdvancedStatsDialog(String name, PlayerTurn turn) {
-        DialogFragment dialogFragment =
-                AdvStatsDialog.create(getMatchId(), name, turn);
-        if (!MatchDialogHelperUtils.isTablet(this))
-            dialogFragment.setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
-
+        DialogFragment dialogFragment = AdvStatsDialog.create(getMatchId(), name, turn);
         dialogFragment.show(getSupportFragmentManager(), "AdvStatsDialog");
     }
 
@@ -433,7 +429,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private void showChoiceDialog(final String name, final PlayerTurn turn, final View view) {
         PopupMenu popupMenu = new PopupMenu(this, view, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
 
-        if (playerHasAdvancedStats(turn, match.getStatDetailLevel()))
+        if (MatchDialogHelperUtils.currentPlayerTurnAndAdvancedStats(turn, match.getDetails()))
             popupMenu.inflate(R.menu.menu_player_adv);
         else popupMenu.inflate(R.menu.menu_player);
 
@@ -459,14 +455,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         });
 
         popupMenu.show();
-    }
-
-    private boolean playerHasAdvancedStats(PlayerTurn turn, Match.StatsDetail detail) {
-        if (turn == PlayerTurn.PLAYER && detail == Match.StatsDetail.ADVANCED_PLAYER)
-            return true;
-        else if (turn == PlayerTurn.OPPONENT && detail == Match.StatsDetail.ADVANCED_OPPONENT)
-            return true;
-        else return detail == Match.StatsDetail.ADVANCED;
     }
 
     void registerFragment(UpdateMatchInfo info) {

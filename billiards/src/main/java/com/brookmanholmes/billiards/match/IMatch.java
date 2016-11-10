@@ -9,6 +9,7 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -209,7 +210,7 @@ interface IMatch<T extends AbstractPlayer> {
      * Returns the level of detail being kept for this match
      * @return The level of detail being kept for this match
      */
-    Match.StatsDetail getStatDetailLevel();
+    EnumSet<Match.StatsDetail> getDetails();
 
     /**
      * Getter for the date this match was created on

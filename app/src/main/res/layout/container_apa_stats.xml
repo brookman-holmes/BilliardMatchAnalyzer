@@ -24,7 +24,8 @@
                 style="@style/player_stats"
                 android:text="@string/rank"
                 android:textColor="@color/primary_text"
-                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}"
+                app:layout_columnWeight="0" />
 
             <TextView
                 style="@style/player_stats"
@@ -40,7 +41,8 @@
             <TextView
                 style="@style/player_stats"
                 android:text="@{apa.apa8Ball ? @string/title_games_needed : @string/points}"
-                android:textColor="@{apa.visible ? @color/secondary_text : @color/primary_text}" />
+                android:textColor="@{apa.visible ? @color/secondary_text : @color/primary_text}"
+                app:layout_columnWeight="0" />
 
             <TextView
                 style="@style/player_stats"
@@ -57,7 +59,8 @@
                 style="@style/player_stats"
                 android:text="@string/match_points"
                 android:textColor="@color/primary_text"
-                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}"
+                app:layout_columnWeight="0" />
 
             <TextView
                 style="@style/player_stats"
@@ -75,7 +78,8 @@
                 style="@style/player_stats"
                 android:text="@string/defensive_shots"
                 android:textColor="@color/secondary_text"
-                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{apa.visible ? View.VISIBLE : View.GONE}"
+                app:layout_columnWeight="0" />
 
             <TextView
                 style="@style/player_stats"
