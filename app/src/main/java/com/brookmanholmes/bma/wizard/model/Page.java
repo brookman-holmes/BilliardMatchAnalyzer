@@ -29,8 +29,8 @@ public abstract class Page implements PageTreeNode {
      * The key into {@link #getData()} used for wizards with simple (single) values.
      */
     public static final String SIMPLE_DATA_KEY = "_";
-
-    final ModelCallbacks modelCallbacks;
+    private static final String TAG = "Page";
+    protected final ModelCallbacks modelCallbacks;
 
     /**
      * Current wizard values/selections.
@@ -67,11 +67,13 @@ public abstract class Page implements PageTreeNode {
         return this;
     }
 
-    @Override public Page findByKey(String key) {
+    @Override
+    public Page findByKey(String key) {
         return getKey().equals(key) ? this : null;
     }
 
-    @Override public void flattenCurrentPageSequence(ArrayList<Page> dest) {
+    @Override
+    public void flattenCurrentPageSequence(ArrayList<Page> dest) {
         dest.add(this);
     }
 
@@ -96,7 +98,8 @@ public abstract class Page implements PageTreeNode {
         modelCallbacks.onPageDataChanged(this);
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -109,7 +112,8 @@ public abstract class Page implements PageTreeNode {
 
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = modelCallbacks.hashCode();
         result = 31 * result + title.hashCode();
         result = 31 * result + (required ? 1 : 0);
@@ -117,7 +121,8 @@ public abstract class Page implements PageTreeNode {
         return result;
     }
 
-    @Override public String toString() {
-        return title;
+    @Override
+    public String toString() {
+        return getKey();
     }
 }

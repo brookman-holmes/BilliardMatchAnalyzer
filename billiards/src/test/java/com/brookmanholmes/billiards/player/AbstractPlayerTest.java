@@ -185,7 +185,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
 
     @Test
     public void addSafetyWithNoPreviousSafeAddsSuccessfulSafety() {
-        actual.addSafety(false);
+        actual.addSafety(false, 0);
 
         expected.safetyAttempts++;
         expected.safetySuccesses++;
@@ -195,7 +195,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
 
     @Test
     public void addSafetyWithPreviousSafeAddsSuccessfulSafetyAndReturn() {
-        actual.addSafety(true);
+        actual.addSafety(true, 0);
 
         expected.safetyAttempts++;
         expected.safetySuccesses++;
@@ -243,7 +243,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
     public void checkGetSafetyPctTextIsCorrect() {
         assertThat(actual.getSafetyPct(), is(".000"));
 
-        actual.addSafety(false);
+        actual.addSafety(false, 0);
 
         assertThat(actual.getSafetyPct(), is("1.000"));
 
@@ -304,7 +304,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
 
         assertThat(actual.getAggressivenessRating(), is("1.000"));
 
-        actual.addSafety(false);
+        actual.addSafety(false, 0);
         actual.addSafetyAttempt(true);
 
         assertThat(actual.getAggressivenessRating(), is(".800"));
@@ -318,7 +318,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
         actual.addBreakShot(2, true, false);
         actual.addBreakShot(0, false, true);
         actual.addShootingMiss();
-        actual.addSafety(false);
+        actual.addSafety(false, 0);
         actual.addSafetyAttempt(true);
 
         assertThat(actual.getTrueShootingPct(), is(".769"));

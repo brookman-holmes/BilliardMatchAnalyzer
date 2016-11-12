@@ -17,7 +17,7 @@ class ApaNineBallController extends PlayerController<ApaNineBallPlayer> {
     @Override void addBreakingStats(ApaNineBallPlayer player) {
         super.addBreakingStats(player);
 
-        if (turn.getGameBallMadeOnBreak())
+        if (turn.isGameBallMadeOnBreak())
             player.addWinOnBreak();
     }
 

@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-              android:layout_height="48dp"
-    android:orientation="horizontal"
-    tools:ignore="UseCompoundDrawables">
+<layout>
+    <data>
+        <variable
+            name="title"
+            type="com.brookmanholmes.bma.ui.matchinfo.BindingAdapter" />
+    </data>
 
-    <TextView
-        android:id="@+id/card_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:paddingLeft="16dp"
-        android:textColor="@color/primary_text"
-        android:textSize="18sp"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
 
-    <ImageView
-        android:id="@+id/collapseExpandButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:src="@drawable/ic_action_collapse" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/card_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingLeft="16dp"
+            android:text="@{title.title}"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/title_size" />
+
+        <ImageView
+            android:id="@+id/collapseExpandButton"
+            imageResource="@{title.imageResource}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{(view) -> title.onCollapse(view)}"
+            android:padding="8dp" />
+    </LinearLayout>
+</layout>

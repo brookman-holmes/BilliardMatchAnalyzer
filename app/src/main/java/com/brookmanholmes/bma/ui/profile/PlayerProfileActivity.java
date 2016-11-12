@@ -1,8 +1,10 @@
 package com.brookmanholmes.bma.ui.profile;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,6 +26,8 @@ import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.MatchListFragment;
+import com.brookmanholmes.bma.ui.matchinfo.MatchInfoFragment;
+import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.stats.AdvBreakingStatsFragment;
 import com.brookmanholmes.bma.ui.stats.AdvSafetyStatsFragment;
 import com.brookmanholmes.bma.ui.stats.AdvShootingStatsFragment;
@@ -37,33 +41,38 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Brookman Holmes on 4/13/2016.
  */
 public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
-    public static final String ARG_PLAYER_NAME = "arg player name";
+    public static final String ARG_PLAYER_NAME = "arg_player_name";
+    private static final String TAG = "PlayerProfileAct";
     private static final String ARG_FILTER_OPPONENT = "arg_filter_opponent";
     private static final String ARG_FILTER_GAME = "arg_filter_game";
     private static final String ARG_FILTER_DATE = "arg_filter_date";
-    private List<Filterable> listeners = new ArrayList<>();
+    @Bind(R.id.playerName)
+    TextView playerName;
+    @Bind(R.id.opponentName)
+    TextView opponentName;
+    @Bind(R.id.playerNameLayout)
+    ViewGroup playerNameLayout;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.pager)
+    ViewPager pager;
+    @Bind(R.id.tabs)
+    TabLayout tabLayout;
+    @Bind(R.id.createMatch)
+    FloatingActionButton fab;
 
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.playerName) TextView playerName;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.opponentName) TextView opponentName;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.playerNameLayout) ViewGroup playerNameLayout;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.pager) ViewPager pager;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.tabs) TabLayout tabLayout;
+    private List<Filterable> listeners = new ArrayList<>();
     private StatFilter filter;
     private String player;
 
-    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_profile);
         ButterKnife.bind(this);
@@ -74,7 +83,6 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         player = getIntent().getExtras().getString(ARG_PLAYER_NAME);
         setupToolbar();
 
-        playerNameLayout.setVisibility(View.GONE);
         playerName.setText(player);
         opponentName.setText(filter.getOpponent());
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), player);
@@ -103,13 +111,15 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         }
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_player_profile, menu);
         return true;
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_filter) {
             displayFilterDialog();
         }
@@ -117,11 +127,25 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         return super.onOptionsItemSelected(item);
     }
 
-    @Override protected void onSaveInstanceState(Bundle outState) {
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
         outState.putString(ARG_FILTER_DATE, filter.getDate());
         outState.putString(ARG_FILTER_GAME, filter.getGameType());
         outState.putString(ARG_FILTER_OPPONENT, filter.getOpponent());
         super.onSaveInstanceState(outState);
+    }
+
+    @OnClick(R.id.createMatch)
+    public void createNewMatch() {
+        fab.hide(new FloatingActionButton.OnVisibilityChangedListener() {
+            @Override
+            public void onHidden(FloatingActionButton fab) {
+                super.onHidden(fab);
+                Intent intent = new Intent(PlayerProfileActivity.this, CreateNewMatchActivity.class);
+                intent.putExtra(ARG_PLAYER_NAME, player);
+                startActivity(intent);
+            }
+        });
     }
 
     private void displayFilterDialog() {
@@ -143,7 +167,8 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         dialog.setTitle("Filter by")
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         filter.setOpponent((String) opponentSpinner.getSelectedItem());
                         opponentName.setText(filter.getOpponent());
                         filter.setDate((String) dateSpinner.getSelectedItem());
@@ -198,30 +223,41 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
     @Override
     public void onPageSelected(int position) {
-        playerNameLayout.setVisibility((position == 1 ? View.VISIBLE : View.GONE));
-
 
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
+        switch (state) {
+            case ViewPager.SCROLL_STATE_IDLE:
+                if (pager.getCurrentItem() == 1)
+                    playerNameLayout.animate().translationY(0).start();
+                else if (pager.getCurrentItem() == 2)
+                    fab.show();
+                break;
+            case ViewPager.SCROLL_STATE_DRAGGING:
+            case ViewPager.SCROLL_STATE_SETTLING:
+                fab.hide();
+                playerNameLayout.animate().translationY(playerNameLayout.getHeight()).start();
+                break;
+        }
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
         final String player;
 
-        public ViewPagerAdapter(FragmentManager fm, String player) {
+        ViewPagerAdapter(FragmentManager fm, String player) {
             super(fm);
             this.player = player;
         }
 
-        @Override public Fragment getItem(int position) {
+        @Override
+        public Fragment getItem(int position) {
             switch (position) {
                 case 0:
                     return PlayerInfoGraphicFragment.create(player);
                 case 1:
-                    return PlayerInfoFragment.create(player);
+                    return MatchInfoFragment.create(player);
                 case 2:
                     return MatchListFragment.create(player, null);
                 case 3:
@@ -235,11 +271,13 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
             }
         }
 
-        @Override public int getCount() {
+        @Override
+        public int getCount() {
             return 6;
         }
 
-        @Override public CharSequence getPageTitle(int position) {
+        @Override
+        public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
                     return player;

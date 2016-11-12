@@ -1,9 +1,9 @@
 package com.brookmanholmes.billiards.match;
 
-import com.brookmanholmes.billiards.game.Game;
-import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.Game;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
@@ -16,7 +16,11 @@ import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,7 +38,7 @@ public class Match implements IMatch {
     private final LinkedList<ITurn> turns = new LinkedList<>();
     private final LinkedList<ITurn> undoneTurns = new LinkedList<>();
     private final LinkedList<GameStatus> games = new LinkedList<>();
-    private final StatsDetail detail;
+    private final EnumSet<StatsDetail> details;
     private long matchId;
     private String location;
     private String notes;
@@ -44,86 +48,103 @@ public class Match implements IMatch {
         location = builder.location;
         notes = builder.notes;
         matchId = builder.id;
-        detail = builder.statsDetail;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
         createdOn = (builder.date == null ? new Date() : builder.date);
+        details = EnumSet.copyOf(builder.details);
     }
 
-    @Override public long getMatchId() {
+    @Override
+    public long getMatchId() {
         return matchId;
     }
 
-    @Override public void setMatchId(long matchId) {
+    @Override
+    public void setMatchId(long matchId) {
         this.matchId = matchId;
     }
 
-    @Override public String getLocation() {
+    @Override
+    public String getLocation() {
         return location;
     }
 
-    @Override public void setLocation(String location) {
+    @Override
+    public void setLocation(String location) {
         this.location = location;
     }
 
-    @Override public String getNotes() {
+    @Override
+    public String getNotes() {
         return notes;
     }
 
-    @Override public void setNotes(String notes) {
+    @Override
+    public void setNotes(String notes) {
         this.notes = notes;
     }
 
 
-    @Override public GameStatus getGameStatus() {
+    @Override
+    public GameStatus getGameStatus() {
         return game.getGameStatus();
     }
 
-    @Override public GameStatus getGameStatus(int turn) {
+    @Override
+    public GameStatus getGameStatus(int turn) {
         return games.get(turn);
     }
 
-    @Override public AbstractPlayer getPlayer() {
+    @Override
+    public AbstractPlayer getPlayer() {
         return PlayerController.getPlayerFromList(player1, playerController.newPlayer());
     }
 
-    @Override public AbstractPlayer getOpponent() {
+    @Override
+    public AbstractPlayer getOpponent() {
         return PlayerController.getPlayerFromList(player2, playerController.newOpponent());
     }
 
-    @Override public AbstractPlayer getPlayer(int from, int to) {
+    @Override
+    public AbstractPlayer getPlayer(int from, int to) {
         return PlayerController.getPlayerFromList(player1.subList(from, to), playerController.newPlayer());
     }
 
-    @Override public AbstractPlayer getOpponent(int from, int to) {
+    @Override
+    public AbstractPlayer getOpponent(int from, int to) {
         return PlayerController.getPlayerFromList(player2.subList(from, to), playerController.newOpponent());
     }
 
-    @Override public String getCurrentPlayersName() {
+    @Override
+    public String getCurrentPlayersName() {
         if (game.getTurn() == PlayerTurn.PLAYER)
             return playerController.getPlayerName();
         else return playerController.getOpponentName();
     }
 
-    @Override public String getNonCurrentPlayersName() {
+    @Override
+    public String getNonCurrentPlayersName() {
         if (game.getTurn() == PlayerTurn.OPPONENT)
             return playerController.getPlayerName();
         else return playerController.getOpponentName();
     }
 
-    @Override public void setPlayerName(String newName) {
+    @Override
+    public void setPlayerName(String newName) {
         playerController.setPlayerName(newName);
         for (AbstractPlayer player : player1)
             player.setName(newName);
     }
 
-    @Override public void setOpponentName(String newName) {
+    @Override
+    public void setOpponentName(String newName) {
         playerController.setOpponentName(newName);
         for (AbstractPlayer player : player2)
             player.setName(newName);
     }
 
-    @Override public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean foul, boolean isGameLost, AdvStats advStats) {
+    @Override
+    public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean foul, boolean isGameLost, AdvStats advStats) {
         ITurn turn = new Turn(turnEnd, tableStatus, foul, isGameLost, advStats);
         undoneTurns.clear();
         addTurn(turn);
@@ -131,7 +152,8 @@ public class Match implements IMatch {
         return turn;
     }
 
-    @Override public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean foul, boolean isGameLost) {
+    @Override
+    public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean foul, boolean isGameLost) {
         ITurn turn = new Turn(turnEnd, tableStatus, foul, isGameLost, new AdvStats.Builder("").build());
         undoneTurns.clear();
         addTurn(turn);
@@ -139,16 +161,18 @@ public class Match implements IMatch {
         return turn;
     }
 
-    @Override public boolean isMatchOver() {
+    @Override
+    public boolean isMatchOver() {
         return matchOver;
     }
 
-    @Override public void addTurn(ITurn turn) {
+    @Override
+    public void addTurn(ITurn turn) {
         updatePlayerStats(turn);
         updateGameState(turn);
         turns.addLast(turn);
 
-        if (game.getGameStatus().breakType == BreakType.GHOST && turn.getTurnEnd() != TurnEnd.GAME_WON) {
+        if (getGameStatus().gameType.isGhostGame() && turn.getTurnEnd() != TurnEnd.GAME_WON) {
             insertGameWonForGhost();
         }
 
@@ -187,15 +211,18 @@ public class Match implements IMatch {
         player2.addLast(pair.getOpponent());
     }
 
-    @Override public int getTurnCount() {
+    @Override
+    public int getTurnCount() {
         return turns.size();
     }
 
-    @Override public List<ITurn> getTurns() {
+    @Override
+    public List<ITurn> getTurns() {
         return turns;
     }
 
-    @Override public List<ITurn> getTurns(int from, int to) {
+    @Override
+    public List<ITurn> getTurns(int from, int to) {
         return turns.subList(from, to);
     }
 
@@ -203,20 +230,39 @@ public class Match implements IMatch {
      * Updates the stat of the game and adds it to a list of game statuses
      * @param turn The turn being added to the game
      */
-    void updateGameState(ITurn turn) {
+    private void updateGameState(ITurn turn) {
         games.addLast(game.getGameStatus());
         game.addTurn(turn);
     }
 
-    @Override public boolean isRedoTurn() {
+    @Override
+    public boolean isRedoTurn() {
         return undoneTurns.size() > 0 && !matchOver;
     }
 
-    @Override public boolean isUndoTurn() {
+    @Override
+    public ArrayList<ITurn> getUndoneTurns() {
+        ArrayList<ITurn> turns = new ArrayList<>();
+        turns.addAll(undoneTurns);
+        return turns;
+    }
+
+    @Override
+    public void setUndoneTurns(List undoneTurns) {
+        for (Object item : undoneTurns) {
+            if (item instanceof ITurn) {
+                this.undoneTurns.addLast((ITurn) item);
+            }
+        }
+    }
+
+    @Override
+    public boolean isUndoTurn() {
         return turns.size() > 0;
     }
 
-    @Override public ITurn redoTurn() {
+    @Override
+    public ITurn redoTurn() {
         if (isRedoTurn()) {
             addTurn(undoneTurns.removeLast());
 
@@ -224,7 +270,8 @@ public class Match implements IMatch {
         } else return null;
     }
 
-    @Override public void undoTurn() {
+    @Override
+    public void undoTurn() {
         if (isUndoTurn()) {
             player1.removeLast();
             player2.removeLast();
@@ -233,22 +280,30 @@ public class Match implements IMatch {
 
             undoneTurns.addLast(turns.removeLast());
             matchOver = isPlayersRaceFinished();
+
+            if (game.getGameStatus().gameType.isGhostGame()) {
+                if (game.getGameStatus().turn == PlayerTurn.OPPONENT)
+                    undoTurn(); // repeat undoing the turn if it's the ghost's turn
+            }
         }
     }
 
-    @Override public StatsDetail getStatDetailLevel() {
-        return detail;
+    @Override
+    public EnumSet<StatsDetail> getDetails() {
+        return details;
     }
 
-    @Override public Date getCreatedOn() {
+    @Override
+    public Date getCreatedOn() {
         return new Date(createdOn.getTime());
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Match{" +
                 "createdOn=" + createdOn +
                 "\n game=" + game +
-                "\n detail=" + detail +
+                "\n details=" + details +
                 "\n matchId=" + matchId +
                 "\n location='" + location + '\'' +
                 "\n notes='" + notes + '\'' +
@@ -256,10 +311,26 @@ public class Match implements IMatch {
     }
 
     public enum StatsDetail {
+        @Deprecated
         NORMAL,
+        @Deprecated
         ADVANCED,
+        @Deprecated
         ADVANCED_PLAYER,
-        ADVANCED_OPPONENT
+        @Deprecated
+        ADVANCED_OPPONENT,
+        SHOT_TYPE_PLAYER,
+        SHOT_TYPE_OPPONENT,
+        CUEING_PLAYER,
+        CUEING_OPPONENT,
+        HOW_MISS_PLAYER,
+        HOW_MISS_OPPONENT,
+        SAFETIES_PLAYER,
+        SAFETIES_OPPONENT,
+        SPEED_PLAYER,
+        SPEED_OPPONENT,
+        BALL_DISTANCES_PLAYER,
+        BALL_DISTANCES_OPPONENT
     }
 
     public static class Builder {
@@ -271,8 +342,8 @@ public class Match implements IMatch {
         private String location = "";
         private String notes = "";
         private long id;
-        private StatsDetail statsDetail = StatsDetail.NORMAL;
         private Date date;
+        private EnumSet<StatsDetail> details = EnumSet.noneOf(StatsDetail.class);
 
         public Builder(String playerName, String opponentName) {
             this.playerName = playerName;
@@ -339,13 +410,20 @@ public class Match implements IMatch {
             return this;
         }
 
-        public Builder setStatsDetail(StatsDetail detail) {
-            statsDetail = detail;
+        public Builder setDate(Date date) {
+            this.date = date;
             return this;
         }
 
-        public Builder setDate(Date date) {
-            this.date = date;
+        public Builder setDetails(StatsDetail... details) {
+            this.details.clear();
+            this.details.addAll(Arrays.asList(details));
+            return this;
+        }
+
+        public Builder setDetails(Collection<StatsDetail> details) {
+            this.details.clear();
+            this.details.addAll(details);
             return this;
         }
 
@@ -361,7 +439,6 @@ public class Match implements IMatch {
                     ", location='" + location + '\'' +
                     ", notes='" + notes + '\'' +
                     ", id=" + id +
-                    ", statsDetail=" + statsDetail +
                     '}';
         }
     }

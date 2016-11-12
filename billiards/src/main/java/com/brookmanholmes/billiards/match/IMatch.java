@@ -4,11 +4,12 @@ import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITableStatus;
-import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -107,22 +108,22 @@ interface IMatch<T extends AbstractPlayer> {
     String getLocation();
 
     /**
+     * Sets the location of the match
+     * @param location The new location for this match
+     */
+    void setLocation(String location);
+
+    /**
      * Getter for the notes attached to the match
      * @return The notes for this match
      */
     String getNotes();
 
     /**
-     * Sets the id of the match
-     * @param matchId The new id for the match
+     * Sets the notes for the match
+     * @param notes The new notes you would like to set for this match
      */
-    void setMatchId(long matchId);
-
-    /**
-     * Sets the location of the match
-     * @param location The new location for this match
-     */
-    void setLocation(String location);
+    void setNotes(String notes);
 
     /**
      * Getter for the player's name who's currently shooting
@@ -135,12 +136,6 @@ interface IMatch<T extends AbstractPlayer> {
      * @return Either the Player's name or the Opponent's name, depending on the turn
      */
     String getNonCurrentPlayersName();
-
-    /**
-     * Sets the notes for the match
-     * @param notes The new notes you would like to set for this match
-     */
-    void setNotes(String notes);
 
     /**
      * Getter for the number of turns in the match
@@ -168,6 +163,20 @@ interface IMatch<T extends AbstractPlayer> {
     ITurn redoTurn();
 
     /**
+     * Get a list of the turns that have been undone, has to be an array list to guarentee that it's
+     * serializable
+     * @return The list of turns that were undone
+     */
+    ArrayList<ITurn> getUndoneTurns();
+
+    /**
+     * Sets the list of turns that have been undone
+     *
+     * @param undoneTurns The list of turns that were undone
+     */
+    void setUndoneTurns(List<ITurn> undoneTurns);
+
+    /**
      * Undo the last turn
      */
     void undoTurn();
@@ -177,6 +186,13 @@ interface IMatch<T extends AbstractPlayer> {
      * @return the id of the match
      */
     long getMatchId();
+
+    /**
+     * Sets the id of the match
+     *
+     * @param matchId The new id for the match
+     */
+    void setMatchId(long matchId);
 
     /**
      * Sets the player's name
@@ -194,7 +210,7 @@ interface IMatch<T extends AbstractPlayer> {
      * Returns the level of detail being kept for this match
      * @return The level of detail being kept for this match
      */
-    Match.StatsDetail getStatDetailLevel();
+    EnumSet<Match.StatsDetail> getDetails();
 
     /**
      * Getter for the date this match was created on

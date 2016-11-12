@@ -13,76 +13,77 @@ import com.brookmanholmes.bma.wizard.model.ReviewItem;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.OPPONENT_NAME_KEY;
+import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.PLAYER_NAME_KEY;
+
 /**
  * Created by Brookman Holmes on 8/23/2016.
  */
 public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatchBuilder {
     public static final String PLAYER_RANK_KEY = "player_rank";
     public static final String OPPONENT_RANK_KEY = "opponent_rank";
+    private static final String TAG = "RaceToPage";
+    private int lower, upper, defaultChoice;
     private RaceToFragment fragment;
-    private String playerName = "Player 1", opponentName = "Player 2";
     private String reviewString, reviewTitle;
     private GameType gameType = GameType.BCA_NINE_BALL;
-    int lower, upper, defaultChoice, columns;
 
-    protected RaceToPage(ModelCallbacks callbacks, String title, String reviewString, GameType gameType, String reviewTitle) {
+    RaceToPage(ModelCallbacks callbacks, String title, String reviewString, GameType gameType, String reviewTitle, String parentKey) {
         super(callbacks, title);
         this.reviewString = reviewString;
         this.reviewTitle = reviewTitle;
         this.gameType = gameType;
+        this.parentKey = parentKey;
     }
 
-    protected RaceToPage(ModelCallbacks callbacks, String title, String reviewString) {
-        super(callbacks, title);
-        this.reviewString = reviewString;
-        this.reviewTitle = title;
-    }
-
-    public RaceToPage setRaceToChoices(int lower, int upper, int defaultChoice, int columns) {
+    RaceToPage setRaceToChoices(int lower, int upper, int defaultChoice) {
         this.lower = lower;
         this.upper = upper;
         this.defaultChoice = defaultChoice;
-        this.columns = columns;
         return this;
     }
 
-    @Override public Fragment createFragment() {
-        return RaceToFragment.create(getKey(), lower, upper, defaultChoice, columns);
+    @Override
+    public Fragment createFragment() {
+        return RaceToFragment.create(getKey(), lower, upper, defaultChoice);
     }
 
-    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
         dest.add(new ReviewItem(reviewTitle, getReviewString(), getKey()));
     }
 
-    @Override public void setPlayerNames(String playerName, String opponentName) {
-        this.playerName = playerName;
-        this.opponentName = opponentName;
+    @Override
+    public void setPlayerNames(String playerName, String opponentName) {
+        data.putString(PLAYER_NAME_KEY, playerName);
+        data.putString(OPPONENT_NAME_KEY, opponentName);
 
         if (fragment != null) {
             updateFragment();
         }
     }
 
-    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+    @Override
+    public void updateMatchBuilder(CreateNewMatchWizardModel model) {
         model.setPlayerRanks(getPlayerRank(), getOpponentRank());
     }
 
     private String getReviewString() {
         if (gameType == GameType.APA_NINE_BALL) {
-            return String.format(Locale.getDefault(), reviewString, playerName, Players.apa9BallRaceTo(getPlayerRank()), opponentName, Players.apa9BallRaceTo(getOpponentRank()));
+            return String.format(Locale.getDefault(), reviewString, getPlayerName(), Players.apa9BallRaceTo(getPlayerRank()), getOpponentName(), Players.apa9BallRaceTo(getOpponentRank()));
         } else if (gameType == GameType.APA_EIGHT_BALL) {
             RaceTo raceTo = Players.apa8BallRaceTo(getPlayerRank(), getOpponentRank());
-            return String.format(Locale.getDefault(), reviewString, playerName, raceTo.getPlayerRaceTo(), opponentName, raceTo.getOpponentRaceTo());
+            return String.format(Locale.getDefault(), reviewString, getPlayerName(), raceTo.getPlayerRaceTo(), getOpponentName(), raceTo.getOpponentRaceTo());
         } else
-            return String.format(Locale.getDefault(), reviewString, playerName, getPlayerRank(), opponentName, getOpponentRank());
+            return String.format(Locale.getDefault(), reviewString, getPlayerName(), getPlayerRank(), getOpponentName(), getOpponentRank());
     }
 
     private int getPlayerRank() {
-        return data.getInt(PLAYER_RANK_KEY, 101);
+        return data.getInt(PLAYER_RANK_KEY);
     }
 
     private int getOpponentRank() {
-        return data.getInt(OPPONENT_RANK_KEY, 101);
+        return data.getInt(OPPONENT_RANK_KEY);
     }
 
     public void registerListener(RaceToFragment fragment) {
@@ -90,11 +91,23 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
         updateFragment();
     }
 
+    public String getPlayerName() {
+        return data.getString(PLAYER_NAME_KEY, "Player 1");
+    }
+
+    public String getOpponentName() {
+        return data.getString(OPPONENT_NAME_KEY, "Player 2");
+    }
+
+    public GameType getGameType() {
+        return gameType;
+    }
+
     public void unregisterListener() {
         this.fragment = null;
     }
 
     private void updateFragment() {
-        fragment.setPlayerNames(playerName, opponentName);
+        fragment.setPlayerNames(getPlayerName(), getOpponentName());
     }
 }

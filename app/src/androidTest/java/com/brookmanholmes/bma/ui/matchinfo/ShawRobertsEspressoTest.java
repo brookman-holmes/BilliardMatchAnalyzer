@@ -10,11 +10,13 @@ import java.util.List;
  * Created by Brookman Holmes on 9/7/2016.
  */
 public class ShawRobertsEspressoTest extends BaseMatchTest {
-    @Override protected Match getMatch() {
+    @Override
+    protected Match getMatch() {
         return SampleMatchProvider.getShawRobertsMatch();
     }
 
-    @Override protected List<ITurn> getTurns() {
+    @Override
+    protected List<ITurn> getTurns() {
         return SampleMatchProvider.getShawRobertsTurns();
     }
 }

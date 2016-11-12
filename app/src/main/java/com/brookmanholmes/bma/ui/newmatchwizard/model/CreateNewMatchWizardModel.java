@@ -12,37 +12,43 @@ import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.PageList;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Brookman Holmes on 1/7/2016.
  */
 public class CreateNewMatchWizardModel extends AbstractWizardModel {
+    private static final String TAG = "CreateNewMatchModel";
     private final Match.Builder builder = new Match.Builder();
     private String playerName = "Player 1";
     private String opponentName = "Player 2";
     private GameType gameType;
     private boolean playTheGhost;
+    private String prePopulatePlayerName;
 
-    public CreateNewMatchWizardModel(Context context) {
+    public CreateNewMatchWizardModel(Context context, String playerName) {
         super(context);
+        prePopulatePlayerName = playerName;
         rootPageList = onNewRootPageList();
     }
 
-    @Override public void onPageDataChanged(Page page) {
+    @Override
+    public void onPageDataChanged(Page page) {
         super.onPageDataChanged(page);
 
         if (page instanceof UpdatesPlayerNames) {
             playerName = ((PlayerNamePage) page).getPlayerName();
             opponentName = ((PlayerNamePage) page).getOpponentName();
-        }
 
-        updatePlayerNames();
+            updatePlayerNames();
+        }
 
         if (page instanceof UpdatesMatchBuilder)
             ((UpdatesMatchBuilder) page).updateMatchBuilder(this);
     }
 
-    @Override public void onPageTreeChanged() {
+    @Override
+    public void onPageTreeChanged() {
         super.onPageTreeChanged();
 
         updateBuilder();
@@ -62,48 +68,58 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         }
     }
 
-    @Override protected PageList onNewRootPageList() {
-        return new PageList(
-                getPlayerNamePage(),
-                getGameChoicePage(),
-                getStatDetailPage()
-        );
+    @Override
+    protected PageList onNewRootPageList() {
+        return new PageList(getPlayerNamePage());
     }
 
     private Page getPlayerNamePage() {
-        return new PlayerNamePage(this, context.getString(R.string.title_page_players),
-                context.getString(R.string.player_number), context.getString(R.string.location))
+        return new PlayerNamePage(this, context.getString(R.string.title_page_players), context, "PNG", prePopulatePlayerName)
+                .addBranch(Boolean.TRUE.toString(), getGhostGameChoicePage(), getDataCollectPage("GDCP", true))
+                .addBranch(Boolean.FALSE.toString(), getGameChoicePage(), getDataCollectPage("DCP", false))
+                .setValue(Boolean.FALSE.toString())
+                .setRequired(true);
+    }
+
+    private Page getGhostGameChoicePage() {
+        return new GameChoicePage(this, context.getString(R.string.title_page_games), context, "GGCP")
+                .addBranch(context.getString(R.string.game_apa_eight_ghost),
+                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.bca_review), GameType.APA_EIGHT_BALL, "gapa8")
+                                .setRaceToChoices(2, 8, 6))
+                .addBranch(context.getString(R.string.game_apa_nine_ghost),
+                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.apa_nine_review), GameType.APA_NINE_BALL, "gapa9")
+                                .setRaceToChoices(1, 10, 6))
+                .addBranch(context.getString(R.string.game_bca_eight_ghost), getBcaRankPage("gbca8"))
+                .addBranch(context.getString(R.string.game_bca_nine_ghost), getBcaRankPage("gbca9"))
+                .addBranch(context.getString(R.string.game_bca_ten_ghost), getBcaRankPage("gbca10"))
+                .setValue(context.getString(R.string.game_bca_nine_ghost))
                 .setRequired(true);
     }
 
     private Page getGameChoicePage() {
-        String apa9ReviewString = context.getString(R.string.apa_nine_review);
-        String reviewString = context.getString(R.string.bca_review);
-        return new GameChoicePage(this, context.getString(R.string.title_page_games), context)
+        return new GameChoicePage(this, context.getString(R.string.title_page_games), context, "GCP")
                 .addBranch(context.getString(R.string.game_apa_eight),
-                        new RaceToPage(this, context.getString(R.string.ranks), reviewString, GameType.APA_EIGHT_BALL, context.getString(R.string.race))
-                                .setRaceToChoices(2, 8, 4, 6),
-                        getFirstBreakPage("apa 8"))
+                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.bca_review), GameType.APA_EIGHT_BALL, "apa8")
+                                .setRaceToChoices(2, 8, 6),
+                        getFirstBreakPage("apa8"))
                 .addBranch(context.getString(R.string.game_apa_nine),
-                        new RaceToPage(this, context.getString(R.string.ranks), apa9ReviewString, GameType.APA_NINE_BALL, context.getString(R.string.race))
-                                .setRaceToChoices(1, 10, 5, 9),
-                        getFirstBreakPage("apa 9"))
-                .addBranch(context.getString(R.string.game_bca_eight),
-                        new RaceToPage(this, context.getString(R.string.race), reviewString)
-                                .setRaceToChoices(1, 22, 5, 7),
-                        getBreakTypePage("bca 8")
-                )
-                .addBranch(context.getString(R.string.game_bca_nine),
-                        new RaceToPage(this, context.getString(R.string.race), reviewString)
-                                .setRaceToChoices(1, 22, 5, 7),
-                        getBreakTypePage("bca 9")
-                )
-                .addBranch(context.getString(R.string.game_bca_ten),
-                        new RaceToPage(this, context.getString(R.string.race), reviewString)
-                                .setRaceToChoices(1, 22, 5, 7),
-                        getBreakTypePage("bca 10"))
+                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.apa_nine_review), GameType.APA_NINE_BALL, "apa9")
+                                .setRaceToChoices(1, 10, 6),
+                        getFirstBreakPage("apa9"))
+                .addBranch(context.getString(R.string.game_bca_eight), getBcaRankPage("bca8"), getBreakTypePage("bca8"))
+                .addBranch(context.getString(R.string.game_bca_nine), getBcaRankPage("bca9"), getBreakTypePage("bca9"))
+                .addBranch(context.getString(R.string.game_bca_ten), getBcaRankPage("bca10"), getBreakTypePage("bca10"))
                 .setValue(context.getString(R.string.game_bca_nine))
                 .setRequired(true);
+    }
+
+    private RaceToPage getRaceToPage(String title, String reviewString, GameType gameType, String parentKey) {
+        return new RaceToPage(this, title, reviewString, gameType, context.getString(R.string.race), parentKey);
+    }
+
+    private Page getBcaRankPage(String parentKey) {
+        return getRaceToPage(context.getString(R.string.race), context.getString(R.string.bca_review), GameType.BCA_EIGHT_BALL, parentKey)
+                .setRaceToChoices(1, 21, 5);
     }
 
     private Page getFirstBreakPage(String parentKey) {
@@ -113,21 +129,20 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
                 .setRequired(true);
     }
 
-    private Page getStatDetailPage() {
-        return new StatDetailPage(this, context.getString(R.string.title_page_stats))
-                .setChoices(context.getResources().getStringArray(R.array.stat_levels))
-                .setValue(context.getString(R.string.detail_normal))
+    private Page getDataCollectPage(String parentKey, boolean isGhost) {
+        return new DataCollectionPage(this, context.getString(R.string.title_page_stats), context.getString(R.string.title_data_collection), parentKey)
+                .setGhost(isGhost)
                 .setRequired(true);
     }
 
-    private Page getBreakTypePage(String parentPage) {
-        return new BreakTypePage(this, context.getString(R.string.title_page_break), context)
+    private Page getBreakTypePage(String parentKey) {
+        return new BreakTypePage(this, context.getString(R.string.title_page_break), context, parentKey)
                 .addBranch(context.getString(R.string.break_winner),
-                        getFirstBreakPage(parentPage))
+                        getFirstBreakPage(parentKey))
                 .addBranch(context.getString(R.string.break_alternate),
-                        getFirstBreakPage(parentPage))
+                        getFirstBreakPage(parentKey))
                 .addBranch(context.getString(R.string.break_loser),
-                        getFirstBreakPage(parentPage))
+                        getFirstBreakPage(parentKey))
                 .addBranch(context.getString(R.string.break_player, playerName))
                 .addBranch(context.getString(R.string.break_player, opponentName))
                 .setValue(context.getString(R.string.break_winner))
@@ -144,13 +159,16 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
                 .setNotes(notes);
 
         playTheGhost = playGhost;
+        if (playTheGhost) { // shim to set the breakType since the break page doesn't exist to set it
+            setBreakType(context.getString(R.string.break_player, playerName));
+        }
     }
 
     void setBreakType(String value) {
         BreakType breakType;
 
         if (playTheGhost)
-            breakType = BreakType.GHOST;
+            breakType = BreakType.PLAYER;
         else if (value.equals(context.getString(R.string.break_winner)))
             breakType = BreakType.WINNER;
         else if (value.equals(context.getString(R.string.break_alternate)))
@@ -194,23 +212,21 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
             gameType = GameType.STRAIGHT_POOL;
         else if (value.equals(context.getString(R.string.game_american_rotation)))
             gameType = GameType.AMERICAN_ROTATION;
+        else if (value.equals(context.getString(R.string.game_bca_eight_ghost)))
+            gameType = GameType.BCA_GHOST_EIGHT_BALL;
+        else if (value.equals(context.getString(R.string.game_bca_nine_ghost)))
+            gameType = GameType.BCA_GHOST_NINE_BALL;
+        else if (value.equals(context.getString(R.string.game_bca_ten_ghost)))
+            gameType = GameType.BCA_GHOST_TEN_BALL;
+        else if (value.equals(context.getString(R.string.game_apa_eight_ghost)))
+            gameType = GameType.APA_GHOST_EIGHT_BALL;
+        else if (value.equals(context.getString(R.string.game_apa_nine_ghost)))
+            gameType = GameType.APA_GHOST_NINE_BALL;
         else throw new IllegalArgumentException("No such game type: " + value);
     }
 
-    void setStatDetail(String value) {
-        Match.StatsDetail detail;
-
-        if (value.equals(context.getString(R.string.detail_normal)))
-            detail = Match.StatsDetail.NORMAL;
-        else if (value.equals(context.getString(R.string.detail_advanced)))
-            detail = Match.StatsDetail.ADVANCED;
-        else if (value.equals(context.getString(R.string.detail_player, playerName)))
-            detail = Match.StatsDetail.ADVANCED_PLAYER;
-        else if (value.equals(context.getString(R.string.detail_player, opponentName)))
-            detail = Match.StatsDetail.ADVANCED_OPPONENT;
-        else throw new IllegalArgumentException("No such stat detail level for: " + value);
-
-        builder.setStatsDetail(detail);
+    void setStatDetail(List<Match.StatsDetail> details) {
+        builder.setDetails(details.toArray(new Match.StatsDetail[details.size()]));
     }
 
     public Match createMatch() {

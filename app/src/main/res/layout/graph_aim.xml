@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:showIn="@layout/fragment_adv_shooting_stats">
 
     <TextView
@@ -9,8 +12,8 @@
         android:layout_gravity="center_horizontal"
         android:paddingTop="8dp"
         android:text="@string/title_aim"
-        android:textSize="16sp"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,43 +29,42 @@
             android:paddingEnd="8dp"
             android:text="@string/title_aim_left"
             android:textAllCaps="true"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
         <LinearLayout
+            android:id="@+id/ll"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
             android:layout_gravity="center"
-            >
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/left"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/graph_background"
+                android:backgroundTint="@color/dead_ball"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:text="@string/no_data"
                 android:textColor="@color/primary_text"
                 android:textSize="12sp"
-                android:backgroundTint="@color/dead_ball"
-                android:background="@drawable/graph_background"
-                android:textStyle="bold"
-                android:text="@string/no_data"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/right"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:background="@drawable/graph_background"
+                android:backgroundTint="@color/colorPrimary"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:backgroundTint="@color/colorPrimary"
-                android:background="@drawable/graph_background"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <TextView
@@ -73,8 +75,7 @@
             android:paddingStart="8dp"
             android:text="@string/title_aim_right"
             android:textAllCaps="true"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
     </LinearLayout>
-</merge>
+</LinearLayout>

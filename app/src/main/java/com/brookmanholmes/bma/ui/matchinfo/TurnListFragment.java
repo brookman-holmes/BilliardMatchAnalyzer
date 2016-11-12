@@ -34,7 +34,8 @@ public class TurnListFragment extends BaseFragment implements
     private static final String ARG_MATCH_ID = "match id";
 
     @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.scrollView) RecyclerView recyclerView;
+    @Bind(R.id.scrollView)
+    RecyclerView recyclerView;
 
     private ExpandableTurnListAdapter adapter;
     private RecyclerView.Adapter wrappedAdapter;
@@ -53,12 +54,14 @@ public class TurnListFragment extends BaseFragment implements
         return frag;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
         ((MatchInfoActivity) getActivity()).registerFragment(this);
     }
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         DatabaseAdapter db = new DatabaseAdapter(getContext());
@@ -74,7 +77,8 @@ public class TurnListFragment extends BaseFragment implements
         wrappedAdapter = itemManager.createWrappedAdapter(adapter);
     }
 
-    @Override public void update(Match match) {
+    @Override
+    public void update(Match match) {
         adapter.updateMatch(match);
         // after update scroll to the end of the data
         itemManager.expandGroup(adapter.getGroupCount() >= 2 ? adapter.getGroupCount() - 2 : 0);
@@ -82,7 +86,8 @@ public class TurnListFragment extends BaseFragment implements
         layoutManager.scrollToPositionWithOffset(adapter.getGroupCount() + 2, 0);
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
@@ -104,7 +109,8 @@ public class TurnListFragment extends BaseFragment implements
         return view;
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         if (itemManager != null) {
             itemManager.release();
             itemManager = null;
@@ -124,12 +130,14 @@ public class TurnListFragment extends BaseFragment implements
         super.onDestroyView();
     }
 
-    @Override public void onDetach() {
+    @Override
+    public void onDetach() {
         ((MatchInfoActivity) getActivity()).removeFragment(this);
         super.onDetach();
     }
 
-    @Override public void onGroupExpand(int groupPosition, boolean fromUser) {
+    @Override
+    public void onGroupExpand(int groupPosition, boolean fromUser) {
         for (int groupToCollapse = 0; groupToCollapse < itemManager.getGroupCount(); groupToCollapse++)
             if (groupToCollapse != groupPosition) {
                 itemManager.collapseGroup(groupToCollapse);
@@ -140,7 +148,8 @@ public class TurnListFragment extends BaseFragment implements
         }
     }
 
-    @Override public void onGroupCollapse(int groupPosition, boolean fromUser) {
+    @Override
+    public void onGroupCollapse(int groupPosition, boolean fromUser) {
 
     }
 

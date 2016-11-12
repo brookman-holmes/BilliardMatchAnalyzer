@@ -16,7 +16,6 @@
 
 package com.brookmanholmes.bma.ui.newmatchwizard;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -26,15 +25,16 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.CreateNewMatchWizardModel;
+import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
@@ -53,16 +53,16 @@ public class CreateNewMatchActivity extends BaseActivity implements
         PageFragmentCallbacks,
         ReviewFragment.Callbacks,
         ModelCallbacks {
+    public static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     private static final String TAG = "CreateNewMatchAct";
-
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.pager) ViewPager pager;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.next_button) Button nextButton;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.prev_button) Button prevButton;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.strip) StepPagerStrip pagerStrip;
+    @Bind(R.id.pager)
+    ViewPager pager;
+    @Bind(R.id.next_button)
+    Button nextButton;
+    @Bind(R.id.prev_button)
+    Button prevButton;
+    @Bind(R.id.strip)
+    StepPagerStrip pagerStrip;
 
     private MyPagerAdapter pagerAdapter;
     private boolean editingAfterReview;
@@ -75,7 +75,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         setContentView(R.layout.activity_create_new_match);
 
         analytics.logEvent("create_match", null);
-        wizardModel = new CreateNewMatchWizardModel(this);
+        wizardModel = new CreateNewMatchWizardModel(this, getIntent().getExtras().getString(ARG_PLAYER_NAME, ""));
 
         ButterKnife.bind(this);
         if (savedInstanceState != null) {
@@ -87,7 +87,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
         pagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
-            @Override public void onPageStripSelected(int position) {
+            @Override
+            public void onPageStripSelected(int position) {
                 position = Math.min(pagerAdapter.getCount() - 1, position);
                 if (pager.getCurrentItem() != position)
                     pager.setCurrentItem(position);
@@ -95,7 +96,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         });
 
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override public void onPageSelected(int position) {
+            @Override
+            public void onPageSelected(int position) {
                 pagerStrip.setCurrentPage(position);
 
                 if (consumePageSelectedEvent) {
@@ -120,20 +122,24 @@ public class CreateNewMatchActivity extends BaseActivity implements
 
     private void createMatchAndLaunchMatchInfoActivity() {
         Match match = wizardModel.createMatch();
-
+        if (match.getGameStatus().gameType.isApa()) {
+            if (match.getGameStatus().gameType == GameType.APA_EIGHT_BALL || match.getGameStatus().gameType == GameType.APA_GHOST_EIGHT_BALL)
+                preferences.edit().putInt("apa8" + match.getPlayer().getName(), match.getPlayer().getRank()).putInt("apa8" + match.getOpponent().getName(), match.getOpponent().getRank()).apply();
+            else if (match.getGameStatus().gameType == GameType.APA_NINE_BALL || match.getGameStatus().gameType == GameType.APA_GHOST_NINE_BALL)
+                preferences.edit().putInt("apa9" + match.getPlayer().getName(), match.getPlayer().getRank()).putInt("apa9" + match.getOpponent().getName(), match.getOpponent().getRank()).apply();
+        }
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
-
         long matchId = databaseAdapter.insertMatch(match);
-
         Intent intent = new Intent(this, MatchInfoActivity.class);
         intent.putExtra(ARG_MATCH_ID, matchId);
 
         startActivity(intent);
-        analytics.logEvent("match_created", MatchDialogHelperUtils.createBundleFromMatch(match));
+        analytics.logEvent("match_created", MatchDialogHelperUtils.getStrippedBundle(match));
         finish();
     }
 
-    @Override public void onPageTreeChanged() {
+    @Override
+    public void onPageTreeChanged() {
         currentPageSequence = wizardModel.getCurrentPageSequence();
         recalculateCutOffPage();
         pagerStrip.setPageCount(currentPageSequence.size() + 1); // + 1 = review step
@@ -155,21 +161,25 @@ public class CreateNewMatchActivity extends BaseActivity implements
         prevButton.setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         super.onDestroy();
         wizardModel.unregisterListener(this);
     }
 
-    @Override protected void onSaveInstanceState(Bundle outState) {
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBundle("model", wizardModel.save());
     }
 
-    @Override public AbstractWizardModel onGetModel() {
+    @Override
+    public AbstractWizardModel onGetModel() {
         return wizardModel;
     }
 
-    @Override public void onEditScreenAfterReview(String key) {
+    @Override
+    public void onEditScreenAfterReview(String key) {
         for (int i = currentPageSequence.size() - 1; i >= 0; i--) {
             if (currentPageSequence.get(i).getKey().equals(key)) {
                 consumePageSelectedEvent = true;
@@ -181,7 +191,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
     }
 
-    @Override public void onPageDataChanged(Page page) {
+    @Override
+    public void onPageDataChanged(Page page) {
         if (page.isRequired()) {
             if (recalculateCutOffPage()) {
                 pagerAdapter.notifyDataSetChanged();
@@ -190,11 +201,13 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
     }
 
-    @Override public Page onGetPage(String key) {
+    @Override
+    public Page onGetPage(String key) {
         return wizardModel.findByKey(key);
     }
 
-    @OnClick(R.id.next_button) public void nextPage() {
+    @OnClick(R.id.next_button)
+    public void nextPage() {
         if (pager.getCurrentItem() == currentPageSequence.size()) {
             if (pagerAdapter.getPrimaryItem() instanceof ReviewFragment) {
                 createMatchAndLaunchMatchInfoActivity();
@@ -208,9 +221,9 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
     }
 
-    @OnClick(R.id.prev_button) public void prevPage() {
+    @OnClick(R.id.prev_button)
+    public void prevPage() {
         pager.setCurrentItem(pager.getCurrentItem() - 1);
-        showKeyboard();
     }
 
     private boolean recalculateCutOffPage() {
@@ -232,13 +245,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
         return false;
     }
 
-    public void showKeyboard() {
-        if (pager.getCurrentItem() == 0) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-        }
-    }
-
     public class MyPagerAdapter extends FragmentStatePagerAdapter {
         private int mCutOffPage;
         private Fragment mPrimaryItem;
@@ -247,7 +253,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
             super(fm);
         }
 
-        @Override public Fragment getItem(int i) {
+        @Override
+        public Fragment getItem(int i) {
             if (i >= currentPageSequence.size()) {
                 return new ReviewFragment();
             }
@@ -255,7 +262,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
             return currentPageSequence.get(i).createFragment();
         }
 
-        @Override public int getItemPosition(Object object) {
+        @Override
+        public int getItemPosition(Object object) {
             if (object == mPrimaryItem) {
                 // Re-use the current fragment (its position never changes)
                 return POSITION_UNCHANGED;
@@ -264,7 +272,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
             return POSITION_NONE;
         }
 
-        @Override public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
             mPrimaryItem = (Fragment) object;
         }
@@ -273,7 +282,8 @@ public class CreateNewMatchActivity extends BaseActivity implements
             return mPrimaryItem;
         }
 
-        @Override public int getCount() {
+        @Override
+        public int getCount() {
             if (currentPageSequence == null) {
                 return 0;
             }

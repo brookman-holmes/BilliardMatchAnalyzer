@@ -2,7 +2,6 @@ package com.brookmanholmes.bma.ui.matchinfo;
 
 import com.brookmanholmes.billiards.turn.ITurn;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**

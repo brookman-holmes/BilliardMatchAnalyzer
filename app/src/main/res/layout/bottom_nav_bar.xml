@@ -16,7 +16,7 @@
         android:paddingBottom="24dp"
         android:paddingLeft="24dp"
         android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:paddingTop="8dp"/>
+        android:paddingTop="8dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

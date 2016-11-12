@@ -8,17 +8,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.Turn;
-import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
+import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.turn.Turn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
 
@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -42,37 +43,42 @@ import java.util.Set;
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class DatabaseAdapter {
-    // column names
-    public static final String TABLE_MATCHES = "matches";
-    public static final String COLUMN_BREAK_TYPE = "break_type";
-    public static final String COLUMN_GAME_TYPE = "game_type";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_STATS_DETAIL = "stats_detail";
     public static final String COLUMN_LOCATION = "location";
-    public static final String COLUMN_NOTES = "notes";
-    public static final String COLUMN_PLAYER_TURN = "player_turn";
-    public static final String COLUMN_CREATED_ON = "created_on";
-    public static final String COLUMN_PLAYER_RANK = "player_rank";
-    public static final String COLUMN_OPPONENT_RANK = "opponent_rank";
-    public static final String TABLE_TURNS = "turns_table";
-    public static final String COLUMN_TABLE_STATUS = "table_status";
-    public static final String COLUMN_TURN_END = "turn_end";
-    public static final String COLUMN_SCRATCH = "foul";
-    public static final String COLUMN_MATCH_ID = "match_id";
-    public static final String COLUMN_TURN_NUMBER = "turn_number";
-    public static final String COLUMN_IS_GAME_LOST = "is_game_lost";
-    public static final String TABLE_PLAYERS = "players";
-    public static final String COLUMN_NAME = "name";
-    public static final String TABLE_ADV_STATS = "adv_stats";
-    public static final String COLUMN_SHOT_TYPE = "shot_type";
-    public static final String COLUMN_SHOT_SUB_TYPE = "shot_sub_type";
-    public static final String TABLE_HOWS = "how_table";
-    public static final String TABLE_WHYS = "why_table";
-    public static final String COLUMN_ADV_STATS_ID = "adv_stats_id";
-    public static final String TABLE_ANGLES = "angle_table";
-    public static final String COLUMN_STRING = "string";
-    public static final String COLUMN_STARTING_POSITION = "starting_position";
     public static final String EMPTY = "";
+    // column names
+    static final String TABLE_MATCHES = "matches";
+    static final String COLUMN_BREAK_TYPE = "break_type";
+    static final String COLUMN_GAME_TYPE = "game_type";
+    static final String COLUMN_ID = "_id";
+    static final String COLUMN_STATS_DETAIL = "stats_detail";
+    static final String COLUMN_NOTES = "notes";
+    static final String COLUMN_PLAYER_TURN = "player_turn";
+    static final String COLUMN_CREATED_ON = "created_on";
+    static final String COLUMN_PLAYER_RANK = "player_rank";
+    static final String COLUMN_OPPONENT_RANK = "opponent_rank";
+    static final String TABLE_TURNS = "turns_table";
+    static final String COLUMN_TABLE_STATUS = "table_status";
+    static final String COLUMN_TURN_END = "turn_end";
+    static final String COLUMN_SCRATCH = "foul";
+    static final String COLUMN_MATCH_ID = "match_id";
+    static final String COLUMN_TURN_NUMBER = "turn_number";
+    static final String COLUMN_IS_GAME_LOST = "is_game_lost";
+    static final String TABLE_PLAYERS = "players";
+    static final String COLUMN_NAME = "name";
+    static final String TABLE_ADV_STATS = "adv_stats";
+    static final String COLUMN_SHOT_TYPE = "shot_type";
+    static final String COLUMN_SHOT_SUB_TYPE = "shot_sub_type";
+    static final String TABLE_HOWS = "how_table";
+    static final String TABLE_WHYS = "why_table";
+    static final String COLUMN_ADV_STATS_ID = "adv_stats_id";
+    static final String TABLE_ANGLES = "angle_table";
+    static final String COLUMN_STRING = "string";
+    static final String COLUMN_STARTING_POSITION = "starting_position";
+    static final String COLUMN_OB_TO_POCKET = "ob_to_pocket";
+    static final String COLUMN_SPEED = "speed";
+    static final String COLUMN_CUE_X = "cue_x";
+    static final String COLUMN_CUE_Y = "cue_y";
+    static final String COLUMN_CB_TO_OB = "cb_to_ob";
     private static final String TAG = "DatabaseAdapter";
     private SQLiteDatabase database;
 
@@ -109,6 +115,27 @@ public class DatabaseAdapter {
         }
 
         return table;
+    }
+
+    static int encodeEnumSet(EnumSet<Match.StatsDetail> set) {
+        int ret = 0;
+
+        for (Match.StatsDetail val : set)
+            ret |= 1 << val.ordinal();
+
+        return ret;
+    }
+
+    private static EnumSet<Match.StatsDetail> decodeEnumSet(int code) {
+        EnumSet<Match.StatsDetail> result = EnumSet.noneOf(Match.StatsDetail.class);
+        Match.StatsDetail[] values = Match.StatsDetail.values();
+        while (code != 0) {
+            int ordinal = Integer.numberOfTrailingZeros(code);
+            code ^= Integer.lowestOneBit(code);
+            result.add(values[ordinal]);
+        }
+
+        return result;
     }
 
     public void createSampleMatches() {
@@ -150,7 +177,7 @@ public class DatabaseAdapter {
         for (Match match : matches) {
             if (!names.contains(match.getPlayer().getName()))
                 names.add(match.getPlayer().getName());
-            if (match.getGameStatus().breakType != BreakType.GHOST && !names.contains(match.getOpponent().getName()))
+            if (!match.getGameStatus().gameType.isGhostGame() && !names.contains(match.getOpponent().getName()))
                 names.add(match.getOpponent().getName());
         }
 
@@ -162,12 +189,13 @@ public class DatabaseAdapter {
 
         for (Match match : getMatches()) {
             combinePlayerInList(players, match.getPlayer());
-            if (match.getGameStatus().breakType != BreakType.GHOST)
+            if (!match.getGameStatus().gameType.isGhostGame())
                 combinePlayerInList(players, match.getOpponent());
         }
 
         Collections.sort(players, new Comparator<AbstractPlayer>() {
-            @Override public int compare(AbstractPlayer o1, AbstractPlayer o2) {
+            @Override
+            public int compare(AbstractPlayer o1, AbstractPlayer o2) {
                 return o1.getName().compareTo(o2.getName());
             }
         });
@@ -191,7 +219,7 @@ public class DatabaseAdapter {
         }
     }
 
-    public List<Pair<AbstractPlayer, AbstractPlayer>> getPlayer(String playerName) {
+    public List<Pair<AbstractPlayer, AbstractPlayer>> getPlayerPairs(String playerName) {
         List<Pair<AbstractPlayer, AbstractPlayer>> players = new ArrayList<>();
 
         Cursor c = database.query(TABLE_PLAYERS,
@@ -225,7 +253,7 @@ public class DatabaseAdapter {
 
     private List<Match> getMatches() {
         List<Match> matches = new ArrayList<>();
-        
+
         final String selection = "m." + COLUMN_ID + " as _id, "
                 + "p." + COLUMN_NAME + " as player_name, "
                 + "opp." + COLUMN_NAME + " as opp_name, "
@@ -313,7 +341,7 @@ public class DatabaseAdapter {
                 .setLocation(c.getString(c.getColumnIndex(COLUMN_LOCATION)))
                 .setMatchId(c.getLong(c.getColumnIndex("_id")))
                 .setNotes(c.getString(c.getColumnIndex(COLUMN_NOTES)))
-                .setStatsDetail(getStatDetail(c))
+                .setDetails(getStatDetail(c))
                 .build(getGameType(c));
     }
 
@@ -339,8 +367,8 @@ public class DatabaseAdapter {
         return BreakType.valueOf(c.getString(c.getColumnIndex(COLUMN_BREAK_TYPE)));
     }
 
-    private Match.StatsDetail getStatDetail(Cursor c) {
-        return Match.StatsDetail.valueOf(c.getString(c.getColumnIndex(COLUMN_STATS_DETAIL)));
+    private EnumSet<Match.StatsDetail> getStatDetail(Cursor c) {
+        return decodeEnumSet(c.getInt(c.getColumnIndex(COLUMN_STATS_DETAIL)));
     }
 
     private GameType getGameType(Cursor c) {
@@ -349,7 +377,7 @@ public class DatabaseAdapter {
 
     public List<Match> getMatches(@Nullable String player, @Nullable String opponent) {
         List<Match> matches = new ArrayList<>();
-        
+
 
         final String selection = "m." + COLUMN_ID + " as _id, "
                 + "p." + COLUMN_NAME + " as player_name, "
@@ -408,7 +436,7 @@ public class DatabaseAdapter {
     }
 
     private void insertPlayer(AbstractPlayer player, long id) {
-        
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, player.getName());
         contentValues.put(COLUMN_MATCH_ID, id);
@@ -417,7 +445,7 @@ public class DatabaseAdapter {
     }
 
     public void undoTurn(long id, int turnNumber) {
-        
+
         String selection = COLUMN_MATCH_ID + "=? and " + COLUMN_TURN_NUMBER + "=?";
         String[] selectionArgs = new String[]{String.valueOf(id), String.valueOf(turnNumber)};
 
@@ -436,34 +464,30 @@ public class DatabaseAdapter {
     }
 
     public long insertMatch(Match match) {
-        
-        if (match.getMatchId() == 0) {
-            ContentValues matchValues = new ContentValues();
+        ContentValues matchValues = new ContentValues();
 
-            GameStatus status = match.getGameStatus();
+        GameStatus status = match.getGameStatus();
 
-            matchValues.put(COLUMN_PLAYER_TURN, status.turn.name());
-            matchValues.put(COLUMN_GAME_TYPE, status.gameType.name());
-            matchValues.put(COLUMN_CREATED_ON, formatDate(match.getCreatedOn()));
-            matchValues.put(COLUMN_BREAK_TYPE, status.breakType.name());
-            matchValues.put(COLUMN_LOCATION, match.getLocation());
-            matchValues.put(COLUMN_STATS_DETAIL, match.getStatDetailLevel().name());
-            matchValues.put(COLUMN_NOTES, match.getNotes());
-            matchValues.put(COLUMN_PLAYER_RANK, match.getPlayer().getRank());
-            matchValues.put(COLUMN_OPPONENT_RANK, match.getOpponent().getRank());
+        matchValues.put(COLUMN_PLAYER_TURN, status.turn.name());
+        matchValues.put(COLUMN_GAME_TYPE, status.gameType.name());
+        matchValues.put(COLUMN_CREATED_ON, formatDate(match.getCreatedOn()));
+        matchValues.put(COLUMN_BREAK_TYPE, status.breakType.name());
+        matchValues.put(COLUMN_LOCATION, match.getLocation());
+        matchValues.put(COLUMN_STATS_DETAIL, encodeEnumSet(match.getDetails()));
+        matchValues.put(COLUMN_NOTES, match.getNotes());
+        matchValues.put(COLUMN_PLAYER_RANK, match.getPlayer().getRank());
+        matchValues.put(COLUMN_OPPONENT_RANK, match.getOpponent().getRank());
 
-
-            long matchId = database.insert(TABLE_MATCHES, null, matchValues);
-            match.setMatchId(matchId);
-            insertPlayer(match.getPlayer(), matchId);
-            insertPlayer(match.getOpponent(), matchId);
-        }
+        long matchId = database.insert(TABLE_MATCHES, null, matchValues);
+        match.setMatchId(matchId);
+        insertPlayer(match.getPlayer(), matchId);
+        insertPlayer(match.getOpponent(), matchId);
 
         return match.getMatchId();
     }
 
     public void updateMatchNotes(String matchNotes, long matchId) {
-        
+
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOTES, matchNotes);
 
@@ -471,7 +495,7 @@ public class DatabaseAdapter {
     }
 
     public void updateMatchLocation(String location, long matchId) {
-        
+
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOCATION, location);
 
@@ -484,18 +508,17 @@ public class DatabaseAdapter {
     }
 
     public void editPlayerName(long matchId, String name, String newName) {
-        
+
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, newName);
         database.update(TABLE_PLAYERS,
                 values,
                 COLUMN_NAME + "=? AND " + COLUMN_MATCH_ID + "=?",
                 new String[]{name, Long.toString(matchId)});
-        ;
     }
 
     public void insertTurn(ITurn turn, long matchId, int turnCount) {
-        
+
         database.delete(TABLE_TURNS,
                 COLUMN_MATCH_ID + "=? AND "
                         + COLUMN_TURN_NUMBER + " >= ?",
@@ -520,6 +543,11 @@ public class DatabaseAdapter {
             values.put(COLUMN_NAME, turn.getAdvStats().getPlayer());
             values.put(COLUMN_TURN_NUMBER, turnCount);
             values.put(COLUMN_MATCH_ID, matchId);
+            values.put(COLUMN_CUE_X, turn.getAdvStats().getCueX());
+            values.put(COLUMN_CUE_Y, turn.getAdvStats().getCueY());
+            values.put(COLUMN_SPEED, turn.getAdvStats().getSpeed());
+            values.put(COLUMN_OB_TO_POCKET, turn.getAdvStats().getObToPocket());
+            values.put(COLUMN_CB_TO_OB, turn.getAdvStats().getCbToOb());
             values.put(COLUMN_STARTING_POSITION, turn.getAdvStats().getStartingPosition());
 
             long advStatsId = database.insert(TABLE_ADV_STATS, null, values);
@@ -568,7 +596,7 @@ public class DatabaseAdapter {
                 null);
 
         if (c.moveToFirst()) {
-            stat =  buildAdvStatsFromCursor(c);
+            stat = buildAdvStatsFromCursor(c);
         }
 
         c.close();
@@ -589,7 +617,7 @@ public class DatabaseAdapter {
     }
 
     private Cursor getMatchTurnsCursor(long id) {
-        
+
 
         return database.query(
                 TABLE_TURNS,
@@ -612,7 +640,7 @@ public class DatabaseAdapter {
     }
 
     public List<AdvStats> getAdvStats(String playerName, String[] shotTypes) {
-        
+
         List<AdvStats> list = new ArrayList<>();
 
         String query = COLUMN_NAME + "=?";
@@ -656,7 +684,7 @@ public class DatabaseAdapter {
                 matchIds.add(match.getMatchId());
         }
 
-        
+
         List<AdvStats> list = new ArrayList<>();
 
         String query = COLUMN_NAME + "=?";
@@ -689,7 +717,7 @@ public class DatabaseAdapter {
     }
 
     public List<AdvStats> getAdvStats(long matchId, String playerName, String[] shotTypes) {
-        
+
         List<AdvStats> list = new ArrayList<>();
 
         String query = COLUMN_MATCH_ID + "=? AND " + COLUMN_NAME + "=?";
@@ -731,6 +759,10 @@ public class DatabaseAdapter {
         builder.startingPosition(c.getString(c.getColumnIndex(COLUMN_STARTING_POSITION)))
                 .shotType(AdvStats.ShotType.valueOf(c.getString(c.getColumnIndex(COLUMN_SHOT_TYPE))))
                 .subType(AdvStats.SubType.valueOf(c.getString(c.getColumnIndex(COLUMN_SHOT_SUB_TYPE))))
+                .speed(c.getInt(c.getColumnIndex(COLUMN_SPEED)))
+                .cueing(c.getInt(c.getColumnIndex(COLUMN_CUE_X)), c.getInt(c.getColumnIndex(COLUMN_CUE_Y)))
+                .cbDistance(c.getFloat(c.getColumnIndex(COLUMN_CB_TO_OB)))
+                .obDistance(c.getFloat(c.getColumnIndex(COLUMN_OB_TO_POCKET)))
                 .angle(getAngleList(advStatsId))
                 .howTypes(getHowList(advStatsId))
                 .whyTypes(getWhyList(advStatsId));
@@ -793,14 +825,12 @@ public class DatabaseAdapter {
     }
 
     public void deleteMatch(long id) {
-        
         database.delete(TABLE_PLAYERS, COLUMN_MATCH_ID + "=" + id, null);
         database.delete(TABLE_TURNS, COLUMN_MATCH_ID + "=" + id, null);
         database.delete(TABLE_MATCHES, COLUMN_ID + "=" + id, null);
     }
 
     public void logDatabase(String table) {
-        
         Log.i(TAG, DatabaseUtils.dumpCursorToString(database.query(table, null, null, null, null, null, null)));
     }
 }

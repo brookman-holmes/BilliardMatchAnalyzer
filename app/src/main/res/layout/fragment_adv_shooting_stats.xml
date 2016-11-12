@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:animateLayoutChanges="true">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/baseLayout"
@@ -15,32 +13,92 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp">
 
-        <include layout="@layout/container_adv_stat_title"/>
+        <include layout="@layout/container_adv_shot_filter" />
 
-        <include layout="@layout/container_adv_shot_filter"/>
-
-        <include layout="@layout/container_miscues"/>
-
-        <include layout="@layout/graph_cut"/>
-
-        <include layout="@layout/graph_aim"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/line_divider" />
 
         <include
-            android:id="@+id/bankGraph"
-            layout="@layout/graph_bank"/>
+            layout="@layout/container_adv_stat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp" />
 
         <include
-            android:id="@+id/kickGraph"
-            layout="@layout/graph_kick"/>
+            layout="@layout/container_miscues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp" />
+
+        <include layout="@layout/graph_cut" />
+
+        <include layout="@layout/graph_aim" />
+
+        <include layout="@layout/graph_kick" />
+
+        <include layout="@layout/graph_bank" />
+
+        <com.github.mikephil.charting.charts.BubbleChart
+            android:id="@+id/speedChart"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:visibility="gone" />
+
+        <com.github.mikephil.charting.charts.BubbleChart
+            android:id="@+id/distanceChart"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/noSpeedData"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/no_speed_data"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/noDistanceData"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/no_distance_data"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <LinearLayout
-            android:id="@+id/parentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/description_heat_graph" />
+
+            <com.brookmanholmes.bma.ui.view.HeatGraph
+                android:id="@+id/heatGraph"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/circle"
+                android:outlineProvider="background" />
         </LinearLayout>
+
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

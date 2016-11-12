@@ -1,50 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/alert_dialog_padding"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_types_of_bank_shots"
-        android:textColor="@color/colorPrimary"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/alert_dialog_padding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        style="@style/help_dialog_title"
-        android:text="@string/bank_natural"
-        android:textColor="@color/primary_text"/>
+        <TextView
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_types_of_bank_shots"
+            android:textColor="@color/colorPrimary" />
 
-    <TextView
-        style="@style/help_dialog_text"
-        android:text="@string/description_bank_natural"/>
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/bank_natural"
+            android:textColor="@color/primary_text" />
 
-    <TextView
-        style="@style/help_dialog_title"
-        android:text="@string/bank_crossover"
-        android:textColor="@color/primary_text"/>
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="@string/description_bank_natural" />
 
-    <TextView
-        style="@style/help_dialog_text"
-        android:text="@string/description_bank_crossover"/>
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/bank_crossover"
+            android:textColor="@color/primary_text" />
 
-    <TextView
-        style="@style/help_dialog_title"
-        android:text="@string/bank_long_rail"
-        android:textColor="@color/primary_text"/>
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="@string/description_bank_crossover" />
 
-    <TextView
-        style="@style/help_dialog_text"
-        android:text="@string/description_bank_long"/>
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/bank_long_rail"
+            android:textColor="@color/primary_text" />
 
-    <TextView
-        style="@style/help_dialog_title"
-        android:text="@string/bank_short_rail"
-        android:textColor="@color/primary_text"/>
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="@string/description_bank_long" />
 
-    <TextView
-        style="@style/help_dialog_text"
-        android:text="@string/description_bank_short"/>
-</LinearLayout>
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/bank_short_rail"
+            android:textColor="@color/primary_text" />
+
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="@string/description_bank_short" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

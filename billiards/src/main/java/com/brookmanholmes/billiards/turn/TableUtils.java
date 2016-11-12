@@ -6,6 +6,8 @@ import com.brookmanholmes.billiards.game.PlayerColor;
 import java.util.Collections;
 import java.util.List;
 
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD;
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD_ON_BREAK;
 import static com.brookmanholmes.billiards.game.BallStatus.MADE;
 import static com.brookmanholmes.billiards.game.BallStatus.MADE_ON_BREAK;
 import static com.brookmanholmes.billiards.game.BallStatus.ON_TABLE;
@@ -18,6 +20,48 @@ import static com.brookmanholmes.billiards.game.PlayerColor.STRIPES;
  * given a set of ball statuses
  */
 public class TableUtils {
+
+    /**
+     * Calculates the number of stripes that were illegally pocketed, does not include balls made on
+     * the break
+     * @param ballStatuses A list of balls on the table, must be of size 15
+     * @return the number of stripes dead
+     */
+    public static int getDeadStripes(List<BallStatus> ballStatuses) {
+        return getDeadBalls(ballStatuses, STRIPES);
+    }
+
+    /**
+     * Calculates the number of solids that were illegally pocketed, does not include balls made on
+     * the break
+     *
+     * @param ballStatuses A list of balls on the table, must be of size 15
+     * @return the number of solids dead
+     */
+    public static int getDeadSolids(List<BallStatus> ballStatuses) {
+        return getDeadBalls(ballStatuses, SOLIDS);
+    }
+
+    /**
+     * Calculates the number of solids that were illegally pocketed on the break
+     *
+     * @param ballStatuses A list of balls on the table, must be of size 15
+     * @return the number of solids dead on the break
+     */
+    public static int getDeadSolidsOnBreak(List<BallStatus> ballStatuses) {
+        return getDeadBallsOnBreak(ballStatuses, SOLIDS);
+    }
+
+    /**
+     * Calculates the number of stripes that were illegally pocketed on the break
+     *
+     * @param ballStatuses A list of balls on the table, must be of size 15
+     * @return the number of stripes dead on the break
+     */
+    public static int getDeadStripesOnBreak(List<BallStatus> ballStatuses) {
+        return getDeadBallsOnBreak(ballStatuses, STRIPES);
+    }
+
     /**
      * Calculates the number of stripes that were legally pocketed on the break
      * @param ballStatuses A list of balls on the table, must be of size 15
@@ -72,6 +116,15 @@ public class TableUtils {
      */
     public static int getStripesRemaining(List<BallStatus> ballStatuses) {
         return getColorRemaining(ballStatuses, STRIPES);
+    }
+
+    private static int getDeadBalls(List<BallStatus> ballStatuses, PlayerColor colorToCount) {
+        return Collections.frequency(getBallStatusOfColor(ballStatuses, colorToCount), DEAD);
+    }
+
+
+    private static int getDeadBallsOnBreak(List<BallStatus> ballStatuses, PlayerColor colorToCount) {
+        return Collections.frequency(getBallStatusOfColor(ballStatuses, colorToCount), DEAD_ON_BREAK);
     }
 
     private static int getColorMadeOnBreak(List<BallStatus> ballStatuses, PlayerColor colorToCount) {

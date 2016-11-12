@@ -13,19 +13,21 @@ import java.util.ArrayList;
 /**
  * Created by Brookman Holmes on 1/7/2016.
  */
-public class BreakTypePage extends BranchPage implements RequiresPlayerNames, UpdatesMatchBuilder {
+class BreakTypePage extends BranchPage implements RequiresPlayerNames, UpdatesMatchBuilder {
     private final String valueEnding;
     private final String firstBreak;
     private String playerName = "Player 1";
     private String opponentName = "Player 2";
 
-    public BreakTypePage(ModelCallbacks callbacks, String title, Context context) {
+    BreakTypePage(ModelCallbacks callbacks, String title, Context context, String parentKey) {
         super(callbacks, title);
         valueEnding = context.getString(R.string.break_player);
         firstBreak = context.getString(R.string.title_page_first_break);
+        this.parentKey = parentKey;
     }
 
-    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
         super.getReviewItems(dest);
 
         if (data.getString(SIMPLE_DATA_KEY, "").equals(String.format(valueEnding, playerName))) {
@@ -35,7 +37,8 @@ public class BreakTypePage extends BranchPage implements RequiresPlayerNames, Up
         }
     }
 
-    @Override public void setPlayerNames(String playerName, String opponentName) {
+    @Override
+    public void setPlayerNames(String playerName, String opponentName) {
         for (Branch branch : branches) {
             for (Page page : branch.childPageList) {
                 if (page instanceof RequiresPlayerNames) {
@@ -56,7 +59,8 @@ public class BreakTypePage extends BranchPage implements RequiresPlayerNames, Up
         branches.get(4).choice = String.format(valueEnding, opponentName);
     }
 
-    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+    @Override
+    public void updateMatchBuilder(CreateNewMatchWizardModel model) {
         model.setBreakType(data.getString(SIMPLE_DATA_KEY));
     }
 }

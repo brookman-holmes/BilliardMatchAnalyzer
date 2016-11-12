@@ -1,125 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <LinearLayout
+        style="@style/alert_dialog_padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        style="@style/alert_dialog_padding">
+        android:orientation="vertical">
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_how_turn_end"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary" />
 
         <TextView
             style="@style/help_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/turn_safety"
-            android:textColor="@color/primary_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/description_safety"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/description_safety" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/turn_safety_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/description_safety_error"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/description_safety_error" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/turn_break_miss"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/description_break_miss"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/description_break_miss" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/turn_miss"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/description_miss"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/description_miss" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/turn_illegal_break"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/description_illegal_break"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/description_illegal_break" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/turn_won_game"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/description_won_game"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/description_won_game" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/turn_continue_game"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/description_continue_game"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/description_continue_game" />
 
         <TextView
             style="@style/help_dialog_title"
-            android:textColor="@color/primary_text"
-            android:text="@string/turn_have_player_break"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/turn_have_player_break"
+            android:textColor="@color/primary_text" />
 
         <TextView
             style="@style/help_dialog_text"
-            android:text="@string/description_have_player_break"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/description_have_player_break" />
 
 
     </LinearLayout>

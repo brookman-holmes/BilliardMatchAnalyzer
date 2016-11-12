@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filters"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/primary_text" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:orientation="horizontal"
-        android:paddingTop="16dp">
+        android:paddingTop="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,14 +30,14 @@
                 android:layout_height="wrap_content"
                 android:minWidth="160dp"
                 android:text="@string/shot_type"
-                android:textColor="@color/primary_text"/>
+                android:textColor="@color/primary_text" />
 
             <Spinner
                 android:id="@+id/shotTypeSpinner"
-                android:layout_width="160dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
-                android:paddingTop="8dp"/>
+                android:paddingTop="8dp" />
 
         </LinearLayout>
 
@@ -46,37 +53,38 @@
                 android:layout_height="wrap_content"
                 android:minWidth="160dp"
                 android:text="@string/cut_type"
-                android:textColor="@color/primary_text"/>
+                android:textColor="@color/primary_text" />
 
             <Spinner
                 android:id="@+id/shotSubTypeSpinner"
-                android:layout_width="160dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
-                android:paddingTop="8dp"/>
+                android:paddingTop="8dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="160dp"
+                android:text="@string/angle_bank_kick"
+                android:textColor="@color/primary_text" />
+
+            <Spinner
+                android:id="@+id/angleSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp" />
 
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="160dp"
-            android:text="@string/angle_bank_kick"
-            android:textColor="@color/primary_text"/>
-
-        <Spinner
-            android:id="@+id/angleSpinner"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"/>
-
-    </LinearLayout>
 </LinearLayout>

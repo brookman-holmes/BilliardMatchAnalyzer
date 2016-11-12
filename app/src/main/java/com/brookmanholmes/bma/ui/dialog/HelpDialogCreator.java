@@ -22,7 +22,8 @@ public class HelpDialogCreator {
         builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
         builder.setView(LayoutInflater.from(context).inflate(getRes(pageTitle), null))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
                     }
                 });
@@ -32,7 +33,8 @@ public class HelpDialogCreator {
         return builder.create();
     }
 
-    @LayoutRes private int getRes(String pageTitle) {
+    @LayoutRes
+    private int getRes(String pageTitle) {
         if (pageTitle.equals(getAnglePageTitle()))
             return R.layout.dialog_help_angle;
         else if (pageTitle.equals(getBankPageTitle()))
@@ -50,7 +52,7 @@ public class HelpDialogCreator {
         else if (pageTitle.equals(getSafetyPageTitle()))
             return R.layout.dialog_help_safety;
         else if (pageTitle.equals(getShotPageTitle()))
-            return R.layout.dialog_help_shot;
+            return R.layout.dialog_help_break;
         else if (pageTitle.equals(getTurnEndPageTitle()))
             return R.layout.dialog_help_turn_end;
         else if (pageTitle.equals(getWhatMissPageTitle()))

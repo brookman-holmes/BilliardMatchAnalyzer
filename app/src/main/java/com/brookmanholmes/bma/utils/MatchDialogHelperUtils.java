@@ -1,16 +1,17 @@
 package com.brookmanholmes.bma.utils;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
-import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
@@ -20,6 +21,24 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.BALL_DISTANCES_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.BALL_DISTANCES_PLAYER;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.CUEING_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.CUEING_PLAYER;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.HOW_MISS_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.HOW_MISS_PLAYER;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SAFETIES_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SAFETIES_PLAYER;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SHOT_TYPE_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SHOT_TYPE_PLAYER;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SPEED_OPPONENT;
+import static com.brookmanholmes.billiards.match.Match.StatsDetail.SPEED_PLAYER;
 
 /**
  * Created by Brookman Holmes on 1/27/2016.
@@ -44,12 +63,12 @@ public class MatchDialogHelperUtils {
     public static final String OPPONENT_FOULS_KEY = "opponent_fouls";
     public static final String PLAYER_FOULS_KEY = "player_fouls";
     public static final String PLAYER_COLOR_KEY = "player_color";
-
+    public static final String DATA_COLLECTION_KEY = "data_collection_key";
 
     private MatchDialogHelperUtils() {
     }
 
-    public static Bundle createBundleFromMatch(Match match) {
+    public static Bundle getBundle(Match match) {
         Bundle args = new Bundle();
 
         args.putBoolean(ALLOW_TURN_SKIP_KEY, match.getGameStatus().allowTurnSkip);
@@ -66,9 +85,37 @@ public class MatchDialogHelperUtils {
         args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.name());
         args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
         args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
-        args.putString(STATS_LEVEL_KEY, match.getStatDetailLevel().name());
         args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
         args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
+        args.putSerializable(DATA_COLLECTION_KEY, match.getDetails());
+        return args;
+    }
+
+    /**
+     * Used to report analytics to Firebase, strips the player name's from the match to protect
+     * user privacy
+     *
+     * @param match match to be reported
+     * @return bundle with all the data of the match
+     */
+    public static Bundle getStrippedBundle(Match match) {
+        Bundle args = new Bundle();
+
+        args.putBoolean(ALLOW_TURN_SKIP_KEY, match.getGameStatus().allowTurnSkip);
+        args.putBoolean(NEW_GAME_KEY, match.getGameStatus().newGame);
+        args.putBoolean(ALLOW_PUSH_KEY, match.getGameStatus().allowPush);
+        args.putString(GAME_TYPE_KEY, match.getGameStatus().gameType.name());
+        args.putIntegerArrayList(BALLS_ON_TABLE_KEY, new ArrayList<>(match.getGameStatus().ballsOnTable));
+        args.putString(TURN_KEY, match.getGameStatus().turn.name());
+        args.putString(CURRENT_PLAYER_COLOR_KEY, match.getGameStatus().currentPlayerColor.name());
+        args.putString(BREAKER_KEY, match.getGameStatus().breaker.name());
+        args.putInt(CONSECUTIVE_FOULS_KEY, match.getGameStatus().currentPlayerConsecutiveFouls);
+        args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.name());
+        args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
+        args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
+        args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
+        args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
+        args.putSerializable(DATA_COLLECTION_KEY, match.getDetails());
         return args;
     }
 
@@ -108,12 +155,23 @@ public class MatchDialogHelperUtils {
                 return 10;
             case BCA_NINE_BALL:
                 return 9;
+            case BCA_GHOST_EIGHT_BALL:
+                return 8;
+            case BCA_GHOST_NINE_BALL:
+                return 9;
+            case BCA_GHOST_TEN_BALL:
+                return 10;
+            case APA_GHOST_EIGHT_BALL:
+                return 8;
+            case APA_GHOST_NINE_BALL:
+                return 9;
             default:
                 throw new InvalidGameTypeException("That game is probably not implemented yet: " + match.getGameStatus().gameType.toString());
         }
     }
 
-    @LayoutRes public static int getLayoutByGameType(GameType gameType) {
+    @LayoutRes
+    public static int getLayout(GameType gameType) {
         switch (gameType) {
             case APA_EIGHT_BALL:
                 return R.layout.select_eight_ball_dialog;
@@ -125,12 +183,22 @@ public class MatchDialogHelperUtils {
                 return R.layout.select_ten_ball_dialog;
             case BCA_NINE_BALL:
                 return R.layout.select_nine_ball_dialog;
+            case APA_GHOST_EIGHT_BALL:
+                return R.layout.select_eight_ball_dialog;
+            case APA_GHOST_NINE_BALL:
+                return R.layout.select_nine_ball_dialog;
+            case BCA_GHOST_EIGHT_BALL:
+                return R.layout.select_eight_ball_dialog;
+            case BCA_GHOST_TEN_BALL:
+                return R.layout.select_ten_ball_dialog;
+            case BCA_GHOST_NINE_BALL:
+                return R.layout.select_nine_ball_dialog;
             default:
                 throw new InvalidGameTypeException("Game type not implemented yet: " + gameType.toString());
         }
     }
 
-    public static GameStatus createGameStatusFromBundle(Bundle args) {
+    public static GameStatus getGameStatus(Bundle args) {
         GameStatus.Builder gameStatus = new GameStatus.Builder(GameType.valueOf(args.getString(GAME_TYPE_KEY)));
 
         if (args.getBoolean(NEW_GAME_KEY)) gameStatus.newGame();
@@ -187,7 +255,8 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    @IdRes public static int convertBallToId(int ball) {
+    @IdRes
+    public static int convertBallToId(int ball) {
         switch (ball) {
             case 1:
                 return R.id.one_ball;
@@ -330,7 +399,9 @@ public class MatchDialogHelperUtils {
     }
 
     public static AdvStats.ShotType convertStringToShotType(Context context, String shot) {
-        if (shot.equals(context.getString(R.string.miss_cut)))
+        if (shot.equals(context.getString(R.string.none)))
+            return AdvStats.ShotType.NONE;
+        else if (shot.equals(context.getString(R.string.miss_cut)))
             return AdvStats.ShotType.CUT;
         else if (shot.equals(context.getString(R.string.miss_long)))
             return AdvStats.ShotType.STRAIGHT_SHOT;
@@ -352,7 +423,8 @@ public class MatchDialogHelperUtils {
             return AdvStats.ShotType.SAFETY_ERROR;
         else if (shot.equals(context.getString(R.string.turn_break_miss)))
             return AdvStats.ShotType.BREAK_SHOT;
-        else throw new IllegalArgumentException("No such conversion between string and AdvStats.ShotType: " + shot);
+        else
+            throw new IllegalArgumentException("No such conversion between string and AdvStats.ShotType: " + shot);
     }
 
     public static AdvStats.WhyType convertStringToWhyType(Context context, String whyType) {
@@ -459,7 +531,9 @@ public class MatchDialogHelperUtils {
         else throw new IllegalArgumentException("no such conversion for " + subType);
     }
 
-    public static @StringRes int convertWhyTypeToStringRes(AdvStats.WhyType whyType) {
+    public static
+    @StringRes
+    int convertWhyTypeToStringRes(AdvStats.WhyType whyType) {
         switch (whyType) {
             case POSITION:
                 return R.string.why_position;
@@ -540,7 +614,9 @@ public class MatchDialogHelperUtils {
             throw new IllegalArgumentException("No such conversion between string and StringRes: " + turnEnd);
     }
 
-    public static @StringRes int convertShotTypeToStringRes(AdvStats.ShotType shotType) {
+    public static
+    @StringRes
+    int convertShotTypeToStringRes(AdvStats.ShotType shotType) {
         switch (shotType) {
             case CUT:
                 return R.string.miss_cut;
@@ -565,13 +641,15 @@ public class MatchDialogHelperUtils {
             case BREAK_SHOT:
                 return R.string.turn_break_miss;
             case NONE:
-                return R.string.empty_string;
+                return R.string.none;
             default:
                 throw new IllegalArgumentException("no such conversion " + shotType);
         }
     }
 
-    public static @StringRes int convertAngleToStringRes(AdvStats.Angle angle) {
+    public static
+    @StringRes
+    int convertAngleToStringRes(AdvStats.Angle angle) {
         switch (angle) {
             case ONE_RAIL:
                 return R.string.one_rail;
@@ -628,7 +706,9 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    public static @StringRes int convertSubTypeToStringRes(AdvStats.SubType shotSubtype) {
+    public static
+    @StringRes
+    int convertSubTypeToStringRes(AdvStats.SubType shotSubtype) {
         switch (shotSubtype) {
             case FULL_HOOK:
                 return R.string.safety_full_hook;
@@ -655,7 +735,9 @@ public class MatchDialogHelperUtils {
         }
     }
 
-    public static @StringRes int convertHowToStringRes(AdvStats.HowType howType) {
+    public static
+    @StringRes
+    int convertHowToStringRes(AdvStats.HowType howType) {
         switch (howType) {
             case MISCUE:
                 return R.string.miscue;
@@ -688,5 +770,41 @@ public class MatchDialogHelperUtils {
             default:
                 throw new IllegalArgumentException("No conversion for " + howType);
         }
+    }
+
+    public static boolean containsAdvancedStatsForPlayer(Collection<Match.StatsDetail> details) {
+        List<Match.StatsDetail> playerDetails = Arrays.asList(SHOT_TYPE_PLAYER,
+                CUEING_PLAYER,
+                HOW_MISS_PLAYER,
+                SAFETIES_PLAYER,
+                SPEED_PLAYER,
+                BALL_DISTANCES_PLAYER);
+        return !Collections.disjoint(details, playerDetails);
+    }
+
+    public static boolean containsAdvancedStatsForOpponent(Collection<Match.StatsDetail> details) {
+        List<Match.StatsDetail> oppDetails = Arrays.asList(SHOT_TYPE_OPPONENT,
+                CUEING_OPPONENT,
+                HOW_MISS_OPPONENT,
+                SAFETIES_OPPONENT,
+                SPEED_OPPONENT,
+                BALL_DISTANCES_OPPONENT);
+        return !Collections.disjoint(details, oppDetails);
+    }
+
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                (context.getResources().getConfiguration().screenLayout &
+                        Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
+
+    public static boolean currentPlayerTurnAndAdvancedStats(PlayerTurn turn, EnumSet<Match.StatsDetail> details) {
+        if (turn == PlayerTurn.PLAYER)
+            return containsAdvancedStatsForPlayer(details);
+        else if (turn == PlayerTurn.OPPONENT)
+            return containsAdvancedStatsForOpponent(details);
+        else
+            return false;
     }
 }

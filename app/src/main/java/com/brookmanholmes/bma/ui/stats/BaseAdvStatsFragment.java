@@ -27,14 +27,16 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 6/3/2016.
  */
 public abstract class BaseAdvStatsFragment extends Fragment implements Filterable {
+    private static final String TAG = "BaseAdvStatsFrag";
     protected FilterStats task;
     List<AdvStats> stats = new ArrayList<>();
-    @Bind(R.id.parentView) LinearLayout statsLayout;
-    @Bind(R.id.baseLayout) LinearLayout baseLayout;
+    @Bind(R.id.baseLayout)
+    LinearLayout baseLayout;
     String playerName;
     String[] shotTypes;
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         long matchId = getArguments().getLong(AdvStatsDialog.ARG_MATCH_ID, -1L);
         playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
@@ -50,9 +52,11 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
 
     abstract String[] getShotTypes();
 
-    @LayoutRes abstract int getLayoutId();
+    @LayoutRes
+    abstract int getLayoutId();
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, view);
@@ -60,14 +64,16 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
         return view;
     }
 
-    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).addListener(this);
         } else updateView();
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         ButterKnife.unbind(this);
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).removeListener(this);
@@ -75,10 +81,11 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
         super.onDestroyView();
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
-        if(task != null)
+        if (task != null)
             task.cancel(true);
         super.onDestroy();
     }
@@ -98,7 +105,8 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
     }
 
     private class FilterStats extends AsyncTask<StatFilter, Void, List<AdvStats>> {
-        @Override protected void onPostExecute(List<AdvStats> list) {
+        @Override
+        protected void onPostExecute(List<AdvStats> list) {
             if (!isCancelled() && isAdded())
                 stats = list;
 
@@ -106,7 +114,8 @@ public abstract class BaseAdvStatsFragment extends Fragment implements Filterabl
                 updateView();
         }
 
-        @Override protected List<AdvStats> doInBackground(StatFilter... params) {
+        @Override
+        protected List<AdvStats> doInBackground(StatFilter... params) {
             return new DatabaseAdapter(getContext()).getAdvStats(playerName, shotTypes, params[0]);
         }
     }

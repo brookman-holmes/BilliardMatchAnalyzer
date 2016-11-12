@@ -2,14 +2,13 @@ package com.brookmanholmes.bma.ui.addturnwizard.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.ShotPage;
-import com.brookmanholmes.billiards.game.BallStatus;
 
 import java.util.List;
 
@@ -30,7 +29,8 @@ public class RotationShotFragment extends ShotFragment {
         return fragment;
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         page = (ShotPage) callbacks.onGetPage(key);
 
@@ -41,9 +41,10 @@ public class RotationShotFragment extends ShotFragment {
         return view;
     }
 
-    @OnClick(R.id.buttonRunOut) @Override void runOut() {
+    @OnClick(R.id.buttonRunOut)
+    @Override
+    void runOut() {
         List<BallStatus> ballStatusList = page.getBallStatuses();
-        Log.i("BallStatuses", ballStatusList.toString());
         for (int i = 0; i < ballStatusList.size(); i++) {
             if (ballStatusList.get(i) == BallStatus.ON_TABLE) {
                 page.updateBallStatus(i + 1);

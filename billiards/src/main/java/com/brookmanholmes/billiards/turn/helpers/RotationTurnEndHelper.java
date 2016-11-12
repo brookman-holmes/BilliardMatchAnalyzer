@@ -14,7 +14,7 @@ class RotationTurnEndHelper extends TurnEndHelper {
 
     @Override boolean showWin() {
         return tableStatus.isGameBallMade()
-                || tableStatus.getGameBallMadeOnBreak();
+                || tableStatus.isGameBallMadeOnBreak();
     }
 
     @Override boolean lostGame() {

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/WizardPageTitle2" />
+
+        <android.support.v7.widget.GridLayout
+            android:id="@+id/ballGrid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:columnCount="3"
+            app:useDefaultMargins="true">
+
+
+            <ImageView
+                android:id="@+id/one_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/one_ball_level" />
+
+            <ImageView
+                android:id="@+id/two_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/two_ball_level" />
+
+            <ImageView
+                android:id="@+id/three_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/three_ball_level" />
+
+            <ImageView
+                android:id="@+id/four_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/four_ball_level" />
+
+            <ImageView
+                android:id="@+id/five_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/five_ball_level" />
+
+            <ImageView
+                android:id="@+id/six_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/six_ball_level" />
+
+            <ImageView
+                android:id="@+id/seven_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/seven_ball_level" />
+
+            <ImageView
+                android:id="@+id/eight_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/eight_ball_level" />
+
+            <ImageView
+                android:id="@+id/nine_ball"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/nine_ball_level" />
+
+        </android.support.v7.widget.GridLayout>
+
+        <Button
+            android:id="@+id/buttonRunOut"
+            style="?android:borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="16dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:visibility="gone" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

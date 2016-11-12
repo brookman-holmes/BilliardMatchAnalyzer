@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -22,19 +23,27 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected FirebaseAnalytics analytics;
     protected SharedPreferences preferences;
-    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         analytics = FirebaseAnalytics.getInstance(BaseActivity.this);
+
+        if (BuildConfig.DEBUG)
+            analytics.setAnalyticsCollectionEnabled(false);
+
         preferences = getPreferences();
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(this);
         refWatcher.watch(this);
         super.onDestroy();
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_submit_feedback) {
             EmailIntentBuilder.from(this)
                     .to("brookman.holmes@gmail.com")

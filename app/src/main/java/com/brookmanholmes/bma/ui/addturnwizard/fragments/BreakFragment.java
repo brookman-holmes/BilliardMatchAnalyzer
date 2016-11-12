@@ -16,6 +16,8 @@ import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.addturnwizard.model.BreakPage;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,7 +25,7 @@ import butterknife.OnClick;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertBallToId;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertIdToBall;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayoutByGameType;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayout;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallDead;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallMade;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallOnTable;
@@ -33,12 +35,15 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
  */
 @SuppressWarnings("WeakerAccess")
 public class BreakFragment extends BaseFragment {
+    private static final String TAG = "BreakFragment";
     private static final String ARG_KEY = "key";
     private static final int ballIds[] = {R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
             R.id.nine_ball, R.id.ten_ball, R.id.eleven_ball, R.id.twelve_ball,
             R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball};
-    @SuppressWarnings("WeakerAccess") @Bind(R.id.title) TextView title;
+    @SuppressWarnings("WeakerAccess")
+    @Bind(R.id.title)
+    TextView title;
     private PageFragmentCallbacks callbacks;
     private String key;
     private BreakPage page;
@@ -57,7 +62,8 @@ public class BreakFragment extends BaseFragment {
         return fragment;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getParentFragment() instanceof PageFragmentCallbacks)) {
@@ -67,23 +73,31 @@ public class BreakFragment extends BaseFragment {
         callbacks = (PageFragmentCallbacks) getParentFragment();
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        page.registerListener(this);
+    }
+
     @Nullable
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         page = (BreakPage) callbacks.onGetPage(key);
 
-        View view = inflater.inflate(getLayoutByGameType(getGameType()), container, false);
+        View view = inflater.inflate(getLayout(getGameType()), container, false);
         ButterKnife.bind(this, view);
         title.setText(page.getTitle());
 
         for (int i = 1; i <= ballIds.length; i++) {
-            ImageView ballImage = (ImageView) view.findViewById(convertBallToId(i));
+            ImageView ballImage = ButterKnife.findById(view, convertBallToId(i));
 
             if (ballImage != null) {
                 ballImage.setImageLevel(1);
@@ -93,20 +107,46 @@ public class BreakFragment extends BaseFragment {
         return view;
     }
 
-    @Override public void onDetach() {
+    @Override
+    public void onPause() {
+        page.unregisterListener();
+        super.onPause();
+    }
+
+    @Override
+    public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Nullable @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
+    public void updateView(List<BallStatus> ballStatuses) {
+        View view = getView();
+        if (view != null) {
+            for (int i = 0; i < ballStatuses.size(); i++) {
+                ImageView ballImage = ButterKnife.findById(view, convertBallToId(i + 1));
+                setBallView(ballStatuses.get(i), ballImage);
+            }
+        }
+    }
+
+    @Nullable
+    @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
             R.id.nine_ball, R.id.ten_ball, R.id.eleven_ball, R.id.twelve_ball,
             R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball})
     public void onClick(ImageView view) {
         int ball = convertIdToBall(view.getId());
 
-        BallStatus ballStatus = page.updateBallStatus(ball);
-
+        BallStatus ballStatus = page.getBallStatus(ball);
+        if (!modifiedByShotPage(ballStatus)) {// if the ball has not been modified by ShotPage
+            ballStatus = page.updateBallStatus(ball);
+        } else { // if the ball has been modified by ShotPage then it needs to be treated like it's on table
+            if (ball == page.getGameBall())
+                ballStatus = BallStatus.GAME_BALL_MADE_ON_BREAK;
+            else
+                ballStatus = BallStatus.MADE_ON_BREAK;
+            page.setBallStatus(BallStatus.MADE_ON_BREAK, ball);
+        }
         setBallView(ballStatus, view);
     }
 
@@ -125,14 +165,29 @@ public class BreakFragment extends BaseFragment {
     }
 
     private boolean ballIsOnTable(BallStatus status) {
-        return status == BallStatus.ON_TABLE;
+        return !ballIsDead(status) && !ballIsMade(status);
     }
 
     private boolean ballIsDead(BallStatus status) {
-        return status == BallStatus.DEAD_ON_BREAK || status == BallStatus.GAME_BALL_DEAD_ON_BREAK;
+        return status == BallStatus.DEAD_ON_BREAK ||
+                status == BallStatus.GAME_BALL_DEAD_ON_BREAK ||
+                status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE ||
+                status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD;
     }
 
     private boolean ballIsMade(BallStatus status) {
-        return status == BallStatus.MADE_ON_BREAK || status == BallStatus.GAME_BALL_MADE_ON_BREAK;
+        return status == BallStatus.MADE_ON_BREAK ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
+    }
+
+    private boolean modifiedByShotPage(BallStatus status) {
+        return BallStatus.MADE == status ||
+                BallStatus.DEAD == status ||
+                status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD ||
+                status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE ||
+                status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
     }
 }

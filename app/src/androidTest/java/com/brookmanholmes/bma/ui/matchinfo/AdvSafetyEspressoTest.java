@@ -5,7 +5,6 @@ import com.brookmanholmes.billiards.turn.ITurn;
 
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICK_LONG;
@@ -24,6 +23,16 @@ import static com.brookmanholmes.billiards.turn.AdvStats.SubType.SHORT_T;
  */
 
 public class AdvSafetyEspressoTest extends AdvStatsEspressoTest {
+    // safeties
+    static ITurn turn1 = turn().setAdvStats(safety(FULL_HOOK)).safety();
+    static ITurn turn2 = turn().setAdvStats(safety(PARTIAL_HOOK)).safety();
+    static ITurn turn3 = turn().setAdvStats(safety(LONG_T)).safety();
+    static ITurn turn4 = turn().setAdvStats(safety(SHORT_T)).safety();
+    static ITurn turn5 = turn().setAdvStats(safety(NO_DIRECT_SHOT)).safety();
+    // safety misses
+    static ITurn safetyMiss1 = turn().setAdvStats(safetyMiss(KICK_LONG, MISCUE, AdvStats.HowType.TOO_HARD, THICK)).safetyMiss();
+    static ITurn safetyMiss2 = turn().setAdvStats(safetyMiss(KICK_SHORT, MISCUE, AdvStats.HowType.TOO_SOFT, THIN)).safetyMiss();
+
     @Override
     protected List<ITurn> getTurns() {
         return list();
@@ -38,15 +47,5 @@ public class AdvSafetyEspressoTest extends AdvStatsEspressoTest {
     public void safetyMisses() {
         mainTest(list(break0, safetyMiss1, safetyMiss2));
     }
-
-    // safeties
-    static ITurn turn1 = turn().setAdvStats(safety(FULL_HOOK)).safety();
-    static ITurn turn2 = turn().setAdvStats(safety(PARTIAL_HOOK)).safety();
-    static ITurn turn3 = turn().setAdvStats(safety(LONG_T)).safety();
-    static ITurn turn4 = turn().setAdvStats(safety(SHORT_T)).safety();
-    static ITurn turn5 = turn().setAdvStats(safety(NO_DIRECT_SHOT)).safety();
-    // safety misses
-    static ITurn safetyMiss1 = turn().setAdvStats(safetyMiss(KICK_LONG, MISCUE, AdvStats.HowType.TOO_HARD, THICK)).safetyMiss();
-    static ITurn safetyMiss2 = turn().setAdvStats(safetyMiss(KICK_SHORT, MISCUE, AdvStats.HowType.TOO_SOFT, THIN)).safetyMiss();
 
 }

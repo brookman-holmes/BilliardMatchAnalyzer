@@ -1,8 +1,12 @@
 package com.brookmanholmes.bma.ui.stats;
 
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +17,19 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.ui.view.HeatGraph;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+import com.github.mikephil.charting.charts.BubbleChart;
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.data.BubbleDataSet;
+import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,23 +52,57 @@ import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THIN;
  */
 @SuppressWarnings("WeakerAccess")
 public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
-    @Bind(R.id.over) TextView overCut;
-    @Bind(R.id.under) TextView underCut;
-    @Bind(R.id.left) TextView leftOfAim;
-    @Bind(R.id.right) TextView rightOfAim;
-    @Bind(R.id.bankLong) TextView bankLong;
-    @Bind(R.id.bankShort) TextView bankShort;
-    @Bind(R.id.kickLong) TextView kickLong;
-    @Bind(R.id.kickShort) TextView kickShort;
-    @Bind(R.id.kickGraph) View kickGraph;
-    @Bind(R.id.bankGraph) View bankGraph;
-    @Bind(R.id.shootingErrorTitle) TextView title;
-    @Bind(R.id.shotTypeSpinner) Spinner shotTypeSpinner;
-    @Bind(R.id.shotSubTypeSpinner) Spinner shotSubTypeSpinner;
-    @Bind(R.id.shotSubTypeLayout) View shotSubTypeLayout;
-    @Bind(R.id.angleSpinner) Spinner angleSpinner;
-    @Bind(R.id.miscues) TextView miscues;
-    private String shotType = "All", subType = "All", angle = "All";
+    private static final String TAG = "AdvShootingStatsFrag";
+
+    @Bind(R.id.over)
+    TextView overCut;
+    @Bind(R.id.under)
+    TextView underCut;
+    @Bind(R.id.left)
+    TextView leftOfAim;
+    @Bind(R.id.right)
+    TextView rightOfAim;
+    @Bind(R.id.bankLong)
+    TextView bankLong;
+    @Bind(R.id.bankShort)
+    TextView bankShort;
+    @Bind(R.id.kickLong)
+    TextView kickLong;
+    @Bind(R.id.kickShort)
+    TextView kickShort;
+    @Bind(R.id.speedChart)
+    BubbleChart speedChart;
+    @Bind(R.id.distanceChart)
+    BubbleChart distanceChart;
+    @Bind(R.id.shootingErrorTitle)
+    TextView title;
+    @Bind(R.id.shotTypeSpinner)
+    Spinner shotTypeSpinner;
+    @Bind(R.id.shotSubTypeSpinner)
+    Spinner shotSubTypeSpinner;
+    @Bind(R.id.shotSubTypeLayout)
+    View shotSubTypeLayout;
+    @Bind(R.id.angleSpinner)
+    Spinner angleSpinner;
+    @Bind(R.id.miscues)
+    TextView miscues;
+    @Bind(R.id.heatGraph)
+    HeatGraph cueBallHeatGraph;
+    @Bind(R.id.noSpeedData)
+    TextView noSpeedData;
+    @Bind(R.id.noDistanceData)
+    TextView noDistanceData;
+
+
+    List<BubbleEntry> obEntries = new ArrayList<>();
+    List<BubbleEntry> cbEntries = new ArrayList<>();
+    List<BubbleEntry> speedEntries = new ArrayList<>();
+    BubbleData speedData = new BubbleData(
+            new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
+    BubbleData distanceData = new BubbleData(
+            new String[]{"<.5'", ".5'", "1'", "1.5'", "2'", "2.5'", "3'", "3.5'", "4'", "4.5'", "5'",
+                    "5.5'", "6'", "6.5'", "7'", "7.5'", "8'", "8.5'", "9'", "9.5'"});
+    private String shotType, subType, angle;
     private GetFilteredStatsAsync task2;
 
     public static AdvShootingStatsFragment create(Bundle args) {
@@ -71,7 +121,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return frag;
     }
 
-    @Override String[] getShotTypes() {
+    @Override
+    String[] getShotTypes() {
         return AdvStats.ShotType.getShots();
     }
 
@@ -113,14 +164,90 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return shotType.equals(getString(R.string.miss_bank)) || shotType.equals("All");
     }
 
-    @Nullable @Override
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (shotType == null)
+            shotType = getString(R.string.all);
+        if (subType == null)
+            subType = getString(R.string.all);
+        if (angle == null)
+            angle = getString(R.string.all);
+
+        Utils.init(getContext()); // call this so that text size is converted to DP correctly
+
+        setupDistanceDataSeries();
+        setupSpeedDataSeries();
+    }
+
+    private void setupSpeedDataSeries() {
+        for (int i = 0; i < 10; i++)
+            speedEntries.add(new BubbleEntry(i, 0f, 0f));
+
+        BubbleDataSet speedDataSet = new BubbleDataSet(speedEntries, getString(R.string.chart_speed_legend));
+        setupDataSeries(speedDataSet);
+        speedDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAccentTransparent));
+        speedData.addDataSet(speedDataSet);
+    }
+
+    private void setupDistanceDataSeries() {
+        for (int i = 0; i < 20; i++) {
+            cbEntries.add(new BubbleEntry(i, 0, 0));
+            obEntries.add(new BubbleEntry(i, 1, 0));
+        }
+
+        BubbleDataSet obDataSet = new BubbleDataSet(obEntries, getString(R.string.chart_cue_legend));
+        BubbleDataSet cbDataSet = new BubbleDataSet(cbEntries, getString(R.string.chart_object_legend));
+        setupDataSeries(obDataSet);
+        setupDataSeries(cbDataSet);
+        obDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryTransparent));
+        cbDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAccentTransparent));
+
+        distanceData.addDataSet(obDataSet);
+        distanceData.addDataSet(cbDataSet);
+    }
+
+    private void setupDataSeries(BubbleDataSet dataSet) {
+        dataSet.setValueTextSize(12);
+        dataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                if (value != 0f)
+                    return ((int) value) + "";
+                else return "";
+            }
+        });
+        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
+    }
+
+
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        LimitLine line0 = new LimitLine(0);
+        LimitLine line1 = new LimitLine(1);
+        line0.setLineColor(ContextCompat.getColor(getContext(), R.color.divider_light));
+        line1.setLineColor(ContextCompat.getColor(getContext(), R.color.divider_light));
+
+        setupChart(distanceChart);
+        distanceChart.setData(distanceData);
+        YAxis left = distanceChart.getAxisLeft();
+        left.setAxisMinValue(-1f);
+        left.setAxisMaxValue(2f);
+        left.addLimitLine(line0);
+        left.addLimitLine(line1);
+
+        setupChart(speedChart);
+        speedChart.getXAxis().setLabelsToSkip(0);
+        speedChart.setData(speedData);
+        speedChart.getAxisLeft().addLimitLine(line0);
 
         shotTypeSpinner.setAdapter(createAdapter(getPossibleShotTypes()));
         shotSubTypeSpinner.setAdapter(createAdapter(getPossibleShotSubTypes()));
         angleSpinner.setAdapter(createAdapter(getPossibleAngles()));
-
 
         shotTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -129,7 +256,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
                 updateView();
             }
 
-            @Override public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -140,7 +268,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
                 updateView();
             }
 
-            @Override public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -151,14 +280,33 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
                 updateView();
             }
 
-            @Override public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
         return view;
     }
 
-    @Override public void onDestroy() {
+    private void setupChart(BubbleChart chart) {
+        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
+        chart.setDescription("");
+        chart.invalidate();
+        YAxis left = chart.getAxisLeft();
+        left.setAxisMinValue(-1f);
+        left.setAxisMaxValue(1f);
+        left.setDrawLabels(false); // no axis labels
+        left.setDrawAxisLine(false); // no axis line
+        left.setDrawGridLines(false); // no grid lines
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawGridLines(false);
+        xAxis.setLabelsToSkip(1);
+        chart.getAxisRight().setEnabled(false); // no right axis
+    }
+
+    @Override
+    public void onDestroy() {
         if (task2 != null)
             task2.cancel(true);
         super.onDestroy();
@@ -219,11 +367,12 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return (ArrayAdapter<String>) spinner.getAdapter();
     }
 
-    @Override void updateView() {
+    @Override
+    void updateView() {
         setItems(shotTypeSpinner, getPossibleShotTypes());
         setItems(shotSubTypeSpinner, getPossibleShotSubTypes());
         setItems(angleSpinner, getPossibleAngles());
-        setVisibilities();
+        setShotSubType();
 
         if (task2 == null) {
             task2 = new GetFilteredStatsAsync();
@@ -238,6 +387,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private void updateView(List<AdvStats> filteredStats) {
+        TransitionManager.beginDelayedTransition(baseLayout);
         StatsUtils.setLayoutWeights(filteredStats, AIM_LEFT, AIM_RIGHT, leftOfAim, rightOfAim);
         StatsUtils.setLayoutWeights(filteredStats, THIN, THICK, overCut, underCut);
         StatsUtils.setLayoutWeights(filteredStats, BANK_SHORT, BANK_LONG, bankShort, bankLong);
@@ -246,50 +396,99 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         title.setText(getString(R.string.title_shooting_errors, filteredStats.size()));
 
-        if (statsLayout != null) {
-            StatsUtils.setListOfMissReasons(statsLayout, filteredStats);
+        // clear values
+        for (BubbleEntry entry : obEntries)
+            entry.setSize(0f);
+        for (BubbleEntry entry : cbEntries)
+            entry.setSize(0f);
+        for (BubbleEntry entry : speedEntries)
+            entry.setSize(0f);
+
+        List<Point> points = new ArrayList<>();
+
+        for (AdvStats stat : filteredStats) {
+            if (getIndex(stat.getObToPocket()) >= 0) {// make sure it's a valid index
+                updateEntrySize(obEntries.get(getIndex(stat.getObToPocket())));
+            }
+            if (getIndex(stat.getCbToOb()) >= 0) {// make sure it's a valid index
+                updateEntrySize(cbEntries.get(getIndex(stat.getCbToOb())));
+            }
+            if (stat.getSpeed() - 1 >= 0) {// make sure it's a valid index
+                updateEntrySize(speedEntries.get(stat.getSpeed() - 1));
+            }
+
+            if (stat.getCueX() > -200 && stat.getCueY() > -200) // make sure it's a valid point
+                points.add(new Point(stat.getCueX(), stat.getCueY()));
         }
-    }
+        cueBallHeatGraph.setData(points);
 
-    private void setVisibilities() {
-        //showKickGraph();
-        //showBankGraph();
-        showShotSubTypeSpinner();
-    }
+        float speedDataSize = 0;
+        float distanceDataSize = 0;
 
-    private void showKickGraph() {
-        if (isKickShot())
-            kickGraph.setVisibility(View.VISIBLE);
-        else kickGraph.setVisibility(View.GONE);
-    }
+        for (BubbleEntry entry : speedEntries)
+            speedDataSize += entry.getSize();
+        for (BubbleEntry entry : obEntries)
+            distanceDataSize += entry.getSize();
+        for (BubbleEntry entry : cbEntries)
+            distanceDataSize += entry.getSize();
 
-    private void showBankGraph() {
-        if (isBankShot())
-            bankGraph.setVisibility(View.VISIBLE);
-        else bankGraph.setVisibility(View.GONE);
-    }
 
-    private void showShotSubTypeSpinner() {
-        if (shotType.equals(getString(R.string.miss_cut))) {
-            shotSubTypeLayout.setVisibility(View.VISIBLE);
+        if (speedDataSize > 0) {
+            speedChart.setVisibility(View.VISIBLE);
+            noSpeedData.setVisibility(View.GONE);
         } else {
+            speedChart.setVisibility(View.GONE);
+            noSpeedData.setVisibility(View.VISIBLE);
+        }
+
+        if (distanceDataSize > 0) {
+            distanceChart.setVisibility(View.VISIBLE);
+            noDistanceData.setVisibility(View.GONE);
+        } else {
+            distanceChart.setVisibility(View.GONE);
+            noDistanceData.setVisibility(View.VISIBLE);
+        }
+
+        speedData.calcMinMax(0, speedData.getYValCount());
+        speedChart.notifyDataSetChanged();
+        speedChart.invalidate();
+
+        distanceData.calcMinMax(0, distanceData.getYValCount());
+        distanceChart.notifyDataSetChanged();
+        distanceChart.invalidate();
+
+    }
+
+    private void updateEntrySize(BubbleEntry entry) {
+        float count = entry.getSize();
+        entry.setSize(count + 1);
+    }
+
+    private int getIndex(float val) {
+        return (int) (val * 2);
+    }
+
+    private void setShotSubType() {
+        if (!shotType.equals(getString(R.string.miss_cut))) {
             shotSubTypeSpinner.setSelection(0);
-            shotSubTypeLayout.setVisibility(View.GONE);
-            subType = "All";
+            subType = getString(R.string.all);
         }
     }
 
-    @Override int getLayoutId() {
+    @Override
+    int getLayoutId() {
         return R.layout.fragment_adv_shooting_stats;
     }
 
     private class GetFilteredStatsAsync extends AsyncTask<Void, Void, List<AdvStats>> {
-        @Override protected void onPostExecute(List<AdvStats> statses) {
+        @Override
+        protected void onPostExecute(List<AdvStats> stats) {
             if (isAdded() && !isCancelled())
-                updateView(statses);
+                updateView(stats);
         }
 
-        @Override protected List<AdvStats> doInBackground(Void... params) {
+        @Override
+        protected List<AdvStats> doInBackground(Void... params) {
             return getFilteredStats();
         }
     }

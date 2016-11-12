@@ -54,12 +54,14 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     public ReviewFragment() {
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         reviewAdapter = new ReviewAdapter();
     }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         wizardModel = callbacks.onGetModel();
         wizardModel.registerListener(this);
@@ -79,7 +81,8 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     }
 
 
-    @Override public void onAttach(Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getActivity() instanceof Callbacks)) {
@@ -89,24 +92,28 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         callbacks = (Callbacks) getActivity();
     }
 
-    @Override public void onPageTreeChanged() {
+    @Override
+    public void onPageTreeChanged() {
         onPageDataChanged(null);
     }
 
-    @Override public void onDetach() {
+    @Override
+    public void onDetach() {
         super.onDetach();
         callbacks = null;
 
         wizardModel.unregisterListener(this);
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
         super.onDestroy();
     }
 
-    @Override public void onPageDataChanged(Page changedPage) {
+    @Override
+    public void onPageDataChanged(Page changedPage) {
         ArrayList<ReviewItem> reviewItems = new ArrayList<>();
         for (Page page : wizardModel.getCurrentPageSequence()) {
             page.getReviewItems(reviewItems);
@@ -117,7 +124,8 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
             reviewItems.add(new ReviewItem("Match notes", page.getData().getString(PlayerNamePage.EXTRA_INFO_KEY), page.getKey()));
         }
         Collections.sort(reviewItems, new Comparator<ReviewItem>() {
-            @Override public int compare(ReviewItem a, ReviewItem b) {
+            @Override
+            public int compare(ReviewItem a, ReviewItem b) {
                 return a.getWeight() > b.getWeight() ? +1 : a.getWeight() < b.getWeight() ? -1 : 0;
             }
         });
@@ -190,7 +198,8 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         return reviewItems;
     }
 
-    @Override public void onListItemClick(ListView l, View v, int position, long id) {
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
         callbacks.onEditScreenAfterReview(reviewItems.get(position).getPageKey());
     }
 
@@ -201,31 +210,38 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     }
 
     private class ReviewAdapter extends BaseAdapter {
-        @Override public boolean hasStableIds() {
+        @Override
+        public boolean hasStableIds() {
             return true;
         }
 
-        @Override public int getItemViewType(int position) {
+        @Override
+        public int getItemViewType(int position) {
             return 0;
         }
 
-        @Override public int getViewTypeCount() {
+        @Override
+        public int getViewTypeCount() {
             return 1;
         }
 
-        @Override public boolean areAllItemsEnabled() {
+        @Override
+        public boolean areAllItemsEnabled() {
             return true;
         }
 
-        @Override public Object getItem(int position) {
+        @Override
+        public Object getItem(int position) {
             return reviewItems.get(position);
         }
 
-        @Override public long getItemId(int position) {
+        @Override
+        public long getItemId(int position) {
             return reviewItems.get(position).hashCode();
         }
 
-        @Override public View getView(int position, View view, ViewGroup container) {
+        @Override
+        public View getView(int position, View view, ViewGroup container) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             View rootView = inflater.inflate(R.layout.list_item_review, container, false);
 
@@ -239,7 +255,8 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
             return rootView;
         }
 
-        @Override public int getCount() {
+        @Override
+        public int getCount() {
             return reviewItems.size();
         }
     }

@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:textSize="18sp"
-    android:textColor="@color/primary_text"
+    android:layout_height="match_parent"
     android:background="@drawable/circle"
     android:gravity="center"
-    tools:showIn="@layout/grid_number_picker"/>
+    android:textColor="@color/primary_text"
+    android:textSize="18sp"/>

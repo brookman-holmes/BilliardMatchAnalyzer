@@ -16,27 +16,11 @@
 
 package com.brookmanholmes.bma.wizard.ui;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.ListFragment;
-import android.support.v4.widget.TextViewCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.brookmanholmes.bma.MyApplication;
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.wizard.model.Page;
-import com.brookmanholmes.bma.wizard.model.SingleFixedChoicePage;
-import com.squareup.leakcanary.RefWatcher;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class SingleChoiceFragment extends BaseChoiceFragment {
     public SingleChoiceFragment() {
@@ -82,7 +66,8 @@ public class SingleChoiceFragment extends BaseChoiceFragment {
         return fragment;
     }
 
-    @Override protected void preSelectItems() {
+    @Override
+    protected void preSelectItems() {
         // Pre-select currently selected item.
         String selection = page.getData().getString(Page.SIMPLE_DATA_KEY);
         for (int i = 0; i < choices.size(); i++) {
@@ -93,13 +78,15 @@ public class SingleChoiceFragment extends BaseChoiceFragment {
         }
     }
 
-    @Override public void onListItemClick(ListView l, View v, int position, long id) {
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
         page.getData().putString(Page.SIMPLE_DATA_KEY,
                 getListAdapter().getItem(position).toString());
         page.notifyDataChanged();
     }
 
-    @Override protected void setListTypeArgs() {
+    @Override
+    protected void setListTypeArgs() {
         layoutRes = android.R.layout.simple_list_item_single_choice;
         choiceMode = ListView.CHOICE_MODE_SINGLE;
     }

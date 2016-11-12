@@ -1,7 +1,6 @@
 package com.brookmanholmes.bma.ui.addturnwizard;
 
 import android.animation.Animator;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -9,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -16,12 +16,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.AddTurnWizardModel;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.bma.ui.dialog.HelpDialogCreator;
+import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.utils.PreferencesUtil;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
@@ -31,6 +34,7 @@ import com.brookmanholmes.bma.wizard.ui.StepPagerStrip;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import butterknife.Bind;
@@ -42,11 +46,17 @@ import butterknife.OnClick;
  */
 @SuppressWarnings("WeakerAccess")
 public class AddTurnDialog extends DialogFragment implements PageFragmentCallbacks, ModelCallbacks, View.OnLayoutChangeListener {
-    @Bind(R.id.imgHelp) public ImageView help;
-    @Bind(R.id.pager) ViewPager pager;
-    @Bind(R.id.strip) StepPagerStrip pagerStrip;
-    @Bind(R.id.next_button) Button nextButton;
-    @Bind(R.id.prev_button) Button prevButton;
+    private static final String TAG = "AddTurnDialog";
+    @Bind(R.id.imgHelp)
+    public ImageView help;
+    @Bind(R.id.pager)
+    ViewPager pager;
+    @Bind(R.id.strip)
+    StepPagerStrip pagerStrip;
+    @Bind(R.id.next_button)
+    Button nextButton;
+    @Bind(R.id.prev_button)
+    Button prevButton;
     private MyPagerAdapter pagerAdapter;
     private AddTurnWizardModel wizardModel;
     private List<Page> currentPageSequence;
@@ -60,16 +70,22 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
     public static AddTurnDialog create(Match match) {
         Bundle args = new Bundle();
 
-        args.putAll(MatchDialogHelperUtils.createBundleFromMatch(match));
+        args.putAll(MatchDialogHelperUtils.getBundle(match));
         AddTurnDialog addTurnDialog = new AddTurnDialog();
 
         addTurnDialog.setArguments(args);
         return addTurnDialog;
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (!MatchDialogHelperUtils.isTablet(getContext()) ||
+                getNecessaryHeight() > getContext().getResources().getDisplayMetrics().heightPixels) {// if the screen is really small then we remove the frame to make it 'bigger'
+            setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
+        } else {
+            setStyle(DialogFragment.STYLE_NORMAL, R.style.AlertDialogTheme);
+        }
         wizardModel = new AddTurnWizardModel(getContext(), getArguments());
 
         if (savedInstanceState != null) {
@@ -85,16 +101,21 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
 
         listener = (AddTurnListener) getActivity();
 
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-        firebaseAnalytics.logEvent("add_turn_started", null);
+        if (!BuildConfig.DEBUG) {
+            FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+            firebaseAnalytics.logEvent("add_turn_started", null);
+        }
     }
 
-    @Override public void onSaveInstanceState(Bundle outState) {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBundle("model", wizardModel.save());
     }
 
-    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_turn, container, false);
         ButterKnife.bind(this, view);
 
@@ -102,7 +123,8 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
 
         pager.setAdapter(pagerAdapter);
         pagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
-            @Override public void onPageStripSelected(int position) {
+            @Override
+            public void onPageStripSelected(int position) {
                 position = Math.min(pagerAdapter.getCount(), position);
                 if (pager.getCurrentItem() != position) {
                     pager.setCurrentItem(position);
@@ -111,7 +133,8 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         });
 
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override public void onPageSelected(int position) {
+            @Override
+            public void onPageSelected(int position) {
                 pagerStrip.setCurrentPage(position);
                 if (consumePageSelectedEvent) {
                     consumePageSelectedEvent = false;
@@ -127,20 +150,59 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         return view;
     }
 
-    @Override public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
+        if (MatchDialogHelperUtils.isTablet(getContext())) { // make the window a little bit smaller for large+ layouts
+            ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+            params.height = getDialogHeight();
+            getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+        }
+
+
         if (PreferencesUtil.getSharedPreferences(getActivity()).getBoolean("first_run_tutorial_add_turn_balls", true)) {
             help();
             PreferencesUtil.getSharedPreferences(getActivity()).edit().putBoolean("first_run_tutorial_add_turn_balls", false).apply();
         }
     }
 
-    @Override public void onDestroyView() {
+    /**
+     * Set the dialog height to something smaller if we're not using advanced data
+     * or if we're on a tablet
+     *
+     * @return the new height of the dialog in pixels
+     */
+    private int getDialogHeight() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getDialog().getWindow().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int necessaryHeight = getNecessaryHeight();
+
+        if (necessaryHeight > metrics.heightPixels) {// if the screen is really small then set the max height to it's normal height
+            return getDialog().getWindow().getAttributes().height;
+        } else return necessaryHeight;
+    }
+
+    private int getNecessaryHeight() {
+        GameStatus gameStatus = MatchDialogHelperUtils.getGameStatus(getArguments());
+        if (MatchDialogHelperUtils.currentPlayerTurnAndAdvancedStats(gameStatus.turn, EnumSet.copyOf((EnumSet<Match.StatsDetail>) getArguments().getSerializable(MatchDialogHelperUtils.DATA_COLLECTION_KEY)))) {
+            return (int) ConversionUtils.convertDpToPx(getContext(), 700);
+        } else if (MatchDialogHelperUtils.getLayout(gameStatus.gameType) == R.layout.select_eight_ball_dialog) {
+            return (int) ConversionUtils.convertDpToPx(getContext(), 600);
+        } else if (MatchDialogHelperUtils.getLayout(gameStatus.gameType) == R.layout.select_ten_ball_dialog) {
+            return (int) ConversionUtils.convertDpToPx(getContext(), 500);
+        } else {
+            return (int) ConversionUtils.convertDpToPx(getContext(), 470);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
         ButterKnife.unbind(this);
         super.onDestroyView();
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
         super.onDestroy();
@@ -156,7 +218,8 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         anim.start();
     }
 
-    @Override public void onPageDataChanged(Page page) {
+    @Override
+    public void onPageDataChanged(Page page) {
         if (page.isRequired()) {
             if (recalculateCutOffPage()) {
                 pagerAdapter.notifyDataSetChanged();
@@ -165,7 +228,8 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         }
     }
 
-    @Override public void onPageTreeChanged() {
+    @Override
+    public void onPageTreeChanged() {
         currentPageSequence = wizardModel.getCurrentPageSequence();
         recalculateCutOffPage();
         pagerStrip.setPageCount(currentPageSequence.size());
@@ -192,7 +256,8 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         return false;
     }
 
-    @Override public Page onGetPage(String key) {
+    @Override
+    public Page onGetPage(String key) {
         return wizardModel.findByKey(key);
     }
 
@@ -208,7 +273,8 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         prevButton.setVisibility(position <= 1 ? View.INVISIBLE : View.VISIBLE);
     }
 
-    @OnClick(R.id.next_button) public void nextButton() {
+    @OnClick(R.id.next_button)
+    public void nextButton() {
         if (pager.getCurrentItem() + 1 == currentPageSequence.size()) {
             listener.addTurn(wizardModel.getTurnBuilder());
             dismiss();
@@ -218,7 +284,8 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         }
     }
 
-    @Override public void dismiss() {
+    @Override
+    public void dismiss() {
         // TODO: 8/24/2016 this probably doesn't work for pressing the back button? need to intercept it somehow
         circularDeveal();
     }
@@ -234,33 +301,42 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
         Animator anim = ViewAnimationUtils.createCircularReveal(view, view.getWidth(), view.getHeight(), finalRadius, 0);
         anim.setDuration(500);
         anim.addListener(new Animator.AnimatorListener() {
-            @Override public void onAnimationStart(Animator animator) {
+            @Override
+            public void onAnimationStart(Animator animator) {
 
             }
 
-            @Override public void onAnimationEnd(Animator animator) {
+            @Override
+            public void onAnimationEnd(Animator animator) {
                 realDismiss();
             }
 
-            @Override public void onAnimationCancel(Animator animator) {
+            @Override
+            public void onAnimationCancel(Animator animator) {
 
             }
 
-            @Override public void onAnimationRepeat(Animator animator) {
+            @Override
+            public void onAnimationRepeat(Animator animator) {
 
             }
         });
         anim.start();
     }
 
-    @OnClick(R.id.prev_button) public void prevButton() {
+    @OnClick(R.id.prev_button)
+    public void prevButton() {
         wizardModel.updatePagesWithTurnInfo();
         pager.setCurrentItem(pager.getCurrentItem() - 1);
     }
 
-    @OnClick(R.id.imgHelp) public void help() {
+    @OnClick(R.id.imgHelp)
+    public void help() {
         new HelpDialogCreator(getContext(),
-                wizardModel.getCurrentPageSequence().get(pager.getCurrentItem()).getTitle(), getArguments().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY))
+                wizardModel.getCurrentPageSequence()
+                        .get(pager.getCurrentItem())
+                        .getTitle(), getArguments()
+                .getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY))
                 .create()
                 .show();
     }
@@ -277,11 +353,13 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
             super(fm);
         }
 
-        @Override public Fragment getItem(int i) {
+        @Override
+        public Fragment getItem(int i) {
             return currentPageSequence.get(i).createFragment();
         }
 
-        @Override public int getItemPosition(Object object) {
+        @Override
+        public int getItemPosition(Object object) {
             if (object == mPrimaryItem) {
                 // Re-use the current fragment (its position never changes)
                 return POSITION_UNCHANGED;
@@ -290,12 +368,14 @@ public class AddTurnDialog extends DialogFragment implements PageFragmentCallbac
             return POSITION_NONE;
         }
 
-        @Override public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
             mPrimaryItem = (Fragment) object;
         }
 
-        @Override public int getCount() {
+        @Override
+        public int getCount() {
             if (currentPageSequence == null) {
                 return 0;
             }

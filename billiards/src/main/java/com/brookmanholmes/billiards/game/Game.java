@@ -82,6 +82,16 @@ public abstract class Game {
                 return new ApaNineBallGame();
             case BCA_EIGHT_BALL:
                 return new EightBallGame(turn, breakType);
+            case BCA_GHOST_EIGHT_BALL:
+                return new EightBallGame(GameType.BCA_GHOST_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
+            case BCA_GHOST_NINE_BALL:
+                return new NineBallGame(GameType.BCA_GHOST_NINE_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
+            case BCA_GHOST_TEN_BALL:
+                return new TenBallGame(GameType.BCA_GHOST_TEN_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
+            case APA_GHOST_EIGHT_BALL:
+                return new EightBallGame(GameType.APA_GHOST_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
+            case APA_GHOST_NINE_BALL:
+                return new NineBallGame(GameType.APA_GHOST_NINE_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }
@@ -112,6 +122,7 @@ public abstract class Game {
      * @param turn The turn that is being added to the game
      */
     private void updateGameStatus(ITurn turn) {
+        playerColor = setPlayerColor(turn); // this must be called before new game otherwise stuff on the break doesn't work!
         setConsecutiveFouls(turn);
 
         removeBallsFromTable(turn.getBallsToRemoveFromTable());
@@ -120,7 +131,6 @@ public abstract class Game {
 
         allowPush = setAllowPush(turn);
         allowTurnSkip = setAllowTurnSkip(turn);
-        playerColor = setPlayerColor(turn);
         playerAllowedToBreakAgain = setAllowPlayerToBreakAgain(turn);
         opponentPlayedSuccessfulSafe = setOpponentPlayedSuccessfulSafe(turn);
         // this happens at the end
@@ -214,8 +224,6 @@ public abstract class Game {
                 return PlayerTurn.OPPONENT;
             case ALTERNATE:
                 return changeTurn(breaker);
-            case GHOST:
-                return PlayerTurn.PLAYER;
             default:
                 throw new IllegalStateException("breakType: " + breakType + " is not supported");
         }

@@ -18,7 +18,6 @@ package com.brookmanholmes.bma.wizard.model;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,8 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
      */
     protected abstract PageList onNewRootPageList();
 
-    @Override public void onPageDataChanged(Page page) {
+    @Override
+    public void onPageDataChanged(Page page) {
         // can't use for each because of concurrent modification (review fragment
         // can get added or removed and will register itself as a listener)
         for (int i = 0; i < listeners.size(); i++) {
@@ -51,7 +51,8 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
         }
     }
 
-    @Override public void onPageTreeChanged() {
+    @Override
+    public void onPageTreeChanged() {
         // can't use for each because of concurrent modification (review fragment
         // can get added or removed and will register itself as a listener)
         for (int i = 0; i < listeners.size(); i++) {

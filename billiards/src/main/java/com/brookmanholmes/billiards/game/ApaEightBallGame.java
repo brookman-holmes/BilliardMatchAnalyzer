@@ -1,7 +1,16 @@
 package com.brookmanholmes.billiards.game;
 
 import com.brookmanholmes.billiards.turn.ITurn;
-import com.brookmanholmes.billiards.turn.TableUtils;
+
+import java.util.List;
+
+import static com.brookmanholmes.billiards.game.PlayerColor.OPEN;
+import static com.brookmanholmes.billiards.game.PlayerColor.SOLIDS;
+import static com.brookmanholmes.billiards.game.PlayerColor.STRIPES;
+import static com.brookmanholmes.billiards.turn.TableUtils.getSolidsMade;
+import static com.brookmanholmes.billiards.turn.TableUtils.getSolidsMadeOnBreak;
+import static com.brookmanholmes.billiards.turn.TableUtils.getStripesMade;
+import static com.brookmanholmes.billiards.turn.TableUtils.getStripesMadeOnBreak;
 
 /**
  * Subclass of {@link com.brookmanholmes.billiards.game.EightBallGame} that keeps track of the
@@ -13,24 +22,43 @@ class ApaEightBallGame extends EightBallGame {
         super(GameType.APA_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
     }
 
-    @Override public GameType getGameType() {
+    @Override
+    public GameType getGameType() {
         return GameType.APA_EIGHT_BALL;
     }
 
-    @Override PlayerColor setPlayerColor(ITurn turn) {
-        if (newGame && turn.getBreakBallsMade() > 0) {
-            if (TableUtils.getSolidsMadeOnBreak(turn.getBallStatuses()) == TableUtils.getStripesMadeOnBreak(turn.getBallStatuses())) {
-                return super.setPlayerColor(turn);
-            } else if (TableUtils.getSolidsMadeOnBreak(turn.getBallStatuses()) > 0) {
-                return convertCurrentPlayerColorToPlayerColor(PlayerColor.SOLIDS);
-            } else if (TableUtils.getStripesMadeOnBreak(turn.getBallStatuses()) > 0) {
-                return convertCurrentPlayerColorToPlayerColor(PlayerColor.STRIPES);
-            } else return PlayerColor.OPEN; // this will never happen
-        } else
-            return super.setPlayerColor(turn);
+    @Override
+    PlayerColor setPlayerColor(ITurn turn) {
+        List<BallStatus> ballStatuses = turn.getBallStatuses(); // makes stuff more readable
+
+        if (newGame) {
+            if (getSolidsMadeOnBreak(ballStatuses) == getStripesMadeOnBreak(ballStatuses)) {
+                return getColorMade(ballStatuses);
+            } else if (getSolidsMadeOnBreak(ballStatuses) > getStripesMadeOnBreak(ballStatuses)) {
+                return convertCurrentPlayerColorToPlayerColor(SOLIDS);
+            } else if (getSolidsMadeOnBreak(ballStatuses) < getStripesMadeOnBreak(ballStatuses)) {
+                return convertCurrentPlayerColorToPlayerColor(STRIPES);
+            } else
+                throw new IllegalArgumentException("reach end of if statement that I shouldn't"); // this will never happen
+        } else {
+            if (playerColor == OPEN) {
+                return getColorMade(ballStatuses);
+            } else
+                return playerColor;
+        }
     }
 
-    @Override boolean winOnBreak() {
+    PlayerColor getColorMade(List<BallStatus> ballStatuses) {
+        if (getSolidsMade(ballStatuses) > getStripesMade(ballStatuses)) {
+            return convertCurrentPlayerColorToPlayerColor(SOLIDS);
+        } else if (getSolidsMade(ballStatuses) < getStripesMade(ballStatuses)) {
+            return convertCurrentPlayerColorToPlayerColor(STRIPES);
+        } else
+            return OPEN;
+    }
+
+    @Override
+    boolean winOnBreak() {
         return true;
     }
 }

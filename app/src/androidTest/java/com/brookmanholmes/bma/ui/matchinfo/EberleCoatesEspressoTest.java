@@ -9,12 +9,14 @@ import java.util.List;
 /**
  * Created by Brookman Holmes on 9/7/2016.
  */
-public class EberleCoatesEspressoTest extends BaseMatchTest{
-    @Override protected Match getMatch() {
+public class EberleCoatesEspressoTest extends BaseMatchTest {
+    @Override
+    protected Match getMatch() {
         return SampleMatchProvider.getEberleCoatesMatch();
     }
 
-    @Override protected List<ITurn> getTurns() {
+    @Override
+    protected List<ITurn> getTurns() {
         return SampleMatchProvider.getEberleCoatesTurns();
     }
 }

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView style="@style/WizardPageTitle" />
+
+        <LinearLayout
+            android:id="@+id/distanceLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.appyvet.rangebar.RangeBar
+                android:id="@+id/rangeCb"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                custom:connectingLineColor="@android:color/transparent"
+                custom:pinColor="@color/colorAccent"
+                custom:pinMaxFont="16sp"
+                custom:rangeBar="false"
+                custom:selectorColor="@color/colorAccent"
+                custom:tickColor="@android:color/black"
+                custom:tickEnd="19"
+                custom:tickInterval="1"
+                custom:tickStart="0" />
+
+            <TextView
+                android:id="@+id/cbText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <com.appyvet.rangebar.RangeBar
+                android:id="@+id/rangeOb"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                custom:connectingLineColor="@android:color/transparent"
+                custom:pinColor="@color/colorAccent"
+                custom:pinMaxFont="16sp"
+                custom:rangeBar="false"
+                custom:selectorColor="@color/colorAccent"
+                custom:tickColor="@android:color/black"
+                custom:tickEnd="19"
+                custom:tickInterval="1"
+                custom:tickStart="0" />
+
+            <TextView
+                android:id="@+id/obText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/distanceDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/line_divider" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cueLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Where on the cue ball did you hit?"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <com.brookmanholmes.bma.ui.view.CueBallHitView
+                android:id="@+id/hit"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle"
+                android:outlineProvider="background" />
+
+            <ImageView
+                android:id="@+id/cueDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/line_divider" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/speedLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.appyvet.rangebar.RangeBar
+                android:id="@+id/rangeSpeed"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                custom:connectingLineColor="@android:color/transparent"
+                custom:pinColor="@color/colorAccent"
+                custom:pinMaxFont="16sp"
+                custom:rangeBar="false"
+                custom:selectorColor="@color/colorAccent"
+                custom:tickColor="@android:color/black"
+                custom:tickEnd="10"
+                custom:tickInterval="1"
+                custom:tickStart="1" />
+
+            <TextView
+                android:id="@+id/speedText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

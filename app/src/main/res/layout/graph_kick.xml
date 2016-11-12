@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -10,8 +11,8 @@
         android:paddingTop="8dp"
         android:text="@string/miss_kick"
         android:textAllCaps="false"
-        android:textSize="16sp"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,8 +27,7 @@
             android:paddingEnd="8dp"
             android:text="@string/title_short"
             android:textAllCaps="true"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -40,27 +40,27 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".6"
+                android:background="@drawable/graph_background"
+                android:backgroundTint="@color/dead_ball"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:text="@string/no_data"
                 android:textColor="@color/primary_text"
                 android:textSize="12sp"
-                android:backgroundTint="@color/dead_ball"
-                android:background="@drawable/graph_background"
-                android:textStyle="bold"
-                android:text="@string/no_data"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/kickLong"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:background="@drawable/graph_background"
+                android:backgroundTint="@color/colorPrimary"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:backgroundTint="@color/colorPrimary"
-                android:background="@drawable/graph_background"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <TextView
@@ -71,8 +71,7 @@
             android:paddingStart="8dp"
             android:text="@string/title_long"
             android:textAllCaps="true"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
     </LinearLayout>
 </LinearLayout>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox"
+            android:enabled="false"
+            android:text="Bank shots (0)"/>
+
+        <CheckBox
+            android:text="Carom shots (0)"
+            android:enabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox8" />
+
+        <CheckBox
+            android:text="Combo shots (0)"
+            android:enabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox7" />
+
+        <CheckBox
+            android:text="Cut shots (1)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox6" />
+
+        <CheckBox
+            android:text="Back cut (0)"
+            android:enabled="false"
+            android:layout_marginLeft="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox9" />
+
+        <CheckBox
+            android:text="Down the rail (0)"
+            android:enabled="false"
+            android:layout_marginLeft="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox11" />
+
+        <CheckBox
+            android:text="Wing cut (1)"
+            android:layout_marginLeft="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox10" />
+
+        <CheckBox
+            android:text="Jump shots (4)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox5" />
+
+        <CheckBox
+            android:text="Kick shots (2)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox3" />
+
+        <CheckBox
+            android:text="Straight shots (1)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox2" />
+
+        <CheckBox
+            android:text="Masse / semi-masse (1)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox4" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+        <CheckBox
+            android:text="@string/angle_ten"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_fifteen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_twenty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_twenty_five"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_thirty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_thirty_five"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_forty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_forty_five"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_fifty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_fifty_five"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_sixty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_sixty_five"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_seventy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_seventy_five"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/angle_eighty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/one_rail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/two_rail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/three_rail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/four_rail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/five_rail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <CheckBox
+            android:text="@string/bank_crossover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <CheckBox
+            android:text="@string/bank_long_rail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <CheckBox
+            android:text="@string/bank_short_rail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <CheckBox
+            android:text="@string/bank_natural"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+</LinearLayout>

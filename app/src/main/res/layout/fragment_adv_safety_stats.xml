@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:animateLayoutChanges="true">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/baseLayout"
@@ -21,30 +19,29 @@
             android:layout_height="wrap_content"
             android:text="@string/title_safety_errors"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text" />
 
         <include
             layout="@layout/container_miscues"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp" />
 
-        <include layout="@layout/graph_cut"/>
+        <include layout="@layout/graph_cut" />
 
-        <include layout="@layout/graph_speed"/>
+        <include layout="@layout/graph_speed" />
 
-        <include layout="@layout/graph_kick"/>
+        <include layout="@layout/graph_kick" />
 
-        <include layout="@layout/divider"/>
+        <include layout="@layout/divider" />
 
         <TextView
             android:id="@+id/successfulSafetiesTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:text="@string/title_safety_results"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text" />
 
         <LinearLayout
             android:id="@+id/parentView"
@@ -52,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

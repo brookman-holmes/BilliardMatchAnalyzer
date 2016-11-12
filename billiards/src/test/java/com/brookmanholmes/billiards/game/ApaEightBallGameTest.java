@@ -19,6 +19,8 @@ public class ApaEightBallGameTest extends AbstractEightBallGameTest {
         ITurn turn = turn().breakBalls(9).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.STRIPES));
+        game.addTurn(turn);
+        assertThat(game.playerColor, is(PlayerColor.STRIPES));
     }
 
     @Test
@@ -26,6 +28,9 @@ public class ApaEightBallGameTest extends AbstractEightBallGameTest {
         ITurn turn = turn().breakBalls(7).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.SOLIDS));
+
+        game.addTurn(turn);
+        assertThat(game.playerColor, is(PlayerColor.SOLIDS));
     }
 
     @Test
@@ -33,6 +38,9 @@ public class ApaEightBallGameTest extends AbstractEightBallGameTest {
         ITurn turn = turn().breakBalls(7, 9).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.OPEN));
+
+        game.addTurn(turn);
+        assertThat(game.playerColor, is(PlayerColor.OPEN));
     }
 
     @Test
@@ -40,6 +48,9 @@ public class ApaEightBallGameTest extends AbstractEightBallGameTest {
         ITurn turn = turn().breakBalls(7, 9).madeBalls(6).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.SOLIDS));
+
+        game.addTurn(turn);
+        assertThat(game.playerColor, is(PlayerColor.SOLIDS));
     }
 
     @Test
@@ -47,6 +58,35 @@ public class ApaEightBallGameTest extends AbstractEightBallGameTest {
         ITurn turn = turn().breakBalls(7, 9).madeBalls(15).miss();
 
         assertThat(game.setPlayerColor(turn), is(PlayerColor.STRIPES));
+
+        game.addTurn(turn);
+        assertThat(game.playerColor, is(PlayerColor.STRIPES));
+    }
+
+    @Test
+    public void solidMadeReturnsSolids() {
+        ITurn turn = turn().madeBalls(1, 7).miss();
+        game.addTurn(turn().breakMiss());
+
+        assertThat(((ApaEightBallGame) game).getColorMade(turn.getBallStatuses()),
+                is(((ApaEightBallGame) game).convertCurrentPlayerColorToPlayerColor(PlayerColor.SOLIDS)));
+    }
+
+    @Test
+    public void stripesMadeReturnsStripes() {
+        ITurn turn = turn().madeBalls(9, 15).miss();
+        game.addTurn(turn().breakMiss());
+
+        assertThat(((ApaEightBallGame) game).getColorMade(turn.getBallStatuses()),
+                is(((ApaEightBallGame) game).convertCurrentPlayerColorToPlayerColor(PlayerColor.STRIPES)));
+    }
+
+    @Test
+    public void nothingMadeReturnsOpen() {
+        ITurn turn = turn().miss();
+        game.addTurn(turn().breakMiss());
+
+        assertThat(((ApaEightBallGame) game).getColorMade(turn.getBallStatuses()), is(PlayerColor.OPEN));
     }
 
     @Override public void setUp() {

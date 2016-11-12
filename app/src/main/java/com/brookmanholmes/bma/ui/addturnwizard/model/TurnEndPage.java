@@ -22,14 +22,15 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     public static final String FOUL_KEY = "foul_key";
     private TurnEndFragment fragment;
 
-    public TurnEndPage(ModelCallbacks callbacks, String title, Bundle matchData) {
+    TurnEndPage(ModelCallbacks callbacks, String title, Bundle matchData) {
         super(callbacks, title);
         data.putAll(matchData);
         setRequired(true);
     }
 
-    @Override public Fragment createFragment() {
-        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.createGameStatusFromBundle(data),
+    @Override
+    public Fragment createFragment() {
+        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.getGameStatus(data),
                 TableStatus.newTable(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)),
                         data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY)));
         ArrayList<String> stringList = new ArrayList<>();
@@ -40,13 +41,15 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         return TurnEndFragment.create(getKey(), stringList, options.defaultCheck.name());
     }
 
-    @Override public void getNewTurnInfo(AddTurnWizardModel model) {
-        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.createGameStatusFromBundle(data),
+    @Override
+    public void getNewTurnInfo(AddTurnWizardModel model) {
+        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.getGameStatus(data),
                 model.getTableStatus());
         updateFragment(options);
     }
 
-    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+    @Override
+    public void updateTurnInfo(AddTurnWizardModel model) {
         model.setTurnEnd(data.getString(SIMPLE_DATA_KEY), data.getString(FOUL_KEY));
     }
 
@@ -57,9 +60,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
             return true;
         else if (turnEnd.equals(branches.get(2).choice))
             return true;
-        else if (turnEnd.equals(branches.get(3).choice))
-            return true;
-        else return false;
+        else return turnEnd.equals(branches.get(3).choice);
     }
 
     public void registerListener(TurnEndFragment fragment) {
@@ -74,5 +75,15 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         if (fragment != null) {
             fragment.updateOptions(options);
         }
+    }
+
+    public TurnEndOptions getTurnEndOptions() {
+        return TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.getGameStatus(data), ((AddTurnWizardModel) modelCallbacks).getTableStatus());
+    }
+
+    @Override
+    public void resetData(Bundle data) {
+        super.resetData(data);
+        updateFragment(getTurnEndOptions());
     }
 }

@@ -1,7 +1,5 @@
 package com.brookmanholmes.billiards.game;
 
-import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,10 +21,5 @@ public class NineBallGameTest extends AbstractRotationGameTest {
 
     @Override GameType thisGamesGameType() {
         return GameType.BCA_NINE_BALL;
-    }
-
-    @Test(expected = InvalidGameTypeException.class)
-    public void testWrongGameType() {
-        game = new NineBallGame(GameType.APA_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
     }
 }

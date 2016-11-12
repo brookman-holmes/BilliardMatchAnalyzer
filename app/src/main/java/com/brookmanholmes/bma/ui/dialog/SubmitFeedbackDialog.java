@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -17,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -27,20 +27,20 @@ public class SubmitFeedbackDialog extends DialogFragment {
     private InputMethodManager inputMethodManager;
     private EditText input;
 
-    @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
         final View view = LayoutInflater.from(getContext()).inflate(R.layout.edit_text, null, false);
         input = (EditText) view.findViewById(R.id.editText);
         input.setHint(getString(R.string.submit_feedback));
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        input.requestFocus();
-        showKeyboard();
         input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (EditorInfo.IME_ACTION_DONE == actionId) {
                     onPositiveButton();
-                    hideKeyboard();
                     dismiss();
                     return true;
                 }
@@ -50,32 +50,32 @@ public class SubmitFeedbackDialog extends DialogFragment {
 
         return builder.setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         onPositiveButton();
-                        hideKeyboard();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        hideKeyboard();
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
                 .create();
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        input.requestFocus();
+    }
+
     private void onPositiveButton() {
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, input.getText().toString());
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, bundle);
-    }
-
-    private void hideKeyboard() {
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-    }
-
-    private void showKeyboard() {
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        if (!BuildConfig.DEBUG) {
+            FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, input.getText().toString());
+            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, bundle);
+        }
     }
 }

@@ -11,17 +11,19 @@ import java.util.ArrayList;
 /**
  * Created by Brookman Holmes on 3/7/2016.
  */
-public class HowMissPage extends MultipleFixedChoicePage implements UpdatesTurnInfo {
-    public HowMissPage(ModelCallbacks callbacks, String title) {
+class HowMissPage extends MultipleFixedChoicePage implements UpdatesTurnInfo {
+    HowMissPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
         data.putStringArrayList(SIMPLE_DATA_KEY, new ArrayList<String>());
     }
 
-    @Override public void updateTurnInfo(AddTurnWizardModel model) {
+    @Override
+    public void updateTurnInfo(AddTurnWizardModel model) {
         model.setHows(data.getStringArrayList(SIMPLE_DATA_KEY));
     }
 
-    @Override public Fragment createFragment() {
+    @Override
+    public Fragment createFragment() {
         return MultipleChoiceFragment.create(getKey(), 1);
     }
 }

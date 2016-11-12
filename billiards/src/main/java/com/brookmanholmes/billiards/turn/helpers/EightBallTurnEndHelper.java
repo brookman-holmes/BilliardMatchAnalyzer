@@ -1,7 +1,6 @@
 package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.TableUtils;
@@ -14,29 +13,40 @@ class EightBallTurnEndHelper extends TurnEndHelper {
         super(game, tableStatus);
     }
 
-    @Override boolean showWin() {
+    @Override
+    boolean showWin() {
         return !currentPlayerBallsRemaining() && tableStatus.isGameBallMade();
     }
 
-    @Override boolean lostGame() {
-        return tableStatus.getGameBallMadeIllegally() ||
+    @Override
+    boolean lostGame() {
+        return tableStatus.isGameBallMadeIllegally() ||
                 (currentPlayerBallsRemaining() && tableStatus.isGameBallMade());
     }
 
-    @Override boolean checkFoul() {
+    @Override
+    boolean checkFoul() {
         return super.checkFoul() || lostGame();
     }
 
-    @Override boolean showSafety() {
+    @Override
+    boolean showSafety() {
         return super.showSafety() && !lostGame();
     }
 
-    @Override boolean showPush() {
+    @Override
+    boolean showPush() {
         return false;
     }
 
-    @Override boolean showTurnSkip() {
+    @Override
+    boolean showTurnSkip() {
         return false;
+    }
+
+    @Override
+    boolean reallyLostGame() {
+        return lostGame();
     }
 
     /**

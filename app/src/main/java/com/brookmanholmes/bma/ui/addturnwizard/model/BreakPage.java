@@ -4,46 +4,78 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.brookmanholmes.billiards.game.BallStatus;
-import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.BreakFragment;
-import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.BranchPage;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
 
+import static com.brookmanholmes.billiards.game.BallStatus.DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_DEAD_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.MADE_ON_BREAK;
+import static com.brookmanholmes.billiards.game.BallStatus.ON_TABLE;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
+
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class BreakPage extends BranchPage implements UpdatesTurnInfo {
-    private static final String showShotPage = "show shot page";
-    private final TableStatus tableStatus;
-    private final GameType gameType;
+    static final String showShotPage = "show shot page";
+    private static final String TAG = "BreakPage";
+    private static final String TABLE_STATUS_KEY = "table_status";
+    final GameType gameType;
+    TableStatus tableStatus;
+    BreakFragment fragment;
 
-    public BreakPage(ModelCallbacks callbacks, String title, String title2, Bundle matchData) {
+    BreakPage(ModelCallbacks callbacks, String title, String title2, Bundle matchData) {
         super(callbacks, title);
 
         data.putAll(matchData);
-        gameType = MatchDialogHelperUtils.createGameStatusFromBundle(matchData).gameType;
+        gameType = getGameStatus(matchData).gameType;
         tableStatus = TableStatus.newTable(gameType);
+        data.putSerializable(TABLE_STATUS_KEY, tableStatus);
 
         addBranch(showShotPage, new ShotPage(callbacks, title2, matchData));
     }
 
-    @Override public Fragment createFragment() {
+    public void registerListener(BreakFragment fragment) {
+        this.fragment = fragment;
+        if (modelCallbacks instanceof AddTurnWizardModel) {
+            this.fragment.updateView(((AddTurnWizardModel) modelCallbacks).getTableStatus().getBallStatuses());
+        }
+    }
+
+    public void unregisterListener() {
+        this.fragment = null;
+    }
+
+    @Override
+    public Fragment createFragment() {
         return BreakFragment.create(getKey(), getData());
     }
 
-    @Override public void getReviewItems(ArrayList<ReviewItem> dest) {
+    @Override
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
     }
 
-    @Override public void updateTurnInfo(AddTurnWizardModel model) {
-        for (int ball = 1; ball <= tableStatus.size(); ball++) {
+    @Override
+    public void updateTurnInfo(AddTurnWizardModel model) {
+        for (int ball = 1; ball <= model.getTableStatus().size(); ball++) {
             model.getTableStatus().setBallTo(tableStatus.getBallStatus(ball), ball);
         }
+    }
+
+    public BallStatus getBallStatus(int ball) {
+        return tableStatus.getBallStatus(ball);
+    }
+
+    public void setBallStatus(BallStatus ballStatus, int ball) {
+        tableStatus.setBallTo(ballStatus, ball);
+        ballStatusUpdated();
     }
 
     public BallStatus updateBallStatus(int ball) {
@@ -51,59 +83,68 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
 
         BallStatus newBallStatus = incrementBallStatus(ballStatus, ball);
         tableStatus.setBallTo(newBallStatus, ball);
-        data.putString(SIMPLE_DATA_KEY, showShotPage());
-        notifyDataChanged();
+        ballStatusUpdated();
 
         return newBallStatus;
     }
 
+    private void ballStatusUpdated() {
+        data.putSerializable(TABLE_STATUS_KEY, tableStatus);
+        data.putString(SIMPLE_DATA_KEY, showShotPage());
+        notifyDataChanged();
+    }
+
+    @Override
+    public void resetData(Bundle data) {
+        tableStatus = (TableStatus) data.getSerializable(TABLE_STATUS_KEY);
+        super.resetData(data);
+    }
+
     private BallStatus incrementBallStatus(BallStatus ballStatus, int ball) {
-        int gameBall = 0;
-        if (gameType == GameType.BCA_EIGHT_BALL) {
-            gameBall = 8;
-        } else if (gameType == GameType.BCA_TEN_BALL) {
-            gameBall = 10;
-        } else if (gameType == GameType.BCA_NINE_BALL) {
-            gameBall = 9;
-        }
+        int gameBall = tableStatus.getGameBall();
 
         switch (ballStatus) {
             case ON_TABLE:
                 if (ball == gameBall)
-                    return BallStatus.GAME_BALL_MADE_ON_BREAK;
+                    return GAME_BALL_MADE_ON_BREAK;
                 else
-                    return BallStatus.MADE_ON_BREAK;
+                    return MADE_ON_BREAK;
             case MADE_ON_BREAK:
-                return BallStatus.DEAD_ON_BREAK;
+                return DEAD_ON_BREAK;
             case DEAD_ON_BREAK:
-                return BallStatus.ON_TABLE;
+                return ON_TABLE;
             case GAME_BALL_MADE_ON_BREAK:
-                if (ball == gameBall)
-                    return BallStatus.GAME_BALL_DEAD_ON_BREAK;
-                else
-                    return BallStatus.DEAD_ON_BREAK;
+                return GAME_BALL_DEAD_ON_BREAK;
             case GAME_BALL_DEAD_ON_BREAK:
-                return BallStatus.ON_TABLE;
+                return ON_TABLE;
             default:
                 return ballStatus;
         }
     }
 
     String showShotPage() {
-        if ((tableStatus.getBreakBallsMade() > 0 && gameNotWonOnBreak()) || BreakType.valueOf(data.getString(MatchDialogHelperUtils.BREAK_TYPE_KEY)) == BreakType.GHOST) {
+        if (tableStatus.getBreakBallsMade() > 0 && gameNotWonOnBreak()) {
             return showShotPage;
         } else return "";
     }
 
-    private boolean gameNotWonOnBreak() {
+    boolean gameNotWonOnBreak() {
         return !(gameBallMadeOnBreak() && canWinOnBreak());
     }
 
-    private boolean gameBallMadeOnBreak() {
-        return tableStatus.getGameBallMadeOnBreak();
+    boolean gameBallMadeOnBreak() {
+        return tableStatus.isGameBallMadeOnBreak();
     }
 
-    private boolean canWinOnBreak() {
-        return gameType == GameType.APA_EIGHT_BALL || gameType == GameType.APA_NINE_BALL || gameType == GameType.BCA_NINE_BALL;
+    boolean canWinOnBreak() {
+        return gameType == GameType.APA_EIGHT_BALL ||
+                gameType == GameType.APA_NINE_BALL ||
+                gameType == GameType.BCA_NINE_BALL ||
+                gameType == GameType.APA_GHOST_EIGHT_BALL ||
+                gameType == GameType.APA_GHOST_NINE_BALL;
+    }
+
+    public int getGameBall() {
+        return tableStatus.getGameBall();
     }
 }

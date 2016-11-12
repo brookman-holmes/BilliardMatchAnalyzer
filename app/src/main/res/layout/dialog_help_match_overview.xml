@@ -1,48 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/alert_dialog_padding"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        style="@style/help_dialog_title"
-        android:text="@string/title_win_pct" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/alert_dialog_padding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        style="@style/help_dialog_text"
-        android:text="@string/description_win_pct" />
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/title_win_pct" />
 
-    <TextView
-        style="@style/help_dialog_title"
-        android:text="@string/title_games_won" />
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="@string/description_win_pct" />
 
-    <TextView
-        style="@style/help_dialog_text"
-        android:text="@string/description_games_won" />
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/title_games_won" />
 
-    <TextView
-        style="@style/help_dialog_title"
-        android:text="@string/title_tsp" />
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="@string/description_games_won" />
 
-    <TextView
-        style="@style/help_dialog_text"
-        android:text="@string/description_tsp" />
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/title_tsp" />
 
-    <TextView
-        style="@style/help_dialog_title"
-        android:text="@string/title_true_shots_made" />
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="@string/description_tsp" />
 
-    <TextView
-        style="@style/help_dialog_text"
-        android:text="@string/description_true_shots_made" />
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/title_true_shots_made" />
 
-    <TextView
-        style="@style/help_dialog_title"
-        android:text="@string/title_ar" />
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="@string/description_true_shots_made" />
 
-    <TextView
-        style="@style/help_dialog_text"
-        android:text="@string/description_ar" />
+        <TextView
+            style="@style/help_dialog_title"
+            android:text="@string/title_ar" />
 
-</LinearLayout>
+        <TextView
+            style="@style/help_dialog_text"
+            android:text="@string/description_ar" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

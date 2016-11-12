@@ -1,28 +1,26 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.model;
 
+import android.support.v4.app.Fragment;
+
 import com.brookmanholmes.billiards.game.PlayerTurn;
+import com.brookmanholmes.bma.ui.newmatchwizard.fragments.FirstBreakFragment;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.SingleFixedChoicePage;
 
 /**
  * Created by Brookman Holmes on 1/7/2016.
  */
-public class FirstBreakPage extends SingleFixedChoicePage implements RequiresPlayerNames, UpdatesMatchBuilder {
-    private final String parentPage;
+class FirstBreakPage extends SingleFixedChoicePage implements RequiresPlayerNames, UpdatesMatchBuilder {
     private String playerName = "Player 1";
     private String opponentName = "Player 2";
 
-    public FirstBreakPage(ModelCallbacks callbacks, String title, String parentPage) {
+    FirstBreakPage(ModelCallbacks callbacks, String title, String parentKey) {
         super(callbacks, title);
-
-        this.parentPage = parentPage;
+        this.parentKey = parentKey;
     }
 
-    @Override public String getKey() {
-        return parentPage + ":" + super.getKey();
-    }
-
-    @Override public void setPlayerNames(String playerName, String opponentName) {
+    @Override
+    public void setPlayerNames(String playerName, String opponentName) {
         if (data.getString(SIMPLE_DATA_KEY, "").equals(this.playerName))
             data.putString(SIMPLE_DATA_KEY, playerName);
         else if (data.getString(SIMPLE_DATA_KEY, "").equals(this.opponentName))
@@ -35,10 +33,16 @@ public class FirstBreakPage extends SingleFixedChoicePage implements RequiresPla
         choices.set(1, opponentName);
     }
 
-    @Override public void updateMatchBuilder(CreateNewMatchWizardModel model) {
+    @Override
+    public void updateMatchBuilder(CreateNewMatchWizardModel model) {
         if (playerName.equals(data.getString(SIMPLE_DATA_KEY)))
             model.setFirstBreaker(PlayerTurn.PLAYER);
         else if (opponentName.equals(data.getString(SIMPLE_DATA_KEY)))
             model.setFirstBreaker(PlayerTurn.OPPONENT);
+    }
+
+    @Override
+    public Fragment createFragment() {
+        return FirstBreakFragment.create(getKey());
     }
 }

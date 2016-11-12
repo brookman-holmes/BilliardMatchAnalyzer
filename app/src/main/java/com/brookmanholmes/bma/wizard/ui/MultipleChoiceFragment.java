@@ -16,10 +16,7 @@
 
 package com.brookmanholmes.bma.wizard.ui;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -68,7 +65,8 @@ public class MultipleChoiceFragment extends BaseChoiceFragment {
         return fragment;
     }
 
-    @Override public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
         // retarded work around for weird bug where items get selected randomly?
         // Pre-select currently selected items.
@@ -88,7 +86,8 @@ public class MultipleChoiceFragment extends BaseChoiceFragment {
         }
     }
 
-    @Override public void onListItemClick(ListView l, View v, int position, long id) {
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
         // deselect items that conflict with this selection
         for (String item : getOpposingItems(adapter.getItem(position))) {
             int opposingItemPosition = adapter.getPosition(item);
@@ -109,7 +108,8 @@ public class MultipleChoiceFragment extends BaseChoiceFragment {
         page.notifyDataChanged();
     }
 
-    @Override protected void preSelectItems() {
+    @Override
+    protected void preSelectItems() {
         // Pre-select currently selected items.
         ArrayList<String> selectedItems = page.getData().getStringArrayList(Page.SIMPLE_DATA_KEY);
         if (selectedItems == null || selectedItems.size() == 0) {
@@ -125,12 +125,14 @@ public class MultipleChoiceFragment extends BaseChoiceFragment {
         }
     }
 
-    @Override protected void setListTypeArgs() {
+    @Override
+    protected void setListTypeArgs() {
         layoutRes = android.R.layout.simple_list_item_multiple_choice;
         choiceMode = ListView.CHOICE_MODE_MULTIPLE;
     }
 
-    @Override protected void setAdapter() {
+    @Override
+    protected void setAdapter() {
         adapter = new ArrayAdapter<>(
                 getContext(),
                 layoutRes,

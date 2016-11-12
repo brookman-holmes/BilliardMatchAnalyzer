@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:showIn="@layout/fragment_adv_break_stats">
 
     <TextView
@@ -11,7 +14,7 @@
         android:text="@string/title_speed"
         android:textAllCaps="false"
         android:textColor="@color/primary_text"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,38 +29,37 @@
             android:paddingRight="8dp"
             android:text="@string/title_speed_slow"
             android:textAllCaps="true"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/slow"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".23"
+                android:background="@drawable/graph_background"
+                android:backgroundTint="@color/dead_ball"
                 android:gravity="center"
+                android:text="@string/no_data"
                 android:textColor="@color/primary_text"
                 android:textSize="12sp"
-                android:backgroundTint="@color/dead_ball"
-                android:background="@drawable/graph_background"
-                android:textStyle="bold"
-                android:text="@string/no_data"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/fast"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/graph_background"
+                android:backgroundTint="@color/colorPrimary"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:backgroundTint="@color/colorPrimary"
-                android:background="@drawable/graph_background"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <TextView
@@ -68,8 +70,7 @@
             android:paddingLeft="8dp"
             android:text="@string/title_speed_fast"
             android:textAllCaps="true"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
     </LinearLayout>
-</merge>
+</LinearLayout>

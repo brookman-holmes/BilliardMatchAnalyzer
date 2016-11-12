@@ -34,7 +34,11 @@ import com.hookedonplay.decoviewlib.charts.SeriesItem;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -46,12 +50,14 @@ import butterknife.ButterKnife;
  * Created by helios on 5/15/2016.
  */
 public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements Filterable {
-    private static final String ARG_PLAYER = "arg player";
+    private static final String ARG_PLAYER = "arg_player";
+    DecimalFormat df = new DecimalFormat("#.###");
     private DatabaseAdapter database;
     private String player;
     private UpdatePlayersAsync task;
 
-    public PlayerInfoGraphicFragment() {}
+    public PlayerInfoGraphicFragment() {
+    }
 
     public static PlayerInfoGraphicFragment create(String player) {
         PlayerInfoGraphicFragment fragment = new PlayerInfoGraphicFragment();
@@ -69,8 +75,10 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             return String.format(Locale.getDefault(), "%.0f%%", val * 100);
     }
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        df.setRoundingMode(RoundingMode.FLOOR);
         database = new DatabaseAdapter(getContext());
         player = getArguments().getString(ARG_PLAYER);
 
@@ -86,7 +94,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).removeListener(this);
         }
@@ -95,7 +104,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         super.onDestroy();
     }
 
-    @Override public void setFilter(StatFilter filter) {
+    @Override
+    public void setFilter(StatFilter filter) {
         if (task == null) {
             task = new UpdatePlayersAsync();
             task.execute(filter);
@@ -108,10 +118,12 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         }
     }
 
-    @Override protected RecyclerView.LayoutManager getLayoutManager() {
+    @Override
+    protected RecyclerView.LayoutManager getLayoutManager() {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override public int getSpanSize(int position) {
+            @Override
+            public int getSpanSize(int position) {
                 switch (adapter.getItemViewType(position)) {
                     case PlayerInfoGraphicAdapter.ITEM_GRAPH:
                         return 3;
@@ -142,7 +154,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         final String playerName;
         final String opponentName;
 
-        public PlayerInfoGraphicAdapter(List<Pair<AbstractPlayer, AbstractPlayer>> pairs, String playerName, String opponentName) {
+        PlayerInfoGraphicAdapter(List<Pair<AbstractPlayer, AbstractPlayer>> pairs, String playerName, String opponentName) {
             splitPlayers(pairs);
             this.playerName = playerName;
             this.opponentName = opponentName;
@@ -157,6 +169,11 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
                 return player;
             } else return new CompPlayer("");
+        }
+
+        private static float roundNumber(int top, int bottom) {
+            BigDecimal decimal = new BigDecimal((float) top / (float) bottom).round(new MathContext(4, RoundingMode.FLOOR));
+            return decimal.floatValue();
         }
 
         private void splitPlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
@@ -209,7 +226,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             return position;
         }
 
-        @LayoutRes int getLayoutResource(int viewType) {
+        @LayoutRes
+        int getLayoutResource(int viewType) {
             switch (viewType) {
                 case ITEM_GRAPH:
                     return R.layout.card_graph;
@@ -247,7 +265,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             @Bind(R.id.graph)
             LineChart chart;
 
-            public GraphViewHolder(View itemView) {
+            GraphViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
 
@@ -352,12 +370,16 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         }
 
         abstract static class TwoItemHolder extends RecyclerView.ViewHolder {
-            @Bind(R.id.item1) TextView item1;
-            @Bind(R.id.item1Desc) TextView item1Desc;
-            @Bind(R.id.item2) TextView item2;
-            @Bind(R.id.item2Desc) TextView item2Desc;
+            @Bind(R.id.item1)
+            TextView item1;
+            @Bind(R.id.item1Desc)
+            TextView item1Desc;
+            @Bind(R.id.item2)
+            TextView item2;
+            @Bind(R.id.item2Desc)
+            TextView item2Desc;
 
-            public TwoItemHolder(View itemView) {
+            TwoItemHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
                 setItemDesc();
@@ -369,11 +391,12 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         }
 
         static class SafetyTwoItemHolder extends TwoItemHolder {
-            public SafetyTwoItemHolder(View itemView) {
+            SafetyTwoItemHolder(View itemView) {
                 super(itemView);
             }
 
-            @Override void setItemDesc() {
+            @Override
+            void setItemDesc() {
                 item1Desc.setText(R.string.title_forced_opponent_foul);
                 item2Desc.setText(R.string.title_effect_safety_rate);
             }
@@ -402,11 +425,12 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         }
 
         static class BreakTwoItemHolder extends TwoItemHolder {
-            public BreakTwoItemHolder(View itemView) {
+            BreakTwoItemHolder(View itemView) {
                 super(itemView);
             }
 
-            @Override void setItemDesc() {
+            @Override
+            void setItemDesc() {
                 item1Desc.setText(R.string.title_break_runs);
                 item2Desc.setText(R.string.title_break_run_pct);
             }
@@ -420,18 +444,24 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         }
 
         static class BreaksGraphViewHolder extends RecyclerView.ViewHolder {
+            private static final String TAG = "BreaksGraphVH";
             final int color1;
             final int color2;
             final int color3;
             final int color4;
             final int grey;
-            @Bind(R.id.decoView) DecoView decoView;
-            @Bind(R.id.title1) TextView successfulBreak;
-            @Bind(R.id.title2) TextView continuationBreak;
-            @Bind(R.id.title3) TextView foulBreak;
-            @Bind(R.id.title4) TextView winBreak;
+            @Bind(R.id.decoView)
+            DecoView decoView;
+            @Bind(R.id.title1)
+            TextView successfulBreak;
+            @Bind(R.id.title2)
+            TextView continuationBreak;
+            @Bind(R.id.title3)
+            TextView foulBreak;
+            @Bind(R.id.title4)
+            TextView winBreak;
 
-            public BreaksGraphViewHolder(View itemView) {
+            BreaksGraphViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
                 color1 = ContextCompat.getColor(itemView.getContext(), R.color.chart3);
@@ -441,24 +471,24 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 grey = ContextCompat.getColor(itemView.getContext(), R.color.chart4);
                 decoView.deleteAll();
                 decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 100, 100)
+                        .setRange(0, 1, 1)
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 100, 100)
+                        .setRange(0, 1, 1)
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .setInset(new PointF(32, 32))
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 100, 100)
+                        .setRange(0, 1, 1)
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .setInset(new PointF(64, 64))
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 100, 100)
+                        .setRange(0, 1, 1)
                         .setLineWidth(32f)
                         .setCapRounded(false)
                         .setInset(new PointF(96, 96))
@@ -468,37 +498,41 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             }
 
             void bind(CompPlayer player) {
-                float attempts = player.getBreakAttempts();
+                int attempts = player.getBreakAttempts();
 
-                float continuation = attempts != 0 ? (float) player.getBreakContinuations() / attempts * 100 : 0;
-                float successes = attempts != 0 ? (float) player.getBreakSuccesses() / attempts * 100 : 0;
-                float wins = attempts != 0 ? (float) player.getWinsOnBreak() / attempts * 100 : 0;
-                float fouls = attempts != 0 ? (float) player.getBreakFouls() / attempts * 100 : 0;
+                float continuation = attempts != 0 ? roundNumber(player.getBreakContinuations(), attempts) : 0;
+                float successes = attempts != 0 ? roundNumber(player.getBreakSuccesses(), attempts) : 0;
+                float wins = attempts != 0 ? roundNumber(player.getWinsOnBreak(), attempts) : 0;
+                float fouls = attempts != 0 ? roundNumber(player.getBreakFouls(), attempts) : 0;
 
-                decoView.addSeries(new SeriesItem.Builder(color1)
-                        .setRange(0, 100, successes)
-                        .setInset(new PointF(0, 0))
-                        .setLineWidth(32f)
-                        .setCapRounded(false)
-                        .build());
-                decoView.addSeries(new SeriesItem.Builder(color2)
-                        .setRange(0, 100, continuation)
-                        .setInset(new PointF(32, 32))
-                        .setLineWidth(32f)
-                        .setCapRounded(false)
-                        .build());
-                decoView.addSeries(new SeriesItem.Builder(color4)
-                        .setRange(0, 100, wins)
-                        .setInset(new PointF(64, 64))
-                        .setLineWidth(32f)
-                        .setCapRounded(false)
-                        .build());
-                decoView.addSeries(new SeriesItem.Builder(color3)
-                        .setRange(0, 100, fouls)
-                        .setInset(new PointF(96, 96))
-                        .setLineWidth(32f)
-                        .setCapRounded(false)
-                        .build());
+                if (player.getBreakSuccesses() > 0)
+                    decoView.addSeries(new SeriesItem.Builder(color1)
+                            .setRange(0, 1, successes)
+                            .setInset(new PointF(0, 0))
+                            .setLineWidth(32f)
+                            .setCapRounded(false)
+                            .build());
+                if (player.getBreakContinuations() > 0)
+                    decoView.addSeries(new SeriesItem.Builder(color2)
+                            .setRange(0, 1, continuation)
+                            .setInset(new PointF(32, 32))
+                            .setLineWidth(32f)
+                            .setCapRounded(false)
+                            .build());
+                if (player.getWinsOnBreak() > 0)
+                    decoView.addSeries(new SeriesItem.Builder(color4)
+                            .setRange(0, 1, wins)
+                            .setInset(new PointF(64, 64))
+                            .setLineWidth(32f)
+                            .setCapRounded(false)
+                            .build());
+                if (player.getBreakFouls() > 0)
+                    decoView.addSeries(new SeriesItem.Builder(color3)
+                            .setRange(0, 1, fouls)
+                            .setInset(new PointF(96, 96))
+                            .setLineWidth(32f)
+                            .setCapRounded(false)
+                            .build());
 
                 successfulBreak.setText(getString(R.string.successful_breaks,
                         player.getBreakSuccesses(),
@@ -527,13 +561,20 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             final int color1;
             final int color2;
             final int color3;
-            @Bind(R.id.decoView) DecoView decoView;
-            @Bind(R.id.title) TextView title;
-            @Bind(R.id.title1) TextView safetyReturns;
-            @Bind(R.id.title2) TextView safetyEscapes;
-            @Bind(R.id.title3) TextView misses;
-            @Bind(R.id.toDisappear) ViewGroup notValid;
-            public SafetyGraphViewHolder(View itemView) {
+            @Bind(R.id.decoView)
+            DecoView decoView;
+            @Bind(R.id.title)
+            TextView title;
+            @Bind(R.id.title1)
+            TextView safetyReturns;
+            @Bind(R.id.title2)
+            TextView safetyEscapes;
+            @Bind(R.id.title3)
+            TextView misses;
+            @Bind(R.id.toDisappear)
+            ViewGroup notValid;
+
+            SafetyGraphViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
                 decoView.deleteAll();
@@ -548,30 +589,35 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
                 CompPlayer player = getPlayerFromList(players);
                 CompPlayer opponent = getPlayerFromList(opponents);
-                float total = (float) opponent.getSafetySuccesses();
+                int total = opponent.getSafetySuccesses();
 
                 if (opponent.getSafetySuccesses() > 0) {
-                    float returns = (float) player.getSafetyReturns() / total * 100;
-                    float escapes = (float) player.getSafetyEscapes() / total * 100;
+                    float returns = roundNumber(player.getSafetyReturns(), total);
+                    float escapes = roundNumber(player.getSafetyEscapes(), total);
+
+                    if (returns < 0)
+                        returns = 0;
+                    if (escapes < 0)
+                        escapes = 0;
 
                     decoView.addSeries(new SeriesItem.Builder(color3)
-                            .setRange(0, 100, 100)
+                            .setRange(0, 1, 1)
                             .setCapRounded(false)
                             .setLineWidth(128f)
                             .build());
                     decoView.addSeries(new SeriesItem.Builder(color1)
-                            .setRange(0, 100, returns + escapes)
+                            .setRange(0, 1, returns + escapes)
                             .setCapRounded(false)
                             .setLineWidth(128f)
                             .build());
                     decoView.addSeries(new SeriesItem.Builder(color2)
-                            .setRange(0, 100, escapes)
+                            .setRange(0, 1, escapes)
                             .setCapRounded(false)
                             .setLineWidth(128f)
                             .build());
                 } else {
                     decoView.addSeries(new SeriesItem.Builder(Color.parseColor("#F5F5F5"))
-                            .setRange(0, 100, 100)
+                            .setRange(0, 1, 1)
                             .setCapRounded(false)
                             .setLineWidth(128f)
                             .build());
@@ -589,7 +635,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
     private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {
         @Override
         protected List<Pair<AbstractPlayer, AbstractPlayer>> doInBackground(StatFilter... filter) {
-            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayer(player);
+            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayerPairs(player);
             List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
 
             for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
@@ -600,7 +646,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             return filteredPlayers;
         }
 
-        @Override protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
+        @Override
+        protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
             ((PlayerInfoGraphicAdapter) adapter).updatePlayers(pairs);
         }
     }

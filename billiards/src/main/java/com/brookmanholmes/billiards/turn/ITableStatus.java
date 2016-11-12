@@ -55,7 +55,7 @@ public interface ITableStatus {
      * {@link BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_MADE}
      * @return true if the game ball was legally pocketed on the break, false otherwise
      */
-    boolean getGameBallMadeOnBreak();
+    boolean isGameBallMadeOnBreak();
 
     /**
      * Returns whether or not the game ball has status
@@ -98,7 +98,7 @@ public interface ITableStatus {
      * {@link BallStatus#GAME_BALL_MADE_ON_BREAK_THEN_DEAD}
      * @return true if the game ball was illegally pocketed, false otherwise
      */
-    boolean getGameBallMadeIllegally();
+    boolean isGameBallMadeIllegally();
 
     /**
      * Returns a list of BallStatuses, where each ball is represented in order by the list
@@ -125,4 +125,11 @@ public interface ITableStatus {
      * @return an enum of type {@link GameType}
      */
     GameType getGameType();
+
+    /**
+     * The ball that decides if the game is over
+     *
+     * @return 8/9/10 depending on the game type
+     */
+    int getGameBall();
 }

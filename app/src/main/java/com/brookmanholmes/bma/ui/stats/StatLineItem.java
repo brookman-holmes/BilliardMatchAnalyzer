@@ -2,8 +2,6 @@ package com.brookmanholmes.bma.ui.stats;
 
 import android.support.annotation.NonNull;
 
-import com.brookmanholmes.billiards.turn.AdvStats;
-
 import java.text.NumberFormat;
 
 /**
@@ -41,7 +39,8 @@ public class StatLineItem implements Comparable<StatLineItem> {
             return pctf.format((double) count / (double) total);
     }
 
-    @Override public int compareTo(@NonNull StatLineItem another) {
+    @Override
+    public int compareTo(@NonNull StatLineItem another) {
         return Integer.compare(count, another.count);
     }
 }

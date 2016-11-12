@@ -29,17 +29,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
+        android:layout_weight=".5"
         android:ellipsize="end"
         android:textAllCaps="true"
         android:textColor="@android:color/tertiary_text_light"
-        android:textStyle="bold"
-        android:layout_weight=".5"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@android:id/text2"
         style="?android:textAppearanceMedium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

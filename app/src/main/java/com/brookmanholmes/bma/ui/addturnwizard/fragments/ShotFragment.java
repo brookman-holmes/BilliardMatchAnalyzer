@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.BallStatus;
-import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.bma.R;
@@ -26,10 +25,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.BREAK_TYPE_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertBallToId;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertIdToBall;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayoutByGameType;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayout;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallDead;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallMade;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallOffTable;
@@ -40,10 +39,11 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
  */
 public abstract class ShotFragment extends BaseFragment {
     static final String ARG_KEY = "key";
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.title) TextView title;
-    @SuppressWarnings("WeakerAccess")
-    @Bind(R.id.buttonRunOut) Button btnRunOut;
+    private static final String TAG = "ShotFragment";
+    @Bind(R.id.title)
+    TextView title;
+    @Bind(R.id.buttonRunOut)
+    Button btnRunOut;
 
     ShotPage page;
     PageFragmentCallbacks callbacks;
@@ -60,8 +60,8 @@ public abstract class ShotFragment extends BaseFragment {
 
         ShotFragment fragment;
 
-        GameType gameType = GameType.valueOf(matchData.getString(MatchDialogHelperUtils.GAME_TYPE_KEY));
-        if (gameType == GameType.APA_EIGHT_BALL || gameType == GameType.BCA_EIGHT_BALL)
+        GameType gameType = GameType.valueOf(matchData.getString(GAME_TYPE_KEY));
+        if (isEightBall(gameType))
             fragment = new EightBallShotFragment();
         else fragment = new RotationShotFragment();
 
@@ -69,7 +69,15 @@ public abstract class ShotFragment extends BaseFragment {
         return fragment;
     }
 
-    @Override public void onAttach(Context context) {
+    private static boolean isEightBall(GameType gameType) {
+        return gameType == GameType.APA_GHOST_EIGHT_BALL ||
+                gameType == GameType.APA_EIGHT_BALL ||
+                gameType == GameType.BCA_EIGHT_BALL ||
+                gameType == GameType.BCA_GHOST_EIGHT_BALL;
+    }
+
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
 
         if (!(getParentFragment() instanceof PageFragmentCallbacks)) {
@@ -79,40 +87,47 @@ public abstract class ShotFragment extends BaseFragment {
         callbacks = (PageFragmentCallbacks) getParentFragment();
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
-        gameType = GameType.valueOf(getArguments().getString(MatchDialogHelperUtils.GAME_TYPE_KEY));
+        gameType = GameType.valueOf(getArguments().getString(GAME_TYPE_KEY));
     }
 
-    @Override public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
         page.registerListener(this);
     }
 
-    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         page = (ShotPage) callbacks.onGetPage(key);
 
-        View view = inflater.inflate(getLayoutByGameType(gameType), container, false);
+        View view = inflater.inflate(getLayout(gameType), container, false);
         ButterKnife.bind(this, view);
         title.setText(page.getTitle());
 
         return view;
     }
 
-    @Override public void onPause() {
+    @Override
+    public void onPause() {
         page.unregisterListener();
         super.onPause();
     }
 
-    @Override public void onDetach() {
+    @Override
+    public void onDetach() {
         super.onDetach();
         callbacks = null;
     }
 
-    @Nullable @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
+    @Nullable
+    @OnClick({R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
             R.id.five_ball, R.id.six_ball, R.id.seven_ball, R.id.eight_ball,
             R.id.nine_ball, R.id.ten_ball, R.id.eleven_ball, R.id.twelve_ball,
             R.id.thirteen_ball, R.id.fourteen_ball, R.id.fifteen_ball})
@@ -134,8 +149,8 @@ public abstract class ShotFragment extends BaseFragment {
     }
 
     private void setBallView(BallStatus status, ImageView ballImage) {
-        if (BreakType.valueOf(getArguments().getString(BREAK_TYPE_KEY)) == BreakType.GHOST &&
-                convertIdToBall(ballImage.getId()) == MatchDialogHelperUtils.createGameStatusFromBundle(getArguments()).GAME_BALL) {
+        if (gameType.isGhostGame() &&
+                convertIdToBall(ballImage.getId()) == MatchDialogHelperUtils.getGameStatus(getArguments()).GAME_BALL) {
             if (status == BallStatus.GAME_BALL_DEAD_ON_BREAK || ballIsOnTable(status))
                 setViewToBallOnTable(ballImage);
             else if (status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE || ballIsMade(status))

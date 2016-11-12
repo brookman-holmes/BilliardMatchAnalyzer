@@ -9,36 +9,46 @@ import com.brookmanholmes.billiards.turn.TurnBuilder;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.brookmanholmes.billiards.turn.AdvStats.HowType.*;
+import static com.brookmanholmes.billiards.turn.AdvStats.Angle.CROSSOVER;
+import static com.brookmanholmes.billiards.turn.AdvStats.Angle.FIVE_RAIL;
+import static com.brookmanholmes.billiards.turn.AdvStats.Angle.FOUR_RAIL;
+import static com.brookmanholmes.billiards.turn.AdvStats.Angle.LONG_RAIL;
+import static com.brookmanholmes.billiards.turn.AdvStats.Angle.NATURAL;
+import static com.brookmanholmes.billiards.turn.AdvStats.Angle.ONE_RAIL;
+import static com.brookmanholmes.billiards.turn.AdvStats.Angle.SHORT_RAIL;
+import static com.brookmanholmes.billiards.turn.AdvStats.Angle.THREE_RAIL;
+import static com.brookmanholmes.billiards.turn.AdvStats.Angle.TWO_RAIL;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_LEFT;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_RIGHT;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICKED_IN;
+import static com.brookmanholmes.billiards.turn.AdvStats.HowType.MISCUE;
+import static com.brookmanholmes.billiards.turn.AdvStats.ShotType.BANK;
+import static com.brookmanholmes.billiards.turn.AdvStats.ShotType.BREAK_SHOT;
+import static com.brookmanholmes.billiards.turn.AdvStats.ShotType.KICK;
+import static com.brookmanholmes.billiards.turn.AdvStats.ShotType.MASSE;
+import static com.brookmanholmes.billiards.turn.AdvStats.ShotType.SAFETY;
+import static com.brookmanholmes.billiards.turn.AdvStats.ShotType.SAFETY_ERROR;
 import static com.brookmanholmes.billiards.turn.AdvStats.SubType.NONE;
-import static com.brookmanholmes.billiards.turn.AdvStats.WhyType.*;
-import static com.brookmanholmes.billiards.turn.AdvStats.ShotType.*;
-import static com.brookmanholmes.billiards.turn.AdvStats.SubType.*;
-import static com.brookmanholmes.billiards.turn.AdvStats.Angle.*;
+import static com.brookmanholmes.billiards.turn.AdvStats.WhyType.ENGLISH;
+import static com.brookmanholmes.billiards.turn.AdvStats.WhyType.FORCING_II;
+import static com.brookmanholmes.billiards.turn.AdvStats.WhyType.TOO_LITTLE_DRAW;
+import static com.brookmanholmes.billiards.turn.AdvStats.WhyType.TOO_LITTLE_FOLLOW;
+import static com.brookmanholmes.billiards.turn.AdvStats.WhyType.TOO_MUCH_DRAW;
+import static com.brookmanholmes.billiards.turn.AdvStats.WhyType.TOO_MUCH_FOLLOW;
 
 /**
  * Created by helios on 9/9/2016.
  */
 
 public abstract class AdvStatsEspressoTest extends BaseMatchTest {
-    @Override
-    protected Match getMatch() {
-        return new Match.Builder("Test 1", "Test 2")
-                .setStatsDetail(Match.StatsDetail.ADVANCED)
-                .build(GameType.BCA_NINE_BALL);
-    }
-
     static ITurn wonGame = turn().madeBalls(9).win();
-
     // break miss
-    static ITurn break0 = turn().setAdvStats(breakMiss(MISCUE,KICKED_IN, AdvStats.HowType.TOO_HARD, AIM_LEFT)).breakMiss();
-    static ITurn break1 = turn().setAdvStats(breakMiss(MISCUE,KICKED_IN, AdvStats.HowType.TOO_SOFT, AIM_RIGHT)).breakMiss();
+    static ITurn break0 = turn().setAdvStats(breakMiss(MISCUE, KICKED_IN, AdvStats.HowType.TOO_HARD, AIM_LEFT)).breakMiss();
+    static ITurn break1 = turn().setAdvStats(breakMiss(MISCUE, KICKED_IN, AdvStats.HowType.TOO_SOFT, AIM_RIGHT)).breakMiss();
     static ITurn break2 = turn().setAdvStats(breakMiss(FORCING_II, TOO_LITTLE_DRAW, ENGLISH)).breakMiss();
     static ITurn break3 = turn().setAdvStats(breakMiss(FORCING_II, TOO_MUCH_DRAW, ENGLISH)).breakMiss();
     static ITurn break4 = turn().setAdvStats(breakMiss(FORCING_II, TOO_LITTLE_FOLLOW, ENGLISH)).breakMiss();
     static ITurn break5 = turn().setAdvStats(breakMiss(FORCING_II, TOO_MUCH_FOLLOW, ENGLISH)).breakMiss();
-
-
 
     static TurnBuilder turn() {
         return new TurnBuilder(GameType.BCA_NINE_BALL);
@@ -98,6 +108,13 @@ public abstract class AdvStatsEspressoTest extends BaseMatchTest {
                 .subType(NONE)
                 .howTypes(howTypes)
                 .build();
+    }
+
+    @Override
+    protected Match getMatch() {
+        return new Match.Builder("Test 1", "Test 2")
+                .setDetails(Match.StatsDetail.values())
+                .build(GameType.BCA_NINE_BALL);
     }
 
     List<ITurn> list(ITurn... turns) {

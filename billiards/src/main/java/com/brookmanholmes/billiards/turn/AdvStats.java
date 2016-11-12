@@ -16,6 +16,11 @@ public class AdvStats {
     private final List<HowType> howTypes = new ArrayList<>();
     private final List<WhyType> whyTypes = new ArrayList<>();
     private final List<Angle> angles = new ArrayList<>();
+    private final float cbToOb;
+    private final float obToPocket;
+    private final int speed;
+    private final int cueX;
+    private final int cueY;
     private final String startingPosition;
     private final boolean use;
 
@@ -28,6 +33,11 @@ public class AdvStats {
         this.startingPosition = builder.startingPosition;
         player = builder.player;
         use = builder.use;
+        cbToOb = builder.cbToOb;
+        obToPocket = builder.obToPocket;
+        speed = builder.speed;
+        cueX = builder.cueX;
+        cueY = builder.cueY;
     }
 
     /**
@@ -98,17 +108,240 @@ public class AdvStats {
         return whyTypes;
     }
 
-    @Override public String toString() {
+    /**
+     * Distance from the cue ball to the object ball
+     *
+     * @return the distance from the cue ball to the object ball
+     */
+    public float getCbToOb() {
+        return cbToOb;
+    }
+
+    /**
+     * Distance from the object ball to the pocket
+     *
+     * @return the distance from the object ball to the pocket
+     */
+    public float getObToPocket() {
+        return obToPocket;
+    }
+
+    /**
+     * The speed of the shot taken (should be on a scale of 1 - 10)
+     *
+     * @return the speed of the shot taken
+     */
+    public int getSpeed() {
+        return speed;
+    }
+
+    /**
+     * The x-axis position of the hit from the cue to the cue ball, 0 being the left most and 100
+     * being the right most
+     *
+     * @return integer between 0 and 100, 0 (left) and 100 (right)
+     */
+    public int getCueX() {
+        return cueX;
+    }
+
+    /**
+     * The x-axis position of the hit from the cue to the cue ball, 0 being the top most and 100
+     * being the bottom most
+     *
+     * @return integer between 0 and 100, 0 (top) and 100 (bottom)
+     */
+    public int getCueY() {
+        return cueY;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AdvStats advStats = (AdvStats) o;
+
+        if (Float.compare(advStats.cbToOb, cbToOb) != 0) return false;
+        if (Float.compare(advStats.obToPocket, obToPocket) != 0) return false;
+        if (speed != advStats.speed) return false;
+        if (cueX != advStats.cueX) return false;
+        if (cueY != advStats.cueY) return false;
+        if (use != advStats.use) return false;
+        if (!player.equals(advStats.player)) return false;
+        if (shotType != advStats.shotType) return false;
+        if (shotSubtype != advStats.shotSubtype) return false;
+        if (!howTypes.equals(advStats.howTypes)) return false;
+        if (!whyTypes.equals(advStats.whyTypes)) return false;
+        if (!angles.equals(advStats.angles)) return false;
+        return startingPosition.equals(advStats.startingPosition);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = player.hashCode();
+        result = 31 * result + shotType.hashCode();
+        result = 31 * result + shotSubtype.hashCode();
+        result = 31 * result + howTypes.hashCode();
+        result = 31 * result + whyTypes.hashCode();
+        result = 31 * result + angles.hashCode();
+        result = 31 * result + (cbToOb != +0.0f ? Float.floatToIntBits(cbToOb) : 0);
+        result = 31 * result + (obToPocket != +0.0f ? Float.floatToIntBits(obToPocket) : 0);
+        result = 31 * result + speed;
+        result = 31 * result + cueX;
+        result = 31 * result + cueY;
+        result = 31 * result + startingPosition.hashCode();
+        result = 31 * result + (use ? 1 : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
         return "AdvStats{" +
                 "player='" + player + '\'' +
-                "\n shotType='" + shotType + '\'' +
-                "\n shotSubtype='" + shotSubtype + '\'' +
-                "\n howTypes=" + howTypes +
-                "\n whyTypes=" + whyTypes +
-                "\n angles=" + angles +
-                "\n startingPosition='" + startingPosition + '\'' +
-                "\n use=" + use +
+                ", shotType=" + shotType +
+                ", shotSubtype=" + shotSubtype +
+                ", howTypes=" + howTypes +
+                ", whyTypes=" + whyTypes +
+                ", angles=" + angles +
+                ", cbToOb=" + cbToOb +
+                ", obToPocket=" + obToPocket +
+                ", speed=" + speed +
+                ", cueX=" + cueX +
+                ", cueY=" + cueY +
+                ", startingPosition='" + startingPosition + '\'' +
+                ", use=" + use +
                 '}';
+    }
+
+    /**
+     * Created by Brookman Holmes on 9/5/2016.
+     */
+    public enum Angle {
+        ONE_RAIL,
+        TWO_RAIL,
+        THREE_RAIL,
+        FOUR_RAIL,
+        FIVE_RAIL,
+        NATURAL,
+        CROSSOVER,
+        LONG_RAIL,
+        SHORT_RAIL,
+        FIVE,
+        TEN,
+        FIFTEEN,
+        TWENTY,
+        TWENTY_FIVE,
+        THIRTY,
+        THIRTY_FIVE,
+        FORTY,
+        FORTY_FIVE,
+        FIFTY,
+        FIFTY_FIVE,
+        SIXTY,
+        SIXTY_FIVE,
+        SEVENTY,
+        SEVENTY_FIVE,
+        EIGHTY
+    }
+
+    /**
+     * Created by Brookman Holmes on 9/5/2016.
+     */
+    public enum ShotType {
+        NONE,
+        CUT,
+        STRAIGHT_SHOT,
+        BANK,
+        KICK,
+        COMBO,
+        CAROM,
+        JUMP,
+        MASSE,
+        SAFETY,
+        SAFETY_ERROR,
+        BREAK_SHOT;
+
+        public static String[] getShots() {
+            return new String[]{
+                    NONE.name(),
+                    CUT.name(),
+                    STRAIGHT_SHOT.name(),
+                    BANK.name(),
+                    KICK.name(),
+                    COMBO.name(),
+                    CAROM.name(),
+                    JUMP.name(),
+                    MASSE.name()};
+        }
+
+        public static String[] getSafeties() {
+            return new String[]{
+                    SAFETY.name(),
+                    SAFETY_ERROR.name()};
+        }
+
+        public static String[] getBreaks() {
+            return new String[]{
+                    BREAK_SHOT.name()};
+        }
+    }
+
+    public enum HowType {
+        MISCUE,
+        TOO_HARD,
+        TOO_SOFT,
+        AIM_LEFT,
+        AIM_RIGHT,
+        KICKED_IN,
+        THIN,
+        THICK,
+        KICK_LONG,
+        KICK_SHORT,
+        BANK_LONG,
+        BANK_SHORT,
+        CURVE_EARLY,
+        CURVE_LATE
+    }
+
+    public enum WhyType {
+        POSITION,
+        LACK_FOCUS,
+        JACK_UP,
+        ENGLISH,
+        TOO_SOFT,
+        TOO_HARD,
+        CURVED,
+        RAIL,
+        FORCING,
+        FORCING_II,
+        TOO_LITTLE_FOLLOW,
+        TOO_LITTLE_DRAW,
+        TOO_LITTLE_INSIDE,
+        TOO_LITTLE_OUTSIDE,
+        TOO_MUCH_FOLLOW,
+        TOO_MUCH_DRAW,
+        TOO_MUCH_INSIDE,
+        TOO_MUCH_OUTSIDE,
+        TABLE,
+        MECHANICS,
+        IMPEDING_BALL,
+        MISJUDGED,
+        PATTERN
+    }
+
+    public enum SubType {
+        FULL_HOOK,
+        PARTIAL_HOOK,
+        LONG_T,
+        SHORT_T,
+        NO_DIRECT_SHOT,
+        OPEN,
+        WING_CUT,
+        BACK_CUT,
+        RAIL_CUT,
+        NONE
     }
 
     /**
@@ -122,6 +355,12 @@ public class AdvStats {
         private ShotType shotType = ShotType.NONE;
         private SubType subType = SubType.NONE;
         private String startingPosition = "";
+        // set these to -1 as default because that will signify that it's not to be used
+        private float cbToOb = -1f;
+        private float obToPocket = -1f;
+        private int speed = -1;
+        private int cueX = -200;
+        private int cueY = -200;
         private boolean use;
 
 
@@ -230,6 +469,52 @@ public class AdvStats {
         }
 
         /**
+         * The x, y coordinates of the cueing on the cue ball
+         *
+         * @param x value between 0 and 100, 0 being left most, 100 being right most
+         * @param y value between 0 and 100, 0 being top most, 100 being bottom most
+         * @return An instance of this builder for chaining purposes
+         */
+        public Builder cueing(int x, int y) {
+            cueX = x;
+            cueY = y;
+            return this;
+        }
+
+        /**
+         * The speed of the shot, 0 being the slowest, 10 being the hardest hit possible
+         *
+         * @param speed The speed of the shot, 0 being the slowest, 10 being the hardest hit possible
+         * @return An instance of this builder for chaining purposes
+         */
+        public Builder speed(int speed) {
+            this.speed = speed;
+            return this;
+        }
+
+        /**
+         * The distance from the cue ball to the object ball
+         *
+         * @param dist float value (probably should be in feet?)
+         * @return An instance of this builder for chaining purposes
+         */
+        public Builder cbDistance(float dist) {
+            this.cbToOb = dist;
+            return this;
+        }
+
+        /**
+         * The distance from the object ball to the pocket
+         *
+         * @param dist float value (probably should be in feet?)
+         * @return An instance of this builder for chaining purposes
+         */
+        public Builder obDistance(float dist) {
+            this.obToPocket = dist;
+            return this;
+        }
+
+        /**
          * Adds to the list of whys for why the shot was missed
          * @param whys A list of whys to add
          * @return An instance of this builder for chaining purposes
@@ -305,129 +590,5 @@ public class AdvStats {
                     "\n use=" + use +
                     '}';
         }
-    }
-
-    /**
-     * Created by Brookman Holmes on 9/5/2016.
-     */
-    public enum Angle {
-        ONE_RAIL,
-        TWO_RAIL,
-        THREE_RAIL,
-        FOUR_RAIL,
-        FIVE_RAIL,
-        NATURAL,
-        CROSSOVER,
-        LONG_RAIL,
-        SHORT_RAIL,
-        FIVE,
-        TEN,
-        FIFTEEN,
-        TWENTY,
-        TWENTY_FIVE,
-        THIRTY,
-        THIRTY_FIVE,
-        FORTY,
-        FORTY_FIVE,
-        FIFTY,
-        FIFTY_FIVE,
-        SIXTY,
-        SIXTY_FIVE,
-        SEVENTY,
-        SEVENTY_FIVE,
-        EIGHTY
-    }
-
-    /**
-     * Created by Brookman Holmes on 9/5/2016.
-     */
-    public enum ShotType {
-        NONE,
-        CUT,
-        STRAIGHT_SHOT,
-        BANK,
-        KICK,
-        COMBO,
-        CAROM,
-        JUMP,
-        MASSE,
-        SAFETY,
-        SAFETY_ERROR,
-        BREAK_SHOT;
-
-        public static String[] getShots() {
-            return new String[] {CUT.name(),
-                    STRAIGHT_SHOT.name(),
-                    BANK.name(),
-                    KICK.name(),
-                    COMBO.name(),
-                    CAROM.name(),
-                    JUMP.name(),
-                    MASSE.name()};
-        }
-
-        public static String[] getSafeties() {
-            return new String[] {SAFETY.name(), SAFETY_ERROR.name()};
-        }
-
-        public static String[] getBreaks() {
-            return new String[] {BREAK_SHOT.name()};
-        }
-    }
-
-    public enum HowType {
-        MISCUE,
-        TOO_HARD,
-        TOO_SOFT,
-        AIM_LEFT,
-        AIM_RIGHT,
-        KICKED_IN,
-        THIN,
-        THICK,
-        KICK_LONG,
-        KICK_SHORT,
-        BANK_LONG,
-        BANK_SHORT,
-        CURVE_EARLY,
-        CURVE_LATE
-    }
-
-    public enum WhyType {
-        POSITION,
-        LACK_FOCUS,
-        JACK_UP,
-        ENGLISH,
-        TOO_SOFT,
-        TOO_HARD,
-        CURVED,
-        RAIL,
-        FORCING,
-        FORCING_II,
-        TOO_LITTLE_FOLLOW,
-        TOO_LITTLE_DRAW,
-        TOO_LITTLE_INSIDE,
-        TOO_LITTLE_OUTSIDE,
-        TOO_MUCH_FOLLOW,
-        TOO_MUCH_DRAW,
-        TOO_MUCH_INSIDE,
-        TOO_MUCH_OUTSIDE,
-        TABLE,
-        MECHANICS,
-        IMPEDING_BALL,
-        MISJUDGED,
-        PATTERN
-    }
-
-    public enum SubType {
-        FULL_HOOK,
-        PARTIAL_HOOK,
-        LONG_T,
-        SHORT_T,
-        NO_DIRECT_SHOT,
-        OPEN,
-        WING_CUT,
-        BACK_CUT,
-        RAIL_CUT,
-        NONE
     }
 }

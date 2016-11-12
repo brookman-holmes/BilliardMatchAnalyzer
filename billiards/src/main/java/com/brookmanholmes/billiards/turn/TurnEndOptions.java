@@ -10,11 +10,12 @@ import java.util.List;
  */
 // TODO: 9/13/2016 add in tests for foul, lostgame, nofoul getters
 public class TurnEndOptions {
+    public final TurnEnd defaultCheck;
+    public final List<TurnEnd> possibleEndings = new ArrayList<>();
     private final boolean foul;
     private final boolean lostGame;
     private final boolean noFoul;
-    public final TurnEnd defaultCheck;
-    public final List<TurnEnd> possibleEndings = new ArrayList<>();
+    private final boolean reallyLostGame;
 
     /**
      * Creates a new {@link com.brookmanholmes.billiards.turn.TurnEndOptions} object with the
@@ -27,10 +28,11 @@ public class TurnEndOptions {
         defaultCheck = builder.checked;
         lostGame = builder.lostGame;
         noFoul = !builder.foul;
+        reallyLostGame = builder.reallyLostGame;
     }
 
     public boolean showFoul() {
-        return true;
+        return !reallyLostGame;
     }
 
     public boolean showNotFoul() {
@@ -81,6 +83,7 @@ public class TurnEndOptions {
         private TurnEnd checked = TurnEnd.MISS;
         private boolean foul;
         private boolean lostGame;
+        private boolean reallyLostGame;
 
         /**
          * Creates a builder for a new {@link com.brookmanholmes.billiards.turn.TurnEndOptions}
@@ -108,8 +111,9 @@ public class TurnEndOptions {
          * @return an instance of {@link com.brookmanholmes.billiards.turn.TurnEndOptions.Builder} for
          * chaining purposes
          */
-        public Builder lostGame(boolean show) {
+        public Builder lostGame(boolean show, boolean reallyLostGame) {
             lostGame = show;
+            this.reallyLostGame = reallyLostGame;
             return this;
         }
 

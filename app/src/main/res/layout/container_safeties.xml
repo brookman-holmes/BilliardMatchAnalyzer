@@ -1,166 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout android:id="@+id/container"
-            style="@style/match_info_grid"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:rowCount="6"
-            tools:showIn="@layout/card_safeties">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="safeties"
+            type="com.brookmanholmes.bma.ui.matchinfo.SafetiesBinder" />
+        <import type="android.view.View" />
+    </data>
 
-    <TextView
-        android:id="@+id/tvSafetyPctPlayer"
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+    <android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        style="@style/match_info_grid"
+        tools:showIn="@layout/card_safeties">
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/title_safety_pct"
-        android:textColor="@color/primary_text"
-        android:layout_columnWeight="1"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{safeties.playerSafetyPct}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{safeties.playerShootingBetter() ? `bold` : `normal`}" />
 
-    <TextView
-        android:id="@+id/tvSafetyPctOpponent"
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@string/title_safety_pct"
+            android:textColor="@color/primary_text"
+            app:layout_columnWeight="0" />
 
-    <TextView
-        android:id="@+id/tvSafetiesAttemptedPlayer"
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{safeties.opponentSafetyPct}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{safeties.opponentShootingBetter() ? `bold` : `normal`}" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_columnWeight="1"
-        android:layout_gravity="center"
-        android:text="@string/title_safeties_made"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{@string/out_of(safeties.playerSafetiesMade, safeties.playerSafeties)}"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        android:id="@+id/tvSafetiesAttemptedOpponent"
-        style="@style/player_stats"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@string/title_safeties_made"
+            android:textColor="@color/secondary_text"
+            app:layout_columnWeight="0" />
 
-    <TextView
-        android:id="@+id/tvSafetyScratchesPlayer"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{@string/out_of(safeties.opponentSafetiesMade, safeties.opponentSafeties)}"
+            android:textColor="@color/secondary_text" />
 
-    <TextView
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/title_safety_fouls"
-        android:textColor="@color/primary_text"
-        android:tag="disappearable"
-        android:layout_columnWeight="1"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{safeties.playerSafetyFouls}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{safeties.playerFoulsLess() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
-    <TextView
-        android:id="@+id/tvSafetyScratchesOpponent"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@string/title_safety_fouls"
+            android:textColor="@color/primary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}"
+            app:layout_columnWeight="0" />
 
-    <TextView
-        android:id="@+id/tvSafetyEscapesPlayer"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{safeties.opponentSafetyFouls}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{safeties.opponentFoulsLess() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
-    <TextView
-        android:id="@+id/tvSafetyEscapesTitle"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/title_safety_escapes"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"
-        android:layout_columnWeight="1"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{safeties.playerSafetyEscapes}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{safeties.playerEscapesMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
-    <TextView
-        android:id="@+id/tvSafetyEscapesOpponent"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@string/title_safety_escapes"
+            android:textColor="@color/secondary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}"
+            app:layout_columnWeight="0" />
 
-    <TextView
-        android:id="@+id/tvSafetyReturnsPlayer"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{safeties.opponentSafetyEscapes}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{safeties.opponentEscapesMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
-    <TextView
-        android:id="@+id/tvSafetyReturnsTitle"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/title_safeties_returned"
-        android:textColor="@color/primary_text"
-        android:tag="disappearable"
-        android:layout_columnWeight="1"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{safeties.playerSafetyReturns}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{safeties.playerReturnsMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
-    <TextView
-        android:id="@+id/tvSafetyReturnsOpponent"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/primary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@string/title_safeties_returned"
+            android:textColor="@color/primary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}"
+            app:layout_columnWeight="0" />
 
-    <TextView
-        android:id="@+id/tvForcedErrorsPlayer"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{safeties.opponentSafetiesReturns}"
+            android:textColor="@color/primary_text"
+            android:typeface="@{safeties.opponentReturnsMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
-    <TextView
-        android:id="@+id/tvForcedErrorsTitle"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/title_forced_fouls"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"
-        android:layout_columnWeight="1"/>
+        <TextView
+            style="@style/player_stats"
+            android:text="@{safeties.playerForcedFouls}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{safeties.playerForcedMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
 
-    <TextView
-        android:id="@+id/tvForcedErrorsOpponent"
-        style="@style/player_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary_text"
-        android:tag="disappearable"/>
-</GridLayout>
+        <TextView
+            style="@style/player_stats"
+            android:text="@string/title_forced_fouls"
+            android:textColor="@color/secondary_text"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}"
+            app:layout_columnWeight="0" />
+
+        <TextView
+            style="@style/player_stats"
+            android:text="@{safeties.opponentForcedFouls}"
+            android:textColor="@color/secondary_text"
+            android:typeface="@{safeties.opponentForcedMore() ? `bold` : `normal`}"
+            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+    </android.support.v7.widget.GridLayout>
+</layout>

@@ -19,6 +19,16 @@ import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICK_SHORT;
  */
 
 public class AdvMissStatsEspressoTest extends AdvStatsEspressoTest {
+    // bank shots
+    static ITurn bank1 = turn().setAdvStats(bank(BANK_LONG)).miss();
+    static ITurn bank2 = turn().setAdvStats(bank(BANK_SHORT)).miss();
+    // kick shots
+    static ITurn kick1 = turn().setAdvStats(kick(KICK_LONG)).miss();
+    static ITurn kick2 = turn().setAdvStats(kick(KICK_SHORT)).miss();
+    // masse shots
+    static ITurn masse1 = turn().setAdvStats(masse(CURVE_EARLY)).miss();
+    static ITurn masse2 = turn().setAdvStats(masse(CURVE_LATE)).miss();
+
     @Override
     protected List<ITurn> getTurns() {
         return Arrays.asList();
@@ -69,15 +79,5 @@ public class AdvMissStatsEspressoTest extends AdvStatsEspressoTest {
 
     }
 
-    // bank shots
-    static ITurn bank1 = turn().setAdvStats(bank(BANK_LONG)).miss();
-    static ITurn bank2 = turn().setAdvStats(bank(BANK_SHORT)).miss();
-    // kick shots
-    static ITurn kick1 = turn().setAdvStats(kick(KICK_LONG)).miss();
-    static ITurn kick2 = turn().setAdvStats(kick(KICK_SHORT)).miss();
-    // masse shots
-    static ITurn masse1 = turn().setAdvStats(masse(CURVE_EARLY)).miss();
-    static ITurn masse2 = turn().setAdvStats(masse(CURVE_LATE)).miss();
 
-    
 }

@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
+import android.graphics.Typeface;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
@@ -36,14 +37,14 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     private List<List<ITurn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
     private Match match;
 
-    public ExpandableTurnListAdapter(Match match) {
+    ExpandableTurnListAdapter(Match match) {
         this.match = match;
         setHasStableIds(true);
         data = buildDataSource(match.getTurns());
         // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
     }
 
-    public void updateMatch(Match match) {
+    void updateMatch(Match match) {
         this.match = match;
         data = buildDataSource(match.getTurns());
         notifyDataSetChanged(); // there is a bug thrown by the library this is based on so neat
@@ -77,19 +78,23 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         return data;
     }
 
-    @Override public int getGroupCount() {
+    @Override
+    public int getGroupCount() {
         return data.size();
     }
 
-    @Override public int getChildCount(int groupPosition) {
+    @Override
+    public int getChildCount(int groupPosition) {
         return data.get(groupPosition).size();
     }
 
-    @Override public long getGroupId(int groupPosition) {
+    @Override
+    public long getGroupId(int groupPosition) {
         return groupPosition;
     }
 
-    @Override public long getChildId(int groupPosition, int childPosition) {
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
         return Integer.valueOf(String.valueOf(groupPosition) + String.valueOf(childPosition));
     }
 
@@ -111,7 +116,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         } else {
             holder.itemView.setVisibility(View.VISIBLE);
             holder.itemView.setEnabled(true);
-            holder.bind(groupPosition + 1,
+            holder.bind(match.getPlayer().getName(), match.getOpponent().getName(), groupPosition + 1,
                     match.getPlayer(0, getTurnNumber(groupPosition)).getWins(),
                     match.getOpponent(0, getTurnNumber(groupPosition)).getWins());
 
@@ -147,7 +152,8 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         else params.bottomMargin = 0;
     }
 
-    @Override public int getChildItemViewType(int groupPosition, int childPosition) {
+    @Override
+    public int getChildItemViewType(int groupPosition, int childPosition) {
         return match.getGameStatus(getTurnNumber(groupPosition, childPosition)).turn == PlayerTurn.PLAYER ? 1 : 0;
     }
 
@@ -176,20 +182,35 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     }
 
     static class GameViewHolder extends AbstractExpandableItemViewHolder {
-        @Bind(R.id.row_game) TextView game;
-        @Bind(R.id.imageView) ImageView expandIndicator;
+        @Bind(R.id.row_game)
+        TextView game;
+        @Bind(R.id.playerWins)
+        TextView playerWins;
+        @Bind(R.id.opponentWins)
+        TextView opponentWins;
+        @Bind(R.id.imageView)
+        ImageView expandIndicator;
 
-        public GameViewHolder(View itemView) {
+        GameViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        private void bind(int gameTotal, int playerScore, int opponentScore) {
-            setText(gameTotal, playerScore, opponentScore);
-        }
+        private void bind(String playerName, String opponentName, int gameTotal, int playerScore, int opponentScore) {
+            game.setText(itemView.getContext().getString(R.string.row_game, gameTotal));
+            playerWins.setText(itemView.getContext().getString(R.string.player_wins, playerName, playerScore));
+            opponentWins.setText(itemView.getContext().getString(R.string.player_wins, opponentName, opponentScore));
 
-        private void setText(int games, int playerGamesWon, int oppGamesWon) {
-            game.setText(itemView.getContext().getString(R.string.row_game, games, playerGamesWon, oppGamesWon));
+            if (playerScore > opponentScore) {
+                playerWins.setTypeface(null, Typeface.BOLD);
+                opponentWins.setTypeface(null, Typeface.NORMAL);
+            } else if (playerScore < opponentScore) {
+                playerWins.setTypeface(null, Typeface.NORMAL);
+                opponentWins.setTypeface(null, Typeface.BOLD);
+            } else {
+                playerWins.setTypeface(null, Typeface.NORMAL);
+                opponentWins.setTypeface(null, Typeface.NORMAL);
+            }
         }
 
         private void setIconState(boolean isExpanded, boolean animate) {
@@ -200,21 +221,30 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 expandIndicator.setImageResource(resId);
             }
 
+            //noinspection ResourceType
             itemView.setElevation((isExpanded ? ConversionUtils.convertDpToPx(itemView.getContext(), 2) : 0));
         }
     }
 
     static class TurnViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.turn) TextView turnString;
-        @Bind(R.id.tvSafetyPct) TextView safetyPct;
-        @Bind(R.id.tvBreakPct) TextView breakPct;
-        @Bind(R.id.tvShootingPct) TextView shootingPct;
-        @Bind(R.id.ballContainer) ViewGroup ballContainer;
-        @Bind(R.id.shootingLine) ImageView shootingLine;
-        @Bind(R.id.safetyLine) ImageView safetyLine;
-        @Bind(R.id.breakingLine) ImageView breakingLine;
+        @Bind(R.id.turn)
+        TextView turnString;
+        @Bind(R.id.tvSafetyPct)
+        TextView safetyPct;
+        @Bind(R.id.tvBreakPct)
+        TextView breakPct;
+        @Bind(R.id.tvShootingPct)
+        TextView shootingPct;
+        @Bind(R.id.ballContainer)
+        ViewGroup ballContainer;
+        @Bind(R.id.shootingLine)
+        ImageView shootingLine;
+        @Bind(R.id.safetyLine)
+        ImageView safetyLine;
+        @Bind(R.id.breakingLine)
+        ImageView breakingLine;
 
-        public TurnViewHolder(View itemView) {
+        TurnViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -249,7 +279,8 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             }
         }
 
-        @ColorRes private int getBallColorTint(int ball) {
+        @ColorRes
+        private int getBallColorTint(int ball) {
             switch (ball) {
                 case 1:
                     return R.color.one_ball;
