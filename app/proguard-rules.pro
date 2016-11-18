@@ -19,18 +19,17 @@
 # ButterKnife 7
 
 -keep class butterknife.** { *; }
--dontwarn butterknife.internal.**
 -keep class **$$ViewBinder { *; }
-
--keepclasseswithmembernames class * { @butterknife.* <fields>; }
-
--keepclasseswithmembernames class * { @butterknife.* <methods>; }
-
--keep class com.github.mikephil.charting.** { *; }
--dontwarn com.github.mikephil.charting.data.realm.**
-
-# for the about libaries to include the libraries it needs
 -keep class .R
+-keep class com.github.mikephil.charting.** { *; }
 -keep class **.R$* {
     <fields>;
 }
+
+-keepclasseswithmembernames class * { @butterknife.* <fields>; }
+-keepclasseswithmembernames class * { @butterknife.* <methods>; }
+
+-dontwarn butterknife.internal.**
+-dontwarn com.github.mikephil.charting.data.realm.**
+
+# for the about libaries to include the libraries it needs

@@ -57,7 +57,7 @@ public class TableStatusTest {
 
     @Test
     public void testRemoveBallsFromTable() {
-        tableStatus.removeBallsFromTable(1, 2, 3, 4, 15, 5);
+        tableStatus.setBallTo(OFF_TABLE, 1, 2, 3, 4, 15, 5);
 
         assertThat(tableStatus.getBallStatus(1), is(OFF_TABLE));
         assertThat(tableStatus.getBallStatus(2), is(OFF_TABLE));

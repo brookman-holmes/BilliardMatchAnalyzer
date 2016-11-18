@@ -24,7 +24,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected FirebaseAnalytics analytics;
     protected SharedPreferences preferences;
 
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         analytics = FirebaseAnalytics.getInstance(BaseActivity.this);
@@ -54,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected SharedPreferences getPreferences() {
+    public SharedPreferences getPreferences() {
         return getSharedPreferences("com.brookmanholmes.bma", MODE_PRIVATE);
     }
 }

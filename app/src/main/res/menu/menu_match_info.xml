@@ -23,14 +23,14 @@
 
     <item
         android:id="@+id/action_undo"
-        android:icon="@drawable/ic_undo_24dp"
+        android:icon="@drawable/ic_undo"
         android:orderInCategory="1"
         android:title="@string/undo_turn"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_redo"
-        android:icon="@drawable/ic_redo_24dp"
+        android:icon="@drawable/ic_redo"
         android:orderInCategory="2"
         android:title="@string/redo_turn"
         app:showAsAction="ifRoom" />
@@ -41,6 +41,12 @@
         android:orderInCategory="0"
         android:title="@string/toggle_view"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_share_match"
+        android:icon="@drawable/ic_share"
+        android:title="Share match"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_submit_feedback"

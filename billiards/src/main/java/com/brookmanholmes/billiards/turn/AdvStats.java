@@ -2,6 +2,7 @@ package com.brookmanholmes.billiards.turn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -442,7 +443,7 @@ public class AdvStats {
          * @param angles A list of angles to add
          * @return An instance of this builder for chaining purposes
          */
-        public Builder angle(List<Angle> angles) {
+        public Builder angle(Collection<Angle> angles) {
             this.angles.addAll(angles);
             return this;
         }
@@ -452,7 +453,7 @@ public class AdvStats {
          * @param hows A list of hows to add
          * @return An instance of this builder for chaining purposes
          */
-        public Builder howTypes(List<HowType> hows) {
+        public Builder howTypes(Collection<HowType> hows) {
             howTypes.addAll(hows);
             return this;
         }
@@ -519,7 +520,7 @@ public class AdvStats {
          * @param whys A list of whys to add
          * @return An instance of this builder for chaining purposes
          */
-        public Builder whyTypes(List<WhyType> whys) {
+        public Builder whyTypes(Collection<WhyType> whys) {
             whyTypes.addAll(whys);
             return this;
         }

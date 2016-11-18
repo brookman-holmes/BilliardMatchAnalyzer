@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -8,17 +9,22 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.transition.TransitionManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,26 +33,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.data.MatchModel;
+import com.brookmanholmes.bma.ui.dialog.EditTextDialog;
+import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.utils.PreferencesUtil;
 import com.github.pavlospt.roundedletterview.RoundedLetterView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -66,6 +87,8 @@ public class IntroActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.createMatch)
     FloatingActionButton fab;
+    @Bind(R.id.progressBar)
+    ProgressBar progressBar;
 
 
     @Override
@@ -93,7 +116,7 @@ public class IntroActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        progressBar.setVisibility(View.GONE);
         final int animationDelay = 250; // .25 seconds
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -161,6 +184,11 @@ public class IntroActivity extends BaseActivity {
                     .withAutoDetect(false)
                     .withLibraries("Butterknife", "LeakCanary", "MPAndroidChart", "materialrangebar")
                     .start(this);
+        }
+
+        if (item.getItemId() == R.id.action_download_match) {
+            DownloadMatchDialog dialog = DownloadMatchDialog.create("Download match");
+            dialog.show(getSupportFragmentManager(), "DownloadMatchDialog");
         }
 
         return super.onOptionsItemSelected(item);
@@ -244,6 +272,192 @@ public class IntroActivity extends BaseActivity {
             ChainTourGuide.init(this).playInSequence(sequence);
 
             preferences.edit().putBoolean("first_run_tutorial_intro", false).apply();
+        }
+    }
+
+    public static class DownloadMatchDialog extends EditTextDialog implements OnSuccessListener<byte[]>, OnFailureListener {
+        private static final long MAX_SIZE = 1024 * 100 * 5; // ~500 kilobytes
+        @Bind(R.id.match)
+        ViewGroup matchView;
+        @Bind(R.id.players)
+        TextView playerNames;
+        @Bind(R.id.breakType)
+        TextView breakType;
+        @Bind(R.id.imgGameType)
+        ImageView gameType;
+        @Bind(R.id.location)
+        TextView location;
+        @Bind(R.id.date)
+        TextView date;
+        @Bind(R.id.ruleSet)
+        TextView ruleSet;
+        @Bind(R.id.textInputLayout)
+        TextInputLayout textInputLayout;
+        Match match;
+        Button positiveButton;
+        private StorageReference storageReference;
+
+        public static DownloadMatchDialog create(String title) {
+            DownloadMatchDialog dialog = new DownloadMatchDialog();
+            Bundle args = new Bundle();
+            args.putString(ARG_TITLE, title);
+            args.putString(ARG_PRETEXT, "");
+            dialog.setArguments(args);
+            return dialog;
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(getString(R.string.firebase_storage_ref));
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            if (getDialog() instanceof AlertDialog) {
+                positiveButton = ((AlertDialog) getDialog()).getButton(Dialog.BUTTON_POSITIVE);
+                positiveButton.setEnabled(false);
+            }
+        }
+
+        @Override
+        protected View createView() {
+            return LayoutInflater.from(getContext()).inflate(R.layout.dialog_download_match, null, false);
+        }
+
+        @Override
+        protected void setupInput(EditText input) {
+            input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        }
+
+        @OnClick(R.id.downloadMatch)
+        public void downloadMatch() {
+            StorageReference matchRef =
+                    storageReference.child("matches/" + input.getText().toString().toUpperCase() + "/match");
+            matchRef.getBytes(MAX_SIZE)
+                    .addOnSuccessListener(this)
+                    .addOnFailureListener(this);
+        }
+
+        @Override
+        protected void onPositiveButton() {
+            DatabaseAdapter db = new DatabaseAdapter(getContext());
+            final long matchId = db.insertMatch(match);
+            final Intent intent = new Intent(getActivity(), MatchInfoActivity.class);
+            intent.putExtra(ARG_MATCH_ID, matchId);
+            startActivity(intent);
+        }
+
+        @Override
+        public void onFailure(@NonNull Exception e) {
+            positiveButton.setEnabled(false);
+            TransitionManager.beginDelayedTransition((LinearLayout) view);
+            matchView.setVisibility(View.INVISIBLE);
+            textInputLayout.setError(e.getLocalizedMessage());
+        }
+
+        @Override
+        public void onSuccess(byte[] bytes) {
+            positiveButton.setEnabled(true);
+            TransitionManager.beginDelayedTransition((LinearLayout) view);
+            matchView.setVisibility(View.VISIBLE);
+            match = MatchModel.unmarshall(bytes).getMatch();
+            setLocation(match.getLocation());
+            date.setText(getDate(match.getCreatedOn()));
+            playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
+            breakType.setText(getBreakType(match.getGameStatus().breakType, match.getPlayer().getName(), match.getOpponent().getName()));
+            gameType.setImageResource(getImageId(match.getGameStatus().gameType));
+            ruleSet.setText(getRuleSet(match.getGameStatus().gameType));
+        }
+
+        private String getDate(Date date) {
+            return DateFormat.getDateInstance().format(date);
+        }
+
+
+        private String getBreakType(BreakType breakType, String playerName, String opponentName) {
+            switch (breakType) {
+                case WINNER:
+                    return getString(R.string.break_winner);
+                case LOSER:
+                    return getString(R.string.break_loser);
+                case ALTERNATE:
+                    return getString(R.string.break_alternate);
+                case PLAYER:
+                    return getString(R.string.break_player, playerName);
+                case OPPONENT:
+                    return getString(R.string.break_player, opponentName);
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
+        private int getImageId(GameType gameType) {
+            switch (gameType) {
+                case BCA_EIGHT_BALL:
+                    return R.drawable.eight_ball;
+                case BCA_NINE_BALL:
+                    return R.drawable.nine_ball;
+                case BCA_TEN_BALL:
+                    return R.drawable.ten_ball;
+                case APA_EIGHT_BALL:
+                    return R.drawable.eight_ball;
+                case APA_NINE_BALL:
+                    return R.drawable.nine_ball;
+                case BCA_GHOST_EIGHT_BALL:
+                    return R.drawable.eight_ball;
+                case BCA_GHOST_NINE_BALL:
+                    return R.drawable.nine_ball;
+                case BCA_GHOST_TEN_BALL:
+                    return R.drawable.ten_ball;
+                case APA_GHOST_EIGHT_BALL:
+                    return R.drawable.eight_ball;
+                case APA_GHOST_NINE_BALL:
+                    return R.drawable.nine_ball;
+                case STRAIGHT_POOL:
+                    return R.drawable.fourteen_ball;
+                case AMERICAN_ROTATION:
+                    return R.drawable.fifteen_ball;
+                default:
+                    return R.drawable.eight_ball;
+            }
+        }
+
+        private String getRuleSet(GameType gameType) {
+            switch (gameType) {
+                case BCA_EIGHT_BALL:
+                    return getString(R.string.bca_rules);
+                case BCA_NINE_BALL:
+                    return getString(R.string.bca_rules);
+                case BCA_TEN_BALL:
+                    return getString(R.string.bca_rules);
+                case APA_EIGHT_BALL:
+                    return getString(R.string.apa_rules);
+                case APA_NINE_BALL:
+                    return getString(R.string.apa_rules);
+                case BCA_GHOST_EIGHT_BALL:
+                    return getString(R.string.bca_rules);
+                case BCA_GHOST_NINE_BALL:
+                    return getString(R.string.bca_rules);
+                case BCA_GHOST_TEN_BALL:
+                    return getString(R.string.bca_rules);
+                case APA_GHOST_EIGHT_BALL:
+                    return getString(R.string.apa_rules);
+                case APA_GHOST_NINE_BALL:
+                    return getString(R.string.apa_rules);
+                default:
+                    return "";
+            }
+        }
+
+        void setLocation(String location) {
+            if (location.isEmpty())
+                this.location.setVisibility(View.GONE);
+            else {
+                this.location.setVisibility(View.VISIBLE);
+                this.location.setText(location);
+            }
         }
     }
 

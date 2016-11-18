@@ -157,17 +157,6 @@ final public class TableStatus implements ITableStatus, Serializable {
         return ballStatuses;
     }
 
-    /**
-     * Removes balls in the list from the table
-     * @param ballsToRemove integers representing each ball that you want to remove
-     */
-    public void removeBallsFromTable(int... ballsToRemove) {
-        for (int ball : ballsToRemove) {
-            if (table.get(ball) == ON_TABLE)
-                table.put(ball, OFF_TABLE);
-        }
-    }
-
     @Override
     public int getGameBall() {
         return GAME_BALL;

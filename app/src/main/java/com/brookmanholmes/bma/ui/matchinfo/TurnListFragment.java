@@ -69,7 +69,7 @@ public class TurnListFragment extends BaseFragment implements
         final Parcelable eimSavedState = (savedInstanceState != null) ?
                 savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         itemManager = new RecyclerViewExpandableItemManager(eimSavedState);
-        adapter = new ExpandableTurnListAdapter(db.getMatch(matchId));
+        adapter = new ExpandableTurnListAdapter(db.getMatchWithTurns(matchId));
         layoutManager = new LinearLayoutManager(getContext());
 
         itemManager.setOnGroupCollapseListener(this);

@@ -314,4 +314,6 @@
     <string name="cb_speed">Speed of shot</string>
     <string name="ball_distances">CB/OB distances</string>
     <string name="title_data_collection">%1$s data collection</string>
+
+    <string name="firebase_storage_ref">gs://billiard-match-analyzer.appspot.com</string>
 </resources>

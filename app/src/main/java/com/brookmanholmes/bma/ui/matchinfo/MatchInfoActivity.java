@@ -1,13 +1,10 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -21,13 +18,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -39,15 +33,23 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.data.MatchModel;
 import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
+import com.brookmanholmes.bma.ui.dialog.AbstractMatchEditTextDialog;
 import com.brookmanholmes.bma.ui.dialog.GameStatusViewBuilder;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.AdvStatsDialog;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.CustomViewPager;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,10 +62,12 @@ import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
 
-public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener {
+public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener,
+        OnFailureListener, OnSuccessListener<UploadTask.TaskSnapshot> {
     private static final String TAG = "MatchInfoActivity";
     private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     private static final String KEY_UNDONE_TURNS = "key_undone_turns";
+    private static final String ARG_MATCH_KEY = "arg_match_key";
     private final List<UpdateMatchInfo> listeners = new ArrayList<>();
 
     @Bind(R.id.toolbar)
@@ -82,10 +86,11 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     CoordinatorLayout layout;
     @Bind(R.id.buttonAddTurn)
     FloatingActionButton fabAddTurn;
+
     private DatabaseAdapter db;
     private Match match;
     private Menu mMenu;
-    private Snackbar matchOverSnackbar;
+    private Snackbar matchOverSnackbar, uploadMatchSnackbar;
     private Drawable activeArrow, inactiveArrow;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +105,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         inactiveArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down_inactive);
 
         db = new DatabaseAdapter(this);
-
-        match = db.getMatch(getMatchId());
+        match = db.getMatchWithTurns(getMatchId());
 
         if (savedInstanceState != null) {
             match.setUndoneTurns((ArrayList) savedInstanceState.getSerializable(KEY_UNDONE_TURNS));
@@ -340,6 +344,10 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if (id == R.id.action_share_match) {
+            shareMatch();
+        }
+
         if (id == R.id.action_notes) {
             showEditMatchNotesDialog();
             analytics.logEvent("show_edit_match_notes", null);
@@ -401,13 +409,78 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         return super.onOptionsItemSelected(item);
     }
 
+    private void shareMatch() {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storage.setMaxUploadRetryTimeMillis(10000);
+        String matchKey = getPreferences().getString(ARG_MATCH_KEY + getMatchId(), "");
+        if (matchKey.isEmpty() || !matchKey.equals(matchKey.toUpperCase())) {
+            matchKey = RandomStringUtils.randomAlphabetic(6).toUpperCase();
+            getPreferences().edit().putString(ARG_MATCH_KEY + getMatchId(), matchKey).apply();
+        }
+
+        final UploadTask task = storage
+                .getReferenceFromUrl(getString(R.string.firebase_storage_ref))
+                .child("matches/" + matchKey + "/match")
+                .putBytes(MatchModel.marshall(match));
+
+        task.addOnFailureListener(this).addOnSuccessListener(this);
+
+        uploadMatchSnackbar = Snackbar.make(layout, "Uploading match", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Cancel", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (task.isInProgress())
+                            task.cancel();
+                    }
+                });
+        uploadMatchSnackbar.show();
+    }
+
+    @Override
+    public void onFailure(@NonNull Exception e) {
+        uploadMatchSnackbar.dismiss();
+        if (!e.getMessage().equals("The operation was cancelled.")) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+            builder.setTitle("Error uploading match")
+                    .setMessage(e.getLocalizedMessage())
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+    }
+
+    @Override
+    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        uploadMatchSnackbar.dismiss();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_share_match, null, false);
+        TextView text = ButterKnife.findById(view, R.id.matchKey);
+        text.setText(getPreferences().getString(ARG_MATCH_KEY + getMatchId(), ""));
+        builder.setTitle("Match uploaded")
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .create()
+                .show();
+    }
+
     private void showAddTurnDialog() {
         AddTurnDialog addTurnDialog = AddTurnDialog.create(match);
         addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
     }
 
     private void showEditPlayerNameDialog(final String name) {
-        EditTextDialog dialog = EditPlayerNameDialog.create(getString(R.string.edit_player_name, name), name, getMatchId());
+        AbstractMatchEditTextDialog dialog = EditPlayerNameDialog.create(getString(R.string.edit_player_name, name), name, getMatchId());
         dialog.show(getSupportFragmentManager(), "EditPlayerName");
     }
 
@@ -417,12 +490,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void showEditMatchNotesDialog() {
-        EditTextDialog dialog = EditMatchNotesDialog.create(getString(R.string.match_notes), match.getNotes(), getMatchId());
+        AbstractMatchEditTextDialog dialog = EditMatchNotesDialog.create(getString(R.string.match_notes), match.getNotes(), getMatchId());
         dialog.show(getSupportFragmentManager(), "EditMatchNotes");
     }
 
     private void showEditMatchLocationDialog() {
-        EditTextDialog dialog = EditMatchLocationDialog.create(getString(R.string.match_location), match.getLocation(), getMatchId());
+        AbstractMatchEditTextDialog dialog = EditMatchLocationDialog.create(getString(R.string.match_location), match.getLocation(), getMatchId());
         dialog.show(getSupportFragmentManager(), "EditMatchLocation");
     }
 
@@ -475,95 +548,10 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         void update(Match match);
     }
 
-    public static abstract class EditTextDialog extends DialogFragment {
-        static final String ARG_TITLE = "arg title";
-        static final String ARG_PRETEXT = "arg pretext";
-        String title;
-        String preText;
-        EditText input;
-        DatabaseAdapter db;
-        Match match;
-        long matchId;
-        private InputMethodManager inputMethodManager;
+    public static class EditPlayerNameDialog extends AbstractMatchEditTextDialog {
 
-        @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            title = getArguments().getString(ARG_TITLE);
-            preText = getArguments().getString(ARG_PRETEXT);
-            matchId = getArguments().getLong(ARG_MATCH_ID);
-            db = new DatabaseAdapter(getContext());
-            match = ((MatchInfoActivity) getActivity()).match;
-        }
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
-            final View view = LayoutInflater.from(getContext()).inflate(R.layout.edit_text, null, false);
-            input = (EditText) view.findViewById(R.id.editText);
-            input.setText(preText);
-            inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            input.requestFocus();
-            showKeyboard();
-            input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (EditorInfo.IME_ACTION_DONE == actionId) {
-                        onPositiveButton();
-                        hideKeyboard();
-                        dismiss();
-                        return true;
-                    }
-                    return false;
-                }
-            });
-
-            setupInput(input);
-            input.setSelection(preText.length(), preText.length());
-
-            return builder.setTitle(title)
-                    .setView(view)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            onPositiveButton();
-                            hideKeyboard();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    })
-                    .create();
-        }
-
-        @Override
-        public void onCancel(DialogInterface dialog) {
-            hideKeyboard();
-            super.onCancel(dialog);
-        }
-
-        private void hideKeyboard() {
-            inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-        }
-
-        private void showKeyboard() {
-            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-        }
-
-        abstract void setupInput(EditText input);
-
-        abstract void onPositiveButton();
-    }
-
-    public static class EditPlayerNameDialog extends EditTextDialog {
-
-        public static EditTextDialog create(String title, String preText, long matchId) {
-            EditTextDialog dialog = new EditPlayerNameDialog();
+        public static AbstractMatchEditTextDialog create(String title, String preText, long matchId) {
+            AbstractMatchEditTextDialog dialog = new EditPlayerNameDialog();
             Bundle args = new Bundle();
             args.putString(ARG_PRETEXT, preText);
             args.putString(ARG_TITLE, title);
@@ -574,12 +562,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         @Override
-        void setupInput(EditText input) {
+        protected void setupInput(EditText input) {
             input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         }
 
         @Override
-        void onPositiveButton() {
+        protected void onPositiveButton() {
             ((MatchInfoActivity) getActivity()).updatePlayerNames(preText, input.getText().toString());
             new Thread(new Runnable() {
                 @Override
@@ -591,9 +579,9 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     }
 
-    public static class EditMatchLocationDialog extends EditTextDialog {
-        public static EditTextDialog create(String title, String preText, long matchId) {
-            EditTextDialog dialog = new EditMatchLocationDialog();
+    public static class EditMatchLocationDialog extends AbstractMatchEditTextDialog {
+        public static AbstractMatchEditTextDialog create(String title, String preText, long matchId) {
+            AbstractMatchEditTextDialog dialog = new EditMatchLocationDialog();
             Bundle args = new Bundle();
             args.putString(ARG_PRETEXT, preText);
             args.putString(ARG_TITLE, title);
@@ -604,12 +592,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         @Override
-        void setupInput(EditText input) {
+        protected void setupInput(EditText input) {
             input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         }
 
         @Override
-        void onPositiveButton() {
+        protected void onPositiveButton() {
             match.setLocation(input.getText().toString());
             new Thread(new Runnable() {
                 @Override
@@ -620,9 +608,9 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
     }
 
-    public static class EditMatchNotesDialog extends EditTextDialog {
-        public static EditTextDialog create(String title, String preText, long matchId) {
-            EditTextDialog dialog = new EditMatchNotesDialog();
+    public static class EditMatchNotesDialog extends AbstractMatchEditTextDialog {
+        public static AbstractMatchEditTextDialog create(String title, String preText, long matchId) {
+            AbstractMatchEditTextDialog dialog = new EditMatchNotesDialog();
             Bundle args = new Bundle();
             args.putString(ARG_PRETEXT, preText);
             args.putString(ARG_TITLE, title);
@@ -633,12 +621,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         @Override
-        void setupInput(EditText input) {
+        protected void setupInput(EditText input) {
 
         }
 
         @Override
-        void onPositiveButton() {
+        protected void onPositiveButton() {
             match.setNotes(input.getText().toString());
             new Thread(new Runnable() {
                 @Override

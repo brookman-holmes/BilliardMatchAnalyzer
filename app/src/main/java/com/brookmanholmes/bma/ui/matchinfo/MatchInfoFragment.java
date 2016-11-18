@@ -134,7 +134,7 @@ public class MatchInfoFragment extends BaseFragment
         boolean expanded;
         int innings = 0;
         if (getArguments().getLong(BaseActivity.ARG_MATCH_ID, -1L) != -1L) {
-            Match match = db.getMatch(getArguments().getLong(BaseActivity.ARG_MATCH_ID));
+            Match match = db.getMatchWithTurns(getArguments().getLong(BaseActivity.ARG_MATCH_ID));
             player = match.getPlayer();
             opponent = match.getOpponent();
             expanded = false;

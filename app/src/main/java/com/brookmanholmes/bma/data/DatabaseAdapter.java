@@ -126,7 +126,7 @@ public class DatabaseAdapter {
         return ret;
     }
 
-    private static EnumSet<Match.StatsDetail> decodeEnumSet(int code) {
+    static EnumSet<Match.StatsDetail> decodeEnumSet(int code) {
         EnumSet<Match.StatsDetail> result = EnumSet.noneOf(Match.StatsDetail.class);
         Match.StatsDetail[] values = Match.StatsDetail.values();
         while (code != 0) {
@@ -139,7 +139,6 @@ public class DatabaseAdapter {
     }
 
     public void createSampleMatches() {
-        // TODO: 8/19/2016 REMOVE THESE BEFORE RELEASE, I might not have permission to use these people's names
         long match = insertMatch(SampleMatchProvider.getHohmannSvbMatch());
         int count = 0;
         for (ITurn turn : SampleMatchProvider.getHohmannSvbTurns()) {
@@ -231,7 +230,7 @@ public class DatabaseAdapter {
                 null);
 
         while (c.moveToNext()) {
-            Match match = getMatch(c.getLong(c.getColumnIndex(COLUMN_MATCH_ID)));
+            Match match = getMatchWithTurns(c.getLong(c.getColumnIndex(COLUMN_MATCH_ID)));
             Pair<AbstractPlayer, AbstractPlayer> pair;
 
             if (match.getPlayer().getName().equals(playerName)) {
@@ -292,7 +291,7 @@ public class DatabaseAdapter {
         return matches;
     }
 
-    public Match getMatch(long id) {
+    public Match getMatchWithTurns(long id) {
         final String selection = "m." + COLUMN_ID + " as _id, "
                 + "p." + COLUMN_NAME + " as player_name, "
                 + "opp." + COLUMN_NAME + " as opp_name, "
@@ -326,6 +325,41 @@ public class DatabaseAdapter {
 
         for (ITurn turn : getMatchTurns(id))
             match.addTurn(turn);
+
+        return match;
+    }
+
+    public Match getMatch(long id) {
+        final String selection = "m." + COLUMN_ID + " as _id, "
+                + "p." + COLUMN_NAME + " as player_name, "
+                + "opp." + COLUMN_NAME + " as opp_name, "
+                + "p." + COLUMN_ID + " as player_id, "
+                + "opp." + COLUMN_ID + " as opp_id, "
+                + COLUMN_PLAYER_TURN + ", "
+                + COLUMN_GAME_TYPE + ", "
+                + COLUMN_BREAK_TYPE + ", "
+                + COLUMN_CREATED_ON + ", "
+                + COLUMN_PLAYER_RANK + ", "
+                + COLUMN_OPPONENT_RANK + ", "
+                + COLUMN_NOTES + ", "
+                + COLUMN_STATS_DETAIL + ", "
+                + COLUMN_LOCATION + "\n";
+
+        final String query = "SELECT " + selection + "from " + TABLE_MATCHES + " m\n"
+                + "left join (select " + COLUMN_NAME + ", " + COLUMN_MATCH_ID + ", " + COLUMN_ID + " from "
+                + TABLE_PLAYERS + " where " + COLUMN_ID + " % 2 = 1) p\n"
+                + "on p." + COLUMN_MATCH_ID + "= m._id\n"
+                + "left join (select " + COLUMN_NAME + ", " + COLUMN_MATCH_ID + ", " + COLUMN_ID + " from "
+                + TABLE_PLAYERS + " where " + COLUMN_ID + " % 2 = 0) opp\n"
+                + "on p." + COLUMN_MATCH_ID + "=" + "opp." + COLUMN_MATCH_ID + "\n"
+                + "where m._id = " + id;
+
+        Cursor c = database.rawQuery(query, null);
+        c.moveToFirst();
+
+        Match match = createMatchFromCursor(c);
+
+        c.close();
 
         return match;
     }
@@ -480,6 +514,12 @@ public class DatabaseAdapter {
 
         long matchId = database.insert(TABLE_MATCHES, null, matchValues);
         match.setMatchId(matchId);
+
+        int turnCount = 0;
+        for (ITurn turn : match.getTurns()) {
+            insertTurn(turn, matchId, turnCount++);
+        }
+
         insertPlayer(match.getPlayer(), matchId);
         insertPlayer(match.getOpponent(), matchId);
 
@@ -603,7 +643,7 @@ public class DatabaseAdapter {
         return stat;
     }
 
-    private List<ITurn> getMatchTurns(long id) {
+    public List<ITurn> getMatchTurns(long id) {
         List<ITurn> turns = new ArrayList<>();
         Cursor c = getMatchTurnsCursor(id);
 

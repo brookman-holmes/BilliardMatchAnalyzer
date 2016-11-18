@@ -368,6 +368,10 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
                                     // update recyclerView
                                     matches.remove(getAdapterPosition());
                                     notifyItemRemoved(getAdapterPosition());
+
+                                    // remove the share match string if it exists
+                                    IntroActivity activity = (IntroActivity) getContext();
+                                    activity.getPreferences().edit().remove(IntroActivity.ARG_MATCH_ID + id).apply();
                                 }
                             })
                             .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

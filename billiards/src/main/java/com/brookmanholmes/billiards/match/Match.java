@@ -92,6 +92,8 @@ public class Match implements IMatch {
 
     @Override
     public GameStatus getGameStatus(int turn) {
+        if (games.size() == 0)
+            return game.getGameStatus();
         return games.get(turn);
     }
 
