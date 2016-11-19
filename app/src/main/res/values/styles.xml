@@ -154,9 +154,9 @@
         <item name="android:paddingEnd">24dp</item>
     </style>
 
-    <style name="stroked_text">
-        <item name="android:layout_height">24dp</item>
-        <item name="android:layout_width">24dp</item>
+    <style name="ball_style">
+        <item name="android:layout_height">@dimen/ball_container_ball_size</item>
+        <item name="android:layout_width">@dimen/ball_container_ball_size</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:gravity">center</item>
         <item name="android:visibility">gone</item>

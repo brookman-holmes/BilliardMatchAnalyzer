@@ -14,4 +14,5 @@
   limitations under the License.
   -->
     <dimen name="activity_dialog_title_padding">24dp</dimen>
+    <dimen name="ball_container_ball_size">32dp</dimen>
 </resources>
