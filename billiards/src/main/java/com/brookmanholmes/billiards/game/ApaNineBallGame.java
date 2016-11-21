@@ -9,8 +9,8 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
  * <p></p>Created by Brookman Holmes on 10/27/2015.
  */
 class ApaNineBallGame extends NineBallGame {
-    ApaNineBallGame() {
-        super(GameType.APA_NINE_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
+    ApaNineBallGame(PlayerTurn turn) {
+        super(GameType.APA_NINE_BALL, turn, BreakType.WINNER);
         allowPush = false;
     }
 

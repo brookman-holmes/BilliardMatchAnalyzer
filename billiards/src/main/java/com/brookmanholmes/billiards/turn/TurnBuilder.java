@@ -10,7 +10,7 @@ import com.brookmanholmes.billiards.game.GameType;
 public class TurnBuilder {
     private final int GAME_BALL;
     private final ITableStatus status;
-    private boolean scratch = false;
+    private boolean foul = false;
     private AdvStats advStats = null;
 
     /**
@@ -113,7 +113,7 @@ public class TurnBuilder {
      * @return This instance of {@link com.brookmanholmes.billiards.turn.TurnBuilder} for chaining purposes
      */
     public TurnBuilder fouled() {
-        scratch = true;
+        foul = true;
         return this;
     }
 
@@ -134,7 +134,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn miss() {
-        return new Turn(TurnEnd.MISS, status, scratch, false, advStats);
+        return new Turn(TurnEnd.MISS, status, foul, false, advStats);
     }
 
     /**
@@ -143,7 +143,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn win() {
-        return new Turn(TurnEnd.GAME_WON, status, scratch, false, advStats);
+        return new Turn(TurnEnd.GAME_WON, status, foul, false, advStats);
     }
 
     /**
@@ -153,7 +153,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn lose() {
-        return new Turn(TurnEnd.MISS, status, scratch, true, advStats);
+        return new Turn(TurnEnd.MISS, status, foul, true, advStats);
     }
 
     /**
@@ -162,7 +162,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn safety() {
-        return new Turn(TurnEnd.SAFETY, status, scratch, false, advStats);
+        return new Turn(TurnEnd.SAFETY, status, foul, false, advStats);
     }
 
     /**
@@ -171,7 +171,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn safetyMiss() {
-        return new Turn(TurnEnd.SAFETY_ERROR, status, scratch, false, advStats);
+        return new Turn(TurnEnd.SAFETY_ERROR, status, foul, false, advStats);
     }
 
     /**
@@ -180,7 +180,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn breakMiss() {
-        return new Turn(TurnEnd.BREAK_MISS, status, scratch, false, advStats);
+        return new Turn(TurnEnd.BREAK_MISS, status, foul, false, advStats);
     }
 
     /**
@@ -189,7 +189,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn push() {
-        return new Turn(TurnEnd.PUSH_SHOT, status, scratch, false, advStats);
+        return new Turn(TurnEnd.PUSH_SHOT, status, foul, false, advStats);
     }
 
     /**
@@ -198,7 +198,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn skipTurn() {
-        return new Turn(TurnEnd.SKIP_TURN, status, scratch, false, advStats);
+        return new Turn(TurnEnd.SKIP_TURN, status, foul, false, advStats);
     }
 
     /**
@@ -207,7 +207,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn continueGame() {
-        return new Turn(TurnEnd.CONTINUE_WITH_GAME, status, scratch, false, advStats);
+        return new Turn(TurnEnd.CONTINUE_WITH_GAME, status, foul, false, advStats);
     }
 
     /**
@@ -216,7 +216,7 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn currentPlayerBreaks() {
-        return new Turn(TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, scratch, false, advStats);
+        return new Turn(TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN, status, foul, false, advStats);
     }
 
     /**
@@ -225,6 +225,6 @@ public class TurnBuilder {
      * @return A new instance of {@link com.brookmanholmes.billiards.turn.ITurn}
      */
     public ITurn opposingPlayerBreaks() {
-        return new Turn(TurnEnd.OPPONENT_BREAKS_AGAIN, status, scratch, false, advStats);
+        return new Turn(TurnEnd.OPPONENT_BREAKS_AGAIN, status, foul, false, advStats);
     }
 }

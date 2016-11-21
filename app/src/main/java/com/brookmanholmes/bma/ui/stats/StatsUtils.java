@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.stats;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.transition.Slide;
@@ -52,7 +53,7 @@ class StatsUtils {
             rightWeight = (float) integerPair.second / ((float) integerPair.first + (float) integerPair.second);
 
         if (integerPair.first + integerPair.second > 0) {
-            leftView.getBackground().setTint(ContextCompat.getColor(leftView.getContext(), R.color.colorAccent));
+            leftView.getBackground().setColorFilter(ContextCompat.getColor(leftView.getContext(), R.color.colorAccent), PorterDuff.Mode.SRC_IN);
             leftView.setTextColor(ContextCompat.getColor(leftView.getContext(), R.color.white));
 
             LinearLayout.LayoutParams leftParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, leftWeight);
@@ -75,7 +76,7 @@ class StatsUtils {
             rightView.setLayoutParams(rightParams);
 
             leftView.setText("No data");
-            leftView.getBackground().setTint(ContextCompat.getColor(leftView.getContext(), R.color.dead_ball));
+            leftView.getBackground().setColorFilter(ContextCompat.getColor(leftView.getContext(), R.color.dead_ball), PorterDuff.Mode.SRC_IN);
             leftView.setTextColor(ContextCompat.getColor(leftView.getContext(), R.color.primary_text));
         }
     }

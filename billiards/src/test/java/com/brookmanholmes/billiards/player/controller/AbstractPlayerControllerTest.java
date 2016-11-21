@@ -70,7 +70,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     }
 
     @Test
-    public void scratchOnBreak() {
+    public void foulOnBreak() {
         playerController.turn = turnBuilder.fouled().breakMiss();
         playerController.gameStatus = game.getGameStatus();
         playerController.addBreakingStats(actualPlayer);
@@ -151,7 +151,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
     }
 
     @Test
-    public void safetyMissTurnEndWithScratchGivesASafetyAttempt() {
+    public void safetyMissTurnEndWithFoulGivesASafetyAttempt() {
         playerController.turn = turnBuilder.fouled().safetyMiss();
         playerController.gameStatus = game.getGameStatus();
 

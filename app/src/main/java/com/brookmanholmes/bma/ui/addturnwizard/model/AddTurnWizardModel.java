@@ -42,6 +42,7 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringT
  */
 public class AddTurnWizardModel extends AbstractWizardModel {
     private static final String TAG = "AddTurnWizardModel";
+    private static final Page[] emptyPageArray = new Page[]{};
     private final Bundle matchData;
     private final TurnBuilder turnBuilder;
     private final String playerName;
@@ -218,7 +219,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                     .setCueing(isCueing())
                     .setDistances(isDistances())
                     .setSpeed(isSpeed())};
-        } else return new Page[]{};
+        } else return emptyPageArray;
     }
 
     private Page[] getSafetyErrorBranch() {
@@ -226,7 +227,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
             return new Page[]{new SafetyErrorPage(this, context.getString(R.string.title_how_miss, playerName))
                     .setChoices(context.getResources().getStringArray(R.array.how_choices_safety))
                     .setRequired(true)};
-        else return new Page[]{};
+        else return emptyPageArray;
     }
 
     private Page[] getMissBranchPage() {
@@ -243,7 +244,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                     .addBranch(context.getString(R.string.miss_masse), getHowMissPage(R.array.how_choices_masse));
 
             return new Page[]{page.setValue(context.getString(R.string.miss_cut)).setRequired(true)};
-        } else return new Page[]{};
+        } else return emptyPageArray;
     }
 
     private Page[] combineArrays(Page[]... pages) {
@@ -272,36 +273,47 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page[] getAnglePage() {
-        return new Page[]{new AngleTypePage(this, context.getString(R.string.title_angle, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.angles))
-                .setValue(context.getResources().getStringArray(R.array.angles)[0])
-                .setRequired(true)};
+        if (isAngle()) {
+            return new Page[]{new AngleTypePage(this, context.getString(R.string.title_angle, playerName), false)
+                    .setChoices(context.getResources().getStringArray(R.array.angles))
+                    .setValue(context.getResources().getStringArray(R.array.angles)[0])
+                    .setRequired(true)};
+        } else if (isSimpleAngle()) {
+            return new Page[]{new AngleTypePage(this, context.getString(R.string.title_angle, playerName), false)
+                    .setChoices(context.getResources().getStringArray(R.array.simple_angles))
+                    .setValue(context.getResources().getStringArray(R.array.simple_angles)[0])
+                    .setRequired(true)};
+        } else return emptyPageArray;
     }
 
     private Page[] getBankPage() {
-        return new Page[]{new BankPage(this, context.getString(R.string.title_bank, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.banks))};
+        if (isAngle()) {
+            return new Page[]{new BankPage(this, context.getString(R.string.title_bank, playerName))
+                    .setChoices(context.getResources().getStringArray(R.array.banks))};
+        } else return emptyPageArray;
     }
 
     private Page[] getKickPage() {
-        return new Page[]{new KickPage(this, context.getString(R.string.title_kick_type, playerName))
-                .setChoices(context.getResources().getStringArray(R.array.kicks))
-                .setValue(context.getString(R.string.one_rail))
-                .setRequired(true)};
+        if (isAngle()) {
+            return new Page[]{new KickPage(this, context.getString(R.string.title_kick_type, playerName))
+                    .setChoices(context.getResources().getStringArray(R.array.kicks))
+                    .setValue(context.getString(R.string.one_rail))
+                    .setRequired(true)};
+        } else return emptyPageArray;
     }
 
     private Page[] getBreakErrorHow() {
         if (isHowMiss())
             return new Page[]{new BreakErrorPage(this, context.getString(R.string.title_how_miss, playerName))
                     .setChoices(context.getResources().getStringArray(R.array.how_choices_break))};
-        else return new Page[]{};
+        else return emptyPageArray;
     }
 
     private Page[] getIllegalBreakHow() {
         if (isHowMiss())
             return new Page[]{new BreakErrorPage(this, context.getString(R.string.title_how_miss, playerName))
                     .setChoices(context.getResources().getStringArray(R.array.how_choices_break))};
-        else return new Page[]{};
+        else return emptyPageArray;
     }
 
     private Page[] getSafetyPage() {
@@ -310,21 +322,21 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                     .setChoices(context.getResources().getStringArray(R.array.safety_types))
                     .setValue(context.getString(R.string.safety_full_hook))
                     .setRequired(true)};
-        else return new Page[]{};
+        else return emptyPageArray;
     }
 
     private Page[] getHowMissPage(@ArrayRes int choices) {
         if (isHowMiss())
             return new Page[]{new HowMissPage(this, context.getString(R.string.title_how_miss, playerName))
                     .setChoices(context.getResources().getStringArray(choices))};
-        else return new Page[]{};
+        else return emptyPageArray;
     }
 
     private Page[] getHowMissPageAll() {
         if (isHowMiss() && !isShotType())
             return new Page[]{new HowMissPage(this, context.getString(R.string.title_how_miss, playerName))
                     .setChoices(context.getResources().getStringArray(R.array.how_choices_all))};
-        else return new Page[]{};
+        else return emptyPageArray;
     }
 
     public TurnBuilder getTurnBuilder() {
@@ -393,7 +405,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         if (turn == PlayerTurn.PLAYER) {
             return dataCollection.contains(Match.StatsDetail.SPEED_PLAYER);
         } else {
-            return dataCollection.contains(Match.StatsDetail.SAFETIES_OPPONENT);
+            return dataCollection.contains(Match.StatsDetail.SPEED_OPPONENT);
         }
     }
 
@@ -406,6 +418,22 @@ public class AddTurnWizardModel extends AbstractWizardModel {
             return dataCollection.contains(Match.StatsDetail.BALL_DISTANCES_PLAYER);
         } else {
             return dataCollection.contains(Match.StatsDetail.BALL_DISTANCES_OPPONENT);
+        }
+    }
+
+    private boolean isAngle() {
+        if (turn == PlayerTurn.PLAYER) {
+            return dataCollection.contains(Match.StatsDetail.ANGLE_PLAYER);
+        } else {
+            return dataCollection.contains(Match.StatsDetail.ANGLE_OPPONENT);
+        }
+    }
+
+    private boolean isSimpleAngle() {
+        if (turn == PlayerTurn.PLAYER) {
+            return dataCollection.contains(Match.StatsDetail.ANGLE_SIMPLE_PLAYER);
+        } else {
+            return dataCollection.contains(Match.StatsDetail.ANGLE_SIMPLE_OPPONENT);
         }
     }
 }

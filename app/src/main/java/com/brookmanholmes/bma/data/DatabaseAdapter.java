@@ -59,7 +59,7 @@ public class DatabaseAdapter {
     static final String TABLE_TURNS = "turns_table";
     static final String COLUMN_TABLE_STATUS = "table_status";
     static final String COLUMN_TURN_END = "turn_end";
-    static final String COLUMN_SCRATCH = "foul";
+    static final String COLUMN_FOUL = "foul";
     static final String COLUMN_MATCH_ID = "match_id";
     static final String COLUMN_TURN_NUMBER = "turn_number";
     static final String COLUMN_IS_GAME_LOST = "is_game_lost";
@@ -569,7 +569,7 @@ public class DatabaseAdapter {
 
         turnValues.put(COLUMN_TABLE_STATUS, tableStatusToString(turn));
         turnValues.put(COLUMN_MATCH_ID, matchId);
-        turnValues.put(COLUMN_SCRATCH, turn.isFoul());
+        turnValues.put(COLUMN_FOUL, turn.isFoul());
         turnValues.put(COLUMN_TURN_END, turn.getTurnEnd().name());
         turnValues.put(COLUMN_TURN_NUMBER, turnCount);
         turnValues.put(COLUMN_IS_GAME_LOST, turn.isGameLost());
@@ -673,7 +673,7 @@ public class DatabaseAdapter {
         return new Turn(
                 TurnEnd.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TURN_END))),
                 stringToTableStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TABLE_STATUS))),
-                cursor.getInt(cursor.getColumnIndex(COLUMN_SCRATCH)) == 1,
+                cursor.getInt(cursor.getColumnIndex(COLUMN_FOUL)) == 1,
                 cursor.getInt(cursor.getColumnIndex(COLUMN_IS_GAME_LOST)) == 1,
                 advStats
         );

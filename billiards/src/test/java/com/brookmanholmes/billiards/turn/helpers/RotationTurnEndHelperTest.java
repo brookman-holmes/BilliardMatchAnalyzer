@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.turn.helpers;
 
-import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
@@ -18,7 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class RotationTurnEndHelperTest extends AbstractTurnEndHelperTest {
     @Override public void setUp() {
         tableStatus = TableStatus.newTable(GameType.BCA_NINE_BALL);
-        showScratchOnDeadBall = true;
+        showFoulOnDeadBall = true;
         gameBuilder = new GameStatus.Builder(GameType.BCA_NINE_BALL);
     }
 

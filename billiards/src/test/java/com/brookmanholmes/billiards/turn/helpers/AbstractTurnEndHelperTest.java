@@ -1,9 +1,9 @@
 package com.brookmanholmes.billiards.turn.helpers;
 
-import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.BallStatus;
-import com.brookmanholmes.billiards.turn.TableStatus;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
+import com.brookmanholmes.billiards.turn.TableStatus;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public abstract class AbstractTurnEndHelperTest {
     TableStatus tableStatus;
     ITurn turn;
     GameStatus.Builder gameBuilder;
-    boolean showScratchOnDeadBall = false;
+    boolean showFoulOnDeadBall = false;
 
 
     @Before
@@ -36,15 +36,15 @@ public abstract class AbstractTurnEndHelperTest {
     }
 
     @Test
-    public void showScratchOnDeadBall() {
+    public void showFoulOnDeadBall() {
         tableStatus.setBallTo(BallStatus.DEAD, 5);
         helper = TurnEndHelper.create(gameBuilder.newGame().build(), tableStatus);
 
-        assertThat(helper.checkFoul(), is(showScratchOnDeadBall));
+        assertThat(helper.checkFoul(), is(showFoulOnDeadBall));
     }
 
     @Test
-    public void showScratchOnDeadBallOnBreak() {
+    public void showFoulOnDeadBallOnBreak() {
         tableStatus.setBallTo(BallStatus.DEAD_ON_BREAK, 5);
         helper = TurnEndHelper.create(gameBuilder.newGame().build(), tableStatus);
 

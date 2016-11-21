@@ -66,7 +66,7 @@ public class TurnTest {
     }
 
     @Test
-    public void isScratchIsTrue() {
+    public void isFoulIsTrue() {
         table.setBallTo(MADE_ON_BREAK, 1, 9);
 
         turn = createGameTurn(table, true, MISS, true);
@@ -75,7 +75,7 @@ public class TurnTest {
     }
 
     @Test
-    public void isScratchIsFalse() {
+    public void isFoulIsFalse() {
         table.setBallTo(MADE_ON_BREAK, 1, 9);
 
         turn = createGameTurn(table, false, MISS, true);
@@ -91,7 +91,7 @@ public class TurnTest {
     }
 
 
-    private ITurn createGameTurn(TableStatus table, boolean scratch, TurnEnd turnEnd, boolean isGameLost) {
-        return new Turn(turnEnd, table, scratch, isGameLost, null);
+    private ITurn createGameTurn(TableStatus table, boolean foul, TurnEnd turnEnd, boolean isGameLost) {
+        return new Turn(turnEnd, table, foul, isGameLost, null);
     }
 }

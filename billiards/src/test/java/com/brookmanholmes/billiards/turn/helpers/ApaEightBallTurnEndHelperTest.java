@@ -10,7 +10,7 @@ import com.brookmanholmes.billiards.turn.TableStatus;
 public class ApaEightBallTurnEndHelperTest extends EightBallTurnEndHelperTest {
     @Override public void setUp() {
         tableStatus = TableStatus.newTable(GameType.APA_EIGHT_BALL);
-        showScratchOnDeadBall = true;
+        showFoulOnDeadBall = true;
         gameBuilder = new GameStatus.Builder(GameType.APA_EIGHT_BALL);
     }
 

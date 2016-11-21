@@ -30,6 +30,7 @@ import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_CB_TO_OB;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_CREATED_ON;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_CUE_X;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_CUE_Y;
+import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_FOUL;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_GAME_TYPE;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_ID;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_IS_GAME_LOST;
@@ -41,7 +42,6 @@ import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_OB_TO_POCKET;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_OPPONENT_RANK;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_PLAYER_RANK;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_PLAYER_TURN;
-import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_SCRATCH;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_SHOT_SUB_TYPE;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_SHOT_TYPE;
 import static com.brookmanholmes.bma.data.DatabaseAdapter.COLUMN_SPEED;
@@ -138,7 +138,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_MATCH_ID + " INTEGER NOT NULL, "
                 + COLUMN_TURN_END + " TEXT COLLATE NOCASE NOT NULL, "
                 + COLUMN_TABLE_STATUS + " TEXT COLLATE NOCASE DEFAULT NULL, "
-                + COLUMN_SCRATCH + " INTEGER DEFAULT NULL, "
+                + COLUMN_FOUL + " INTEGER DEFAULT NULL, "
                 + COLUMN_IS_GAME_LOST + " INTEGER DEFAULT NULL, "
                 + COLUMN_TURN_NUMBER + " INTEGER DEFAULT 0"
                 + ");";

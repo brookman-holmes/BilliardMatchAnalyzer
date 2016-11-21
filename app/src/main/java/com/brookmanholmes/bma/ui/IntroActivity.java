@@ -587,9 +587,9 @@ public class IntroActivity extends BaseActivity {
                 safetyPct.setText(String.format(context.getString(R.string.safety_pct), player.getSafetyPct()));
                 breakPct.setText(String.format(context.getString(R.string.breaking_pct), player.getBreakPct()));
 
-                shootingLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
-                safetyLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
-                breakingLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
+                shootingLine.getDrawable().setTint(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
+                safetyLine.getDrawable().setTint(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
+                breakingLine.getDrawable().setTint(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
             }
 
             @OnClick(R.id.container)

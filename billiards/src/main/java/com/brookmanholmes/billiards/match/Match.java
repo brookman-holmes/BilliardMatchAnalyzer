@@ -332,7 +332,33 @@ public class Match implements IMatch {
         SPEED_PLAYER,
         SPEED_OPPONENT,
         BALL_DISTANCES_PLAYER,
-        BALL_DISTANCES_OPPONENT
+        BALL_DISTANCES_OPPONENT,
+        ANGLE_SIMPLE_PLAYER,
+        ANGLE_SIMPLE_OPPONENT,
+        ANGLE_PLAYER,
+        ANGLE_OPPONENT;
+
+        public static Collection<StatsDetail> getPlayerStatsTracked() {
+            return Arrays.asList(SHOT_TYPE_PLAYER,
+                    CUEING_PLAYER,
+                    HOW_MISS_PLAYER,
+                    SAFETIES_PLAYER,
+                    SPEED_PLAYER,
+                    BALL_DISTANCES_PLAYER,
+                    ANGLE_SIMPLE_PLAYER,
+                    ANGLE_PLAYER);
+        }
+
+        public static Collection<StatsDetail> getOpponentStatsTracked() {
+            return Arrays.asList(SHOT_TYPE_OPPONENT,
+                    CUEING_OPPONENT,
+                    HOW_MISS_OPPONENT,
+                    SAFETIES_OPPONENT,
+                    SPEED_OPPONENT,
+                    BALL_DISTANCES_OPPONENT,
+                    ANGLE_SIMPLE_OPPONENT,
+                    ANGLE_OPPONENT);
+        }
     }
 
     public static class Builder {

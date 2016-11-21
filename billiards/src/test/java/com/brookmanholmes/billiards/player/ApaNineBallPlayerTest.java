@@ -76,9 +76,9 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
     }
 
     @Override @Test
-    public void addShootingBallsMadeAdds8BallsMadeWithScratch() {
+    public void addShootingBallsMadeAdds8BallsMadeWithFoul() {
         expected.points += 8;
-        super.addShootingBallsMadeAdds8BallsMadeWithScratch();
+        super.addShootingBallsMadeAdds8BallsMadeWithFoul();
     }
 
 

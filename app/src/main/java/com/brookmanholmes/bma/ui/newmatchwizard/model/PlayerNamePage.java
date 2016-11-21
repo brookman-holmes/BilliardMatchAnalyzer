@@ -50,6 +50,7 @@ public class PlayerNamePage extends BranchPage implements UpdatesMatchBuilder, U
         data.putString(SIMPLE_DATA_KEY, Boolean.FALSE.toString());
         this.parentKey = parentKey;
         this.name = name;
+        data.putString(PLAYER_NAME_KEY, name);
     }
 
     @Override

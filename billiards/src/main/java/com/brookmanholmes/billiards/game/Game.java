@@ -77,9 +77,9 @@ public abstract class Game {
             case BCA_TEN_BALL:
                 return new TenBallGame(turn, breakType);
             case APA_EIGHT_BALL:
-                return new ApaEightBallGame();
+                return new ApaEightBallGame(turn);
             case APA_NINE_BALL:
-                return new ApaNineBallGame();
+                return new ApaNineBallGame(turn);
             case BCA_EIGHT_BALL:
                 return new EightBallGame(turn, breakType);
             case BCA_GHOST_EIGHT_BALL:

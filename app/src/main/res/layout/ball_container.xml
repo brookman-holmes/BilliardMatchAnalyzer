@@ -4,86 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ballContainer"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="4dp"
     android:paddingTop="4dp"
     app:orientation="horizontal"
-    app:useDefaultMargins="false"
     tools:showIn="@layout/row_turn">
 
     <ImageView
-        android:id="@+id/one_ball"
         style="@style/ball_style"
-        android:src="@drawable/one_ball_level" />
-
+        android:background="@drawable/ic_background"
+        android:backgroundTint="@color/one_ball"
+        android:src="@drawable/ic_one_ball" />
     <ImageView
-        android:id="@+id/two_ball"
         style="@style/ball_style"
-        android:src="@drawable/two_ball_level" />
-
+        android:background="@drawable/ic_background"
+        android:backgroundTint="@color/two_ball"
+        android:src="@drawable/ic_two_ball" />
     <ImageView
-        android:id="@+id/three_ball"
         style="@style/ball_style"
-        android:src="@drawable/three_ball_level" />
-
+        android:background="@drawable/ic_background"
+        android:backgroundTint="@color/three_ball"
+        android:src="@drawable/ic_three_ball" />
     <ImageView
-        android:id="@+id/four_ball"
         style="@style/ball_style"
-        android:src="@drawable/four_ball_level" />
-
+        android:background="@drawable/ic_background"
+        android:backgroundTint="@color/four_ball"
+        android:src="@drawable/ic_four_ball" />
     <ImageView
-        android:id="@+id/five_ball"
         style="@style/ball_style"
-        android:src="@drawable/five_ball_level" />
-
+        android:background="@drawable/ic_background"
+        android:backgroundTint="@color/five_ball"
+        android:src="@drawable/ic_five_ball" />
     <ImageView
-        android:id="@+id/six_ball"
         style="@style/ball_style"
-        android:src="@drawable/six_ball_level" />
-
+        android:background="@drawable/ic_background"
+        android:backgroundTint="@color/six_ball"
+        android:src="@drawable/ic_six_ball" />
     <ImageView
-        android:id="@+id/seven_ball"
         style="@style/ball_style"
-        android:src="@drawable/seven_ball_level" />
-
+        android:background="@drawable/ic_background"
+        android:backgroundTint="@color/seven_ball"
+        android:src="@drawable/ic_seven_ball" />
     <ImageView
-        android:id="@+id/eight_ball"
         style="@style/ball_style"
-        android:src="@drawable/eight_ball_level" />
-
+        android:background="@drawable/ic_background"
+        android:backgroundTint="@color/eight_ball"
+        android:src="@drawable/ic_eight_ball" />
     <ImageView
-        android:id="@+id/nine_ball"
         style="@style/ball_style"
-        android:src="@drawable/nine_ball_level" />
-
+        android:background="@drawable/ic_background_stripe"
+        android:backgroundTint="@color/one_ball"
+        android:src="@drawable/ic_nine_ball" />
     <ImageView
-        android:id="@+id/ten_ball"
         style="@style/ball_style"
-        android:src="@drawable/ten_ball_level" />
-
+        android:background="@drawable/ic_background_stripe"
+        android:backgroundTint="@color/two_ball"
+        android:src="@drawable/ic_ten_ball" />
     <ImageView
-        android:id="@+id/eleven_ball"
         style="@style/ball_style"
-        android:src="@drawable/eleven_ball_level" />
-
+        android:background="@drawable/ic_background_stripe"
+        android:backgroundTint="@color/three_ball"
+        android:src="@drawable/ic_eleven_ball" />
     <ImageView
-        android:id="@+id/twelve_ball"
         style="@style/ball_style"
-        android:src="@drawable/twelve_ball_level" />
-
+        android:background="@drawable/ic_background_stripe"
+        android:backgroundTint="@color/four_ball"
+        android:src="@drawable/ic_twelve_ball" />
     <ImageView
-        android:id="@+id/thirteen_ball"
         style="@style/ball_style"
-        android:src="@drawable/thirteen_ball_level" />
-
+        android:background="@drawable/ic_background_stripe"
+        android:backgroundTint="@color/five_ball"
+        android:src="@drawable/ic_thirteen_ball" />
     <ImageView
-        android:id="@+id/fourteen_ball"
         style="@style/ball_style"
-        android:src="@drawable/fourteen_ball_level" />
-
+        android:background="@drawable/ic_background_stripe"
+        android:backgroundTint="@color/six_ball"
+        android:src="@drawable/ic_fourteen_ball" />
     <ImageView
-        android:id="@+id/fifteen_ball"
         style="@style/ball_style"
-        android:src="@drawable/fifteen_ball_level" />
+        android:background="@drawable/ic_background_stripe"
+        android:backgroundTint="@color/seven_ball"
+        android:src="@drawable/ic_fifteen_ball" />
 
 </android.support.v7.widget.GridLayout>

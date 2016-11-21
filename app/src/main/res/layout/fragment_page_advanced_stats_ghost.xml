@@ -87,6 +87,46 @@
                 app:layout_gravity="center_horizontal" />
 
             <CheckBox
+                android:id="@+id/cbAnglePlayer"
+                android:enabled="false"
+                app:layout_columnWeight="1"
+                app:layout_gravity="right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Detailed angles"
+                app:layout_columnWeight="1"
+                app:layout_gravity="center" />
+
+            <CheckBox
+                android:id="@+id/cbAngleOpponent"
+                android:enabled="false"
+                app:layout_columnWeight="1"
+                app:layout_gravity="left" />
+
+            <CheckBox
+                android:id="@+id/cbAngleSimplePlayer"
+                android:enabled="false"
+                app:layout_columnWeight="1"
+                app:layout_gravity="right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Simple angles"
+                app:layout_columnWeight="1"
+                app:layout_gravity="center" />
+
+            <CheckBox
+                android:id="@+id/cbAngleSimpleOpponent"
+                android:enabled="false"
+                app:layout_columnWeight="1"
+                app:layout_gravity="left" />
+
+            <CheckBox
                 android:id="@+id/cbHowPlayer"
                 app:layout_columnWeight="1"
                 app:layout_gravity="center_horizontal" />

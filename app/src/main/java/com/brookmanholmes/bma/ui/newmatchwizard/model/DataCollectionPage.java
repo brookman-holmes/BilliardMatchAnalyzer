@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.ui.newmatchwizard.fragments.DataCollectionFragment;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
@@ -84,23 +85,9 @@ public class DataCollectionPage extends Page implements RequiresPlayerNames, Upd
         ArrayList<String> playerItems = data.getStringArrayList(PLAYER_DESC_KEY);
         ArrayList<String> opponentItems = data.getStringArrayList(OPP_DESC_KEY);
 
-        dest.add(new ReviewItem(String.format(Locale.getDefault(), reviewTitle, data.getString(PLAYER_NAME_KEY)), formatAdvShotData(playerItems), getKey()));
+        dest.add(new ReviewItem(String.format(Locale.getDefault(), reviewTitle, data.getString(PLAYER_NAME_KEY)), MatchDialogHelperUtils.formatAdvShotData(playerItems, "\n"), getKey()));
         if (!isGhost)
-            dest.add(new ReviewItem(String.format(Locale.getDefault(), reviewTitle, data.getString(OPPONENT_NAME_KEY)), formatAdvShotData(opponentItems), getKey()));
+            dest.add(new ReviewItem(String.format(Locale.getDefault(), reviewTitle, data.getString(OPPONENT_NAME_KEY)), MatchDialogHelperUtils.formatAdvShotData(opponentItems, "\n"), getKey()));
     }
 
-    private String formatAdvShotData(List<String> advShotData) {
-        String result = "";
-
-        if (advShotData != null) {
-
-            for (int i = 0; i < advShotData.size(); i++) {
-                result += advShotData.get(i);
-
-                if (i + 1 < advShotData.size())
-                    result += "\n";
-            }
-        }
-        return result;
-    }
 }

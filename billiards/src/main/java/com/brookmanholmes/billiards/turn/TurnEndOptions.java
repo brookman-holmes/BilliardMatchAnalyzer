@@ -24,11 +24,15 @@ public class TurnEndOptions {
      */
     private TurnEndOptions(Builder builder) {
         possibleEndings.addAll(builder.turnEnds);
-        foul = builder.foul;
         defaultCheck = builder.checked;
-        lostGame = builder.lostGame;
         noFoul = !builder.foul;
+        foul = builder.foul;
+        lostGame = builder.lostGame;
         reallyLostGame = builder.reallyLostGame;
+    }
+
+    public boolean isFoul() {
+        return foul;
     }
 
     public boolean showFoul() {

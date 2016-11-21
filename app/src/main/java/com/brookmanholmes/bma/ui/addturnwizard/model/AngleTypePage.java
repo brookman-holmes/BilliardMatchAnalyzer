@@ -10,9 +10,11 @@ import com.brookmanholmes.bma.wizard.ui.SingleChoiceFragment;
  * Created by Brookman Holmes on 3/7/2016.
  */
 class AngleTypePage extends SingleFixedChoicePage implements UpdatesTurnInfo {
+    boolean sortPage;
 
-    AngleTypePage(ModelCallbacks callbacks, String title) {
+    AngleTypePage(ModelCallbacks callbacks, String title, boolean sortPage) {
         super(callbacks, title);
+        this.sortPage = sortPage;
     }
 
     @Override
@@ -22,6 +24,6 @@ class AngleTypePage extends SingleFixedChoicePage implements UpdatesTurnInfo {
 
     @Override
     public Fragment createFragment() {
-        return SingleChoiceFragment.create(getKey(), 1);
+        return SingleChoiceFragment.create(getKey(), 1, sortPage);
     }
 }

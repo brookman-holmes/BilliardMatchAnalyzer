@@ -244,7 +244,10 @@ public class AdvStats {
         SIXTY_FIVE,
         SEVENTY,
         SEVENTY_FIVE,
-        EIGHTY
+        EIGHTY,
+        SHALLOW,
+        MEDIUM,
+        STEEP
     }
 
     /**

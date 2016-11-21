@@ -1,8 +1,11 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -258,20 +261,23 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             safetyPct.setText(itemView.getContext().getString(R.string.safety_pct, player.getSafetyPct()));
             breakPct.setText(itemView.getContext().getString(R.string.breaking_pct, player.getBreakPct()));
 
-            shootingLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
-            safetyLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
-            breakingLine.setImageTintList(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
+            shootingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
+            safetyLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
+            breakingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
         }
 
         private void setBalls(ITableStatus tableStatus) {
             for (int ball = 1; ball <= tableStatus.size(); ball++) {
                 ImageView childAt = (ImageView) ballContainer.getChildAt(ball - 1);
+                Drawable background = DrawableCompat.wrap(childAt.getBackground());
+                background.mutate();
+
                 if (ballIsMade(tableStatus.getBallStatus(ball))) {
                     childAt.setVisibility(View.VISIBLE);
-                    ((ImageView) ballContainer.getChildAt(ball - 1)).setImageLevel(1);
+                    background.setTint(ContextCompat.getColor(itemView.getContext(), getBallColorTint(ball)));
                 } else if (ballIsDead(tableStatus.getBallStatus(ball))) {
                     childAt.setVisibility(View.VISIBLE);
-                    ((ImageView) ballContainer.getChildAt(ball - 1)).setImageLevel(0);
+                    background.setTint(ContextCompat.getColor(itemView.getContext(), R.color.dead_ball));
                 } else {
                     ballContainer.getChildAt(ball - 1).setVisibility(View.GONE);
                 }

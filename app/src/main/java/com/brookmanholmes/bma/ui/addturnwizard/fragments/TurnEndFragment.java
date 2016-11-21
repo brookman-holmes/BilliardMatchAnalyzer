@@ -206,12 +206,12 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         foulGroup.findViewById(R.id.yes).setVisibility(options.showFoul() ? View.VISIBLE : View.GONE);
         foulGroup.findViewById(R.id.lostGame).setVisibility(options.showLostGame() ? View.VISIBLE : View.GONE);
 
-        updateFoulChoice();
+        updateFoulChoice(options.isFoul());
     }
 
-    private void updateFoulChoice() {
+    private void updateFoulChoice(boolean isFoul) {
         boolean no = foulGroup.findViewById(R.id.no).getVisibility() == View.VISIBLE;
-        boolean yes = foulGroup.findViewById(R.id.yes).getVisibility() == View.VISIBLE;
+        boolean yes = foulGroup.findViewById(R.id.yes).getVisibility() == View.VISIBLE && isFoul;
         boolean lostGame = foulGroup.findViewById(R.id.lostGame).getVisibility() == View.VISIBLE;
 
         if (!no && !yes) // if the only option is lost game check it
@@ -219,12 +219,13 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         else if (!no && !lostGame) // if the only option is foul check it
             foulGroup.check(R.id.yes);
         else {
-            if (getFoulFromPage().equals(getString(R.string.no)) && no)
+            if (getFoulFromPage().equals(getString(R.string.no)) && no) {
                 foulGroup.check(R.id.no);
-            else if (getFoulFromPage().equals(getString(R.string.yes)) && yes)
+            } else if (getFoulFromPage().equals(getString(R.string.yes)) && yes) {
                 foulGroup.check(R.id.yes);
-            else
-                foulGroup.check(R.id.lostGame);
+            } else {
+                foulGroup.check(R.id.no);
+            }
         }
     }
 

@@ -25,7 +25,7 @@ public class TenBallGameTest extends AbstractRotationGameTest {
     }
 
     @Test
-    public void playerMakingDeadBallAndScratchingDoesntAllowTurnSkip() {
+    public void playerMakingDeadBallAndFoulingDoesntAllowTurnSkip() {
         ITurn turn = turn().breakBalls(3, 4).deadBalls(1).fouled().miss();
 
         assertThat(game.setAllowTurnSkip(turn), is(false));

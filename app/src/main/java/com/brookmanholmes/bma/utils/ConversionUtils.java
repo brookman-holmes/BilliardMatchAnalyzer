@@ -1,7 +1,7 @@
 package com.brookmanholmes.bma.utils;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
@@ -80,7 +80,9 @@ public class ConversionUtils {
         }
     }
 
-    public static ColorStateList getPctColor(Context context, String pctString) {
+    public static
+    @ColorInt
+    int getPctColor(Context context, String pctString) {
         float pct = Float.valueOf(pctString);
         @ColorRes int color;
         if (pct > .9)
@@ -94,6 +96,6 @@ public class ConversionUtils {
         else
             color = R.color.bad;
 
-        return new ColorStateList(new int[][]{new int[0]}, new int[]{ContextCompat.getColor(context, color)});
+        return ContextCompat.getColor(context, color);
     }
 }

@@ -18,8 +18,8 @@ import static com.brookmanholmes.billiards.turn.TableUtils.getStripesMadeOnBreak
  * <p></p>Created by Brookman Holmes on 10/27/2015.
  */
 class ApaEightBallGame extends EightBallGame {
-    ApaEightBallGame() {
-        super(GameType.APA_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
+    ApaEightBallGame(PlayerTurn turn) {
+        super(GameType.APA_EIGHT_BALL, turn, BreakType.WINNER);
     }
 
     @Override

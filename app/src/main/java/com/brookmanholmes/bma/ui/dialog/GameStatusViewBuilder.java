@@ -11,6 +11,7 @@ import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,6 +39,10 @@ public class GameStatusViewBuilder {
     GridLayout ballContainer;
     @Bind(R.id.pushStatus)
     TextView pushStatus;
+    @Bind(R.id.playerStatsTracked)
+    TextView playerStatsTracked;
+    @Bind(R.id.opponentStatsTracked)
+    TextView opponentStatsTracked;
 
     private GameStatusViewBuilder(Match match, View view) {
         ButterKnife.bind(this, view);
@@ -70,6 +75,17 @@ public class GameStatusViewBuilder {
         }
 
         setBallsOnTable(match, ballContainer);
+
+        playerStatsTracked.setText("Stats tracked for " + playerName + ": " +
+                MatchDialogHelperUtils.getDataCollectionStringsFromSet(
+                        view.getContext(),
+                        match.getDetails(),
+                        Match.StatsDetail.getPlayerStatsTracked()));
+        opponentStatsTracked.setText("Stats tracked for " + opponentName + ": " +
+                MatchDialogHelperUtils.getDataCollectionStringsFromSet(
+                        view.getContext(),
+                        match.getDetails(),
+                        Match.StatsDetail.getOpponentStatsTracked()));
     }
 
     private static String getLastBreaker(Context context, Match match) {

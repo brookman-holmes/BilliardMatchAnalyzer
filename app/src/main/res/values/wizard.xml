@@ -89,6 +89,11 @@
         <item>80°</item>
     </string-array>
 
+    <string-array name="simple_angles">
+        <item>@string/angle_shallow</item>
+        <item>@string/angle_medium</item>
+        <item>@string/angle_steep</item>
+    </string-array>
 
     <string name="title_how_miss">How did %1$s miss?</string>
     <string name="title_why_miss">Why did %1$s miss?</string>
@@ -101,4 +106,7 @@
     <string name="title_cut_type">What kind of cut shot did %1$s attempt?</string>
     <string name="title_break">Input balls %1$s made on the break</string>
     <string name="title_shot">Input balls %1$s made this turn</string>
+    <string name="angle_shallow">Shallow cut (0°-25°)</string>
+    <string name="angle_medium">Medium cut (30°-55°)</string>
+    <string name="angle_steep">Steep cut (60°-90°)</string>
 </resources>

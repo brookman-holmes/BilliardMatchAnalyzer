@@ -39,7 +39,7 @@ public class TurnEndOptionsList {
     private static final TurnEndOptions option26 = option().defaultSelections();
     private static final TurnEndOptions option27 = option().miss().safetyError().select(TurnEnd.MISS);
     private static final TurnEndOptions option28 = option().wonGame();
-    private static final TurnEndOptions option29 = option().scratch().missOnBreak().select(TurnEnd.BREAK_MISS);
+    private static final TurnEndOptions option29 = option().foul().missOnBreak().select(TurnEnd.BREAK_MISS);
     private static final TurnEndOptions option30 = option().defaultSelections();
     private static final TurnEndOptions option31 = option().defaultSelections();
     private static final TurnEndOptions option32 = option().wonGame();

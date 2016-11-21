@@ -16,12 +16,12 @@ import java.util.List;
 public class Turn implements ITurn, Serializable {
     private final ITableStatus tableStatus;
     private final TurnEnd turnEnd;
-    private final boolean scratch;
+    private final boolean foul;
     private final boolean gameLost;
     private final AdvStats advStats;
 
-    public Turn(TurnEnd turnEnd, ITableStatus tableStatus, boolean scratch, boolean isGameLost, AdvStats advStats) {
-        this.scratch = scratch;
+    public Turn(TurnEnd turnEnd, ITableStatus tableStatus, boolean foul, boolean isGameLost, AdvStats advStats) {
+        this.foul = foul;
         this.turnEnd = turnEnd;
         this.tableStatus = tableStatus;
         this.gameLost = isGameLost;
@@ -50,7 +50,7 @@ public class Turn implements ITurn, Serializable {
 
     @Override
     public boolean isFoul() {
-        return scratch;
+        return foul;
     }
 
     @Override
@@ -137,7 +137,7 @@ public class Turn implements ITurn, Serializable {
 
         Turn turn = (Turn) o;
 
-        if (scratch != turn.scratch) return false;
+        if (foul != turn.foul) return false;
         if (gameLost != turn.gameLost) return false;
         if (!tableStatus.equals(turn.tableStatus)) return false;
         if (turnEnd != turn.turnEnd) return false;
@@ -149,7 +149,7 @@ public class Turn implements ITurn, Serializable {
     public int hashCode() {
         int result = tableStatus.hashCode();
         result = 31 * result + turnEnd.hashCode();
-        result = 31 * result + (scratch ? 1 : 0);
+        result = 31 * result + (foul ? 1 : 0);
         result = 31 * result + (gameLost ? 1 : 0);
         result = 31 * result + advStats.hashCode();
         return result;
@@ -160,7 +160,7 @@ public class Turn implements ITurn, Serializable {
         return "Turn{" +
                 "tableStatus=" + tableStatus +
                 "\n turnEnd=" + turnEnd +
-                "\n foul=" + scratch +
+                "\n foul=" + foul +
                 '}';
     }
 

@@ -153,7 +153,29 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
     private boolean isAngle(AdvStats stat) {
         // all has to go first otherwise it throws an illegal argument exception
-        return angle.equals(getString(R.string.all)) || stat.getAngles().contains(MatchDialogHelperUtils.convertStringToAngle(getContext(), angle));
+        if (angle.equals(getString(R.string.angle_shallow)))
+            return stat.getAngles().contains(MatchDialogHelperUtils.convertStringToAngle(getContext(), angle)) ||
+                    stat.getAngles().contains(AdvStats.Angle.TEN) ||
+                    stat.getAngles().contains(AdvStats.Angle.FIFTEEN) ||
+                    stat.getAngles().contains(AdvStats.Angle.TWENTY) ||
+                    stat.getAngles().contains(AdvStats.Angle.TWENTY_FIVE);
+        else if (angle.equals(getString(R.string.angle_medium)))
+            return stat.getAngles().contains(MatchDialogHelperUtils.convertStringToAngle(getContext(), angle)) ||
+                    stat.getAngles().contains(AdvStats.Angle.THIRTY) ||
+                    stat.getAngles().contains(AdvStats.Angle.THIRTY_FIVE) ||
+                    stat.getAngles().contains(AdvStats.Angle.FORTY) ||
+                    stat.getAngles().contains(AdvStats.Angle.FORTY_FIVE) ||
+                    stat.getAngles().contains(AdvStats.Angle.FIFTY) ||
+                    stat.getAngles().contains(AdvStats.Angle.FIFTY_FIVE);
+        else if (angle.equals(getString(R.string.angle_steep)))
+            return stat.getAngles().contains(MatchDialogHelperUtils.convertStringToAngle(getContext(), angle)) ||
+                    stat.getAngles().contains(AdvStats.Angle.SIXTY) ||
+                    stat.getAngles().contains(AdvStats.Angle.SIXTY_FIVE) ||
+                    stat.getAngles().contains(AdvStats.Angle.SEVENTY) ||
+                    stat.getAngles().contains(AdvStats.Angle.SEVENTY_FIVE) ||
+                    stat.getAngles().contains(AdvStats.Angle.EIGHTY);
+        else
+            return angle.equals(getString(R.string.all)) || stat.getAngles().contains(MatchDialogHelperUtils.convertStringToAngle(getContext(), angle));
     }
 
     private boolean isKickShot() {

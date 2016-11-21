@@ -28,7 +28,7 @@ public class TurnEndOptionsBuilder {
     }
 
     public TurnEndOptionsBuilder lostGame() {
-        options.lostGame(true);
+        options.lostGame(true, true);
         return this;
     }
 
@@ -52,7 +52,7 @@ public class TurnEndOptionsBuilder {
         return this;
     }
 
-    public TurnEndOptionsBuilder scratch() {
+    public TurnEndOptionsBuilder foul() {
         options.checkFoul(true);
         return this;
     }
@@ -61,7 +61,7 @@ public class TurnEndOptionsBuilder {
         return options.allowPlayerToChooseToContinueGame().defaultOption(MISS).build();
     }
 
-    public TurnEndOptions reBreakOnScratch() {
+    public TurnEndOptions reBreakOnFoul() {
         return options.allowPlayerToChooseWhoBreaks().defaultOption(CONTINUE_WITH_GAME).build();
     }
 

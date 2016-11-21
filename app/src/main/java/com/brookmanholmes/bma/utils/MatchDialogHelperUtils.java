@@ -394,6 +394,12 @@ public class MatchDialogHelperUtils {
             return AdvStats.Angle.LONG_RAIL;
         else if (angle.equals(context.getString(R.string.bank_short_rail)))
             return AdvStats.Angle.SHORT_RAIL;
+        else if (angle.equals(context.getString(R.string.angle_shallow)))
+            return AdvStats.Angle.SHALLOW;
+        else if (angle.equals(context.getString(R.string.angle_medium)))
+            return AdvStats.Angle.MEDIUM;
+        else if (angle.equals(context.getString(R.string.angle_steep)))
+            return AdvStats.Angle.STEEP;
         else
             throw new IllegalArgumentException("No such conversion between string and AdvStats.Angle: " + angle);
     }
@@ -701,6 +707,12 @@ public class MatchDialogHelperUtils {
                 return R.string.angle_seventy_five;
             case EIGHTY:
                 return R.string.angle_eighty;
+            case SHALLOW:
+                return R.string.angle_shallow;
+            case MEDIUM:
+                return R.string.angle_medium;
+            case STEEP:
+                return R.string.angle_steep;
             default:
                 throw new IllegalArgumentException("No such conversion for " + angle);
         }
@@ -806,5 +818,74 @@ public class MatchDialogHelperUtils {
             return containsAdvancedStatsForOpponent(details);
         else
             return false;
+    }
+
+    public static String getDataCollectionStringsFromSet(Context context, EnumSet<Match.StatsDetail> set, Collection<Match.StatsDetail> toRetain) {
+        List<String> data = new ArrayList<>();
+        EnumSet<Match.StatsDetail> newSet = EnumSet.copyOf(set);
+        newSet.retainAll(toRetain);
+
+        for (Match.StatsDetail detail : newSet) {
+            data.add(getStringFromDetail(context, detail));
+        }
+
+        return formatAdvShotData(data, ", ");
+    }
+
+    private static String getStringFromDetail(Context context, Match.StatsDetail detail) {
+        switch (detail) {
+            case SHOT_TYPE_PLAYER:
+            case SHOT_TYPE_OPPONENT:
+                return context.getString(R.string.shot_type);
+
+            case CUEING_PLAYER:
+            case CUEING_OPPONENT:
+                return context.getString(R.string.cueing);
+
+            case HOW_MISS_PLAYER:
+            case HOW_MISS_OPPONENT:
+                return context.getString(R.string.how_miss);
+
+            case SAFETIES_PLAYER:
+            case SAFETIES_OPPONENT:
+                return context.getString(R.string.title_safeties);
+
+            case SPEED_PLAYER:
+            case SPEED_OPPONENT:
+                return context.getString(R.string.cb_speed);
+
+            case BALL_DISTANCES_PLAYER:
+            case BALL_DISTANCES_OPPONENT:
+                return context.getString(R.string.ball_distances);
+
+            case ANGLE_PLAYER:
+            case ANGLE_OPPONENT:
+                return context.getString(R.string.angle_detailed);
+
+            case ANGLE_SIMPLE_PLAYER:
+            case ANGLE_SIMPLE_OPPONENT:
+                return context.getString(R.string.angle_simple);
+
+            default:
+                throw new IllegalArgumentException("No corresponding string for detail: " + detail);
+        }
+    }
+
+    public static String formatAdvShotData(List<String> advShotData, String separator) {
+        String result = "";
+
+        if (advShotData != null) {
+
+            for (int i = 0; i < advShotData.size(); i++) {
+                result += advShotData.get(i);
+
+                if (i + 1 < advShotData.size())
+                    result += separator;
+            }
+        }
+
+        if (result.isEmpty())
+            return "none";
+        return result;
     }
 }

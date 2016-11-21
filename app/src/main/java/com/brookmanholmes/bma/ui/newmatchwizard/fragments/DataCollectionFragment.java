@@ -34,11 +34,14 @@ public class DataCollectionFragment extends BaseFragment {
     private static final int[] checkBoxes = new int[]{R.id.cbShotTypePlayer, R.id.cbShotTypeOpponent, R.id.cbCuePlayer,
             R.id.cbCueOpponent, R.id.cbHowPlayer, R.id.cbHowOpponent, R.id.cbSafetiesPlayer,
             R.id.cbSafetiesOpponent, R.id.cbSpeedPlayer, R.id.cbSpeedOpponent, R.id.cbBallDistPlayer,
-            R.id.cbBallDistOpponent};
+            R.id.cbBallDistOpponent, R.id.cbAnglePlayer, R.id.cbAngleOpponent, R.id.cbAngleSimplePlayer,
+            R.id.cbAngleSimpleOpponent};
     private static final int[] playerBoxes = new int[]{R.id.cbShotTypePlayer, R.id.cbCuePlayer,
-            R.id.cbHowPlayer, R.id.cbSafetiesPlayer, R.id.cbSpeedPlayer, R.id.cbBallDistPlayer};
+            R.id.cbHowPlayer, R.id.cbSafetiesPlayer, R.id.cbSpeedPlayer, R.id.cbBallDistPlayer,
+            R.id.cbAnglePlayer, R.id.cbAngleSimplePlayer};
     private static final int[] opponentBoxes = new int[]{R.id.cbShotTypeOpponent, R.id.cbCueOpponent,
-            R.id.cbHowOpponent, R.id.cbSafetiesOpponent, R.id.cbSpeedOpponent, R.id.cbBallDistOpponent};
+            R.id.cbHowOpponent, R.id.cbSafetiesOpponent, R.id.cbSpeedOpponent, R.id.cbBallDistOpponent,
+            R.id.cbAngleOpponent, R.id.cbAngleSimpleOpponent};
 
     @Bind(R.id.playerName)
     TextView playerName;
@@ -115,11 +118,56 @@ public class DataCollectionFragment extends BaseFragment {
     @OnCheckedChanged({R.id.cbShotTypePlayer, R.id.cbShotTypeOpponent, R.id.cbCuePlayer,
             R.id.cbCueOpponent, R.id.cbHowPlayer, R.id.cbHowOpponent, R.id.cbSafetiesPlayer,
             R.id.cbSafetiesOpponent, R.id.cbSpeedPlayer, R.id.cbSpeedOpponent, R.id.cbBallDistPlayer,
-            R.id.cbBallDistOpponent})
+            R.id.cbBallDistOpponent, R.id.cbAnglePlayer, R.id.cbAngleOpponent, R.id.cbAngleSimplePlayer,
+            R.id.cbAngleSimpleOpponent})
     public void notifyPage(CheckBox box) {
         ArrayList<String> enumList = new ArrayList<>();
         ArrayList<String> playerDescriptions = new ArrayList<>();
         ArrayList<String> opponentDescriptions = new ArrayList<>();
+
+        if (box.getId() == R.id.cbShotTypePlayer) {
+            CheckBox checkBox = ButterKnife.findById(box.getRootView(), R.id.cbAnglePlayer);
+            if (!box.isChecked()) {
+                checkBox.setChecked(false);
+                checkBox.setEnabled(false);
+            } else checkBox.setEnabled(true);
+
+            checkBox = ButterKnife.findById(box.getRootView(), R.id.cbAngleSimplePlayer);
+            if (!box.isChecked()) {
+                checkBox.setChecked(false);
+                checkBox.setEnabled(false);
+            } else checkBox.setEnabled(true);
+        } else if (box.getId() == R.id.cbShotTypeOpponent) {
+            CheckBox checkBox = ButterKnife.findById(box.getRootView(), R.id.cbAngleOpponent);
+            if (!box.isChecked()) {
+                checkBox.setChecked(false);
+                checkBox.setEnabled(false);
+            } else checkBox.setEnabled(true);
+            checkBox = ButterKnife.findById(box.getRootView(), R.id.cbAngleSimpleOpponent);
+            if (!box.isChecked()) {
+                checkBox.setChecked(false);
+                checkBox.setEnabled(false);
+            } else checkBox.setEnabled(true);
+        }
+
+        // uncheck duplicate boxes
+        if (box.getId() == R.id.cbAnglePlayer) {
+            CheckBox checkBox = ButterKnife.findById(box.getRootView(), R.id.cbAngleSimplePlayer);
+            if (box.isChecked())
+                checkBox.setChecked(false);
+        } else if (box.getId() == R.id.cbAngleOpponent) {
+            CheckBox checkBox = ButterKnife.findById(box.getRootView(), R.id.cbAngleSimpleOpponent);
+            if (box.isChecked())
+                checkBox.setChecked(false);
+        } else if (box.getId() == R.id.cbAngleSimplePlayer) {
+            CheckBox checkBox = ButterKnife.findById(box.getRootView(), R.id.cbAnglePlayer);
+            if (box.isChecked())
+                checkBox.setChecked(false);
+        } else if (box.getId() == R.id.cbAngleSimpleOpponent) {
+            CheckBox checkBox = ButterKnife.findById(box.getRootView(), R.id.cbAngleOpponent);
+            if (box.isChecked())
+                checkBox.setChecked(false);
+        }
 
         for (int i : checkBoxes) {
             CheckBox checkBox = ButterKnife.findById(box.getRootView(), i);
@@ -164,6 +212,14 @@ public class DataCollectionFragment extends BaseFragment {
                 return Match.StatsDetail.BALL_DISTANCES_PLAYER;
             case R.id.cbBallDistOpponent:
                 return Match.StatsDetail.BALL_DISTANCES_OPPONENT;
+            case R.id.cbAnglePlayer:
+                return Match.StatsDetail.ANGLE_PLAYER;
+            case R.id.cbAngleOpponent:
+                return Match.StatsDetail.ANGLE_OPPONENT;
+            case R.id.cbAngleSimplePlayer:
+                return Match.StatsDetail.ANGLE_SIMPLE_PLAYER;
+            case R.id.cbAngleSimpleOpponent:
+                return Match.StatsDetail.ANGLE_SIMPLE_OPPONENT;
             default:
                 throw new IllegalArgumentException("No corresponding StatsDetail from id " + id);
         }
@@ -172,29 +228,29 @@ public class DataCollectionFragment extends BaseFragment {
     private String getStringFromId(int id) {
         switch (id) {
             case R.id.cbShotTypePlayer:
-                return getString(R.string.shot_type);
             case R.id.cbShotTypeOpponent:
                 return getString(R.string.shot_type);
             case R.id.cbCuePlayer:
-                return getString(R.string.cueing);
             case R.id.cbCueOpponent:
                 return getString(R.string.cueing);
             case R.id.cbHowPlayer:
-                return getString(R.string.how_miss);
             case R.id.cbHowOpponent:
                 return getString(R.string.how_miss);
             case R.id.cbSafetiesPlayer:
-                return getString(R.string.title_safeties);
             case R.id.cbSafetiesOpponent:
                 return getString(R.string.title_safeties);
             case R.id.cbSpeedPlayer:
-                return getString(R.string.cb_speed);
             case R.id.cbSpeedOpponent:
                 return getString(R.string.cb_speed);
             case R.id.cbBallDistPlayer:
-                return getString(R.string.ball_distances);
             case R.id.cbBallDistOpponent:
                 return getString(R.string.ball_distances);
+            case R.id.cbAnglePlayer:
+            case R.id.cbAngleOpponent:
+                return getString(R.string.angle_detailed);
+            case R.id.cbAngleSimplePlayer:
+            case R.id.cbAngleSimpleOpponent:
+                return getString(R.string.angle_simple);
             default:
                 throw new IllegalArgumentException("No corresponding StatsDetail from id " + id);
         }

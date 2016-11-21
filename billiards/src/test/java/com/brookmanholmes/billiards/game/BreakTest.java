@@ -120,7 +120,7 @@ public class BreakTest {
         return mockedTurn;
     }
 
-    private ITurn createMockTurnWithTheseBallsMade(boolean scratch, int... balls) {
+    private ITurn createMockTurnWithTheseBallsMade(boolean foul, int... balls) {
         List<Integer> ballsMade = new ArrayList<>();
         for (int ball : balls) {
             ballsMade.add(ball);
@@ -128,7 +128,7 @@ public class BreakTest {
 
         ITurn mockedTurn = mock(ITurn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
-        when(mockedTurn.isFoul()).thenReturn(scratch);
+        when(mockedTurn.isFoul()).thenReturn(foul);
         when(mockedTurn.getBallsToRemoveFromTable()).thenReturn(ballsMade);
         return mockedTurn;
     }

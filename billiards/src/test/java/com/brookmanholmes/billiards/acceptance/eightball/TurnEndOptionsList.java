@@ -14,19 +14,19 @@ public class TurnEndOptionsList {
     private static final TurnEndOptions option1 = option().wonGame();
     private static final TurnEndOptions option2 = option().defaultSelections();
     private static final TurnEndOptions option3 = option().defaultSelections();
-    private static final TurnEndOptions option4 = option().safetyError().miss().scratch().lostGame().scratch().select(TurnEnd.MISS);
+    private static final TurnEndOptions option4 = option().safetyError().miss().foul().lostGame().foul().select(TurnEnd.MISS);
     private static final TurnEndOptions option5 = option().defaultSelections();
     private static final TurnEndOptions option6 = option().wonGame();
-    private static final TurnEndOptions option7 = option().scratch().missOnBreak().select(TurnEnd.BREAK_MISS);
-    private static final TurnEndOptions option8 = option().reBreakOnScratch();
+    private static final TurnEndOptions option7 = option().foul().missOnBreak().select(TurnEnd.BREAK_MISS);
+    private static final TurnEndOptions option8 = option().reBreakOnFoul();
     private static final TurnEndOptions option9 = option().defaultSelections();
     private static final TurnEndOptions option10 = option().wonGame();
     private static final TurnEndOptions option11 = option().wonGame();
     private static final TurnEndOptions option12 = option().defaultSelections();
     private static final TurnEndOptions option13 = option().defaultSelections();
     private static final TurnEndOptions option14 = option().wonGame();
-    private static final TurnEndOptions option15 = option().scratch().missOnBreak().select(TurnEnd.BREAK_MISS);
-    private static final TurnEndOptions option16 = option().reBreakOnScratch();
+    private static final TurnEndOptions option15 = option().foul().missOnBreak().select(TurnEnd.BREAK_MISS);
+    private static final TurnEndOptions option16 = option().reBreakOnFoul();
     private static final TurnEndOptions option17 = option().reBreak();
     private static final TurnEndOptions option18 = option().wonGame();
 

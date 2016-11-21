@@ -92,6 +92,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private Menu mMenu;
     private Snackbar matchOverSnackbar, uploadMatchSnackbar;
     private Drawable activeArrow, inactiveArrow;
+    private boolean addTurnButtonEnabled = true;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -475,8 +476,10 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void showAddTurnDialog() {
-        AddTurnDialog addTurnDialog = AddTurnDialog.create(match);
-        addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
+        if (getSupportFragmentManager().findFragmentByTag("AddTurnDialog") == null) {
+            AddTurnDialog addTurnDialog = AddTurnDialog.create(match);
+            addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
+        }
     }
 
     private void showEditPlayerNameDialog(final String name) {

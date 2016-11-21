@@ -68,7 +68,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
     }
 
     @Test
-    public void addSafetyAttemptWithScratchAddsOneToTotalAndAddsAScratch() {
+    public void addSafetyAttemptWithFoulAddsOneToTotalAndAddsAFoul() {
         actual.addSafetyAttempt(true);
 
         expected.safetyAttempts++;
@@ -88,7 +88,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
     }
 
     @Test
-    public void addShootingBallsMadeAdds8BallsMadeWithScratch() {
+    public void addShootingBallsMadeAdds8BallsMadeWithFoul() {
         actual.addShootingBallsMade(8, true);
 
         expected.shootingBallsMade += 8;
