@@ -3,6 +3,10 @@ package com.brookmanholmes.bma.ui.matchinfo;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -63,7 +67,7 @@ import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener,
-        OnFailureListener, OnSuccessListener<UploadTask.TaskSnapshot> {
+        OnFailureListener, OnSuccessListener<UploadTask.TaskSnapshot>, NfcAdapter.CreateNdefMessageCallback {
     private static final String TAG = "MatchInfoActivity";
     private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     private static final String KEY_UNDONE_TURNS = "key_undone_turns";
@@ -92,7 +96,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private Menu mMenu;
     private Snackbar matchOverSnackbar, uploadMatchSnackbar;
     private Drawable activeArrow, inactiveArrow;
-    private boolean addTurnButtonEnabled = true;
+
+    private NfcAdapter nfcAdapter;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +137,21 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         setToolbarTitle(match.getGameStatus().gameType);
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), getMatchId());
         pager.setAdapter(adapter);
+
+        setupNfc();
+    }
+
+    private void setupNfc() {
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        nfcAdapter.setNdefPushMessageCallback(this, this);
+    }
+
+    @Override
+    public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
+        byte[] payload = MatchModel.marshall(match);
+        String mime = "application/com.brookmanholmes.bma.matchModel";
+
+        return new NdefMessage(NdefRecord.createMime(mime, payload));
     }
 
     private void setToolbarTitle(GameType gameType) {
