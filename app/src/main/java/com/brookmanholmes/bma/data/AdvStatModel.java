@@ -33,17 +33,24 @@ class AdvStatModel implements Parcelable {
     private final int cueY;
     private final String startingPosition;
     private final boolean use;
-    private int howTypes;
-    private int whyTypes;
-    private int angles;
+    private int howTypes = 0;
+    private int whyTypes = 0;
+    private int angles = 0;
 
     AdvStatModel(AdvStats stat) {
         player = stat.getPlayer();
         shotType = stat.getShotType().ordinal();
         shotSubtype = stat.getShotSubtype().ordinal();
-        howTypes = encode(EnumSet.copyOf(stat.getHowTypes()));
-        whyTypes = encode(EnumSet.copyOf(stat.getWhyTypes()));
-        angles = encode(EnumSet.copyOf(stat.getAngles()));
+
+        if (stat.getHowTypes().size() > 0)
+            howTypes = encode(EnumSet.copyOf(stat.getHowTypes()));
+
+        if (stat.getWhyTypes().size() > 0)
+            whyTypes = encode(EnumSet.copyOf(stat.getWhyTypes()));
+
+        if (stat.getAngles().size() > 0)
+            angles = encode(EnumSet.copyOf(stat.getAngles()));
+
         cbToOb = stat.getCbToOb();
         obToPocket = stat.getObToPocket();
         speed = stat.getSpeed();

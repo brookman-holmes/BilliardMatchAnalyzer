@@ -8,6 +8,7 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
@@ -67,7 +68,8 @@ import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener,
-        OnFailureListener, OnSuccessListener<UploadTask.TaskSnapshot>, NfcAdapter.CreateNdefMessageCallback {
+        OnFailureListener, OnSuccessListener<UploadTask.TaskSnapshot>, NfcAdapter.CreateNdefMessageCallback,
+        NfcAdapter.OnNdefPushCompleteCallback {
     private static final String TAG = "MatchInfoActivity";
     private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     private static final String KEY_UNDONE_TURNS = "key_undone_turns";
@@ -97,13 +99,15 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private Snackbar matchOverSnackbar, uploadMatchSnackbar;
     private Drawable activeArrow, inactiveArrow;
 
-    private NfcAdapter nfcAdapter;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_info);
         ButterKnife.bind(this);
         pager.setPagingEnabled(false);
+
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+            processIntent(getIntent());
+        }
 
         setSupportActionBar(toolbar);
 
@@ -142,16 +146,39 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void setupNfc() {
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        nfcAdapter.setNdefPushMessageCallback(this, this);
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter != null) {
+            nfcAdapter.setNdefPushMessageCallback(this, this);
+            nfcAdapter.setOnNdefPushCompleteCallback(this, this);
+        }
     }
 
     @Override
     public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
         byte[] payload = MatchModel.marshall(match);
-        String mime = "application/com.brookmanholmes.bma.matchModel";
+        String mime = "application/com.brookmanholmes.bma.matchmodel";
 
         return new NdefMessage(NdefRecord.createMime(mime, payload));
+    }
+
+    @Override
+    public void onNdefPushComplete(NfcEvent nfcEvent) {
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+    }
+
+
+    private void processIntent(Intent intent) {
+        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        NdefMessage message = (NdefMessage) rawMsgs[0];
+
+        Match match = MatchModel.unmarshall(message.getRecords()[0].getPayload()).getMatch();
+        DatabaseAdapter db = new DatabaseAdapter(this);
+        final long matchId = db.insertMatch(match);
+        getIntent().putExtra(ARG_MATCH_ID, matchId);
     }
 
     private void setToolbarTitle(GameType gameType) {

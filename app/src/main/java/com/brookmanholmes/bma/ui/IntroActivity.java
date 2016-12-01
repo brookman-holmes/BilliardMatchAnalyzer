@@ -5,17 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.nfc.NdefMessage;
-import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -41,7 +37,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -91,9 +86,6 @@ public class IntroActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.createMatch)
     FloatingActionButton fab;
-    @Bind(R.id.progressBar)
-    ProgressBar progressBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +112,6 @@ public class IntroActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        progressBar.setVisibility(View.GONE);
         final int animationDelay = 250; // .25 seconds
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -128,28 +119,6 @@ public class IntroActivity extends BaseActivity {
                 fab.show();
             }
         }, animationDelay); // display fab after activity starts
-
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-            processIntent(getIntent());
-        }
-    }
-
-    private void processIntent(Intent intent) {
-        Snackbar.make(toolbar.getRootView(), "Ndef received", Snackbar.LENGTH_LONG);
-        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-        NdefMessage message = (NdefMessage) rawMsgs[0];
-
-        Match match = MatchModel.unmarshall(message.getRecords()[0].getPayload()).getMatch();
-        DatabaseAdapter db = new DatabaseAdapter(this);
-        final long matchId = db.insertMatch(match);
-        final Intent newIntent = new Intent(this, MatchInfoActivity.class);
-        newIntent.putExtra(ARG_MATCH_ID, matchId);
-        startActivity(newIntent);
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
     }
 
     @Override

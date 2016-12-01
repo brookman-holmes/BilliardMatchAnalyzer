@@ -67,8 +67,8 @@ public class StepPagerStrip extends View {
         tabWidth = res.getDimensionPixelSize(R.dimen.step_pager_tab_width);
         tabHeight = res.getDimensionPixelSize(R.dimen.step_pager_tab_height);
         indicatorSpacing = res.getDimensionPixelSize(R.dimen.step_pager_tab_spacing);
-        radius = 14;
-        nonCurrentRadius = 10;
+        radius = res.getDimension(R.dimen.step_pager_tab_width);
+        nonCurrentRadius = res.getDimension(R.dimen.step_pager_tab_width_non_current);
 
         nextTabPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nextTabPaint.setColor(ContextCompat.getColor(getContext(), R.color.step_pager_next_tab_color));

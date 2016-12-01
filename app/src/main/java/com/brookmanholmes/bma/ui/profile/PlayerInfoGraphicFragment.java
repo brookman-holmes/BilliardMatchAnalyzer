@@ -6,6 +6,7 @@ import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -464,6 +465,9 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             BreaksGraphViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
+
+                float width = getDimension(R.dimen.decoview_inset);
+
                 color1 = ContextCompat.getColor(itemView.getContext(), R.color.chart3);
                 color2 = ContextCompat.getColor(itemView.getContext(), R.color.chart2);
                 color3 = ContextCompat.getColor(itemView.getContext(), R.color.chart1);
@@ -472,26 +476,26 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 decoView.deleteAll();
                 decoView.addSeries(new SeriesItem.Builder(grey)
                         .setRange(0, 1, 1)
-                        .setLineWidth(32f)
+                        .setLineWidth(width)
                         .setCapRounded(false)
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(grey)
                         .setRange(0, 1, 1)
-                        .setLineWidth(32f)
+                        .setLineWidth(width)
                         .setCapRounded(false)
-                        .setInset(new PointF(32, 32))
+                        .setInset(new PointF(width, width))
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(grey)
                         .setRange(0, 1, 1)
-                        .setLineWidth(32f)
+                        .setLineWidth(width)
                         .setCapRounded(false)
-                        .setInset(new PointF(64, 64))
+                        .setInset(new PointF(width * 2, width * 2))
                         .build());
                 decoView.addSeries(new SeriesItem.Builder(grey)
                         .setRange(0, 1, 1)
-                        .setLineWidth(32f)
+                        .setLineWidth(width)
                         .setCapRounded(false)
-                        .setInset(new PointF(96, 96))
+                        .setInset(new PointF(width * 3, width * 3))
                         .build());
 
                 decoView.configureAngles(300, 0);
@@ -505,32 +509,34 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 float wins = attempts != 0 ? roundNumber(player.getWinsOnBreak(), attempts) : 0;
                 float fouls = attempts != 0 ? roundNumber(player.getBreakFouls(), attempts) : 0;
 
+                float width = getDimension(R.dimen.decoview_inset);
+
                 if (player.getBreakSuccesses() > 0)
                     decoView.addSeries(new SeriesItem.Builder(color1)
                             .setRange(0, 1, successes)
                             .setInset(new PointF(0, 0))
-                            .setLineWidth(32f)
+                            .setLineWidth(width)
                             .setCapRounded(false)
                             .build());
                 if (player.getBreakContinuations() > 0)
                     decoView.addSeries(new SeriesItem.Builder(color2)
                             .setRange(0, 1, continuation)
-                            .setInset(new PointF(32, 32))
-                            .setLineWidth(32f)
+                            .setInset(new PointF(width, width))
+                            .setLineWidth(width)
                             .setCapRounded(false)
                             .build());
                 if (player.getWinsOnBreak() > 0)
                     decoView.addSeries(new SeriesItem.Builder(color4)
                             .setRange(0, 1, wins)
-                            .setInset(new PointF(64, 64))
-                            .setLineWidth(32f)
+                            .setInset(new PointF(width * 2, width * 2))
+                            .setLineWidth(width)
                             .setCapRounded(false)
                             .build());
                 if (player.getBreakFouls() > 0)
                     decoView.addSeries(new SeriesItem.Builder(color3)
                             .setRange(0, 1, fouls)
-                            .setInset(new PointF(96, 96))
-                            .setLineWidth(32f)
+                            .setInset(new PointF(width * 3, width * 3))
+                            .setLineWidth(width)
                             .setCapRounded(false)
                             .build());
 
@@ -554,6 +560,10 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
             private String getString(@StringRes int res, Object... formatArgs) {
                 return itemView.getContext().getString(res, formatArgs);
+            }
+
+            private int getDimension(@DimenRes int dimen) {
+                return itemView.getContext().getResources().getDimensionPixelSize(dimen);
             }
         }
 
@@ -591,6 +601,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 CompPlayer opponent = getPlayerFromList(opponents);
                 int total = opponent.getSafetySuccesses();
 
+                float width = getDimension(R.dimen.decoview_inset) * 4;
+
                 if (opponent.getSafetySuccesses() > 0) {
                     float returns = roundNumber(player.getSafetyReturns(), total);
                     float escapes = roundNumber(player.getSafetyEscapes(), total);
@@ -600,26 +612,27 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                     if (escapes < 0)
                         escapes = 0;
 
+
                     decoView.addSeries(new SeriesItem.Builder(color3)
                             .setRange(0, 1, 1)
                             .setCapRounded(false)
-                            .setLineWidth(128f)
+                            .setLineWidth(width)
                             .build());
                     decoView.addSeries(new SeriesItem.Builder(color1)
                             .setRange(0, 1, returns + escapes)
                             .setCapRounded(false)
-                            .setLineWidth(128f)
+                            .setLineWidth(width)
                             .build());
                     decoView.addSeries(new SeriesItem.Builder(color2)
                             .setRange(0, 1, escapes)
                             .setCapRounded(false)
-                            .setLineWidth(128f)
+                            .setLineWidth(width)
                             .build());
                 } else {
                     decoView.addSeries(new SeriesItem.Builder(Color.parseColor("#F5F5F5"))
                             .setRange(0, 1, 1)
                             .setCapRounded(false)
-                            .setLineWidth(128f)
+                            .setLineWidth(width)
                             .build());
                 }
 
@@ -629,6 +642,9 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 safetyEscapes.setText(itemView.getContext().getString(R.string.legend_made_ball, player.getSafetyEscapes(), opponent.getSafetySuccesses(), convertFloatToPercent((float) player.getSafetyEscapes() / (float) opponent.getSafetySuccesses())));
             }
 
+            private int getDimension(@DimenRes int dimen) {
+                return itemView.getContext().getResources().getDimensionPixelSize(dimen);
+            }
         }
     }
 

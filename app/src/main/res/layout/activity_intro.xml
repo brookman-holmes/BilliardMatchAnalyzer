@@ -40,12 +40,4 @@
         android:visibility="invisible"
         app:borderWidth="0dp"
         app:layout_behavior="com.brookmanholmes.bma.utils.ScrollAwareFABBehavior" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/circle"
-        android:elevation="4dp" />
 </android.support.design.widget.CoordinatorLayout>

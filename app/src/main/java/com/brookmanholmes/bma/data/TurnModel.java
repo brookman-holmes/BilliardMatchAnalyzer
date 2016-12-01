@@ -59,7 +59,7 @@ class TurnModel implements Parcelable {
     ITurn createTurn() {
         TableStatus tableStatus = TableStatus.newTable(GameType.values()[gameType]);
         for (int i = 1; i <= tableStatus.size(); i++) {
-            tableStatus.setBallTo(BallStatus.values()[ballStatuses[i - 1]]);
+            tableStatus.setBallTo(BallStatus.values()[ballStatuses[i - 1]], i);
         }
         if (advStat != null) {
             return new Turn(TurnEnd.values()[turnEnd], tableStatus, foul, lostGame, advStat.createAdvStat());

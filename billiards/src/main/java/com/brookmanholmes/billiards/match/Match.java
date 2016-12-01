@@ -33,6 +33,7 @@ public class Match implements IMatch {
     private final PlayerController playerController;
     private final Date createdOn;
     private final Game game;
+    private final Game initialGameState;
     private final LinkedList<AbstractPlayer> player1 = new LinkedList<>();
     private final LinkedList<AbstractPlayer> player2 = new LinkedList<>();
     private final LinkedList<ITurn> turns = new LinkedList<>();
@@ -49,6 +50,7 @@ public class Match implements IMatch {
         notes = builder.notes;
         matchId = builder.id;
         game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
+        initialGameState = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
         this.playerController = playerController;
         createdOn = (builder.date == null ? new Date() : builder.date);
         details = EnumSet.copyOf(builder.details);
@@ -83,7 +85,6 @@ public class Match implements IMatch {
     public void setNotes(String notes) {
         this.notes = notes;
     }
-
 
     @Override
     public GameStatus getGameStatus() {
@@ -298,6 +299,10 @@ public class Match implements IMatch {
     @Override
     public Date getCreatedOn() {
         return new Date(createdOn.getTime());
+    }
+
+    public GameStatus getInitialGameStatus() {
+        return initialGameState.getGameStatus();
     }
 
     @Override

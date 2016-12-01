@@ -500,7 +500,7 @@ public class DatabaseAdapter {
     public long insertMatch(Match match) {
         ContentValues matchValues = new ContentValues();
 
-        GameStatus status = match.getGameStatus();
+        GameStatus status = match.getInitialGameStatus();
 
         matchValues.put(COLUMN_PLAYER_TURN, status.turn.name());
         matchValues.put(COLUMN_GAME_TYPE, status.gameType.name());
@@ -516,7 +516,7 @@ public class DatabaseAdapter {
         match.setMatchId(matchId);
 
         int turnCount = 0;
-        for (ITurn turn : match.getTurns()) {
+        for (ITurn turn : match.getGameStatus().gameType.isGhostGame() ? getTurnsForGhostGame(match) : getTurns(match)) {
             insertTurn(turn, matchId, turnCount++);
         }
 
@@ -524,6 +524,30 @@ public class DatabaseAdapter {
         insertPlayer(match.getOpponent(), matchId);
 
         return match.getMatchId();
+    }
+
+    private List<ITurn> getTurns(Match match) {
+        List<ITurn> turns = new ArrayList<>();
+        for (int i = 0; i < match.getTurns().size(); i++) {
+            turns.add(match.getTurns().get(i));
+        }
+
+        return turns;
+    }
+
+    private List<ITurn> getTurnsForGhostGame(Match match) {
+        List<ITurn> turns = new ArrayList<>();
+        for (int i = 0; i < match.getTurns().size(); ) {
+            turns.add(match.getTurns().get(i));
+
+            if (match.getTurns().get(i).getTurnEnd() != TurnEnd.GAME_WON) {
+                i += 1; // skip the next turn because it's the ghost
+            }
+
+            i += 1; // increment loop
+        }
+
+        return turns;
     }
 
     public void updateMatchNotes(String matchNotes, long matchId) {

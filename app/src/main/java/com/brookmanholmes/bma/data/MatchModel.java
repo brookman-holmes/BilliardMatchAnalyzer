@@ -9,6 +9,7 @@ import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.ITurn;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +31,7 @@ public class MatchModel implements Parcelable {
             return new MatchModel[size];
         }
     };
+    private static final String TAG = "MatchModel";
     private String playerName, opponentName;
     private int playerRank = 100, opponentRank = 100;
     private int breakType = BreakType.ALTERNATE.ordinal();
@@ -48,7 +50,7 @@ public class MatchModel implements Parcelable {
         playerRank = match.getPlayer().getRank();
         opponentRank = match.getOpponent().getRank();
 
-        GameStatus gameStatus = match.getGameStatus(0);
+        GameStatus gameStatus = match.getInitialGameStatus();
 
         breakType = gameStatus.breakType.ordinal();
         playerTurn = gameStatus.turn.ordinal();
@@ -58,15 +60,15 @@ public class MatchModel implements Parcelable {
         date = match.getCreatedOn();
         details = DatabaseAdapter.encodeEnumSet(match.getDetails());
 
-        for (ITurn turn : match.getTurns()) {
-            turns.add(new TurnModel(turn));
-        }
+        if (gameStatus.gameType.isGhostGame())
+            addTurnsForGhostGame(match);
+        else
+            addTurns(match);
 
         for (ITurn turn : match.getUndoneTurns()) {
             undoneTurns.add(new TurnModel(turn));
         }
     }
-
 
     protected MatchModel(Parcel in) {
         this.playerName = in.readString();
@@ -105,6 +107,24 @@ public class MatchModel implements Parcelable {
         MatchModel result = CREATOR.createFromParcel(parcel);
         parcel.recycle();
         return result;
+    }
+
+    private void addTurns(Match match) {
+        for (int i = 0; i < match.getTurns().size(); i++) {
+            turns.add(new TurnModel(match.getTurns().get(i)));
+        }
+    }
+
+    private void addTurnsForGhostGame(Match match) {
+        for (int i = 0; i < match.getTurns().size(); ) {
+            turns.add(new TurnModel(match.getTurns().get(i)));
+
+            if (match.getTurns().get(i).getTurnEnd() != TurnEnd.GAME_WON) {
+                i += 1; // skip the next turn because it's the ghost
+            }
+
+            i += 1; // increment loop
+        }
     }
 
     public Match getMatch() {
