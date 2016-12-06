@@ -9,11 +9,11 @@ import java.util.Date;
  */
 public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     // formatter for percentages (e.g. .875)
-    private final static DecimalFormat pctf = new DecimalFormat("#.000");
+    final static DecimalFormat pctf = new DecimalFormat("#.000");
     // formatter for average number of balls made per turn (e.g. 5.33)
-    private final static DecimalFormat avgf = new DecimalFormat("##.##");
-    private final static String ZERO_PERCENT = ".000";
-    private final static String ZERO = "0";
+    final static DecimalFormat avgf = new DecimalFormat("##.##");
+    final static String ZERO_PERCENT = ".000";
+    final static String ZERO = "0";
     Date date;
     int rank;
     int safetyAttempts = 0;

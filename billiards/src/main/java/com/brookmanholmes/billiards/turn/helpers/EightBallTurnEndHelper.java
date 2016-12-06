@@ -19,19 +19,19 @@ class EightBallTurnEndHelper extends TurnEndHelper {
     }
 
     @Override
-    boolean lostGame() {
+    boolean seriousFoul() {
         return tableStatus.isGameBallMadeIllegally() ||
                 (currentPlayerBallsRemaining() && tableStatus.isGameBallMade());
     }
 
     @Override
     boolean checkFoul() {
-        return super.checkFoul() || lostGame();
+        return super.checkFoul() || seriousFoul();
     }
 
     @Override
     boolean showSafety() {
-        return super.showSafety() && !lostGame();
+        return super.showSafety() && !seriousFoul();
     }
 
     @Override
@@ -46,7 +46,7 @@ class EightBallTurnEndHelper extends TurnEndHelper {
 
     @Override
     boolean reallyLostGame() {
-        return lostGame();
+        return seriousFoul();
     }
 
     /**

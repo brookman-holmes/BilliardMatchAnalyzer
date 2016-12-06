@@ -100,18 +100,7 @@ public class StraightPoolShotFragment extends BaseFragment {
             R.id.nine, R.id.zero})
     void padSelected(TextView textView) {
         // // FIXME: 12/4/2016 don't be retarded plx
-        String count = ballCount.getText().toString();
-
-        if (Integer.parseInt(ballCount.getText().toString()) == 0) {
-            ballCount.setText(textView.getText());
-        } else if (ballCount.getText().length() == 3) {
-            ballCount.setText(ballCount.getText().toString().substring(1, 3) + textView.getText().toString());
-        } else {
-            ballCount.append(textView.getText());
-        }
-
-
-        ballCount.setText(count);
+        ballCount.append(textView.getText());
         updatePage();
     }
 

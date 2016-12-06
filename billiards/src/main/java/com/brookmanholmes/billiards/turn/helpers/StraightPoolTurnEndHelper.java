@@ -18,8 +18,8 @@ class StraightPoolTurnEndHelper extends TurnEndHelper {
     }
 
     @Override
-    boolean lostGame() {
-        return false;
+    boolean seriousFoul() {
+        return game.currentPlayerConsecutiveFouls >= 2 && tableStatus.getShootingBallsMade() == 0;
     }
 
     @Override

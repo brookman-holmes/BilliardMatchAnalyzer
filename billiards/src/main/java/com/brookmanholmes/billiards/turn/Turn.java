@@ -95,7 +95,7 @@ public class Turn implements ITurn, Serializable {
     }
 
     @Override
-    public boolean isGameLost() {
+    public boolean isSeriousFoul() {
         return gameLost;
     }
 

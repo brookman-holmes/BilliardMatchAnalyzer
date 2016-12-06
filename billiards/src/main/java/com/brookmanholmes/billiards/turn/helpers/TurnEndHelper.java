@@ -90,10 +90,10 @@ public abstract class TurnEndHelper {
     abstract boolean showWin();
 
     /**
-     * Determines whether or not the player could have lost the game
-     * @return true if the game could have been lost, false if the game could not be lost
+     * Determines whether or not the player could have committed a serious foul
+     * @return true if the player committed a serious foul, false otherwise
      */
-    abstract boolean lostGame();
+    abstract boolean seriousFoul();
 
     /**
      * Determines the default selection for the end of the turn
@@ -192,7 +192,7 @@ public abstract class TurnEndHelper {
         } else {
             return new TurnEndOptions.Builder()
                     .wonGame(showWin())
-                    .lostGame(lostGame(), reallyLostGame())
+                    .lostGame(seriousFoul(), reallyLostGame())
                     .safety(showSafety())
                     .safetyError(showSafetyMiss())
                     .miss(showMiss())

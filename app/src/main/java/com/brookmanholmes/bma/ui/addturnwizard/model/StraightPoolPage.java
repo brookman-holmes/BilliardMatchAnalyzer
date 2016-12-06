@@ -2,7 +2,6 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.turn.ITableStatus;
@@ -42,12 +41,9 @@ class StraightPoolPage extends Page implements UpdatesTurnInfo {
         clearTable(turnWizardModel.getTableStatus()); // reset all the balls to back to on the table
         int ballsMade = data.getInt(SIMPLE_DATA_KEY);
         ArrayList<Integer> ballsOnTable = data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY);
-        Log.i(TAG, "updateTurnInfo: ballsOnTable: " + ballsOnTable);
         for (int i = 0; i < ballsMade; i++) {
             turnWizardModel.getTableStatus().setBallTo(BallStatus.MADE, ballsOnTable.get(i));
         }
-
-        Log.i(TAG, "updateTurnInfo: balls to remove from the table: " + turnWizardModel.getTableStatus().getBallsToRemoveFromTable());
     }
 
     private void clearTable(ITableStatus tableStatus) {

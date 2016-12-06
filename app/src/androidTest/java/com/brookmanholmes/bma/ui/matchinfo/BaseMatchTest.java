@@ -147,7 +147,7 @@ public abstract class BaseMatchTest {
     }
 
     private void selectFoul(ITurn turn) {
-        if (turn.isGameLost())
+        if (turn.isSeriousFoul())
             onView(withId(R.id.lostGame)).perform(click());
         else if (turn.isFoul())
             onView(withId(R.id.yes)).perform(click());

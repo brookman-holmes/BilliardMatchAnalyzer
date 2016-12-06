@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui.matchinfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,9 @@ public class MatchInfoFragment extends BaseFragment
         safeties.update(match.getPlayer(), match.getOpponent());
         breaks.update(match.getPlayer(), match.getOpponent());
         runs.update(match.getPlayer(), match.getOpponent());
+
+        Log.i(TAG, "update: " + match.getGameStatus());
+        Log.i(TAG, "update: " + match.getPlayer());
     }
 
     private void update(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {

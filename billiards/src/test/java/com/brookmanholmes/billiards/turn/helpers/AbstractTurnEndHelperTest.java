@@ -58,7 +58,7 @@ public abstract class AbstractTurnEndHelperTest {
 
         helper = TurnEndHelper.create(gameBuilder.build(), tableStatus);
 
-        assertThat(helper.lostGame(), is(true));
+        assertThat(helper.seriousFoul(), is(true));
     }
 
     @Test

@@ -11,26 +11,29 @@ class NineBallController extends PlayerController<NineBallPlayer> {
         super(playerName, opponentName, playerRank, opponentRank);
     }
 
-    @Override void addBreakingStats(NineBallPlayer player) {
+    @Override
+    void addBreakingStats(NineBallPlayer player) {
         super.addBreakingStats(player);
-
 
         if (turn.isGameBallMadeOnBreak())
             player.addWinOnBreak();
     }
 
-    @Override void addRunOutStats(NineBallPlayer player) {
+    @Override
+    void addRunOutStats(NineBallPlayer player) {
         super.addRunOutStats(player);
 
         if (turn.getBallsRemaining() > 0)
             player.addEarlyWin();
     }
 
-    @Override public NineBallPlayer newPlayer() {
+    @Override
+    public NineBallPlayer newPlayer() {
         return new NineBallPlayer(playerName, playerRank);
     }
 
-    @Override public NineBallPlayer newOpponent() {
+    @Override
+    public NineBallPlayer newOpponent() {
         return new NineBallPlayer(opponentName, opponentRank);
     }
 }

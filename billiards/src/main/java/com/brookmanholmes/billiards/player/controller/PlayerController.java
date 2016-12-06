@@ -196,7 +196,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
             addGamesToPlayers(player1, player2);
         }
 
-        if (turn.isGameLost()) {
+        if (turn.isSeriousFoul()) {
             if (player1 instanceof IEarlyWins && player2 instanceof IEarlyWins) {
                 if (gameStatus.turn == PlayerTurn.PLAYER)
                     ((IEarlyWins) player2).addEarlyWin();
@@ -230,7 +230,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * @return true if the game is over, false otherwise
      */
     boolean isGameOver() {
-        return turn.getTurnEnd() == GAME_WON || turn.isGameLost();
+        return turn.getTurnEnd() == GAME_WON || turn.isSeriousFoul();
     }
 
     /**
@@ -241,7 +241,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
     PlayerTurn getGameWinner() {
         if (turn.getTurnEnd() == GAME_WON)
             return gameStatus.turn;
-        else if (turn.isGameLost())
+        else if (turn.isSeriousFoul())
             return gameStatus.turn.nextPlayer();
         else throw new IllegalStateException("Should not be called if the game is not over");
     }

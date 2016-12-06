@@ -17,7 +17,7 @@ class GhostTurnEndHelper extends TurnEndHelper {
     }
 
     @Override
-    boolean lostGame() {
+    boolean seriousFoul() {
         return false;
     }
 

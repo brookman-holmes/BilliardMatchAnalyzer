@@ -12,26 +12,31 @@ class RotationTurnEndHelper extends TurnEndHelper {
         super(game, tableStatus);
     }
 
-    @Override boolean showWin() {
+    @Override
+    boolean showWin() {
         return tableStatus.isGameBallMade()
                 || tableStatus.isGameBallMadeOnBreak();
     }
 
-    @Override boolean lostGame() {
+    @Override
+    boolean seriousFoul() {
         return game.currentPlayerConsecutiveFouls >= 2 && tableStatus.getShootingBallsMade() == 0;
     }
 
-    @Override boolean checkFoul() {
+    @Override
+    boolean checkFoul() {
         return super.checkFoul() || tableStatus.getDeadBalls() > 0;
     }
 
-    @Override boolean showSafety() {
+    @Override
+    boolean showSafety() {
         return super.showSafety() && tableStatus.getDeadBalls() == 0;
     }
 
     // // TODO: 1/29/2016 add in a test to make sure that push shot doesn't show when making the 9 on the break
     // TODO: 3/9/2016 add in test to make sure you don't show push shot when the player fouls
-    @Override boolean showPush() {
+    @Override
+    boolean showPush() {
         return super.showPush() && !showWin() && !checkFoul() && game.gameType != GameType.APA_NINE_BALL;
     }
 }

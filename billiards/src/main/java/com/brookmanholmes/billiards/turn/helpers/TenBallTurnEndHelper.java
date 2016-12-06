@@ -11,11 +11,13 @@ class TenBallTurnEndHelper extends RotationTurnEndHelper {
         super(game, tableStatus);
     }
 
-    @Override boolean showWin() {
+    @Override
+    boolean showWin() {
         return tableStatus.isGameBallMade();
     }
 
-    @Override boolean checkFoul() {
+    @Override
+    boolean checkFoul() {
         return tableStatus.getDeadBallsOnBreak() > 0;
     }
 }

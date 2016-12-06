@@ -17,7 +17,7 @@ class ApaGhostNineBallTurnEndHelper extends TurnEndHelper {
     }
 
     @Override
-    boolean lostGame() {
+    boolean seriousFoul() {
         return false;
     }
 

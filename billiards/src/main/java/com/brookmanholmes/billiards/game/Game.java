@@ -70,7 +70,7 @@ public abstract class Game {
      * @throws InvalidGameTypeException
      */
     public static Game newGame(GameType gameType, PlayerTurn turn, BreakType breakType) throws InvalidGameTypeException {
-        // TODO: 10/27/2015 implement straight pool and american rotation games
+        // TODO: 10/27/2015 implement american rotation games
         switch (gameType) {
             case BCA_NINE_BALL:
                 return new NineBallGame(turn, breakType);
@@ -195,9 +195,7 @@ public abstract class Game {
      * @param turn The incoming turn
      * @return true for the game is over, false for the game is not over
      */
-    boolean isGameOver(ITurn turn) {
-        return turn.getTurnEnd() == TurnEnd.GAME_WON || turn.isGameLost();
-    }
+    abstract boolean isGameOver(ITurn turn);
 
     /**
      * Sets the game status to a new game
@@ -278,7 +276,7 @@ public abstract class Game {
      * Sets the consecutive fouls of PLAYER and OPPONENT
      * @param turn The incoming turn
      */
-    private void setConsecutiveFouls(ITurn turn) {
+    void setConsecutiveFouls(ITurn turn) {
         if (turn.isFoul()) {
             if (this.turn == PlayerTurn.PLAYER)
                 consecutivePlayerFouls++;

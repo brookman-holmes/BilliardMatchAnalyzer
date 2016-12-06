@@ -21,7 +21,7 @@ class GhostEightBallTurnEndHelper extends GhostTurnEndHelper {
     }
 
     @Override
-    boolean lostGame() {
+    boolean seriousFoul() {
         return false;
     }
 

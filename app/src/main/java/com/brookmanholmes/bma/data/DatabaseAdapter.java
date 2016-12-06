@@ -596,7 +596,7 @@ public class DatabaseAdapter {
         turnValues.put(COLUMN_FOUL, turn.isFoul());
         turnValues.put(COLUMN_TURN_END, turn.getTurnEnd().name());
         turnValues.put(COLUMN_TURN_NUMBER, turnCount);
-        turnValues.put(COLUMN_IS_GAME_LOST, turn.isGameLost());
+        turnValues.put(COLUMN_IS_GAME_LOST, turn.isSeriousFoul());
 
         database.insert(TABLE_TURNS, null, turnValues);
 

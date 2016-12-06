@@ -111,7 +111,7 @@ public abstract class AbstractGameTest {
         assertThat(game.isGameOver(mockedTurn), is(true));
 
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
-        when(mockedTurn.isGameLost()).thenReturn(true);
+        when(mockedTurn.isSeriousFoul()).thenReturn(true);
         assertThat(game.isGameOver(mockedTurn), is(true));
     }
 

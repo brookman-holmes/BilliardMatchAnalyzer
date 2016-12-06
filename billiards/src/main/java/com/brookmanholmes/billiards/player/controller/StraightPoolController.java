@@ -20,4 +20,36 @@ class StraightPoolController extends PlayerController<StraightPoolPlayer> {
     public StraightPoolPlayer newOpponent() {
         return new StraightPoolPlayer(opponentName, opponentRank);
     }
+
+    @Override
+    void addSafetyStats(StraightPoolPlayer player) {
+        super.addSafetyStats(player);
+    }
+
+    @Override
+    void addShootingStats(StraightPoolPlayer player) {
+        super.addShootingStats(player);
+
+        if (gameStatus.currentPlayerConsecutiveFouls >= 2 && turn.isSeriousFoul()) {
+            player.addSeriousFoul();
+        }
+    }
+
+    @Override
+    void addBreakingStats(StraightPoolPlayer player) {
+        if (turn.getShootingBallsMade() == 0)
+            player.addBreakShot(0, false, turn.isFoul());
+    }
+
+    @Override
+    void addRunOutStats(StraightPoolPlayer player) {
+
+    }
+
+    @Override
+    boolean isGameOver() {
+        return false;
+    }
+
+
 }

@@ -14,28 +14,39 @@ abstract class RotationGame extends Game {
         allowPush = true;
     }
 
-    @Override void startNewGame(ITurn turn) {
+    @Override
+    void startNewGame(ITurn turn) {
         super.startNewGame(turn);
         allowPush = true;
     }
 
-    @Override boolean setAllowPlayerToBreakAgain(ITurn turn) {
+    @Override
+    boolean setAllowPlayerToBreakAgain(ITurn turn) {
         return false;
     }
 
-    @Override PlayerColor setPlayerColor(ITurn turn) {
+    @Override
+    PlayerColor setPlayerColor(ITurn turn) {
         return PlayerColor.OPEN;
     }
 
-    @Override boolean setAllowTurnSkip(ITurn turn) {
+    @Override
+    boolean setAllowTurnSkip(ITurn turn) {
         return turn.getTurnEnd() == TurnEnd.PUSH_SHOT;
     }
 
-    @Override boolean setAllowPush(ITurn turn) {
+    @Override
+    boolean setAllowPush(ITurn turn) {
         return (turn.getBreakBallsMade() == 0 && !turn.isFoul() && turn.getTurnEnd() == TurnEnd.BREAK_MISS);
     }
 
-    @Override public int[] getGhostBallsToWinGame() {
+    @Override
+    boolean isGameOver(ITurn turn) {
+        return turn.getTurnEnd() == TurnEnd.GAME_WON || turn.isSeriousFoul();
+    }
+
+    @Override
+    public int[] getGhostBallsToWinGame() {
         int[] ballsToWin = new int[ballsOnTable.size()];
 
         for (int i = 0; i < ballsOnTable.size(); i++) {

@@ -3,7 +3,6 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
-import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
@@ -60,8 +59,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(GAME_TYPE_KEY)),
                 matchData.getIntegerArrayList(BALLS_ON_TABLE_KEY));
 
-
-        Log.i(TAG, "AddTurnWizardModel: " + matchData.getIntegerArrayList(BALLS_ON_TABLE_KEY));
         turnBuilder.foul = false;
         turnBuilder.lostGame = false;
         turnBuilder.advStats.name(playerName);

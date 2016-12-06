@@ -21,7 +21,7 @@ class ApaGhostEightBallTurnEndHelper extends ApaEightBallTurnEndHelper {
     }
 
     @Override
-    boolean lostGame() {
+    boolean seriousFoul() {
         return tableStatus.isGameBallMadeIllegally();
     }
 

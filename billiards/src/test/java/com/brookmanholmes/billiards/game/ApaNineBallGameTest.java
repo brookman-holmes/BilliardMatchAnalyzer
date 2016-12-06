@@ -19,7 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @SuppressWarnings("unused")
 public class ApaNineBallGameTest extends AbstractGameTest {
     @Override public void setUp() {
-        game = new ApaNineBallGame();
+        game = new ApaNineBallGame(PlayerTurn.PLAYER);
     }
 
     @Override List<Integer> populateList() {
@@ -27,7 +27,7 @@ public class ApaNineBallGameTest extends AbstractGameTest {
     }
 
     @Override Game createNewGame() {
-        return new ApaNineBallGame();
+        return new ApaNineBallGame(PlayerTurn.PLAYER);
     }
 
     @Test
@@ -40,35 +40,6 @@ public class ApaNineBallGameTest extends AbstractGameTest {
     public void setAllowTurnSkipReturnsFalse() {
         assertThat(game.setAllowTurnSkip(
                 turn().madeBalls(1, 2, 3).miss()), is(false));
-    }
-
-    @Test
-    public void getPointsFromTurnReturns0() {
-        TableStatus table = createTableStatus();
-        ITurn turn = createGameTurn(TurnEnd.BREAK_MISS, table);
-
-        assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(0));
-    }
-
-    @Test
-    public void getPointsFromTurnWithBreakBallsReturns3() {
-        ITurn turn = turn().breakBalls(1, 2, 3).miss();
-
-        assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(3));
-    }
-
-    @Test
-    public void getPointsFromTurnWithGameBallMadeReturns7() {
-        ITurn turn = turn().breakBalls(1, 2, 3).madeBalls(4, 5, 9).win();
-
-        assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(7));
-    }
-
-    @Test
-    public void getPointsFromTurnWithGameBallMadeOnBreakReturns2() {
-        ITurn turn = turn().madeBalls(9).win();
-
-        assertThat(ApaNineBallGame.getPointsFromTurn(turn), is(2));
     }
 
     @Override GameType thisGamesGameType() {

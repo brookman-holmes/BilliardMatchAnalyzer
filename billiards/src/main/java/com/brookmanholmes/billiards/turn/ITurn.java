@@ -15,7 +15,7 @@ public interface ITurn extends ITableStatus {
      * a three fouls rule or illegally pocketing the 8 ball)
      * @return true if the game was lost, false otherwise
      */
-    boolean isGameLost();
+    boolean isSeriousFoul();
 
     /**
      * Returns what type of ending the turn was

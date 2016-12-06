@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -207,7 +206,6 @@ public class RaceToFragment extends BaseFragment {
         }
 
         private void selectView(int selection) {
-            Log.i(TAG, "selectView: " + selection);
             grid.getChildAt(selection).setBackground(selectedBackground);
             ((TextView) grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             this.selection = selection;

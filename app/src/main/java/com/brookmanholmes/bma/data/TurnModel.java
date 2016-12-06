@@ -38,7 +38,7 @@ class TurnModel implements Parcelable {
 
         turnEnd = turn.getTurnEnd().ordinal();
         foul = turn.isFoul();
-        lostGame = turn.isGameLost();
+        lostGame = turn.isSeriousFoul();
         gameType = turn.getGameType().ordinal();
 
         ballStatuses = new int[turn.size()];

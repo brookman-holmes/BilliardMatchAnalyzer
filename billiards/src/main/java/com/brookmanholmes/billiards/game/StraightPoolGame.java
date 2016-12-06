@@ -39,6 +39,35 @@ class StraightPoolGame extends Game {
     }
 
     @Override
+    void setConsecutiveFouls(ITurn turn) {
+        // don't count breaking fouls in with consecutive fouls
+        if (turn.isFoul() && turn.getShootingBallsMade() == 0 && !newGame) {
+            if (this.turn == PlayerTurn.PLAYER)
+                consecutivePlayerFouls++;
+            else
+                consecutiveOpponentFouls++;
+        } else {
+            if (this.turn == PlayerTurn.PLAYER)
+                consecutivePlayerFouls = 0;
+            else
+                consecutiveOpponentFouls = 0;
+        }
+
+
+        // clear consecutive fouls after the third
+        if (turn.isSeriousFoul()) {
+            if (this.turn == PlayerTurn.PLAYER)
+                consecutivePlayerFouls = 0;
+            else consecutiveOpponentFouls = 0;
+        }
+    }
+
+    @Override
+    boolean isGameOver(ITurn turn) {
+        return false;
+    }
+
+    @Override
     public int[] getGhostBallsToWinGame() {
         return new int[0];
     }
