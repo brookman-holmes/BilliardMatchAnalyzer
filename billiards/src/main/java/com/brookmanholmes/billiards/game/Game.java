@@ -92,6 +92,8 @@ public abstract class Game {
                 return new EightBallGame(GameType.APA_GHOST_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
             case APA_GHOST_NINE_BALL:
                 return new NineBallGame(GameType.APA_GHOST_NINE_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
+            case STRAIGHT_POOL:
+                return new StraightPoolGame(turn);
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }

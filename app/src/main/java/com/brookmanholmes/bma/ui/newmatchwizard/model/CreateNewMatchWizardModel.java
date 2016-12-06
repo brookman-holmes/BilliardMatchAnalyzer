@@ -84,14 +84,15 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     private Page getGhostGameChoicePage() {
         return new GameChoicePage(this, context.getString(R.string.title_page_games), context, "GGCP")
                 .addBranch(context.getString(R.string.game_apa_eight_ghost),
-                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.bca_review), GameType.APA_EIGHT_BALL, "gapa8")
+                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.games_needed), GameType.APA_EIGHT_BALL, "gapa8")
                                 .setRaceToChoices(2, 8, 6))
                 .addBranch(context.getString(R.string.game_apa_nine_ghost),
-                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.apa_nine_review), GameType.APA_NINE_BALL, "gapa9")
+                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.points_needed), GameType.APA_NINE_BALL, "gapa9")
                                 .setRaceToChoices(1, 10, 6))
                 .addBranch(context.getString(R.string.game_bca_eight_ghost), getBcaRankPage("gbca8"))
                 .addBranch(context.getString(R.string.game_bca_nine_ghost), getBcaRankPage("gbca9"))
                 .addBranch(context.getString(R.string.game_bca_ten_ghost), getBcaRankPage("gbca10"))
+                //.addBranch(context.getString(R.string.game_straight_ghost), getStraightRankPage("gstraight")) // todo need to figure out how to do rankings for straight pool against the ghost
                 .setValue(context.getString(R.string.game_bca_nine_ghost))
                 .setRequired(true);
     }
@@ -99,16 +100,17 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     private Page getGameChoicePage() {
         return new GameChoicePage(this, context.getString(R.string.title_page_games), context, "GCP")
                 .addBranch(context.getString(R.string.game_apa_eight),
-                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.bca_review), GameType.APA_EIGHT_BALL, "apa8")
+                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.games_needed), GameType.APA_EIGHT_BALL, "apa8")
                                 .setRaceToChoices(2, 8, 6),
                         getFirstBreakPage("apa8"))
                 .addBranch(context.getString(R.string.game_apa_nine),
-                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.apa_nine_review), GameType.APA_NINE_BALL, "apa9")
+                        getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.points_needed), GameType.APA_NINE_BALL, "apa9")
                                 .setRaceToChoices(1, 10, 6),
                         getFirstBreakPage("apa9"))
                 .addBranch(context.getString(R.string.game_bca_eight), getBcaRankPage("bca8"), getBreakTypePage("bca8"))
                 .addBranch(context.getString(R.string.game_bca_nine), getBcaRankPage("bca9"), getBreakTypePage("bca9"))
                 .addBranch(context.getString(R.string.game_bca_ten), getBcaRankPage("bca10"), getBreakTypePage("bca10"))
+                .addBranch(context.getString(R.string.game_straight), getStraightRankPage("straight"), getFirstBreakPage("straight"))
                 .setValue(context.getString(R.string.game_bca_nine))
                 .setRequired(true);
     }
@@ -117,8 +119,13 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         return new RaceToPage(this, title, reviewString, gameType, context.getString(R.string.race), parentKey);
     }
 
+    private Page getStraightRankPage(String parentKey) {
+        return getRaceToPage(context.getString(R.string.race), context.getString(R.string.points_needed), GameType.STRAIGHT_POOL, parentKey)
+                .setRaceToChoices(10, 150, 10, 50);
+    }
+
     private Page getBcaRankPage(String parentKey) {
-        return getRaceToPage(context.getString(R.string.race), context.getString(R.string.bca_review), GameType.BCA_EIGHT_BALL, parentKey)
+        return getRaceToPage(context.getString(R.string.race), context.getString(R.string.games_needed), GameType.BCA_EIGHT_BALL, parentKey)
                 .setRaceToChoices(1, 21, 5);
     }
 

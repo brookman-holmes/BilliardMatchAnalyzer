@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
@@ -145,7 +146,9 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 viewType == 1 ? PlayerTurn.PLAYER : PlayerTurn.OPPONENT,
                 viewType == 1 ? match.getPlayer(0, turn + 1) : match.getOpponent(0, turn + 1));
 
-        holder.setBalls(data.get(groupPosition).get(childPosition));
+        if (match.getGameStatus().gameType != GameType.STRAIGHT_POOL) {
+            holder.setBalls(data.get(groupPosition).get(childPosition));
+        }
 
         // set margin of bottom view holder to get a cool spacing
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();

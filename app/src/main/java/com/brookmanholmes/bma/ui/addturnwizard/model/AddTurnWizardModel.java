@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
+import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
@@ -59,6 +60,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(GAME_TYPE_KEY)),
                 matchData.getIntegerArrayList(BALLS_ON_TABLE_KEY));
 
+
+        Log.i(TAG, "AddTurnWizardModel: " + matchData.getIntegerArrayList(BALLS_ON_TABLE_KEY));
         turnBuilder.foul = false;
         turnBuilder.lostGame = false;
         turnBuilder.advStats.name(playerName);
@@ -99,6 +102,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     protected PageList onNewRootPageList() {
         if (matchData.getBoolean(ALLOW_BREAK_AGAIN_KEY))
             return new PageList(getTurnEndPage());
+        else if (GameType.valueOf(matchData.getString(GAME_TYPE_KEY)) == GameType.STRAIGHT_POOL)
+            return new PageList(getStraightPoolPage(), getTurnEndPage());
         else if (GameType.valueOf(matchData.getString(GAME_TYPE_KEY)).isGhostGame())
             return new PageList(getGhostBreakPage(), getTurnEndPage());
         else if (matchData.getBoolean(NEW_GAME_KEY))
@@ -196,6 +201,10 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     private Page getShotPage() {
         return new ShotPage(this, context.getString(R.string.title_shot, playerName), matchData);
+    }
+
+    private Page getStraightPoolPage() {
+        return new StraightPoolPage(this, context.getString(R.string.title_shot_straight, playerName), matchData);
     }
 
     private Page getTurnEndPage() {

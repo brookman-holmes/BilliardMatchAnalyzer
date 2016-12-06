@@ -23,7 +23,7 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
     public static final String PLAYER_RANK_KEY = "player_rank";
     public static final String OPPONENT_RANK_KEY = "opponent_rank";
     private static final String TAG = "RaceToPage";
-    private int lower, upper, defaultChoice;
+    private int lower, upper, defaultChoice, increment = 1;
     private RaceToFragment fragment;
     private String reviewString, reviewTitle;
     private GameType gameType = GameType.BCA_NINE_BALL;
@@ -43,9 +43,17 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
         return this;
     }
 
+    RaceToPage setRaceToChoices(int lower, int upper, int increment, int defaultChoice) {
+        this.lower = lower;
+        this.upper = upper;
+        this.defaultChoice = defaultChoice;
+        this.increment = increment;
+        return this;
+    }
+
     @Override
     public Fragment createFragment() {
-        return RaceToFragment.create(getKey(), lower, upper, defaultChoice);
+        return RaceToFragment.create(getKey(), lower, upper, increment, defaultChoice);
     }
 
     @Override

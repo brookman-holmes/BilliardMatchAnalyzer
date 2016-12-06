@@ -2,31 +2,23 @@ package com.brookmanholmes.billiards.turn.helpers;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.turn.ITableStatus;
-import com.brookmanholmes.billiards.turn.TableUtils;
 
 /**
- * Created by Brookman Holmes on 10/24/2016.
+ * Created by Brookman Holmes on 12/1/2016.
  */
 
-class GhostEightBallTurnEndHelper extends GhostTurnEndHelper {
-    GhostEightBallTurnEndHelper(GameStatus game, ITableStatus tableStatus) {
+class StraightPoolTurnEndHelper extends TurnEndHelper {
+    StraightPoolTurnEndHelper(GameStatus game, ITableStatus tableStatus) {
         super(game, tableStatus);
     }
 
     @Override
     boolean showWin() {
-        return (TableUtils.getSolidsRemaining(tableStatus.getBallStatuses()) == 0 ||
-                TableUtils.getStripesRemaining(tableStatus.getBallStatuses()) == 0)
-                && tableStatus.isGameBallMade();
-    }
-
-    @Override
-    boolean lostGame() {
         return false;
     }
 
     @Override
-    boolean showPush() {
+    boolean lostGame() {
         return false;
     }
 
@@ -36,17 +28,37 @@ class GhostEightBallTurnEndHelper extends GhostTurnEndHelper {
     }
 
     @Override
-    boolean showSafety() {
+    boolean showPush() {
         return false;
     }
 
     @Override
+    boolean showSafety() {
+        return true;
+    }
+
+    @Override
     boolean showSafetyMiss() {
+        return true;
+    }
+
+    @Override
+    boolean showMiss() {
+        return true;
+    }
+
+    @Override
+    boolean checkFoul() {
         return false;
     }
 
     @Override
     boolean showBreakMiss() {
+        return false;
+    }
+
+    @Override
+    boolean reallyLostGame() {
         return false;
     }
 }

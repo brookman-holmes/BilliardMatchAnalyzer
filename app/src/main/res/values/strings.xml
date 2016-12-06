@@ -237,8 +237,8 @@
     <string name="total_fouls">Total fouls</string>
     <string name="race_to">How many games does %1$s play to?</string>
     <string name="apa_ranks">What is %1$s\'s rank?</string>
-    <string name="apa_nine_review">%1$s needs %2$d points\n\n%3$s needs %4$d points</string>
-    <string name="bca_review">%1$s needs %2$d games\n\n%3$s needs %4$d games</string>
+    <string name="points_needed">%1$s needs %2$d points\n\n%3$s needs %4$d points</string>
+    <string name="games_needed">%1$s needs %2$d games\n\n%3$s needs %4$d games</string>
     <string name="race">Race</string>
     <string name="click_button_test">Click the question mark\nif you have any questions</string>
     <string name="title_bank_error">Banks</string>
@@ -318,4 +318,8 @@
     <string name="firebase_storage_ref">gs://billiard-match-analyzer.appspot.com</string>
     <string name="angle_detailed">Detailed angles</string>
     <string name="angle_simple">Simple angles</string>
+    <string name="game_straight_ghost">Straight pool vs. The Ghost</string>
+    <string name="title_shot_straight">Input number of balls %1$s made this turn</string>
+    <string name="download_match">Download match</string>
+    <string name="share_match">Share match</string>
 </resources>

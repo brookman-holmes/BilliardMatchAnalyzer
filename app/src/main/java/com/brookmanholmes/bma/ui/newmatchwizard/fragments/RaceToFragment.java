@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class RaceToFragment extends BaseFragment {
     private static final String ARG_DEFAULT_CHOICE_KEY = "default_choice";
     private static final String ARG_PLAYER_INDEX = "player_index";
     private static final String ARG_OPP_INDEX = "opp_index";
+    private static final String ARG_INCREMENT_KEY = "increment";
     @Bind(R.id.playerName)
     TextView playerName;
     @Bind(R.id.opponentName)
@@ -52,12 +54,13 @@ public class RaceToFragment extends BaseFragment {
     public RaceToFragment() {
     }
 
-    public static RaceToFragment create(String key, int lowerBound, int upperBound, int defaultChoice) {
+    public static RaceToFragment create(String key, int lowerBound, int upperBound, int increment, int defaultChoice) {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
         args.putInt(ARG_DEFAULT_CHOICE_KEY, defaultChoice);
         args.putInt(ARG_LOWER_BOUND_KEY, lowerBound);
         args.putInt(ARG_UPPER_BOUND_KEY, upperBound);
+        args.putInt(ARG_INCREMENT_KEY, increment);
 
         RaceToFragment fragment = new RaceToFragment();
         fragment.setArguments(args);
@@ -91,6 +94,7 @@ public class RaceToFragment extends BaseFragment {
         int max = getArguments().getInt(ARG_UPPER_BOUND_KEY);
         int playerChoice = getArguments().getInt(ARG_DEFAULT_CHOICE_KEY);
         int opponentChoice = getArguments().getInt(ARG_DEFAULT_CHOICE_KEY);
+        int increment = getArguments().getInt(ARG_INCREMENT_KEY);
         int columns = 5;
 
         View view = inflater.inflate(R.layout.fragment_race_page, container, false);
@@ -108,10 +112,13 @@ public class RaceToFragment extends BaseFragment {
                 playerChoice = preferences.getInt("apa9" + page.getPlayerName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY)) - 1;
                 opponentChoice = preferences.getInt("apa9" + page.getOpponentName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY)) - 1;
             }
+        } else if (page.getGameType() == GameType.STRAIGHT_POOL) {
+            playerChoice = preferences.getInt("straight" + page.getPlayerName() + page.getOpponentName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY)) / increment;
+            opponentChoice = preferences.getInt("straight" + page.getOpponentName() + page.getPlayerName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY)) / increment;
         }
 
-        playerController = new RaceController(playerGrid, min, max, columns, page.getData().getInt(ARG_PLAYER_INDEX, playerChoice));
-        opponentController = new RaceController(opponentGrid, min, max, columns, page.getData().getInt(ARG_OPP_INDEX, opponentChoice));
+        playerController = new RaceController(playerGrid, min, max, increment, columns, page.getData().getInt(ARG_PLAYER_INDEX, playerChoice));
+        opponentController = new RaceController(opponentGrid, min, max, increment, columns, page.getData().getInt(ARG_OPP_INDEX, opponentChoice));
         updatePage();
         return view;
     }
@@ -158,14 +165,14 @@ public class RaceToFragment extends BaseFragment {
         private Drawable selectedBackground;
         private Drawable unselectedBackground;
 
-        RaceController(GridLayout grid, int min, int max, int columns, int selection) {
+        RaceController(GridLayout grid, int min, int max, int increment, int columns, int selection) {
             this.grid = grid;
             unselectedBackground = ContextCompat.getDrawable(grid.getContext(), R.drawable.white_circle);
             selectedBackground = ContextCompat.getDrawable(grid.getContext(), R.drawable.blue_circle);
 
             grid.setColumnCount(columns);
 
-            for (int i = min; i < max; i++) {
+            for (int i = min; i < max; i += increment) {
                 grid.addView(createTextView(i));
             }
 
@@ -200,6 +207,7 @@ public class RaceToFragment extends BaseFragment {
         }
 
         private void selectView(int selection) {
+            Log.i(TAG, "selectView: " + selection);
             grid.getChildAt(selection).setBackground(selectedBackground);
             ((TextView) grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             this.selection = selection;

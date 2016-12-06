@@ -63,6 +63,8 @@ public abstract class TurnEndHelper {
                 return new ApaGhostEightBallTurnEndHelper(game, tableStatus);
             case APA_GHOST_NINE_BALL:
                 return new ApaGhostNineBallTurnEndHelper(game, tableStatus);
+            case STRAIGHT_POOL:
+                return new StraightPoolTurnEndHelper(game, tableStatus);
             default:
                 throw new InvalidGameTypeException();
         }

@@ -165,6 +165,8 @@ public class MatchDialogHelperUtils {
                 return 8;
             case APA_GHOST_NINE_BALL:
                 return 9;
+            case STRAIGHT_POOL:
+                return 0;
             default:
                 throw new InvalidGameTypeException("That game is probably not implemented yet: " + match.getGameStatus().gameType.toString());
         }
@@ -193,6 +195,8 @@ public class MatchDialogHelperUtils {
                 return R.layout.select_ten_ball_dialog;
             case BCA_GHOST_NINE_BALL:
                 return R.layout.select_nine_ball_dialog;
+            case STRAIGHT_POOL:
+                return R.layout.select_straight_pool_balls_dialog;
             default:
                 throw new InvalidGameTypeException("Game type not implemented yet: " + gameType.toString());
         }

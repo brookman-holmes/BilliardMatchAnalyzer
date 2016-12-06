@@ -2,13 +2,15 @@ package com.brookmanholmes.billiards.game;
 
 import com.brookmanholmes.billiards.turn.ITurn;
 
+import java.util.List;
+
 /**
  * Created by Brookman Holmes on 11/18/2016.
  */
 
 class StraightPoolGame extends Game {
     StraightPoolGame(PlayerTurn turn) {
-        super(GameType.STRAIGHT_POOL, turn, BreakType.WINNER, 15, 0);
+        super(GameType.STRAIGHT_POOL, turn, BreakType.WINNER, 999, 999);
     }
 
     @Override
@@ -23,12 +25,17 @@ class StraightPoolGame extends Game {
 
     @Override
     PlayerColor setPlayerColor(ITurn turn) {
-        return null;
+        return PlayerColor.OPEN;
     }
 
     @Override
     boolean setAllowPlayerToBreakAgain(ITurn turn) {
-        return false;
+        return newGame && turn.isFoul() && turn.getShootingBallsMade() == 0;
+    }
+
+    @Override
+    void removeBallsFromTable(List<Integer> ballsToRemove) {
+        // don't remove balls from the table because it shouldn't matter....
     }
 
     @Override

@@ -93,6 +93,8 @@ final public class TableStatus implements ITableStatus, Serializable {
                 return new TableStatus(15, 8, gameType);
             case APA_GHOST_NINE_BALL:
                 return new TableStatus(9, 9, gameType);
+            case STRAIGHT_POOL:
+                return new TableStatus(999, 999, gameType);
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }
@@ -130,6 +132,8 @@ final public class TableStatus implements ITableStatus, Serializable {
                 return new TableStatus(15, 8, gameType, ballsOnTable);
             case APA_GHOST_NINE_BALL:
                 return new TableStatus(9, 9, gameType, ballsOnTable);
+            case STRAIGHT_POOL:
+                return new TableStatus(999, 999, gameType, ballsOnTable);
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }
@@ -140,7 +144,7 @@ final public class TableStatus implements ITableStatus, Serializable {
         List<Integer> ballsOffTable = new ArrayList<>();
 
         for (int ball : table.keySet()) {
-            if (table.get(ball) != ON_TABLE)
+            if (table.get(ball) != ON_TABLE && table.get(ball) != OFF_TABLE)
                 ballsOffTable.add(ball);
         }
 
@@ -232,7 +236,7 @@ final public class TableStatus implements ITableStatus, Serializable {
     public BallStatus getBallStatus(int ball) throws InvalidBallException {
         if (table.get(ball) != null)
             return table.get(ball);
-        else throw new InvalidBallException();
+        else throw new InvalidBallException("ball: " + ball);
     }
 
     @Override

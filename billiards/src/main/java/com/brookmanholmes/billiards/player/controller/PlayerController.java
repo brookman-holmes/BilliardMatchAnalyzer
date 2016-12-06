@@ -111,6 +111,8 @@ public abstract class PlayerController<T extends AbstractPlayer> {
                 return new ApaEightBallController(playerName, opponentName, playerRank, opponentRank);
             case APA_GHOST_NINE_BALL:
                 return new ApaNineBallController(playerName, opponentName, playerRank, opponentRank);
+            case STRAIGHT_POOL:
+                return new StraightPoolController(playerName, opponentName, playerRank, opponentRank);
             default:
                 throw new InvalidGameTypeException(game.getGameType().name());
         }

@@ -11,11 +11,13 @@ class StraightPoolController extends PlayerController<StraightPoolPlayer> {
         super(playerName, opponentName, playerRank, opponentRank);
     }
 
-    @Override public StraightPoolPlayer newPlayer() {
+    @Override
+    public StraightPoolPlayer newPlayer() {
         return new StraightPoolPlayer(playerName, playerRank);
     }
 
-    @Override public StraightPoolPlayer newOpponent() {
+    @Override
+    public StraightPoolPlayer newOpponent() {
         return new StraightPoolPlayer(opponentName, opponentRank);
     }
 }
