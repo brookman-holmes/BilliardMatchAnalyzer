@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.StraightPoolPlayer;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -18,7 +19,7 @@ public class ShootingBinder extends BindingAdapter {
     public String playerFouls, opponentFouls;
 
     ShootingBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
-        super(expanded);
+        super(expanded, !(player instanceof StraightPoolPlayer));
         playerShootingPct = player.getShootingPct();
         opponentShootingPct = opponent.getShootingPct();
 

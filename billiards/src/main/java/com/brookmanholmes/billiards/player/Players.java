@@ -49,7 +49,10 @@ public class Players {
             return isMatchOverApa9((ApaNineBallPlayer)player, (ApaNineBallPlayer)opponent);
         else if (player instanceof ApaEightBallPlayer && opponent instanceof ApaEightBallPlayer)
             return isMatchOverApa8((ApaEightBallPlayer)player, (ApaEightBallPlayer)opponent);
-        else
+        else if (player instanceof StraightPoolPlayer && opponent instanceof StraightPoolPlayer) {
+            return player.getRank() <= ((StraightPoolPlayer) player).getPoints() ||
+                    opponent.getRank() <= ((StraightPoolPlayer) opponent).getPoints();
+        } else
             return player.getRank() <= player.getWins() ||
                     opponent.getRank() <= opponent.getWins();
     }

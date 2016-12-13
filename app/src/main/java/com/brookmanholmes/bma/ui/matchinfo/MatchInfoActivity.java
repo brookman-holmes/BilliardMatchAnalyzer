@@ -22,11 +22,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -92,6 +94,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     CoordinatorLayout layout;
     @Bind(R.id.buttonAddTurn)
     FloatingActionButton fabAddTurn;
+    @Bind(R.id.ballContainer)
+    ViewGroup ballContainer;
 
     private DatabaseAdapter db;
     private Match match;
@@ -122,9 +126,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         playerName.setText(match.getPlayer().getName());
-        playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
         opponentName.setText(match.getOpponent().getName());
-        opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, inactiveArrow, null);
 
         // no reason to click on The Ghost
         if (match.getGameStatus().gameType.isGhostGame())
@@ -143,6 +145,33 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         pager.setAdapter(adapter);
 
         setupNfc();
+    }
+
+    private void hideBalls() {
+        if (match.getGameStatus().gameType != GameType.STRAIGHT_POOL) {
+            for (int i = 0; i < ballContainer.getChildCount(); i++) {
+                ballContainer.getChildAt(i).setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    private void setBallsOnTable() {
+        if (match.getGameStatus().gameType != GameType.STRAIGHT_POOL) {
+            findViewById(R.id.ballContainer).setVisibility(View.VISIBLE);
+            findViewById(R.id.ballsRemaining).setVisibility(View.GONE);
+            for (int i = 0; i < match.getGameStatus().ballsOnTable.size(); i++) {
+                int ball = match.getGameStatus().ballsOnTable.get(i) - 1;
+                ballContainer.getChildAt(ball).setVisibility(View.VISIBLE);
+            }
+        } else {
+            findViewById(R.id.ballContainer).setVisibility(View.GONE);
+            findViewById(R.id.ballsRemaining).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.ballsRemaining)).setText(getString(R.string.balls_remaining, getBallsRemaining()));
+        }
+    }
+
+    private int getBallsRemaining() {
+        return 15 - ((match.getPlayer().getShootingBallsMade() + match.getOpponent().getShootingBallsMade()) % 14);
     }
 
     private void setupNfc() {
@@ -246,6 +275,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         }
 
         updateFragments();
+        hideBalls();
+        setBallsOnTable();
 
         if (match.isMatchOver()) {
             fabAddTurn.hide();
@@ -254,6 +285,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             matchOverSnackbar.dismiss();
             fabAddTurn.show();
         }
+
+        Log.i(TAG, "updateViews: player allowed to break again? " + match.getGameStatus().playerAllowedToBreakAgain);
     }
 
     private Snackbar makeSnackbar(@StringRes int resId, int duration) {
@@ -273,13 +306,13 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 turnBuilder.tableStatus,
                 turnBuilder.turnEnd,
                 turnBuilder.foul,
-                turnBuilder.lostGame,
+                turnBuilder.seriousFoul,
                 turnBuilder.advStats.build()));
 
         Bundle bundle = new Bundle();
         bundle.putString("turn_end", turnBuilder.turnEnd.name());
         bundle.putBoolean("foul", turnBuilder.foul);
-        bundle.putBoolean("lost_game", turnBuilder.lostGame);
+        bundle.putBoolean("lost_game", turnBuilder.seriousFoul);
         bundle.putString("ball_statuses", turnBuilder.tableStatus.getBallStatuses().toString());
         analytics.logEvent("add_turn_finished", bundle);
     }

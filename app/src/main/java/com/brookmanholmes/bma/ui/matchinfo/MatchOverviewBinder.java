@@ -5,6 +5,7 @@ import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
 import com.brookmanholmes.billiards.player.CompPlayer;
+import com.brookmanholmes.billiards.player.StraightPoolPlayer;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -29,7 +30,8 @@ public class MatchOverviewBinder extends BindingAdapter {
     public boolean apaTitle = false;
 
     MatchOverviewBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
-        super(expanded);
+        super(expanded, !(player instanceof StraightPoolPlayer));
+
         if (useGameTotal(player, opponent)) {
             apaTitle = true;
         }

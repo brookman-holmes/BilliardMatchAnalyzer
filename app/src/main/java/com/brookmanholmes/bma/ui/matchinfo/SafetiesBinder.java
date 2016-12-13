@@ -21,10 +21,8 @@ public class SafetiesBinder extends BindingAdapter {
 
     public String playerForcedFouls, opponentForcedFouls;
 
-    public boolean showCard = true;
-
     SafetiesBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded, boolean showCard) {
-        super(expanded);
+        super(expanded, showCard);
         this.title = title;
         helpLayout = R.layout.dialog_help_safeties;
 
@@ -47,8 +45,6 @@ public class SafetiesBinder extends BindingAdapter {
 
         playerForcedFouls = player.getSafetyForcedErrors() + "";
         opponentForcedFouls = opponent.getSafetyForcedErrors() + "";
-
-        this.showCard = showCard;
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent) {

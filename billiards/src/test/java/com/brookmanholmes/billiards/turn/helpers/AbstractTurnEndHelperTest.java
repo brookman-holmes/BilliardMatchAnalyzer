@@ -36,14 +36,6 @@ public abstract class AbstractTurnEndHelperTest {
     }
 
     @Test
-    public void showFoulOnDeadBall() {
-        tableStatus.setBallTo(BallStatus.DEAD, 5);
-        helper = TurnEndHelper.create(gameBuilder.newGame().build(), tableStatus);
-
-        assertThat(helper.checkFoul(), is(showFoulOnDeadBall));
-    }
-
-    @Test
     public void showFoulOnDeadBallOnBreak() {
         tableStatus.setBallTo(BallStatus.DEAD_ON_BREAK, 5);
         helper = TurnEndHelper.create(gameBuilder.newGame().build(), tableStatus);

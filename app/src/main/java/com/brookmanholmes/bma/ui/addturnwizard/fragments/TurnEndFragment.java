@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
 import com.brookmanholmes.bma.MyApplication;
@@ -98,10 +100,14 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         TextView title = (TextView) rootView.findViewById(android.R.id.title);
         TextViewCompat.setTextAppearance(title, R.style.WizardPageTitle2);
         title.setPadding(0, 0, 0, 0);
+
         foulLayout = (LinearLayout) rootView.findViewById(R.id.foulLayout);
         foulGroup = (RadioGroup) rootView.findViewById(R.id.foulGroup);
         foulGroup.setOnCheckedChangeListener(this);
         foulGroup.check(R.id.no);
+        GameStatus gameStatus = MatchDialogHelperUtils.getGameStatus(page.getData());
+        ((TextView) foulGroup.findViewById(R.id.seriousFoul)).setText(gameStatus.gameType == GameType.STRAIGHT_POOL ? R.string.foul_serious : R.string.foul_lost_game);
+        
         ((TextView) rootView.findViewById(R.id.subTitle)).setText(getString(R.string.title_foul, page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
         listView = (ListView) rootView.findViewById(android.R.id.list);
@@ -177,7 +183,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
             page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.yes));
         else if (checkedId == R.id.no)
             page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.no));
-        else if (checkedId == R.id.lostGame)
+        else if (checkedId == R.id.seriousFoul)
             page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.foul_lost_game));
     }
 
@@ -204,7 +210,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
     private void updateFoulOptions(TurnEndOptions options) {
         foulGroup.findViewById(R.id.no).setVisibility(options.showNotFoul() ? View.VISIBLE : View.GONE);
         foulGroup.findViewById(R.id.yes).setVisibility(options.showFoul() ? View.VISIBLE : View.GONE);
-        foulGroup.findViewById(R.id.lostGame).setVisibility(options.showLostGame() ? View.VISIBLE : View.GONE);
+        foulGroup.findViewById(R.id.seriousFoul).setVisibility(options.showLostGame() ? View.VISIBLE : View.GONE);
 
         updateFoulChoice(options.isFoul());
     }
@@ -212,10 +218,10 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
     private void updateFoulChoice(boolean isFoul) {
         boolean no = foulGroup.findViewById(R.id.no).getVisibility() == View.VISIBLE;
         boolean yes = foulGroup.findViewById(R.id.yes).getVisibility() == View.VISIBLE && isFoul;
-        boolean lostGame = foulGroup.findViewById(R.id.lostGame).getVisibility() == View.VISIBLE;
+        boolean lostGame = foulGroup.findViewById(R.id.seriousFoul).getVisibility() == View.VISIBLE;
 
         if (!no && !yes) // if the only option is lost game check it
-            foulGroup.check(R.id.lostGame);
+            foulGroup.check(R.id.seriousFoul);
         else if (!no && !lostGame) // if the only option is foul check it
             foulGroup.check(R.id.yes);
         else {

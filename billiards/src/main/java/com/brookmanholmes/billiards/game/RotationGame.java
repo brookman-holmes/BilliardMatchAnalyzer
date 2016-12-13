@@ -41,11 +41,6 @@ abstract class RotationGame extends Game {
     }
 
     @Override
-    boolean isGameOver(ITurn turn) {
-        return turn.getTurnEnd() == TurnEnd.GAME_WON || turn.isSeriousFoul();
-    }
-
-    @Override
     public int[] getGhostBallsToWinGame() {
         int[] ballsToWin = new int[ballsOnTable.size()];
 

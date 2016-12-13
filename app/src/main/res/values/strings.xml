@@ -322,4 +322,6 @@
     <string name="title_shot_straight">Input number of balls %1$s made this turn</string>
     <string name="download_match">Download match</string>
     <string name="share_match">Share match</string>
+    <string name="straight_pool_balls_on_table">Balls remaining on table: %1$d</string>
+    <string name="balls_remaining">Balls remaining on table: %1$d</string>
 </resources>

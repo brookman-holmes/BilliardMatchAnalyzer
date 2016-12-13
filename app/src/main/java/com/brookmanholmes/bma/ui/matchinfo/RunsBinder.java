@@ -2,6 +2,7 @@ package com.brookmanholmes.bma.ui.matchinfo;
 
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.IEarlyWins;
+import com.brookmanholmes.billiards.player.StraightPoolPlayer;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -16,11 +17,10 @@ public class RunsBinder extends BindingAdapter {
     public String playerFiveBallRuns, opponentFiveBallRuns;
 
     public String playerEarlyWins = "0", opponentEarlyWins = "0";
-    public boolean showCard = true;
     boolean showEarlyWins = false;
 
     RunsBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded, boolean showCard) {
-        super(expanded);
+        super(expanded, !(player instanceof StraightPoolPlayer) && showCard);
         this.title = title;
         helpLayout = R.layout.dialog_help_runs;
 
@@ -38,8 +38,6 @@ public class RunsBinder extends BindingAdapter {
             opponentEarlyWins = ((IEarlyWins) opponent).getEarlyWins() + "";
             showEarlyWins = true;
         }
-
-        this.showCard = showCard;
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent) {
@@ -61,7 +59,7 @@ public class RunsBinder extends BindingAdapter {
     }
 
     public boolean isShowEarlyWins() {
-        return showEarlyWins && visible;
+        return showEarlyWins && expanded;
     }
 
     public boolean playerBreakRunsMore() {

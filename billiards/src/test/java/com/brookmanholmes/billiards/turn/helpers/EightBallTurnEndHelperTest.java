@@ -1,9 +1,9 @@
 package com.brookmanholmes.billiards.turn.helpers;
 
-import com.brookmanholmes.billiards.game.Game;
-import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.Game;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
@@ -17,12 +17,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 11/7/2015.
  */
 public class EightBallTurnEndHelperTest extends AbstractTurnEndHelperTest {
-    @Override public void setUp() {
+    @Override
+    public void setUp() {
         tableStatus = TableStatus.newTable(GameType.BCA_EIGHT_BALL);
         gameBuilder = new GameStatus.Builder(GameType.BCA_EIGHT_BALL);
     }
 
-    @Override void setupLossStuff() {
+    @Override
+    void setupLossStuff() {
         tableStatus.setBallTo(BallStatus.DEAD, gameBuilder.build().GAME_BALL);
     }
 

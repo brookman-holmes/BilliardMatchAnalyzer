@@ -22,16 +22,14 @@ public class ApaBinder extends BindingAdapter {
 
     public String innings, deadBalls = "0";
 
-    public boolean showCard = false;
     public boolean apa8Ball;
 
     ApaBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded, int innings) {
-        super(expanded);
+        super(expanded, player instanceof IApa);
         this.title = title;
         this.helpLayout = R.layout.dialog_help_apa;
 
         if (player instanceof IApa && opponent instanceof IApa) {
-            showCard = true;
             playerRank = player.getRank() + "";
             opponentRank = opponent.getRank() + "";
 
@@ -58,7 +56,6 @@ public class ApaBinder extends BindingAdapter {
 
     public void update(AbstractPlayer player, AbstractPlayer opponent, int innings) {
         if (player instanceof IApa && opponent instanceof IApa) {
-            showCard = true;
             playerRank = player.getRank() + "";
             opponentRank = opponent.getRank() + "";
 

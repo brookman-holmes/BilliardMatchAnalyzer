@@ -19,6 +19,7 @@
     <string name="safety_no_shot">No direct shot</string>
     <string name="safety_open">Open</string>
 
+    <string name="foul_serious">Yes, 15 point penalty</string>
     <string name="foul_lost_game">Yes, lost game</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

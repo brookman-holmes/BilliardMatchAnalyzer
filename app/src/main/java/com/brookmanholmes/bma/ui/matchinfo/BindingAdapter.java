@@ -20,17 +20,18 @@ import com.brookmanholmes.bma.R;
 
 public class BindingAdapter extends BaseObservable {
     private static final String TAG = "BindingAdapter";
-    public boolean visible = false;
-    public
+    public boolean expanded = false;
     @DrawableRes
-    int imageResource;
+    public int imageResource;
+    public boolean showCard = true;
     String title;
     int helpLayout;
 
-    public BindingAdapter(boolean visible) {
-        this.visible = visible;
+    public BindingAdapter(boolean expanded, boolean showCard) {
+        this.expanded = expanded;
+        this.showCard = showCard;
 
-        imageResource = (visible ? R.drawable.ic_action_collapse : R.drawable.ic_action_expand);
+        imageResource = (expanded ? R.drawable.ic_action_collapse : R.drawable.ic_action_expand);
     }
 
     @android.databinding.BindingAdapter("android:typeface")
@@ -77,7 +78,7 @@ public class BindingAdapter extends BaseObservable {
 
         // toggle the visibility
         TransitionManager.beginDelayedTransition(container);
-        visible = !visible;
+        expanded = !expanded;
         notifyChange();
     }
 }

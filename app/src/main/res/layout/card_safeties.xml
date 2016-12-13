@@ -4,7 +4,6 @@
         <variable
             name="safeties"
             type="com.brookmanholmes.bma.ui.matchinfo.SafetiesBinder" />
-
         <import type="android.view.View" />
     </data>
 

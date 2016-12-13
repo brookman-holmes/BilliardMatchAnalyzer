@@ -86,13 +86,13 @@
             android:text="@{overview.playerTotalFouls}"
             android:textColor="@color/primary_text"
             android:typeface="@{overview.playerFoulsMore() ? `bold` : `normal`}"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{overview.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/total_fouls"
             android:textColor="@color/primary_text"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}"
+            android:visibility="@{overview.expanded ? View.VISIBLE : View.GONE}"
             app:layout_columnWeight="0" />
 
         <TextView
@@ -100,26 +100,26 @@
             android:text="@{overview.opponentTotalFouls}"
             android:textColor="@color/primary_text"
             android:typeface="@{overview.opponentFoulsMore() ? `bold` : `normal`}"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{overview.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{overview.playerAggRating}"
             android:textColor="@color/secondary_text"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{overview.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/title_ar"
             android:textColor="@color/secondary_text"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}"
+            android:visibility="@{overview.expanded ? View.VISIBLE : View.GONE}"
             app:layout_columnWeight="0" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{overview.opponentAggRating}"
             android:textColor="@color/secondary_text"
-            android:visibility="@{overview.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{overview.expanded ? View.VISIBLE : View.GONE}" />
 
     </android.support.v7.widget.GridLayout>
 </layout>

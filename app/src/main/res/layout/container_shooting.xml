@@ -51,13 +51,13 @@
             android:text="@{shooting.playerAvg}"
             android:textColor="@color/primary_text"
             android:typeface="@{shooting.playerAvgBetter() ? `bold` : `normal`}"
-            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{shooting.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/title_avg_balls_turn"
             android:textColor="@color/primary_text"
-            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}"
+            android:visibility="@{shooting.expanded ? View.VISIBLE : View.GONE}"
             app:layout_columnWeight="0" />
 
         <TextView
@@ -65,20 +65,20 @@
             android:text="@{shooting.opponentAvg}"
             android:textColor="@color/primary_text"
             android:typeface="@{shooting.opponentAvgBetter() ? `bold` : `normal`}"
-            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{shooting.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{shooting.playerFouls}"
             android:textColor="@color/secondary_text"
             android:typeface="@{shooting.playerFoulsBetter() ? `bold` : `normal`}"
-            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{shooting.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/title_shooting_fouls"
             android:textColor="@color/secondary_text"
-            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}"
+            android:visibility="@{shooting.expanded ? View.VISIBLE : View.GONE}"
             app:layout_columnWeight="0" />
 
         <TextView
@@ -86,7 +86,7 @@
             android:text="@{shooting.opponentFouls}"
             android:textColor="@color/secondary_text"
             android:typeface="@{shooting.opponentFoulsBetter() ? `bold` : `normal`}"
-            android:visibility="@{shooting.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{shooting.expanded ? View.VISIBLE : View.GONE}" />
 
     </android.support.v7.widget.GridLayout>
 </layout>

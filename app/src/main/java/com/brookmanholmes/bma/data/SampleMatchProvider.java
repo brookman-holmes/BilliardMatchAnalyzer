@@ -393,7 +393,7 @@ public class SampleMatchProvider {
         // player makes all but the 8 ball
         private static final ITurn turn3 = turn().offTable(4, 9).madeBalls(1, 2, 3, 5, 6).deadBalls(7).miss();
         // opponent makes the 8 early
-        private static final ITurn turn4 = turn().deadBalls(8).lose();
+        private static final ITurn turn4 = turn().deadBalls(8).seriousFoul().miss();
         /**
          * Game 3
          */

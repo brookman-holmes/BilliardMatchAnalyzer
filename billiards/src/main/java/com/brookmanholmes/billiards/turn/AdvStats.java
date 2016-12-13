@@ -1,5 +1,9 @@
 package com.brookmanholmes.billiards.turn;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,7 +14,7 @@ import java.util.List;
  * Data class for storing more advanced information for shooting. Provides options for storing what,
  * how and why a player missed
  */
-public class AdvStats {
+public class AdvStats implements Serializable {
     private final String player;
     private final ShotType shotType;
     private final SubType shotSubtype;
@@ -195,6 +199,14 @@ public class AdvStats {
         result = 31 * result + startingPosition.hashCode();
         result = 31 * result + (use ? 1 : 0);
         return result;
+    }
+
+    private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
+        inputStream.defaultReadObject();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream) throws IOException {
+        outputStream.defaultWriteObject();
     }
 
     @Override

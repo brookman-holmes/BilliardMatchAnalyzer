@@ -51,13 +51,13 @@
             android:text="@{safeties.playerSafetyFouls}"
             android:textColor="@color/primary_text"
             android:typeface="@{safeties.playerFoulsLess() ? `bold` : `normal`}"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/title_safety_fouls"
             android:textColor="@color/primary_text"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}"
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}"
             app:layout_columnWeight="0" />
 
         <TextView
@@ -65,20 +65,20 @@
             android:text="@{safeties.opponentSafetyFouls}"
             android:textColor="@color/primary_text"
             android:typeface="@{safeties.opponentFoulsLess() ? `bold` : `normal`}"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.playerSafetyEscapes}"
             android:textColor="@color/secondary_text"
             android:typeface="@{safeties.playerEscapesMore() ? `bold` : `normal`}"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/title_safety_escapes"
             android:textColor="@color/secondary_text"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}"
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}"
             app:layout_columnWeight="0" />
 
         <TextView
@@ -86,20 +86,20 @@
             android:text="@{safeties.opponentSafetyEscapes}"
             android:textColor="@color/secondary_text"
             android:typeface="@{safeties.opponentEscapesMore() ? `bold` : `normal`}"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.playerSafetyReturns}"
             android:textColor="@color/primary_text"
             android:typeface="@{safeties.playerReturnsMore() ? `bold` : `normal`}"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/title_safeties_returned"
             android:textColor="@color/primary_text"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}"
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}"
             app:layout_columnWeight="0" />
 
         <TextView
@@ -107,20 +107,20 @@
             android:text="@{safeties.opponentSafetiesReturns}"
             android:textColor="@color/primary_text"
             android:typeface="@{safeties.opponentReturnsMore() ? `bold` : `normal`}"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@{safeties.playerForcedFouls}"
             android:textColor="@color/secondary_text"
             android:typeface="@{safeties.playerForcedMore() ? `bold` : `normal`}"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
 
         <TextView
             style="@style/player_stats"
             android:text="@string/title_forced_fouls"
             android:textColor="@color/secondary_text"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}"
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}"
             app:layout_columnWeight="0" />
 
         <TextView
@@ -128,6 +128,6 @@
             android:text="@{safeties.opponentForcedFouls}"
             android:textColor="@color/secondary_text"
             android:typeface="@{safeties.opponentForcedMore() ? `bold` : `normal`}"
-            android:visibility="@{safeties.visible ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
     </android.support.v7.widget.GridLayout>
 </layout>

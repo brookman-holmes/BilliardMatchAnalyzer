@@ -34,7 +34,8 @@ public class RaceTo {
         return opponentRaceTo;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -45,7 +46,8 @@ public class RaceTo {
 
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = playerRaceTo;
         result = 31 * result + opponentRaceTo;
         return result;

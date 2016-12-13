@@ -16,7 +16,8 @@ public class CompPlayer extends AbstractPlayer implements IWinsOnBreak {
         super(name);
     }
 
-    @Override public void addPlayerStats(AbstractPlayer player) {
+    @Override
+    public void addPlayerStats(AbstractPlayer player) {
         super.addPlayerStats(player);
 
         if (player instanceof IEarlyWins) {
@@ -28,29 +29,35 @@ public class CompPlayer extends AbstractPlayer implements IWinsOnBreak {
         }
     }
 
-    @Override public void addWinOnBreak() {
+    @Override
+    public void addWinOnBreak() {
         winsOnBreak++;
     }
 
-    @Override public int getWinsOnBreak() {
+    @Override
+    public int getWinsOnBreak() {
         return winsOnBreak;
     }
 
-    @Override public void addWinsOnBreak(int wins) {
+    @Override
+    public void addWinsOnBreak(int wins) {
         if (wins < 0)
             throw new IllegalArgumentException("Wins must be greater than or equal to 0");
         winsOnBreak += wins;
     }
 
-    @Override public void addEarlyWin() {
+    @Override
+    public void addEarlyWin() {
         earlyWins++;
     }
 
-    @Override public int getEarlyWins() {
+    @Override
+    public int getEarlyWins() {
         return earlyWins;
     }
 
-    @Override public void addEarlyWins(int wins) {
+    @Override
+    public void addEarlyWins(int wins) {
         if (wins < 0)
             throw new IllegalArgumentException("Wins must be greater than or equal to 0");
         earlyWins += wins;

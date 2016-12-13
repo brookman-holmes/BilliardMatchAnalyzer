@@ -17,14 +17,14 @@ public class Turn implements ITurn, Serializable {
     private final ITableStatus tableStatus;
     private final TurnEnd turnEnd;
     private final boolean foul;
-    private final boolean gameLost;
+    private final boolean seriousFoul;
     private final AdvStats advStats;
 
-    public Turn(TurnEnd turnEnd, ITableStatus tableStatus, boolean foul, boolean isGameLost, AdvStats advStats) {
+    public Turn(TurnEnd turnEnd, ITableStatus tableStatus, boolean foul, boolean isSeriousFoul, AdvStats advStats) {
         this.foul = foul;
         this.turnEnd = turnEnd;
         this.tableStatus = tableStatus;
-        this.gameLost = isGameLost;
+        this.seriousFoul = isSeriousFoul;
         this.advStats = advStats;
     }
 
@@ -96,7 +96,12 @@ public class Turn implements ITurn, Serializable {
 
     @Override
     public boolean isSeriousFoul() {
-        return gameLost;
+        return seriousFoul;
+    }
+
+    @Override
+    public boolean isGameLost() {
+        return tableStatus.getGameType() != GameType.STRAIGHT_POOL && seriousFoul;
     }
 
     @Override
@@ -138,7 +143,7 @@ public class Turn implements ITurn, Serializable {
         Turn turn = (Turn) o;
 
         if (foul != turn.foul) return false;
-        if (gameLost != turn.gameLost) return false;
+        if (seriousFoul != turn.seriousFoul) return false;
         if (!tableStatus.equals(turn.tableStatus)) return false;
         if (turnEnd != turn.turnEnd) return false;
         return advStats.equals(turn.advStats);
@@ -150,7 +155,7 @@ public class Turn implements ITurn, Serializable {
         int result = tableStatus.hashCode();
         result = 31 * result + turnEnd.hashCode();
         result = 31 * result + (foul ? 1 : 0);
-        result = 31 * result + (gameLost ? 1 : 0);
+        result = 31 * result + (seriousFoul ? 1 : 0);
         result = 31 * result + advStats.hashCode();
         return result;
     }

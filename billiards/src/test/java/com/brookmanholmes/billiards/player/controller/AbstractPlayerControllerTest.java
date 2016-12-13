@@ -221,7 +221,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
 
     @Test
     public void getGameWinnerReturnsOpponentAfterLoss() {
-        playerController.turn = turnBuilder.lose();
+        playerController.turn = turnBuilder.seriousFoul().miss();
         playerController.gameStatus = game.getGameStatus();
 
         assertThat(playerController.getGameWinner(), is(PlayerTurn.OPPONENT));
@@ -232,7 +232,7 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
         playerController.turn = turnBuilder.win();
         assertThat(playerController.isGameOver(), is(true));
 
-        playerController.turn = turnBuilder.lose();
+        playerController.turn = turnBuilder.seriousFoul().miss();
         assertThat(playerController.isGameOver(), is(true));
     }
 

@@ -13,7 +13,8 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
         super(name, rank);
     }
 
-    @Override public void addPlayerStats(AbstractPlayer player) {
+    @Override
+    public void addPlayerStats(AbstractPlayer player) {
         super.addPlayerStats(player);
 
         if (player instanceof IApa) {
@@ -27,14 +28,16 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
         }
     }
 
-    @Override public void addBreakShot(int ballsMade, boolean continuation, boolean foul) {
+    @Override
+    public void addBreakShot(int ballsMade, boolean continuation, boolean foul) {
         super.addBreakShot(ballsMade, continuation, foul);
 
         if (!foul)
             points += ballsMade;
     }
 
-    @Override public void addShootingBallsMade(int ballsMade, boolean foul) {
+    @Override
+    public void addShootingBallsMade(int ballsMade, boolean foul) {
         super.addShootingBallsMade(ballsMade, foul);
         points += ballsMade;
     }
@@ -43,11 +46,13 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
         this.points += points;
     }
 
-    @Override public int getPoints() {
+    @Override
+    public int getPoints() {
         return points;
     }
 
-    @Override public int getPointsNeeded(int opponentRank) {
+    @Override
+    public int getPointsNeeded(int opponentRank) {
         return Players.apa9BallRaceTo(rank);
     }
 
@@ -59,49 +64,58 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
         this.deadBalls += deadBalls;
     }
 
-    @Override public void addEarlyWin() {
+    @Override
+    public void addEarlyWin() {
         earlyWins++;
     }
 
-    @Override public int getEarlyWins() {
+    @Override
+    public int getEarlyWins() {
         return earlyWins;
     }
 
-    @Override public void addWinOnBreak() {
+    @Override
+    public void addWinOnBreak() {
         winsOnBreak++;
     }
 
-    @Override public int getWinsOnBreak() {
+    @Override
+    public int getWinsOnBreak() {
         return winsOnBreak;
     }
 
-    @Override public void addWinsOnBreak(int wins) {
+    @Override
+    public void addWinsOnBreak(int wins) {
         if (wins < 0)
             throw new IllegalArgumentException("Wins must be greater than or equal to 0");
 
         winsOnBreak += wins;
     }
 
-    @Override public void addEarlyWins(int wins) {
+    @Override
+    public void addEarlyWins(int wins) {
         if (wins < 0)
             throw new IllegalArgumentException("Wins must be greater than or equal to 0");
 
         earlyWins += wins;
     }
 
-    @Override public int getMatchPoints(int opponentScore, int opponentRank) {
+    @Override
+    public int getMatchPoints(int opponentScore, int opponentRank) {
         if (points >= Players.apa9BallRaceTo(rank))
             return 20 - Players.getMinimumMatchPointsEarned(opponentRank, opponentScore);
         else return Players.getMinimumMatchPointsEarned(rank, points);
     }
 
-    @Override public void addGameWon() {
+    @Override
+    public void addGameWon() {
         super.addGameWon();
         // the player had to have made the 9 ball to get to this point... I think...
         points++;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
@@ -116,7 +130,8 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
 
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + winsOnBreak;
         result = 31 * result + earlyWins;
@@ -126,7 +141,8 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
         return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "ApaNineBallPlayer{" +
                 "winsOnBreak=" + winsOnBreak +
                 ", rank=" + rank +

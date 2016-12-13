@@ -517,11 +517,13 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         } else return ZERO_PERCENT;
     }
 
-    @Override public int compareTo(AbstractPlayer o) {
+    @Override
+    public int compareTo(AbstractPlayer o) {
         return this.name.compareTo(o.name);
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 

@@ -1,10 +1,13 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
+import android.util.Log;
+
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
 import com.brookmanholmes.billiards.player.IWinsOnBreak;
 import com.brookmanholmes.billiards.player.NineBallPlayer;
+import com.brookmanholmes.billiards.player.StraightPoolPlayer;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -12,6 +15,8 @@ import com.brookmanholmes.bma.R;
  */
 
 public class BreaksBinder extends BindingAdapter {
+
+    private static final String TAG = "BreaksBinder";
     public int playerBallOnBreak, opponentBallOnBreak;
     public int playerBreaks, opponentBreaks;
 
@@ -26,7 +31,8 @@ public class BreaksBinder extends BindingAdapter {
     boolean showWinOnBreak = false;
 
     BreaksBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
-        super(expanded);
+        super(expanded, !(player instanceof StraightPoolPlayer));
+        Log.i(TAG, "BreaksBinder: instanceOf StraightPoolPlayer " + (player instanceof StraightPoolPlayer));
         this.title = title;
         helpLayout = R.layout.dialog_help_breaks;
 
@@ -83,7 +89,7 @@ public class BreaksBinder extends BindingAdapter {
     }
 
     public boolean isShowWinOnBreak() {
-        return showWinOnBreak && visible;
+        return showWinOnBreak && expanded;
     }
 
     public boolean playerAvgHigher() {

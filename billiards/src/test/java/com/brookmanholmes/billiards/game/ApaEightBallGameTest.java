@@ -90,7 +90,7 @@ public class ApaEightBallGameTest extends AbstractEightBallGameTest {
     }
 
     @Override public void setUp() {
-        game = new ApaEightBallGame();
+        game = new ApaEightBallGame(PlayerTurn.PLAYER);
     }
 
     @Override List<Integer> populateList() {
@@ -98,7 +98,7 @@ public class ApaEightBallGameTest extends AbstractEightBallGameTest {
     }
 
     @Override Game createNewGame() {
-        return new ApaEightBallGame();
+        return new ApaEightBallGame(PlayerTurn.PLAYER);
     }
 
     @Override GameType thisGamesGameType() {

@@ -125,6 +125,7 @@ public abstract class Game {
      */
     private void updateGameStatus(ITurn turn) {
         playerColor = setPlayerColor(turn); // this must be called before new game otherwise stuff on the break doesn't work!
+        playerAllowedToBreakAgain = setAllowPlayerToBreakAgain(turn); // ditto to above comment
         setConsecutiveFouls(turn);
 
         removeBallsFromTable(turn.getBallsToRemoveFromTable());
@@ -133,7 +134,6 @@ public abstract class Game {
 
         allowPush = setAllowPush(turn);
         allowTurnSkip = setAllowTurnSkip(turn);
-        playerAllowedToBreakAgain = setAllowPlayerToBreakAgain(turn);
         opponentPlayedSuccessfulSafe = setOpponentPlayedSuccessfulSafe(turn);
         // this happens at the end
         this.turn = changeTurn(this.turn);
@@ -195,7 +195,9 @@ public abstract class Game {
      * @param turn The incoming turn
      * @return true for the game is over, false for the game is not over
      */
-    abstract boolean isGameOver(ITurn turn);
+    boolean isGameOver(ITurn turn) {
+        return turn.getTurnEnd() == TurnEnd.GAME_WON || turn.isSeriousFoul();
+    }
 
     /**
      * Sets the game status to a new game

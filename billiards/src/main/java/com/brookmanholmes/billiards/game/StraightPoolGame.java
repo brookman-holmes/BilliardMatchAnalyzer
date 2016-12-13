@@ -53,7 +53,6 @@ class StraightPoolGame extends Game {
                 consecutiveOpponentFouls = 0;
         }
 
-
         // clear consecutive fouls after the third
         if (turn.isSeriousFoul()) {
             if (this.turn == PlayerTurn.PLAYER)

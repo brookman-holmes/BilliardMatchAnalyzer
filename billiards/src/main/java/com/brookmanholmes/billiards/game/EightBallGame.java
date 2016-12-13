@@ -70,11 +70,6 @@ class EightBallGame extends Game {
     }
 
     @Override
-    boolean isGameOver(ITurn turn) {
-        return turn.getTurnEnd() == TurnEnd.GAME_WON;
-    }
-
-    @Override
     boolean setAllowPlayerToBreakAgain(ITurn turn) {
         return turn.getTurnEnd() == TurnEnd.BREAK_MISS
                 && turn.isFoul()

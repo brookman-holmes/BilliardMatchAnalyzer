@@ -59,7 +59,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         for (int i = 0; i < turns.size(); i++) {
             ITurn turn = turns.get(i);
 
-            if ((!turn.isSeriousFoul() && turn.getTurnEnd() != TurnEnd.GAME_WON)) {
+            if (!turn.isGameLost() && turn.getTurnEnd() != TurnEnd.GAME_WON) {
                 turnsInGame.add(turn); // add any turn that doesn't end the game
             } else {
                 turnsInGame.add(turn); // add the turn that won the game

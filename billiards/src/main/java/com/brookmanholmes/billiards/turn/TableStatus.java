@@ -144,7 +144,7 @@ final public class TableStatus implements ITableStatus, Serializable {
         List<Integer> ballsOffTable = new ArrayList<>();
 
         for (int ball : table.keySet()) {
-            if (table.get(ball) != ON_TABLE && table.get(ball) != OFF_TABLE)
+            if (table.get(ball) != ON_TABLE)
                 ballsOffTable.add(ball);
         }
 

@@ -99,8 +99,17 @@ public class StraightPoolShotFragment extends BaseFragment {
     @OnClick({R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight,
             R.id.nine, R.id.zero})
     void padSelected(TextView textView) {
-        // // FIXME: 12/4/2016 don't be retarded plx
-        ballCount.append(textView.getText());
+        int ballsMade = 0;
+        String result = ballCount.getText().toString();
+
+        result = result.concat(textView.getText().toString()); // add text to it
+
+        if (result.length() > 3) // chop it if it's too long
+            result = result.substring(1, 4);
+
+        ballsMade = Integer.valueOf(result); // remove the leading zeros!
+
+        ballCount.setText(String.format(Locale.getDefault(), "%1$d", ballsMade));
         updatePage();
     }
 

@@ -11,11 +11,17 @@ public interface ITurn extends ITableStatus {
     boolean isFoul();
 
     /**
-     * Returns whether or not the current turn resulted in the game being lost (from something like
-     * a three fouls rule or illegally pocketing the 8 ball)
-     * @return true if the game was lost, false otherwise
+     * Returns whether or not the current turn resulted in a serious foul (3 fouls for 9 ball / straight pool)
+     * @return true if the turn was a serious foul, false otherwise
      */
     boolean isSeriousFoul();
+
+    /**
+     * Returns whether or not the current turn resulted in a loss of game
+     *
+     * @return true if the game is over, false otherwise
+     */
+    boolean isGameLost();
 
     /**
      * Returns what type of ending the turn was

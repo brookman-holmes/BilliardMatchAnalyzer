@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
+import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
@@ -60,7 +61,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 matchData.getIntegerArrayList(BALLS_ON_TABLE_KEY));
 
         turnBuilder.foul = false;
-        turnBuilder.lostGame = false;
+        turnBuilder.seriousFoul = false;
         turnBuilder.advStats.name(playerName);
         turnBuilder.advStats.shotType(AdvStats.ShotType.NONE);
 
@@ -121,7 +122,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
         if (getFoulPossible(turnBuilder.turnEnd)) {
             turnBuilder.foul = (context.getString(R.string.yes).equals(foul) || context.getString(R.string.foul_lost_game).equals(foul));
-            turnBuilder.lostGame = context.getString(R.string.foul_lost_game).equals(foul);
+            turnBuilder.seriousFoul = context.getString(R.string.foul_lost_game).equals(foul);
         }
     }
 
@@ -352,6 +353,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 ((UpdatesTurnInfo) page).updateTurnInfo(this);
 
         turnBuilder.advStats.startingPosition(matchData.getBoolean(SUCCESSFUL_SAFE_KEY) ? "Safe" : "Open");
+        Log.i(TAG, "getTurnBuilder: serious foul? " + turnBuilder.seriousFoul);
         return turnBuilder;
     }
 

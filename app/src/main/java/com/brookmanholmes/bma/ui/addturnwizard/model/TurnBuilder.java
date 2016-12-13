@@ -15,7 +15,7 @@ public class TurnBuilder {
     public final AdvStats.Builder advStats = new AdvStats.Builder();
     public TurnEnd turnEnd;
     public boolean foul;
-    public boolean lostGame;
+    public boolean seriousFoul;
 
     public TurnBuilder(GameType gameType) {
         this.tableStatus = TableStatus.newTable(gameType);

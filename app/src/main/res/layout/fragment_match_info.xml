@@ -19,6 +19,18 @@
         <variable
             name="runs"
             type="com.brookmanholmes.bma.ui.matchinfo.RunsBinder" />
+
+        <variable
+            name="straight"
+            type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolBinder" />
+
+        <variable
+            name="straightRuns"
+            type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolRunsBinder" />
+
+        <variable
+            name="straightTable"
+            type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolTableBinder" />
     </data>
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -32,13 +44,19 @@
             android:layout_height="wrap_content"
             android:background="@color/colorBackground"
             android:orientation="vertical"
-            android:paddingBottom="64dp"
+            android:paddingBottom="96dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp">
 
             <include
                 layout="@layout/card_apa_stats"
                 bind:apa="@{apa}" />
+
+            <include
+                layout="@layout/straight_pool_info"
+                bind:straight="@{straight}"
+                bind:straightRuns="@{straightRuns}"
+                bind:straightTable="@{straightTable}" />
 
             <include
                 layout="@layout/card_match_overview"
@@ -59,6 +77,7 @@
             <include
                 layout="@layout/card_run_outs"
                 bind:runs="@{runs}" />
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

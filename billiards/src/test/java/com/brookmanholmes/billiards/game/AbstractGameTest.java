@@ -109,10 +109,6 @@ public abstract class AbstractGameTest {
         ITurn mockedTurn = mock(ITurn.class);
         when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.GAME_WON);
         assertThat(game.isGameOver(mockedTurn), is(true));
-
-        when(mockedTurn.getTurnEnd()).thenReturn(TurnEnd.MISS);
-        when(mockedTurn.isSeriousFoul()).thenReturn(true);
-        assertThat(game.isGameOver(mockedTurn), is(true));
     }
 
     @Test

@@ -75,7 +75,7 @@ public class GameStatusBuilderTest {
 
     @Test
     public void testCurrentPlayerFouls() {
-        builder.currentPlayerConsecutiveFouls(4);
+        builder.turn(PlayerTurn.PLAYER).consecutivePlayerFouls(4);
         assertThat(builder.build().currentPlayerConsecutiveFouls, is(4));
     }
 

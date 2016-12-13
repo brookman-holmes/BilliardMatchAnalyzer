@@ -15,7 +15,8 @@ public class NineBallPlayer extends AbstractPlayer implements IWinsOnBreak {
         super(name);
     }
 
-    @Override public void addPlayerStats(AbstractPlayer player) {
+    @Override
+    public void addPlayerStats(AbstractPlayer player) {
         super.addPlayerStats(player);
 
         if (player instanceof IWinsOnBreak) {
@@ -25,35 +26,42 @@ public class NineBallPlayer extends AbstractPlayer implements IWinsOnBreak {
 
     }
 
-    @Override public void addEarlyWin() {
+    @Override
+    public void addEarlyWin() {
         earlyWins++;
     }
 
-    @Override public int getEarlyWins() {
+    @Override
+    public int getEarlyWins() {
         return earlyWins;
     }
 
-    @Override public void addWinOnBreak() {
+    @Override
+    public void addWinOnBreak() {
         winsOnBreak++;
     }
 
-    @Override public int getWinsOnBreak() {
+    @Override
+    public int getWinsOnBreak() {
         return winsOnBreak;
     }
 
-    @Override public void addWinsOnBreak(int wins) {
+    @Override
+    public void addWinsOnBreak(int wins) {
         if (wins < 0)
             throw new IllegalArgumentException("Wins must be greater than or equal to 0");
         winsOnBreak += wins;
     }
 
-    @Override public void addEarlyWins(int wins) {
+    @Override
+    public void addEarlyWins(int wins) {
         if (wins < 0)
             throw new IllegalArgumentException("Wins must be greater than or equal to 0");
         earlyWins += wins;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
@@ -65,14 +73,16 @@ public class NineBallPlayer extends AbstractPlayer implements IWinsOnBreak {
 
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + earlyWins;
         result = 31 * result + winsOnBreak;
         return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "NineBallPlayer{" +
                 "winsOnBreak=" + winsOnBreak +
                 "earlyWins=" + earlyWins +

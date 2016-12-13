@@ -329,6 +329,9 @@ public final class GameStatus {
         }
 
         public GameStatus build() {
+            if (turn == PlayerTurn.PLAYER)
+                currentPlayerConsecutiveFouls = consecutivePlayerFouls;
+            else currentPlayerConsecutiveFouls = consecutiveOpponentFouls;
             return new GameStatus(this);
         }
     }
