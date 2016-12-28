@@ -59,6 +59,8 @@ public class HelpDialogCreator {
             return R.layout.dialog_help_what_miss;
         else if (pageTitle.equals(getWhyMissPageTitle()))
             return R.layout.dialog_help_why_miss;
+        else if (pageTitle.equals(context.getString(R.string.title_shot_straight, playerName)))
+            return R.layout.dialog_help_input_balls;
         else
             throw new IllegalArgumentException("Invalid page title: " + pageTitle);
     }

@@ -26,10 +26,11 @@ import com.brookmanholmes.bma.ui.BaseRecyclerFragment;
 import com.brookmanholmes.bma.ui.stats.Filterable;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 
@@ -38,7 +39,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -270,28 +270,32 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 super(itemView);
                 ButterKnife.bind(this, itemView);
 
-                chart.setDescription("");
-                chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-                chart.getXAxis().setDrawLabels(true);
+                chart.setTouchEnabled(false);
+                chart.getDescription().setEnabled(false);
+                chart.getXAxis().setDrawLabels(false);
                 chart.getXAxis().setDrawGridLines(false);
-                chart.getAxisRight().setAxisMinValue(0f);
-                chart.getAxisRight().setAxisMaxValue(1.1f);
-                chart.getAxisLeft().setAxisMinValue(0f);
-                chart.getAxisLeft().setAxisMaxValue(1.1f);
+                chart.getAxisRight().setAxisMinimum(0f);
+                chart.getAxisRight().setAxisMaximum(1.1f);
+                chart.getAxisLeft().setAxisMinimum(0f);
+                chart.getAxisLeft().setAxisMaximum(1.1f);
                 chart.getAxisLeft().setGranularity(.1f);
                 chart.getAxisRight().setDrawLabels(false);
                 chart.getLegend().setEnabled(false);
+                chart.getAxisLeft().setValueFormatter(new IAxisValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value, AxisBase axis) {
+                        return DecimalFormat.getPercentInstance().format(value);
+                    }
+                });
 
                 chart.setDrawGridBackground(false);
+
             }
 
             public void bind(List<AbstractPlayer> players) {
                 Context context = itemView.getContext();
-                List<String> xVals = new ArrayList<>();
-                for (AbstractPlayer player : players) {
-                    xVals.add(DateFormat.getDateInstance(DateFormat.SHORT).format(player.getMatchDate()));
-                }
-                LineData data = new LineData(xVals);
+
+                LineData data = new LineData();
                 LineDataSet tsp = getDataSet(getTspDataSet(players), context.getString(R.string.title_tsp), getColor(R.color.chart));
                 LineDataSet shootingP = getDataSet(getShootingDataSet(players), context.getString(R.string.title_shooting_pct), getColor(R.color.chart1));
                 LineDataSet breakingP = getDataSet(getBreakingDataSet(players), context.getString(R.string.title_break_pct), getColor(R.color.chart2));
@@ -314,7 +318,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                     if (players.get(i).getShootingAttempts() +
                             players.get(i).getBreakAttempts() +
                             players.get(i).getSafetyAttempts() > 0)
-                        list.add(new Entry(Float.valueOf(players.get(i).getTrueShootingPct()), i));
+                        list.add(new Entry(i, Float.valueOf(players.get(i).getTrueShootingPct())));
                 }
 
                 return list;
@@ -325,7 +329,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
                 for (int i = 0; i < players.size(); i++) {
                     if (players.get(i).getShootingAttempts() > 0)
-                        list.add(new Entry(Float.valueOf(players.get(i).getShootingPct()), i));
+                        list.add(new Entry(i, Float.valueOf(players.get(i).getShootingPct())));
                 }
 
                 return list;
@@ -336,7 +340,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
                 for (int i = 0; i < players.size(); i++) {
                     if (players.get(i).getSafetyAttempts() > 0)
-                        list.add(new Entry(Float.valueOf(players.get(i).getSafetyPct()), i));
+                        list.add(new Entry(i, Float.valueOf(players.get(i).getSafetyPct())));
                 }
 
                 return list;
@@ -347,7 +351,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
                 for (int i = 0; i < players.size(); i++) {
                     if (players.get(i).getBreakAttempts() > 0)
-                        list.add(new Entry(Float.valueOf(players.get(i).getBreakPct()), i));
+                        list.add(new Entry(i, Float.valueOf(players.get(i).getBreakPct())));
                 }
 
                 return list;
@@ -581,8 +585,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             TextView safetyEscapes;
             @Bind(R.id.title3)
             TextView misses;
-            @Bind(R.id.toDisappear)
-            ViewGroup notValid;
+            @Bind(R.id.title4)
+            View notValid;
 
             SafetyGraphViewHolder(View itemView) {
                 super(itemView);
@@ -595,7 +599,6 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 color3 = ContextCompat.getColor(itemView.getContext(), R.color.chart1);
             }
 
-            // TODO: 8/26/2016 make sure that numbers are within range
             public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
                 CompPlayer player = getPlayerFromList(players);
                 CompPlayer opponent = getPlayerFromList(opponents);

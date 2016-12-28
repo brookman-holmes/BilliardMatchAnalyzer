@@ -94,6 +94,8 @@ public abstract class Game {
                 return new NineBallGame(GameType.APA_GHOST_NINE_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
             case STRAIGHT_POOL:
                 return new StraightPoolGame(turn);
+            case STRAIGHT_GHOST:
+                return new StraightPoolHighRunAttempt();
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }
@@ -135,8 +137,7 @@ public abstract class Game {
         allowPush = setAllowPush(turn);
         allowTurnSkip = setAllowTurnSkip(turn);
         opponentPlayedSuccessfulSafe = setOpponentPlayedSuccessfulSafe(turn);
-        // this happens at the end
-        this.turn = changeTurn(this.turn);
+        this.turn = changeTurn(this.turn); // this happens at the end
     }
 
     /**
@@ -178,12 +179,13 @@ public abstract class Game {
     }
 
     /**
-     * Changes the turn of the game to the next player
+     * Changes the turn of the game to the next player and increments the number of innings
+     * according to APA rules
      *
      * @param turn Which player's turn it currently is
      * @return Which player shoots next
      */
-    private PlayerTurn changeTurn(PlayerTurn turn) {
+    PlayerTurn changeTurn(PlayerTurn turn) {
         if (turn.nextPlayer() == firstPlayerToShoot)
             innings++;
 

@@ -58,6 +58,8 @@ public class ConversionUtils {
                 return context.getString(R.string.game_american_rotation);
             case STRAIGHT_POOL:
                 return context.getString(R.string.game_straight);
+            case STRAIGHT_GHOST:
+                return context.getString(R.string.game_straight_ghost);
             default:
                 throw new InvalidGameTypeException("No such GameType: " + gameType);
         }
@@ -97,5 +99,11 @@ public class ConversionUtils {
             color = R.color.bad;
 
         return ContextCompat.getColor(context, color);
+    }
+
+    public static float convertSpToPx(Context context, int sp) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, metrics);
     }
 }

@@ -4,11 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-
-import com.brookmanholmes.bma.R;
 
 /**
  * Created by Brookman Holmes on 9/26/2016.
@@ -16,7 +13,6 @@ import com.brookmanholmes.bma.R;
 
 public class CueBallHitView extends CueBallView {
     private static final String TAG = "CueBallHitView";
-    private static final int SIZE = 25;
 
     private Paint hitPaint;
     private PointF hitPoint;
@@ -31,8 +27,7 @@ public class CueBallHitView extends CueBallView {
         hitPoint.y = 0;
 
         hitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        hitPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-        hitPaint.setAlpha(128);
+        hitPaint.setColor(color);
         hitPaint.setStyle(Paint.Style.FILL);
     }
 
@@ -85,11 +80,9 @@ public class CueBallHitView extends CueBallView {
         super.onDraw(canvas);
 
         canvas.drawCircle(hitPoint.x == 0 ? getCenterX() : hitPoint.x,
-                hitPoint.y == 0 ? getCenterY() : hitPoint.y,
-                getPixels(SIZE), hitPaint);
+                hitPoint.y == 0 ? getCenterY() : hitPoint.y, size, hitPaint);
         canvas.drawCircle(hitPoint.x == 0 ? getCenterX() : hitPoint.x,
-                hitPoint.y == 0 ? getCenterY() : hitPoint.y,
-                getPixels(SIZE / 3), hitPaint);
+                hitPoint.y == 0 ? getCenterY() : hitPoint.y, size / 3, hitPaint);
     }
 
     private double computeDistance(double x1, double y1, double x2, double y2) {

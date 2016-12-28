@@ -207,7 +207,7 @@ public class RaceToFragment extends BaseFragment {
 
         private void selectView(int selection) {
             grid.getChildAt(selection).setBackground(selectedBackground);
-            ((TextView) grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            //((TextView) grid.getChildAt(selection)).setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             this.selection = selection;
         }
 

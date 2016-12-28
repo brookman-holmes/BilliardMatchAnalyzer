@@ -18,7 +18,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +47,7 @@ import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.data.MatchModel;
 import com.brookmanholmes.bma.ui.dialog.EditTextDialog;
+import com.brookmanholmes.bma.ui.matchinfo.HighRunAttemptActivity;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
@@ -339,7 +339,9 @@ public class IntroActivity extends BaseActivity {
         protected void onPositiveButton() {
             DatabaseAdapter db = new DatabaseAdapter(getContext());
             final long matchId = db.insertMatch(match);
-            final Intent intent = new Intent(getActivity(), MatchInfoActivity.class);
+            final Intent intent = match.getGameStatus().gameType.isSinglePlayer() ?
+                    new Intent(getActivity(), HighRunAttemptActivity.class) :
+                    new Intent(getActivity(), MatchInfoActivity.class);
             intent.putExtra(ARG_MATCH_ID, matchId);
             startActivity(intent);
         }
@@ -499,12 +501,15 @@ public class IntroActivity extends BaseActivity {
             super.onDestroy();
         }
 
-        private static class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
+        private static class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+            private static final int PLAYER_VIEW = 0;
+            private static final int FOOTER = 1;
             final int[] colors = new int[]{Color.parseColor("#f44336"), Color.parseColor("#9C27B0"),
                     Color.parseColor("#3F51B5"), Color.parseColor("#2196F3"), Color.parseColor("#00BCD4"),
                     Color.parseColor("#4CAF50"), Color.parseColor("#CDDC39"), Color.parseColor("#FF9800"),
                     Color.parseColor("#FF5722"), Color.parseColor("#795548"), Color.parseColor("#9E9E9E"),
                     Color.parseColor("#607D8B")};
+
             List<AbstractPlayer> players;
 
             public RecyclerAdapter(List<AbstractPlayer> players) {
@@ -518,23 +523,37 @@ public class IntroActivity extends BaseActivity {
             }
 
             @Override
-            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_player, parent, false);
-                return new ViewHolder(view);
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(viewType == PLAYER_VIEW ? R.layout.card_player : R.layout.footer, parent, false);
+                if (viewType == PLAYER_VIEW)
+                    return new ViewHolder(view);
+                else return new FooterHolder(view);
             }
 
             @Override
-            public void onBindViewHolder(ViewHolder holder, int position) {
-                holder.bind(players.get(position), getColor(position));
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+                if (holder instanceof ViewHolder)
+                    ((ViewHolder) holder).bind(players.get(position), getColor(position));
             }
 
             @Override
             public int getItemCount() {
-                return players.size();
+                return players.size() + 1;
+            }
+
+            @Override
+            public int getItemViewType(int position) {
+                return position == getItemCount() - 1 ? FOOTER : PLAYER_VIEW;
             }
 
             private int getColor(int position) {
                 return colors[position % colors.length];
+            }
+        }
+
+        static class FooterHolder extends RecyclerView.ViewHolder {
+            FooterHolder(View itemView) {
+                super(itemView);
             }
         }
 
@@ -546,7 +565,7 @@ public class IntroActivity extends BaseActivity {
             @Bind(R.id.gamesPlayed)
             TextView gamesPlayed;
             @Bind(R.id.shootingPctGrid)
-            GridLayout gridLayout;
+            ViewGroup shootPctLayout;
             @Bind(R.id.shootingLine)
             ImageView shootingLine;
             @Bind(R.id.safetyLine)
@@ -571,8 +590,6 @@ public class IntroActivity extends BaseActivity {
                 playerName.setText(player.getName());
                 playerIcon.setBackgroundColor(color);
                 playerIcon.setTitleText(player.getName().substring(0, 1));
-                gridLayout.setColumnCount(2);
-                gridLayout.setRowCount(3);
                 Context context = itemView.getContext();
                 gamesPlayed.setText(context.getResources().getQuantityString(R.plurals.num_games, player.getGameTotal(), player.getGameTotal()));
                 DatabaseAdapter db = new DatabaseAdapter(itemView.getContext());
@@ -582,9 +599,9 @@ public class IntroActivity extends BaseActivity {
                 safetyPct.setText(String.format(context.getString(R.string.safety_pct), player.getSafetyPct()));
                 breakPct.setText(String.format(context.getString(R.string.breaking_pct), player.getBreakPct()));
 
-                shootingLine.getDrawable().setTint(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
-                safetyLine.getDrawable().setTint(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
-                breakingLine.getDrawable().setTint(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
+                shootingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
+                safetyLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
+                breakingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
             }
 
             @OnClick(R.id.container)

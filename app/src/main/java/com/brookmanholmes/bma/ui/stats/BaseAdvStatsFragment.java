@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 6/3/2016.
  */
-public abstract class BaseAdvStatsFragment extends Fragment implements Filterable {
+public abstract class BaseAdvStatsFragment extends DialogFragment implements Filterable {
     private static final String TAG = "BaseAdvStatsFrag";
     protected FilterStats task;
     List<AdvStats> stats = new ArrayList<>();

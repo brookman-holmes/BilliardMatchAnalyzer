@@ -1,12 +1,21 @@
 package com.brookmanholmes.billiards.player;
 
+import org.apache.commons.math3.stat.StatUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Brookman Holmes on 5/9/2016.
  */
-public class CompPlayer extends AbstractPlayer implements IWinsOnBreak {
+public class CompPlayer extends AbstractPlayer implements IWinsOnBreak, IStraightPool {
     // TODO: 8/26/2016 create tests for this whole class
     private int earlyWins = 0;
     private int winsOnBreak = 0;
+
+    // straight pool info
+    private int highRun = 0;
+    private List<Integer> runLengths = new ArrayList<>();
 
     public CompPlayer(String name, int rank) {
         super(name, rank);
@@ -27,6 +36,51 @@ public class CompPlayer extends AbstractPlayer implements IWinsOnBreak {
         if (player instanceof IWinsOnBreak) {
             winsOnBreak += ((IWinsOnBreak) player).getWinsOnBreak();
         }
+
+        if (player instanceof StraightPoolPlayer) {
+            if (highRun < ((StraightPoolPlayer) player).getHighRun())
+                highRun = ((StraightPoolPlayer) player).getHighRun();
+            runLengths.addAll(((StraightPoolPlayer) player).getRunLengths());
+
+            gameTotal++;
+
+            if (((StraightPoolPlayer) player).getPoints() >= player.rank)
+                gameWins++;
+        }
+    }
+
+    @Override
+    public int getHighRun() {
+        return highRun;
+    }
+
+    @Override
+    public List<Integer> getRunLengths() {
+        return new ArrayList<>(runLengths);
+    }
+
+    @Override
+    public String getAverageRunLength() {
+        if (runLengths.size() > 0) {
+            double[] runLengths = new double[this.runLengths.size()];
+            for (int i = 0; i < this.runLengths.size(); i++) {
+                runLengths[i] = this.runLengths.get(i);
+            }
+
+            return avgf.format(StatUtils.mean(runLengths));
+        } else return avgf.format(0);
+    }
+
+    @Override
+    public String getMedianRunLength() {
+        if (runLengths.size() > 0) {
+            double[] runLengths = new double[this.runLengths.size()];
+            for (int i = 0; i < this.runLengths.size(); i++) {
+                runLengths[i] = this.runLengths.get(i);
+            }
+
+            return avgf.format(StatUtils.percentile(runLengths, 50));
+        } else return avgf.format(0);
     }
 
     @Override

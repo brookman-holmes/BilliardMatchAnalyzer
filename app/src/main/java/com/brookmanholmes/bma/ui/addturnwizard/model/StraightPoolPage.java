@@ -24,6 +24,7 @@ class StraightPoolPage extends Page implements UpdatesTurnInfo {
         super(model, title);
 
         data.putAll(matchData);
+        data.putInt(SIMPLE_DATA_KEY, 0);
     }
 
     @Override

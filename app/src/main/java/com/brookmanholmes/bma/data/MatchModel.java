@@ -32,6 +32,7 @@ public class MatchModel implements Parcelable {
         }
     };
     private static final String TAG = "MatchModel";
+
     private String playerName, opponentName;
     private int playerRank = 100, opponentRank = 100;
     private int breakType = BreakType.ALTERNATE.ordinal();

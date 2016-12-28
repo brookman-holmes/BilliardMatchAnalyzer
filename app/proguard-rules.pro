@@ -31,5 +31,6 @@
 
 -dontwarn butterknife.internal.**
 -dontwarn com.github.mikephil.charting.data.realm.**
+-dontwarn java.awt.**
 
 # for the about libaries to include the libraries it needs

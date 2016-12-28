@@ -21,7 +21,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,7 +28,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -71,7 +69,7 @@ import tourguide.tourguide.ToolTip;
 
 public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.AddTurnListener,
         OnFailureListener, OnSuccessListener<UploadTask.TaskSnapshot>, NfcAdapter.CreateNdefMessageCallback,
-        NfcAdapter.OnNdefPushCompleteCallback {
+        NfcAdapter.OnNdefPushCompleteCallback, UpdatesPlayerNames {
     private static final String TAG = "MatchInfoActivity";
     private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     private static final String KEY_UNDONE_TURNS = "key_undone_turns";
@@ -99,7 +97,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     private DatabaseAdapter db;
     private Match match;
-    private Menu mMenu;
+    private Menu menu;
     private Snackbar matchOverSnackbar, uploadMatchSnackbar;
     private Drawable activeArrow, inactiveArrow;
 
@@ -239,7 +237,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         showChoiceDialog(name, turn, view);
     }
 
-    private void updatePlayerNames(String name, String newName) {
+    public void updatePlayerName(String name, String newName) {
         if (opponentName.getText().toString().equals(name)) {
             opponentName.setText(newName);
             match.setOpponentName(newName);
@@ -254,7 +252,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void updateViews() {
-        if (mMenu != null)
+        if (menu != null)
             updateMenuItems();
 
         if (match.isMatchOver()) {
@@ -294,10 +292,10 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void updateMenuItems() {
-        mMenu.findItem(R.id.action_undo).setEnabled(match.isUndoTurn());
-        mMenu.findItem(R.id.action_redo).setEnabled(match.isRedoTurn());
-        mMenu.findItem(R.id.action_undo).getIcon().setAlpha(this.mMenu.findItem(R.id.action_undo).isEnabled() ? 255 : 97);
-        mMenu.findItem(R.id.action_redo).getIcon().setAlpha(this.mMenu.findItem(R.id.action_redo).isEnabled() ? 255 : 97);
+        menu.findItem(R.id.action_undo).setEnabled(match.isUndoTurn());
+        menu.findItem(R.id.action_redo).setEnabled(match.isRedoTurn());
+        menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 97);
+        menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 97);
     }
 
     @Override
@@ -342,7 +340,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_match_info, menu);
-        this.mMenu = menu;
+        this.menu = menu;
         updateMenuItems();
 
         // createGuide(); todo this needs more work so I'm going to not show it until I get it where I want it
@@ -563,7 +561,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void showEditPlayerNameDialog(final String name) {
-        AbstractMatchEditTextDialog dialog = EditPlayerNameDialog.create(getString(R.string.edit_player_name, name), name, getMatchId());
+        AbstractMatchEditTextDialog dialog = AbstractMatchEditTextDialog.EditPlayerNameDialog.create(getString(R.string.edit_player_name, name), name, getMatchId());
         dialog.show(getSupportFragmentManager(), "EditPlayerName");
     }
 
@@ -573,12 +571,12 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     }
 
     private void showEditMatchNotesDialog() {
-        AbstractMatchEditTextDialog dialog = EditMatchNotesDialog.create(getString(R.string.match_notes), match.getNotes(), getMatchId());
+        AbstractMatchEditTextDialog dialog = AbstractMatchEditTextDialog.EditMatchNotesDialog.create(getString(R.string.match_notes), match.getNotes(), getMatchId());
         dialog.show(getSupportFragmentManager(), "EditMatchNotes");
     }
 
     private void showEditMatchLocationDialog() {
-        AbstractMatchEditTextDialog dialog = EditMatchLocationDialog.create(getString(R.string.match_location), match.getLocation(), getMatchId());
+        AbstractMatchEditTextDialog dialog = AbstractMatchEditTextDialog.EditMatchLocationDialog.create(getString(R.string.match_location), match.getLocation(), getMatchId());
         dialog.show(getSupportFragmentManager(), "EditMatchLocation");
     }
 
@@ -629,95 +627,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
     interface UpdateMatchInfo {
         void update(Match match);
-    }
-
-    public static class EditPlayerNameDialog extends AbstractMatchEditTextDialog {
-
-        public static AbstractMatchEditTextDialog create(String title, String preText, long matchId) {
-            AbstractMatchEditTextDialog dialog = new EditPlayerNameDialog();
-            Bundle args = new Bundle();
-            args.putString(ARG_PRETEXT, preText);
-            args.putString(ARG_TITLE, title);
-            args.putLong(ARG_MATCH_ID, matchId);
-
-            dialog.setArguments(args);
-            return dialog;
-        }
-
-        @Override
-        protected void setupInput(EditText input) {
-            input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        }
-
-        @Override
-        protected void onPositiveButton() {
-            ((MatchInfoActivity) getActivity()).updatePlayerNames(preText, input.getText().toString());
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    db.editPlayerName(matchId, preText, input.getText().toString());
-                }
-            }).start();
-        }
-
-    }
-
-    public static class EditMatchLocationDialog extends AbstractMatchEditTextDialog {
-        public static AbstractMatchEditTextDialog create(String title, String preText, long matchId) {
-            AbstractMatchEditTextDialog dialog = new EditMatchLocationDialog();
-            Bundle args = new Bundle();
-            args.putString(ARG_PRETEXT, preText);
-            args.putString(ARG_TITLE, title);
-            args.putLong(ARG_MATCH_ID, matchId);
-
-            dialog.setArguments(args);
-            return dialog;
-        }
-
-        @Override
-        protected void setupInput(EditText input) {
-            input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        }
-
-        @Override
-        protected void onPositiveButton() {
-            match.setLocation(input.getText().toString());
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    db.updateMatchLocation(input.getText().toString(), matchId);
-                }
-            }).start();
-        }
-    }
-
-    public static class EditMatchNotesDialog extends AbstractMatchEditTextDialog {
-        public static AbstractMatchEditTextDialog create(String title, String preText, long matchId) {
-            AbstractMatchEditTextDialog dialog = new EditMatchNotesDialog();
-            Bundle args = new Bundle();
-            args.putString(ARG_PRETEXT, preText);
-            args.putString(ARG_TITLE, title);
-            args.putLong(ARG_MATCH_ID, matchId);
-
-            dialog.setArguments(args);
-            return dialog;
-        }
-
-        @Override
-        protected void setupInput(EditText input) {
-
-        }
-
-        @Override
-        protected void onPositiveButton() {
-            match.setNotes(input.getText().toString());
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    db.updateMatchNotes(input.getText().toString(), matchId);
-                }
-            });
-        }
     }
 
     private static class PagerAdapter extends FragmentPagerAdapter {

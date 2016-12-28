@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseActivity;
+import com.brookmanholmes.bma.ui.matchinfo.HighRunAttemptActivity;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.CreateNewMatchWizardModel;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
@@ -130,7 +132,10 @@ public class CreateNewMatchActivity extends BaseActivity implements
         }
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
         long matchId = databaseAdapter.insertMatch(match);
-        Intent intent = new Intent(this, MatchInfoActivity.class);
+        Log.i(TAG, "match type is: " + match.getGameStatus().gameType);
+        final Intent intent = match.getGameStatus().gameType.isSinglePlayer() ?
+                new Intent(this, HighRunAttemptActivity.class) :
+                new Intent(this, MatchInfoActivity.class);
         intent.putExtra(ARG_MATCH_ID, matchId);
 
         startActivity(intent);

@@ -42,6 +42,7 @@ public class MatchInfoFragment extends BaseFragment
     private static final String KEY_STRAIGHT_TABLE_EXPANDED = "key_straight_table_expanded";
     private static final String KEY_STRAIGHT_POOL_EXPANDED = "key_straight_pool_expanded";
     private static final String KEY_STRAIGHT_RUNS_EXPANDED = "key_straight_runs_expanded";
+
     String playerName;
 
     ApaBinder apa;
@@ -97,15 +98,7 @@ public class MatchInfoFragment extends BaseFragment
 
     @Override
     public void update(Match match) {
-        apa.update(match.getPlayer(), match.getOpponent(), match.getGameStatus().innings);
-        overview.update(match.getPlayer(), match.getOpponent());
-        shooting.update(match.getPlayer(), match.getOpponent());
-        safeties.update(match.getPlayer(), match.getOpponent());
-        breaks.update(match.getPlayer(), match.getOpponent());
-        runs.update(match.getPlayer(), match.getOpponent());
-        straightPool.update(match.getPlayer(), match.getOpponent());
-        straightPoolTable.update(match.getPlayer(), match.getOpponent());
-        straightPoolRuns.update(match.getPlayer(), match.getOpponent());
+        updateBinders(match.getPlayer(), match.getOpponent(), match.getGameStatus().innings);
     }
 
     private void update(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
@@ -113,6 +106,11 @@ public class MatchInfoFragment extends BaseFragment
         AbstractPlayer player = pair.getLeft();
         AbstractPlayer opponent = pair.getRight();
 
+        updateBinders(player, opponent, 0);
+    }
+
+    private void updateBinders(AbstractPlayer player, AbstractPlayer opponent, int innings) {
+        apa.update(player, opponent, innings);
         overview.update(player, opponent);
         shooting.update(player, opponent);
         safeties.update(player, opponent);
@@ -173,9 +171,9 @@ public class MatchInfoFragment extends BaseFragment
         safeties = new SafetiesBinder(player, opponent, getString(R.string.title_safeties), getArguments().getBoolean(KEY_SAFETIES_EXPANDED, expanded), !isGhostGame);
         breaks = new BreaksBinder(player, opponent, getString(R.string.title_breaks), getArguments().getBoolean(KEY_BREAKS_EXPANDED, expanded));
         runs = new RunsBinder(player, opponent, getString(R.string.title_run_outs), getArguments().getBoolean(KEY_RUNS_EXPANDED, expanded), !isGhostGame);
-        straightPool = new StraightPoolBinder(player, opponent, getString(R.string.title_match_overview), getArguments().getBoolean(KEY_RUNS_EXPANDED, expanded));
-        straightPoolRuns = new StraightPoolRunsBinder(player, opponent, "Runs", getArguments().getBoolean(KEY_RUNS_EXPANDED, expanded));
-        straightPoolTable = new StraightPoolTableBinder(player, opponent, getArguments().getBoolean(KEY_RUNS_EXPANDED, expanded));
+        straightPool = new StraightPoolBinder(player, opponent, getString(R.string.title_match_overview), getArguments().getBoolean(KEY_STRAIGHT_POOL_EXPANDED, expanded));
+        straightPoolRuns = new StraightPoolRunsBinder(player, opponent, "Runs", getArguments().getBoolean(KEY_STRAIGHT_RUNS_EXPANDED, expanded));
+        straightPoolTable = new StraightPoolTableBinder(player, opponent, getArguments().getBoolean(KEY_STRAIGHT_TABLE_EXPANDED, expanded));
     }
 
     private Pair<CompPlayer, CompPlayer> splitPlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
@@ -223,6 +221,10 @@ public class MatchInfoFragment extends BaseFragment
         outState.putBoolean(KEY_RUNS_EXPANDED, runs.expanded);
         outState.putBoolean(KEY_SHOOTING_EXPANDED, shooting.expanded);
         outState.putBoolean(KEY_SAFETIES_EXPANDED, safeties.expanded);
+        outState.putBoolean(KEY_STRAIGHT_POOL_EXPANDED, straightPool.expanded);
+        outState.putBoolean(KEY_STRAIGHT_RUNS_EXPANDED, straightPoolRuns.expanded);
+        outState.putBoolean(KEY_STRAIGHT_TABLE_EXPANDED, straightPoolTable.expanded);
+
         super.onSaveInstanceState(outState);
     }
 

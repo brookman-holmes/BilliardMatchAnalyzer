@@ -4,11 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.View;
 
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 
 import java.util.ArrayList;
@@ -31,8 +28,7 @@ public class HeatGraph extends CueBallView {
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        paint.setAlpha(16);
+        paint.setColor(color);
     }
 
     @Override
@@ -42,7 +38,7 @@ public class HeatGraph extends CueBallView {
         for (Point point : data) {
             canvas.drawCircle(convertPointXToFloat(point.x),
                     convertPointYToFloat(point.y),
-                    getPixels(15),
+                    size,
                     paint);
         }
     }
@@ -62,11 +58,10 @@ public class HeatGraph extends CueBallView {
         invalidate();
     }
 
-    public void addDataPoint(Point point) {
+    public void setData(Point point) {
+        data.clear();
         data.add(point);
-    }
 
-    public void reDraw() {
         invalidate();
     }
 
@@ -76,5 +71,10 @@ public class HeatGraph extends CueBallView {
 
     private float convertPointYToFloat(float y) {
         return (y + 100) / 200 * getHeight();
+    }
+
+    @Override
+    protected int getDefaultSize() {
+        return (int) ConversionUtils.convertDpToPx(getContext(), 15);
     }
 }

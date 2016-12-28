@@ -43,8 +43,10 @@ public class DataCollectionFragment extends BaseFragment {
             R.id.cbHowOpponent, R.id.cbSafetiesOpponent, R.id.cbSpeedOpponent, R.id.cbBallDistOpponent,
             R.id.cbAngleOpponent, R.id.cbAngleSimpleOpponent};
 
+    @Nullable
     @Bind(R.id.playerName)
     TextView playerName;
+    @Nullable
     @Bind(R.id.opponentName)
     TextView opponentName;
 
@@ -111,10 +113,15 @@ public class DataCollectionFragment extends BaseFragment {
     }
 
     public void setPlayerNames(String player, String opponent) {
-        playerName.setText(player);
-        opponentName.setText(opponent);
+        if (playerName != null) {
+            playerName.setText(player);
+        }
+        if (opponentName != null) {
+            opponentName.setText(opponent);
+        }
     }
 
+    @Nullable
     @OnCheckedChanged({R.id.cbShotTypePlayer, R.id.cbShotTypeOpponent, R.id.cbCuePlayer,
             R.id.cbCueOpponent, R.id.cbHowPlayer, R.id.cbHowOpponent, R.id.cbSafetiesPlayer,
             R.id.cbSafetiesOpponent, R.id.cbSpeedPlayer, R.id.cbSpeedOpponent, R.id.cbBallDistPlayer,
@@ -171,7 +178,7 @@ public class DataCollectionFragment extends BaseFragment {
 
         for (int i : checkBoxes) {
             CheckBox checkBox = ButterKnife.findById(box.getRootView(), i);
-            if (checkBox.isChecked()) {
+            if (checkBox != null && checkBox.isChecked()) {
                 enumList.add(getEnumFromId(i).name());
                 if (ArrayUtils.contains(playerBoxes, i))
                     playerDescriptions.add(getStringFromId(i));

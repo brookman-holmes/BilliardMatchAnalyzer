@@ -23,7 +23,6 @@ import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnEndPage;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
-import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -32,6 +31,8 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
+
+import static com.brookmanholmes.bma.wizard.model.Page.SIMPLE_DATA_KEY;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
@@ -130,13 +131,17 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         repopulateChoicesList(options.possibleEndings);
         updateFoulOptions(options);
 
+        String selection;
         if (adapter.contains(getTurnEndFromPage())) {
             listView.setItemChecked(adapter.indexOf(getTurnEndFromPage()), true);
+            selection = getTurnEndFromPage();
         } else {
             listView.setItemChecked(adapter.indexOf(getString(options.defaultCheck)), true);
+            selection = getString(options.defaultCheck);
         }
 
-        updateFoulLayout(getTurnEndFromPage());
+        updatePage(selection);
+        updateFoulLayout(selection);
     }
 
     @Override
@@ -183,8 +188,11 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
             page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.yes));
         else if (checkedId == R.id.no)
             page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.no));
-        else if (checkedId == R.id.seriousFoul)
-            page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.foul_lost_game));
+        else if (checkedId == R.id.seriousFoul) {
+            GameStatus gameStatus = MatchDialogHelperUtils.getGameStatus(page.getData());
+            String result = gameStatus.gameType == GameType.STRAIGHT_POOL ? getString(R.string.foul_serious) : getString(R.string.foul_lost_game);
+            page.getData().putString(TurnEndPage.FOUL_KEY, result);
+        }
     }
 
     private void populateChoicesList(List<String> options) {
@@ -266,14 +274,21 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
     }
 
     private void updatePage(int position) {
-        if (!page.getData().getString(Page.SIMPLE_DATA_KEY, "").equals(adapter.getItem(position))) {
-            page.getData().putString(Page.SIMPLE_DATA_KEY, adapter.getItem(position));
+        if (!page.getData().getString(SIMPLE_DATA_KEY, "").equals(adapter.getItem(position))) {
+            page.getData().putString(SIMPLE_DATA_KEY, adapter.getItem(position));
+            page.notifyDataChanged();
+        }
+    }
+
+    private void updatePage(String selection) {
+        if (!page.getData().getString(SIMPLE_DATA_KEY, "").equals(selection)) {
+            page.getData().putString(SIMPLE_DATA_KEY, selection);
             page.notifyDataChanged();
         }
     }
 
     private String getTurnEndFromPage() {
-        return page.getData().getString(Page.SIMPLE_DATA_KEY, "");
+        return page.getData().getString(SIMPLE_DATA_KEY, "");
     }
 
     private String getFoulFromPage() {

@@ -2,9 +2,7 @@
 <view xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/card_view_style"
-    class="android.support.v7.widget.CardView"
-    app:cardElevation="2dp"
-    app:cardUseCompatPadding="true">
+    class="android.support.v7.widget.CardView">
 
     <LinearLayout
         android:id="@+id/container"
@@ -34,10 +32,9 @@
 
             <TextView
                 android:id="@+id/playerName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:gravity="left"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
 
@@ -49,16 +46,90 @@
             <TextView
                 android:id="@+id/gamesPlayed"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/secondary_text"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
-        <include
-            layout="@layout/container_shooting_pcts"
+        <LinearLayout
+            android:id="@+id/shootingPctGrid"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/shootingLine"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/circle"
+                    android:tint="@color/almost_good" />
+
+                <TextView
+                    android:id="@+id/tvShootingPct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shooting .667"
+                    android:textColor="@color/primary_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/safetyLine"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/circle"
+                    android:tint="@color/almost_good" />
+
+                <TextView
+                    android:id="@+id/tvSafetyPct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shooting .667"
+                    android:textColor="@color/primary_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/breakingLine"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/circle"
+                    android:tint="@color/almost_good" />
+
+                <TextView
+                    android:id="@+id/tvBreakPct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shooting .667"
+                    android:textColor="@color/primary_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </LinearLayout>
 </view>

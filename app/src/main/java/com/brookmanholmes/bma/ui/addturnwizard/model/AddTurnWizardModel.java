@@ -3,7 +3,6 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
-import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
@@ -50,7 +49,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private final PlayerTurn turn;
     private final EnumSet<Match.StatsDetail> dataCollection;
 
-
     public AddTurnWizardModel(Context context, Bundle matchData) {
         super(context);
         this.matchData = matchData;
@@ -60,6 +58,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
         turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(GAME_TYPE_KEY)),
                 matchData.getIntegerArrayList(BALLS_ON_TABLE_KEY));
 
+        turnBuilder.turnEnd = TurnEnd.MISS;
         turnBuilder.foul = false;
         turnBuilder.seriousFoul = false;
         turnBuilder.advStats.name(playerName);
@@ -102,6 +101,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
             return new PageList(getTurnEndPage());
         else if (GameType.valueOf(matchData.getString(GAME_TYPE_KEY)) == GameType.STRAIGHT_POOL)
             return new PageList(getStraightPoolPage(), getTurnEndPage());
+        else if (GameType.valueOf(matchData.getString(GAME_TYPE_KEY)) == GameType.STRAIGHT_GHOST)
+            return new PageList(getStraightPoolPage(), combineArrays(getHowMissPageAll(), getMissBranchPage(), getCueingPage()));
         else if (GameType.valueOf(matchData.getString(GAME_TYPE_KEY)).isGhostGame())
             return new PageList(getGhostBreakPage(), getTurnEndPage());
         else if (matchData.getBoolean(NEW_GAME_KEY))
@@ -122,7 +123,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
         if (getFoulPossible(turnBuilder.turnEnd)) {
             turnBuilder.foul = (context.getString(R.string.yes).equals(foul) || context.getString(R.string.foul_lost_game).equals(foul));
-            turnBuilder.seriousFoul = context.getString(R.string.foul_lost_game).equals(foul);
+            turnBuilder.seriousFoul = context.getString(R.string.foul_lost_game).equals(foul) || context.getString(R.string.foul_serious).equals(foul);
         }
     }
 
@@ -353,7 +354,6 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 ((UpdatesTurnInfo) page).updateTurnInfo(this);
 
         turnBuilder.advStats.startingPosition(matchData.getBoolean(SUCCESSFUL_SAFE_KEY) ? "Safe" : "Open");
-        Log.i(TAG, "getTurnBuilder: serious foul? " + turnBuilder.seriousFoul);
         return turnBuilder;
     }
 

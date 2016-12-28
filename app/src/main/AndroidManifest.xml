@@ -32,6 +32,7 @@
             android:name=".ui.newmatchwizard.CreateNewMatchActivity"
             android:theme="@style/AppTheme.CreateMatch"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ui.matchinfo.MatchInfoActivity"
             android:launchMode="singleTask">
@@ -39,6 +40,16 @@
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/com.brookmanholmes.bma.matchmodel" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.matchinfo.HighRunAttemptActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/com.brookmanholmes.bma.hramatchmodel" />
             </intent-filter>
         </activity>
 

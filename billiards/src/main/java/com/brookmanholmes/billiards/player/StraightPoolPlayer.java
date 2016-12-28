@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Brookman Holmes on 1/12/2016.
  */
-public class StraightPoolPlayer extends AbstractPlayer {
+public class StraightPoolPlayer extends AbstractPlayer implements IStraightPool {
     private int highRun = 0;
     private int seriousFouls = 0;
     private List<Integer> runLengths = new ArrayList<>();
@@ -36,6 +36,7 @@ public class StraightPoolPlayer extends AbstractPlayer {
         }
     }
 
+    @Override
     public int getHighRun() {
         return highRun;
     }
@@ -48,6 +49,12 @@ public class StraightPoolPlayer extends AbstractPlayer {
         return shootingBallsMade - shootingFouls - safetyFouls - breakFouls - getSeriousFoulsPoints();
     }
 
+    @Override
+    public int getTotalFouls() {
+        return shootingFouls + safetyFouls;
+    }
+
+    @Override
     public List<Integer> getRunLengths() {
         return new ArrayList<>(runLengths);
     }
@@ -56,6 +63,7 @@ public class StraightPoolPlayer extends AbstractPlayer {
         return seriousFouls * 15;
     }
 
+    @Override
     public String getAverageRunLength() {
         if (runLengths.size() > 0) {
             double[] runLengths = new double[this.runLengths.size()];
@@ -67,6 +75,7 @@ public class StraightPoolPlayer extends AbstractPlayer {
         } else return avgf.format(0);
     }
 
+    @Override
     public String getMedianRunLength() {
         if (runLengths.size() > 0) {
             double[] runLengths = new double[this.runLengths.size()];

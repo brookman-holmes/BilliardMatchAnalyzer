@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
@@ -24,15 +24,15 @@
                 android:id="@+id/rangeCb"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
-                custom:connectingLineColor="@android:color/transparent"
-                custom:pinColor="@color/colorAccent"
-                custom:pinMaxFont="16sp"
-                custom:rangeBar="false"
-                custom:selectorColor="@color/colorAccent"
-                custom:tickColor="@android:color/black"
-                custom:tickEnd="19"
-                custom:tickInterval="1"
-                custom:tickStart="0" />
+                app:connectingLineColor="@android:color/transparent"
+                app:pinColor="@color/colorAccent"
+                app:pinMaxFont="16sp"
+                app:rangeBar="false"
+                app:selectorColor="@color/colorAccent"
+                app:tickColor="@android:color/black"
+                app:tickEnd="19"
+                app:tickInterval="1"
+                app:tickStart="0" />
 
             <TextView
                 android:id="@+id/cbText"
@@ -45,15 +45,15 @@
                 android:id="@+id/rangeOb"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
-                custom:connectingLineColor="@android:color/transparent"
-                custom:pinColor="@color/colorAccent"
-                custom:pinMaxFont="16sp"
-                custom:rangeBar="false"
-                custom:selectorColor="@color/colorAccent"
-                custom:tickColor="@android:color/black"
-                custom:tickEnd="19"
-                custom:tickInterval="1"
-                custom:tickStart="0" />
+                app:connectingLineColor="@android:color/transparent"
+                app:pinColor="@color/colorAccent"
+                app:pinMaxFont="16sp"
+                app:rangeBar="false"
+                app:selectorColor="@color/colorAccent"
+                app:tickColor="@android:color/black"
+                app:tickEnd="19"
+                app:tickInterval="1"
+                app:tickStart="0" />
 
             <TextView
                 android:id="@+id/obText"
@@ -93,7 +93,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/circle"
-                android:outlineProvider="background" />
+                android:outlineProvider="background"
+                app:hit_color="@color/colorPrimarySuperTransparent" />
 
             <ImageView
                 android:id="@+id/cueDivider"
@@ -113,15 +114,15 @@
                 android:id="@+id/rangeSpeed"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
-                custom:connectingLineColor="@android:color/transparent"
-                custom:pinColor="@color/colorAccent"
-                custom:pinMaxFont="16sp"
-                custom:rangeBar="false"
-                custom:selectorColor="@color/colorAccent"
-                custom:tickColor="@android:color/black"
-                custom:tickEnd="10"
-                custom:tickInterval="1"
-                custom:tickStart="1" />
+                app:connectingLineColor="@android:color/transparent"
+                app:pinColor="@color/colorAccent"
+                app:pinMaxFont="16sp"
+                app:rangeBar="false"
+                app:selectorColor="@color/colorAccent"
+                app:tickColor="@android:color/black"
+                app:tickEnd="10"
+                app:tickInterval="1"
+                app:tickStart="1" />
 
             <TextView
                 android:id="@+id/speedText"

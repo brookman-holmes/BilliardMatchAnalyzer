@@ -92,7 +92,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
                 .addBranch(context.getString(R.string.game_bca_eight_ghost), getBcaRankPage("gbca8"))
                 .addBranch(context.getString(R.string.game_bca_nine_ghost), getBcaRankPage("gbca9"))
                 .addBranch(context.getString(R.string.game_bca_ten_ghost), getBcaRankPage("gbca10"))
-                //.addBranch(context.getString(R.string.game_straight_ghost), getStraightRankPage("gstraight")) // todo need to figure out how to do rankings for straight pool against the ghost
+                .addBranch(context.getString(R.string.game_straight_ghost))
                 .setValue(context.getString(R.string.game_bca_nine_ghost))
                 .setRequired(true);
     }
@@ -229,6 +229,8 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
             gameType = GameType.APA_GHOST_EIGHT_BALL;
         else if (value.equals(context.getString(R.string.game_apa_nine_ghost)))
             gameType = GameType.APA_GHOST_NINE_BALL;
+        else if (value.equals(context.getString(R.string.game_straight_ghost)))
+            gameType = GameType.STRAIGHT_GHOST;
         else throw new IllegalArgumentException("No such game type: " + value);
     }
 

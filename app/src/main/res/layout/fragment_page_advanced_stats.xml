@@ -17,34 +17,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/playerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Player 1" />
+
+            <TextView
+                style="@style/player_stats"
+                android:text="How shots are missed\n(Left of ball, Right of ball, etc.)"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/opponentName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Player 2" />
+        </LinearLayout>
+
+        <android.support.v7.widget.GridLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             app:columnCount="3"
             app:useDefaultMargins="true">
-
-            <TextView
-                android:id="@+id/playerName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Player 1"
-                app:layout_column="0"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_horizontal" />
-
-            <TextView
-                android:id="@+id/opponentName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Player 2"
-                app:layout_column="2"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_horizontal" />
 
             <CheckBox
                 android:checked="true"
@@ -53,12 +58,8 @@
                 app:layout_gravity="center_horizontal" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Balls made and turn endings"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center" />
+                style="@style/player_stats"
+                android:text="Balls made and turn endings" />
 
             <CheckBox
                 android:checked="true"
@@ -72,12 +73,8 @@
                 app:layout_gravity="center_horizontal" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Shot types of misses"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center" />
+                style="@style/player_stats"
+                android:text="Shot types of misses" />
 
             <CheckBox
                 android:id="@+id/cbShotTypeOpponent"
@@ -91,12 +88,8 @@
                 app:layout_gravity="right" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Detailed angles"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center" />
+                style="@style/player_stats"
+                android:text="Detailed angles" />
 
             <CheckBox
                 android:id="@+id/cbAngleOpponent"
@@ -111,12 +104,8 @@
                 app:layout_gravity="right" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Simple angles"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center" />
+                style="@style/player_stats"
+                android:text="Simple angles" />
 
             <CheckBox
                 android:id="@+id/cbAngleSimpleOpponent"
@@ -130,12 +119,8 @@
                 app:layout_gravity="center_horizontal" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="How shots are missed\n(Left of ball, Right of ball, etc.)"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center" />
+                style="@style/player_stats"
+                android:text="How shots are missed\n(Left of ball, Right of ball, etc.)" />
 
             <CheckBox
                 android:id="@+id/cbHowOpponent"
@@ -148,12 +133,8 @@
                 app:layout_gravity="center_horizontal" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Cue tip placement"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center" />
+                style="@style/player_stats"
+                android:text="Cue tip placement" />
 
             <CheckBox
                 android:id="@+id/cbCueOpponent"
@@ -166,12 +147,8 @@
                 app:layout_gravity="center_horizontal" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Cue/object ball distance"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center" />
+                style="@style/player_stats"
+                android:text="Cue/object ball distance" />
 
             <CheckBox
                 android:id="@+id/cbBallDistOpponent"
@@ -184,12 +161,8 @@
                 app:layout_gravity="center_horizontal" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Cue ball speed"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center" />
+                style="@style/player_stats"
+                android:text="Cue ball speed" />
 
             <CheckBox
                 android:id="@+id/cbSpeedOpponent"
@@ -202,12 +175,8 @@
                 app:layout_gravity="center_horizontal" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Safeties\n(full/partial hooks, etc.)"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center" />
+                style="@style/player_stats"
+                android:text="Safeties\n(full/partial hooks, etc.)" />
 
             <CheckBox
                 android:id="@+id/cbSafetiesOpponent"

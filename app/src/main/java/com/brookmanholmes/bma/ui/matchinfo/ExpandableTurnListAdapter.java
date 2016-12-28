@@ -1,11 +1,7 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
@@ -36,7 +29,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 5/1/2016.
  */
-class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<ExpandableTurnListAdapter.GameViewHolder, ExpandableTurnListAdapter.TurnViewHolder> {
+class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<ExpandableTurnListAdapter.GameViewHolder, AdvTurnViewHolder> {
     private List<List<ITurn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
     private Match match;
 
@@ -107,8 +100,11 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     }
 
     @Override
-    public TurnViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
-        return new TurnViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_turn, parent, false));
+    public AdvTurnViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
+        return new AdvTurnViewHolder(
+                LayoutInflater.from(
+                        parent.getContext()).inflate(R.layout.row_turn, parent, false),
+                match);
     }
 
     @Override
@@ -138,7 +134,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     }
 
     @Override
-    public void onBindChildViewHolder(TurnViewHolder holder, int groupPosition, int childPosition, int viewType) {
+    public void onBindChildViewHolder(AdvTurnViewHolder holder, int groupPosition, int childPosition, int viewType) {
         // set background for top/bottom position
         int turn = getTurnNumber(groupPosition, childPosition);
 
@@ -228,117 +224,6 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
 
             //noinspection ResourceType
             itemView.setElevation((isExpanded ? ConversionUtils.convertDpToPx(itemView.getContext(), 2) : 0));
-        }
-    }
-
-    static class TurnViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.turn)
-        TextView turnString;
-        @Bind(R.id.tvSafetyPct)
-        TextView safetyPct;
-        @Bind(R.id.tvBreakPct)
-        TextView breakPct;
-        @Bind(R.id.tvShootingPct)
-        TextView shootingPct;
-        @Bind(R.id.ballContainer)
-        ViewGroup ballContainer;
-        @Bind(R.id.shootingLine)
-        ImageView shootingLine;
-        @Bind(R.id.safetyLine)
-        ImageView safetyLine;
-        @Bind(R.id.breakingLine)
-        ImageView breakingLine;
-
-        TurnViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        private void bind(ITurn turn, PlayerTurn playerTurn, AbstractPlayer player) {
-            String color = (playerTurn == PlayerTurn.PLAYER ? "#2196F3" : "#FF3D00");
-            TurnStringAdapter turnStringAdapter = new TurnStringAdapter(itemView.getContext(), turn, player, color);
-
-            turnString.setText(turnStringAdapter.getTurnString());
-
-            shootingPct.setText(itemView.getContext().getString(R.string.shooting_pct, player.getShootingPct()));
-            safetyPct.setText(itemView.getContext().getString(R.string.safety_pct, player.getSafetyPct()));
-            breakPct.setText(itemView.getContext().getString(R.string.breaking_pct, player.getBreakPct()));
-
-            shootingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
-            safetyLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
-            breakingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
-        }
-
-        private void setBalls(ITableStatus tableStatus) {
-            for (int ball = 1; ball <= tableStatus.size(); ball++) {
-                ImageView childAt = (ImageView) ballContainer.getChildAt(ball - 1);
-                Drawable background = DrawableCompat.wrap(childAt.getBackground());
-                background.mutate();
-
-                if (ballIsMade(tableStatus.getBallStatus(ball))) {
-                    childAt.setVisibility(View.VISIBLE);
-                    background.setTint(ContextCompat.getColor(itemView.getContext(), getBallColorTint(ball)));
-                } else if (ballIsDead(tableStatus.getBallStatus(ball))) {
-                    childAt.setVisibility(View.VISIBLE);
-                    background.setTint(ContextCompat.getColor(itemView.getContext(), R.color.dead_ball));
-                } else {
-                    ballContainer.getChildAt(ball - 1).setVisibility(View.GONE);
-                }
-            }
-        }
-
-        @ColorRes
-        private int getBallColorTint(int ball) {
-            switch (ball) {
-                case 1:
-                    return R.color.one_ball;
-                case 2:
-                    return R.color.two_ball;
-                case 3:
-                    return R.color.three_ball;
-                case 4:
-                    return R.color.four_ball;
-                case 5:
-                    return R.color.five_ball;
-                case 6:
-                    return R.color.six_ball;
-                case 7:
-                    return R.color.seven_ball;
-                case 8:
-                    return R.color.eight_ball;
-                case 9:
-                    return R.color.one_ball;
-                case 10:
-                    return R.color.two_ball;
-                case 11:
-                    return R.color.three_ball;
-                case 12:
-                    return R.color.four_ball;
-                case 13:
-                    return R.color.five_ball;
-                case 14:
-                    return R.color.six_ball;
-                case 15:
-                    return R.color.seven_ball;
-                default:
-                    throw new IllegalArgumentException("Ball cannot be outside of 1-15, was: " + ball);
-            }
-        }
-
-        private boolean ballIsMade(BallStatus status) {
-            return status == BallStatus.MADE ||
-                    status == BallStatus.MADE_ON_BREAK ||
-                    status == BallStatus.GAME_BALL_MADE_ON_BREAK ||
-                    status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE ||
-                    status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_MADE;
-        }
-
-        private boolean ballIsDead(BallStatus status) {
-            return status == BallStatus.DEAD ||
-                    status == BallStatus.DEAD_ON_BREAK ||
-                    status == BallStatus.GAME_BALL_DEAD_ON_BREAK ||
-                    status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_DEAD ||
-                    status == BallStatus.GAME_BALL_MADE_ON_BREAK_THEN_DEAD;
         }
     }
 }

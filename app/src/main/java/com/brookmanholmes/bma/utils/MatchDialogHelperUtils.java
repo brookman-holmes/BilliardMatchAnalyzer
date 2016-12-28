@@ -197,6 +197,8 @@ public class MatchDialogHelperUtils {
                 return R.layout.select_nine_ball_dialog;
             case STRAIGHT_POOL:
                 return R.layout.select_straight_pool_balls_dialog;
+            case STRAIGHT_GHOST:
+                return R.layout.select_straight_pool_balls_dialog;
             default:
                 throw new InvalidGameTypeException("Game type not implemented yet: " + gameType.toString());
         }

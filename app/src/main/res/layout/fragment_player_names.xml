@@ -93,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/play_the_ghost" />
+            android:text="@string/single_player" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

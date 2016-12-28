@@ -13,5 +13,6 @@
         <item>@string/game_bca_eight</item>
         <item>@string/game_bca_nine</item>
         <item>@string/game_bca_ten</item>
+        <item>@string/game_straight</item>
     </string-array>
 </resources>

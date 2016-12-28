@@ -24,6 +24,7 @@ import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.ui.matchinfo.HighRunAttemptActivity;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.Filterable;
@@ -73,7 +74,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
             opponent = getArguments().getString(ARG_OPPONENT, null);
         }
 
-        adapter = new MatchListRecyclerAdapter(getContext(), database.getMatches(player, opponent));
+        adapter = new MatchListRecyclerAdapter(database.getMatches(player, opponent));
     }
 
     @Override
@@ -121,49 +122,54 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
         }
     }
 
-    static class MatchListRecyclerAdapter extends RecyclerView.Adapter<MatchListRecyclerAdapter.ListItemHolder> {
+    static class MatchListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        private static final int MATCH_VIEW = 0;
+        private static final int FOOTER = 1;
         List<Match> matches;
-        Context context;
 
-        MatchListRecyclerAdapter(Context context, List<Match> matches) {
+        MatchListRecyclerAdapter(List<Match> matches) {
             this.matches = matches;
-            this.context = context;
         }
 
         @Override
-        public ListItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ListItemHolder(LayoutInflater.from(context)
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (viewType == FOOTER)
+                return new FooterHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.footer, parent, false));
+            else
+                return new ListItemHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.card_match_row, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(ListItemHolder holder, int position) {
-            Match match = matches.get(position);
-            holder.setLocation(match.getLocation());
-            holder.date.setText(getDate(match.getCreatedOn()));
-            holder.playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
-            holder.breakType.setText(getBreakType(match.getGameStatus().breakType, match.getPlayer().getName(), match.getOpponent().getName()));
-            holder.gameType.setImageResource(getImageId(match.getGameStatus().gameType));
-            holder.ruleSet.setText(getRuleSet(match.getGameStatus().gameType));
-            holder.itemView.setTag(match.getMatchId());
-            holder.id = match.getMatchId();
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (holder instanceof ListItemHolder) {
+                ((ListItemHolder) holder).bind(matches.get(position));
+            }
         }
 
         @Override
-        public void onBindViewHolder(ListItemHolder holder, int position, List<Object> payloads) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
             if (payloads.size() > position) {
-                Bundle bundle = (Bundle) payloads.get(position);
-                if (bundle.containsKey(DatabaseAdapter.COLUMN_LOCATION))
-                    holder.location.setText(bundle.getString(DatabaseAdapter.COLUMN_LOCATION));
-                if (bundle.containsKey("player_name"))
-                    holder.playerNames.setText(getString(R.string.and, bundle.getString("player_name"), bundle.getString("opp_name")));
+                if (holder instanceof ListItemHolder) {
+                    Bundle bundle = (Bundle) payloads.get(position);
+                    if (bundle.containsKey(DatabaseAdapter.COLUMN_LOCATION))
+                        ((ListItemHolder) holder).location.setText(bundle.getString(DatabaseAdapter.COLUMN_LOCATION));
+                    if (bundle.containsKey("player_name"))
+                        ((ListItemHolder) holder).playerNames.setText(((ListItemHolder) holder).getString(R.string.and, bundle.getString("player_name"), bundle.getString("opp_name")));
+                }
             } else
                 super.onBindViewHolder(holder, position, payloads);
         }
 
         @Override
         public int getItemCount() {
-            return matches.size();
+            return matches.size() + 1;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position == getItemCount() - 1 ? FOOTER : MATCH_VIEW;
         }
 
         private void update(List<Match> matches) {
@@ -172,92 +178,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
             diffResult.dispatchUpdatesTo(this);
         }
 
-        private String getDate(Date date) {
-            return DateFormat.getDateInstance().format(date);
-        }
 
-        private String getBreakType(BreakType breakType, String playerName, String opponentName) {
-            switch (breakType) {
-                case WINNER:
-                    return getString(R.string.break_winner);
-                case LOSER:
-                    return getString(R.string.break_loser);
-                case ALTERNATE:
-                    return getString(R.string.break_alternate);
-                case PLAYER:
-                    return getString(R.string.break_player, playerName);
-                case OPPONENT:
-                    return getString(R.string.break_player, opponentName);
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
-        private int getImageId(GameType gameType) {
-            switch (gameType) {
-                case BCA_EIGHT_BALL:
-                    return R.drawable.eight_ball;
-                case BCA_NINE_BALL:
-                    return R.drawable.nine_ball;
-                case BCA_TEN_BALL:
-                    return R.drawable.ten_ball;
-                case APA_EIGHT_BALL:
-                    return R.drawable.eight_ball;
-                case APA_NINE_BALL:
-                    return R.drawable.nine_ball;
-                case BCA_GHOST_EIGHT_BALL:
-                    return R.drawable.eight_ball;
-                case BCA_GHOST_NINE_BALL:
-                    return R.drawable.nine_ball;
-                case BCA_GHOST_TEN_BALL:
-                    return R.drawable.ten_ball;
-                case APA_GHOST_EIGHT_BALL:
-                    return R.drawable.eight_ball;
-                case APA_GHOST_NINE_BALL:
-                    return R.drawable.nine_ball;
-                case STRAIGHT_POOL:
-                    return R.drawable.fourteen_ball;
-                case AMERICAN_ROTATION:
-                    return R.drawable.fifteen_ball;
-                default:
-                    return R.drawable.eight_ball;
-            }
-        }
-
-        private String getRuleSet(GameType gameType) {
-            switch (gameType) {
-                case BCA_EIGHT_BALL:
-                    return getString(R.string.bca_rules);
-                case BCA_NINE_BALL:
-                    return getString(R.string.bca_rules);
-                case BCA_TEN_BALL:
-                    return getString(R.string.bca_rules);
-                case APA_EIGHT_BALL:
-                    return getString(R.string.apa_rules);
-                case APA_NINE_BALL:
-                    return getString(R.string.apa_rules);
-                case BCA_GHOST_EIGHT_BALL:
-                    return getString(R.string.bca_rules);
-                case BCA_GHOST_NINE_BALL:
-                    return getString(R.string.bca_rules);
-                case BCA_GHOST_TEN_BALL:
-                    return getString(R.string.bca_rules);
-                case APA_GHOST_EIGHT_BALL:
-                    return getString(R.string.apa_rules);
-                case APA_GHOST_NINE_BALL:
-                    return getString(R.string.apa_rules);
-                default:
-                    return "";
-            }
-        }
-
-        private String getString(@StringRes int resId) {
-            return context.getString(resId);
-        }
-
-        private String getString(@StringRes int resId, Object... formatArgs) {
-            return context.getString(resId, formatArgs);
-        }
 
         private static class MatchListDiffCallback extends DiffUtil.Callback {
             private List<Match> oldList;
@@ -318,6 +239,12 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
             }
         }
 
+        static class FooterHolder extends RecyclerView.ViewHolder {
+            FooterHolder(View itemView) {
+                super(itemView);
+            }
+        }
+
         class ListItemHolder extends RecyclerView.ViewHolder {
             long id;
             @Bind(R.id.players)
@@ -338,6 +265,21 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
                 ButterKnife.bind(this, itemView);
             }
 
+            public void bind(Match match) {
+                setLocation(match.getLocation());
+                date.setText(getDate(match.getCreatedOn()));
+                if (match.getGameStatus().gameType == GameType.STRAIGHT_GHOST) {
+                    playerNames.setText(match.getPlayer().getName());
+                    breakType.setText(getString(R.string.game_straight_ghost));
+                } else {
+                    playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
+                    breakType.setText(getBreakType(match.getGameStatus().breakType, match.getPlayer().getName(), match.getOpponent().getName()));
+                }
+                gameType.setImageResource(getImageId(match.getGameStatus().gameType));
+                ruleSet.setText(getRuleSet(match.getGameStatus().gameType));
+                id = match.getMatchId();
+            }
+
             void setLocation(String location) {
                 if (location.isEmpty())
                     this.location.setVisibility(View.GONE);
@@ -349,7 +291,9 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
 
             @OnClick(R.id.container)
             public void onClick() {
-                final Intent intent = new Intent(getContext(), MatchInfoActivity.class);
+                final Intent intent = matches.get(getAdapterPosition()).getGameStatus().gameType.isSinglePlayer() ?
+                        new Intent(getContext(), HighRunAttemptActivity.class) :
+                        new Intent(getContext(), MatchInfoActivity.class);
                 intent.putExtra(BaseActivity.ARG_MATCH_ID, id);
                 getContext().startActivity(intent);
             }
@@ -386,6 +330,95 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
 
             private Context getContext() {
                 return itemView.getContext();
+            }
+
+            private String getDate(Date date) {
+                return DateFormat.getDateInstance().format(date);
+            }
+
+            private String getBreakType(BreakType breakType, String playerName, String opponentName) {
+                switch (breakType) {
+                    case WINNER:
+                        return getString(R.string.break_winner);
+                    case LOSER:
+                        return getString(R.string.break_loser);
+                    case ALTERNATE:
+                        return getString(R.string.break_alternate);
+                    case PLAYER:
+                        return getString(R.string.break_player, playerName);
+                    case OPPONENT:
+                        return getString(R.string.break_player, opponentName);
+                    default:
+                        throw new IllegalArgumentException();
+                }
+            }
+
+            private int getImageId(GameType gameType) {
+                switch (gameType) {
+                    case BCA_EIGHT_BALL:
+                        return R.drawable.eight_ball;
+                    case BCA_NINE_BALL:
+                        return R.drawable.nine_ball;
+                    case BCA_TEN_BALL:
+                        return R.drawable.ten_ball;
+                    case APA_EIGHT_BALL:
+                        return R.drawable.eight_ball;
+                    case APA_NINE_BALL:
+                        return R.drawable.nine_ball;
+                    case BCA_GHOST_EIGHT_BALL:
+                        return R.drawable.eight_ball;
+                    case BCA_GHOST_NINE_BALL:
+                        return R.drawable.nine_ball;
+                    case BCA_GHOST_TEN_BALL:
+                        return R.drawable.ten_ball;
+                    case APA_GHOST_EIGHT_BALL:
+                        return R.drawable.eight_ball;
+                    case APA_GHOST_NINE_BALL:
+                        return R.drawable.nine_ball;
+                    case STRAIGHT_POOL:
+                        return R.drawable.fourteen_ball;
+                    case STRAIGHT_GHOST:
+                        return R.drawable.fourteen_ball;
+                    case AMERICAN_ROTATION:
+                        return R.drawable.fifteen_ball;
+                    default:
+                        return R.drawable.eight_ball;
+                }
+            }
+
+            private String getRuleSet(GameType gameType) {
+                switch (gameType) {
+                    case BCA_EIGHT_BALL:
+                        return getString(R.string.bca_rules);
+                    case BCA_NINE_BALL:
+                        return getString(R.string.bca_rules);
+                    case BCA_TEN_BALL:
+                        return getString(R.string.bca_rules);
+                    case APA_EIGHT_BALL:
+                        return getString(R.string.apa_rules);
+                    case APA_NINE_BALL:
+                        return getString(R.string.apa_rules);
+                    case BCA_GHOST_EIGHT_BALL:
+                        return getString(R.string.bca_rules);
+                    case BCA_GHOST_NINE_BALL:
+                        return getString(R.string.bca_rules);
+                    case BCA_GHOST_TEN_BALL:
+                        return getString(R.string.bca_rules);
+                    case APA_GHOST_EIGHT_BALL:
+                        return getString(R.string.apa_rules);
+                    case APA_GHOST_NINE_BALL:
+                        return getString(R.string.apa_rules);
+                    default:
+                        return "";
+                }
+            }
+
+            private String getString(@StringRes int resId) {
+                return getContext().getString(resId);
+            }
+
+            private String getString(@StringRes int resId, Object... formatArgs) {
+                return getContext().getString(resId, formatArgs);
             }
         }
     }

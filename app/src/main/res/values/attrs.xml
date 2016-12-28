@@ -17,4 +17,36 @@
         <attr name="ob_dead" format="boolean" />
         <attr name="ob_text_size" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="CueBallView">
+        <attr name="hit_indicator" format="dimension" />
+        <attr name="line_width" format="dimension" />
+        <attr name="hit_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="HowMissLayout">
+        <attr name="hml_title" format="string" />
+        <attr name="hml_left_label" format="string" />
+        <attr name="hml_right_label" format="string" />
+        <attr name="hml_background" format="color" />
+        <attr name="hml_text_color" format="color" />
+    </declare-styleable>
+    <declare-styleable name="MiniBarGraphLayout">
+        <attr name="mbg_title" format="string" />
+        <attr name="mbg_bar_color" format="color" />
+        <attr name="mbg_text" format="string" />
+        <attr name="mbg_weight" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="BarGraphView">
+        <attr name="bgv_selected" format="integer" />
+        <attr name="bgv_title" format="string" />
+        <attr name="bgv_width" format="dimension" />
+        <attr name="bgv_spacing" format="dimension" />
+        <attr name="bgv_current_color" format="color" />
+        <attr name="bgv_prev_color" format="color" />
+        <attr name="bgv_next_color" format="color" />
+        <attr name="bgv_count" format="integer" />
+        <attr name="bgv_text_size" format="dimension" />
+    </declare-styleable>
 </resources>

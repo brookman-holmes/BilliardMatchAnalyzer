@@ -11,11 +11,9 @@ import android.widget.TextView;
 
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.BaseFragment;
-import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -40,7 +38,6 @@ public class StraightPoolShotFragment extends BaseFragment {
     Page page;
     String key;
     PageFragmentCallbacks callbacks;
-    int ballsOnTable = 0;
 
     public static StraightPoolShotFragment create(String key, Bundle matchData) {
         Bundle args = new Bundle();
@@ -58,10 +55,6 @@ public class StraightPoolShotFragment extends BaseFragment {
 
         Bundle args = getArguments();
         key = args.getString(ARG_KEY);
-        ArrayList<Integer> ballsOnTable = args.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY);
-
-        if (ballsOnTable != null)
-            this.ballsOnTable = ballsOnTable.size();
     }
 
     @Override
@@ -79,8 +72,6 @@ public class StraightPoolShotFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         page = callbacks.onGetPage(key);
-        page.getData().putInt(SIMPLE_DATA_KEY, 0);
-        page.notifyDataChanged();
 
         View view = inflater.inflate(R.layout.select_straight_pool_balls_dialog, container, false);
         ButterKnife.bind(this, view);
@@ -94,7 +85,6 @@ public class StraightPoolShotFragment extends BaseFragment {
         super.onDetach();
         callbacks = null;
     }
-
 
     @OnClick({R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight,
             R.id.nine, R.id.zero})

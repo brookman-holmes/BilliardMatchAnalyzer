@@ -2,8 +2,8 @@ package com.brookmanholmes.bma.ui.view;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -19,15 +19,26 @@ import com.brookmanholmes.bma.utils.ConversionUtils;
  */
 
 public class CueBallView extends View {
+    private static final int DEFAULT_SIZE = 25;
     protected Paint linePaint;
+    protected int size;
+    protected int color;
 
     public CueBallView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CueBallView);
+
+        size = a.getDimensionPixelSize(R.styleable.CueBallView_hit_indicator, getDefaultSize());
+
+        color = a.getColor(R.styleable.CueBallView_hit_color, ContextCompat.getColor(getContext(), R.color.colorPrimarySuperTransparent));
+
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         linePaint.setStyle(Paint.Style.STROKE);
-        linePaint.setStrokeWidth(ConversionUtils.convertDpToPx(getContext(), 2));
+        linePaint.setStrokeWidth(a.getDimension(R.styleable.CueBallView_line_width, ConversionUtils.convertDpToPx(getContext(), 2)));
         linePaint.setColor(ContextCompat.getColor(getContext(), R.color.dead_ball));
+
+        a.recycle();
 
         setClipToOutline(true);
     }
@@ -70,5 +81,9 @@ public class CueBallView extends View {
     private float getScaledTextSize(int size) {
         DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, size, metrics);
+    }
+
+    protected int getDefaultSize() {
+        return (int) ConversionUtils.convertDpToPx(getContext(), DEFAULT_SIZE);
     }
 }

@@ -160,6 +160,15 @@ public class AdvStats implements Serializable {
         return cueY;
     }
 
+    /**
+     * Returns whether the cueing is valid for this advanced stat
+     *
+     * @return true if the cueing is valid, false otherwise
+     */
+    public boolean isCueingValid() {
+        return cueY > -200 && cueX > -200;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

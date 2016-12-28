@@ -38,6 +38,8 @@ public class AdvStatsDialog extends DialogFragment {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    PlayerTurn turn;
+
     public AdvStatsDialog() {
     }
 
@@ -57,16 +59,18 @@ public class AdvStatsDialog extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!MatchDialogHelperUtils.isTablet(getContext()))
-            setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
-        else
+        if (MatchDialogHelperUtils.isTablet(getContext()))
             setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AlertDialogTheme);
+        else
+            setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
+
+        turn = PlayerTurn.valueOf(getArguments().getString(ARG_PLAYER_TURN));
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (getArguments().getString(ARG_PLAYER_TURN, "").equals(PlayerTurn.PLAYER.toString()))
+        if (turn == PlayerTurn.PLAYER)
             getDialog().getWindow().setWindowAnimations(R.style.SlideInFromLeftDialogTransitionTheme);
         else
             getDialog().getWindow().setWindowAnimations(R.style.SlideInFromRightDialogTransitionTheme);
@@ -94,32 +98,32 @@ public class AdvStatsDialog extends DialogFragment {
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
-        private static final String ARGS_BUNDLE = "args_bundle";
         final String shooting;
         final String safeties;
         final String breaks;
-        final Bundle args = new Bundle();
+        final Bundle args;
 
         public ViewPagerAdapter(FragmentManager fm, Bundle args, Context context) {
             super(fm);
             shooting = context.getString(R.string.title_shooting);
             safeties = context.getString(R.string.title_safeties);
             breaks = context.getString(R.string.title_breaks);
-            this.args.putBundle(ARGS_BUNDLE, args);
+            this.args = args;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 1:
-                    return AdvSafetyStatsFragment.create(args.getBundle(ARGS_BUNDLE));
-                case 2:
-                    return AdvBreakingStatsFragment.create(args.getBundle(ARGS_BUNDLE));
                 case 0:
-                    return AdvShootingStatsFragment.create(args.getBundle(ARGS_BUNDLE));
+                    return AdvShootingStatsFragment.create(args);
+                case 1:
+                    return AdvSafetyStatsFragment.create(args);
+                case 2:
+                    return AdvBreakingStatsFragment.create(args);
                 default:
                     throw new IllegalStateException("View pager out of position (0, 1, 2): " + position);
             }
+
         }
 
         @Override

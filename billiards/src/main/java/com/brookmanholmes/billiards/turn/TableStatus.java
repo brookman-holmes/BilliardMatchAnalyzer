@@ -95,6 +95,8 @@ final public class TableStatus implements ITableStatus, Serializable {
                 return new TableStatus(9, 9, gameType);
             case STRAIGHT_POOL:
                 return new TableStatus(999, 999, gameType);
+            case STRAIGHT_GHOST:
+                return new TableStatus(999, 999, gameType);
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }
@@ -133,6 +135,8 @@ final public class TableStatus implements ITableStatus, Serializable {
             case APA_GHOST_NINE_BALL:
                 return new TableStatus(9, 9, gameType, ballsOnTable);
             case STRAIGHT_POOL:
+                return new TableStatus(999, 999, gameType, ballsOnTable);
+            case STRAIGHT_GHOST:
                 return new TableStatus(999, 999, gameType, ballsOnTable);
             default:
                 throw new InvalidGameTypeException(gameType.name());

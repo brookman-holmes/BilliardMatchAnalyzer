@@ -1,7 +1,5 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
-import android.util.Log;
-
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
@@ -32,7 +30,6 @@ public class BreaksBinder extends BindingAdapter {
 
     BreaksBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
         super(expanded, !(player instanceof StraightPoolPlayer));
-        Log.i(TAG, "BreaksBinder: instanceOf StraightPoolPlayer " + (player instanceof StraightPoolPlayer));
         this.title = title;
         helpLayout = R.layout.dialog_help_breaks;
 

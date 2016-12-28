@@ -231,6 +231,11 @@ public final class GameStatus {
                     GAME_BALL = 200;
                     winOnBreak = false;
                     break;
+                case STRAIGHT_GHOST:
+                    MAX_BALLS = 200;
+                    GAME_BALL = 200;
+                    winOnBreak = false;
+                    break;
                 default:
                     throw new InvalidGameTypeException(gameType.name());
             }

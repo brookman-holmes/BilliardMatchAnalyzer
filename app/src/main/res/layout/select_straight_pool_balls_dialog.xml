@@ -20,6 +20,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="8dp"
+            android:freezesText="true"
             android:gravity="center"
             android:maxLength="3"
             android:maxLines="1"
@@ -30,21 +31,23 @@
 
         <ImageView
             android:id="@+id/backspace"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:layout_toEndOf="@+id/ballCount"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_backspace_black_24dp" />
 
     </RelativeLayout>
 
     <android.support.v7.widget.GridLayout
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginLeft="42dp"
         android:layout_marginRight="42dp"
-        android:layout_marginTop="24dp"
         app:columnCount="3"
         app:columnOrderPreserved="true"
         app:useDefaultMargins="true">

@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="apa"
             type="com.brookmanholmes.bma.ui.matchinfo.ApaBinder" />
+
         <variable
             name="overview"
             type="com.brookmanholmes.bma.ui.matchinfo.MatchOverviewBinder" />
+
         <variable
             name="shooting"
             type="com.brookmanholmes.bma.ui.matchinfo.ShootingBinder" />
+
         <variable
             name="safeties"
             type="com.brookmanholmes.bma.ui.matchinfo.SafetiesBinder" />
+
         <variable
             name="breaks"
             type="com.brookmanholmes.bma.ui.matchinfo.BreaksBinder" />
+
         <variable
             name="runs"
             type="com.brookmanholmes.bma.ui.matchinfo.RunsBinder" />
@@ -31,10 +37,11 @@
         <variable
             name="straightTable"
             type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolTableBinder" />
+
+        <import type="android.view.View" />
     </data>
 
-    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/newId"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground">
@@ -53,10 +60,8 @@
                 bind:apa="@{apa}" />
 
             <include
-                layout="@layout/straight_pool_info"
-                bind:straight="@{straight}"
-                bind:straightRuns="@{straightRuns}"
-                bind:straightTable="@{straightTable}" />
+                layout="@layout/card_straight_pool"
+                bind:straight="@{straight}" />
 
             <include
                 layout="@layout/card_match_overview"
@@ -65,6 +70,10 @@
             <include
                 layout="@layout/card_shooting_pct"
                 bind:shooting="@{shooting}" />
+
+            <include
+                layout="@layout/card_straight_pool_runs"
+                bind:straightRuns="@{straightRuns}" />
 
             <include
                 layout="@layout/card_safeties"

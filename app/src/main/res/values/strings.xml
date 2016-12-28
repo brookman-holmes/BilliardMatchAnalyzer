@@ -273,7 +273,7 @@
     <string name="cut_type">Cut type</string>
     <string name="angle_bank_kick">Angle/Bank/Kick</string>
     <string name="toggle_view">Toggle view</string>
-    <string name="play_the_ghost">Play the ghost?</string>
+    <string name="single_player">Single player</string>
     <string name="empty_string" />
     <string name="all">All</string>
     <string name="aboutLibraries_description_showIcon">true</string>
@@ -318,10 +318,12 @@
     <string name="firebase_storage_ref">gs://billiard-match-analyzer.appspot.com</string>
     <string name="angle_detailed">Detailed angles</string>
     <string name="angle_simple">Simple angles</string>
-    <string name="game_straight_ghost">Straight pool vs. The Ghost</string>
+    <string name="game_straight_ghost">High run attempt</string>
     <string name="title_shot_straight">Input number of balls %1$s made this turn</string>
     <string name="download_match">Download match</string>
     <string name="share_match">Share match</string>
     <string name="straight_pool_balls_on_table">Balls remaining on table: %1$d</string>
     <string name="balls_remaining">Balls remaining on table: %1$d</string>
+    <string name="title_straight_pool_runs">Runs</string>
+    <string name="lifetime_average">Lifetime average</string>
 </resources>

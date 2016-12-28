@@ -1,9 +1,6 @@
 package com.brookmanholmes.billiards.game;
 
 import com.brookmanholmes.billiards.turn.ITurn;
-import com.brookmanholmes.billiards.turn.TableStatus;
-import com.brookmanholmes.billiards.turn.Turn;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import org.junit.Test;
 
@@ -34,15 +31,25 @@ public class EightBallGameTest extends AbstractEightBallGameTest {
     
     @Test
     public void setPlayerAllowedToBreakAgainReturnsTrue() {
-        TableStatus tableStatus = TableStatus.newTable(game.gameType);
-        tableStatus.setBallTo(BallStatus.DEAD_ON_BREAK, 1, 8);
-
-        ITurn turn = new Turn(TurnEnd.BREAK_MISS, tableStatus, true, false, null);
+        ITurn turn = turn().deadOnBreak(8).fouled().breakMiss();
         assertThat(game.setAllowPlayerToBreakAgain(turn), is(true));
 
         game.addTurn(turn);
 
         assertThat(game.playerAllowedToBreakAgain, is(true));
+    }
+
+    @Test
+    public void continueWithGameDoesntChangeTurns() {
+        ITurn turn = turn().deadOnBreak(8).fouled().breakMiss();
+        game.addTurn(turn);
+
+        assertThat(game.turn, is(PlayerTurn.OPPONENT));
+
+        ITurn turn2 = turn().continueGame();
+        game.addTurn(turn2);
+
+        assertThat(game.turn, is(PlayerTurn.OPPONENT));
     }
 
     @Test

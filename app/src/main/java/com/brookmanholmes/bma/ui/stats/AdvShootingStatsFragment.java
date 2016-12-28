@@ -4,9 +4,12 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +22,22 @@ import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.view.HeatGraph;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
-import com.github.mikephil.charting.charts.BubbleChart;
-import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.BubbleDataSet;
-import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.utils.EntryXComparator;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -46,6 +52,8 @@ import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICK_LONG;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICK_SHORT;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THICK;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THIN;
+import static com.brookmanholmes.bma.ui.stats.AdvStatsDialog.ARG_MATCH_ID;
+import static com.brookmanholmes.bma.ui.stats.AdvStatsDialog.ARG_PLAYER_NAME;
 
 /**
  * Created by Brookman Holmes on 3/12/2016.
@@ -53,7 +61,24 @@ import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THIN;
 @SuppressWarnings("WeakerAccess")
 public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     private static final String TAG = "AdvShootingStatsFrag";
-
+    private final StatGetter speedGetter = new StatGetter() {
+        @Override
+        public float getStat(AdvStats stat) {
+            return stat.getSpeed();
+        }
+    };
+    private final StatGetter cbGetter = new StatGetter() {
+        @Override
+        public float getStat(AdvStats stat) {
+            return stat.getCbToOb();
+        }
+    };
+    private final StatGetter obGetter = new StatGetter() {
+        @Override
+        public float getStat(AdvStats stat) {
+            return stat.getObToPocket();
+        }
+    };
     @Bind(R.id.over)
     TextView overCut;
     @Bind(R.id.under)
@@ -71,9 +96,9 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.kickShort)
     TextView kickShort;
     @Bind(R.id.speedChart)
-    BubbleChart speedChart;
+    BarChart speedChart;
     @Bind(R.id.distanceChart)
-    BubbleChart distanceChart;
+    BarChart distanceChart;
     @Bind(R.id.shootingErrorTitle)
     TextView title;
     @Bind(R.id.shotTypeSpinner)
@@ -88,22 +113,18 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     TextView miscues;
     @Bind(R.id.heatGraph)
     HeatGraph cueBallHeatGraph;
-    @Bind(R.id.noSpeedData)
-    TextView noSpeedData;
-    @Bind(R.id.noDistanceData)
-    TextView noDistanceData;
-
-
-    List<BubbleEntry> obEntries = new ArrayList<>();
-    List<BubbleEntry> cbEntries = new ArrayList<>();
-    List<BubbleEntry> speedEntries = new ArrayList<>();
-    BubbleData speedData = new BubbleData(
-            new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
-    BubbleData distanceData = new BubbleData(
-            new String[]{"<.5'", ".5'", "1'", "1.5'", "2'", "2.5'", "3'", "3.5'", "4'", "4.5'", "5'",
-                    "5.5'", "6'", "6.5'", "7'", "7.5'", "8'", "8.5'", "9'", "9.5'"});
+    private BarData speedData = new BarData(), distanceData = new BarData();
     private String shotType, subType, angle;
     private GetFilteredStatsAsync task2;
+
+    public static AdvShootingStatsFragment create(String name, long matchId) {
+        AdvShootingStatsFragment frag = new AdvShootingStatsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PLAYER_NAME, name);
+        args.putLong(ARG_MATCH_ID, matchId);
+        frag.setArguments(args);
+        return frag;
+    }
 
     public static AdvShootingStatsFragment create(Bundle args) {
         AdvShootingStatsFragment frag = new AdvShootingStatsFragment();
@@ -115,7 +136,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     public static AdvShootingStatsFragment create(String name) {
         AdvShootingStatsFragment frag = new AdvShootingStatsFragment();
         Bundle args = new Bundle();
-        args.putString(AdvStatsDialog.ARG_PLAYER_NAME, name);
+        args.putString(ARG_PLAYER_NAME, name);
         frag.setArguments(args);
 
         return frag;
@@ -198,74 +219,32 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
             angle = getString(R.string.all);
 
         Utils.init(getContext()); // call this so that text size is converted to DP correctly
-
-        setupDistanceDataSeries();
-        setupSpeedDataSeries();
     }
-
-    private void setupSpeedDataSeries() {
-        for (int i = 0; i < 10; i++)
-            speedEntries.add(new BubbleEntry(i, 0f, 0f));
-
-        BubbleDataSet speedDataSet = new BubbleDataSet(speedEntries, getString(R.string.chart_speed_legend));
-        setupDataSeries(speedDataSet);
-        speedDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAccentTransparent));
-        speedData.addDataSet(speedDataSet);
-    }
-
-    private void setupDistanceDataSeries() {
-        for (int i = 0; i < 20; i++) {
-            cbEntries.add(new BubbleEntry(i, 0, 0));
-            obEntries.add(new BubbleEntry(i, 1, 0));
-        }
-
-        BubbleDataSet obDataSet = new BubbleDataSet(obEntries, getString(R.string.chart_cue_legend));
-        BubbleDataSet cbDataSet = new BubbleDataSet(cbEntries, getString(R.string.chart_object_legend));
-        setupDataSeries(obDataSet);
-        setupDataSeries(cbDataSet);
-        obDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryTransparent));
-        cbDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAccentTransparent));
-
-        distanceData.addDataSet(obDataSet);
-        distanceData.addDataSet(cbDataSet);
-    }
-
-    private void setupDataSeries(BubbleDataSet dataSet) {
-        dataSet.setValueTextSize(12);
-        dataSet.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                if (value != 0f)
-                    return ((int) value) + "";
-                else return "";
-            }
-        });
-        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
-    }
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        LimitLine line0 = new LimitLine(0);
-        LimitLine line1 = new LimitLine(1);
-        line0.setLineColor(ContextCompat.getColor(getContext(), R.color.divider_light));
-        line1.setLineColor(ContextCompat.getColor(getContext(), R.color.divider_light));
+        setupChart(speedChart, 10f);
+        speedChart.setFitBars(true);
+        speedChart.getXAxis().setAxisMinimum(1f);
+        setupChart(distanceChart, 9.5f);
+        speedChart.getXAxis().setValueFormatter(new DefaultAxisValueFormatter(0));
+        distanceChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                if (Float.compare(value, 0) == 0)
+                    return "<.5'";
+                else if (Float.compare(value, .5f) == 0)
+                    return ".5'";
+                else if (Float.compare(value, 1f) == 0)
+                    return "1'";
+                else return new DecimalFormat("#.#").format(value) + "'";
+            }
+        });
 
-        setupChart(distanceChart);
-        distanceChart.setData(distanceData);
-        YAxis left = distanceChart.getAxisLeft();
-        left.setAxisMinValue(-1f);
-        left.setAxisMaxValue(2f);
-        left.addLimitLine(line0);
-        left.addLimitLine(line1);
-
-        setupChart(speedChart);
-        speedChart.getXAxis().setLabelsToSkip(0);
-        speedChart.setData(speedData);
-        speedChart.getAxisLeft().addLimitLine(line0);
+        displayChartData(stats);
 
         shotTypeSpinner.setAdapter(createAdapter(getPossibleShotTypes()));
         shotSubTypeSpinner.setAdapter(createAdapter(getPossibleShotSubTypes()));
@@ -310,21 +289,59 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return view;
     }
 
-    private void setupChart(BubbleChart chart) {
-        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        chart.setDescription("");
-        chart.invalidate();
+    private BarDataSet getDataSet(@StringRes int label, @ColorRes int color, List<BarEntry> entries) {
+        BarDataSet dataSet = new BarDataSet(entries, getString(label));
+        dataSet.setValueFormatter(new DefaultValueFormatter(0));
+        dataSet.setValueTextSize(12);
+        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
+        dataSet.setColor(ContextCompat.getColor(getContext(), color));
+        return dataSet;
+    }
+
+    private void setupChart(BarChart chart) {
+        chart.getDescription().setEnabled(false);
+        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        chart.setTouchEnabled(false);
         YAxis left = chart.getAxisLeft();
-        left.setAxisMinValue(-1f);
-        left.setAxisMaxValue(1f);
-        left.setDrawLabels(false); // no axis labels
+        left.setDrawLabels(false);
         left.setDrawAxisLine(false); // no axis line
         left.setDrawGridLines(false); // no grid lines
         XAxis xAxis = chart.getXAxis();
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
-        xAxis.setLabelsToSkip(1);
+        xAxis.setAxisMinimum(0f);
+        xAxis.setLabelCount(10);
+        xAxis.setAvoidFirstLastClipping(true);
+        xAxis.setCenterAxisLabels(true);
         chart.getAxisRight().setEnabled(false); // no right axis
+    }
+
+    private void setupChart(BarChart chart, float xMax) {
+        setupChart(chart);
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setAxisMaximum(xMax);
+    }
+
+    private List<BarEntry> getEntries(List<AdvStats> stats, StatGetter statGetter) {
+        ArrayList<BarEntry> entries = new ArrayList<>();
+
+        for (AdvStats stat : stats) {
+            boolean hasEntry = false;
+            for (BarEntry entry : entries) {
+                if (Float.compare(entry.getX(), statGetter.getStat(stat)) == 0) {
+                    hasEntry = true;
+                    entry.setY(entry.getY() + 1);
+                }
+            }
+
+            if (!hasEntry && statGetter.getStat(stat) >= 0)
+                entries.add(new BarEntry(statGetter.getStat(stat), 1));
+
+        }
+
+        Collections.sort(entries, new EntryXComparator());
+        Log.i(TAG, "getEntries: " + entries);
+        return entries;
     }
 
     @Override
@@ -343,7 +360,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         return new ArrayList<>(shotTypes);
     }
-
 
     private List<String> getPossibleShotSubTypes() {
         SortedSet<String> shotSubTypes = new TreeSet<>();
@@ -409,6 +425,11 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private void updateView(List<AdvStats> filteredStats) {
+        speedData.clearValues();
+        distanceData.clearValues();
+
+        displayChartData(filteredStats);
+
         TransitionManager.beginDelayedTransition(baseLayout);
         StatsUtils.setLayoutWeights(filteredStats, AIM_LEFT, AIM_RIGHT, leftOfAim, rightOfAim);
         StatsUtils.setLayoutWeights(filteredStats, THIN, THICK, overCut, underCut);
@@ -418,76 +439,33 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         title.setText(getString(R.string.title_shooting_errors, filteredStats.size()));
 
-        // clear values
-        for (BubbleEntry entry : obEntries)
-            entry.setSize(0f);
-        for (BubbleEntry entry : cbEntries)
-            entry.setSize(0f);
-        for (BubbleEntry entry : speedEntries)
-            entry.setSize(0f);
-
         List<Point> points = new ArrayList<>();
 
         for (AdvStats stat : filteredStats) {
-            if (getIndex(stat.getObToPocket()) >= 0) {// make sure it's a valid index
-                updateEntrySize(obEntries.get(getIndex(stat.getObToPocket())));
-            }
-            if (getIndex(stat.getCbToOb()) >= 0) {// make sure it's a valid index
-                updateEntrySize(cbEntries.get(getIndex(stat.getCbToOb())));
-            }
-            if (stat.getSpeed() - 1 >= 0) {// make sure it's a valid index
-                updateEntrySize(speedEntries.get(stat.getSpeed() - 1));
-            }
-
             if (stat.getCueX() > -200 && stat.getCueY() > -200) // make sure it's a valid point
                 points.add(new Point(stat.getCueX(), stat.getCueY()));
         }
+
         cueBallHeatGraph.setData(points);
+    }
 
-        float speedDataSize = 0;
-        float distanceDataSize = 0;
+    private void displayChartData(List<AdvStats> stats) {
+        Log.i(TAG, "displayChartData: " + stats);
+        speedData = new BarData(
+                getDataSet(R.string.chart_speed_legend, R.color.colorAccentTransparent, getEntries(stats, speedGetter)));
+        distanceData = new BarData(
+                getDataSet(R.string.chart_cue_legend, R.color.colorPrimaryTransparent, getEntries(stats, cbGetter)),
+                getDataSet(R.string.chart_object_legend, R.color.colorAccentTransparent, getEntries(stats, obGetter)));
 
-        for (BubbleEntry entry : speedEntries)
-            speedDataSize += entry.getSize();
-        for (BubbleEntry entry : obEntries)
-            distanceDataSize += entry.getSize();
-        for (BubbleEntry entry : cbEntries)
-            distanceDataSize += entry.getSize();
+        distanceData.setBarWidth(.15f);
 
-
-        if (speedDataSize > 0) {
-            speedChart.setVisibility(View.VISIBLE);
-            noSpeedData.setVisibility(View.GONE);
-        } else {
-            speedChart.setVisibility(View.GONE);
-            noSpeedData.setVisibility(View.VISIBLE);
-        }
-
-        if (distanceDataSize > 0) {
-            distanceChart.setVisibility(View.VISIBLE);
-            noDistanceData.setVisibility(View.GONE);
-        } else {
-            distanceChart.setVisibility(View.GONE);
-            noDistanceData.setVisibility(View.VISIBLE);
-        }
-
-        speedData.calcMinMax(0, speedData.getYValCount());
-        speedChart.notifyDataSetChanged();
+        speedChart.setData(speedData);
+        distanceChart.setData(distanceData);
+        distanceChart.groupBars(0f, .1f, .05f);
+        distanceChart.setFitBars(true);
+        speedChart.setFitBars(true);
         speedChart.invalidate();
-
-        distanceData.calcMinMax(0, distanceData.getYValCount());
-        distanceChart.notifyDataSetChanged();
         distanceChart.invalidate();
-
-    }
-
-    private void updateEntrySize(BubbleEntry entry) {
-        float count = entry.getSize();
-        entry.setSize(count + 1);
-    }
-
-    private int getIndex(float val) {
-        return (int) (val * 2);
     }
 
     private void setShotSubType() {
@@ -500,6 +478,10 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Override
     int getLayoutId() {
         return R.layout.fragment_adv_shooting_stats;
+    }
+
+    private interface StatGetter {
+        float getStat(AdvStats stat);
     }
 
     private class GetFilteredStatsAsync extends AsyncTask<Void, Void, List<AdvStats>> {

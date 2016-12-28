@@ -218,6 +218,31 @@ public class DatabaseAdapter {
         }
     }
 
+    public List<AbstractPlayer> getPlayer(String playerName, GameType gameType, long id) {
+        List<AbstractPlayer> result = new ArrayList<>();
+
+        Cursor c = database.query(TABLE_PLAYERS,
+                new String[]{COLUMN_MATCH_ID},
+                COLUMN_NAME + "=? AND " + COLUMN_MATCH_ID + "<>?",
+                new String[]{playerName, String.valueOf(id)},
+                null,
+                null,
+                null);
+
+        while (c.moveToNext()) {
+            Match match = getMatchWithTurns(c.getLong(c.getColumnIndex(COLUMN_MATCH_ID)));
+
+            if (match.getPlayer().getName().equals(playerName))
+                result.add(match.getPlayer());
+            else if (match.getOpponent().getName().equals(playerName))
+                result.add(match.getOpponent());
+        }
+
+        c.close();
+
+        return result;
+    }
+
     public List<Pair<AbstractPlayer, AbstractPlayer>> getPlayerPairs(String playerName) {
         List<Pair<AbstractPlayer, AbstractPlayer>> players = new ArrayList<>();
 
@@ -412,7 +437,6 @@ public class DatabaseAdapter {
     public List<Match> getMatches(@Nullable String player, @Nullable String opponent) {
         List<Match> matches = new ArrayList<>();
 
-
         final String selection = "m." + COLUMN_ID + " as _id, "
                 + "p." + COLUMN_NAME + " as player_name, "
                 + "opp." + COLUMN_NAME + " as opp_name, "
@@ -440,6 +464,8 @@ public class DatabaseAdapter {
             query += " where (player_name = ? or opp_name = ?) AND (player_name = ? or opp_name =?)";
         else if (opponent != null || player != null)
             query += " where (player_name = ? or opp_name = ?)";
+
+        query += " ORDER BY _id DESC";
 
         String[] queryArgs;
         if (player == null && opponent == null)
@@ -526,6 +552,20 @@ public class DatabaseAdapter {
         return match.getMatchId();
     }
 
+    public EnumSet<Match.StatsDetail> getMatchDataCollection(long id) {
+        Cursor c = database.query(TABLE_MATCHES,
+                null,
+                COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null);
+
+        EnumSet<Match.StatsDetail> result = decodeEnumSet(c.getInt(c.getColumnIndex(COLUMN_STATS_DETAIL)));
+        c.close();
+        return result;
+    }
+
     private List<ITurn> getTurns(Match match) {
         List<ITurn> turns = new ArrayList<>();
         for (int i = 0; i < match.getTurns().size(); i++) {
@@ -551,7 +591,6 @@ public class DatabaseAdapter {
     }
 
     public void updateMatchNotes(String matchNotes, long matchId) {
-
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOTES, matchNotes);
 
@@ -559,7 +598,6 @@ public class DatabaseAdapter {
     }
 
     public void updateMatchLocation(String location, long matchId) {
-
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOCATION, location);
 
@@ -572,7 +610,6 @@ public class DatabaseAdapter {
     }
 
     public void editPlayerName(long matchId, String name, String newName) {
-
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, newName);
         database.update(TABLE_PLAYERS,
@@ -582,7 +619,6 @@ public class DatabaseAdapter {
     }
 
     public void insertTurn(ITurn turn, long matchId, int turnCount) {
-
         database.delete(TABLE_TURNS,
                 COLUMN_MATCH_ID + "=? AND "
                         + COLUMN_TURN_NUMBER + " >= ?",
@@ -669,7 +705,14 @@ public class DatabaseAdapter {
 
     public List<ITurn> getMatchTurns(long id) {
         List<ITurn> turns = new ArrayList<>();
-        Cursor c = getMatchTurnsCursor(id);
+        Cursor c = database.query(
+                TABLE_TURNS,
+                null,
+                COLUMN_MATCH_ID + "=?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                COLUMN_TURN_NUMBER + " ASC");
 
         while (c.moveToNext()) {
             turns.add(buildTurnFromCursor(c, getAdvStat(id, c.getLong(c.getColumnIndex(COLUMN_TURN_NUMBER)))));
@@ -678,19 +721,6 @@ public class DatabaseAdapter {
         c.close();
 
         return turns;
-    }
-
-    private Cursor getMatchTurnsCursor(long id) {
-
-
-        return database.query(
-                TABLE_TURNS,
-                null,
-                COLUMN_MATCH_ID + "=?",
-                new String[]{String.valueOf(id)},
-                null,
-                null,
-                COLUMN_TURN_NUMBER + " ASC");
     }
 
     private ITurn buildTurnFromCursor(Cursor cursor, AdvStats advStats) {
@@ -704,7 +734,6 @@ public class DatabaseAdapter {
     }
 
     public List<AdvStats> getAdvStats(String playerName, String[] shotTypes) {
-
         List<AdvStats> list = new ArrayList<>();
 
         String query = COLUMN_NAME + "=?";
@@ -781,7 +810,6 @@ public class DatabaseAdapter {
     }
 
     public List<AdvStats> getAdvStats(long matchId, String playerName, String[] shotTypes) {
-
         List<AdvStats> list = new ArrayList<>();
 
         String query = COLUMN_MATCH_ID + "=? AND " + COLUMN_NAME + "=?";

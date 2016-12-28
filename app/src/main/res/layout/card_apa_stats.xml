@@ -8,12 +8,9 @@
     </data>
 
     <view xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         style="@style/card_view_style"
         class="android.support.v7.widget.CardView"
-        android:visibility="@{apa.showCard ? View.VISIBLE : View.GONE}"
-        app:cardElevation="2dp"
-        app:cardUseCompatPadding="true">
+        android:visibility="@{apa.showCard ? View.VISIBLE : View.GONE}">
 
         <LinearLayout
             android:layout_width="match_parent"

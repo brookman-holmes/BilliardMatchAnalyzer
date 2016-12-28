@@ -38,6 +38,5 @@
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/white"
         android:visibility="invisible"
-        app:borderWidth="0dp"
-        app:layout_behavior="com.brookmanholmes.bma.utils.ScrollAwareFABBehavior" />
+        app:borderWidth="0dp" />
 </android.support.design.widget.CoordinatorLayout>

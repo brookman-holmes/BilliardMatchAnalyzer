@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<view xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/card_view_style"
-    class="android.support.v7.widget.CardView"
-    app:cardElevation="2dp"
-    app:cardUseCompatPadding="true">
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/card_view_style">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,51 +29,26 @@
             android:baselineAligned="false"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/color_indicator_c0"
+                android:text="@string/title_tsp_short"
+                android:textSize="14sp" />
 
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/color_indicator"
-                    android:tint="@color/chart" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="3dp"
-                    android:text="@string/title_tsp_short"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/color_indicator"
-                    android:tint="@color/chart1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="3dp"
-                    android:text="@string/title_shooting_pct_short"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/color_indicator_c1"
+                android:text="@string/title_shooting_pct_short"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,54 +59,25 @@
             android:baselineAligned="false"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/color_indicator_c3"
+                android:text="@string/title_safety_pct_short"
+                android:textSize="14sp" />
 
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/color_indicator"
-                    android:tint="@color/chart3" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="3dp"
-                    android:text="@string/title_safety_pct_short"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/color_indicator"
-                    android:tint="@color/chart2" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="3dp"
-                    android:text="@string/title_breaking_pct_short"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/color_indicator_c2"
+                android:text="@string/title_breaking_pct_short"
+                android:textSize="14sp" />
         </LinearLayout>
-
     </LinearLayout>
-
-
-</view>
+</android.support.v7.widget.CardView>
