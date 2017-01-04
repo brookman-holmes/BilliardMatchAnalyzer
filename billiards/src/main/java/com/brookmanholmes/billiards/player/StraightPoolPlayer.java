@@ -94,6 +94,11 @@ public class StraightPoolPlayer extends AbstractPlayer implements IStraightPool 
     }
 
     @Override
+    public float getMatchCompletionPct() {
+        return (float) getPoints() / (float) rank;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

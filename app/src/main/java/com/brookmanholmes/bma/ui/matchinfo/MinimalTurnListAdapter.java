@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.bma.R;
 
 
@@ -31,7 +32,11 @@ class MinimalTurnListAdapter extends RecyclerView.Adapter<MinimalTurnViewHolder>
 
     @Override
     public void onBindViewHolder(MinimalTurnViewHolder holder, int position) {
-        holder.bind(match.getTurns().get(position), PlayerTurn.PLAYER, match.getPlayer());
+        PlayerTurn turn = match.getGameStatus(position).turn;
+        AbstractPlayer player = turn == PlayerTurn.PLAYER ?
+                match.getPlayer(0, position + 1) : match.getOpponent(0, position + 1);
+
+        holder.bind(match.getTurns().get(position), turn, player);
     }
 
     @Override

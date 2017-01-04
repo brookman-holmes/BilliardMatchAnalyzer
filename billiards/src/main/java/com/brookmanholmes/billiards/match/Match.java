@@ -7,11 +7,8 @@ import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
-import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.Players;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITableStatus;
@@ -318,30 +315,6 @@ public class Match implements IMatch {
                 "\n location='" + location + '\'' +
                 "\n notes='" + notes + '\'' +
                 '}';
-    }
-
-    public float getMatchComplPctPlayer() {
-        if (getPlayer() instanceof ApaEightBallPlayer) {
-            return (float) ((ApaEightBallPlayer) getPlayer()).getPoints() / (float) ((ApaEightBallPlayer) getPlayer()).getPointsNeeded(getOpponent().getRank());
-        } else if (getPlayer() instanceof ApaNineBallPlayer) {
-            return (float) ((ApaNineBallPlayer) getPlayer()).getPoints() / (float) ((ApaNineBallPlayer) getPlayer()).getPointsNeeded(getOpponent().getRank());
-        } else if (getPlayer() instanceof StraightPoolPlayer) {
-            return (float) ((StraightPoolPlayer) getPlayer()).getPoints() / (float) getPlayer().getRank();
-        } else {
-            return (float) getPlayer().getWins() / (float) getPlayer().getRank();
-        }
-    }
-
-    public float getMatchComplPctOpponent() {
-        if (getOpponent() instanceof ApaEightBallPlayer) {
-            return (float) ((ApaEightBallPlayer) getOpponent()).getPoints() / (float) ((ApaEightBallPlayer) getOpponent()).getPointsNeeded(getPlayer().getRank());
-        } else if (getOpponent() instanceof ApaNineBallPlayer) {
-            return (float) ((ApaNineBallPlayer) getOpponent()).getPoints() / (float) ((ApaNineBallPlayer) getOpponent()).getPointsNeeded(getPlayer().getRank());
-        } else if (getOpponent() instanceof StraightPoolPlayer) {
-            return (float) ((StraightPoolPlayer) getOpponent()).getPoints() / (float) getOpponent().getRank();
-        } else {
-            return (float) getOpponent().getWins() / (float) getOpponent().getRank();
-        }
     }
 
     public enum StatsDetail {

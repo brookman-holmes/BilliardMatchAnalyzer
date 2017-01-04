@@ -8,10 +8,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
-import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.View;
 
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.utils.ConversionUtils;
@@ -20,7 +18,7 @@ import com.brookmanholmes.bma.utils.ConversionUtils;
  * Created by Brookman Holmes on 11/9/2016.
  */
 
-public class ObjectBall extends View {
+public class ObjectBall extends BaseView {
     @ColorRes
     private static final int DEFAULT_BACKGROUND_COLOR = R.color.one_ball;
     private static final String DEFAULT_BALL_NUMBER = "1";
@@ -128,11 +126,5 @@ public class ObjectBall extends View {
         canvas.drawCircle(centerX, centerY, textSize / 1.2f, textBackgroundPaint);
         canvas.drawCircle(centerX, centerY, textSize / 1.2f, strokePaint);
         canvas.drawText(ballNumber, xPos, yPos, textPaint);
-    }
-
-    private
-    @ColorInt
-    int getColor(@ColorRes int color) {
-        return ContextCompat.getColor(getContext(), color);
     }
 }

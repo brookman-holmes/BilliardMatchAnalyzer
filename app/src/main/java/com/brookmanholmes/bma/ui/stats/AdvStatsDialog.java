@@ -8,7 +8,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.ui.BaseDialogFragment;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import butterknife.Bind;
@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 3/11/2016.
  */
 @SuppressWarnings("WeakerAccess")
-public class AdvStatsDialog extends DialogFragment {
+public class AdvStatsDialog extends BaseDialogFragment {
     static final String ARG_MATCH_ID = "match id";
     static final String ARG_PLAYER_NAME = "player name";
     static final String ARG_PLAYER_TURN = "player turn";
@@ -83,7 +83,7 @@ public class AdvStatsDialog extends DialogFragment {
         ButterKnife.bind(this, view);
 
         toolbar.setTitle(getString(R.string.title_advanced_stats, getArguments().getString(ARG_PLAYER_NAME, "ERROR NO NAME PRESENT IN ARGUMENTS")));
-        toolbar.setTitleTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
+        toolbar.setTitleTextColor(getColor(android.R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

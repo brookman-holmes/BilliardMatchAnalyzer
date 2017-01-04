@@ -465,6 +465,10 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         } else return ZERO_PERCENT;
     }
 
+    public float getMatchCompletionPct() {
+        return (float) gameWins / (float) rank;
+    }
+
     /**
      * The total number of shots attempted (shooting, breaking and safeties)
      * @return The total number of shots attempted

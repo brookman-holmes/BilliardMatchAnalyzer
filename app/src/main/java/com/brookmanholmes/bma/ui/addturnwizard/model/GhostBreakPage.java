@@ -11,14 +11,15 @@ import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 class GhostBreakPage extends BreakPage {
     GhostBreakPage(ModelCallbacks callbacks, String title, String title2, Bundle matchData) {
         super(callbacks, title, title2, matchData);
+        data.putString(SIMPLE_DATA_KEY, showShotPage);
     }
 
     @Override
     String showShotPage() {
         if ((gameType == GameType.APA_GHOST_NINE_BALL || gameType == GameType.APA_GHOST_EIGHT_BALL) && gameBallMadeOnBreak())
-            return "";
+            return "no";
         else if (gameType == GameType.APA_GHOST_EIGHT_BALL && tableStatus.isGameBallMadeIllegally())
-            return "";
+            return "no";
         else
             return showShotPage;
     }

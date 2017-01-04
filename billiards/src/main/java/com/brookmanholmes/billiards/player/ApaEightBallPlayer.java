@@ -4,11 +4,15 @@ package com.brookmanholmes.billiards.player;
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class ApaEightBallPlayer extends AbstractPlayer implements IApa {
+    private final int opponentRank;
+    private final RaceTo raceTo;
     private int winsOnBreak = 0;
     private int earlyWins = 0;
 
-    public ApaEightBallPlayer(String name, int rank) {
+    public ApaEightBallPlayer(String name, int rank, int opponentRank) {
         super(name, rank);
+        this.opponentRank = opponentRank;
+        raceTo = Players.apa8BallRaceTo(rank, opponentRank);
     }
 
     @Override
@@ -27,7 +31,7 @@ public class ApaEightBallPlayer extends AbstractPlayer implements IApa {
     }
 
     @Override
-    public int getPointsNeeded(int opponentRank) {
+    public int getPointsNeeded() {
         return Players.apa8BallRaceTo(rank, opponentRank).getPlayerRaceTo();
     }
 
@@ -66,9 +70,7 @@ public class ApaEightBallPlayer extends AbstractPlayer implements IApa {
     }
 
     @Override
-    public int getMatchPoints(int opponentScore, int opponentRank) {
-        RaceTo raceTo = Players.apa8BallRaceTo(rank, opponentRank);
-
+    public int getMatchPoints(int opponentScore) {
         if (getWins() == raceTo.getPlayerRaceTo()) {
             if (opponentScore == 0)
                 return 3;
@@ -81,6 +83,11 @@ public class ApaEightBallPlayer extends AbstractPlayer implements IApa {
     @Override
     public int getRank() {
         return rank;
+    }
+
+    @Override
+    public float getMatchCompletionPct() {
+        return (float) getPoints() / (float) raceTo.getPlayerRaceTo();
     }
 
     @Override

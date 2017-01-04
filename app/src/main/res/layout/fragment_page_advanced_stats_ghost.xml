@@ -9,132 +9,81 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingEnd="16dp"
+        android:paddingStart="32dp">
 
         <TextView
             style="@style/WizardPageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-
-        <android.support.v7.widget.GridLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <CheckBox
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            app:columnCount="2"
-            app:useDefaultMargins="true">
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:enabled="false"
+            android:text="Balls made and turn endings" />
 
-            <TextView
-                style="@style/player_stats"
-                android:text="Balls made and turn endings"
-                app:layout_columnWeight="0" />
+        <CheckBox
+            android:id="@+id/cbShotTypePlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Shot types of misses" />
 
-            <CheckBox
-                android:layout_marginLeft="16dp"
-                android:checked="true"
-                android:enabled="false"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_vertical|left" />
+        <CheckBox
+            android:id="@+id/cbAnglePlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
+            android:enabled="false"
+            android:text="Detailed angles" />
 
-            <TextView
-                style="@style/player_stats"
-                android:text="Shot types of misses"
-                app:layout_columnWeight="0" />
-            <CheckBox
-                android:id="@+id/cbShotTypePlayer"
-                android:layout_marginLeft="16dp"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_vertical|left" />
+        <CheckBox
+            android:id="@+id/cbAngleSimplePlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
+            android:enabled="false"
+            android:text="Simple angles" />
 
+        <CheckBox
+            android:id="@+id/cbHowPlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="How shots are missed\n(Left of ball, Right of ball, etc.)" />
 
-            <TextView
-                style="@style/player_stats"
-                android:text="Detailed angles"
-                app:layout_columnWeight="0" />
-            <CheckBox
-                android:id="@+id/cbAnglePlayer"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:enabled="false"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_vertical|left" />
+        <CheckBox
+            android:id="@+id/cbCuePlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Cue tip placement" />
 
+        <CheckBox
+            android:id="@+id/cbBallDistPlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Cue/object ball distance" />
 
-            <TextView
-                style="@style/player_stats"
-                android:text="Simple angles"
-                app:layout_columnWeight="0" />
-            <CheckBox
-                android:id="@+id/cbAngleSimplePlayer"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:enabled="false"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_vertical|left" />
+        <CheckBox
+            android:id="@+id/cbSpeedPlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Cue ball speed" />
 
+        <CheckBox
+            android:id="@+id/cbSafetiesPlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:enabled="false"
+            android:text="Safeties (full/partial hooks, etc.)" />
 
-            <TextView
-                style="@style/player_stats"
-                android:text="How shots are missed\n(Left of ball, Right of ball, etc.)"
-                app:layout_columnWeight="0" />
-            <CheckBox
-                android:id="@+id/cbHowPlayer"
-                android:layout_marginLeft="16dp"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_vertical|left" />
-
-
-            <TextView
-                style="@style/player_stats"
-                android:text="Cue tip placement"
-                app:layout_columnWeight="0" />
-            <CheckBox
-                android:id="@+id/cbCuePlayer"
-                android:layout_marginLeft="16dp"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_vertical|left" />
-
-
-            <TextView
-                style="@style/player_stats"
-                android:text="Cue/object ball distance"
-                app:layout_columnWeight="0" />
-            <CheckBox
-                android:id="@+id/cbBallDistPlayer"
-                android:layout_marginLeft="16dp"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_vertical|left" />
-
-
-            <TextView
-                style="@style/player_stats"
-                android:text="Cue ball speed"
-                app:layout_columnWeight="0" />
-            <CheckBox
-                android:id="@+id/cbSpeedPlayer"
-                android:layout_marginLeft="16dp"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_vertical|left" />
-
-
-            <TextView
-                style="@style/player_stats"
-                android:text="Safeties\n(full/partial hooks, etc.)"
-                app:layout_columnWeight="0" />
-            <CheckBox
-                android:id="@+id/cbSafetiesPlayer"
-                android:layout_marginLeft="16dp"
-                app:layout_columnWeight="1"
-                app:layout_gravity="center_vertical|left" />
-
-            <Space />
-
-            <Space />
-
-        </android.support.v7.widget.GridLayout>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

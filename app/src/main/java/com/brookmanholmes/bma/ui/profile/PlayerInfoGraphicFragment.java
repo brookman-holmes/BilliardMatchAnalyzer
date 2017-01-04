@@ -1,16 +1,16 @@
 package com.brookmanholmes.bma.ui.profile;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,12 +25,7 @@ import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseRecyclerFragment;
 import com.brookmanholmes.bma.ui.stats.Filterable;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.brookmanholmes.bma.ui.view.BaseViewHolder;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 
@@ -41,11 +36,19 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter;
+import lecho.lib.hellocharts.formatter.SimpleLineChartValueFormatter;
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.view.LineChartView;
 
 /**
  * Created by helios on 5/15/2016.
@@ -143,7 +146,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
     /**
      * Created by helios on 5/22/2016.
      */
-    static class PlayerInfoGraphicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    static class PlayerInfoGraphicAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         static final int ITEM_GRAPH = 0;
         static final int ITEM_SAFETY_INFO = 1;
         static final int ITEM_SAFETY_GRAPH = 2;
@@ -192,13 +195,13 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(getLayoutResource(viewType), parent, false);
             return getViewHolderByViewType(view, viewType);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(BaseViewHolder holder, int position) {
             switch (getItemViewType(position)) {
                 case ITEM_GRAPH:
                     ((GraphViewHolder) holder).bind(players);
@@ -245,7 +248,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             }
         }
 
-        RecyclerView.ViewHolder getViewHolderByViewType(View view, int viewType) {
+        BaseViewHolder getViewHolderByViewType(View view, int viewType) {
             switch (viewType) {
                 case ITEM_GRAPH:
                     return new GraphViewHolder(view);
@@ -262,119 +265,83 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             }
         }
 
-        static class GraphViewHolder extends RecyclerView.ViewHolder {
+        static class GraphViewHolder extends BaseViewHolder {
+            private static final String TAG = "GraphViewHolder";
             @Bind(R.id.graph)
-            LineChart chart;
+            LineChartView chart;
 
             GraphViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
-
-                chart.setTouchEnabled(false);
-                chart.getDescription().setEnabled(false);
-                chart.getXAxis().setDrawLabels(false);
-                chart.getXAxis().setDrawGridLines(false);
-                chart.getAxisRight().setAxisMinimum(0f);
-                chart.getAxisRight().setAxisMaximum(1.1f);
-                chart.getAxisLeft().setAxisMinimum(0f);
-                chart.getAxisLeft().setAxisMaximum(1.1f);
-                chart.getAxisLeft().setGranularity(.1f);
-                chart.getAxisRight().setDrawLabels(false);
-                chart.getLegend().setEnabled(false);
-                chart.getAxisLeft().setValueFormatter(new IAxisValueFormatter() {
-                    @Override
-                    public String getFormattedValue(float value, AxisBase axis) {
-                        return DecimalFormat.getPercentInstance().format(value);
-                    }
-                });
-
-                chart.setDrawGridBackground(false);
-
             }
 
             public void bind(List<AbstractPlayer> players) {
-                Context context = itemView.getContext();
+                List<PointValue> tsp = new ArrayList<>();
+                List<PointValue> shooting = new ArrayList<>();
+                List<PointValue> safeties = new ArrayList<>();
+                List<PointValue> breaking = new ArrayList<>();
 
-                LineData data = new LineData();
-                LineDataSet tsp = getDataSet(getTspDataSet(players), context.getString(R.string.title_tsp), getColor(R.color.chart));
-                LineDataSet shootingP = getDataSet(getShootingDataSet(players), context.getString(R.string.title_shooting_pct), getColor(R.color.chart1));
-                LineDataSet breakingP = getDataSet(getBreakingDataSet(players), context.getString(R.string.title_break_pct), getColor(R.color.chart2));
-                LineDataSet safetyP = getDataSet(getSafetyDataSet(players), context.getString(R.string.title_safety_pct), getColor(R.color.chart3));
+                float count = 0;
+                for (AbstractPlayer player : players) {
+                    if (player.getShootingAttempts() + player.getSafetyAttempts() + player.getBreakAttempts() > 0)
+                        tsp.add(new PointValue(count, Float.valueOf(player.getTrueShootingPct())));
+                    if (player.getShootingAttempts() > 0)
+                        shooting.add(new PointValue(count, Float.valueOf(player.getShootingPct())));
+                    if (player.getSafetyAttempts() > 0)
+                        safeties.add(new PointValue(count, Float.valueOf(player.getSafetyPct())));
+                    if (player.getBreakAttempts() > 0)
+                        breaking.add(new PointValue(count, Float.valueOf(player.getBreakPct())));
 
-                data.addDataSet(tsp);
-                data.addDataSet(shootingP);
-                data.addDataSet(breakingP);
-                data.addDataSet(safetyP);
-
-
-                chart.setData(data);
-                chart.animateX(1750);
-            }
-
-            private List<Entry> getTspDataSet(List<AbstractPlayer> players) {
-                List<Entry> list = new ArrayList<>();
-
-                for (int i = 0; i < players.size(); i++) {
-                    if (players.get(i).getShootingAttempts() +
-                            players.get(i).getBreakAttempts() +
-                            players.get(i).getSafetyAttempts() > 0)
-                        list.add(new Entry(i, Float.valueOf(players.get(i).getTrueShootingPct())));
+                    count += 1;
                 }
 
-                return list;
+                LineChartData data = new LineChartData(getLines(tsp, shooting, safeties, breaking, getDummyLine((int) count)));
+
+                Axis axis = new Axis();
+                axis.setHasSeparationLine(true)
+                        .setFormatter(new SimpleAxisValueFormatter())
+                        .setHasLines(true);
+                data.setAxisYLeft(axis);
+                data.setValueLabelTextSize(24);
+
+                chart.setLineChartData(data);
             }
 
-            private List<Entry> getShootingDataSet(List<AbstractPlayer> players) {
-                List<Entry> list = new ArrayList<>();
-
-                for (int i = 0; i < players.size(); i++) {
-                    if (players.get(i).getShootingAttempts() > 0)
-                        list.add(new Entry(i, Float.valueOf(players.get(i).getShootingPct())));
-                }
-
-                return list;
+            private Line getLine(List<PointValue> values, @ColorRes int color, int radiusModifer) {
+                return new Line(values)
+                        .setPointRadius(3 + radiusModifer)
+                        .setColor(getColor(color))
+                        .setPointColor(getColor(color))
+                        .setHasLabels(false)
+                        .setStrokeWidth(2)
+                        .setHasPoints(true)
+                        .setCubic(true)
+                        .setHasLabelsOnlyForSelected(true)
+                        .setFormatter(new SimpleLineChartValueFormatter(3))
+                        .setFilled(false);
             }
 
-            private List<Entry> getSafetyDataSet(List<AbstractPlayer> players) {
-                List<Entry> list = new ArrayList<>();
-
-                for (int i = 0; i < players.size(); i++) {
-                    if (players.get(i).getSafetyAttempts() > 0)
-                        list.add(new Entry(i, Float.valueOf(players.get(i).getSafetyPct())));
-                }
-
-                return list;
+            private Line getDummyLine(int count) {
+                return new Line(Arrays.asList(new PointValue(0, 0), new PointValue(count, 1.05f)))
+                        .setColor(getColor(android.R.color.transparent))
+                        .setHasPoints(false);
             }
 
-            private List<Entry> getBreakingDataSet(List<AbstractPlayer> players) {
-                List<Entry> list = new ArrayList<>();
-
-                for (int i = 0; i < players.size(); i++) {
-                    if (players.get(i).getBreakAttempts() > 0)
-                        list.add(new Entry(i, Float.valueOf(players.get(i).getBreakPct())));
-                }
-
-                return list;
+            private List<Line> getLines(List<PointValue> tsp, List<PointValue> shooting, List<PointValue> safeties, List<PointValue> breaking, Line line) {
+                return Arrays.asList(getLine(shooting, R.color.chart1, 1),
+                        getLine(safeties, R.color.chart3, 1),
+                        getLine(breaking, R.color.chart2, 1),
+                        getLine(tsp, R.color.chart, 0),
+                        line);
             }
 
-            private LineDataSet getDataSet(List<Entry> entries, String label, int color) {
-                LineDataSet dataSet = new LineDataSet(entries, label);
-                dataSet.setLineWidth(1.75f);
-                dataSet.setCircleRadius(4f);
-                dataSet.setDrawValues(false);
-                dataSet.setDrawCircles(true);
-                dataSet.setDrawCircleHole(true);
-                dataSet.setCircleColor(color);
-                dataSet.setColor(color);
-                return dataSet;
-            }
-
-            private int getColor(@ColorRes int color) {
-                return ContextCompat.getColor(itemView.getContext(), color);
+            @ColorInt
+            private int getColor(@ColorRes int color, int alpha) {
+                return ColorUtils.setAlphaComponent(getColor(color), alpha);
             }
         }
 
-        abstract static class TwoItemHolder extends RecyclerView.ViewHolder {
+        abstract static class TwoItemHolder extends BaseViewHolder {
             @Bind(R.id.item1)
             TextView item1;
             @Bind(R.id.item1Desc)
@@ -448,7 +415,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             }
         }
 
-        static class BreaksGraphViewHolder extends RecyclerView.ViewHolder {
+        static class BreaksGraphViewHolder extends BaseViewHolder {
             private static final String TAG = "BreaksGraphVH";
             final int color1;
             final int color2;
@@ -472,11 +439,11 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
                 float width = getDimension(R.dimen.decoview_inset);
 
-                color1 = ContextCompat.getColor(itemView.getContext(), R.color.chart3);
-                color2 = ContextCompat.getColor(itemView.getContext(), R.color.chart2);
-                color3 = ContextCompat.getColor(itemView.getContext(), R.color.chart1);
-                color4 = ContextCompat.getColor(itemView.getContext(), R.color.chart);
-                grey = ContextCompat.getColor(itemView.getContext(), R.color.chart4);
+                color1 = getColor(R.color.chart3);
+                color2 = getColor(R.color.chart2);
+                color3 = getColor(R.color.chart1);
+                color4 = getColor(R.color.chart);
+                grey = getColor(R.color.chart4);
                 decoView.deleteAll();
                 decoView.addSeries(new SeriesItem.Builder(grey)
                         .setRange(0, 1, 1)
@@ -571,7 +538,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
             }
         }
 
-        static class SafetyGraphViewHolder extends RecyclerView.ViewHolder {
+        static class SafetyGraphViewHolder extends BaseViewHolder {
             final int color1;
             final int color2;
             final int color3;
@@ -594,9 +561,9 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 decoView.deleteAll();
                 title.setText(R.string.title_after_opponent_safety);
                 notValid.setVisibility(View.GONE);
-                color1 = ContextCompat.getColor(itemView.getContext(), R.color.chart3);
-                color2 = ContextCompat.getColor(itemView.getContext(), R.color.chart2);
-                color3 = ContextCompat.getColor(itemView.getContext(), R.color.chart1);
+                color1 = getColor(R.color.chart3);
+                color2 = getColor(R.color.chart2);
+                color3 = getColor(R.color.chart1);
             }
 
             public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {

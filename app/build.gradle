@@ -72,8 +72,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.apache.commons:commons-collections4:4.1'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
-    compile 'im.dacer:AndroidCharts:1.0.2'
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.3@aar'
     compile 'de.cketti.mailto:email-intent-builder:1.0.0'
     compile('com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar') {

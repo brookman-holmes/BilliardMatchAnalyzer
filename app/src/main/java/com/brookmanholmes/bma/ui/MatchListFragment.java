@@ -29,6 +29,7 @@ import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.Filterable;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
+import com.brookmanholmes.bma.ui.view.BaseViewHolder;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import java.text.DateFormat;
@@ -122,7 +123,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
         }
     }
 
-    static class MatchListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    static class MatchListRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         private static final int MATCH_VIEW = 0;
         private static final int FOOTER = 1;
         List<Match> matches;
@@ -132,7 +133,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == FOOTER)
                 return new FooterHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.footer, parent, false));
@@ -142,14 +143,14 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(BaseViewHolder holder, int position) {
             if (holder instanceof ListItemHolder) {
                 ((ListItemHolder) holder).bind(matches.get(position));
             }
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+        public void onBindViewHolder(BaseViewHolder holder, int position, List<Object> payloads) {
             if (payloads.size() > position) {
                 if (holder instanceof ListItemHolder) {
                     Bundle bundle = (Bundle) payloads.get(position);
@@ -239,13 +240,13 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
             }
         }
 
-        static class FooterHolder extends RecyclerView.ViewHolder {
+        static class FooterHolder extends BaseViewHolder {
             FooterHolder(View itemView) {
                 super(itemView);
             }
         }
 
-        class ListItemHolder extends RecyclerView.ViewHolder {
+        class ListItemHolder extends BaseViewHolder {
             long id;
             @Bind(R.id.players)
             TextView playerNames;

@@ -47,11 +47,11 @@ class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
 
     @Override
     public ApaEightBallPlayer newPlayer() {
-        return new ApaEightBallPlayer(playerName, playerRank);
+        return new ApaEightBallPlayer(playerName, playerRank, opponentRank);
     }
 
     @Override
     public ApaEightBallPlayer newOpponent() {
-        return new ApaEightBallPlayer(opponentName, opponentRank);
+        return new ApaEightBallPlayer(opponentName, opponentRank, playerRank);
     }
 }

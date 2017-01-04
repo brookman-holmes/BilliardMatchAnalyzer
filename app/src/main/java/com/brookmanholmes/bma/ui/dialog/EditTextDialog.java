@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.ui.BaseDialogFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 11/15/2016.
  */
-public abstract class EditTextDialog extends DialogFragment {
+public abstract class EditTextDialog extends BaseDialogFragment {
     protected static final String ARG_TITLE = "arg title";
     protected static final String ARG_PRETEXT = "arg pretext";
     protected String title;

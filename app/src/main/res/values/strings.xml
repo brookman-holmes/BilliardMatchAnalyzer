@@ -131,6 +131,7 @@
     <string name="select_solids">Select all remaining solids</string>
     <string name="select_stripes">Select all remaining stripes</string>
     <string name="row_game">Game %1$d</string>
+    <string name="row_rack">Rack %1$d</string>
     <string name="opponents">Opponents</string>
     <string name="title_player_profile">%1$s\'s Profile</string>
     <string name="action_filter">Filter</string>
@@ -304,6 +305,7 @@
     <string name="game_bca_ten_ghost">BCA 10 Ball vs. The Ghost</string>
     <string name="player_name">Player</string>
     <string name="player_wins">%1$s has %2$d wins</string>
+    <string name="player_points">%1$s has %2$d points</string>
     <string name="description_heat_graph">Where the cue struck the cue ball when a shot was missed</string>
     <string name="description_no_data">No advanced shot data available</string>
     <string name="none">None</string>

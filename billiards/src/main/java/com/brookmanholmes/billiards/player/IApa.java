@@ -9,10 +9,9 @@ public interface IApa extends IWinsOnBreak {
      * Returns the minimum number of match points earned based on the player's score,
      * their opponent's score and their opponent's rank
      * @param opponentScore The current score for the opponent
-     * @param opponentRank The rank of the opponent
      * @return An integer that is the minimum number of match points scored
      */
-    int getMatchPoints(int opponentScore, int opponentRank);
+    int getMatchPoints(int opponentScore);
 
     /**
      * The current number of points/games that the player has
@@ -22,8 +21,7 @@ public interface IApa extends IWinsOnBreak {
 
     /**
      * Get the points needed to win the match
-     * @param opponentRank The rank of their opponent
      * @return The number of points/games needed for this player to win their match
      */
-    int getPointsNeeded(int opponentRank);
+    int getPointsNeeded();
 }

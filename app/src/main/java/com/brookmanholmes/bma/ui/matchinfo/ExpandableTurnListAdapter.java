@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.StraightPoolPlayer;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
@@ -36,14 +38,58 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     ExpandableTurnListAdapter(Match match) {
         this.match = match;
         setHasStableIds(true);
-        data = buildDataSource(match.getTurns());
+        data = getData(match.getTurns());
         // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
     }
 
     void updateMatch(Match match) {
         this.match = match;
-        data = buildDataSource(match.getTurns());
+        data = getData(match.getTurns());
         notifyDataSetChanged(); // there is a bug thrown by the library this is based on so neat
+    }
+
+    private List<List<ITurn>> getData(List<ITurn> turns) {
+        if (match.getGameStatus().gameType == GameType.STRAIGHT_POOL)
+            return buildStraightPoolDataSource(turns);
+        else return buildDataSource(turns);
+    }
+
+    private List<List<ITurn>> buildStraightPoolDataSource(List<ITurn> turns) {
+        List<List<ITurn>> data = new ArrayList<>();
+        ArrayList<ITurn> turnsInGame = new ArrayList<>();
+
+        int ballCount = 0;
+        int rackCount = 0;
+        for (int i = 0; i < turns.size(); i++) {
+            ITurn turn = turns.get(i);
+            ballCount += turn.getShootingBallsMade();
+
+            float rack = ((float) ballCount) / 14;
+
+            if (Float.compare(rack, rackCount + 1) < 0) {
+                // add any turn where the number of balls made divided by 14 is
+                // NOT more than the old rack count by at least 1
+                turnsInGame.add(turn);
+            } else {
+                turnsInGame.add(turn); // add the turn that rolls over to the new rack
+                data.add(turnsInGame);
+                turnsInGame = new ArrayList<>();
+            }
+
+            rackCount = (int) Math.floor(rack);
+
+            if (i + 1 == turns.size())
+                data.add(turnsInGame);
+        }
+
+        // add group at the end of the list to simulate a footer
+        if (data.size() > 0 && data.get(data.size() - 1).size() > 0) {
+            // if the last item is empty then it becomes the footer
+            // otherwise we create a new one
+            data.add(new ArrayList<ITurn>());
+        }
+
+        return data;
     }
 
     private List<List<ITurn>> buildDataSource(List<ITurn> turns) {
@@ -96,7 +142,11 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
 
     @Override
     public GameViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
-        return new GameViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_game, parent, false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_game, parent, false);
+        if (match.getGameStatus().gameType == GameType.STRAIGHT_POOL)
+            return new RackViewHolder(view);
+        else
+            return new GameViewHolder(view);
     }
 
     @Override
@@ -115,9 +165,9 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         } else {
             holder.itemView.setVisibility(View.VISIBLE);
             holder.itemView.setEnabled(true);
-            holder.bind(match.getPlayer().getName(), match.getOpponent().getName(), groupPosition + 1,
-                    match.getPlayer(0, getTurnNumber(groupPosition)).getWins(),
-                    match.getOpponent(0, getTurnNumber(groupPosition)).getWins());
+
+            holder.bind(match.getPlayer(0, getTurnNumber(groupPosition)),
+                    match.getOpponent(0, getTurnNumber(groupPosition)));
 
             // set background resource (target view ID: container)
             final int expandState = holder.getExpandStateFlags();
@@ -141,10 +191,6 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         holder.bind(data.get(groupPosition).get(childPosition),
                 viewType == 1 ? PlayerTurn.PLAYER : PlayerTurn.OPPONENT,
                 viewType == 1 ? match.getPlayer(0, turn + 1) : match.getOpponent(0, turn + 1));
-
-        if (match.getGameStatus().gameType != GameType.STRAIGHT_POOL) {
-            holder.setBalls(data.get(groupPosition).get(childPosition));
-        }
 
         // set margin of bottom view holder to get a cool spacing
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
@@ -197,7 +243,14 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             ButterKnife.bind(this, itemView);
         }
 
-        private void bind(String playerName, String opponentName, int gameTotal, int playerScore, int opponentScore) {
+        void bind(AbstractPlayer player, AbstractPlayer opponent) {
+            String playerName = player.getName();
+            String opponentName = opponent.getName();
+
+            int playerScore = player.getWins();
+            int opponentScore = opponent.getWins();
+            int gameTotal = playerScore + opponentScore + 1;
+
             game.setText(itemView.getContext().getString(R.string.row_game, gameTotal));
             playerWins.setText(itemView.getContext().getString(R.string.player_wins, playerName, playerScore));
             opponentWins.setText(itemView.getContext().getString(R.string.player_wins, opponentName, opponentScore));
@@ -224,6 +277,44 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
 
             //noinspection ResourceType
             itemView.setElevation((isExpanded ? ConversionUtils.convertDpToPx(itemView.getContext(), 2) : 0));
+        }
+    }
+
+    static class RackViewHolder extends GameViewHolder {
+        RackViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        void bind(AbstractPlayer player, AbstractPlayer opponent) {
+            float points = player.getShootingBallsMade() + opponent.getShootingBallsMade();
+            int rackTotal = (int) Math.floor(points / 14) + 1;
+            String playerName = player.getName();
+            String opponentName = opponent.getName();
+
+            game.setText(itemView.getContext().getString(R.string.row_rack, rackTotal));
+
+            if (player instanceof StraightPoolPlayer && opponent instanceof StraightPoolPlayer) {
+                int playerScore = ((StraightPoolPlayer) player).getPoints();
+                int opponentScore = ((StraightPoolPlayer) opponent).getPoints();
+
+                float playerPct = (float) playerScore / (float) player.getRank();
+                float opponentPct = (float) opponentScore / (float) opponent.getRank();
+
+                playerWins.setText(itemView.getContext().getString(R.string.player_points, playerName, playerScore));
+                opponentWins.setText(itemView.getContext().getString(R.string.player_points, opponentName, opponentScore));
+
+                if (Float.compare(playerPct, opponentPct) > 0) {
+                    playerWins.setTypeface(null, Typeface.BOLD);
+                    opponentWins.setTypeface(null, Typeface.NORMAL);
+                } else if (Float.compare(playerPct, opponentPct) < 0) {
+                    playerWins.setTypeface(null, Typeface.NORMAL);
+                    opponentWins.setTypeface(null, Typeface.BOLD);
+                } else {
+                    playerWins.setTypeface(null, Typeface.NORMAL);
+                    opponentWins.setTypeface(null, Typeface.NORMAL);
+                }
+            }
         }
     }
 }

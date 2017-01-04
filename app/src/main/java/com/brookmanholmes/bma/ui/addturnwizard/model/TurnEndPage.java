@@ -86,4 +86,19 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         super.resetData(data);
         updateFragment(getTurnEndOptions());
     }
+
+    public void setTurnEnd(String turnEnd) {
+        boolean notifyTree = !turnEnd.equals(getData().getString(SIMPLE_DATA_KEY));
+
+        data.putString(SIMPLE_DATA_KEY, turnEnd);
+
+        if (notifyTree)
+            modelCallbacks.onPageTreeChanged();
+        notifyDataChanged();
+    }
+
+    @Override
+    public void notifyDataChanged() {
+        modelCallbacks.onPageDataChanged(this);
+    }
 }

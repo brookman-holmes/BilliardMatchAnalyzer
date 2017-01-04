@@ -72,15 +72,49 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <com.github.mikephil.charting.charts.BarChart
+        <lecho.lib.hellocharts.view.ColumnChartView
             android:id="@+id/speedChart"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="200dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp" />
 
-        <com.github.mikephil.charting.charts.BarChart
+        <lecho.lib.hellocharts.view.ColumnChartView
             android:id="@+id/distanceChart"
             android:layout_width="match_parent"
             android:layout_height="200dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/color_indicator_c5"
+                android:gravity="center"
+                android:text="From CB to OB" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Distance"
+                android:textColor="@color/primary_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/color_indicator_c6"
+                android:gravity="center"
+                android:text="From OB to pocket" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

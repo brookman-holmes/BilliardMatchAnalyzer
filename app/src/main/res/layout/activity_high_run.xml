@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="runAttempt"
             type="com.brookmanholmes.bma.ui.matchinfo.HighRunAttemptBinder" />
-
         <import type="android.view.View" />
     </data>
 
@@ -180,7 +177,7 @@
                         android:layout_margin="16dp"
                         android:orientation="vertical">
 
-                        <com.github.mikephil.charting.charts.LineChart
+                        <lecho.lib.hellocharts.view.LineChartView
                             android:id="@+id/chart"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
@@ -196,7 +193,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="4dp"
-                                android:drawableStart="@drawable/blue_circle"
+                                android:drawableStart="@drawable/color_indicator_c2"
                                 android:text="Run length"
                                 android:textSize="12sp" />
 

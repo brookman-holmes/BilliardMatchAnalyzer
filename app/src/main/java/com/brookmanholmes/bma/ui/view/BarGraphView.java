@@ -5,21 +5,17 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.utils.ConversionUtils;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 /**
  * Created by Brookman Holmes on 12/27/2016.
  */
 
-public class BarGraphView extends View {
+public class BarGraphView extends BaseView {
     private final float width;
     private final float smallWidth;
     private final float spacing;
@@ -32,7 +28,6 @@ public class BarGraphView extends View {
     private final Paint textPaint;
     private final int count;
     private int current;
-    private IAxisValueFormatter valueFormatter = new DefaultAxisValueFormatter(0);
 
     public BarGraphView(Context context) {
         this(context, null, 0);
@@ -51,9 +46,9 @@ public class BarGraphView extends View {
         smallWidth = width / 2;
         spacing = a.getDimension(R.styleable.BarGraphView_bgv_spacing, ConversionUtils.convertDpToPx(context, 4));
         current = a.getInt(R.styleable.BarGraphView_bgv_selected, 0);
-        currentPaintColor = a.getColor(R.styleable.BarGraphView_bgv_current_color, ContextCompat.getColor(context, R.color.colorAccent));
-        prevPaintColor = a.getColor(R.styleable.BarGraphView_bgv_prev_color, ContextCompat.getColor(context, R.color.colorAccentLight));
-        nextPaintColor = a.getColor(R.styleable.BarGraphView_bgv_next_color, ContextCompat.getColor(context, R.color.dead_ball));
+        currentPaintColor = a.getColor(R.styleable.BarGraphView_bgv_current_color, getColor(R.color.colorAccent));
+        prevPaintColor = a.getColor(R.styleable.BarGraphView_bgv_prev_color, getColor(R.color.colorAccentLight));
+        nextPaintColor = a.getColor(R.styleable.BarGraphView_bgv_next_color, getColor(R.color.dead_ball));
         count = a.getInt(R.styleable.BarGraphView_bgv_count, 10);
         float textSize = a.getDimension(R.styleable.BarGraphView_bgv_text_size, ConversionUtils.convertSpToPx(context, 12));
         a.recycle();
@@ -65,7 +60,7 @@ public class BarGraphView extends View {
         nextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nextPaint.setColor(nextPaintColor);
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setColor(ContextCompat.getColor(context, R.color.primary_text));
+        textPaint.setColor(getColor(R.color.primary_text));
         textPaint.setTextSize(textSize);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setLinearText(true);
@@ -122,24 +117,18 @@ public class BarGraphView extends View {
             if (current == i) {
                 int xPos = (int) cx;
                 int yPos = (int) (center - (textPaint.descent() + textPaint.ascent()) / 2);
-                canvas.drawText(valueFormatter.getFormattedValue(i + 1, null), xPos, yPos, textPaint);
+                //canvas.drawText(valueFormatter.getFormattedValue(i + 1, null), xPos, yPos, textPaint);
             }
         }
     }
 
     public void setSelection(int selection) {
         current = selection;
-        Log.i("BGV", "setSelection: " + current);
         invalidate();
     }
 
     public void setSelection(float selection) {
         current = Math.round(selection * 2);
-        Log.i("BGV", "setSelection: " + current);
         invalidate();
-    }
-
-    public void setValueFormatter(IAxisValueFormatter valueFormatter) {
-        this.valueFormatter = valueFormatter;
     }
 }

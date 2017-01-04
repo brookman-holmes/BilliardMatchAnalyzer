@@ -10,8 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer> {
     @Override public void setUp() {
         rank = 5;
-        expected = new ApaNineBallPlayer(testName, rank);
-        actual = new ApaNineBallPlayer(testName, rank);
+        expected = new ApaNineBallPlayer(testName, rank, rank);
+        actual = new ApaNineBallPlayer(testName, rank, rank);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
 
     @Test
     public void addPlayerStatsWorksCorrectlyForNineBall() {
-        ApaNineBallPlayer player = new ApaNineBallPlayer(testName, rank);
+        ApaNineBallPlayer player = new ApaNineBallPlayer(testName, rank, rank);
 
         player.addEarlyWin();
         player.addWinOnBreak();
@@ -84,7 +84,7 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
 
     @Test
     public void addDeadBallsEquals3() {
-        ApaNineBallPlayer player = new ApaNineBallPlayer(testName, rank);
+        ApaNineBallPlayer player = new ApaNineBallPlayer(testName, rank, rank);
 
         player.addDeadBalls(3);
 
@@ -108,16 +108,16 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest<ApaNineBallPlayer>
     @Test
     public void getMatchPointsReturns20() {
         actual.addPoints(700);
-        assertThat(actual.getMatchPoints(0, 9), is(20));
+        assertThat(actual.getMatchPoints(0), is(20));
     }
 
     @Test
     public void getMatchPointsReturns0() {
-        assertThat(actual.getMatchPoints(0, 9), is(0));
+        assertThat(actual.getMatchPoints(0), is(0));
     }
 
     @Test
     public void getPointsNeededReturnsRank5Value() {
-        assertThat(actual.getPointsNeeded(0), is(Players.apa9BallRaceTo(rank)));
+        assertThat(actual.getPointsNeeded(), is(Players.apa9BallRaceTo(rank)));
     }
 }

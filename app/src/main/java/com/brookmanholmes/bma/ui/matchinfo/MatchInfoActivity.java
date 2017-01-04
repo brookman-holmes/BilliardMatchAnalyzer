@@ -2,7 +2,7 @@ package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.PorterDuff;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -21,7 +21,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.transition.AutoTransition;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,6 +58,7 @@ import com.google.firebase.storage.UploadTask;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,12 +97,22 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     FloatingActionButton fabAddTurn;
     @Bind(R.id.ballContainer)
     ViewGroup ballContainer;
+    @Bind(R.id.playerWinPct)
+    ViewGroup playerWinPct;
+    @Bind(R.id.playerSpacing)
+    ViewGroup playerSpacing;
+    @Bind(R.id.opponentSpacing)
+    ViewGroup opponentSpacing;
+    @Bind(R.id.opponentWinPct)
+    ViewGroup opponentWinPct;
+    @Bind(R.id.winPctLayout)
+    ViewGroup winPctLayout;
+
 
     private DatabaseAdapter db;
     private Match match;
     private Menu menu;
     private Snackbar matchOverSnackbar, uploadMatchSnackbar;
-    private Drawable activeArrow, inactiveArrow;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,9 +126,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
         setSupportActionBar(toolbar);
 
-        activeArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down);
-        inactiveArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down_inactive);
-
         db = new DatabaseAdapter(this);
         match = db.getMatchWithTurns(getMatchId());
 
@@ -127,8 +137,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         opponentName.setText(match.getOpponent().getName());
 
         // no reason to click on The Ghost
-        if (match.getGameStatus().gameType.isGhostGame())
-            opponentNameLayout.setEnabled(false);
+        opponentNameLayout.setEnabled(!match.getGameStatus().gameType.isGhostGame());
 
         matchOverSnackbar = makeSnackbar(R.string.match_over, Snackbar.LENGTH_INDEFINITE)
                 .setAction(android.R.string.ok, new View.OnClickListener() {
@@ -143,6 +152,14 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         pager.setAdapter(adapter);
 
         setupNfc();
+        setWinPctColors();
+    }
+
+    private void setWinPctColors() { // works around api 21 tinting not working?
+        playerWinPct.getBackground().setColorFilter(getColor2(R.color.colorPrimaryLight), PorterDuff.Mode.SRC_IN);
+        opponentWinPct.getBackground().setColorFilter(getColor2(R.color.colorPrimaryLight), PorterDuff.Mode.SRC_IN);
+        ((LinearLayout) playerWinPct.getParent()).getBackground().setColorFilter(getColor2(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
+        ((LinearLayout) opponentWinPct.getParent()).getBackground().setColorFilter(getColor2(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
     }
 
     private void hideBalls() {
@@ -225,11 +242,6 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         updateViews();
     }
 
-    @OnClick(R.id.buttonAddTurn)
-    public void addInning() {
-        showAddTurnDialog();
-    }
-
     @OnClick({R.id.opponentNameLayout, R.id.playerNameLayout})
     public void showPlayerOptionsMenu(LinearLayout view) {
         String name = ((TextView) view.getChildAt(0)).getText().toString();
@@ -237,6 +249,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         showChoiceDialog(name, turn, view);
     }
 
+    @Override
     public void updatePlayerName(String name, String newName) {
         if (opponentName.getText().toString().equals(name)) {
             opponentName.setText(newName);
@@ -256,25 +269,20 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             updateMenuItems();
 
         if (match.isMatchOver()) {
-            playerName.setTextColor(ContextCompat.getColor(this, R.color.white));
-            opponentName.setTextColor(ContextCompat.getColor(this, R.color.white));
-            playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
-            opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
-        } else if (match.getCurrentPlayersName().equals(playerName.getText().toString())) {
-            playerName.setTextColor(ContextCompat.getColor(this, R.color.white));
-            playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
-            opponentName.setTextColor(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
-            opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, inactiveArrow, null);
+            playerName.setAlpha(1);
+            opponentName.setAlpha(1);
+        } else if (match.getGameStatus().turn == PlayerTurn.PLAYER) {
+            playerName.setAlpha(1);
+            opponentName.setAlpha(.7f);
         } else {
-            playerName.setTextColor(ContextCompat.getColor(this, R.color.non_current_players_turn_text));
-            playerName.setCompoundDrawablesWithIntrinsicBounds(null, null, inactiveArrow, null);
-            opponentName.setTextColor(ContextCompat.getColor(this, R.color.white));
-            opponentName.setCompoundDrawablesWithIntrinsicBounds(null, null, activeArrow, null);
+            playerName.setAlpha(.7f);
+            opponentName.setAlpha(1);
         }
 
         updateFragments();
         hideBalls();
         setBallsOnTable();
+        setWinCompPct();
 
         if (match.isMatchOver()) {
             fabAddTurn.hide();
@@ -283,19 +291,48 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             matchOverSnackbar.dismiss();
             fabAddTurn.show();
         }
+    }
 
-        Log.i(TAG, "updateViews: player allowed to break again? " + match.getGameStatus().playerAllowedToBreakAgain);
+    private void setWinCompPct() {
+        float scaleValue = 10;
+        Transition transition = new AutoTransition();
+        transition.setStartDelay(1000);
+        transition.addTarget(playerWinPct)
+                .addTarget(playerSpacing)
+                .addTarget(opponentWinPct)
+                .addTarget(opponentSpacing);
+
+        TransitionManager.beginDelayedTransition(winPctLayout, transition);
+        float playerPct = round(match.getPlayer().getMatchCompletionPct(), 2) * scaleValue;
+        float opponentPct = round(match.getOpponent().getMatchCompletionPct(), 2) * scaleValue;
+        setWeight(playerWinPct, playerPct);
+        setWeight(playerSpacing, scaleValue - playerPct);
+        setWeight(opponentWinPct, opponentPct);
+        setWeight(opponentSpacing, scaleValue - opponentPct);
+    }
+
+    private void setWeight(View view, float weight) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
+        params.weight = weight;
+        params.gravity = Gravity.CENTER;
+        view.setLayoutParams(params);
+    }
+
+    private float round(float d, int places) {
+        BigDecimal bd = new BigDecimal(d);
+        bd = bd.setScale(places, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     private Snackbar makeSnackbar(@StringRes int resId, int duration) {
-        return Snackbar.make(layout, resId, duration).setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+        return Snackbar.make(layout, resId, duration).setActionTextColor(getColor2(R.color.colorAccent));
     }
 
     private void updateMenuItems() {
-        menu.findItem(R.id.action_undo).setEnabled(match.isUndoTurn());
-        menu.findItem(R.id.action_redo).setEnabled(match.isRedoTurn());
-        menu.findItem(R.id.action_undo).getIcon().setAlpha(this.menu.findItem(R.id.action_undo).isEnabled() ? 255 : 97);
-        menu.findItem(R.id.action_redo).getIcon().setAlpha(this.menu.findItem(R.id.action_redo).isEnabled() ? 255 : 97);
+        menu.findItem(R.id.action_undo).setEnabled(match.isUndoTurn())
+                .getIcon().setAlpha(match.isUndoTurn() ? 255 : 97);
+        menu.findItem(R.id.action_redo).setEnabled(match.isRedoTurn())
+                .getIcon().setAlpha(match.isRedoTurn() ? 255 : 97);
     }
 
     @Override
@@ -352,7 +389,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
         if (preferences.getBoolean("first_run_tutorial_info", true)) {
             Overlay overlay = new Overlay()
                     .setStyle(Overlay.Style.Circle)
-                    .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryTransparent))
+                    .setBackgroundColor(getColor2(R.color.colorPrimaryTransparent))
                     .disableClick(true)
                     .disableClickThroughHole(true);
 
@@ -361,8 +398,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             if (match.isMatchOver()) {
                 t1 = ChainTourGuide.init(this)
                         .setToolTip(new ToolTip()
-                                .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
-                                .setTextColor(ContextCompat.getColor(this, R.color.white))
+                                .setBackgroundColor(getColor2(R.color.colorAccent))
+                                .setTextColor(getColor2(R.color.white))
                                 .setDescription("When you finish a match this snackbar will alert you that it is over")
                                 .setGravity(Gravity.TOP | Gravity.LEFT))
                         .setOverlay(overlay)
@@ -370,8 +407,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
             } else {
                 t1 = ChainTourGuide.init(this)
                         .setToolTip(new ToolTip()
-                                .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
-                                .setTextColor(ContextCompat.getColor(this, R.color.white))
+                                .setBackgroundColor(getColor2(R.color.colorAccent))
+                                .setTextColor(getColor2(R.color.white))
                                 .setDescription("You can add a turn to the match by clicking here")
                                 .setGravity(Gravity.TOP | Gravity.LEFT))
                         .setOverlay(overlay)
@@ -380,8 +417,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
 
             ChainTourGuide t2 = ChainTourGuide.init(this)
                     .setToolTip(new ToolTip()
-                            .setTextColor(ContextCompat.getColor(this, R.color.white))
-                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+                            .setTextColor(getColor2(R.color.white))
+                            .setBackgroundColor(getColor2(R.color.colorAccent))
                             .setDescription("Clicking on items in the toolbar and menu will allow you to do things like " +
                                     "undo turns, change the way the match is viewed, " +
                                     "view the status of the current game and more")
@@ -389,14 +426,14 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                             .setShadow(true))
                     .setOverlay(new Overlay()
                             .setStyle(Overlay.Style.Rectangle)
-                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryTransparent))
+                            .setBackgroundColor(getColor2(R.color.colorPrimaryTransparent))
                             .disableClick(true)
                             .disableClickThroughHole(true))
                     .playLater(toolbar);
             ChainTourGuide t5 = ChainTourGuide.init(this)
                     .setToolTip(new ToolTip()
-                            .setTextColor(ContextCompat.getColor(this, R.color.white))
-                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+                            .setTextColor(getColor2(R.color.white))
+                            .setBackgroundColor(getColor2(R.color.colorAccent))
                             .setDescription("Clicking on a player's name will give you some options\n" +
                                     "to choose from, like view their advanced stats for this match\n" +
                                     "or going directly to their profile")
@@ -553,7 +590,8 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
                 .show();
     }
 
-    private void showAddTurnDialog() {
+    @OnClick(R.id.buttonAddTurn)
+    void showAddTurnDialog() {
         if (getSupportFragmentManager().findFragmentByTag("AddTurnDialog") == null) {
             AddTurnDialog addTurnDialog = AddTurnDialog.create(match);
             addTurnDialog.show(getSupportFragmentManager(), "AddTurnDialog");
@@ -632,7 +670,7 @@ public class MatchInfoActivity extends BaseActivity implements AddTurnDialog.Add
     private static class PagerAdapter extends FragmentPagerAdapter {
         private final long matchId;
 
-        public PagerAdapter(FragmentManager fm, long matchId) {
+        PagerAdapter(FragmentManager fm, long matchId) {
             super(fm);
             this.matchId = matchId;
         }

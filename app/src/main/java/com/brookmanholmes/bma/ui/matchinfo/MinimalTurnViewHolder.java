@@ -1,9 +1,8 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.graphics.Point;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
@@ -11,48 +10,52 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITurn;
+import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.ui.view.BaseViewHolder;
 import com.brookmanholmes.bma.ui.view.HeatGraph;
-import com.brookmanholmes.bma.ui.view.HowMissLayout;
-import com.brookmanholmes.bma.ui.view.MiniBarGraphLayout;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.brookmanholmes.bma.ui.view.HorizontalBarView;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
+import static com.brookmanholmes.billiards.turn.TurnEnd.MISS;
+import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY_ERROR;
 
 /**
  * Created by Brookman Holmes on 12/20/2016.
  */
 
-class MinimalTurnViewHolder extends RecyclerView.ViewHolder {
+class MinimalTurnViewHolder extends BaseViewHolder {
     private static final String TAG = "MinTurnVH";
     @Bind(R.id.turn)
     TextView turnString;
     @Bind(R.id.heatGraph)
     HeatGraph heatGraph;
-    @Bind(R.id.aim)
-    HowMissLayout aim;
-    @Bind(R.id.speed)
-    HowMissLayout speed;
-    @Bind(R.id.cut)
-    HowMissLayout cut;
-    @Bind(R.id.bank)
-    HowMissLayout bank;
-    @Bind(R.id.kick)
-    HowMissLayout kick;
-    @Bind(R.id.masse)
-    HowMissLayout masse;
     @Bind(R.id.speedGraph)
-    MiniBarGraphLayout shotSpeed;
+    HorizontalBarView shotSpeed;
     @Bind(R.id.cbGraph)
-    MiniBarGraphLayout cbDistance;
+    HorizontalBarView cbDistance;
     @Bind(R.id.obGraph)
-    MiniBarGraphLayout obDistance;
+    HorizontalBarView obDistance;
+    @Bind(R.id.shotType)
+    TextView shotType;
+    @Bind(R.id.angle)
+    TextView angle;
+    @Bind(R.id.divider)
+    ViewGroup divider;
+    @Bind(R.id.howMissDescription)
+    TextView howMissDescription;
 
     private EnumSet<Match.StatsDetail> dataCollection;
 
@@ -60,18 +63,6 @@ class MinimalTurnViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         ButterKnife.bind(this, itemView);
         dataCollection = EnumSet.copyOf(match.getDetails());
-
-        final IAxisValueFormatter valueFormatter = new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                if (Float.compare(value, 0) == 0)
-                    return "less than .5'";
-                else
-                    return new DecimalFormat("#.#").format(value) + "'";
-            }
-        };
-        obDistance.setValueFormatter(valueFormatter);
-        cbDistance.setValueFormatter(valueFormatter);
     }
 
     void bind(ITurn turn, PlayerTurn playerTurn, AbstractPlayer player) {
@@ -80,78 +71,92 @@ class MinimalTurnViewHolder extends RecyclerView.ViewHolder {
 
         turnString.setText(turnStringAdapter.getTurnString());
 
-        setAdvData(turn, playerTurn);
+        if (turn.getAdvStats() != null) {
+            setAdvData(turn, playerTurn);
+            if (turn.getTurnEnd() != GAME_WON)
+                divider.setVisibility(View.VISIBLE);
+            else divider.setVisibility(View.GONE);
+        } else {
+            heatGraph.setVisibility(View.GONE);
+            shotSpeed.setVisibility(View.GONE);
+            angle.setVisibility(View.GONE);
+            obDistance.setVisibility(View.GONE);
+            cbDistance.setVisibility(View.GONE);
+            shotType.setVisibility(View.GONE);
+            divider.setVisibility(View.GONE);
+            howMissDescription.setVisibility(View.GONE);
+        }
+    }
+
+    private String formatDistance(float distance) {
+        if (Float.compare(distance, 0) == 0)
+            return "less than .5'";
+        else return new DecimalFormat("#.#''").format(distance);
     }
 
     private void setAdvData(ITurn turn, PlayerTurn playerTurn) {
-        if (isCueing(playerTurn) && turn.getAdvStats().isCueingValid()) {
+        if (isCueing(playerTurn) && turn.getAdvStats().isCueingValid() && turn.getTurnEnd() == MISS) {
             heatGraph.setVisibility(View.VISIBLE);
             heatGraph.setData(new Point(turn.getAdvStats().getCueX(), turn.getAdvStats().getCueY()));
         } else {
             heatGraph.setVisibility(View.GONE);
         }
 
-        if (isSpeed(playerTurn) && turn.getAdvStats().getSpeed() > 0) {
-            shotSpeed.setBarWeight(turn.getAdvStats().getSpeed());
-            Log.i(TAG, "SPEED: " + turn.getAdvStats().getSpeed());
+        if (isSpeed(playerTurn) && turn.getAdvStats().getSpeed() > 0 && turn.getTurnEnd() == MISS) {
+            shotSpeed.setText(String.format(Locale.getDefault(), "Speed: %1$d/10", turn.getAdvStats().getSpeed()));
+            shotSpeed.setPercentage(turn.getAdvStats().getSpeed() * 10);
         } else {
             shotSpeed.setVisibility(View.GONE);
         }
 
-        if (isAngle(playerTurn) || isSimpleAngle(playerTurn)) {
-
+        if (turn.getAdvStats() != null && turn.getAdvStats().getAngles().size() > 0) {
+            angle.setVisibility(View.VISIBLE);
+            String title = turn.getAdvStats().getAngles().size() == 1 ? "Angle: %1$s" : "Angles: %1$s";
+            angle.setText(String.format(title,
+                    StringUtils.join(getAngleStringList(turn.getAdvStats().getAngles()), ", ").toLowerCase()));
         } else {
-
+            angle.setVisibility(View.GONE);
         }
 
-        if (isDistances(playerTurn) && turn.getAdvStats().getCbToOb() + turn.getAdvStats().getObToPocket() >= 0) {
+        if (isHowMiss(playerTurn) && (turn.getTurnEnd() == MISS || turn.getTurnEnd() == SAFETY_ERROR)) {
+            String title = "How the shot was missed: %1$s";
+            howMissDescription.setText(String.format(Locale.getDefault(), title,
+                    StringUtils.join(getHowTypeStringList(turn.getAdvStats().getHowTypes()), ", ")));
+            howMissDescription.setVisibility(View.VISIBLE);
+        } else {
+            howMissDescription.setVisibility(View.GONE);
+        }
+
+        if (isDistances(playerTurn) && turn.getAdvStats().getCbToOb() + turn.getAdvStats().getObToPocket() >= 0 && turn.getTurnEnd() == MISS) {
             obDistance.setVisibility(View.VISIBLE);
             cbDistance.setVisibility(View.VISIBLE);
 
-            obDistance.setBarWeight(turn.getAdvStats().getObToPocket());
-            cbDistance.setBarWeight(turn.getAdvStats().getCbToOb());
-            Log.i(TAG, "CB DISTANCE: " + turn.getAdvStats().getCbToOb());
-            Log.i(TAG, "OB DISTANCE: " + turn.getAdvStats().getObToPocket());
+            obDistance.setText(String.format(Locale.getDefault(), "OB->Pocket %1$s", formatDistance(turn.getAdvStats().getObToPocket())));
+            cbDistance.setText(String.format(Locale.getDefault(), "OB->CB %1$s", formatDistance(turn.getAdvStats().getCbToOb())));
+            obDistance.setPercentage(turn.getAdvStats().getObToPocket() / 9.5f * 100);
+            cbDistance.setPercentage(turn.getAdvStats().getCbToOb() / 9.5f * 100);
         } else {
             obDistance.setVisibility(View.GONE);
             cbDistance.setVisibility(View.GONE);
         }
 
-        if (isHowMiss(playerTurn)) {
-            aim.setVisibility(View.VISIBLE);
-            speed.setVisibility(View.VISIBLE);
-            cut.setVisibility(View.VISIBLE);
-            kick.setVisibility(View.VISIBLE);
-            bank.setVisibility(View.VISIBLE);
-            masse.setVisibility(View.VISIBLE);
-
-            List<AdvStats.HowType> how = turn.getAdvStats().getHowTypes();
-
-            aim.setHowMiss(how.contains(AdvStats.HowType.AIM_LEFT), how.contains(AdvStats.HowType.AIM_RIGHT));
-            speed.setHowMiss(how.contains(AdvStats.HowType.TOO_SOFT), how.contains(AdvStats.HowType.TOO_HARD));
-            cut.setHowMiss(how.contains(AdvStats.HowType.THIN), how.contains(AdvStats.HowType.THICK));
-            kick.setHowMiss(how.contains(AdvStats.HowType.KICK_SHORT), how.contains(AdvStats.HowType.KICK_LONG));
-            bank.setHowMiss(how.contains(AdvStats.HowType.BANK_SHORT), how.contains(AdvStats.HowType.BANK_LONG));
-            masse.setHowMiss(how.contains(AdvStats.HowType.CURVE_EARLY), how.contains(AdvStats.HowType.CURVE_LATE));
+        if (isShotType(playerTurn) && turn.getTurnEnd() == MISS) {
+            shotType.setVisibility(View.VISIBLE);
+            String type;
+            if (turn.getAdvStats().getShotType() == AdvStats.ShotType.CUT)
+                type = itemView.getContext().getString(MatchDialogHelperUtils.convertSubTypeToStringRes(turn.getAdvStats().getShotSubtype()));
+            else
+                type = itemView.getContext().getString(MatchDialogHelperUtils.convertShotTypeToStringRes(turn.getAdvStats().getShotType()));
+            shotType.setText(String.format("Shot type: %1$s", type));
         } else {
-            aim.setVisibility(View.GONE);
-            speed.setVisibility(View.GONE);
-            cut.setVisibility(View.GONE);
-            kick.setVisibility(View.GONE);
-            bank.setVisibility(View.GONE);
-            masse.setVisibility(View.GONE);
+            shotType.setVisibility(View.GONE);
         }
 
-        if (isSafeties(playerTurn)) {
-            // TODO: 12/14/2016 probably have to do something special here
-        } else {
-
-        }
-
-        if (isShotType(playerTurn)) {
-
-        } else {
-
+        if (isSafeties(playerTurn) && turn.getTurnEnd() == TurnEnd.SAFETY) {
+            shotType.setVisibility(View.VISIBLE);
+            shotType.setText(MatchDialogHelperUtils.convertSubTypeToStringRes(turn.getAdvStats().getShotSubtype()));
+        } else if (!(isShotType(playerTurn) && turn.getTurnEnd() == MISS)) {
+            shotType.setVisibility(View.GONE);
         }
     }
 
@@ -219,9 +224,21 @@ class MinimalTurnViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    private String formatDistance(float dist) {
-        if (Float.compare(dist, 0) == 0)
-            return "less than .5'";
-        else return dist + "'";
+    private List<String> getAngleStringList(List<AdvStats.Angle> angles) {
+        List<String> strings = new ArrayList<>();
+        for (AdvStats.Angle angle : angles) {
+            strings.add(itemView.getContext().getString(MatchDialogHelperUtils.convertAngleToStringRes(angle)));
+        }
+
+        return strings;
+    }
+
+    private List<String> getHowTypeStringList(List<AdvStats.HowType> howTypes) {
+        List<String> strings = new ArrayList<>();
+        for (AdvStats.HowType howType : howTypes) {
+            strings.add(itemView.getContext().getString(MatchDialogHelperUtils.convertHowToStringRes(howType)));
+        }
+
+        return strings;
     }
 }

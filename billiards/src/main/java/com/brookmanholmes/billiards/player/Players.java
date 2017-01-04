@@ -65,8 +65,8 @@ public class Players {
      * @return True if the match is finished, false otherwise
      */
     private static boolean isMatchOverApa9(ApaNineBallPlayer player, ApaNineBallPlayer opponent) {
-        return player.getPointsNeeded(0) <= player.getPoints() ||
-                opponent.getPointsNeeded(0) <= opponent.getPoints();
+        return player.getPointsNeeded() <= player.getPoints() ||
+                opponent.getPointsNeeded() <= opponent.getPoints();
     }
 
     // TODO: 8/26/2016 test this method

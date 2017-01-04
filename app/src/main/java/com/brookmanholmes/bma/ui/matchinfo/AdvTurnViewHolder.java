@@ -1,8 +1,7 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorRes;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.ColorInt;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.StraightPoolPlayer;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.bma.R;
@@ -53,6 +53,9 @@ class AdvTurnViewHolder extends MinimalTurnViewHolder {
         shootingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
         safetyLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
         breakingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
+
+        if (!(player instanceof StraightPoolPlayer)) // set balls for non-straight-pool games
+            setBalls(turn);
     }
 
     void setBalls(ITableStatus tableStatus) {
@@ -63,49 +66,49 @@ class AdvTurnViewHolder extends MinimalTurnViewHolder {
 
             if (ballIsMade(tableStatus.getBallStatus(ball))) {
                 childAt.setVisibility(View.VISIBLE);
-                background.setTint(ContextCompat.getColor(itemView.getContext(), getBallColorTint(ball)));
+                background.setTint(getBallColorTint(ball));
             } else if (ballIsDead(tableStatus.getBallStatus(ball))) {
                 childAt.setVisibility(View.VISIBLE);
-                background.setTint(ContextCompat.getColor(itemView.getContext(), R.color.dead_ball));
+                background.setTint(getColor(R.color.dead_ball));
             } else {
                 ballContainer.getChildAt(ball - 1).setVisibility(View.GONE);
             }
         }
     }
 
-    @ColorRes
+    @ColorInt
     private int getBallColorTint(int ball) {
         switch (ball) {
             case 1:
-                return R.color.one_ball;
+                return getColor(R.color.one_ball);
             case 2:
-                return R.color.two_ball;
+                return getColor(R.color.two_ball);
             case 3:
-                return R.color.three_ball;
+                return getColor(R.color.three_ball);
             case 4:
-                return R.color.four_ball;
+                return getColor(R.color.four_ball);
             case 5:
-                return R.color.five_ball;
+                return getColor(R.color.five_ball);
             case 6:
-                return R.color.six_ball;
+                return getColor(R.color.six_ball);
             case 7:
-                return R.color.seven_ball;
+                return getColor(R.color.seven_ball);
             case 8:
-                return R.color.eight_ball;
+                return getColor(R.color.eight_ball);
             case 9:
-                return R.color.one_ball;
+                return getColor(R.color.one_ball);
             case 10:
-                return R.color.two_ball;
+                return getColor(R.color.two_ball);
             case 11:
-                return R.color.three_ball;
+                return getColor(R.color.three_ball);
             case 12:
-                return R.color.four_ball;
+                return getColor(R.color.four_ball);
             case 13:
-                return R.color.five_ball;
+                return getColor(R.color.five_ball);
             case 14:
-                return R.color.six_ball;
+                return getColor(R.color.six_ball);
             case 15:
-                return R.color.seven_ball;
+                return getColor(R.color.seven_ball);
             default:
                 throw new IllegalArgumentException("Ball cannot be outside of 1-15, was: " + ball);
         }

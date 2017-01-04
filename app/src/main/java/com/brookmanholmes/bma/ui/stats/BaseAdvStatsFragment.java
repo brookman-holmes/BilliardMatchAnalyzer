@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.ui.BaseDialogFragment;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 6/3/2016.
  */
-public abstract class BaseAdvStatsFragment extends DialogFragment implements Filterable {
+public abstract class BaseAdvStatsFragment extends BaseDialogFragment implements Filterable {
     private static final String TAG = "BaseAdvStatsFrag";
     protected FilterStats task;
     List<AdvStats> stats = new ArrayList<>();

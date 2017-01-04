@@ -1,6 +1,9 @@
 package com.brookmanholmes.bma.ui;
 
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 
 import com.brookmanholmes.bma.MyApplication;
 import com.squareup.leakcanary.RefWatcher;
@@ -23,5 +26,10 @@ public abstract class BaseFragment extends Fragment {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
         super.onDestroy();
+    }
+
+    @ColorInt
+    protected int getColor(@ColorRes int color) {
+        return ContextCompat.getColor(getContext(), color);
     }
 }

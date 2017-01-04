@@ -15,7 +15,6 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,12 +43,6 @@ import com.brookmanholmes.bma.ui.dialog.AbstractMatchEditTextDialog;
 import com.brookmanholmes.bma.ui.dialog.GameStatusViewBuilder;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.ui.stats.AdvStatsDialog;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -58,12 +51,20 @@ import com.google.firebase.storage.UploadTask;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter;
+import lecho.lib.hellocharts.formatter.SimpleLineChartValueFormatter;
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.view.LineChartView;
 
 /**
  * Created by Brookman Holmes on 12/20/2016.
@@ -85,7 +86,7 @@ public class HighRunAttemptActivity extends BaseActivity implements AddTurnDialo
     @Bind(R.id.scrollView)
     RecyclerView recyclerView;
     @Bind(R.id.chart)
-    LineChart chart;
+    LineChartView chart;
     @Bind(R.id.button)
     Button buttonShowAdvShot;
 
@@ -127,34 +128,7 @@ public class HighRunAttemptActivity extends BaseActivity implements AddTurnDialo
         buttonShowAdvShot.setVisibility(details.size() > 0 ? View.VISIBLE : View.GONE);
 
         setupNfc();
-        setupChart();
-    }
-
-    private void setupChart() {
-        chart.setTouchEnabled(false);
-        chart.getDescription().setEnabled(false);
-        chart.getLegend().setEnabled(false);
-        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        chart.getXAxis().setDrawLabels(false);
-        chart.getXAxis().setDrawGridLines(false);
-        chart.getAxisRight().setDrawLabels(false);
-        chart.getAxisRight().setDrawAxisLine(false);
-        chart.getAxisRight().setDrawGridLines(false);
-        chart.getAxisLeft().setDrawGridLines(false);
-        chart.getAxisLeft().setAxisMinimum(0f);
-        chart.getAxisLeft().calculate(0f, getMaxValue());
-        chart.getAxisLeft().addLimitLine(getLimitLine());
-        chart.getAxisLeft().setDrawLimitLinesBehindData(true);
-        chart.setData(setupChartData());
-    }
-
-    private LimitLine getLimitLine() {
-        LimitLine result = new LimitLine(runBinder.getLifetimeAverage());
-        result.setLineColor(ContextCompat.getColor(this, R.color.chart1));
-        result.setLineWidth(.75f);
-        result.setTextColor(ContextCompat.getColor(this, R.color.primary_text));
-        result.setTextSize(10f);
-        return result;
+        chart.setLineChartData(getData());
     }
 
     @OnClick(R.id.button)
@@ -162,44 +136,52 @@ public class HighRunAttemptActivity extends BaseActivity implements AddTurnDialo
         showAdvancedStatsDialog(match.getPlayer().getName(), PlayerTurn.PLAYER);
     }
 
-    private LineData setupChartData() {
-        LineData result = new LineData();
-        LineDataSet data = getDataSet(
-                getEntries(match.getPlayer()),
-                "Avg run length",
-                ContextCompat.getColor(this, R.color.chart2)
-        );
-
-        result.addDataSet(data);
-        return result;
-    }
-
-    private LineDataSet getDataSet(List<Entry> entries, String label, int color) {
-        LineDataSet dataSet = new LineDataSet(entries, label);
-        dataSet.setLineWidth(1.75f);
-        dataSet.setCircleRadius(4f);
-        dataSet.setCircleHoleRadius(2f);
-        dataSet.setDrawFilled(true);
-        dataSet.setFillColor(color);
-        dataSet.setFillAlpha(96);
-        dataSet.setDrawValues(false);
-        dataSet.setDrawCircles(true);
-        dataSet.setDrawCircleHole(true);
-        dataSet.setCircleColor(color);
-        dataSet.setColor(color);
-        return dataSet;
-    }
-
-    private List<Entry> getEntries(AbstractPlayer player) {
-        List<Entry> result = new ArrayList<>();
-        if (player instanceof IStraightPool) {
-            for (int i = 0; i < ((IStraightPool) player).getRunLengths().size(); i++) {
-                result.add(new Entry(i, ((IStraightPool) player).getRunLengths().get(i)));
-            }
+    private LineChartData getData() {
+        List<PointValue> values = new ArrayList<>();
+        List<Integer> runLengths = ((IStraightPool) match.getPlayer()).getRunLengths();
+        int count = 0;
+        for (Integer integer : runLengths) {
+            values.add(new PointValue(count++, integer));
         }
 
-        return result;
+        Line line = new Line(values)
+                .setPointRadius(4)
+                .setColor(getColor2(R.color.chart2))
+                .setHasLabels(true)
+                .setFormatter(new SimpleLineChartValueFormatter(0))
+                .setStrokeWidth(2)
+                .setCubic(true)
+                .setHasLabelsOnlyForSelected(true)
+                .setFilled(true)
+                .setAreaTransparency(96);
+        float upperLimit = 15.05f;
+        int maxRun = Integer.parseInt(runBinder.lifetimeMax);
+        if (maxRun > upperLimit)
+            upperLimit = (float) maxRun + 1.05f;
+
+        Line dummyLine = new Line(Arrays.asList(new PointValue(0, 0), new PointValue(0, upperLimit)))
+                .setColor(getColor2(android.R.color.transparent))
+                .setHasPoints(false);
+        Line averageLine = new Line(Arrays.asList(new PointValue(0, runBinder.getLifetimeAverage()),
+                new PointValue(runLengths.size(), runBinder.getLifetimeAverage())))
+                .setColor(getColor2(R.color.chart1))
+                .setHasPoints(false)
+                .setHasLabels(false)
+                .setStrokeWidth(1);
+
+        LineChartData data = new LineChartData(Arrays.asList(averageLine, line, dummyLine));
+        Axis axis = new Axis();
+        axis.setHasSeparationLine(true)
+                .setFormatter(new SimpleAxisValueFormatter())
+                .setTextColor(getColor2(R.color.secondary_text))
+                .setHasLines(true);
+        data.setAxisYLeft(axis);
+        data.setValueLabelBackgroundColor(getColor2(R.color.chart2));
+        data.setValueLabelsTextColor(getColor2(R.color.white));
+        data.setValueLabelTextSize(16);
+        return data;
     }
+
 
     private List<Integer> getRunLengths(List<AbstractPlayer> players) {
         List<Integer> result = new ArrayList<>();
@@ -466,19 +448,13 @@ public class HighRunAttemptActivity extends BaseActivity implements AddTurnDialo
     }
 
     Snackbar makeSnackbar(@StringRes int resId, int duration) {
-        return Snackbar.make(layout, resId, duration).setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+        return Snackbar.make(layout, resId, duration).setActionTextColor(getColor2(R.color.colorAccent));
     }
 
     void updateViews() {
         adapter.update(match);
         runBinder.update((StraightPoolPlayer) match.getPlayer());
-        chart.setData(setupChartData());
-        chart.getAxisLeft().removeAllLimitLines();
-        chart.getAxisLeft().addLimitLine(getLimitLine());
-        chart.getAxisLeft().setAxisMaximum(getMaxValue());
-        chart.getAxisLeft().calculate(0f, 0f);
-        chart.invalidate();
-
+        chart.setLineChartData(getData());
         updateMenuItems();
     }
 

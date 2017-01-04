@@ -47,10 +47,10 @@ class ApaNineBallController extends PlayerController<ApaNineBallPlayer> {
     }
 
     @Override public ApaNineBallPlayer newPlayer() {
-        return new ApaNineBallPlayer(playerName, playerRank);
+        return new ApaNineBallPlayer(playerName, playerRank, opponentRank);
     }
 
     @Override public ApaNineBallPlayer newOpponent() {
-        return new ApaNineBallPlayer(opponentName, opponentRank);
+        return new ApaNineBallPlayer(opponentName, opponentRank, playerRank);
     }
 }

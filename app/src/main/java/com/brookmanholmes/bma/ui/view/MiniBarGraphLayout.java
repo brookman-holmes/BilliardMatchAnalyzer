@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.brookmanholmes.bma.R;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+
+import java.text.DecimalFormat;
 
 /**
  * Created by Brookman Holmes on 12/22/2016.
@@ -23,7 +23,7 @@ public class MiniBarGraphLayout extends LinearLayout {
     TextView title, text;
     ImageView bar;
     float totalWeight;
-    private IAxisValueFormatter valueFormatter = new DefaultAxisValueFormatter(0);
+    boolean useDistanceFormatter = false;
 
     public MiniBarGraphLayout(Context context) {
         super(context);
@@ -62,30 +62,37 @@ public class MiniBarGraphLayout extends LinearLayout {
         text.setText(a.getText(R.styleable.MiniBarGraphLayout_mbg_text));
         bar.setColorFilter(a.getColor(R.styleable.MiniBarGraphLayout_mbg_bar_color, ContextCompat.getColor(getContext(), R.color.colorAccent)));
         totalWeight = a.getFloat(R.styleable.MiniBarGraphLayout_mbg_weight, 10f);
-
+        useDistanceFormatter = a.getBoolean(R.styleable.MiniBarGraphLayout_mbg_formatter_feet, false);
         a.recycle();
     }
 
     public void setBarWeight(float weight) {
         if (weight >= 0) {
+            if (Float.compare(weight, 0f) == 0)
+                weight = .25f; // bump up the weight for 0 weighted ones so that you get a little graph
             setVisibility(View.VISIBLE);
-            LinearLayout.LayoutParams barLayoutParams =
-                    new LinearLayout.LayoutParams(bar.getLayoutParams());
-            barLayoutParams.weight = weight;
-            barLayoutParams.gravity = Gravity.CENTER;
-            LinearLayout.LayoutParams textLayoutParams =
-                    new LinearLayout.LayoutParams(text.getLayoutParams());
-            textLayoutParams.weight = totalWeight - weight;
-            textLayoutParams.gravity = Gravity.CENTER;
-            bar.setLayoutParams(barLayoutParams);
-            text.setLayoutParams(textLayoutParams);
-            text.setText(valueFormatter.getFormattedValue(weight, null));
-        } else {
-            setVisibility(View.GONE);
+
+            setWeight(bar, weight);
+            setWeight(text, totalWeight - weight);
+
+            if (useDistanceFormatter) {
+                String string;
+                if (Float.compare(weight, .25f) == 0)
+                    string = "less than .5'";
+                else
+                    string = new DecimalFormat("#.#''").format(weight);
+                text.setText(string);
+            } else {
+                String string = (int) weight + "/10";
+                text.setText(string);
+            }
         }
     }
 
-    public void setValueFormatter(IAxisValueFormatter valueFormatter) {
-        this.valueFormatter = valueFormatter;
+    private void setWeight(View view, float weight) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
+        params.weight = weight;
+        params.gravity = Gravity.CENTER;
+        view.setLayoutParams(params);
     }
 }

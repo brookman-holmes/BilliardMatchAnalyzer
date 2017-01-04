@@ -35,11 +35,11 @@ public class ApaBinder extends BindingAdapter {
 
             playerPoints = ((IApa) player).getPoints();
             opponentPoints = ((IApa) opponent).getPoints();
-            playerPointsNeeded = ((IApa) player).getPointsNeeded(opponent.getRank());
-            opponentPointsNeeded = ((IApa) opponent).getPointsNeeded(player.getRank());
+            playerPointsNeeded = ((IApa) player).getPointsNeeded();
+            opponentPointsNeeded = ((IApa) opponent).getPointsNeeded();
 
-            playerMatchPoints = ((IApa) player).getMatchPoints(((IApa) opponent).getPoints(), opponent.getRank()) + "";
-            opponentMatchPoints = ((IApa) opponent).getMatchPoints(((IApa) player).getPoints(), player.getRank()) + "";
+            playerMatchPoints = ((IApa) player).getMatchPoints(((IApa) opponent).getPoints()) + "";
+            opponentMatchPoints = ((IApa) opponent).getMatchPoints(((IApa) player).getPoints()) + "";
 
             playerDefenses = player.getSafetyAttempts() + "";
             opponentDefenses = opponent.getSafetyAttempts() + "";
@@ -61,11 +61,11 @@ public class ApaBinder extends BindingAdapter {
 
             playerPoints = ((IApa) player).getPoints();
             opponentPoints = ((IApa) opponent).getPoints();
-            playerPointsNeeded = ((IApa) player).getPointsNeeded(opponent.getRank());
-            opponentPointsNeeded = ((IApa) opponent).getPointsNeeded(player.getRank());
+            playerPointsNeeded = ((IApa) player).getPointsNeeded();
+            opponentPointsNeeded = ((IApa) opponent).getPointsNeeded();
 
-            playerMatchPoints = ((IApa) player).getMatchPoints(((IApa) opponent).getPoints(), opponent.getRank()) + "";
-            opponentMatchPoints = ((IApa) opponent).getMatchPoints(((IApa) player).getPoints(), player.getRank()) + "";
+            playerMatchPoints = ((IApa) player).getMatchPoints(((IApa) opponent).getPoints()) + "";
+            opponentMatchPoints = ((IApa) opponent).getMatchPoints(((IApa) player).getPoints()) + "";
 
             playerDefenses = player.getSafetyAttempts() + "";
             opponentDefenses = opponent.getSafetyAttempts() + "";

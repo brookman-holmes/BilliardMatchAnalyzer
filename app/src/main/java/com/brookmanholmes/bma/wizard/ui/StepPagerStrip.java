@@ -21,15 +21,15 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.ui.view.BaseView;
 
-public class StepPagerStrip extends View {
+public class StepPagerStrip extends BaseView {
     private static final int[] ATTRS = new int[]{
             android.R.attr.gravity
     };
@@ -71,13 +71,13 @@ public class StepPagerStrip extends View {
         nonCurrentRadius = res.getDimension(R.dimen.step_pager_tab_width_non_current);
 
         nextTabPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        nextTabPaint.setColor(ContextCompat.getColor(getContext(), R.color.step_pager_next_tab_color));
+        nextTabPaint.setColor(getColor(R.color.step_pager_next_tab_color));
 
         selectedTabPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        selectedTabPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        selectedTabPaint.setColor(getColor(R.color.colorAccent));
 
         prevTabPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        prevTabPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryLight));
+        prevTabPaint.setColor(getColor(R.color.colorPrimaryLight));
     }
 
     public void setOnPageSelectedListener(OnPageSelectedListener onPageSelectedListener) {

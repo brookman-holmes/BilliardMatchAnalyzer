@@ -191,4 +191,11 @@
         <item name="android:layout_height">40dp</item>
         <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
     </style>
+
+    <style name="win_indicator">
+        <item name="android:tint">@color/colorPrimaryLight</item>
+        <item name="android:src">@drawable/circle</item>
+        <item name="android:layout_width">4dp</item>
+        <item name="android:layout_height">4dp</item>
+    </style>
 </resources>

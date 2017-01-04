@@ -1,15 +1,10 @@
 package com.brookmanholmes.bma.ui.stats;
 
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,27 +17,20 @@ import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.view.HeatGraph;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.utils.EntryXComparator;
-import com.github.mikephil.charting.utils.Utils;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import butterknife.Bind;
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.Column;
+import lecho.lib.hellocharts.model.ColumnChartData;
+import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.view.ColumnChartView;
 
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_LEFT;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_RIGHT;
@@ -61,24 +49,7 @@ import static com.brookmanholmes.bma.ui.stats.AdvStatsDialog.ARG_PLAYER_NAME;
 @SuppressWarnings("WeakerAccess")
 public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     private static final String TAG = "AdvShootingStatsFrag";
-    private final StatGetter speedGetter = new StatGetter() {
-        @Override
-        public float getStat(AdvStats stat) {
-            return stat.getSpeed();
-        }
-    };
-    private final StatGetter cbGetter = new StatGetter() {
-        @Override
-        public float getStat(AdvStats stat) {
-            return stat.getCbToOb();
-        }
-    };
-    private final StatGetter obGetter = new StatGetter() {
-        @Override
-        public float getStat(AdvStats stat) {
-            return stat.getObToPocket();
-        }
-    };
+
     @Bind(R.id.over)
     TextView overCut;
     @Bind(R.id.under)
@@ -96,9 +67,9 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.kickShort)
     TextView kickShort;
     @Bind(R.id.speedChart)
-    BarChart speedChart;
+    ColumnChartView speedChart;
     @Bind(R.id.distanceChart)
-    BarChart distanceChart;
+    ColumnChartView distanceChart;
     @Bind(R.id.shootingErrorTitle)
     TextView title;
     @Bind(R.id.shotTypeSpinner)
@@ -113,7 +84,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     TextView miscues;
     @Bind(R.id.heatGraph)
     HeatGraph cueBallHeatGraph;
-    private BarData speedData = new BarData(), distanceData = new BarData();
+
     private String shotType, subType, angle;
     private GetFilteredStatsAsync task2;
 
@@ -217,8 +188,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
             subType = getString(R.string.all);
         if (angle == null)
             angle = getString(R.string.all);
-
-        Utils.init(getContext()); // call this so that text size is converted to DP correctly
     }
 
     @Nullable
@@ -226,25 +195,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        setupChart(speedChart, 10f);
-        speedChart.setFitBars(true);
-        speedChart.getXAxis().setAxisMinimum(1f);
-        setupChart(distanceChart, 9.5f);
-        speedChart.getXAxis().setValueFormatter(new DefaultAxisValueFormatter(0));
-        distanceChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                if (Float.compare(value, 0) == 0)
-                    return "<.5'";
-                else if (Float.compare(value, .5f) == 0)
-                    return ".5'";
-                else if (Float.compare(value, 1f) == 0)
-                    return "1'";
-                else return new DecimalFormat("#.#").format(value) + "'";
-            }
-        });
-
-        displayChartData(stats);
+        speedChart.setColumnChartData(getSpeedData(stats));
+        distanceChart.setColumnChartData(getDistanceData(stats));
 
         shotTypeSpinner.setAdapter(createAdapter(getPossibleShotTypes()));
         shotSubTypeSpinner.setAdapter(createAdapter(getPossibleShotSubTypes()));
@@ -289,60 +241,93 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return view;
     }
 
-    private BarDataSet getDataSet(@StringRes int label, @ColorRes int color, List<BarEntry> entries) {
-        BarDataSet dataSet = new BarDataSet(entries, getString(label));
-        dataSet.setValueFormatter(new DefaultValueFormatter(0));
-        dataSet.setValueTextSize(12);
-        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
-        dataSet.setColor(ContextCompat.getColor(getContext(), color));
-        return dataSet;
-    }
+    private ColumnChartData getSpeedData(List<AdvStats> stats) {
+        List<Column> columns = new ArrayList<>();
+        for (int i = 0; i < 10; i++)
+            columns.add(new Column());
 
-    private void setupChart(BarChart chart) {
-        chart.getDescription().setEnabled(false);
-        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        chart.setTouchEnabled(false);
-        YAxis left = chart.getAxisLeft();
-        left.setDrawLabels(false);
-        left.setDrawAxisLine(false); // no axis line
-        left.setDrawGridLines(false); // no grid lines
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setDrawAxisLine(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setAxisMinimum(0f);
-        xAxis.setLabelCount(10);
-        xAxis.setAvoidFirstLastClipping(true);
-        xAxis.setCenterAxisLabels(true);
-        chart.getAxisRight().setEnabled(false); // no right axis
-    }
-
-    private void setupChart(BarChart chart, float xMax) {
-        setupChart(chart);
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setAxisMaximum(xMax);
-    }
-
-    private List<BarEntry> getEntries(List<AdvStats> stats, StatGetter statGetter) {
-        ArrayList<BarEntry> entries = new ArrayList<>();
-
-        for (AdvStats stat : stats) {
-            boolean hasEntry = false;
-            for (BarEntry entry : entries) {
-                if (Float.compare(entry.getX(), statGetter.getStat(stat)) == 0) {
-                    hasEntry = true;
-                    entry.setY(entry.getY() + 1);
-                }
-            }
-
-            if (!hasEntry && statGetter.getStat(stat) >= 0)
-                entries.add(new BarEntry(statGetter.getStat(stat), 1));
-
+        for (Column column : columns) {
+            List<SubcolumnValue> values = new ArrayList<>();
+            values.add(new MySubColumnValue(0f, getColor(R.color.colorAccent)));
+            column.setValues(values)
+                    .setHasLabels(true);
         }
 
-        Collections.sort(entries, new EntryXComparator());
-        Log.i(TAG, "getEntries: " + entries);
-        return entries;
+        for (AdvStats stat : stats) {
+            if (stat.getSpeed() > 0) {
+                float val = columns.get(stat.getSpeed() - 1).getValues().get(0).getValue();
+                columns.get(stat.getSpeed() - 1).getValues().get(0).setValue(val + 1);
+            }
+        }
+
+        Axis xAxis = new Axis();
+
+        xAxis.setHasLines(true)
+                .setInside(false)
+                .setHasSeparationLine(true)
+                .setFormatter(new SimpleAxisValueFormatterV2(0))
+                .setTextColor(getColor(R.color.primary_text))
+                .setName("Speed");
+
+        ColumnChartData data = new ColumnChartData(columns);
+        data.setFillRatio(.8f)
+                .setStacked(false)
+                .setAxisXBottom(xAxis);
+        data.setValueLabelBackgroundAuto(false);
+        data.setValueLabelBackgroundColor(getColor(R.color.colorAccent));
+
+        return data;
     }
+
+    private ColumnChartData getDistanceData(List<AdvStats> stats) {
+        List<Column> columns = new ArrayList<>();
+        for (int i = 0; i < 20; i++)
+            columns.add(new Column());
+
+        for (int i = 0; i < columns.size(); i++) {
+            List<SubcolumnValue> values = new ArrayList<>();
+            values.add(new MySubColumnValue(0f, getColor(R.color.colorAccent)));
+            values.add(new MySubColumnValue(0f, getColor(R.color.colorPrimary)));
+
+            columns.get(i).setValues(values)
+                    .setHasLabels(true);
+        }
+
+        for (AdvStats stat : stats) {
+            int cbCol = (int) (stat.getCbToOb() * 2);
+            int obCol = (int) (stat.getObToPocket() * 2);
+
+            if (stat.getCbToOb() >= 0) {
+                SubcolumnValue value = columns.get(cbCol).getValues().get(0);
+                float newVal = value.getValue() + 1;
+                value.setValue(newVal);
+            }
+
+            if (stat.getObToPocket() >= 0) {
+                SubcolumnValue value = columns.get(obCol).getValues().get(1);
+                float newVal = value.getValue() + 1;
+                value.setValue(newVal);
+            }
+        }
+
+        Axis xAxis = new Axis();
+
+        xAxis.setHasLines(true)
+                .setInside(false)
+                .setFormatter(new SimpleAxisValueFormatter(0).setAppendedText("'".toCharArray()))
+                .setHasSeparationLine(true)
+                .setTextColor(getColor(R.color.primary_text));
+
+        ColumnChartData data = new ColumnChartData(columns);
+        data.setFillRatio(.8f)
+                .setStacked(true)
+                .setAxisXBottom(xAxis);
+        data.setValueLabelBackgroundAuto(true);
+        data.setValueLabelTextSize(10);
+
+        return data;
+    }
+
 
     @Override
     public void onDestroy() {
@@ -425,11 +410,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private void updateView(List<AdvStats> filteredStats) {
-        speedData.clearValues();
-        distanceData.clearValues();
-
-        displayChartData(filteredStats);
-
         TransitionManager.beginDelayedTransition(baseLayout);
         StatsUtils.setLayoutWeights(filteredStats, AIM_LEFT, AIM_RIGHT, leftOfAim, rightOfAim);
         StatsUtils.setLayoutWeights(filteredStats, THIN, THICK, overCut, underCut);
@@ -446,26 +426,9 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
                 points.add(new Point(stat.getCueX(), stat.getCueY()));
         }
 
+        speedChart.setColumnChartData(getSpeedData(filteredStats));
+        distanceChart.setColumnChartData(getDistanceData(filteredStats));
         cueBallHeatGraph.setData(points);
-    }
-
-    private void displayChartData(List<AdvStats> stats) {
-        Log.i(TAG, "displayChartData: " + stats);
-        speedData = new BarData(
-                getDataSet(R.string.chart_speed_legend, R.color.colorAccentTransparent, getEntries(stats, speedGetter)));
-        distanceData = new BarData(
-                getDataSet(R.string.chart_cue_legend, R.color.colorPrimaryTransparent, getEntries(stats, cbGetter)),
-                getDataSet(R.string.chart_object_legend, R.color.colorAccentTransparent, getEntries(stats, obGetter)));
-
-        distanceData.setBarWidth(.15f);
-
-        speedChart.setData(speedData);
-        distanceChart.setData(distanceData);
-        distanceChart.groupBars(0f, .1f, .05f);
-        distanceChart.setFitBars(true);
-        speedChart.setFitBars(true);
-        speedChart.invalidate();
-        distanceChart.invalidate();
     }
 
     private void setShotSubType() {
@@ -480,8 +443,35 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return R.layout.fragment_adv_shooting_stats;
     }
 
-    private interface StatGetter {
-        float getStat(AdvStats stat);
+    private static class MySubColumnValue extends SubcolumnValue {
+        private static NumberFormat formatter = DecimalFormat.getNumberInstance();
+
+        public MySubColumnValue() {
+            super();
+        }
+
+        public MySubColumnValue(float value) {
+            super(value);
+        }
+
+        public MySubColumnValue(float value, int color) {
+            super(value, color);
+        }
+
+        public MySubColumnValue(SubcolumnValue columnValue) {
+            super(columnValue);
+        }
+
+        @Override
+        public int getDarkenColor() {
+            return getColor();
+        }
+
+        @Override
+        public SubcolumnValue setValue(float value) {
+            setLabel(formatter.format(value));
+            return super.setValue(value);
+        }
     }
 
     private class GetFilteredStatsAsync extends AsyncTask<Void, Void, List<AdvStats>> {

@@ -36,6 +36,7 @@
         <attr name="mbg_bar_color" format="color" />
         <attr name="mbg_text" format="string" />
         <attr name="mbg_weight" format="float" />
+        <attr name="mbg_formatter_feet" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="BarGraphView">
@@ -48,5 +49,17 @@
         <attr name="bgv_next_color" format="color" />
         <attr name="bgv_count" format="integer" />
         <attr name="bgv_text_size" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="HorizontalBarView">
+        <attr name="bar_emptyColor" format="color" />
+        <attr name="bar_fillColor" format="color" />
+        <attr name="bar_emptyTextColor" format="color" />
+        <attr name="bar_fillTextColor" format="color" />
+        <attr name="bar_textSize" format="dimension" />
+        <attr name="bar_text" format="string" />
+        <attr name="bar_textPadding" format="dimension" />
+        <attr name="bar_fillPercentage" format="float" />
+        <attr name="bar_fontPath" format="string" />
     </declare-styleable>
 </resources>

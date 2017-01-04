@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.player.controller;
 
-import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
@@ -22,13 +22,13 @@ public class ApaNineBallPlayerControllerTest extends AbstractNineBallPlayerContr
         game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
         int opponentRank = 4;
         playerController = new ApaNineBallController("", "", playerRank, opponentRank);
-        actualPlayer = new ApaNineBallPlayer("", playerRank);
-        expectedPlayer = new ApaNineBallPlayer("", playerRank);
+        actualPlayer = new ApaNineBallPlayer("", playerRank, playerRank);
+        expectedPlayer = new ApaNineBallPlayer("", playerRank, playerRank);
         turnBuilder = new TurnBuilder(game.getGameType());
     }
 
     @Override ApaNineBallPlayer getBlankPlayer() {
-        return new ApaNineBallPlayer("", playerRank);
+        return new ApaNineBallPlayer("", playerRank, playerRank);
     }
 
     @Test public void foulOnBreakAdds2DeadBalls() {

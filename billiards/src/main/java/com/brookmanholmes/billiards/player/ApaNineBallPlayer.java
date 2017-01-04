@@ -4,13 +4,17 @@ package com.brookmanholmes.billiards.player;
  * Created by Brookman Holmes on 1/12/2016.
  */
 public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
+    private final int opponentRank;
+    private final int pointsNeeded;
     int points = 0;
     private int winsOnBreak = 0;
     private int earlyWins = 0;
     private int deadBalls = 0;
 
-    public ApaNineBallPlayer(String name, int rank) {
+    public ApaNineBallPlayer(String name, int rank, int opponentRank) {
         super(name, rank);
+        this.opponentRank = opponentRank;
+        pointsNeeded = Players.apa9BallRaceTo(rank);
     }
 
     @Override
@@ -42,6 +46,11 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
         points += ballsMade;
     }
 
+    @Override
+    public float getMatchCompletionPct() {
+        return (float) getPoints() / (float) getPointsNeeded();
+    }
+
     public void addPoints(int points) {
         this.points += points;
     }
@@ -52,8 +61,8 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
     }
 
     @Override
-    public int getPointsNeeded(int opponentRank) {
-        return Players.apa9BallRaceTo(rank);
+    public int getPointsNeeded() {
+        return pointsNeeded;
     }
 
     public int getDeadBalls() {
@@ -101,8 +110,8 @@ public class ApaNineBallPlayer extends AbstractPlayer implements IApa {
     }
 
     @Override
-    public int getMatchPoints(int opponentScore, int opponentRank) {
-        if (points >= Players.apa9BallRaceTo(rank))
+    public int getMatchPoints(int opponentScore) {
+        if (points >= pointsNeeded)
             return 20 - Players.getMinimumMatchPointsEarned(opponentRank, opponentScore);
         else return Players.getMinimumMatchPointsEarned(rank, points);
     }

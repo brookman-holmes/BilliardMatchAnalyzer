@@ -84,7 +84,6 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
                 android.R.layout.simple_list_item_single_choice,
                 android.R.id.text1,
                 new ArrayList<String>());
-
     }
 
     @Override
@@ -108,7 +107,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         foulGroup.check(R.id.no);
         GameStatus gameStatus = MatchDialogHelperUtils.getGameStatus(page.getData());
         ((TextView) foulGroup.findViewById(R.id.seriousFoul)).setText(gameStatus.gameType == GameType.STRAIGHT_POOL ? R.string.foul_serious : R.string.foul_lost_game);
-        
+
         ((TextView) rootView.findViewById(R.id.subTitle)).setText(getString(R.string.title_foul, page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
         ((TextView) rootView.findViewById(android.R.id.title)).setText(page.getTitle());
         listView = (ListView) rootView.findViewById(android.R.id.list);
@@ -117,9 +116,6 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
 
         listView.setDividerHeight(0);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        TurnEnd turnEnd = TurnEnd.valueOf(getArguments().getString(ARG_SELECTION_KEY));
-        listView.setItemChecked(adapter.getPosition(getString(turnEnd)), true);
-        updateFoulLayout(getString(turnEnd));
 
         return rootView;
     }
@@ -127,6 +123,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         TurnEndOptions options = page.getTurnEndOptions();
         repopulateChoicesList(options.possibleEndings);
         updateFoulOptions(options);
@@ -140,8 +137,8 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
             selection = getString(options.defaultCheck);
         }
 
-        updatePage(selection);
         updateFoulLayout(selection);
+        page.getData().putString(SIMPLE_DATA_KEY, selection); // don't notify of a change because it fucks my world up
     }
 
     @Override
@@ -274,17 +271,11 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
     }
 
     private void updatePage(int position) {
-        if (!page.getData().getString(SIMPLE_DATA_KEY, "").equals(adapter.getItem(position))) {
-            page.getData().putString(SIMPLE_DATA_KEY, adapter.getItem(position));
-            page.notifyDataChanged();
-        }
+        updatePage(adapter.getItem(position));
     }
 
     private void updatePage(String selection) {
-        if (!page.getData().getString(SIMPLE_DATA_KEY, "").equals(selection)) {
-            page.getData().putString(SIMPLE_DATA_KEY, selection);
-            page.notifyDataChanged();
-        }
+        page.setTurnEnd(selection);
     }
 
     private String getTurnEndFromPage() {

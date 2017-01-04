@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -18,12 +17,13 @@ import android.widget.TextView;
 
 import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.ui.BaseDialogFragment;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * Created by Brookman Holmes on 8/20/2016.
  */
-public class SubmitFeedbackDialog extends DialogFragment {
+public class SubmitFeedbackDialog extends BaseDialogFragment {
     private InputMethodManager inputMethodManager;
     private EditText input;
 

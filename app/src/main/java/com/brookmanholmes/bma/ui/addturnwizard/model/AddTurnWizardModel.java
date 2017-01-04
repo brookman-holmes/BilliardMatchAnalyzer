@@ -97,13 +97,14 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     @Override
     protected PageList onNewRootPageList() {
+        GameType gameType = GameType.valueOf(matchData.getString(GAME_TYPE_KEY));
         if (matchData.getBoolean(ALLOW_BREAK_AGAIN_KEY))
             return new PageList(getTurnEndPage());
-        else if (GameType.valueOf(matchData.getString(GAME_TYPE_KEY)) == GameType.STRAIGHT_POOL)
+        else if (gameType == GameType.STRAIGHT_POOL)
             return new PageList(getStraightPoolPage(), getTurnEndPage());
-        else if (GameType.valueOf(matchData.getString(GAME_TYPE_KEY)) == GameType.STRAIGHT_GHOST)
+        else if (gameType == GameType.STRAIGHT_GHOST)
             return new PageList(getStraightPoolPage(), combineArrays(getHowMissPageAll(), getMissBranchPage(), getCueingPage()));
-        else if (GameType.valueOf(matchData.getString(GAME_TYPE_KEY)).isGhostGame())
+        else if (gameType.isGhostGame())
             return new PageList(getGhostBreakPage(), getTurnEndPage());
         else if (matchData.getBoolean(NEW_GAME_KEY))
             return new PageList(getBreakPage(), getTurnEndPage());

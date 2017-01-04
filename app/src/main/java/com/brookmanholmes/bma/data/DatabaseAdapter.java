@@ -188,7 +188,7 @@ public class DatabaseAdapter {
 
         for (Match match : getMatches()) {
             combinePlayerInList(players, match.getPlayer());
-            if (!match.getGameStatus().gameType.isGhostGame())
+            if (!match.getGameStatus().gameType.isGhostGame() && !match.getGameStatus().gameType.isSinglePlayer())
                 combinePlayerInList(players, match.getOpponent());
         }
 

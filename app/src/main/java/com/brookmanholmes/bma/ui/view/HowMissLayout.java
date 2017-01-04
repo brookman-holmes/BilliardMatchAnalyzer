@@ -2,7 +2,6 @@ package com.brookmanholmes.bma.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -54,10 +53,7 @@ public class HowMissLayout extends LinearLayout {
         left.setText(a.getText(R.styleable.HowMissLayout_hml_left_label));
         right.setText(a.getText(R.styleable.HowMissLayout_hml_right_label));
 
-        int background = a.getColor(R.styleable.HowMissLayout_hml_background, ContextCompat.getColor(getContext(), R.color.colorPrimary));
-        int textColor = a.getColor(R.styleable.HowMissLayout_hml_text_color, ContextCompat.getColor(getContext(), R.color.white));
-        left.getBackground().setColorFilter(background, PorterDuff.Mode.SRC_IN);
-        right.getBackground().setColorFilter(background, PorterDuff.Mode.SRC_IN);
+        int textColor = a.getColor(R.styleable.HowMissLayout_hml_text_color, ContextCompat.getColor(getContext(), R.color.colorPrimary));
         left.setTextColor(textColor);
         right.setTextColor(textColor);
         a.recycle();

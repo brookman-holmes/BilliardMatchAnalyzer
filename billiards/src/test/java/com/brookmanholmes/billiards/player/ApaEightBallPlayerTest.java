@@ -8,15 +8,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 1/19/2016.
  */
 public class ApaEightBallPlayerTest extends AbstractPlayerTest<ApaEightBallPlayer> {
-    @Override public void setUp() {
+    int opponentRank = 2;
+
+    @Override
+    public void setUp() {
         rank = 5;
-        expected = new ApaEightBallPlayer(testName, rank);
-        actual = new ApaEightBallPlayer(testName, rank);
+        expected = new ApaEightBallPlayer(testName, rank, opponentRank);
+        actual = new ApaEightBallPlayer(testName, rank, opponentRank);
     }
 
     @Test
     public void addPlayerStatsWorksCorrectlyForNineBall() {
-        ApaEightBallPlayer player = new ApaEightBallPlayer(testName, rank);
+        ApaEightBallPlayer player = new ApaEightBallPlayer(testName, rank, opponentRank);
 
         player.addEarlyWin();
         player.addWinOnBreak();
@@ -31,7 +34,7 @@ public class ApaEightBallPlayerTest extends AbstractPlayerTest<ApaEightBallPlaye
 
     @Test
     public void getMatchPointsReturns0() {
-        assertThat(actual.getMatchPoints(0, 2), is(0));
+        assertThat(actual.getMatchPoints(0), is(0));
     }
 
     @Test
@@ -41,7 +44,7 @@ public class ApaEightBallPlayerTest extends AbstractPlayerTest<ApaEightBallPlaye
         actual.addGameWon();
         actual.addGameWon();
 
-        assertThat(actual.getMatchPoints(0, 2), is(1));
+        assertThat(actual.getMatchPoints(0), is(1));
     }
 
     @Test
@@ -52,7 +55,7 @@ public class ApaEightBallPlayerTest extends AbstractPlayerTest<ApaEightBallPlaye
         actual.addGameWon();
         actual.addGameWon();
 
-        assertThat(actual.getMatchPoints(1, 2), is(2));
+        assertThat(actual.getMatchPoints(1), is(2));
     }
 
     @Test
@@ -63,7 +66,7 @@ public class ApaEightBallPlayerTest extends AbstractPlayerTest<ApaEightBallPlaye
         actual.addGameWon();
         actual.addGameWon();
 
-        assertThat(actual.getMatchPoints(0, 2), is(3));
+        assertThat(actual.getMatchPoints(0), is(3));
     }
 
     @Test

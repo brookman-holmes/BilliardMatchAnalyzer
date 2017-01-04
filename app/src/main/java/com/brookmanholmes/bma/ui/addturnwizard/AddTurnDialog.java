@@ -21,6 +21,7 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.ui.BaseDialogFragment;
 import com.brookmanholmes.bma.ui.addturnwizard.model.AddTurnWizardModel;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
 import com.brookmanholmes.bma.ui.dialog.HelpDialogCreator;
@@ -45,7 +46,7 @@ import butterknife.OnClick;
  * Created by Brookman Holmes on 2/20/2016.
  */
 @SuppressWarnings("WeakerAccess")
-public class AddTurnDialog extends DialogFragment implements PageFragmentCallbacks, ModelCallbacks, View.OnLayoutChangeListener {
+public class AddTurnDialog extends BaseDialogFragment implements PageFragmentCallbacks, ModelCallbacks, View.OnLayoutChangeListener {
     private static final String TAG = "AddTurnDialog";
     @Bind(R.id.imgHelp)
     public ImageView help;

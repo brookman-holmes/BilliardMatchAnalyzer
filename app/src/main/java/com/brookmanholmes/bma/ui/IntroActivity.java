@@ -51,6 +51,7 @@ import com.brookmanholmes.bma.ui.matchinfo.HighRunAttemptActivity;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
 import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
+import com.brookmanholmes.bma.ui.view.BaseViewHolder;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.utils.PreferencesUtil;
@@ -235,14 +236,14 @@ public class IntroActivity extends BaseActivity {
         if (preferences.getBoolean("first_run_tutorial_intro", true)) {
             Overlay overlay = new Overlay()
                     .setStyle(Overlay.Style.Circle)
-                    .setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryTransparent))
+                    .setBackgroundColor(getColor2(R.color.colorPrimaryTransparent))
                     .disableClick(true)
                     .disableClickThroughHole(true);
 
             ChainTourGuide t2 = ChainTourGuide.init(this)
                     .setToolTip(new ToolTip()
-                            .setTextColor(ContextCompat.getColor(this, R.color.white))
-                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+                            .setTextColor(getColor2(R.color.white))
+                            .setBackgroundColor(getColor2(R.color.colorAccent))
                             .setDescription(getString(R.string.tutorial_change_view_player_matches))
                             .setGravity(Gravity.LEFT | Gravity.BOTTOM))
                     .setOverlay(overlay)
@@ -251,8 +252,8 @@ public class IntroActivity extends BaseActivity {
             ChainTourGuide t1 = ChainTourGuide.init(this)
                     .setToolTip(new ToolTip()
                             .setTitle(getString(R.string.tutorial_welcome))
-                            .setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
-                            .setTextColor(ContextCompat.getColor(this, R.color.white))
+                            .setBackgroundColor(getColor2(R.color.colorAccent))
+                            .setTextColor(getColor2(R.color.white))
                             .setDescription(getString(R.string.tutorial_create_match))
                             .setGravity(Gravity.TOP | Gravity.LEFT))
                     .setOverlay(overlay)
@@ -501,7 +502,7 @@ public class IntroActivity extends BaseActivity {
             super.onDestroy();
         }
 
-        private static class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        private static class RecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             private static final int PLAYER_VIEW = 0;
             private static final int FOOTER = 1;
             final int[] colors = new int[]{Color.parseColor("#f44336"), Color.parseColor("#9C27B0"),
@@ -523,7 +524,7 @@ public class IntroActivity extends BaseActivity {
             }
 
             @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(viewType == PLAYER_VIEW ? R.layout.card_player : R.layout.footer, parent, false);
                 if (viewType == PLAYER_VIEW)
                     return new ViewHolder(view);
@@ -531,7 +532,7 @@ public class IntroActivity extends BaseActivity {
             }
 
             @Override
-            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            public void onBindViewHolder(BaseViewHolder holder, int position) {
                 if (holder instanceof ViewHolder)
                     ((ViewHolder) holder).bind(players.get(position), getColor(position));
             }
@@ -551,13 +552,13 @@ public class IntroActivity extends BaseActivity {
             }
         }
 
-        static class FooterHolder extends RecyclerView.ViewHolder {
+        static class FooterHolder extends BaseViewHolder {
             FooterHolder(View itemView) {
                 super(itemView);
             }
         }
 
-        static class ViewHolder extends RecyclerView.ViewHolder {
+        static class ViewHolder extends BaseViewHolder {
             @Bind(R.id.playerIndicator)
             RoundedLetterView playerIcon;
             @Bind(R.id.playerName)
