@@ -42,9 +42,8 @@ android {
 repositories {
     maven { url "https://jitpack.io" }
     mavenCentral()
-    maven() {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-    }
+    maven() { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 dependencies {
@@ -58,10 +57,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':billiards')
     compile 'com.github.pavlospt:roundedletterview:1.2'
-    compile 'com.google.firebase:firebase-crash:9.8.0'
-    compile 'com.google.firebase:firebase-core:9.8.0'
-    compile 'com.google.firebase:firebase-storage:9.8.0'
-    compile 'com.google.firebase:firebase-auth:9.8.0'
+    compile 'com.google.firebase:firebase-crash:10.0.1'
+    compile 'com.google.firebase:firebase-core:10.0.1'
+    compile 'com.google.firebase:firebase-storage:10.0.1'
+    compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile 'com.firebaseui:firebase-ui-auth:1.1.1'
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:support-annotations:25.1.0'
     compile 'com.android.support:design:25.1.0'

@@ -92,7 +92,7 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public int getItemCount() {
-        return match.getTurnCount() == 0 ? 2 : match.getTurnCount() + 3;
+        return match.getTurnCount() == 0 ? 4 : match.getTurnCount() + 4;
     }
 
     @Override

@@ -240,7 +240,7 @@ public class Match implements IMatch {
 
     @Override
     public boolean isRedoTurn() {
-        return undoneTurns.size() > 0 && !matchOver;
+        return undoneTurns.size() > 0;
     }
 
     @Override

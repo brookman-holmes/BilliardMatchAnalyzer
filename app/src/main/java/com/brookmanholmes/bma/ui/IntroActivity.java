@@ -43,6 +43,7 @@ import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.data.MatchModel;
@@ -55,6 +56,7 @@ import com.brookmanholmes.bma.ui.view.BaseViewHolder;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.utils.PreferencesUtil;
+import com.firebase.ui.auth.AuthUI;
 import com.github.pavlospt.roundedletterview.RoundedLetterView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -67,6 +69,7 @@ import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -83,6 +86,8 @@ public class IntroActivity extends BaseActivity {
     public static final String TAG = "IntroActivity";
     private static final String MATCH_LIST_FRAGMENT = "match list fragment";
     private static final String PLAYER_LIST_FRAGMENT = "player list fragment";
+
+    private static final int RC_SIGN_IN = 1555;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -172,6 +177,20 @@ public class IntroActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_reset_preferences) {
             PreferencesUtil.resetTutorial(preferences);
+        }
+
+        if (item.getItemId() == R.id.action_sign_in) {
+            AuthUI.getInstance().signOut(this);
+            startActivityForResult(AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setProviders(Arrays.asList(
+                                    new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
+                            ))
+                            .setTheme(R.style.SignInTheme)
+                            .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+                            .build(),
+                    RC_SIGN_IN);
         }
 
         if (item.getItemId() == R.id.action_about) {
