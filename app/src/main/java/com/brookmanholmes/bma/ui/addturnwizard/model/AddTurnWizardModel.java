@@ -98,12 +98,12 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     @Override
     protected PageList onNewRootPageList() {
         GameType gameType = GameType.valueOf(matchData.getString(GAME_TYPE_KEY));
-        if (matchData.getBoolean(ALLOW_BREAK_AGAIN_KEY))
-            return new PageList(getTurnEndPage());
-        else if (gameType == GameType.STRAIGHT_POOL)
-            return new PageList(getStraightPoolPage(), getTurnEndPage());
+        if (gameType == GameType.STRAIGHT_POOL) // straight pool pages must be higher than the rebreak option because they handle re-break option differently
+            return new PageList(getStraightPoolPage());
         else if (gameType == GameType.STRAIGHT_GHOST)
-            return new PageList(getStraightPoolPage(), combineArrays(getHowMissPageAll(), getMissBranchPage(), getCueingPage()));
+            return new PageList(getStraightPoolPage());
+        else if (matchData.getBoolean(ALLOW_BREAK_AGAIN_KEY))
+            return new PageList(getTurnEndPage());
         else if (gameType.isGhostGame())
             return new PageList(getGhostBreakPage(), getTurnEndPage());
         else if (matchData.getBoolean(NEW_GAME_KEY))
@@ -123,8 +123,8 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 matchData.getString(OPPOSING_PLAYER_NAME_KEY));
 
         if (getFoulPossible(turnBuilder.turnEnd)) {
-            turnBuilder.foul = (context.getString(R.string.yes).equals(foul) || context.getString(R.string.foul_lost_game).equals(foul));
             turnBuilder.seriousFoul = context.getString(R.string.foul_lost_game).equals(foul) || context.getString(R.string.foul_serious).equals(foul);
+            turnBuilder.foul = context.getString(R.string.yes).equals(foul) || turnBuilder.seriousFoul;
         }
     }
 
@@ -204,7 +204,13 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getStraightPoolPage() {
-        return new StraightPoolPage(this, context.getString(R.string.title_shot_straight, playerName), matchData);
+        return new StraightPoolPage(this, context.getString(R.string.title_shot_straight, playerName), matchData)
+                .addBranch(context.getString(R.string.turn_safety_error), getSafetyErrorBranch())
+                .addBranch(context.getString(R.string.turn_miss), combineArrays(getHowMissPageAll(), getMissBranchPage(), getCueingPage()))
+                .addBranch(context.getString(R.string.turn_safety), getSafetyPage())
+                .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(CURRENT_PLAYER_NAME_KEY)))
+                .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(OPPOSING_PLAYER_NAME_KEY)))
+                .setValue(context.getString(R.string.turn_miss));
     }
 
     private Page getTurnEndPage() {

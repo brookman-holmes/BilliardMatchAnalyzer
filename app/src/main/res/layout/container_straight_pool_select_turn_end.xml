@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp"
+    tools:showIn="@layout/select_straight_pool_balls_dialog">
+
+    <RadioGroup
+        android:id="@+id/options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/miss"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="@string/turn_miss"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+        <RadioButton
+            android:id="@+id/safety"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="@string/turn_safety"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+        <RadioButton
+            android:id="@+id/safety_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="@string/turn_safety_error"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+        <RadioButton
+            android:id="@+id/rebreak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="@string/turn_current_player_breaks"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/line_divider" />
+
+    <LinearLayout
+        android:id="@+id/foulLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Did someone foul here?" />
+
+        <RadioGroup
+            android:id="@+id/foulGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:text="@string/no" />
+
+            <RadioButton
+                android:id="@+id/yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:text="@string/yes" />
+
+            <RadioButton
+                android:id="@+id/seriousFoul"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:text="@string/foul_serious" />
+        </RadioGroup>
+    </LinearLayout>
+</LinearLayout>

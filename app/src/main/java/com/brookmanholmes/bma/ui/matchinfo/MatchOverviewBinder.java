@@ -36,41 +36,15 @@ public class MatchOverviewBinder extends BindingAdapter {
             apaTitle = true;
         }
 
-        playerWinPct = player.getWinPct();
-        opponentWinPct = opponent.getWinPct();
-
-        playerGamesWon = player.getWins();
-        opponentGamesWon = opponent.getWins();
-
-        if (useGameTotal(player, opponent)) {
-            playerGamesPlayed = player.getGameTotal();
-            opponentGamesPlayed = opponent.getGameTotal();
-        } else {
-            playerGamesPlayed = player.getRank();
-            opponentGamesPlayed = opponent.getRank();
-        }
-
-        playerTsp = player.getTrueShootingPct();
-        opponentTsp = opponent.getTrueShootingPct();
-
-        playerShotsSuccess = player.getShotsSucceededOfAllTypes();
-        opponentShotsSuccess = opponent.getShotsSucceededOfAllTypes();
-        playerTotalShots = player.getShotAttemptsOfAllTypes();
-        opponentTotalShots = opponent.getShotAttemptsOfAllTypes();
-
-        playerTotalFouls = Integer.toString(player.getTotalFouls());
-        opponentTotalFouls = Integer.toString(opponent.getTotalFouls());
-
-        playerAggRating = player.getAggressivenessRating();
-        opponentAggRating = opponent.getAggressivenessRating();
+        update(player, opponent);
 
         this.title = title;
         helpLayout = R.layout.dialog_help_match_overview;
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent) {
-        playerWinPct = player.getWinPct();
-        opponentWinPct = opponent.getWinPct();
+        playerWinPct = pctf.format(player.getWinPct());
+        opponentWinPct = pctf.format(opponent.getWinPct());
 
         playerGamesWon = player.getWins();
         opponentGamesWon = opponent.getWins();
@@ -83,8 +57,8 @@ public class MatchOverviewBinder extends BindingAdapter {
             opponentGamesPlayed = opponent.getRank();
         }
 
-        playerTsp = player.getTrueShootingPct();
-        opponentTsp = opponent.getTrueShootingPct();
+        playerTsp = pctf.format(player.getTrueShootingPct());
+        opponentTsp = pctf.format(opponent.getTrueShootingPct());
 
         playerShotsSuccess = player.getShotsSucceededOfAllTypes();
         opponentShotsSuccess = opponent.getShotsSucceededOfAllTypes();
@@ -94,32 +68,18 @@ public class MatchOverviewBinder extends BindingAdapter {
         playerTotalFouls = Integer.toString(player.getTotalFouls());
         opponentTotalFouls = Integer.toString(opponent.getTotalFouls());
 
-        playerAggRating = player.getAggressivenessRating();
-        opponentAggRating = opponent.getAggressivenessRating();
+        playerAggRating = pctf.format(player.getAggressivenessRating());
+        opponentAggRating = pctf.format(opponent.getAggressivenessRating());
 
         notifyChange();
     }
 
-    public boolean playerShootingBetter() {
-        return Double.compare(
-                Double.parseDouble(playerTsp),
-                Double.parseDouble(opponentTsp)
-        ) > 0;
+    public int highlightShooting() {
+        return compare(playerTsp, opponentTsp);
     }
 
-    public boolean opponentShootingBetter() {
-        return Double.compare(
-                Double.parseDouble(playerTsp),
-                Double.parseDouble(opponentTsp)
-        ) < 0;
-    }
-
-    public boolean opponentFoulsMore() {
-        return Integer.parseInt(playerTotalFouls) > Integer.parseInt(opponentTotalFouls);
-    }
-
-    public boolean playerFoulsMore() {
-        return Integer.parseInt(playerTotalFouls) < Integer.parseInt(opponentTotalFouls);
+    public int highlightFouls() {
+        return compare(playerTotalFouls, opponentTotalFouls) * -1;
     }
 
     private boolean useGameTotal(AbstractPlayer player, AbstractPlayer opponent) {

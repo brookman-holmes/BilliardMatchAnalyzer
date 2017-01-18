@@ -46,9 +46,9 @@ class AdvTurnViewHolder extends MinimalTurnViewHolder {
     @Override
     void bind(ITurn turn, PlayerTurn playerTurn, AbstractPlayer player) {
         super.bind(turn, playerTurn, player);
-        shootingPct.setText(itemView.getContext().getString(R.string.shooting_pct, player.getShootingPct()));
-        safetyPct.setText(itemView.getContext().getString(R.string.safety_pct, player.getSafetyPct()));
-        breakPct.setText(itemView.getContext().getString(R.string.breaking_pct, player.getBreakPct()));
+        shootingPct.setText(itemView.getContext().getString(R.string.shooting_pct, ConversionUtils.pctf.format(player.getShootingPct())));
+        safetyPct.setText(itemView.getContext().getString(R.string.safety_pct, ConversionUtils.pctf.format(player.getSafetyPct())));
+        breakPct.setText(itemView.getContext().getString(R.string.breaking_pct, ConversionUtils.pctf.format(player.getBreakPct())));
 
         shootingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
         safetyLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));

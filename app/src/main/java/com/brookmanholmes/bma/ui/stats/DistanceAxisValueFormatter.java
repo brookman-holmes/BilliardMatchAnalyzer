@@ -4,15 +4,15 @@ import lecho.lib.hellocharts.formatter.AxisValueFormatter;
 import lecho.lib.hellocharts.formatter.ValueFormatterHelper;
 import lecho.lib.hellocharts.model.AxisValue;
 
-public class SimpleAxisValueFormatter implements AxisValueFormatter {
+public class DistanceAxisValueFormatter implements AxisValueFormatter {
 
     private ValueFormatterHelper valueFormatterHelper = new ValueFormatterHelper();
 
-    public SimpleAxisValueFormatter() {
+    public DistanceAxisValueFormatter() {
         valueFormatterHelper.determineDecimalSeparator();
     }
 
-    public SimpleAxisValueFormatter(int decimalDigitsNumber) {
+    public DistanceAxisValueFormatter(int decimalDigitsNumber) {
         this();
         valueFormatterHelper.setDecimalDigitsNumber(decimalDigitsNumber);
     }
@@ -35,7 +35,7 @@ public class SimpleAxisValueFormatter implements AxisValueFormatter {
         return valueFormatterHelper.getDecimalDigitsNumber();
     }
 
-    public SimpleAxisValueFormatter setDecimalDigitsNumber(int decimalDigitsNumber) {
+    public DistanceAxisValueFormatter setDecimalDigitsNumber(int decimalDigitsNumber) {
         valueFormatterHelper.setDecimalDigitsNumber(decimalDigitsNumber);
         return this;
     }
@@ -44,7 +44,7 @@ public class SimpleAxisValueFormatter implements AxisValueFormatter {
         return valueFormatterHelper.getAppendedText();
     }
 
-    public SimpleAxisValueFormatter setAppendedText(char[] appendedText) {
+    public DistanceAxisValueFormatter setAppendedText(char[] appendedText) {
         valueFormatterHelper.setAppendedText(appendedText);
         return this;
     }
@@ -53,7 +53,7 @@ public class SimpleAxisValueFormatter implements AxisValueFormatter {
         return valueFormatterHelper.getPrependedText();
     }
 
-    public SimpleAxisValueFormatter setPrependedText(char[] prependedText) {
+    public DistanceAxisValueFormatter setPrependedText(char[] prependedText) {
         valueFormatterHelper.setPrependedText(prependedText);
         return this;
     }
@@ -62,7 +62,7 @@ public class SimpleAxisValueFormatter implements AxisValueFormatter {
         return valueFormatterHelper.getDecimalSeparator();
     }
 
-    public SimpleAxisValueFormatter setDecimalSeparator(char decimalSeparator) {
+    public DistanceAxisValueFormatter setDecimalSeparator(char decimalSeparator) {
         valueFormatterHelper.setDecimalSeparator(decimalSeparator);
         return this;
     }

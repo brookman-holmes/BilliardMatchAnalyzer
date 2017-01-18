@@ -144,12 +144,12 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
     @Override
     public void onResume() {
         super.onResume();
-        page.registerListener(this);
+        page.registerFragment(this);
     }
 
     @Override
     public void onPause() {
-        page.unregisterListener();
+        page.unregisterFragment();
         super.onPause();
     }
 

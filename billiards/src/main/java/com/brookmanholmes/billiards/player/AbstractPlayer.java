@@ -1,6 +1,5 @@
 package com.brookmanholmes.billiards.player;
 
-import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -8,12 +7,7 @@ import java.util.Date;
  * Created by Brookman Holmes on 10/28/2015.
  */
 public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
-    // formatter for percentages (e.g. .875)
-    final static DecimalFormat pctf = new DecimalFormat("#.000");
-    // formatter for average number of balls made per turn (e.g. 5.33)
-    final static DecimalFormat avgf = new DecimalFormat("##.##");
-    final static String ZERO_PERCENT = ".000";
-    final static String ZERO = "0";
+
     Date date;
     int rank;
     int safetyAttempts = 0;
@@ -416,53 +410,53 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     }
 
     /**
-     * Retrieves the win percentage for the player, formatted as #.000
+     * Retrieves the win percentage for the player
      * @return The win percentage for the player
      */
-    public String getWinPct() {
+    public double getWinPct() {
         if (gameTotal > 0) {
-            return pctf.format((double) gameWins / (double) gameTotal);
-        } else return ZERO_PERCENT;
+            return (double) gameWins / (double) gameTotal;
+        } else return 0;
     }
 
     /**
-     * The average number of balls made per turn, formatted as ##.##
+     * The average number of balls made per turn
      * @return The average number of balls made per turn
      */
-    public String getAvgBallsTurn() {
+    public double getAvgBallsTurn() {
         if (shootingTurns > 0) {
-            return avgf.format(((double) shootingBallsMade) / (double) shootingTurns);
-        } else return ZERO;
+            return ((double) shootingBallsMade) / (double) shootingTurns;
+        } else return 0;
     }
 
     /**
-     * Retrieves the safety percentage for the player, formatted as #.000
+     * Retrieves the safety percentage for the player
      * @return The safety percentage for the player
      */
-    public String getSafetyPct() {
+    public double getSafetyPct() {
         if (safetyAttempts > 0) {
-            return pctf.format((double) safetySuccesses / (double) safetyAttempts);
-        } else return ZERO_PERCENT;
+            return (double) safetySuccesses / (double) safetyAttempts;
+        } else return 0;
     }
 
     /**
-     * Retrieves the shooting percentage for the player, formatted as #.000
+     * Retrieves the shooting percentage for the player
      * @return The shooting percentage for the player
      */
-    public String getShootingPct() {
+    public double getShootingPct() {
         if (getShootingAttempts() > 0) {
-            return pctf.format((double) shootingBallsMade / ((double) getShootingAttempts()));
-        } else return ZERO_PERCENT;
+            return (double) shootingBallsMade / (double) getShootingAttempts();
+        } else return 0;
     }
 
     /**
-     * Retrieves the successful percentage for the player, formatted as #.000
+     * Retrieves the successful percentage for the player
      * @return The successful breaking percentage for the player
      */
-    public String getBreakPct() {
+    public double getBreakPct() {
         if (getBreakAttempts() > 0) {
-            return pctf.format((double) breakSuccesses / (double) breakAttempts);
-        } else return ZERO_PERCENT;
+            return (double) breakSuccesses / (double) breakAttempts;
+        } else return 0;
     }
 
     public float getMatchCompletionPct() {
@@ -486,39 +480,38 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     }
 
     /**
-     * The average number of balls made on the break, formatted as ##.##
+     * The average number of balls made on the break
      * @return The average number of balls made on the break
      */
-    public String getAvgBallsBreak() {
+    public double getAvgBallsBreak() {
         if (breakAttempts > 0) {
-            return avgf.format(((double) breakBallsMade / (double) breakAttempts));
-        } else return ZERO;
+            return (double) breakBallsMade / (double) breakAttempts;
+        } else return 0;
     }
 
     /**
      * The aggressiveness of the player
      * {@link AbstractPlayer#getShootingAttempts()} / (
      * {@link AbstractPlayer#getShootingAttempts()} + {@link AbstractPlayer#getSafetyAttempts()})
-     * formatted as #.000
      * @return The aggressiveness of the player
      */
-    public String getAggressivenessRating() {
+    public double getAggressivenessRating() {
         if (shootingBallsMade + shootingMisses + safetyAttempts > 0) {
-            return pctf.format((((double) getShootingAttempts()) / ((double) getShootingAttempts() + (double) safetyAttempts)));
-        } else return ZERO_PERCENT;
+            return (((double) getShootingAttempts()) / ((double) getShootingAttempts() + (double) safetyAttempts));
+        } else return 0;
 
     }
 
     /**
      * The player's true shooting percentage, which is determined by
      * {@link AbstractPlayer#getShotsSucceededOfAllTypes()} /
-     * {@link AbstractPlayer#getShotAttemptsOfAllTypes()} formatted as #.000
+     * {@link AbstractPlayer#getShotAttemptsOfAllTypes()}
      * @return The player's true shooting percentage
      */
-    public String getTrueShootingPct() {
+    public double getTrueShootingPct() {
         if (getShotAttemptsOfAllTypes() > 0) {
-            return pctf.format((double) getShotsSucceededOfAllTypes() / (double) getShotAttemptsOfAllTypes());
-        } else return ZERO_PERCENT;
+            return (double) getShotsSucceededOfAllTypes() / (double) getShotAttemptsOfAllTypes();
+        } else return 0;
     }
 
     @Override

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
     <data>
         <variable
             name="safeties"
@@ -7,9 +9,8 @@
         <import type="android.view.View" />
     </data>
 
-    <view xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.CardView
         style="@style/card_view_style"
-        class="android.support.v7.widget.CardView"
         android:visibility="@{safeties.showCard ? View.VISIBLE : View.GONE}">
 
         <LinearLayout
@@ -23,9 +24,126 @@
                 android:layout_height="wrap_content"
                 bind:title="@{safeties}" />
 
-            <include
-                layout="@layout/container_safeties"
-                bind:safeties="@{safeties}" />
+            <android.support.v7.widget.GridLayout style="@style/match_info_grid">
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{safeties.playerSafetyPct}"
+                    android:textColor="@color/primary_text"
+                    android:typeface="@{safeties.highlightSafeties() == 1 ? `bold` : `normal`}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/title_safety_pct"
+                    android:textColor="@color/primary_text"
+                    app:layout_columnWeight="0" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{safeties.opponentSafetyPct}"
+                    android:textColor="@color/primary_text"
+                    android:typeface="@{safeties.highlightSafeties() == -1 ? `bold` : `normal`}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{@string/out_of(safeties.playerSafetiesMade, safeties.playerSafeties)}"
+                    android:textColor="@color/secondary_text" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/title_safeties_made"
+                    android:textColor="@color/secondary_text"
+                    app:layout_columnWeight="0" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{@string/out_of(safeties.opponentSafetiesMade, safeties.opponentSafeties)}"
+                    android:textColor="@color/secondary_text" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{safeties.playerSafetyFouls}"
+                    android:textColor="@color/primary_text"
+                    android:typeface="@{safeties.highlightFouls() == 1 ? `bold` : `normal`}"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/title_safety_fouls"
+                    android:textColor="@color/primary_text"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}"
+                    app:layout_columnWeight="0" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{safeties.opponentSafetyFouls}"
+                    android:textColor="@color/primary_text"
+                    android:typeface="@{safeties.highlightFouls() == -1 ? `bold` : `normal`}"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{safeties.playerSafetyEscapes}"
+                    android:textColor="@color/secondary_text"
+                    android:typeface="@{safeties.highlightEscapes() == 1 ? `bold` : `normal`}"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/title_safety_escapes"
+                    android:textColor="@color/secondary_text"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}"
+                    app:layout_columnWeight="0" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{safeties.opponentSafetyEscapes}"
+                    android:textColor="@color/secondary_text"
+                    android:typeface="@{safeties.highlightEscapes() == -1 ? `bold` : `normal`}"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{safeties.playerSafetyReturns}"
+                    android:textColor="@color/primary_text"
+                    android:typeface="@{safeties.highlightReturns() == 1 ? `bold` : `normal`}"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/title_safeties_returned"
+                    android:textColor="@color/primary_text"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}"
+                    app:layout_columnWeight="0" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{safeties.opponentSafetiesReturns}"
+                    android:textColor="@color/primary_text"
+                    android:typeface="@{safeties.highlightReturns() == -1 ? `bold` : `normal`}"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{safeties.playerForcedFouls}"
+                    android:textColor="@color/secondary_text"
+                    android:typeface="@{safeties.highlightForcing() == 1 ? `bold` : `normal`}"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/title_forced_fouls"
+                    android:textColor="@color/secondary_text"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}"
+                    app:layout_columnWeight="0" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{safeties.opponentForcedFouls}"
+                    android:textColor="@color/secondary_text"
+                    android:typeface="@{safeties.highlightForcing() == -1 ? `bold` : `normal`}"
+                    android:visibility="@{safeties.expanded ? View.VISIBLE : View.GONE}" />
+            </android.support.v7.widget.GridLayout>
 
             <include
                 layout="@layout/layout_bottom_row"
@@ -33,5 +151,5 @@
                 android:layout_height="wrap_content"
                 bind:binder="@{safeties}" />
         </LinearLayout>
-    </view>
+    </android.support.v7.widget.CardView>
 </layout>

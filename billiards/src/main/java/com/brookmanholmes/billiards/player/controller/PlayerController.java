@@ -91,29 +91,27 @@ public abstract class PlayerController<T extends AbstractPlayer> {
     public static PlayerController<?> createController(Game game, String playerName, String opponentName, int playerRank, int opponentRank) {
         switch (game.getGameType()) {
             case BCA_NINE_BALL:
-                return new NineBallController(playerName, opponentName, playerRank, opponentRank);
-            case BCA_TEN_BALL:
-                return new TenBallController(playerName, opponentName, playerRank, opponentRank);
-            case APA_EIGHT_BALL:
-                return new ApaEightBallController(playerName, opponentName, playerRank, opponentRank);
-            case APA_NINE_BALL:
-                return new ApaNineBallController(playerName, opponentName, playerRank, opponentRank);
-            case BCA_EIGHT_BALL:
-                return new EightBallController(playerName, opponentName, playerRank, opponentRank);
-            case BCA_GHOST_EIGHT_BALL:
-                return new EightBallController(playerName, opponentName, playerRank, opponentRank);
             case BCA_GHOST_NINE_BALL:
                 return new NineBallController(playerName, opponentName, playerRank, opponentRank);
+            case BCA_TEN_BALL:
             case BCA_GHOST_TEN_BALL:
                 return new TenBallController(playerName, opponentName, playerRank, opponentRank);
+            case APA_EIGHT_BALL:
             case APA_GHOST_EIGHT_BALL:
                 return new ApaEightBallController(playerName, opponentName, playerRank, opponentRank);
+            case APA_NINE_BALL:
             case APA_GHOST_NINE_BALL:
                 return new ApaNineBallController(playerName, opponentName, playerRank, opponentRank);
+            case BCA_EIGHT_BALL:
+            case BCA_GHOST_EIGHT_BALL:
+                return new EightBallController(playerName, opponentName, playerRank, opponentRank);
             case STRAIGHT_POOL:
-                return new StraightPoolController(playerName, opponentName, playerRank, opponentRank);
             case STRAIGHT_GHOST:
                 return new StraightPoolController(playerName, opponentName, playerRank, opponentRank);
+            case EQUAL_OFFENSE:
+                return null; // TODO: 1/5/2017 implement equal offense here
+            case EQUAL_DEFENSE:
+                return null; // // TODO: 1/5/2017 implement equal defense here
             default:
                 throw new InvalidGameTypeException(game.getGameType().name());
         }

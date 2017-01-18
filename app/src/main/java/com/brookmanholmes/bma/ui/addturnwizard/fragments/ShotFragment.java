@@ -1,6 +1,5 @@
 package com.brookmanholmes.bma.ui.addturnwizard.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,10 +13,9 @@ import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.addturnwizard.model.ShotPage;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
-import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
+import com.brookmanholmes.bma.wizard.ui.BaseFragmentDependentPageFragment;
 
 import java.util.List;
 
@@ -37,7 +35,7 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
-public abstract class ShotFragment extends BaseFragment {
+public abstract class ShotFragment extends BaseFragmentDependentPageFragment<ShotPage> {
     static final String ARG_KEY = "key";
     private static final String TAG = "ShotFragment";
     @Bind(R.id.title)
@@ -45,9 +43,6 @@ public abstract class ShotFragment extends BaseFragment {
     @Bind(R.id.buttonRunOut)
     Button btnRunOut;
 
-    ShotPage page;
-    PageFragmentCallbacks callbacks;
-    String key;
     private GameType gameType;
 
     public ShotFragment() {
@@ -77,29 +72,10 @@ public abstract class ShotFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (!(getParentFragment() instanceof PageFragmentCallbacks)) {
-            throw new ClassCastException("Activity must implement PageFragmentCallbacks");
-        }
-
-        callbacks = (PageFragmentCallbacks) getParentFragment();
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle args = getArguments();
-        key = args.getString(ARG_KEY);
         gameType = GameType.valueOf(getArguments().getString(GAME_TYPE_KEY));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        page.registerListener(this);
     }
 
     @Nullable
@@ -112,18 +88,6 @@ public abstract class ShotFragment extends BaseFragment {
         title.setText(page.getTitle());
 
         return view;
-    }
-
-    @Override
-    public void onPause() {
-        page.unregisterListener();
-        super.onPause();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        callbacks = null;
     }
 
     @Nullable

@@ -60,27 +60,27 @@ public class CompPlayer extends AbstractPlayer implements IWinsOnBreak, IStraigh
     }
 
     @Override
-    public String getAverageRunLength() {
+    public double getAverageRunLength() {
         if (runLengths.size() > 0) {
             double[] runLengths = new double[this.runLengths.size()];
             for (int i = 0; i < this.runLengths.size(); i++) {
                 runLengths[i] = this.runLengths.get(i);
             }
 
-            return avgf.format(StatUtils.mean(runLengths));
-        } else return avgf.format(0);
+            return StatUtils.mean(runLengths);
+        } else return 0;
     }
 
     @Override
-    public String getMedianRunLength() {
+    public double getMedianRunLength() {
         if (runLengths.size() > 0) {
             double[] runLengths = new double[this.runLengths.size()];
             for (int i = 0; i < this.runLengths.size(); i++) {
                 runLengths[i] = this.runLengths.get(i);
             }
 
-            return avgf.format(StatUtils.percentile(runLengths, 50));
-        } else return avgf.format(0);
+            return StatUtils.percentile(runLengths, 50);
+        } else return 0;
     }
 
     @Override

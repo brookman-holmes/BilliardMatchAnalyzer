@@ -328,4 +328,13 @@
     <string name="balls_remaining">Balls remaining on table: %1$d</string>
     <string name="title_straight_pool_runs">Runs</string>
     <string name="lifetime_average">Lifetime average</string>
+    <string name="this_session">This session</string>
+    <string name="lifetime">Lifetime</string>
+    <string name="high_run">High run</string>
+    <string name="attempts">Attempts</string>
+    <string name="average_run_length">Average run length</string>
+    <string name="median_run_length">Median run length</string>
+    <string name="run_length">Run length</string>
+    <string name="turns">Turns</string>
+    <string name="title_straight_pool">Input %1$s\'s turn</string>
 </resources>

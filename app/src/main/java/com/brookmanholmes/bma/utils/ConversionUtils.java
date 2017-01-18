@@ -12,12 +12,18 @@ import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.bma.R;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Brookman Holmes on 8/2/2016.
  */
 public class ConversionUtils {
-    private ConversionUtils() {
+    // formatter for percentages (e.g. .875)
+    public final static DecimalFormat pctf = new DecimalFormat("#.000");
+    // formatter for average number of balls made per turn (e.g. 5.33)
+    public final static DecimalFormat avgf = new DecimalFormat("##.##");
 
+    private ConversionUtils() {
     }
 
     public static float convertDpToPx(Context context, float dp) {
@@ -84,8 +90,7 @@ public class ConversionUtils {
 
     public static
     @ColorInt
-    int getPctColor(Context context, String pctString) {
-        float pct = Float.valueOf(pctString);
+    int getPctColor(Context context, double pct) {
         @ColorRes int color;
         if (pct > .9)
             color = R.color.good;

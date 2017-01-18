@@ -7,7 +7,7 @@ import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.BreakFragment;
-import com.brookmanholmes.bma.wizard.model.BranchPage;
+import com.brookmanholmes.bma.wizard.model.FragmentDependentBranch;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
@@ -23,13 +23,12 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
-public class BreakPage extends BranchPage implements UpdatesTurnInfo {
+public class BreakPage extends FragmentDependentBranch<BreakFragment> implements UpdatesTurnInfo {
     static final String showShotPage = "show shot page";
     private static final String TAG = "BreakPage";
     private static final String TABLE_STATUS_KEY = "table_status";
     final GameType gameType;
     TableStatus tableStatus;
-    BreakFragment fragment;
 
     BreakPage(ModelCallbacks callbacks, String title, String title2, Bundle matchData) {
         super(callbacks, title);
@@ -42,20 +41,15 @@ public class BreakPage extends BranchPage implements UpdatesTurnInfo {
         addBranch(showShotPage, new ShotPage(callbacks, title2, matchData));
     }
 
-    public void registerListener(BreakFragment fragment) {
-        this.fragment = fragment;
-        if (modelCallbacks instanceof AddTurnWizardModel) {
-            this.fragment.updateView(((AddTurnWizardModel) modelCallbacks).getTableStatus().getBallStatuses());
-        }
-    }
-
-    public void unregisterListener() {
-        this.fragment = null;
-    }
-
     @Override
     public Fragment createFragment() {
         return BreakFragment.create(getKey(), getData());
+    }
+
+    @Override
+    public void updateFragment() {
+        if (modelCallbacks instanceof AddTurnWizardModel)
+            fragment.updateView(((AddTurnWizardModel) modelCallbacks).getTableStatus().getBallStatuses());
     }
 
     @Override

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shootingPctGrid"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingEnd="8dp"
+    android:paddingStart="8dp"
+    tools:showIn="@layout/row_turn">
+
+    <ImageView
+        android:id="@+id/shootingLine"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/circle"
+        android:tint="@color/almost_good" />
+
+    <TextView
+        android:id="@+id/tvShootingPct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Shooting .667"
+        android:textColor="@color/primary_text"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/safetyLine"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/circle"
+        android:tint="@color/almost_good" />
+
+    <TextView
+        android:id="@+id/tvSafetyPct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Shooting .667"
+        android:textColor="@color/primary_text"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/breakingLine"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/circle"
+        android:tint="@color/almost_good" />
+
+    <TextView
+        android:id="@+id/tvBreakPct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shooting .667"
+        android:textColor="@color/primary_text"
+        android:textSize="12sp" />
+
+</LinearLayout>

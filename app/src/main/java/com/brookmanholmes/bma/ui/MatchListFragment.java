@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.brookmanholmes.bma.ui.stats.Filterable;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
 import com.brookmanholmes.bma.ui.view.BaseViewHolder;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ import butterknife.OnLongClick;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MatchListFragment extends BaseRecyclerFragment implements Filterable {
+public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.MatchListRecyclerAdapter> implements Filterable {
     private static final String TAG = "MatchListFragment";
     private static final String ARG_PLAYER = "arg_player";
     private static final String ARG_OPPONENT = "arg_opponent";
@@ -83,7 +85,17 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
         if (getActivity() instanceof PlayerProfileActivity) {
             ((PlayerProfileActivity) getActivity()).addListener(this);
         }
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+
+        Drawable divider = getContext().getDrawable(R.drawable.line_divider);
+        if (recyclerView.getLayoutManager() instanceof GridLayoutManager)
+            recyclerView.addItemDecoration(new SimpleListDividerDecorator(divider, divider, false));
+        else
+            recyclerView.addItemDecoration(new SimpleListDividerDecorator(divider, false));
+
+        recyclerView.setPadding(0, 0, 0, 0);
+        return view;
     }
 
     @Override
@@ -101,7 +113,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
     }
 
     public void update() {
-        ((MatchListRecyclerAdapter) adapter).update(database.getMatches(player, opponent));
+        adapter.update(database.getMatches(player, opponent));
     }
 
     @Override
@@ -139,7 +151,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
                         .inflate(R.layout.footer, parent, false));
             else
                 return new ListItemHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.card_match_row, parent, false));
+                        .inflate(R.layout.row_match, parent, false));
         }
 
         @Override
@@ -248,6 +260,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
 
         class ListItemHolder extends BaseViewHolder {
             long id;
+
             @Bind(R.id.players)
             TextView playerNames;
             @Bind(R.id.breakType)
@@ -272,6 +285,8 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
                 if (match.getGameStatus().gameType == GameType.STRAIGHT_GHOST) {
                     playerNames.setText(match.getPlayer().getName());
                     breakType.setText(getString(R.string.game_straight_ghost));
+                } else if (match.getGameStatus().gameType == GameType.STRAIGHT_POOL) {
+                    playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
                 } else {
                     playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
                     breakType.setText(getBreakType(match.getGameStatus().breakType, match.getPlayer().getName(), match.getOpponent().getName()));
@@ -428,7 +443,7 @@ public class MatchListFragment extends BaseRecyclerFragment implements Filterabl
         @Override
         protected void onPostExecute(List<Match> matches) {
             if (isAdded() && !isCancelled())
-                ((MatchListRecyclerAdapter) adapter).update(matches);
+                adapter.update(matches);
         }
 
         @Override

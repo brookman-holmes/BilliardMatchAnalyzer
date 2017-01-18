@@ -32,7 +32,7 @@
 
     <include
         android:id="@+id/match"
-        layout="@layout/container_match_row"
+        layout="@layout/row_match"
         android:visibility="invisible" />
 
 </LinearLayout>

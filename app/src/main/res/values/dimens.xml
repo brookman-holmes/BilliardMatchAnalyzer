@@ -22,4 +22,7 @@
     <dimen name="activity_dialog_title_padding">0dp</dimen>
     <dimen name="ball_container_ball_size">24dp</dimen>
     <dimen name="decoview_inset">8dp</dimen>
+    <dimen name="adv_stat_title_text_size">16sp</dimen>
+    <dimen name="adv_stat_body_text_size">14sp</dimen>
+    <dimen name="adv_stat_graph_text_size">10sp</dimen>
 </resources>

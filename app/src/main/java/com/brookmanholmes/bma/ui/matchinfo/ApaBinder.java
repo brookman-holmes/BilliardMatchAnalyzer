@@ -29,23 +29,7 @@ public class ApaBinder extends BindingAdapter {
         this.title = title;
         this.helpLayout = R.layout.dialog_help_apa;
 
-        if (player instanceof IApa && opponent instanceof IApa) {
-            playerRank = player.getRank() + "";
-            opponentRank = opponent.getRank() + "";
-
-            playerPoints = ((IApa) player).getPoints();
-            opponentPoints = ((IApa) opponent).getPoints();
-            playerPointsNeeded = ((IApa) player).getPointsNeeded();
-            opponentPointsNeeded = ((IApa) opponent).getPointsNeeded();
-
-            playerMatchPoints = ((IApa) player).getMatchPoints(((IApa) opponent).getPoints()) + "";
-            opponentMatchPoints = ((IApa) opponent).getMatchPoints(((IApa) player).getPoints()) + "";
-
-            playerDefenses = player.getSafetyAttempts() + "";
-            opponentDefenses = opponent.getSafetyAttempts() + "";
-
-            this.innings = innings + "";
-        }
+        update(player, opponent, innings);
 
         if (player instanceof ApaEightBallPlayer) {
             apa8Ball = true;

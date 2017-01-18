@@ -33,10 +33,9 @@ import android.widget.TextView;
 
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
-import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
-import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
+import com.brookmanholmes.bma.wizard.ui.BasePageFragment;
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -45,7 +44,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PlayerNameFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener {
+public class PlayerNameFragment extends BasePageFragment<PlayerNamePage> implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "PlayerNameFragment";
     private static final String ARG_KEY = "key";
     private static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
@@ -60,9 +59,6 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
     @Bind(R.id.cbGhost)
     CheckBox playTheGhost;
 
-    private PageFragmentCallbacks callbacks;
-    private String key;
-    private PlayerNamePage page;
     private List<String> names;
 
     public PlayerNameFragment() {
@@ -85,11 +81,7 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle args = getArguments();
-        key = args.getString(ARG_KEY);
-
         DatabaseAdapter database = new DatabaseAdapter(getContext());
-
         names = database.getPlayerNames();
     }
 
@@ -127,23 +119,6 @@ public class PlayerNameFragment extends BaseFragment implements CompoundButton.O
             opponentName.setText(R.string.ghost_name);
         else
             opponentName.setText("");
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (!(getActivity() instanceof PageFragmentCallbacks)) {
-            throw new ClassCastException("Activity must implement PageFragmentCallbacks");
-        }
-
-        callbacks = (PageFragmentCallbacks) getActivity();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        callbacks = null;
     }
 
     @Override

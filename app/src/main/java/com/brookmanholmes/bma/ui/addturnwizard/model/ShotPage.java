@@ -8,8 +8,8 @@ import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.ShotFragment;
+import com.brookmanholmes.bma.wizard.model.FragmentDependentPage;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
-import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
@@ -37,11 +37,10 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
-public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
+public class ShotPage extends FragmentDependentPage<ShotFragment> implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
     private static final String TAG = "ShotPage";
     private static final String TABLE_STATUS_KEY = "table_status";
     private TableStatus tableStatus;
-    private ShotFragment fragment;
     private PlayerColor playerColor = PlayerColor.OPEN;
 
     ShotPage(ModelCallbacks callbacks, String title, Bundle matchData) {
@@ -185,16 +184,7 @@ public class ShotPage extends Page implements RequiresUpdatedTurnInfo, UpdatesTu
         return tableStatus.getBallStatus(tableStatus.getGameBall());
     }
 
-    public void registerListener(ShotFragment fragment) {
-        this.fragment = fragment;
-        updateFragment();
-    }
-
-    public void unregisterListener() {
-        fragment = null;
-    }
-
-    private void updateFragment() {
+    public void updateFragment() {
         PlayerColor currentPlayerColor = PlayerColor.valueOf(data.getString(CURRENT_PLAYER_COLOR_KEY));
         if (fragment != null) {
             GameType gameType = GameType.valueOf(data.getString(GAME_TYPE_KEY));

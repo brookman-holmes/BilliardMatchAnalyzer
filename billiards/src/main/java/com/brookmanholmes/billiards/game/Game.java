@@ -96,6 +96,10 @@ public abstract class Game {
                 return new StraightPoolGame(turn);
             case STRAIGHT_GHOST:
                 return new StraightPoolHighRunAttempt();
+            case EQUAL_DEFENSE:
+                return new EqualDefense(turn);
+            case EQUAL_OFFENSE:
+                return new EqualOffense();
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }

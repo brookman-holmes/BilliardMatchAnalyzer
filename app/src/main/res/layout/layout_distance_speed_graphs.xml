@@ -4,51 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
+    android:layout_gravity="center"
     android:layout_marginTop="4dp"
     android:orientation="vertical"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
     tools:showIn="@layout/row_turn">
 
     <com.brookmanholmes.bma.ui.view.HorizontalBarView
         android:id="@+id/speedGraph"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:bar_emptyColor="#FFCCBC"
+        app:bar_emptyColor="#FBE9E7"
         app:bar_emptyTextColor="@color/primary_text"
         app:bar_fillColor="@color/colorAccent"
         app:bar_fillPercentage="30"
         app:bar_fillTextColor="@color/white"
         app:bar_text="Speed: 3/10"
         app:bar_textPadding="2dp"
-        app:bar_textSize="8sp" />
+        app:bar_textSize="@dimen/adv_stat_graph_text_size" />
 
     <com.brookmanholmes.bma.ui.view.HorizontalBarView
         android:id="@+id/cbGraph"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:bar_emptyColor="#FFCCBC"
+        app:bar_emptyColor="#FBE9E7"
         app:bar_emptyTextColor="@color/primary_text"
         app:bar_fillColor="@color/colorAccent"
         app:bar_fillPercentage="0"
         app:bar_fillTextColor="@color/white"
         app:bar_text="CB->OB: less than .5'"
         app:bar_textPadding="2dp"
-        app:bar_textSize="8sp" />
+        app:bar_textSize="@dimen/adv_stat_graph_text_size" />
 
     <com.brookmanholmes.bma.ui.view.HorizontalBarView
         android:id="@+id/obGraph"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:bar_emptyColor="#FFCCBC"
+        app:bar_emptyColor="#FBE9E7"
         app:bar_emptyTextColor="@color/primary_text"
         app:bar_fillColor="@color/colorAccent"
         app:bar_fillPercentage="79"
         app:bar_fillTextColor="@color/white"
         app:bar_text="OB->Pocket: 7.5'"
         app:bar_textPadding="2dp"
-        app:bar_textSize="8sp" />
+        app:bar_textSize="@dimen/adv_stat_graph_text_size" />
 </LinearLayout>

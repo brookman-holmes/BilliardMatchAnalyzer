@@ -16,7 +16,9 @@ public enum GameType {
     APA_EIGHT_BALL(false, true, false, false),
     APA_GHOST_EIGHT_BALL(true, true, false, false),
     APA_GHOST_NINE_BALL(true, true, false, false),
-    STRAIGHT_GHOST(false, false, false, true); // is not classified as a ghost game because there are no turns by the second player
+    STRAIGHT_GHOST(false, false, false, true),// is not classified as a ghost game because there are no turns by the second player
+    EQUAL_OFFENSE(false, false, false, true),// is not classified as a ghost game because there are no turns by the second player
+    EQUAL_DEFENSE(false, false, false, false);
 
     private final boolean ghostGame;
     private final boolean apa;

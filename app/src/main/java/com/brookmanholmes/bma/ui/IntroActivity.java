@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -61,6 +61,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
@@ -359,14 +360,25 @@ public class IntroActivity extends BaseActivity {
         public void onSuccess(byte[] bytes) {
             positiveButton.setEnabled(true);
             TransitionManager.beginDelayedTransition((LinearLayout) view);
-            matchView.setVisibility(View.VISIBLE);
-            match = MatchModel.unmarshall(bytes).getMatch();
-            setLocation(match.getLocation());
-            date.setText(getDate(match.getCreatedOn()));
-            playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
-            breakType.setText(getBreakType(match.getGameStatus().breakType, match.getPlayer().getName(), match.getOpponent().getName()));
-            gameType.setImageResource(getImageId(match.getGameStatus().gameType));
-            ruleSet.setText(getRuleSet(match.getGameStatus().gameType));
+            try {
+                match = MatchModel.unmarshall(bytes).getMatch();
+                setLocation(match.getLocation());
+                date.setText(getDate(match.getCreatedOn()));
+                if (match.getGameStatus().gameType == GameType.STRAIGHT_GHOST) {
+                    playerNames.setText(match.getPlayer().getName());
+                    breakType.setText(getString(R.string.game_straight_ghost));
+                } else if (match.getGameStatus().gameType == GameType.STRAIGHT_POOL) {
+                    playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
+                } else {
+                    playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
+                    breakType.setText(getBreakType(match.getGameStatus().breakType, match.getPlayer().getName(), match.getOpponent().getName()));
+                }
+                gameType.setImageResource(getImageId(match.getGameStatus().gameType));
+                ruleSet.setText(getRuleSet(match.getGameStatus().gameType));
+                matchView.setVisibility(View.VISIBLE);
+            } catch (Exception e) { // should probably be more specific with the error I'm catching
+                textInputLayout.setError("Looks like something went wrong! Try re-uploading and make sure the app versions are the same.");
+            }
         }
 
         private String getDate(Date date) {
@@ -415,6 +427,8 @@ public class IntroActivity extends BaseActivity {
                     return R.drawable.nine_ball;
                 case STRAIGHT_POOL:
                     return R.drawable.fourteen_ball;
+                case STRAIGHT_GHOST:
+                    return R.drawable.fourteen_ball;
                 case AMERICAN_ROTATION:
                     return R.drawable.fifteen_ball;
                 default:
@@ -459,9 +473,7 @@ public class IntroActivity extends BaseActivity {
         }
     }
 
-    public static class PlayerListFragment extends BaseRecyclerFragment {
-        private GetPlayersTask task;
-
+    public static class PlayerListFragment extends BaseRecyclerFragment<PlayerListFragment.RecyclerAdapter> {
         public PlayerListFragment() {
 
         }
@@ -475,10 +487,21 @@ public class IntroActivity extends BaseActivity {
         @Override
         public void onResume() {
             super.onResume();
-            if (task == null || task.getStatus() != AsyncTask.Status.RUNNING) {
-                task = new GetPlayersTask();
-                task.execute();
-            }
+            adapter.update(new DatabaseAdapter(getContext()).getPlayers());
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = super.onCreateView(inflater, container, savedInstanceState);
+
+            Drawable divider = getContext().getDrawable(R.drawable.line_divider);
+            if (recyclerView.getLayoutManager() instanceof GridLayoutManager)
+                recyclerView.addItemDecoration(new SimpleListDividerDecorator(divider, divider, false));
+            else
+                recyclerView.addItemDecoration(new SimpleListDividerDecorator(divider, false));
+
+            recyclerView.setPadding(0, 0, 0, 0);
+            return view;
         }
 
         @Override
@@ -495,14 +518,7 @@ public class IntroActivity extends BaseActivity {
             }
         }
 
-        @Override
-        public void onDestroy() {
-            if (task.getStatus() != AsyncTask.Status.FINISHED)
-                task.cancel(true);
-            super.onDestroy();
-        }
-
-        private static class RecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+        static class RecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             private static final int PLAYER_VIEW = 0;
             private static final int FOOTER = 1;
             final int[] colors = new int[]{Color.parseColor("#f44336"), Color.parseColor("#9C27B0"),
@@ -513,7 +529,7 @@ public class IntroActivity extends BaseActivity {
 
             List<AbstractPlayer> players;
 
-            public RecyclerAdapter(List<AbstractPlayer> players) {
+            RecyclerAdapter(List<AbstractPlayer> players) {
                 Collections.sort(players);
                 this.players = players;
             }
@@ -525,7 +541,7 @@ public class IntroActivity extends BaseActivity {
 
             @Override
             public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(viewType == PLAYER_VIEW ? R.layout.card_player : R.layout.footer, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(viewType == PLAYER_VIEW ? R.layout.row_player : R.layout.footer, parent, false);
                 if (viewType == PLAYER_VIEW)
                     return new ViewHolder(view);
                 else return new FooterHolder(view);
@@ -582,7 +598,7 @@ public class IntroActivity extends BaseActivity {
             @Bind(R.id.matchesPlayed)
             TextView matchesPlayed;
 
-            public ViewHolder(View itemView) {
+            ViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
             }
@@ -596,9 +612,9 @@ public class IntroActivity extends BaseActivity {
                 DatabaseAdapter db = new DatabaseAdapter(itemView.getContext());
                 List<Match> matches = db.getMatches(player.getName(), null);
                 matchesPlayed.setText(context.getResources().getQuantityString(R.plurals.num_matches, matches.size(), matches.size()));
-                shootingPct.setText(String.format(context.getString(R.string.shooting_pct), player.getShootingPct()));
-                safetyPct.setText(String.format(context.getString(R.string.safety_pct), player.getSafetyPct()));
-                breakPct.setText(String.format(context.getString(R.string.breaking_pct), player.getBreakPct()));
+                shootingPct.setText(String.format(context.getString(R.string.shooting_pct), ConversionUtils.pctf.format(player.getShootingPct())));
+                safetyPct.setText(String.format(context.getString(R.string.safety_pct), ConversionUtils.pctf.format(player.getSafetyPct())));
+                breakPct.setText(String.format(context.getString(R.string.breaking_pct), ConversionUtils.pctf.format(player.getBreakPct())));
 
                 shootingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getShootingPct()));
                 safetyLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
@@ -610,23 +626,6 @@ public class IntroActivity extends BaseActivity {
                 Intent intent = new Intent(itemView.getContext(), PlayerProfileActivity.class);
                 intent.putExtra(PlayerProfileActivity.ARG_PLAYER_NAME, playerName.getText().toString());
                 itemView.getContext().startActivity(intent);
-            }
-        }
-
-        private class GetPlayersTask extends AsyncTask<Void, Void, List<AbstractPlayer>> {
-            @Override
-            protected List<AbstractPlayer> doInBackground(Void... params) {
-                if (!isCancelled()) {
-                    return new DatabaseAdapter(getContext()).getPlayers();
-                } else {
-                    return new ArrayList<>();
-                }
-            }
-
-            @Override
-            protected void onPostExecute(List<AbstractPlayer> abstractPlayers) {
-                if (adapter != null)
-                    ((RecyclerAdapter) adapter).update(abstractPlayers);
             }
         }
     }

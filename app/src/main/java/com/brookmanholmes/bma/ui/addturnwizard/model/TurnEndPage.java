@@ -10,7 +10,7 @@ import com.brookmanholmes.billiards.turn.TurnEndOptions;
 import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.TurnEndFragment;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
-import com.brookmanholmes.bma.wizard.model.BranchPage;
+import com.brookmanholmes.bma.wizard.model.FragmentDependentBranch;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 
 import java.util.ArrayList;
@@ -18,9 +18,8 @@ import java.util.ArrayList;
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
-public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
+public class TurnEndPage extends FragmentDependentBranch<TurnEndFragment> implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
     public static final String FOUL_KEY = "foul_key";
-    private TurnEndFragment fragment;
 
     TurnEndPage(ModelCallbacks callbacks, String title, Bundle matchData) {
         super(callbacks, title);
@@ -45,7 +44,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     public void getNewTurnInfo(AddTurnWizardModel model) {
         TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.getGameStatus(data),
                 model.getTableStatus());
-        updateFragment(options);
+        updateFragment();
     }
 
     @Override
@@ -63,18 +62,20 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
         else return turnEnd.equals(branches.get(3).choice);
     }
 
-    public void registerListener(TurnEndFragment fragment) {
+    @Override
+    public void registerFragment(TurnEndFragment fragment) {
         this.fragment = fragment;
     }
 
-    public void unregisterListener() {
+    @Override
+    public void unregisterFragment() {
         fragment = null;
     }
 
-    private void updateFragment(TurnEndOptions options) {
-        if (fragment != null) {
-            fragment.updateOptions(options);
-        }
+    @Override
+    public void updateFragment() {
+        if (fragment != null)
+            fragment.updateOptions(getTurnEndOptions());
     }
 
     public TurnEndOptions getTurnEndOptions() {
@@ -84,7 +85,7 @@ public class TurnEndPage extends BranchPage implements RequiresUpdatedTurnInfo, 
     @Override
     public void resetData(Bundle data) {
         super.resetData(data);
-        updateFragment(getTurnEndOptions());
+        updateFragment();
     }
 
     public void setTurnEnd(String turnEnd) {

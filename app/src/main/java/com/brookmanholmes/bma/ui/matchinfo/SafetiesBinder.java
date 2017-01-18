@@ -26,30 +26,12 @@ public class SafetiesBinder extends BindingAdapter {
         this.title = title;
         helpLayout = R.layout.dialog_help_safeties;
 
-        playerSafetyPct = player.getSafetyPct();
-        opponentSafetyPct = opponent.getSafetyPct();
-
-        playerSafetiesMade = player.getSafetySuccesses();
-        opponentSafetiesMade = opponent.getSafetySuccesses();
-        playerSafeties = player.getSafetyAttempts();
-        opponentSafeties = opponent.getSafetyAttempts();
-
-        playerSafetyFouls = player.getSafetyFouls() + "";
-        opponentSafetyFouls = opponent.getSafetyFouls() + "";
-
-        playerSafetyEscapes = player.getSafetyEscapes() + "";
-        opponentSafetyEscapes = opponent.getSafetyEscapes() + "";
-
-        playerSafetyReturns = player.getSafetyReturns() + "";
-        opponentSafetiesReturns = opponent.getSafetyReturns() + "";
-
-        playerForcedFouls = player.getSafetyForcedErrors() + "";
-        opponentForcedFouls = opponent.getSafetyForcedErrors() + "";
+        update(player, opponent);
     }
 
     public void update(AbstractPlayer player, AbstractPlayer opponent) {
-        playerSafetyPct = player.getSafetyPct();
-        opponentSafetyPct = opponent.getSafetyPct();
+        playerSafetyPct = pctf.format(player.getSafetyPct());
+        opponentSafetyPct = pctf.format(opponent.getSafetyPct());
 
         playerSafetiesMade = player.getSafetySuccesses();
         opponentSafetiesMade = opponent.getSafetySuccesses();
@@ -71,49 +53,23 @@ public class SafetiesBinder extends BindingAdapter {
         notifyChange();
     }
 
-    public boolean playerShootingBetter() {
-        return Double.compare(
-                Double.parseDouble(playerSafetyPct),
-                Double.parseDouble(opponentSafetyPct)
-        ) > 0;
+    public int highlightSafeties() {
+        return compare(playerSafetyPct, opponentSafetyPct);
     }
 
-    public boolean opponentShootingBetter() {
-        return Double.compare(
-                Double.parseDouble(playerSafetyPct),
-                Double.parseDouble(opponentSafetyPct)
-        ) < 0;
+    public int highlightFouls() {
+        return compare(playerSafetyFouls, opponentSafetyFouls) * -1;
     }
 
-    public boolean playerFoulsLess() {
-        return Integer.parseInt(playerSafetyFouls) < Integer.parseInt(opponentSafetyFouls);
+    public int highlightEscapes() {
+        return compare(playerSafetyEscapes, opponentSafetyEscapes);
     }
 
-    public boolean opponentFoulsLess() {
-        return Integer.parseInt(playerSafetyFouls) > Integer.parseInt(opponentSafetyFouls);
+    public int highlightReturns() {
+        return compare(playerSafetyReturns, opponentSafetiesReturns);
     }
 
-    public boolean playerEscapesMore() {
-        return Integer.parseInt(playerSafetyEscapes) > Integer.parseInt(opponentSafetyEscapes);
-    }
-
-    public boolean opponentEscapesMore() {
-        return Integer.parseInt(playerSafetyEscapes) < Integer.parseInt(opponentSafetyEscapes);
-    }
-
-    public boolean playerReturnsMore() {
-        return Integer.parseInt(playerSafetyReturns) > Integer.parseInt(opponentSafetiesReturns);
-    }
-
-    public boolean opponentReturnsMore() {
-        return Integer.parseInt(playerSafetyReturns) < Integer.parseInt(opponentSafetiesReturns);
-    }
-
-    public boolean playerForcedMore() {
-        return Integer.parseInt(opponentForcedFouls) > Integer.parseInt(playerForcedFouls);
-    }
-
-    public boolean opponentForcedMore() {
-        return Integer.parseInt(opponentForcedFouls) < Integer.parseInt(playerForcedFouls);
+    public int highlightForcing() {
+        return compare(playerForcedFouls, opponentForcedFouls) * -1;
     }
 }

@@ -62,35 +62,19 @@ public class RunsBinder extends BindingAdapter {
         return showEarlyWins && expanded;
     }
 
-    public boolean playerBreakRunsMore() {
-        return Integer.parseInt(playerBreakRuns) > Integer.parseInt(opponentBreakRuns);
+    public int highlightBreakRuns() {
+        return compare(playerBreakRuns, opponentBreakRuns);
     }
 
-    public boolean opponentBreakRunsMore() {
-        return Integer.parseInt(playerBreakRuns) < Integer.parseInt(opponentBreakRuns);
+    public int highlightTableRuns() {
+        return compare(playerTableRuns, opponentTableRuns);
     }
 
-    public boolean playerTableRunsMore() {
-        return Integer.parseInt(playerTableRuns) > Integer.parseInt(opponentTableRuns);
+    public int highlightFiveBallRuns() {
+        return compare(playerFiveBallRuns, opponentFiveBallRuns);
     }
 
-    public boolean opponentTableRunsMore() {
-        return Integer.parseInt(playerTableRuns) < Integer.parseInt(opponentTableRuns);
-    }
-
-    public boolean playerFiveBallRunsMore() {
-        return Integer.parseInt(playerFiveBallRuns) > Integer.parseInt(opponentFiveBallRuns);
-    }
-
-    public boolean opponentFiveBallRunsMore() {
-        return Integer.parseInt(playerFiveBallRuns) < Integer.parseInt(opponentFiveBallRuns);
-    }
-
-    public boolean playerEarlyWinsMore() {
-        return Integer.parseInt(playerEarlyWins) > Integer.parseInt(opponentEarlyWins);
-    }
-
-    public boolean opponentEarlyWinsMore() {
-        return Integer.parseInt(playerEarlyWins) < Integer.parseInt(opponentEarlyWins);
+    public int highlightEarlyWins() {
+        return compare(playerEarlyWins, opponentEarlyWins);
     }
 }

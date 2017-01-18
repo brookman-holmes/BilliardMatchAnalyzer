@@ -6,8 +6,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.utils.ConversionUtils;
@@ -45,8 +43,7 @@ public class CueBallView extends BaseView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawCircle(getCenterX(),
-                getCenterY(), getRadius() - getPixels(1), linePaint);
+        canvas.drawCircle(getCenterX(), getCenterY(), getRadius() - getPixels(1), linePaint);
 
         drawXLine(canvas, getCenterX());
         drawYLine(canvas, getCenterY());
@@ -74,11 +71,6 @@ public class CueBallView extends BaseView {
 
     protected float getRadius() {
         return Math.min(getWidth(), getHeight()) / 2;
-    }
-
-    private float getScaledTextSize(int size) {
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, size, metrics);
     }
 
     protected int getDefaultSize() {

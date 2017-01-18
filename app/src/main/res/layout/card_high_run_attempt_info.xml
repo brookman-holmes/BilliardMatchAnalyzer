@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="runAttempt"
+            type="com.brookmanholmes.bma.ui.matchinfo.HighRunAttemptBinder" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:text="Runs" />
+
+        <android.support.v7.widget.CardView style="@style/card_view_style">
+
+            <android.support.v7.widget.GridLayout
+                style="@style/match_info_grid"
+                android:padding="16dp">
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/this_session"
+                    app:layout_column="1" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/lifetime"
+                    app:layout_column="2" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:gravity="start"
+                    android:text="@string/high_run"
+                    android:textColor="@color/primary_text"
+                    app:layout_columnWeight="0"
+                    app:layout_gravity="start" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runAttempt.currentMax}"
+                    android:textColor="@color/primary_text" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runAttempt.lifetimeMax}"
+                    android:textColor="@color/primary_text"
+                    app:layout_column="2" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:gravity="start"
+                    android:text="@string/attempts"
+                    android:textColor="@color/secondary_text"
+                    app:layout_columnWeight="0"
+                    app:layout_gravity="start" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runAttempt.currentAttempts}"
+                    android:textColor="@color/secondary_text" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runAttempt.lifetimeAttempts}"
+                    android:textColor="@color/secondary_text"
+                    app:layout_column="2" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:gravity="start"
+                    android:text="@string/average_run_length"
+                    android:textColor="@color/primary_text"
+                    app:layout_columnWeight="0"
+                    app:layout_gravity="start" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runAttempt.currentMean}"
+                    android:textColor="@color/primary_text" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runAttempt.lifetimeMean}"
+                    android:textColor="@color/primary_text"
+                    app:layout_column="2" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:gravity="start"
+                    android:text="@string/median_run_length"
+                    android:textColor="@color/secondary_text"
+                    app:layout_columnWeight="0"
+                    app:layout_gravity="start" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runAttempt.currentMedian}"
+                    android:textColor="@color/secondary_text" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runAttempt.lifetimeMedian}"
+                    android:textColor="@color/secondary_text"
+                    app:layout_column="2" />
+
+            </android.support.v7.widget.GridLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</layout>

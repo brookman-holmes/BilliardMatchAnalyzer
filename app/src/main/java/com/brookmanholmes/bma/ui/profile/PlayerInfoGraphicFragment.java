@@ -53,7 +53,7 @@ import lecho.lib.hellocharts.view.LineChartView;
 /**
  * Created by helios on 5/15/2016.
  */
-public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements Filterable {
+public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGraphicFragment.PlayerInfoGraphicAdapter> implements Filterable {
     private static final String ARG_PLAYER = "arg_player";
     DecimalFormat df = new DecimalFormat("#.###");
     private DatabaseAdapter database;
@@ -284,13 +284,13 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
                 float count = 0;
                 for (AbstractPlayer player : players) {
                     if (player.getShootingAttempts() + player.getSafetyAttempts() + player.getBreakAttempts() > 0)
-                        tsp.add(new PointValue(count, Float.valueOf(player.getTrueShootingPct())));
+                        tsp.add(new PointValue(count, (float) player.getTrueShootingPct()));
                     if (player.getShootingAttempts() > 0)
-                        shooting.add(new PointValue(count, Float.valueOf(player.getShootingPct())));
+                        shooting.add(new PointValue(count, (float) player.getShootingPct()));
                     if (player.getSafetyAttempts() > 0)
-                        safeties.add(new PointValue(count, Float.valueOf(player.getSafetyPct())));
+                        safeties.add(new PointValue(count, (float) player.getSafetyPct()));
                     if (player.getBreakAttempts() > 0)
-                        breaking.add(new PointValue(count, Float.valueOf(player.getBreakPct())));
+                        breaking.add(new PointValue(count, (float) player.getBreakPct()));
 
                     count += 1;
                 }
@@ -634,7 +634,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment implements F
 
         @Override
         protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
-            ((PlayerInfoGraphicAdapter) adapter).updatePlayers(pairs);
+            adapter.updatePlayers(pairs);
         }
     }
 }

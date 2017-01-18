@@ -85,10 +85,10 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         return new GameChoicePage(this, context.getString(R.string.title_page_games), context, "GGCP")
                 .addBranch(context.getString(R.string.game_apa_eight_ghost),
                         getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.games_needed), GameType.APA_EIGHT_BALL, "gapa8")
-                                .setRaceToChoices(2, 8, 6))
+                                .setRaceToChoices(2, 7, 5))
                 .addBranch(context.getString(R.string.game_apa_nine_ghost),
                         getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.points_needed), GameType.APA_NINE_BALL, "gapa9")
-                                .setRaceToChoices(1, 10, 6))
+                                .setRaceToChoices(1, 9, 6))
                 .addBranch(context.getString(R.string.game_bca_eight_ghost), getBcaRankPage("gbca8"))
                 .addBranch(context.getString(R.string.game_bca_nine_ghost), getBcaRankPage("gbca9"))
                 .addBranch(context.getString(R.string.game_bca_ten_ghost), getBcaRankPage("gbca10"))
@@ -101,11 +101,11 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         return new GameChoicePage(this, context.getString(R.string.title_page_games), context, "GCP")
                 .addBranch(context.getString(R.string.game_apa_eight),
                         getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.games_needed), GameType.APA_EIGHT_BALL, "apa8")
-                                .setRaceToChoices(2, 8, 6),
+                                .setRaceToChoices(2, 7, 5),
                         getFirstBreakPage("apa8"))
                 .addBranch(context.getString(R.string.game_apa_nine),
                         getRaceToPage(context.getString(R.string.ranks), context.getString(R.string.points_needed), GameType.APA_NINE_BALL, "apa9")
-                                .setRaceToChoices(1, 10, 6),
+                                .setRaceToChoices(1, 9, 6),
                         getFirstBreakPage("apa9"))
                 .addBranch(context.getString(R.string.game_bca_eight), getBcaRankPage("bca8"), getBreakTypePage("bca8"))
                 .addBranch(context.getString(R.string.game_bca_nine), getBcaRankPage("bca9"), getBreakTypePage("bca9"))
@@ -121,7 +121,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
 
     private Page getStraightRankPage(String parentKey) {
         return getRaceToPage(context.getString(R.string.race), context.getString(R.string.points_needed), GameType.STRAIGHT_POOL, parentKey)
-                .setRaceToChoices(10, 150, 10, 50);
+                .setRaceToChoices(1, 20, 10, 5);
     }
 
     private Page getBcaRankPage(String parentKey) {

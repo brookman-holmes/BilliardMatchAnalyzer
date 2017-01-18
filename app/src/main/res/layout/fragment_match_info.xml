@@ -44,16 +44,15 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackground">
+        android:background="@color/colorBackground"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorBackground"
-            android:orientation="vertical"
-            android:paddingBottom="96dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp">
+            android:orientation="vertical">
 
             <include
                 layout="@layout/card_apa_stats"
@@ -86,6 +85,10 @@
             <include
                 layout="@layout/card_run_outs"
                 bind:runs="@{runs}" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="96dp" />
 
         </LinearLayout>
 

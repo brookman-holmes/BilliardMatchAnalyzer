@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/WizardPageContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <TextView
+        style="@style/WizardPageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/playerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Select player 1's rank"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/playerPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        app:np_dividerColor="@color/colorPrimary"
+        app:np_max="10"
+        app:np_min="1"
+        app:np_orientation="horizontal"
+        app:np_textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/line_divider" />
+
+    <TextView
+        android:id="@+id/opponentName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Select player 2's rank"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/opponentPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        app:np_dividerColor="@color/colorPrimary"
+        app:np_max="10"
+        app:np_min="1"
+        app:np_orientation="horizontal"
+        app:np_textSize="16sp" />
+
+</LinearLayout>

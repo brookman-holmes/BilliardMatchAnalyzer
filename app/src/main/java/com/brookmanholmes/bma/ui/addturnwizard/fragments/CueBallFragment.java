@@ -1,6 +1,5 @@
 package com.brookmanholmes.bma.ui.addturnwizard.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.TextViewCompat;
@@ -12,12 +11,11 @@ import android.widget.TextView;
 
 import com.appyvet.rangebar.RangeBar;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.addturnwizard.model.CueBallPage;
 import com.brookmanholmes.bma.ui.view.CueBallHitView;
 import com.brookmanholmes.bma.ui.view.OnCueBallTouched;
 import com.brookmanholmes.bma.utils.ConversionUtils;
-import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
+import com.brookmanholmes.bma.wizard.ui.BasePageFragment;
 
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -28,7 +26,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 9/27/2016.
  */
-public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBarTextListener,
+public class CueBallFragment extends BasePageFragment<CueBallPage> implements RangeBar.OnRangeBarTextListener,
         RangeBar.OnRangeBarChangeListener {
     private static final String TAG = "CueBallFragment";
     private static final String ARG_KEY = "key";
@@ -56,9 +54,6 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
     TextView speedText;
     @Bind(R.id.hit)
     CueBallHitView hit;
-    private String key;
-    private CueBallPage page;
-    private PageFragmentCallbacks callbacks;
 
     public static CueBallFragment create(String key) {
         CueBallFragment fragment = new CueBallFragment();
@@ -67,23 +62,6 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
 
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (!(getParentFragment() instanceof PageFragmentCallbacks)) {
-            throw new ClassCastException("Activity must implement PageFragmentCallbacks");
-        } else
-            callbacks = (PageFragmentCallbacks) getParentFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        key = args.getString(ARG_KEY);
     }
 
     @Nullable
@@ -139,12 +117,6 @@ public class CueBallFragment extends BaseFragment implements RangeBar.OnRangeBar
             cueDivider.setVisibility(View.GONE);
 
         return view;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        callbacks = null;
     }
 
     @Override

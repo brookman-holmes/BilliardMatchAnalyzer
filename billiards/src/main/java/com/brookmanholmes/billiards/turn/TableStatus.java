@@ -73,30 +73,26 @@ final public class TableStatus implements ITableStatus, Serializable {
      */
     public static TableStatus newTable(GameType gameType) throws InvalidGameTypeException {
         switch (gameType) {
-            case APA_EIGHT_BALL:
-                return new TableStatus(15, 8, gameType);
-            case BCA_EIGHT_BALL:
-                return new TableStatus(15, 8, gameType);
-            case APA_NINE_BALL:
-                return new TableStatus(9, 9, gameType);
-            case BCA_NINE_BALL:
-                return new TableStatus(9, 9, gameType);
-            case BCA_TEN_BALL:
-                return new TableStatus(10, 10, gameType);
             case BCA_GHOST_EIGHT_BALL:
-                return new TableStatus(15, 8, gameType);
-            case BCA_GHOST_NINE_BALL:
-                return new TableStatus(9, 9, gameType);
-            case BCA_GHOST_TEN_BALL:
-                return new TableStatus(10, 10, gameType);
+            case APA_EIGHT_BALL:
+            case BCA_EIGHT_BALL:
             case APA_GHOST_EIGHT_BALL:
                 return new TableStatus(15, 8, gameType);
+            case APA_NINE_BALL:
+            case BCA_NINE_BALL:
             case APA_GHOST_NINE_BALL:
+            case BCA_GHOST_NINE_BALL:
                 return new TableStatus(9, 9, gameType);
+            case BCA_TEN_BALL:
+            case BCA_GHOST_TEN_BALL:
+                return new TableStatus(10, 10, gameType);
             case STRAIGHT_POOL:
-                return new TableStatus(999, 999, gameType);
             case STRAIGHT_GHOST:
                 return new TableStatus(999, 999, gameType);
+            case EQUAL_DEFENSE:
+                return null; // // TODO: 1/5/2017 implement equal defense here
+            case EQUAL_OFFENSE:
+                return null;// TODO: 1/5/2017 implement equal offense here
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }
@@ -114,30 +110,26 @@ final public class TableStatus implements ITableStatus, Serializable {
      */
     public static TableStatus newTable(GameType gameType, List<Integer> ballsOnTable) throws InvalidGameTypeException {
         switch (gameType) {
+            case BCA_GHOST_EIGHT_BALL:
             case APA_EIGHT_BALL:
-                return new TableStatus(15, 8, gameType, ballsOnTable);
             case BCA_EIGHT_BALL:
+            case APA_GHOST_EIGHT_BALL:
                 return new TableStatus(15, 8, gameType, ballsOnTable);
             case APA_NINE_BALL:
-                return new TableStatus(9, 9, gameType, ballsOnTable);
             case BCA_NINE_BALL:
+            case APA_GHOST_NINE_BALL:
+            case BCA_GHOST_NINE_BALL:
                 return new TableStatus(9, 9, gameType, ballsOnTable);
             case BCA_TEN_BALL:
                 return new TableStatus(10, 10, gameType, ballsOnTable);
-            case BCA_GHOST_EIGHT_BALL:
-                return new TableStatus(15, 8, gameType, ballsOnTable);
-            case BCA_GHOST_NINE_BALL:
-                return new TableStatus(9, 9, gameType, ballsOnTable);
             case BCA_GHOST_TEN_BALL:
-                return new TableStatus(10, 10, gameType, ballsOnTable);
-            case APA_GHOST_EIGHT_BALL:
-                return new TableStatus(15, 8, gameType, ballsOnTable);
-            case APA_GHOST_NINE_BALL:
-                return new TableStatus(9, 9, gameType, ballsOnTable);
             case STRAIGHT_POOL:
-                return new TableStatus(999, 999, gameType, ballsOnTable);
             case STRAIGHT_GHOST:
                 return new TableStatus(999, 999, gameType, ballsOnTable);
+            case EQUAL_DEFENSE:
+                return null; // // TODO: 1/5/2017 implement equal defense here
+            case EQUAL_OFFENSE:
+                return null;// TODO: 1/5/2017 implement equal offense here
             default:
                 throw new InvalidGameTypeException(gameType.name());
         }

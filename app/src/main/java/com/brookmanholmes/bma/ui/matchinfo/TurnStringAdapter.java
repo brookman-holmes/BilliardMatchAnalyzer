@@ -5,8 +5,10 @@ import android.text.Html;
 import android.text.Spanned;
 
 import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 /**
  * Created by Brookman Holmes on 4/30/2016.
@@ -38,7 +40,7 @@ class TurnStringAdapter {
     }
 
     private String formatVal(int val) {
-        return "<b><font color='#57000000'>" + val + "</font></b>";
+        return "<b><font color='#de000000'>" + val + "</font></b>";
     }
 
     private void buildTurn() {
@@ -63,6 +65,11 @@ class TurnStringAdapter {
                     turnBuilder.append(" and then missed");
                 } else if (turn.getTurnEnd() == TurnEnd.SAFETY) {
                     turnBuilder.append(" and then played safe");
+                    if (turn.getAdvStats() != null && AdvStats.SubType.isSafety(turn.getAdvStats().getShotSubtype())) {
+                        turnBuilder.append(" (<b>");
+                        turnBuilder.append(context.getString(MatchDialogHelperUtils.convertSubTypeToStringRes(turn.getAdvStats().getShotSubtype())));
+                        turnBuilder.append("</b>)");
+                    }
                 } else if (turn.getTurnEnd() == TurnEnd.SAFETY_ERROR) {
                     turnBuilder.append(" and then failed their safety attempt");
                 } else if (turn.getTurnEnd() == TurnEnd.PUSH_SHOT) {
@@ -92,6 +99,11 @@ class TurnStringAdapter {
                     turnBuilder.append(" and then missed");
                 } else if (turn.getTurnEnd() == TurnEnd.SAFETY) {
                     turnBuilder.append(" and then played safe");
+                    if (turn.getAdvStats() != null) {
+                        turnBuilder.append(" (<b>");
+                        turnBuilder.append(context.getString(MatchDialogHelperUtils.convertSubTypeToStringRes(turn.getAdvStats().getShotSubtype())));
+                        turnBuilder.append("</b>)");
+                    }
                 } else if (turn.getTurnEnd() == TurnEnd.SAFETY_ERROR) {
                     turnBuilder.append(" and then failed their safety attempt");
                 }
@@ -111,6 +123,11 @@ class TurnStringAdapter {
                         break;
                     case SAFETY:
                         turnBuilder.append(" played safe");
+                        if (turn.getAdvStats() != null) {
+                            turnBuilder.append(" (<b>");
+                            turnBuilder.append(context.getString(MatchDialogHelperUtils.convertSubTypeToStringRes(turn.getAdvStats().getShotSubtype())));
+                            turnBuilder.append("</b>)");
+                        }
                         break;
                     case PUSH_SHOT:
                         turnBuilder.append(" pushed");

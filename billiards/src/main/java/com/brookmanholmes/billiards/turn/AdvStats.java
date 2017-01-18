@@ -366,8 +366,22 @@ public class AdvStats implements Serializable {
         WING_CUT,
         BACK_CUT,
         RAIL_CUT,
-        NONE
+        NONE;
+
+        public static boolean isSafety(SubType subType) {
+            switch (subType) {
+                case FULL_HOOK:
+                case PARTIAL_HOOK:
+                case LONG_T:
+                case SHORT_T:
+                case NO_DIRECT_SHOT:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
+
 
     /**
      * Builder for creating a new AdvStats object

@@ -10,7 +10,7 @@ public interface IStraightPool {
 
     List<Integer> getRunLengths();
 
-    String getAverageRunLength();
+    double getAverageRunLength();
 
-    String getMedianRunLength();
+    double getMedianRunLength();
 }

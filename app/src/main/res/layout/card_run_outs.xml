@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--suppress AndroidUnknownAttribute -->
-<layout xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
     <data>
         <variable
             name="runs"
@@ -8,9 +10,8 @@
         <import type="android.view.View" />
     </data>
 
-    <view xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.CardView
         style="@style/card_view_style"
-        class="android.support.v7.widget.CardView"
         android:visibility="@{runs.showCard ? View.VISIBLE : View.GONE}">
 
         <LinearLayout
@@ -24,9 +25,90 @@
                 android:layout_height="wrap_content"
                 bind:title="@{runs}" />
 
-            <include
-                layout="@layout/container_runs"
-                bind:runs="@{runs}" />
+            <android.support.v7.widget.GridLayout style="@style/match_info_grid">
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runs.playerBreakRuns}"
+                    android:textColor="@color/primary_text"
+                    android:typeface="@{runs.highlightBreakRuns() == 1 ? `bold` : `normal`}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/title_break_runs"
+                    android:textColor="@color/primary_text"
+                    app:layout_columnWeight="0" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runs.opponentBreakRuns}"
+                    android:textColor="@color/primary_text"
+                    android:typeface="@{runs.highlightBreakRuns() == -1 ? `bold` : `normal`}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runs.playerTableRuns}"
+                    android:textColor="@color/secondary_text"
+                    android:typeface="@{runs.highlightTableRuns() == 1 ? `bold` : `normal`}"
+                    android:visibility="@{runs.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/title_table_runs"
+                    android:textColor="@color/secondary_text"
+                    android:visibility="@{runs.expanded ? View.VISIBLE : View.GONE}"
+                    app:layout_columnWeight="0" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runs.opponentTableRuns}"
+                    android:textColor="@color/secondary_text"
+                    android:typeface="@{runs.highlightTableRuns() == -1 ? `bold` : `normal`}"
+                    android:visibility="@{runs.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runs.playerFiveBallRuns}"
+                    android:textColor="@color/primary_text"
+                    android:typeface="@{runs.highlightFiveBallRuns() == 1 ? `bold` : `normal`}"
+                    android:visibility="@{runs.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/title_five_ball_outs"
+                    android:textColor="@color/primary_text"
+                    android:visibility="@{runs.expanded ? View.VISIBLE : View.GONE}"
+                    app:layout_columnWeight="0" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runs.opponentFiveBallRuns}"
+                    android:textColor="@color/primary_text"
+                    android:typeface="@{runs.highlightFiveBallRuns() == -1 ? `bold` : `normal`}"
+                    android:visibility="@{runs.expanded ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runs.playerEarlyWins}"
+                    android:textColor="@color/secondary_text"
+                    android:typeface="@{runs.highlightEarlyWins() == 1 ? `bold` : `normal`}"
+                    android:visibility="@{runs.showEarlyWins ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@string/title_early_wins"
+                    android:textColor="@color/secondary_text"
+                    android:visibility="@{runs.showEarlyWins ? View.VISIBLE : View.GONE}"
+                    app:layout_columnWeight="0" />
+
+                <TextView
+                    style="@style/player_stats"
+                    android:text="@{runs.opponentEarlyWins}"
+                    android:textColor="@color/secondary_text"
+                    android:typeface="@{runs.highlightEarlyWins() == -1 ? `bold` : `normal`}"
+                    android:visibility="@{runs.showEarlyWins ? View.VISIBLE : View.GONE}" />
+
+            </android.support.v7.widget.GridLayout>
 
             <include
                 layout="@layout/layout_bottom_row"
@@ -34,5 +116,5 @@
                 android:layout_height="wrap_content"
                 bind:binder="@{runs}" />
         </LinearLayout>
-    </view>
+    </android.support.v7.widget.CardView>
 </layout>

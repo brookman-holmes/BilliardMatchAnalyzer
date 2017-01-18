@@ -2,7 +2,6 @@ package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -23,19 +22,14 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.IStraightPool;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.data.MatchModel;
-import com.brookmanholmes.bma.databinding.ActivityHighRunBinding;
 import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
@@ -50,21 +44,9 @@ import com.google.firebase.storage.UploadTask;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter;
-import lecho.lib.hellocharts.formatter.SimpleLineChartValueFormatter;
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.view.LineChartView;
 
 /**
  * Created by Brookman Holmes on 12/20/2016.
@@ -85,24 +67,17 @@ public class HighRunAttemptActivity extends BaseActivity implements AddTurnDialo
     CoordinatorLayout layout;
     @Bind(R.id.scrollView)
     RecyclerView recyclerView;
-    @Bind(R.id.chart)
-    LineChartView chart;
-    @Bind(R.id.button)
-    Button buttonShowAdvShot;
 
     DatabaseAdapter db;
     Match match;
     Menu menu;
     Snackbar uploadMatchSnackbar;
-    MinimalTurnListAdapter adapter;
-    ActivityHighRunBinding binding;
-    HighRunAttemptBinder runBinder;
-    List<AbstractPlayer> players;
+    HighRunAttemptAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_high_run);
+        setContentView(R.layout.activity_high_run);
         ButterKnife.bind(this);
 
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
@@ -114,85 +89,19 @@ public class HighRunAttemptActivity extends BaseActivity implements AddTurnDialo
 
         db = new DatabaseAdapter(this);
         match = db.getMatchWithTurns(getMatchId());
-        players = db.getPlayer(match.getPlayer().getName(), match.getGameStatus().gameType, getMatchId());
 
-        adapter = new MinimalTurnListAdapter(match);
+        adapter = new HighRunAttemptAdapter(this, match);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        runBinder = new HighRunAttemptBinder((StraightPoolPlayer) match.getPlayer(), getRunLengths(players));
-        binding.setRunAttempt(runBinder);
-
-        EnumSet<Match.StatsDetail> details = EnumSet.copyOf(match.getDetails());
-        details.retainAll(Match.StatsDetail.getPlayerStatsTracked());
-        buttonShowAdvShot.setVisibility(details.size() > 0 ? View.VISIBLE : View.GONE);
-
         setupNfc();
-        chart.setLineChartData(getData());
     }
 
-    @OnClick(R.id.button)
     public void showAdvShotData() {
         showAdvancedStatsDialog(match.getPlayer().getName(), PlayerTurn.PLAYER);
     }
 
-    private LineChartData getData() {
-        List<PointValue> values = new ArrayList<>();
-        List<Integer> runLengths = ((IStraightPool) match.getPlayer()).getRunLengths();
-        int count = 0;
-        for (Integer integer : runLengths) {
-            values.add(new PointValue(count++, integer));
-        }
 
-        Line line = new Line(values)
-                .setPointRadius(4)
-                .setColor(getColor2(R.color.chart2))
-                .setHasLabels(true)
-                .setFormatter(new SimpleLineChartValueFormatter(0))
-                .setStrokeWidth(2)
-                .setCubic(true)
-                .setHasLabelsOnlyForSelected(true)
-                .setFilled(true)
-                .setAreaTransparency(96);
-        float upperLimit = 15.05f;
-        int maxRun = Integer.parseInt(runBinder.lifetimeMax);
-        if (maxRun > upperLimit)
-            upperLimit = (float) maxRun + 1.05f;
-
-        Line dummyLine = new Line(Arrays.asList(new PointValue(0, 0), new PointValue(0, upperLimit)))
-                .setColor(getColor2(android.R.color.transparent))
-                .setHasPoints(false);
-        Line averageLine = new Line(Arrays.asList(new PointValue(0, runBinder.getLifetimeAverage()),
-                new PointValue(runLengths.size(), runBinder.getLifetimeAverage())))
-                .setColor(getColor2(R.color.chart1))
-                .setHasPoints(false)
-                .setHasLabels(false)
-                .setStrokeWidth(1);
-
-        LineChartData data = new LineChartData(Arrays.asList(averageLine, line, dummyLine));
-        Axis axis = new Axis();
-        axis.setHasSeparationLine(true)
-                .setFormatter(new SimpleAxisValueFormatter())
-                .setTextColor(getColor2(R.color.secondary_text))
-                .setHasLines(true);
-        data.setAxisYLeft(axis);
-        data.setValueLabelBackgroundColor(getColor2(R.color.chart2));
-        data.setValueLabelsTextColor(getColor2(R.color.white));
-        data.setValueLabelTextSize(16);
-        return data;
-    }
-
-
-    private List<Integer> getRunLengths(List<AbstractPlayer> players) {
-        List<Integer> result = new ArrayList<>();
-
-        for (AbstractPlayer player : players) {
-            if (player instanceof StraightPoolPlayer)
-                result.addAll(((StraightPoolPlayer) player).getRunLengths());
-        }
-
-        return result;
-    }
 
     @Override
     protected void onResume() {
@@ -453,19 +362,7 @@ public class HighRunAttemptActivity extends BaseActivity implements AddTurnDialo
 
     void updateViews() {
         adapter.update(match);
-        runBinder.update((StraightPoolPlayer) match.getPlayer());
-        chart.setLineChartData(getData());
         updateMenuItems();
-    }
-
-    private float getMaxValue() {
-        float max = 10f;
-        if (Float.valueOf(runBinder.currentMax) > max + 5)
-            max = Float.valueOf(runBinder.currentMax);
-        else if (Float.valueOf(runBinder.lifetimeMax) > max + 5)
-            max = Float.valueOf(runBinder.lifetimeMax);
-
-        return max + 5;
     }
 
     void showAddTurnDialog() {

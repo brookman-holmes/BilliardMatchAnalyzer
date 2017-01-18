@@ -618,8 +618,12 @@ public class MatchDialogHelperUtils {
             return TurnEnd.GAME_WON;
         else if (turnEnd.equals(context.getString(R.string.turn_current_player_breaks, currentPlayer)))
             return TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN;
+        else if (turnEnd.equals(context.getString(R.string.turn_current_player_breaks, opposingPlayer)))
+            return TurnEnd.OPPONENT_BREAKS_AGAIN;
         else if (turnEnd.equals(context.getString(R.string.turn_non_current_player_breaks, opposingPlayer)))
             return TurnEnd.OPPONENT_BREAKS_AGAIN;
+        else if (turnEnd.equals(context.getString(R.string.turn_non_current_player_breaks, currentPlayer)))
+            return TurnEnd.CURRENT_PLAYER_BREAKS_AGAIN;
         else if (turnEnd.equals(context.getString(R.string.turn_continue_game)))
             return TurnEnd.CONTINUE_WITH_GAME;
         else

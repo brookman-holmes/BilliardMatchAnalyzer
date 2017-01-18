@@ -71,7 +71,6 @@ public class TurnListFragment extends BaseFragment implements
         itemManager = new RecyclerViewExpandableItemManager(eimSavedState);
         adapter = new ExpandableTurnListAdapter(db.getMatchWithTurns(matchId));
         layoutManager = new LinearLayoutManager(getContext());
-
         itemManager.setOnGroupCollapseListener(this);
         itemManager.setOnGroupExpandListener(this);
         wrappedAdapter = itemManager.createWrappedAdapter(adapter);

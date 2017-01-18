@@ -7,20 +7,32 @@
     android:background="@color/white"
     android:elevation="2dp"
     android:orientation="vertical"
-    android:paddingBottom="8dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="8dp">
+    android:paddingBottom="8dp">
+
+    <LinearLayout
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-16dp"
+        android:layout_marginRight="-16dp"
+        android:background="@drawable/line_divider"
+        android:orientation="horizontal"></LinearLayout>
 
     <TextView
         android:id="@+id/turn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
         android:textColor="@color/primary_text"
-        android:textSize="16sp" />
+        android:textSize="@dimen/adv_stat_title_text_size" />
 
-    <include layout="@layout/row_turn_adv_stats" />
+    <include
+        layout="@layout/row_turn_adv_stats"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp" />
 
     <include layout="@layout/container_shooting_pcts" />
 

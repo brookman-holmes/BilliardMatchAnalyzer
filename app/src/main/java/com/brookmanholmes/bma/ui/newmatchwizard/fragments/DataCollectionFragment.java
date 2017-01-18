@@ -1,6 +1,5 @@
 package com.brookmanholmes.bma.ui.newmatchwizard.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,10 +10,9 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.DataCollectionPage;
 import com.brookmanholmes.bma.wizard.model.Page;
-import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
+import com.brookmanholmes.bma.wizard.ui.BasePageFragment;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -28,7 +26,7 @@ import butterknife.OnCheckedChanged;
  * Created by helios on 11/4/2016.
  */
 
-public class DataCollectionFragment extends BaseFragment {
+public class DataCollectionFragment extends BasePageFragment<DataCollectionPage> {
     private static final String ARG_KEY = "key";
     private static final String ARG_GHOST = "arg_ghost";
     private static final int[] checkBoxes = new int[]{R.id.cbShotTypePlayer, R.id.cbShotTypeOpponent, R.id.cbCuePlayer,
@@ -50,9 +48,6 @@ public class DataCollectionFragment extends BaseFragment {
     @Bind(R.id.opponentName)
     TextView opponentName;
 
-    private PageFragmentCallbacks callbacks;
-    private DataCollectionPage page;
-    private String key;
     private boolean isGhostGame;
 
     public static DataCollectionFragment create(String key, boolean isGhost) {
@@ -65,22 +60,10 @@ public class DataCollectionFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (getActivity() instanceof PageFragmentCallbacks) {
-            callbacks = (PageFragmentCallbacks) getActivity();
-        } else {
-            throw new ClassCastException("Activity must implement PageFragmentCallbacks");
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        key = args.getString(ARG_KEY);
         isGhostGame = args.getBoolean(ARG_GHOST);
     }
 

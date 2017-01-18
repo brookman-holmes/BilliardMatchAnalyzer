@@ -21,16 +21,7 @@ public class StraightPoolRunsBinder extends ShootingBinder {
         showCard = player instanceof IStraightPool;
         isStraightPoolPlayer = player instanceof StraightPoolPlayer;
 
-        if (player instanceof IStraightPool && opponent instanceof IStraightPool) {
-            playerMax = Integer.toString(((IStraightPool) player).getHighRun());
-            opponentMax = Integer.toString(((IStraightPool) opponent).getHighRun());
-
-            playerMean = ((IStraightPool) player).getAverageRunLength();
-            opponentMean = ((IStraightPool) opponent).getAverageRunLength();
-
-            playerMedian = ((IStraightPool) player).getMedianRunLength();
-            opponentMedian = ((IStraightPool) opponent).getMedianRunLength();
-        }
+        update(player, opponent);
     }
 
     @Override
@@ -39,35 +30,26 @@ public class StraightPoolRunsBinder extends ShootingBinder {
             playerMax = Integer.toString(((IStraightPool) player).getHighRun());
             opponentMax = Integer.toString(((IStraightPool) opponent).getHighRun());
 
-            playerMean = ((IStraightPool) player).getAverageRunLength();
-            opponentMean = ((IStraightPool) opponent).getAverageRunLength();
+            playerMean = avgf.format(((IStraightPool) player).getAverageRunLength());
+            opponentMean = avgf.format(((IStraightPool) opponent).getAverageRunLength());
 
-            playerMedian = ((IStraightPool) player).getMedianRunLength();
-            opponentMedian = ((IStraightPool) opponent).getMedianRunLength();
+            playerMedian = avgf.format(((IStraightPool) player).getMedianRunLength());
+            opponentMedian = avgf.format(((IStraightPool) opponent).getMedianRunLength());
         }
 
         super.update(player, opponent);
     }
 
     public int highlightMax() {
-        int playerVal = Integer.valueOf(this.playerMax);
-        int opponentVal = Integer.valueOf(this.opponentMax);
-
-        return Integer.compare(playerVal, opponentVal);
+        return compare(playerMax, opponentMax);
     }
 
     public int highlightMedian() {
-        double playerVal = Double.valueOf(this.playerMedian);
-        double opponentVal = Double.valueOf(this.opponentMedian);
-
-        return Double.compare(playerVal, opponentVal);
+        return compare(playerMedian, opponentMedian);
     }
 
     public int highlightAvg() {
-        double playerVal = Double.valueOf(this.playerMean);
-        double opponentVal = Double.valueOf(this.opponentMean);
-
-        return Double.compare(playerVal, opponentVal);
+        return compare(playerMean, opponentMean);
     }
 
     public boolean showFoulTotal() {

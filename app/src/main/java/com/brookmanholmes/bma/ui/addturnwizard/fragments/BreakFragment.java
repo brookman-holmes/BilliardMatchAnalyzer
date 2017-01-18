@@ -1,6 +1,5 @@
 package com.brookmanholmes.bma.ui.addturnwizard.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,9 +11,8 @@ import android.widget.TextView;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.ui.BaseFragment;
 import com.brookmanholmes.bma.ui.addturnwizard.model.BreakPage;
-import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
+import com.brookmanholmes.bma.wizard.ui.BasePageFragment;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.setViewToBallO
  * Created by Brookman Holmes on 2/20/2016.
  */
 @SuppressWarnings("WeakerAccess")
-public class BreakFragment extends BaseFragment {
+public class BreakFragment extends BasePageFragment<BreakPage> {
     private static final String TAG = "BreakFragment";
     private static final String ARG_KEY = "key";
     private static final int ballIds[] = {R.id.one_ball, R.id.two_ball, R.id.three_ball, R.id.four_ball,
@@ -44,9 +42,6 @@ public class BreakFragment extends BaseFragment {
     @SuppressWarnings("WeakerAccess")
     @Bind(R.id.title)
     TextView title;
-    private PageFragmentCallbacks callbacks;
-    private String key;
-    private BreakPage page;
 
     public BreakFragment() {
     }
@@ -63,28 +58,9 @@ public class BreakFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (!(getParentFragment() instanceof PageFragmentCallbacks)) {
-            throw new ClassCastException("Activity must implement PageFragmentCallbacks");
-        }
-
-        callbacks = (PageFragmentCallbacks) getParentFragment();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Bundle args = getArguments();
-        key = args.getString(ARG_KEY);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        page.registerListener(this);
+        page.registerFragment(this);
     }
 
     @Nullable
@@ -105,18 +81,6 @@ public class BreakFragment extends BaseFragment {
         }
 
         return view;
-    }
-
-    @Override
-    public void onPause() {
-        page.unregisterListener();
-        super.onPause();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        callbacks = null;
     }
 
     public void updateView(List<BallStatus> ballStatuses) {

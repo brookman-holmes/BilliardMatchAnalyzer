@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/card_deco_view">
+
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/color_indicator_c3"
+        android:text="@string/successful_breaks"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/color_indicator_c2"
+        android:text="@string/continuation_after_the_break"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/title4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/color_indicator_c0"
+        android:text="@string/_8_9_on_the_break"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/title3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/color_indicator_c1"
+        android:text="@string/fouls_on_the_break"
+        android:textSize="14sp" />
+</merge>

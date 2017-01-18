@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.ui.newmatchwizard.fragments.DataCollectionFragment;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+import com.brookmanholmes.bma.wizard.model.FragmentDependentPage;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
-import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
@@ -20,11 +20,10 @@ import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.PLAY
  * Created by helios on 11/4/2016.
  */
 
-public class DataCollectionPage extends Page implements RequiresPlayerNames, UpdatesMatchBuilder {
+public class DataCollectionPage extends FragmentDependentPage<DataCollectionFragment> implements RequiresPlayerNames, UpdatesMatchBuilder {
     public static final String PLAYER_DESC_KEY = "player_key";
     public static final String OPP_DESC_KEY = "opp_key";
     String reviewTitle;
-    private DataCollectionFragment fragment;
     private boolean isGhost = false;
 
 
@@ -44,17 +43,9 @@ public class DataCollectionPage extends Page implements RequiresPlayerNames, Upd
         }
     }
 
-    private void updateFragment() {
-        fragment.setPlayerNames(data.getString(PLAYER_NAME_KEY), data.getString(OPPONENT_NAME_KEY));
-    }
-
-    public void registerFragment(DataCollectionFragment fragment) {
-        this.fragment = fragment;
-        updateFragment();
-    }
-
-    public void unregisterFragment() {
-        this.fragment = null;
+    public void updateFragment() {
+        if (fragment != null)
+            fragment.setPlayerNames(data.getString(PLAYER_NAME_KEY), data.getString(OPPONENT_NAME_KEY));
     }
 
     @Override

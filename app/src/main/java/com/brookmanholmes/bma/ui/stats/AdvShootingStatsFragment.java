@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.ui.view.HeatGraph;
+import com.brookmanholmes.bma.ui.view.HeatGraphV2;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import java.text.DecimalFormat;
@@ -83,7 +83,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.miscues)
     TextView miscues;
     @Bind(R.id.heatGraph)
-    HeatGraph cueBallHeatGraph;
+    HeatGraphV2 cueBallHeatGraph;
 
     private String shotType, subType, angle;
     private GetFilteredStatsAsync task2;
@@ -265,7 +265,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         xAxis.setHasLines(true)
                 .setInside(false)
                 .setHasSeparationLine(true)
-                .setFormatter(new SimpleAxisValueFormatterV2(0))
+                .setFormatter(new SpeedAxisValueFormatter(0))
                 .setTextColor(getColor(R.color.primary_text))
                 .setName("Speed");
 
@@ -314,7 +314,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         xAxis.setHasLines(true)
                 .setInside(false)
-                .setFormatter(new SimpleAxisValueFormatter(0).setAppendedText("'".toCharArray()))
+                .setFormatter(new DistanceAxisValueFormatter(0).setAppendedText("'".toCharArray()))
                 .setHasSeparationLine(true)
                 .setTextColor(getColor(R.color.primary_text));
 
@@ -415,8 +415,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         StatsUtils.setLayoutWeights(filteredStats, THIN, THICK, overCut, underCut);
         StatsUtils.setLayoutWeights(filteredStats, BANK_SHORT, BANK_LONG, bankShort, bankLong);
         StatsUtils.setLayoutWeights(filteredStats, KICK_SHORT, KICK_LONG, kickShort, kickLong);
-        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(filteredStats)));
 
+        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(filteredStats)));
         title.setText(getString(R.string.title_shooting_errors, filteredStats.size()));
 
         List<Point> points = new ArrayList<>();
@@ -432,7 +432,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private void setShotSubType() {
-        if (!shotType.equals(getString(R.string.miss_cut))) {
+        if (!shotType.equals(getString(R.string.miss_cut)) && !shotType.equals(getString(R.string.all))) {
             shotSubTypeSpinner.setSelection(0);
             subType = getString(R.string.all);
         }

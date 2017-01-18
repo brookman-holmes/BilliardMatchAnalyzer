@@ -26,32 +26,14 @@ public class BreaksBinder extends BindingAdapter {
 
     public String playerWinOnBreak = "0", opponentWinOnBreak = "0";
     public String breakBall;
-    boolean showWinOnBreak = false;
+    private boolean showWinOnBreak = false;
 
     BreaksBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
         super(expanded, !(player instanceof StraightPoolPlayer));
         this.title = title;
         helpLayout = R.layout.dialog_help_breaks;
 
-        playerBallOnBreak = player.getBreakSuccesses();
-        opponentBallOnBreak = opponent.getBreakSuccesses();
-        playerBreaks = player.getBreakAttempts();
-        opponentBreaks = opponent.getBreakAttempts();
-
-        playerAvg = player.getAvgBallsBreak();
-        opponentAvg = opponent.getAvgBallsBreak();
-
-        playerContinuation = player.getBreakContinuations() + "";
-        opponentContinuation = opponent.getBreakContinuations() + "";
-
-        playerFouls = player.getBreakFouls() + "";
-        opponentFouls = opponent.getBreakFouls() + "";
-
-        if (player instanceof IWinsOnBreak && opponent instanceof IWinsOnBreak) {
-            showWinOnBreak = true;
-            playerWinOnBreak = ((IWinsOnBreak) player).getWinsOnBreak() + "";
-            opponentWinOnBreak = ((IWinsOnBreak) opponent).getWinsOnBreak() + "";
-        }
+        update(player, opponent);
 
         if (player instanceof ApaEightBallPlayer) {
             breakBall = "8";
@@ -68,8 +50,8 @@ public class BreaksBinder extends BindingAdapter {
         playerBreaks = player.getBreakAttempts();
         opponentBreaks = opponent.getBreakAttempts();
 
-        playerAvg = player.getAvgBallsBreak();
-        opponentAvg = opponent.getAvgBallsBreak();
+        playerAvg = avgf.format(player.getAvgBallsBreak());
+        opponentAvg = avgf.format(opponent.getAvgBallsBreak());
 
         playerContinuation = player.getBreakContinuations() + "";
         opponentContinuation = opponent.getBreakContinuations() + "";
@@ -89,41 +71,19 @@ public class BreaksBinder extends BindingAdapter {
         return showWinOnBreak && expanded;
     }
 
-    public boolean playerAvgHigher() {
-        return Double.compare(
-                Double.parseDouble(playerAvg),
-                Double.parseDouble(opponentAvg)
-        ) > 0;
+    public int highlightAvg() {
+        return compare(playerAvg, opponentAvg);
     }
 
-    public boolean opponentAvgHigher() {
-        return Double.compare(
-                Double.parseDouble(playerAvg),
-                Double.parseDouble(opponentAvg)
-        ) < 0;
+    public int highlightFouls() {
+        return compare(playerFouls, opponentFouls) * -1;
     }
 
-    public boolean playerFoulsLower() {
-        return Integer.parseInt(playerFouls) < Integer.parseInt(opponentFouls);
+    public int highlightContinuations() {
+        return compare(playerContinuation, opponentContinuation);
     }
 
-    public boolean opponentFoulsLower() {
-        return Integer.parseInt(playerFouls) > Integer.parseInt(opponentFouls);
-    }
-
-    public boolean playerContinuationsHigher() {
-        return Integer.parseInt(playerContinuation) > Integer.parseInt(opponentContinuation);
-    }
-
-    public boolean opponentContinuationsHigher() {
-        return Integer.parseInt(playerContinuation) < Integer.parseInt(opponentContinuation);
-    }
-
-    public boolean playerWinsOnBreakMore() {
-        return Integer.parseInt(playerWinOnBreak) > Integer.parseInt(opponentWinOnBreak);
-    }
-
-    public boolean opponentWinsOnBreakMore() {
-        return Integer.parseInt(playerWinOnBreak) < Integer.parseInt(opponentWinOnBreak);
+    public int highlightWinsOnBreak() {
+        return compare(playerWinOnBreak, opponentWinOnBreak);
     }
 }

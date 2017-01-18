@@ -31,8 +31,8 @@ public class HighRunAttemptBinder extends BaseObservable {
 
     public void update(StraightPoolPlayer player) {
         currentMax = Integer.toString(player.getHighRun());
-        currentMean = player.getAverageRunLength();
-        currentMedian = player.getMedianRunLength();
+        currentMean = avgf.format(player.getAverageRunLength());
+        currentMedian = avgf.format(player.getMedianRunLength());
         currentAttempts = String.format(Locale.getDefault(), "%1$d", player.getRunLengths().size());
 
         setLifetimeStats(convertListToDoubleArray(player.getRunLengths()));

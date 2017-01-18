@@ -14,11 +14,11 @@ import butterknife.ButterKnife;
 /**
  * Created by Brookman Holmes on 8/31/2016.
  */
-public abstract class BaseRecyclerFragment extends BaseFragment {
+public abstract class BaseRecyclerFragment<T extends RecyclerView.Adapter> extends BaseFragment {
     protected RecyclerView.LayoutManager layoutManager;
     @Bind(R.id.scrollView)
     protected RecyclerView recyclerView;
-    protected RecyclerView.Adapter adapter;
+    protected T adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

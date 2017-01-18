@@ -13,12 +13,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.utils.ConversionUtils;
+
+import java.text.DecimalFormat;
 
 /**
  * Created by Brookman Holmes on 9/21/2016.
  */
 
 public class BindingAdapter extends BaseObservable {
+    // formatter for percentages (e.g. .875)
+    final static DecimalFormat pctf = ConversionUtils.pctf;
+    // formatter for average number of balls made per turn (e.g. 5.33)
+    final static DecimalFormat avgf = ConversionUtils.avgf;
     private static final String TAG = "BindingAdapter";
     public boolean expanded = false;
     @DrawableRes
@@ -53,6 +60,10 @@ public class BindingAdapter extends BaseObservable {
     @android.databinding.BindingAdapter("imageResource")
     public static void setImageResource(ImageView imageView, int resource) {
         imageView.setImageResource(resource);
+    }
+
+    static int compare(String x, String y) {
+        return Double.compare(Double.parseDouble(x), Double.parseDouble(y));
     }
 
     public String getTitle() {

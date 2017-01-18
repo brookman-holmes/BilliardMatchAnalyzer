@@ -27,24 +27,7 @@ public class StraightPoolBinder extends BindingAdapter {
         super(expanded, player instanceof StraightPoolPlayer);
 
         if (player instanceof StraightPoolPlayer && opponent instanceof StraightPoolPlayer) {
-            playerPoints = ((StraightPoolPlayer) player).getPoints();
-            opponentPoints = ((StraightPoolPlayer) opponent).getPoints();
-            playerPointsNeeded = player.getRank();
-            opponentPointsNeeded = opponent.getRank();
-
-            playerTsp = player.getTrueShootingPct();
-            opponentTsp = opponent.getTrueShootingPct();
-
-            playerShotsSuccess = player.getShotsSucceededOfAllTypes();
-            opponentShotsSuccess = opponent.getShotsSucceededOfAllTypes();
-            playerTotalShots = player.getShotAttemptsOfAllTypes();
-            opponentTotalShots = opponent.getShotAttemptsOfAllTypes();
-
-            playerTotalFouls = Integer.toString(player.getTotalFouls());
-            opponentTotalFouls = Integer.toString(opponent.getTotalFouls());
-
-            playerAggRating = player.getAggressivenessRating();
-            opponentAggRating = opponent.getAggressivenessRating();
+            update(player, opponent);
         }
 
         this.title = title;
@@ -58,8 +41,8 @@ public class StraightPoolBinder extends BindingAdapter {
             playerPointsNeeded = player.getRank();
             opponentPointsNeeded = opponent.getRank();
 
-            playerTsp = player.getTrueShootingPct();
-            opponentTsp = opponent.getTrueShootingPct();
+            playerTsp = pctf.format(player.getTrueShootingPct());
+            opponentTsp = pctf.format(opponent.getTrueShootingPct());
 
             playerShotsSuccess = player.getShotsSucceededOfAllTypes();
             opponentShotsSuccess = opponent.getShotsSucceededOfAllTypes();
@@ -69,32 +52,18 @@ public class StraightPoolBinder extends BindingAdapter {
             playerTotalFouls = Integer.toString(player.getTotalFouls());
             opponentTotalFouls = Integer.toString(opponent.getTotalFouls());
 
-            playerAggRating = player.getAggressivenessRating();
-            opponentAggRating = opponent.getAggressivenessRating();
+            playerAggRating = pctf.format(player.getAggressivenessRating());
+            opponentAggRating = pctf.format(opponent.getAggressivenessRating());
 
             notifyChange();
         }
     }
 
-    public boolean playerShootingBetter() {
-        return Double.compare(
-                Double.parseDouble(playerTsp),
-                Double.parseDouble(opponentTsp)
-        ) > 0;
+    public int highlightShooting() {
+        return compare(playerTsp, opponentTsp);
     }
 
-    public boolean opponentShootingBetter() {
-        return Double.compare(
-                Double.parseDouble(playerTsp),
-                Double.parseDouble(opponentTsp)
-        ) < 0;
-    }
-
-    public boolean opponentFoulsMore() {
-        return Integer.parseInt(playerTotalFouls) > Integer.parseInt(opponentTotalFouls);
-    }
-
-    public boolean playerFoulsMore() {
-        return Integer.parseInt(playerTotalFouls) < Integer.parseInt(opponentTotalFouls);
+    public int highlightFouls() {
+        return compare(playerTotalFouls, opponentTotalFouls) * -1;
     }
 }

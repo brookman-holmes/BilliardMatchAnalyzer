@@ -6,8 +6,8 @@ import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Players;
 import com.brookmanholmes.billiards.player.RaceTo;
 import com.brookmanholmes.bma.ui.newmatchwizard.fragments.RaceToFragment;
+import com.brookmanholmes.bma.wizard.model.FragmentDependentPage;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
-import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
@@ -19,12 +19,12 @@ import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.PLAY
 /**
  * Created by Brookman Holmes on 8/23/2016.
  */
-public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatchBuilder {
+public class RaceToPage extends FragmentDependentPage<RaceToFragment> implements RequiresPlayerNames, UpdatesMatchBuilder {
     public static final String PLAYER_RANK_KEY = "player_rank";
     public static final String OPPONENT_RANK_KEY = "opponent_rank";
     private static final String TAG = "RaceToPage";
+
     private int lower, upper, defaultChoice, increment = 1;
-    private RaceToFragment fragment;
     private String reviewString, reviewTitle;
     private GameType gameType = GameType.BCA_NINE_BALL;
 
@@ -94,11 +94,6 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
         return data.getInt(OPPONENT_RANK_KEY);
     }
 
-    public void registerListener(RaceToFragment fragment) {
-        this.fragment = fragment;
-        updateFragment();
-    }
-
     public String getPlayerName() {
         return data.getString(PLAYER_NAME_KEY, "Player 1");
     }
@@ -111,11 +106,8 @@ public class RaceToPage extends Page implements RequiresPlayerNames, UpdatesMatc
         return gameType;
     }
 
-    public void unregisterListener() {
-        this.fragment = null;
-    }
-
-    private void updateFragment() {
+    @Override
+    public void updateFragment() {
         fragment.setPlayerNames(getPlayerName(), getOpponentName());
     }
 }

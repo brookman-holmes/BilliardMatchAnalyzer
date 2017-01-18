@@ -1,8 +1,9 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.graphics.Point;
+import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
@@ -10,11 +11,11 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITurn;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.view.BaseViewHolder;
 import com.brookmanholmes.bma.ui.view.HeatGraph;
 import com.brookmanholmes.bma.ui.view.HorizontalBarView;
+import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,9 +29,7 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
 import static com.brookmanholmes.billiards.turn.TurnEnd.MISS;
-import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY_ERROR;
 
 /**
  * Created by Brookman Holmes on 12/20/2016.
@@ -38,6 +37,8 @@ import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY_ERROR;
 
 class MinimalTurnViewHolder extends BaseViewHolder {
     private static final String TAG = "MinTurnVH";
+    @Bind(R.id.divider)
+    View divider;
     @Bind(R.id.turn)
     TextView turnString;
     @Bind(R.id.heatGraph)
@@ -52,8 +53,6 @@ class MinimalTurnViewHolder extends BaseViewHolder {
     TextView shotType;
     @Bind(R.id.angle)
     TextView angle;
-    @Bind(R.id.divider)
-    ViewGroup divider;
     @Bind(R.id.howMissDescription)
     TextView howMissDescription;
 
@@ -73,9 +72,6 @@ class MinimalTurnViewHolder extends BaseViewHolder {
 
         if (turn.getAdvStats() != null) {
             setAdvData(turn, playerTurn);
-            if (turn.getTurnEnd() != GAME_WON)
-                divider.setVisibility(View.VISIBLE);
-            else divider.setVisibility(View.GONE);
         } else {
             heatGraph.setVisibility(View.GONE);
             shotSpeed.setVisibility(View.GONE);
@@ -83,9 +79,18 @@ class MinimalTurnViewHolder extends BaseViewHolder {
             obDistance.setVisibility(View.GONE);
             cbDistance.setVisibility(View.GONE);
             shotType.setVisibility(View.GONE);
-            divider.setVisibility(View.GONE);
             howMissDescription.setVisibility(View.GONE);
         }
+    }
+
+    void showDivider(boolean showDivider) {
+        divider.setVisibility(showDivider ? View.VISIBLE : View.GONE);
+        CardView.LayoutParams params = new CardView.LayoutParams(itemView.getLayoutParams());
+        params.topMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
+        params.bottomMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 0);
+        params.leftMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
+        params.rightMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
+        itemView.setLayoutParams(params);
     }
 
     private String formatDistance(float distance) {
@@ -95,39 +100,39 @@ class MinimalTurnViewHolder extends BaseViewHolder {
     }
 
     private void setAdvData(ITurn turn, PlayerTurn playerTurn) {
-        if (isCueing(playerTurn) && turn.getAdvStats().isCueingValid() && turn.getTurnEnd() == MISS) {
+        if (turn.getAdvStats().isCueingValid()) {
             heatGraph.setVisibility(View.VISIBLE);
             heatGraph.setData(new Point(turn.getAdvStats().getCueX(), turn.getAdvStats().getCueY()));
         } else {
             heatGraph.setVisibility(View.GONE);
         }
 
-        if (isSpeed(playerTurn) && turn.getAdvStats().getSpeed() > 0 && turn.getTurnEnd() == MISS) {
+        if (turn.getAdvStats().getSpeed() > 0) {
             shotSpeed.setText(String.format(Locale.getDefault(), "Speed: %1$d/10", turn.getAdvStats().getSpeed()));
             shotSpeed.setPercentage(turn.getAdvStats().getSpeed() * 10);
         } else {
             shotSpeed.setVisibility(View.GONE);
         }
 
-        if (turn.getAdvStats() != null && turn.getAdvStats().getAngles().size() > 0) {
+        if (turn.getAdvStats().getAngles().size() > 0) {
             angle.setVisibility(View.VISIBLE);
-            String title = turn.getAdvStats().getAngles().size() == 1 ? "Angle: %1$s" : "Angles: %1$s";
-            angle.setText(String.format(title,
-                    StringUtils.join(getAngleStringList(turn.getAdvStats().getAngles()), ", ").toLowerCase()));
+            String title = turn.getAdvStats().getAngles().size() == 1 ? "Angle:<br>%1$s" : "Angles:<br>%1$s";
+            angle.setText(Html.fromHtml(String.format(title,
+                    StringUtils.join(getAngleStringList(turn.getAdvStats().getAngles()), "<br>"))));
         } else {
             angle.setVisibility(View.GONE);
         }
 
-        if (isHowMiss(playerTurn) && (turn.getTurnEnd() == MISS || turn.getTurnEnd() == SAFETY_ERROR)) {
-            String title = "How the shot was missed: %1$s";
-            howMissDescription.setText(String.format(Locale.getDefault(), title,
-                    StringUtils.join(getHowTypeStringList(turn.getAdvStats().getHowTypes()), ", ")));
+        if (turn.getAdvStats().getHowTypes().size() > 0) {
+            String title = "How the shot was missed:<br>%1$s";
+            howMissDescription.setText(Html.fromHtml(String.format(Locale.getDefault(), title,
+                    StringUtils.join(getHowTypeStringList(turn.getAdvStats().getHowTypes()), "<br>"))));
             howMissDescription.setVisibility(View.VISIBLE);
         } else {
             howMissDescription.setVisibility(View.GONE);
         }
 
-        if (isDistances(playerTurn) && turn.getAdvStats().getCbToOb() + turn.getAdvStats().getObToPocket() >= 0 && turn.getTurnEnd() == MISS) {
+        if (turn.getAdvStats().getCbToOb() >= 0 && turn.getAdvStats().getObToPocket() >= 0) {
             obDistance.setVisibility(View.VISIBLE);
             cbDistance.setVisibility(View.VISIBLE);
 
@@ -147,15 +152,9 @@ class MinimalTurnViewHolder extends BaseViewHolder {
                 type = itemView.getContext().getString(MatchDialogHelperUtils.convertSubTypeToStringRes(turn.getAdvStats().getShotSubtype()));
             else
                 type = itemView.getContext().getString(MatchDialogHelperUtils.convertShotTypeToStringRes(turn.getAdvStats().getShotType()));
-            shotType.setText(String.format("Shot type: %1$s", type));
+            type = setStringStyle(type);
+            shotType.setText(Html.fromHtml(String.format("Shot type:<br>%1$s", type)));
         } else {
-            shotType.setVisibility(View.GONE);
-        }
-
-        if (isSafeties(playerTurn) && turn.getTurnEnd() == TurnEnd.SAFETY) {
-            shotType.setVisibility(View.VISIBLE);
-            shotType.setText(MatchDialogHelperUtils.convertSubTypeToStringRes(turn.getAdvStats().getShotSubtype()));
-        } else if (!(isShotType(playerTurn) && turn.getTurnEnd() == MISS)) {
             shotType.setVisibility(View.GONE);
         }
     }
@@ -168,66 +167,10 @@ class MinimalTurnViewHolder extends BaseViewHolder {
         }
     }
 
-    private boolean isCueing(PlayerTurn turn) {
-        if (turn == PlayerTurn.PLAYER) {
-            return dataCollection.contains(Match.StatsDetail.CUEING_PLAYER);
-        } else {
-            return dataCollection.contains(Match.StatsDetail.CUEING_OPPONENT);
-        }
-    }
-
-    private boolean isHowMiss(PlayerTurn turn) {
-        if (turn == PlayerTurn.PLAYER) {
-            return dataCollection.contains(Match.StatsDetail.HOW_MISS_PLAYER);
-        } else {
-            return dataCollection.contains(Match.StatsDetail.HOW_MISS_OPPONENT);
-        }
-    }
-
-    private boolean isSafeties(PlayerTurn turn) {
-        if (turn == PlayerTurn.PLAYER) {
-            return dataCollection.contains(Match.StatsDetail.SAFETIES_PLAYER);
-        } else {
-            return dataCollection.contains(Match.StatsDetail.SAFETIES_OPPONENT);
-        }
-    }
-
-    private boolean isSpeed(PlayerTurn turn) {
-        if (turn == PlayerTurn.PLAYER) {
-            return dataCollection.contains(Match.StatsDetail.SPEED_PLAYER);
-        } else {
-            return dataCollection.contains(Match.StatsDetail.SPEED_OPPONENT);
-        }
-    }
-
-    private boolean isDistances(PlayerTurn turn) {
-        if (turn == PlayerTurn.PLAYER) {
-            return dataCollection.contains(Match.StatsDetail.BALL_DISTANCES_PLAYER);
-        } else {
-            return dataCollection.contains(Match.StatsDetail.BALL_DISTANCES_OPPONENT);
-        }
-    }
-
-    private boolean isAngle(PlayerTurn turn) {
-        if (turn == PlayerTurn.PLAYER) {
-            return dataCollection.contains(Match.StatsDetail.ANGLE_PLAYER);
-        } else {
-            return dataCollection.contains(Match.StatsDetail.ANGLE_OPPONENT);
-        }
-    }
-
-    private boolean isSimpleAngle(PlayerTurn turn) {
-        if (turn == PlayerTurn.PLAYER) {
-            return dataCollection.contains(Match.StatsDetail.ANGLE_SIMPLE_PLAYER);
-        } else {
-            return dataCollection.contains(Match.StatsDetail.ANGLE_SIMPLE_OPPONENT);
-        }
-    }
-
     private List<String> getAngleStringList(List<AdvStats.Angle> angles) {
         List<String> strings = new ArrayList<>();
         for (AdvStats.Angle angle : angles) {
-            strings.add(itemView.getContext().getString(MatchDialogHelperUtils.convertAngleToStringRes(angle)));
+            strings.add(setStringStyle(itemView.getContext().getString(MatchDialogHelperUtils.convertAngleToStringRes(angle))));
         }
 
         return strings;
@@ -236,9 +179,17 @@ class MinimalTurnViewHolder extends BaseViewHolder {
     private List<String> getHowTypeStringList(List<AdvStats.HowType> howTypes) {
         List<String> strings = new ArrayList<>();
         for (AdvStats.HowType howType : howTypes) {
-            strings.add(itemView.getContext().getString(MatchDialogHelperUtils.convertHowToStringRes(howType)));
+            strings.add(setStringStyle(itemView.getContext().getString(MatchDialogHelperUtils.convertHowToStringRes(howType))));
         }
 
         return strings;
+    }
+
+    private String setStringStyle(String string) {
+        String result = "<b><font color='#2196F3'>";
+        result += string;
+        result += "</font></b>";
+
+        return result;
     }
 }

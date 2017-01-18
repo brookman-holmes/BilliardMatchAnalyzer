@@ -14,7 +14,6 @@ import butterknife.ButterKnife;
  * Created by Brookman Holmes on 8/31/2016.
  */
 public abstract class BaseFragment extends Fragment {
-
     @Override
     public void onDestroyView() {
         ButterKnife.unbind(this);

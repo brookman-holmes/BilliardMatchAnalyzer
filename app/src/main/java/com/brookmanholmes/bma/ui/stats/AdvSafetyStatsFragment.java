@@ -1,13 +1,21 @@
 package com.brookmanholmes.bma.ui.stats;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.databinding.FragmentAdvSafetyStatsBinding;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICK_LONG;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICK_SHORT;
@@ -39,8 +47,9 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
     TextView kickShort;
     @Bind(R.id.miscues)
     TextView miscues;
-    @Bind(R.id.parentView)
-    LinearLayout statsLayout;
+
+    SafetyStatBinder model;
+    FragmentAdvSafetyStatsBinding binding;
 
     public static AdvSafetyStatsFragment create(Bundle args) {
         AdvSafetyStatsFragment frag = new AdvSafetyStatsFragment();
@@ -58,20 +67,29 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
         return frag;
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_adv_safety_stats, container, false);
+        ButterKnife.bind(this, binding.getRoot());
+
+        model = new SafetyStatBinder(new ArrayList<StatLineItem>());
+        binding.setSafety(model);
+
+        return binding.getRoot();
+    }
+
     @Override
     void updateView() {
         StatsUtils.setLayoutWeights(stats, THIN, THICK, overCut, underCut);
         StatsUtils.setLayoutWeights(stats, TOO_SOFT, TOO_HARD, slow, fast);
         StatsUtils.setLayoutWeights(stats, KICK_SHORT, KICK_LONG, kickShort, kickLong);
-        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(stats)));
 
-        if (statsLayout != null) {
-            StatsUtils.setListOfSafetyStats(statsLayout, stats);
-            safetyResults.setText(getString(R.string.title_safety_results, stats.size()));
-            safetyErrorsTitle.setText(
-                    getString(R.string.title_safety_errors,
-                            StatsUtils.getFailedSafeties(getContext(), stats)));
-        }
+        model.update(StatsUtils.getSafetyStats(stats));
+
+        miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(stats)));
+        safetyResults.setText(getString(R.string.title_safety_results, stats.size()));
+        safetyErrorsTitle.setText(getString(R.string.title_safety_errors, StatsUtils.getFailedSafeties(stats)));
     }
 
     @Override
