@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/WizardPageTitle2"
+        android:layout_width="wrap_content"
+        android:text="@string/title_straight_pool" />
+
+    <include
+        layout="@layout/container_straight_pool_number_pickers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:background="@drawable/line_divider"
+        android:orientation="horizontal"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/container_straight_pool_select_turn_end"
+        android:visibility="gone" />
+</LinearLayout>

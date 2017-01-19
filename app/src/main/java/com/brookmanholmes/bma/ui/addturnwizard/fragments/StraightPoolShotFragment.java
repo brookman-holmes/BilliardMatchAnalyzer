@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.addturnwizard.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class StraightPoolShotFragment extends BasePageFragment<StraightPoolPage>
             }
         }
     };
+
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.miss)
@@ -66,7 +68,10 @@ public class StraightPoolShotFragment extends BasePageFragment<StraightPoolPage>
     NumberPicker npTens;
     @Bind(R.id.npOnes)
     NumberPicker npOnes;
+
     GameStatus gameStatus;
+
+
     private final RadioGroup.OnCheckedChangeListener turnEndListener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -89,8 +94,11 @@ public class StraightPoolShotFragment extends BasePageFragment<StraightPoolPage>
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         page = (StraightPoolPage) callbacks.onGetPage(key);
+        gameStatus = MatchDialogHelperUtils.getGameStatus(page.getData());
 
-        View view = inflater.inflate(R.layout.select_straight_pool_balls_dialog, container, false);
+        @LayoutRes int layout = gameStatus.gameType.isSinglePlayer() ? R.layout.select_straight_pool_balls_dialog_ghost : R.layout.select_straight_pool_balls_dialog;
+
+        View view = inflater.inflate(layout, container, false);
         ButterKnife.bind(this, view);
         title.setText(getString(R.string.title_straight_pool, page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
 
@@ -105,14 +113,8 @@ public class StraightPoolShotFragment extends BasePageFragment<StraightPoolPage>
         String opponentName = page.getData().getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY);
         rebreakButton.setText(getString(R.string.turn_current_player_breaks, opponentName));
         subTitle.setText(getString(R.string.title_foul, page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
-        gameStatus = MatchDialogHelperUtils.getGameStatus(page.getData());
         updateTurnEndOptions(gameStatus.playerAllowedToBreakAgain);
         updateFoulOptions(gameStatus.currentPlayerConsecutiveFouls, getBallsMade());
-
-        if (gameStatus.gameType.isSinglePlayer()) {
-            foulLayout.setVisibility(View.GONE);
-            turnEndGroup.setVisibility(View.GONE);
-        }
 
         return view;
     }

@@ -133,6 +133,10 @@ public class IntroActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_intro, menu);
         MenuItem item = menu.findItem(R.id.spinner);
 
+        if (!BuildConfig.DEBUG) // remove the sign in option because it's for debug builds only
+            menu.removeItem(R.id.action_sign_in);
+
+
         Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
         spinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.rounded_rectangle));
         @SuppressWarnings("ConstantConditions") ArrayAdapter<String> adapter = new ArrayAdapter<>(getSupportActionBar().getThemedContext(),

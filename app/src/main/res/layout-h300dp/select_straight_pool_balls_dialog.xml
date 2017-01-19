@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
@@ -24,10 +24,12 @@
             <include layout="@layout/container_straight_pool_number_pickers" />
 
             <LinearLayout
+                android:id="@+id/divider"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
-                android:background="@drawable/line_divider" />
+                android:background="@drawable/line_divider"
+                android:orientation="horizontal" />
 
             <include layout="@layout/container_straight_pool_select_turn_end" />
         </LinearLayout>

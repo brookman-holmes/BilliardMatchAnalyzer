@@ -20,13 +20,15 @@
             android:layout_gravity="center" />
 
         <LinearLayout
+            android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="36dp"
             android:layout_marginStart="36dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/line_divider" />
+            android:background="@drawable/line_divider"
+            android:orientation="horizontal" />
 
         <include layout="@layout/container_straight_pool_select_turn_end" />
     </LinearLayout>

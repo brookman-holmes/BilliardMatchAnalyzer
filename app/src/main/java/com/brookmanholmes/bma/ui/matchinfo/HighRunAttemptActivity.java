@@ -8,7 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
+import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.bma.R;
+import com.brookmanholmes.bma.data.DatabaseAdapter;
+
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -28,7 +32,12 @@ public class HighRunAttemptActivity extends AbstractMatchActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new HighRunAttemptAdapter(this, match);
+        List<AbstractPlayer> players = new DatabaseAdapter(this)
+                .getPlayer(match.getPlayer().getName(),
+                        match.getGameStatus().gameType,
+                        match.getMatchId());
+
+        adapter = new HighRunAttemptAdapter(this, match, players);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -13,9 +13,11 @@ import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.IStraightPool;
 import com.brookmanholmes.billiards.player.StraightPoolPlayer;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.databinding.CardHighRunAttemptInfoBinding;
 import com.brookmanholmes.bma.ui.view.BaseViewHolder;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.math3.stat.StatUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,11 +50,24 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private Match match;
     private HighRunAttemptActivity activity;
+    private List<Integer> previousRunLengths;
 
-    HighRunAttemptAdapter(HighRunAttemptActivity activity, Match match) {
+    HighRunAttemptAdapter(HighRunAttemptActivity activity, Match match, List<AbstractPlayer> players) {
         this.match = match;
+        previousRunLengths = getRunLengths(players);
         this.activity = activity;
         setHasStableIds(true);
+    }
+
+    private static List<Integer> getRunLengths(List<AbstractPlayer> players) {
+        List<Integer> result = new ArrayList<>();
+
+        for (AbstractPlayer player : players) {
+            if (player instanceof StraightPoolPlayer)
+                result.addAll(((StraightPoolPlayer) player).getRunLengths());
+        }
+
+        return result;
     }
 
     @Override
@@ -61,7 +76,7 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         if (viewType == TURN_VIEW)
             return new MinimalTurnViewHolder(inflater.inflate(R.layout.row_turn_min, parent, false), match);
         else if (viewType == RUNS_VIEW)
-            return new RunViewHolder(inflater.inflate(R.layout.card_high_run_attempt_info, parent, false), match);
+            return new RunViewHolder(inflater.inflate(R.layout.card_high_run_attempt_info, parent, false), match, previousRunLengths);
         else if (viewType == TURN_VIEW_HEADER)
             return new TurnHeaderHolder(inflater.inflate(R.layout.layout_turn_header, parent, false));
         else if (viewType == RUNS_GRAPH_VIEW)
@@ -86,7 +101,7 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         } else if (holder instanceof RunViewHolder) {
             ((RunViewHolder) holder).bind(match);
         } else if (holder instanceof RunGraphViewHolder) {
-            ((RunGraphViewHolder) holder).bind(match, 0, 0);
+            ((RunGraphViewHolder) holder).bind(match, previousRunLengths);
         }
     }
 
@@ -119,27 +134,15 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static class RunViewHolder extends BaseViewHolder {
         private HighRunAttemptBinder runAttemptBinder;
 
-        RunViewHolder(View itemView, Match match) {
+        RunViewHolder(View itemView, Match match, List<Integer> runLengths) {
             super(itemView);
             CardHighRunAttemptInfoBinding binder = DataBindingUtil.bind(itemView);
-            List<AbstractPlayer> players = new DatabaseAdapter(itemView.getContext()).getPlayer(match.getPlayer().getName(), match.getGameStatus().gameType, match.getMatchId());
-            runAttemptBinder = new HighRunAttemptBinder((StraightPoolPlayer) match.getPlayer(), getRunLengths(players));
+            runAttemptBinder = new HighRunAttemptBinder((StraightPoolPlayer) match.getPlayer(), runLengths);
             binder.setRunAttempt(runAttemptBinder);
         }
 
         private void bind(Match match) {
             runAttemptBinder.update((StraightPoolPlayer) match.getPlayer());
-        }
-
-        private List<Integer> getRunLengths(List<AbstractPlayer> players) {
-            List<Integer> result = new ArrayList<>();
-
-            for (AbstractPlayer player : players) {
-                if (player instanceof StraightPoolPlayer)
-                    result.addAll(((StraightPoolPlayer) player).getRunLengths());
-            }
-
-            return result;
         }
     }
 
@@ -165,11 +168,26 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             buttonShowAdvShot.setVisibility(details.size() > 0 ? View.VISIBLE : View.GONE);
         }
 
-        private void bind(Match match, int highRun, float averageRun) {
+        private void bind(Match match, List<Integer> runLengths) {
             this.match = match;
+            setStats(runLengths);
             chart.setLineChartData(getData());
-            this.highRun = highRun;
-            this.averageRun = averageRun;
+        }
+
+        private void setStats(List<Integer> runLengths) {
+            double[] combinedRuns = ArrayUtils.addAll(convertListToDoubleArray(runLengths),
+                    convertListToDoubleArray(((StraightPoolPlayer) match.getPlayer()).getRunLengths()));
+
+            highRun = (int) StatUtils.max(combinedRuns);
+            averageRun = (float) StatUtils.mean(combinedRuns);
+        }
+
+        private double[] convertListToDoubleArray(List<Integer> runLengths) {
+            double[] result = new double[runLengths.size()];
+            for (int i = 0; i < runLengths.size(); i++)
+                result[i] = runLengths.get(i);
+
+            return result;
         }
 
         private LineChartData getData() {
@@ -190,9 +208,7 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     .setHasLabelsOnlyForSelected(true)
                     .setFilled(true)
                     .setAreaTransparency(96);
-            float upperLimit = 15.05f;
-            if (highRun > upperLimit)
-                upperLimit = (float) highRun + 1.05f;
+            float upperLimit = (float) highRun + 10.05f;
 
             Line dummyLine = new Line(Arrays.asList(new PointValue(0, 0), new PointValue(0, upperLimit)))
                     .setColor(getColor(android.R.color.transparent))

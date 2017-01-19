@@ -115,27 +115,15 @@
                 android:text="From OB to pocket" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/description_heat_graph" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:text="@string/description_heat_graph" />
-
-            <com.brookmanholmes.bma.ui.view.HeatGraphV2
-                android:id="@+id/heatGraph"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/circle"
-                android:outlineProvider="background" />
-        </LinearLayout>
+        <include layout="@layout/layout_heat_graph" />
 
 
     </LinearLayout>

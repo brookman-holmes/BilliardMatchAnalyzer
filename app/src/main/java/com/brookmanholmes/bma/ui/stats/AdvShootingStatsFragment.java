@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,6 +120,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private List<AdvStats> getFilteredStats() {
+        long time = System.currentTimeMillis();
         List<AdvStats> list = new ArrayList<>();
 
         for (AdvStats stat : stats) {
@@ -130,6 +132,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
             }
         }
 
+        Log.d(TAG, "getFilteredStats: " + (System.currentTimeMillis() - time));
         return list;
     }
 
