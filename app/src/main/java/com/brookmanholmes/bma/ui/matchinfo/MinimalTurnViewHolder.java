@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.bma.R;
@@ -64,8 +64,8 @@ class MinimalTurnViewHolder extends BaseViewHolder {
         dataCollection = EnumSet.copyOf(match.getDetails());
     }
 
-    void bind(ITurn turn, PlayerTurn playerTurn, AbstractPlayer player) {
-        String color = (playerTurn == PlayerTurn.PLAYER ? "#2196F3" : "#FF3D00");
+    void bind(ITurn turn, PlayerTurn playerTurn, Player player) {
+        String color = ConversionUtils.getColorString(playerTurn == PlayerTurn.PLAYER ? getColor(R.color.colorAccent) : getColor(R.color.colorAccent));
         TurnStringAdapter turnStringAdapter = new TurnStringAdapter(itemView.getContext(), turn, player, color);
 
         turnString.setText(turnStringAdapter.getTurnString());
@@ -186,7 +186,7 @@ class MinimalTurnViewHolder extends BaseViewHolder {
     }
 
     private String setStringStyle(String string) {
-        String result = "<b><font color='#2196F3'>";
+        String result = "<b><font color='" + ConversionUtils.getColorString(getColor(R.color.colorPrimary)) + "'>";
         result += string;
         result += "</font></b>";
 

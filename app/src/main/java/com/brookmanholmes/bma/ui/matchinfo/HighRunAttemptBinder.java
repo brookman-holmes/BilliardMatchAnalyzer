@@ -2,7 +2,7 @@ package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.databinding.BaseObservable;
 
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.stat.StatUtils;
@@ -24,12 +24,12 @@ public class HighRunAttemptBinder extends BaseObservable {
     public String currentAttempts = "0", lifetimeAttempts = "0";
     private float lifetimeAverage = 0f;
 
-    HighRunAttemptBinder(StraightPoolPlayer player, List<Integer> lifetimeRuns) {
+    HighRunAttemptBinder(Player player, List<Integer> lifetimeRuns) {
         this.lifetimeRuns = convertListToDoubleArray(lifetimeRuns);
         update(player);
     }
 
-    public void update(StraightPoolPlayer player) {
+    public void update(Player player) {
         currentMax = Integer.toString(player.getHighRun());
         currentMean = avgf.format(player.getAverageRunLength());
         currentMedian = avgf.format(player.getMedianRunLength());

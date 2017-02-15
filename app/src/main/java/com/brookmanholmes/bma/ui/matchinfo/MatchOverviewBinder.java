@@ -1,11 +1,8 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
-import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
-import com.brookmanholmes.billiards.player.CompPlayer;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -29,10 +26,12 @@ public class MatchOverviewBinder extends BindingAdapter {
 
     public boolean apaTitle = false;
 
-    MatchOverviewBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
-        super(expanded, !(player instanceof StraightPoolPlayer));
+    public boolean showWinPctLayout;
 
-        if (useGameTotal(player, opponent)) {
+    MatchOverviewBinder(Player player, Player opponent, String title, boolean expanded) {
+        super(expanded, !(player.getGameType().isStraightPool()));
+
+        if (useGameTotal(player)) {
             apaTitle = true;
         }
 
@@ -40,16 +39,17 @@ public class MatchOverviewBinder extends BindingAdapter {
 
         this.title = title;
         helpLayout = R.layout.dialog_help_match_overview;
+        showWinPctLayout = !(player.getGameType().isApa());
     }
 
-    public void update(AbstractPlayer player, AbstractPlayer opponent) {
+    public void update(Player player, Player opponent) {
         playerWinPct = pctf.format(player.getWinPct());
         opponentWinPct = pctf.format(opponent.getWinPct());
 
         playerGamesWon = player.getWins();
         opponentGamesWon = opponent.getWins();
 
-        if (useGameTotal(player, opponent)) {
+        if (useGameTotal(player)) {
             playerGamesPlayed = player.getGameTotal();
             opponentGamesPlayed = opponent.getGameTotal();
         } else {
@@ -74,6 +74,7 @@ public class MatchOverviewBinder extends BindingAdapter {
         notifyChange();
     }
 
+
     public int highlightShooting() {
         return compare(playerTsp, opponentTsp);
     }
@@ -82,9 +83,8 @@ public class MatchOverviewBinder extends BindingAdapter {
         return compare(playerTotalFouls, opponentTotalFouls) * -1;
     }
 
-    private boolean useGameTotal(AbstractPlayer player, AbstractPlayer opponent) {
-        return (player instanceof ApaEightBallPlayer && opponent instanceof ApaEightBallPlayer) ||
-                (player instanceof ApaNineBallPlayer && opponent instanceof ApaNineBallPlayer) ||
-                (player instanceof CompPlayer && opponent instanceof CompPlayer);
+    private boolean useGameTotal(Player player) {
+        return (player.getGameType().isApa()) ||
+                (player.getGameType() == GameType.ALL);
     }
 }

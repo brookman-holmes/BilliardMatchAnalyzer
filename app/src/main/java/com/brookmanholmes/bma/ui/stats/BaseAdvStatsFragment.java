@@ -1,26 +1,20 @@
 package com.brookmanholmes.bma.ui.stats;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.bma.MyApplication;
-import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseDialogFragment;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -28,12 +22,11 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseAdvStatsFragment extends BaseDialogFragment implements Filterable {
     private static final String TAG = "BaseAdvStatsFrag";
-    protected FilterStats task;
+
     List<AdvStats> stats = new ArrayList<>();
-    @Bind(R.id.baseLayout)
-    LinearLayout baseLayout;
     String playerName;
     String[] shotTypes;
+    private DatabaseAdapter db;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,18 +35,17 @@ public abstract class BaseAdvStatsFragment extends BaseDialogFragment implements
         playerName = getArguments().getString(AdvStatsDialog.ARG_PLAYER_NAME);
         shotTypes = getShotTypes();
 
-        DatabaseAdapter db = new DatabaseAdapter(getContext());
+        db = new DatabaseAdapter(getContext());
+
         stats = matchId == -1L ?
                 db.getAdvStats(playerName, shotTypes) :
                 db.getAdvStats(matchId, playerName, shotTypes);
     }
 
-    abstract void updateView();
-
-    abstract String[] getShotTypes();
-
     @LayoutRes
     abstract int getLayoutId();
+    abstract void updateView();
+    abstract String[] getShotTypes();
 
     @Nullable
     @Override
@@ -82,41 +74,8 @@ public abstract class BaseAdvStatsFragment extends BaseDialogFragment implements
     }
 
     @Override
-    public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        if (task != null)
-            task.cancel(true);
-        super.onDestroy();
-    }
-
-    @Override
     public void setFilter(StatFilter filter) {
-        if (task == null) {
-            task = new FilterStats();
-            task.execute(filter);
-        }
-
-        if (task.getStatus() != AsyncTask.Status.RUNNING) {
-            task.cancel(true);
-            task = new FilterStats();
-            task.execute(filter);
-        }
-    }
-
-    private class FilterStats extends AsyncTask<StatFilter, Void, List<AdvStats>> {
-        @Override
-        protected void onPostExecute(List<AdvStats> list) {
-            if (!isCancelled() && isAdded())
-                stats = list;
-
-            if (!isCancelled() && isAdded())
-                updateView();
-        }
-
-        @Override
-        protected List<AdvStats> doInBackground(StatFilter... params) {
-            return new DatabaseAdapter(getContext()).getAdvStats(playerName, shotTypes, params[0]);
-        }
+        db.getAdvStats(playerName, shotTypes, filter);
+        updateView();
     }
 }

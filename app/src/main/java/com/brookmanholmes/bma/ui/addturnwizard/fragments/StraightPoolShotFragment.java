@@ -54,6 +54,8 @@ public class StraightPoolShotFragment extends BasePageFragment<StraightPoolPage>
     RadioButton safetyErrorButton;
     @Bind(R.id.rebreak)
     RadioButton rebreakButton;
+    @Bind(R.id.gameWon)
+    RadioButton gameWonButton;
     @Bind(R.id.options)
     RadioGroup turnEndGroup;
     @Bind(R.id.foulGroup)
@@ -70,6 +72,7 @@ public class StraightPoolShotFragment extends BasePageFragment<StraightPoolPage>
     NumberPicker npOnes;
 
     GameStatus gameStatus;
+    int pointsToWin;
 
 
     private final RadioGroup.OnCheckedChangeListener turnEndListener = new RadioGroup.OnCheckedChangeListener() {
@@ -95,7 +98,7 @@ public class StraightPoolShotFragment extends BasePageFragment<StraightPoolPage>
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         page = (StraightPoolPage) callbacks.onGetPage(key);
         gameStatus = MatchDialogHelperUtils.getGameStatus(page.getData());
-
+        pointsToWin = page.getData().getInt(MatchDialogHelperUtils.POINTS_TO_WIN, 0);
         @LayoutRes int layout = gameStatus.gameType.isSinglePlayer() ? R.layout.select_straight_pool_balls_dialog_ghost : R.layout.select_straight_pool_balls_dialog;
 
         View view = inflater.inflate(layout, container, false);
@@ -113,7 +116,7 @@ public class StraightPoolShotFragment extends BasePageFragment<StraightPoolPage>
         String opponentName = page.getData().getString(MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY);
         rebreakButton.setText(getString(R.string.turn_current_player_breaks, opponentName));
         subTitle.setText(getString(R.string.title_foul, page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
-        updateTurnEndOptions(gameStatus.playerAllowedToBreakAgain);
+        updateTurnEndOptions(gameStatus.playerAllowedToBreakAgain, getBallsMade());
         updateFoulOptions(gameStatus.currentPlayerConsecutiveFouls, getBallsMade());
 
         return view;
@@ -137,17 +140,26 @@ public class StraightPoolShotFragment extends BasePageFragment<StraightPoolPage>
         }
     }
 
-    private void updateTurnEndOptions(boolean canOpponentBreakAgain) {
-        if (canOpponentBreakAgain)
-            rebreakButton.setVisibility(View.VISIBLE);
-        else rebreakButton.setVisibility(View.GONE);
+    private void updateTurnEndOptions(boolean canOpponentBreakAgain, int points) {
+        if (points == pointsToWin) {
+            gameWonButton.setVisibility(View.VISIBLE);
+            turnEndGroup.check(R.id.gameWon);
+        } else {
+            if (canOpponentBreakAgain && points == 0)
+                rebreakButton.setVisibility(View.VISIBLE);
+            else rebreakButton.setVisibility(View.GONE);
+
+            gameWonButton.setVisibility(View.GONE);
+            if (gameWonButton.isChecked())
+                turnEndGroup.check(R.id.miss);
+        }
     }
 
     private void updatePage() {
         page.getData().putInt(StraightPoolPage.BALLS_MADE_KEY, getBallsMade());
         String selection = ((RadioButton) turnEndGroup.findViewById(turnEndGroup.getCheckedRadioButtonId())).getText().toString();
         page.setTurnEnd(selection);
-        updateTurnEndOptions(getBallsMade() == 0 && gameStatus.playerAllowedToBreakAgain);
+        updateTurnEndOptions(gameStatus.playerAllowedToBreakAgain, getBallsMade());
         updateFoulOptions(gameStatus.currentPlayerConsecutiveFouls, getBallsMade());
         page.notifyDataChanged();
     }

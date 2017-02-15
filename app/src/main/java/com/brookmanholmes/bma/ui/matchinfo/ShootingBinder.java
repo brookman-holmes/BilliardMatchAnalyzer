@@ -1,7 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -18,14 +17,14 @@ public class ShootingBinder extends BindingAdapter {
 
     public String playerFouls, opponentFouls;
 
-    ShootingBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
-        super(expanded, !(player instanceof StraightPoolPlayer));
+    ShootingBinder(Player player, Player opponent, String title, boolean expanded) {
+        super(expanded, !(player.getGameType().isStraightPool()));
         update(player, opponent);
         this.title = title;
         helpLayout = R.layout.dialog_help_shooting;
     }
 
-    public void update(AbstractPlayer player, AbstractPlayer opponent) {
+    public void update(Player player, Player opponent) {
         playerShootingPct = pctf.format(player.getShootingPct());
         opponentShootingPct = pctf.format(opponent.getShootingPct());
 

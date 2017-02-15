@@ -1,11 +1,10 @@
 package com.brookmanholmes.billiards.match;
 
-import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.EightBallPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 
@@ -31,8 +30,8 @@ public class MatchTest {
     private TurnBuilder turnBuilder;
 
 
-    private AbstractPlayer player1;
-    private AbstractPlayer player2;
+    private Player player1;
+    private Player player2;
 
     private static List<ITurn> turns() {
         TurnBuilder turnBuilder = new TurnBuilder(GameType.BCA_EIGHT_BALL);
@@ -67,8 +66,8 @@ public class MatchTest {
 
         turnBuilder = new TurnBuilder(gameType);
 
-        player1 = new EightBallPlayer(playerName);
-        player2 = new EightBallPlayer(opponentName);
+        player1 = new Player(playerName, GameType.BCA_EIGHT_BALL);
+        player2 = new Player(opponentName, GameType.BCA_EIGHT_BALL);
     }
 
     @Test

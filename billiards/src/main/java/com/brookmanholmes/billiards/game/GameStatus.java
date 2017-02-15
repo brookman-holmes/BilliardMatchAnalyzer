@@ -1,5 +1,6 @@
 package com.brookmanholmes.billiards.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * A data class to capture the state of a game
  * <p></p>Created by Brookman Holmes on 10/30/2015.
  */
-public final class GameStatus {
+public final class GameStatus implements Serializable {
     public final int GAME_BALL;
     public final int MAX_BALLS;
     public final boolean playerAllowedToBreakAgain;

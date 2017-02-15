@@ -162,20 +162,6 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
         }
 
         @Override
-        public void onBindViewHolder(BaseViewHolder holder, int position, List<Object> payloads) {
-            if (payloads.size() > position) {
-                if (holder instanceof ListItemHolder) {
-                    Bundle bundle = (Bundle) payloads.get(position);
-                    if (bundle.containsKey(DatabaseAdapter.COLUMN_LOCATION))
-                        ((ListItemHolder) holder).location.setText(bundle.getString(DatabaseAdapter.COLUMN_LOCATION));
-                    if (bundle.containsKey("player_name"))
-                        ((ListItemHolder) holder).playerNames.setText(((ListItemHolder) holder).getString(R.string.and, bundle.getString("player_name"), bundle.getString("opp_name")));
-                }
-            } else
-                super.onBindViewHolder(holder, position, payloads);
-        }
-
-        @Override
         public int getItemCount() {
             return matches.size() + 1;
         }
@@ -222,33 +208,7 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
                 Match oldMatch = oldList.get(oldItemPosition);
                 Match newMatch = newList.get(newItemPosition);
 
-                return newMatch.getPlayer().getName().equals(oldMatch.getPlayer().getName()) &&
-                        newMatch.getOpponent().getName().equals(oldMatch.getOpponent().getName()) &&
-                        newMatch.getNotes().equals(oldMatch.getNotes()) &&
-                        newMatch.getLocation().equals(oldMatch.getLocation());
-            }
-
-            @Nullable
-            @Override
-            public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-                Match oldMatch = oldList.get(oldItemPosition);
-                Match newMatch = newList.get(newItemPosition);
-
-                Bundle diff = new Bundle();
-
-                if (!newMatch.getPlayer().getName().equals(oldMatch.getPlayer().getName()) ||
-                        !newMatch.getOpponent().getName().equals(oldMatch.getOpponent().getName())) {
-                    diff.putString("player_name", newMatch.getPlayer().getName());
-                    diff.putString("opp_name", newMatch.getOpponent().getName());
-                }
-
-                if (!newMatch.getLocation().equals(oldMatch.getLocation()))
-                    diff.putString(DatabaseAdapter.COLUMN_LOCATION, newMatch.getLocation());
-
-                if (diff.size() == 0)
-                    return null;
-
-                return diff;
+                return oldMatch.equals(newMatch);
             }
         }
 
@@ -287,6 +247,7 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
                     breakType.setText(getString(R.string.game_straight_ghost));
                 } else if (match.getGameStatus().gameType == GameType.STRAIGHT_POOL) {
                     playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
+                    breakType.setText(getString(R.string.game_straight));
                 } else {
                     playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
                     breakType.setText(getBreakType(match.getGameStatus().breakType, match.getPlayer().getName(), match.getOpponent().getName()));
@@ -454,7 +415,13 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
             if (opponent.equals("All opponents"))
                 opponent = null;
 
-            List<Match> matches = new DatabaseAdapter(getContext()).getMatches(player, opponent);
+            // some error is occurring with a null context? Trying to guard against that here
+            List<Match> matches = new ArrayList<>();
+            DatabaseAdapter db = getContext() != null ? new DatabaseAdapter(getContext()) : null;
+            if (db != null) {
+                matches.addAll(db.getMatches(player, opponent));
+            }
+
             for (Match match : matches) {
                 if (filter[0].isMatchQualified(match)) {
                     filteredMatches.add(match);

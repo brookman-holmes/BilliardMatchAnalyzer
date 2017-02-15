@@ -3,32 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
+    android:layout_height="88dp"
     android:background="?android:attr/selectableItemBackground"
     android:paddingBottom="8dp"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
     android:paddingTop="8dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="72dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="12sp" />
+        android:layout_alignParentEnd="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="12sp" />
 
         <TextView
             android:id="@+id/players"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:paddingEnd="16dp"
+            android:paddingStart="72dp"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
@@ -36,7 +32,9 @@
             android:id="@+id/breakType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/players"
             android:paddingEnd="16dp"
+            android:paddingStart="72dp"
             android:textColor="@color/secondary_text"
             android:textSize="14sp" />
 
@@ -44,18 +42,18 @@
             android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/breakType"
             android:maxLines="2"
             android:maxWidth="300dp"
             android:paddingEnd="16dp"
+            android:paddingStart="72dp"
             android:textColor="@color/secondary_text"
             android:textSize="14sp" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignTop="@+id/players"
         android:orientation="vertical"
         tools:ignore="UseCompoundDrawables">
 

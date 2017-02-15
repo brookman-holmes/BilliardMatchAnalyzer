@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/baseLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -35,20 +35,58 @@
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp" />
 
-        <include layout="@layout/graph_cut" />
+        <com.brookmanholmes.bma.ui.view.HowMissLayout
+            android:id="@+id/hmlCut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:hml_left_label="@string/title_cut_over"
+            app:hml_right_label="@string/title_cut_under"
+            app:hml_title="@string/title_cut" />
 
-        <include layout="@layout/graph_aim" />
+        <com.brookmanholmes.bma.ui.view.HowMissLayout
+            android:id="@+id/hmlAim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:hml_left_label="@string/title_aim_left"
+            app:hml_right_label="@string/title_aim_right"
+            app:hml_title="@string/title_aim" />
 
-        <include layout="@layout/graph_kick" />
+        <com.brookmanholmes.bma.ui.view.HowMissLayout
+            android:id="@+id/hmlKick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:hml_left_label="@string/title_short"
+            app:hml_right_label="@string/title_long"
+            app:hml_title="@string/title_kick_error" />
 
-        <include layout="@layout/graph_bank" />
+        <com.brookmanholmes.bma.ui.view.HowMissLayout
+            android:id="@+id/hmlBank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:hml_left_label="@string/title_short"
+            app:hml_right_label="@string/title_long"
+            app:hml_title="@string/title_bank_error" />
 
         <lecho.lib.hellocharts.view.ColumnChartView
             android:id="@+id/speedChart"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:text="Speed"
+            android:textColor="@color/primary_text" />
 
         <lecho.lib.hellocharts.view.ColumnChartView
             android:id="@+id/distanceChart"
@@ -61,13 +99,13 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1.5"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/color_indicator_c5"
-                android:gravity="center"
                 android:text="From CB to OB"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -80,13 +118,13 @@
                 android:textColor="@color/primary_text" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1.5"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/color_indicator_c6"
-                android:gravity="center"
                 android:text="From OB to pocket"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
@@ -96,8 +134,13 @@
             android:layout_marginTop="16dp"
             android:text="@string/description_heat_graph" />
 
-        <include layout="@layout/layout_heat_graph" />
-
+        <com.brookmanholmes.bma.ui.view.HeatGraph
+            android:id="@+id/heatGraph"
+            android:layout_width="@dimen/heat_graph_size"
+            android:layout_height="@dimen/heat_graph_size"
+            app:hit_color="@color/bad"
+            app:hit_indicator="4dp"
+            app:hit_indicator_alpha="@integer/adv_shooting_stat_heat_graph_alpha" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

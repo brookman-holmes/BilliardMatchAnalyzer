@@ -1,7 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -23,10 +22,12 @@ public class StraightPoolBinder extends BindingAdapter {
 
     public String playerTotalFouls = "0", opponentTotalFouls = "0";
 
-    public StraightPoolBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
-        super(expanded, player instanceof StraightPoolPlayer);
+    public int ballsRemaining;
 
-        if (player instanceof StraightPoolPlayer && opponent instanceof StraightPoolPlayer) {
+    StraightPoolBinder(Player player, Player opponent, String title, boolean expanded) {
+        super(expanded, player.getGameType().isStraightPool());
+
+        if (player.getGameType().isStraightPool()) {
             update(player, opponent);
         }
 
@@ -34,10 +35,10 @@ public class StraightPoolBinder extends BindingAdapter {
         this.helpLayout = R.layout.dialog_help_straight_pool;
     }
 
-    public void update(AbstractPlayer player, AbstractPlayer opponent) {
-        if (player instanceof StraightPoolPlayer && opponent instanceof StraightPoolPlayer) {
-            playerPoints = ((StraightPoolPlayer) player).getPoints();
-            opponentPoints = ((StraightPoolPlayer) opponent).getPoints();
+    public void update(Player player, Player opponent) {
+        if (player.getGameType().isStraightPool()) {
+            playerPoints = player.getPoints();
+            opponentPoints = opponent.getPoints();
             playerPointsNeeded = player.getRank();
             opponentPointsNeeded = opponent.getRank();
 
@@ -54,6 +55,8 @@ public class StraightPoolBinder extends BindingAdapter {
 
             playerAggRating = pctf.format(player.getAggressivenessRating());
             opponentAggRating = pctf.format(opponent.getAggressivenessRating());
+
+            ballsRemaining = 15 - ((player.getShootingBallsMade() + opponent.getShootingBallsMade()) % 14);
 
             notifyChange();
         }

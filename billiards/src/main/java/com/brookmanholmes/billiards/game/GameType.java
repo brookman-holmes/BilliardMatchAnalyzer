@@ -18,7 +18,7 @@ public enum GameType {
     APA_GHOST_NINE_BALL(true, true, false, false),
     STRAIGHT_GHOST(false, false, false, true),// is not classified as a ghost game because there are no turns by the second player
     EQUAL_OFFENSE(false, false, false, true),// is not classified as a ghost game because there are no turns by the second player
-    EQUAL_DEFENSE(false, false, false, false);
+    EQUAL_DEFENSE(false, false, false, false), ALL(false, false, false, false);
 
     private final boolean ghostGame;
     private final boolean apa;
@@ -46,5 +46,42 @@ public enum GameType {
 
     public boolean isSinglePlayer() {
         return isSinglePlayer;
+    }
+
+    public boolean isApa8Ball() {
+        return this.equals(APA_EIGHT_BALL) || this.equals(APA_GHOST_EIGHT_BALL);
+    }
+
+    public boolean isApa9Ball() {
+        return this.equals(APA_NINE_BALL) || this.equals(APA_GHOST_NINE_BALL);
+    }
+
+    public boolean isStraightPool() {
+        return this.equals(STRAIGHT_POOL) || this.equals(STRAIGHT_GHOST);
+    }
+
+    public boolean is9Ball() {
+        return this.equals(APA_GHOST_NINE_BALL) || this.equals(BCA_GHOST_NINE_BALL)
+                || this.equals(APA_NINE_BALL) || this.equals(BCA_NINE_BALL);
+    }
+
+    public boolean is10Ball() {
+        return this.equals(BCA_TEN_BALL);
+    }
+
+    public boolean isBca8Ball() {
+        return this.equals(BCA_EIGHT_BALL) || this.equals(BCA_GHOST_EIGHT_BALL);
+    }
+
+    public boolean isBca9Ball() {
+        return this.equals(BCA_NINE_BALL) || this.equals(BCA_GHOST_NINE_BALL);
+    }
+
+    public boolean isWinOnBreak() {
+        return isApa() || is9Ball();
+    }
+
+    public boolean isWinEarly() {
+        return is9Ball() || this.equals(BCA_TEN_BALL);
     }
 }

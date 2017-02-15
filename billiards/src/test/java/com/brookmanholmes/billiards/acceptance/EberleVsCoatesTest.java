@@ -4,13 +4,12 @@ import com.brookmanholmes.billiards.acceptance.eberlecoates.GameStatusList;
 import com.brookmanholmes.billiards.acceptance.eberlecoates.PlayerList;
 import com.brookmanholmes.billiards.acceptance.eberlecoates.TurnEndOptionsList;
 import com.brookmanholmes.billiards.acceptance.eberlecoates.TurnList;
-import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.NineBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 
 import org.junit.Test;
@@ -24,7 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class EberleVsCoatesTest extends MatchTester {
     private PlayerController controller;
-    private List<Pair<AbstractPlayer>> expectedPairs;
+    private List<Pair<Player>> expectedPairs;
 
     @Override public void setUp() {
         expectedGameStatusList = GameStatusList.getGameStatuses();
@@ -38,7 +37,7 @@ public class EberleVsCoatesTest extends MatchTester {
 
     @Test
     public void verifyPlayerPairsWithList() {
-        Pair<NineBallPlayer> actualPair;
+        Pair<Player> actualPair;
         for (int i = 0; i < turns.size(); i++) {
             actualPair = controller.addTurn(expectedGameStatusList.get(i), turns.get(i));
             assertThat("afterTurn" + i, actualPair.getPlayer(), is(expectedPairs.get(i).getPlayer()));

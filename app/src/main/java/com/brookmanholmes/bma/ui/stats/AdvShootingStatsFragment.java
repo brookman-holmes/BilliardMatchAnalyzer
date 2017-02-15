@@ -1,11 +1,8 @@
 package com.brookmanholmes.bma.ui.stats;
 
 import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +13,22 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.ui.view.HeatGraphV2;
+import com.brookmanholmes.bma.ui.view.HeatGraph;
+import com.brookmanholmes.bma.ui.view.HowMissLayout;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import butterknife.Bind;
+import lecho.lib.hellocharts.formatter.AxisValueFormatter;
 import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.SubcolumnValue;
@@ -51,22 +52,15 @@ import static com.brookmanholmes.bma.ui.stats.AdvStatsDialog.ARG_PLAYER_NAME;
 public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     private static final String TAG = "AdvShootingStatsFrag";
 
-    @Bind(R.id.over)
-    TextView overCut;
-    @Bind(R.id.under)
-    TextView underCut;
-    @Bind(R.id.left)
-    TextView leftOfAim;
-    @Bind(R.id.right)
-    TextView rightOfAim;
-    @Bind(R.id.bankLong)
-    TextView bankLong;
-    @Bind(R.id.bankShort)
-    TextView bankShort;
-    @Bind(R.id.kickLong)
-    TextView kickLong;
-    @Bind(R.id.kickShort)
-    TextView kickShort;
+    @Bind(R.id.hmlAim)
+    HowMissLayout aim;
+    @Bind(R.id.hmlCut)
+    HowMissLayout cut;
+    @Bind(R.id.hmlKick)
+    HowMissLayout kick;
+    @Bind(R.id.hmlBank)
+    HowMissLayout bank;
+
     @Bind(R.id.speedChart)
     ColumnChartView speedChart;
     @Bind(R.id.distanceChart)
@@ -84,10 +78,47 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.miscues)
     TextView miscues;
     @Bind(R.id.heatGraph)
-    HeatGraphV2 cueBallHeatGraph;
+    HeatGraph cueBallHeatGraph;
 
-    private String shotType, subType, angle;
-    private GetFilteredStatsAsync task2;
+    private String shotType, cutTypes, angle;
+    private ColumnChartData speedData, distanceData;
+    private final AdapterView.OnItemSelectedListener shotTypeSpinnerListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            shotType = ((ArrayAdapter<String>) shotTypeSpinner.getAdapter()).getItem(position);
+            updateView();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+    private final AdapterView.OnItemSelectedListener subTypeSpinnerListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            cutTypes = ((ArrayAdapter<String>) shotSubTypeSpinner.getAdapter()).getItem(position);
+            updateView();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+    private final AdapterView.OnItemSelectedListener angleSpinnerListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            angle = ((ArrayAdapter<String>) angleSpinner.getAdapter()).getItem(position);
+            updateView();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
 
     public static AdvShootingStatsFragment create(String name, long matchId) {
         AdvShootingStatsFragment frag = new AdvShootingStatsFragment();
@@ -120,7 +151,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     }
 
     private List<AdvStats> getFilteredStats() {
-        long time = System.currentTimeMillis();
         List<AdvStats> list = new ArrayList<>();
 
         for (AdvStats stat : stats) {
@@ -131,8 +161,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
                 }
             }
         }
-
-        Log.d(TAG, "getFilteredStats: " + (System.currentTimeMillis() - time));
         return list;
     }
 
@@ -143,7 +171,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
     private boolean isSubType(AdvStats stat) {
         // all has to go first otherwise it throws an illegal argument exception
-        return subType.equals(getString(R.string.all)) || stat.getShotSubtype() == MatchDialogHelperUtils.convertStringToSubType(getContext(), subType);
+        return cutTypes.equals(getString(R.string.all)) || stat.getShotSubtype() == MatchDialogHelperUtils.convertStringToSubType(getContext(), cutTypes);
     }
 
     private boolean isAngle(AdvStats stat) {
@@ -173,24 +201,32 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
             return angle.equals(getString(R.string.all)) || stat.getAngles().contains(MatchDialogHelperUtils.convertStringToAngle(getContext(), angle));
     }
 
-    private boolean isKickShot() {
-        return shotType.equals(getString(R.string.miss_kick)) || shotType.equals("All");
-    }
-
-    private boolean isBankShot() {
-        return shotType.equals(getString(R.string.miss_bank)) || shotType.equals("All");
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (shotType == null)
             shotType = getString(R.string.all);
-        if (subType == null)
-            subType = getString(R.string.all);
+        if (cutTypes == null)
+            cutTypes = getString(R.string.all);
         if (angle == null)
             angle = getString(R.string.all);
+
+        List<AxisValue> speedAxisValues = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            AxisValue value = new AxisValue(i);
+            value.setLabel(String.valueOf(i + 1));
+            speedAxisValues.add(value);
+        }
+
+        List<AxisValue> distanceAxisValues = new ArrayList<>();
+        for (float value = 0f; value < 20; value += .5f) {
+            distanceAxisValues.add(new AxisValue(value));
+        }
+
+        speedData = createColumnData(createAxis(speedAxisValues, "", new SpeedAxisValueFormatter(0)), false, 10);
+        distanceData = createColumnData(createAxis(distanceAxisValues, "", new DistanceAxisValueFormatter(1).setAppendedText("'".toCharArray())), true, 20);
+
+        setData(stats);
     }
 
     @Nullable
@@ -198,226 +234,152 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        speedChart.setColumnChartData(getSpeedData(stats));
-        distanceChart.setColumnChartData(getDistanceData(stats));
+        speedChart.setColumnChartData(speedData);
+        distanceChart.setColumnChartData(distanceData);
 
-        shotTypeSpinner.setAdapter(createAdapter(getPossibleShotTypes()));
-        shotSubTypeSpinner.setAdapter(createAdapter(getPossibleShotSubTypes()));
-        angleSpinner.setAdapter(createAdapter(getPossibleAngles()));
+        shotTypeSpinner.setAdapter(createAdapter(new ArrayList<String>()));
+        shotSubTypeSpinner.setAdapter(createAdapter(new ArrayList<String>()));
+        angleSpinner.setAdapter(createAdapter(new ArrayList<String>()));
+        setSpinnerItems();
 
-        shotTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                shotType = getAdapter(shotTypeSpinner).getItem(position);
-                updateView();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        shotSubTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                subType = getAdapter(shotSubTypeSpinner).getItem(position);
-                updateView();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        angleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                angle = getAdapter(angleSpinner).getItem(position);
-                updateView();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        shotTypeSpinner.setOnItemSelectedListener(shotTypeSpinnerListener);
+        shotSubTypeSpinner.setOnItemSelectedListener(subTypeSpinnerListener);
+        angleSpinner.setOnItemSelectedListener(angleSpinnerListener);
         return view;
     }
 
-    private ColumnChartData getSpeedData(List<AdvStats> stats) {
+    private ColumnChartData createColumnData(Axis axis, boolean stacked, int columnCount) {
         List<Column> columns = new ArrayList<>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < columnCount; i++) {
             columns.add(new Column());
+        }
 
         for (Column column : columns) {
             List<SubcolumnValue> values = new ArrayList<>();
-            values.add(new MySubColumnValue(0f, getColor(R.color.colorAccent)));
+            values.add(new MySubColumnValue(0f, getColor(R.color.colorPrimary)));
+            if (stacked)
+                values.add(new MySubColumnValue(0f, getColor(R.color.colorTertiary)));
             column.setValues(values)
                     .setHasLabels(true);
         }
 
-        for (AdvStats stat : stats) {
-            if (stat.getSpeed() > 0) {
-                float val = columns.get(stat.getSpeed() - 1).getValues().get(0).getValue();
-                columns.get(stat.getSpeed() - 1).getValues().get(0).setValue(val + 1);
-            }
-        }
-
-        Axis xAxis = new Axis();
-
-        xAxis.setHasLines(true)
-                .setInside(false)
-                .setHasSeparationLine(true)
-                .setFormatter(new SpeedAxisValueFormatter(0))
-                .setTextColor(getColor(R.color.primary_text))
-                .setName("Speed");
-
         ColumnChartData data = new ColumnChartData(columns);
         data.setFillRatio(.8f)
-                .setStacked(false)
-                .setAxisXBottom(xAxis);
-        data.setValueLabelBackgroundAuto(false);
-        data.setValueLabelBackgroundColor(getColor(R.color.colorAccent));
-
+                .setStacked(stacked)
+                .setAxisXBottom(axis);
+        data.setValueLabelBackgroundAuto(true);
+        data.setValueLabelTextSize(10);
         return data;
     }
 
-    private ColumnChartData getDistanceData(List<AdvStats> stats) {
-        List<Column> columns = new ArrayList<>();
-        for (int i = 0; i < 20; i++)
-            columns.add(new Column());
+    private Axis createAxis(List<AxisValue> values, String title, AxisValueFormatter formatter) {
+        Axis axis = new Axis(values);
+        axis.setHasLines(true)
+                .setHasSeparationLine(true)
+                .setFormatter(formatter)
+                .setTextColor(getColor(R.color.primary_text))
+                .setName(title);
+        return axis;
+    }
 
-        for (int i = 0; i < columns.size(); i++) {
-            List<SubcolumnValue> values = new ArrayList<>();
-            values.add(new MySubColumnValue(0f, getColor(R.color.colorAccent)));
-            values.add(new MySubColumnValue(0f, getColor(R.color.colorPrimary)));
-
-            columns.get(i).setValues(values)
-                    .setHasLabels(true);
+    private void setData(List<AdvStats> stats) {
+        // clear values
+        for (Column column : speedData.getColumns()) {
+            for (SubcolumnValue value : column.getValues())
+                value.setValue(0f);
+        }
+        for (Column column : distanceData.getColumns()) {
+            for (SubcolumnValue value : column.getValues())
+                value.setValue(0f);
         }
 
         for (AdvStats stat : stats) {
+            if (stat.getSpeed() > 0) {
+                float val = speedData.getColumns().get(stat.getSpeed() - 1).getValues().get(0).getValue();
+                speedData.getColumns().get(stat.getSpeed() - 1).getValues().get(0).setValue(val + 1);
+            }
+
             int cbCol = (int) (stat.getCbToOb() * 2);
             int obCol = (int) (stat.getObToPocket() * 2);
 
             if (stat.getCbToOb() >= 0) {
-                SubcolumnValue value = columns.get(cbCol).getValues().get(0);
+                SubcolumnValue value = distanceData.getColumns().get(cbCol).getValues().get(0);
                 float newVal = value.getValue() + 1;
                 value.setValue(newVal);
             }
 
             if (stat.getObToPocket() >= 0) {
-                SubcolumnValue value = columns.get(obCol).getValues().get(1);
+                SubcolumnValue value = distanceData.getColumns().get(obCol).getValues().get(1);
                 float newVal = value.getValue() + 1;
                 value.setValue(newVal);
             }
         }
-
-        Axis xAxis = new Axis();
-
-        xAxis.setHasLines(true)
-                .setInside(false)
-                .setFormatter(new DistanceAxisValueFormatter(0).setAppendedText("'".toCharArray()))
-                .setHasSeparationLine(true)
-                .setTextColor(getColor(R.color.primary_text));
-
-        ColumnChartData data = new ColumnChartData(columns);
-        data.setFillRatio(.8f)
-                .setStacked(true)
-                .setAxisXBottom(xAxis);
-        data.setValueLabelBackgroundAuto(true);
-        data.setValueLabelTextSize(10);
-
-        return data;
     }
 
-
-    @Override
-    public void onDestroy() {
-        if (task2 != null)
-            task2.cancel(true);
-        super.onDestroy();
-    }
-
-    private List<String> getPossibleShotTypes() {
+    private void setSpinnerItems() {
         SortedSet<String> shotTypes = new TreeSet<>();
+        SortedSet<String> cutTypes = new TreeSet<>();
+        SortedSet<String> angles = new TreeSet<>();
+
         for (AdvStats stat : stats) {
             shotTypes.add(getString(MatchDialogHelperUtils.convertShotTypeToStringRes(stat.getShotType())));
-        }
-        shotTypes.add(getString(R.string.all));
-
-        return new ArrayList<>(shotTypes);
-    }
-
-    private List<String> getPossibleShotSubTypes() {
-        SortedSet<String> shotSubTypes = new TreeSet<>();
-        for (AdvStats stat : stats) {
-            if (isShotType(stat))
-                shotSubTypes.add(getString(MatchDialogHelperUtils.convertSubTypeToStringRes(stat.getShotSubtype())));
-        }
-        shotSubTypes.add(getString(R.string.all));
-        shotSubTypes.remove(getString(R.string.empty_string));
-
-        return new ArrayList<>(shotSubTypes);
-    }
-
-    private List<String> getPossibleAngles() {
-        SortedSet<String> angles = new TreeSet<>();
-        for (AdvStats stat : stats) {
-            if ((isShotType(stat)) && (isSubType(stat))) {
-                for (AdvStats.Angle angle : stat.getAngles())
-                    angles.add(getString(MatchDialogHelperUtils.convertAngleToStringRes(angle)));
-            }
+            cutTypes.add(getString(MatchDialogHelperUtils.convertSubTypeToStringRes(stat.getShotSubtype())));
+            for (AdvStats.Angle angle : stat.getAngles())
+                angles.add(getString(MatchDialogHelperUtils.convertAngleToStringRes(angle)));
         }
 
-        List<String> list = new ArrayList<>(angles);
-        list.add(0, getString(R.string.all));
+        String emptyString = getString(R.string.empty_string);
+        String all = getString(R.string.all);
+        String none = getString(R.string.none);
 
-        return list;
+        List<String> possibleShotTypes, possibleAngles, possibleCutTypes;
+
+        possibleShotTypes = new ArrayList<>(shotTypes);
+        possibleShotTypes.add(0, all);
+        possibleShotTypes.remove(emptyString);
+        possibleShotTypes.remove(none);
+
+        possibleCutTypes = new ArrayList<>(cutTypes);
+        possibleCutTypes.add(0, all);
+        possibleCutTypes.remove(emptyString);
+        possibleCutTypes.remove(none);
+
+        possibleAngles = new ArrayList<>(angles);
+        possibleAngles.add(0, all);
+        possibleAngles.remove(emptyString);
+        possibleAngles.remove(none);
+
+        setItems(shotTypeSpinner, possibleShotTypes);
+        setItems(shotSubTypeSpinner, possibleCutTypes);
+        setItems(angleSpinner, possibleAngles);
     }
 
-    private ArrayAdapter<String> createAdapter(List<String> data) {
+    private void setItems(Spinner spinner, Collection<String> items) {
+        ((ArrayAdapter<String>) spinner.getAdapter()).clear();
+        ((ArrayAdapter<String>) spinner.getAdapter()).addAll(items);
+    }
+
+    private ArrayAdapter<String> createAdapter(Collection<String> data) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item,
-                data);
+                new ArrayList<>(data));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return adapter;
     }
 
-    private void setItems(Spinner spinner, List<String> items) {
-        getAdapter(spinner).clear();
-        getAdapter(spinner).addAll(items);
-    }
-
-    private ArrayAdapter<String> getAdapter(Spinner spinner) {
-        return (ArrayAdapter<String>) spinner.getAdapter();
-    }
-
     @Override
     void updateView() {
-        setItems(shotTypeSpinner, getPossibleShotTypes());
-        setItems(shotSubTypeSpinner, getPossibleShotSubTypes());
-        setItems(angleSpinner, getPossibleAngles());
+        setSpinnerItems();
         setShotSubType();
 
-        if (task2 == null) {
-            task2 = new GetFilteredStatsAsync();
-            task2.execute();
-        }
-
-        if (task2.getStatus() != AsyncTask.Status.PENDING) {
-            task2.cancel(true);
-            task2 = new GetFilteredStatsAsync();
-            task2.execute();
-        }
+        updateView(getFilteredStats());
     }
 
     private void updateView(List<AdvStats> filteredStats) {
-        TransitionManager.beginDelayedTransition(baseLayout);
-        StatsUtils.setLayoutWeights(filteredStats, AIM_LEFT, AIM_RIGHT, leftOfAim, rightOfAim);
-        StatsUtils.setLayoutWeights(filteredStats, THIN, THICK, overCut, underCut);
-        StatsUtils.setLayoutWeights(filteredStats, BANK_SHORT, BANK_LONG, bankShort, bankLong);
-        StatsUtils.setLayoutWeights(filteredStats, KICK_SHORT, KICK_LONG, kickShort, kickLong);
+        aim.setWeights(StatsUtils.getHowError(filteredStats, AIM_LEFT, AIM_RIGHT));
+        cut.setWeights(StatsUtils.getHowError(filteredStats, THIN, THICK));
+        kick.setWeights(StatsUtils.getHowError(filteredStats, KICK_SHORT, KICK_LONG));
+        bank.setWeights(StatsUtils.getHowError(filteredStats, BANK_SHORT, BANK_LONG));
 
         miscues.setText(getString(R.string.title_miscues, StatsUtils.getMiscues(filteredStats)));
         title.setText(getString(R.string.title_shooting_errors, filteredStats.size()));
@@ -429,15 +391,16 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
                 points.add(new Point(stat.getCueX(), stat.getCueY()));
         }
 
-        speedChart.setColumnChartData(getSpeedData(filteredStats));
-        distanceChart.setColumnChartData(getDistanceData(filteredStats));
+        setData(filteredStats);
+        speedChart.setColumnChartData(speedData);
+        distanceChart.setColumnChartData(distanceData);
         cueBallHeatGraph.setData(points);
     }
 
     private void setShotSubType() {
         if (!shotType.equals(getString(R.string.miss_cut)) && !shotType.equals(getString(R.string.all))) {
             shotSubTypeSpinner.setSelection(0);
-            subType = getString(R.string.all);
+            cutTypes = getString(R.string.all);
         }
     }
 
@@ -449,20 +412,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     private static class MySubColumnValue extends SubcolumnValue {
         private static NumberFormat formatter = DecimalFormat.getNumberInstance();
 
-        public MySubColumnValue() {
-            super();
-        }
-
-        public MySubColumnValue(float value) {
-            super(value);
-        }
-
         public MySubColumnValue(float value, int color) {
             super(value, color);
-        }
-
-        public MySubColumnValue(SubcolumnValue columnValue) {
-            super(columnValue);
         }
 
         @Override
@@ -474,19 +425,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         public SubcolumnValue setValue(float value) {
             setLabel(formatter.format(value));
             return super.setValue(value);
-        }
-    }
-
-    private class GetFilteredStatsAsync extends AsyncTask<Void, Void, List<AdvStats>> {
-        @Override
-        protected void onPostExecute(List<AdvStats> stats) {
-            if (isAdded() && !isCancelled())
-                updateView(stats);
-        }
-
-        @Override
-        protected List<AdvStats> doInBackground(Void... params) {
-            return getFilteredStats();
         }
     }
 }

@@ -6,12 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.utils.ConversionUtils;
 
 public class HorizontalBarView extends BaseView {
     String mText = "";
@@ -213,25 +211,19 @@ public class HorizontalBarView extends BaseView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         //Build the filled part first
         mBarRect.right = (int) (mBarRect.right * (mValue / 100f));
         int fillRight = mBarRect.right;
-        //canvas.drawRect(mBarRect, mBarPaintFill);
-        float rounding = ConversionUtils.convertDpToPx(getContext(), 6);
-        // draw at the meeting point to fill around the rounded corners
-        canvas.drawRect(mBarRect.right - (int) rounding, mBarRect.top, mBarRect.right + (int) rounding, mBarRect.bottom, mBarPaintEmpty);
+        canvas.drawRect(mBarRect, mBarPaintFill);
 
-        if (mBarRect.right > 0) // draw at the beginning to fill in the rounded corners
-            canvas.drawRect(mBarRect.left, mBarRect.top, mBarRect.left + (int) rounding, mBarRect.bottom, mBarRect.right > 0 ? mBarPaintFill : mBarPaintEmpty);
-
-        canvas.drawRoundRect(new RectF(mBarRect), rounding, rounding, mBarPaintFill);
         //Draw the empty part starting from the end of the filled part
         //this is to avoid overdraw.
         int originalLeft = mBarRect.left;
         mBarRect.left = mBarRect.right;
         mBarRect.right = getWidth() - getPaddingRight() - mHalfStrokeWidth;
         int emptyRight = mBarRect.right;
-        canvas.drawRoundRect(new RectF(mBarRect), rounding, rounding, mBarPaintEmpty);
+        canvas.drawRect(mBarRect, mBarPaintEmpty);
         mBarRect.left = originalLeft;
 
         //double the padding to account for the left and right sides.
@@ -245,6 +237,5 @@ public class HorizontalBarView extends BaseView {
             mTextRect.left = fillRight - mTextWidth - mTextPadding;
             canvas.drawText(mText, mTextRect.left, mTextRect.top, mFillTextPaint);
         }
-
     }
 }

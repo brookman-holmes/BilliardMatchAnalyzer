@@ -4,8 +4,8 @@ import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 import com.brookmanholmes.billiards.turn.TurnEnd;
@@ -22,11 +22,11 @@ import static org.mockito.Mockito.when;
  * Created by Brookman Holmes on 1/30/2016.
  */
 @SuppressWarnings("unused")
-public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
-    PlayerController<T> playerController;
+public abstract class AbstractPlayerControllerTest {
+    PlayerController playerController;
     Game game;
     TurnBuilder turnBuilder;
-    T actualPlayer, expectedPlayer;
+    Player actualPlayer, expectedPlayer;
 
     @Before
     public abstract void setUp();
@@ -250,17 +250,17 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
 
     @Test
     public void test1() {
-        Pair<T> players = playerController.addTurn(game.getGameStatus(), breakAndRunTurn());
+        Pair<Player> players = playerController.addTurn(game.getGameStatus(), breakAndRunTurn());
         game.addTurn(breakAndRunTurn());
 
 
-        T player1 = getBreakAndRunPlayer();
+        Player player1 = getBreakAndRunPlayer();
         player1.addGameWon();
         player1.addBreakAndRun();
 
         assertThat(players.getPlayer(), is(player1));
 
-        T player2 = getBlankPlayer();
+        Player player2 = getBlankPlayer();
         player2.addGameLost();
 
         assertThat(players.getOpponent(), is(player2));
@@ -285,13 +285,13 @@ public abstract class AbstractPlayerControllerTest<T extends AbstractPlayer> {
 
     abstract ITurn failedRunOutTurn();
 
-    abstract T getBlankPlayer();
+    abstract Player getBlankPlayer();
 
-    abstract T getBreakAndRunPlayer();
+    abstract Player getBreakAndRunPlayer();
 
-    abstract T failedRunOutPlayer();
+    abstract Player failedRunOutPlayer();
 
-    abstract T fourBallRunOutPlayer();
+    abstract Player fourBallRunOutPlayer();
 
     private void testPlayerEquality() {
         assertThat(actualPlayer, is(expectedPlayer));

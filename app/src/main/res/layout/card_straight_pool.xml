@@ -7,6 +7,9 @@
             name="straight"
             type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolBinder" />
 
+        <variable
+            name="winIndicator"
+            type="com.brookmanholmes.bma.ui.matchinfo.WinIndicatorBinder" />
         <import type="android.view.View" />
     </data>
 
@@ -26,6 +29,14 @@
                 bind:title="@{straight}" />
 
             <android.support.v7.widget.GridLayout style="@style/match_info_grid">
+
+                <include
+                    layout="@layout/container_win_pct_indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_columnSpan="3"
+                    bind:showWinPctLayout="@{straight.showCard}"
+                    bind:winIndicator="@{winIndicator}" />
 
                 <TextView
                     style="@style/player_stats"
@@ -117,6 +128,12 @@
                     android:typeface="@{straight.highlightFouls() == -1 ? `bold` : `normal`}"
                     android:visibility="@{straight.expanded ? View.VISIBLE : View.GONE}" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/balls_remaining(straight.ballsRemaining)}"
+                    android:textSize="@dimen/player_text_size"
+                    app:layout_columnSpan="3" />
             </android.support.v7.widget.GridLayout>
 
             <include

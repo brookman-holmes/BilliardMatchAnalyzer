@@ -1,7 +1,7 @@
 package com.brookmanholmes.billiards.match;
 
 import com.brookmanholmes.billiards.game.GameStatus;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Brookman Holmes on 1/31/2016.
  */
-interface IMatch<T extends AbstractPlayer> {
+interface IMatch<T extends Player> {
     /**
      * Creates and adds a new {@link com.brookmanholmes.billiards.turn.ITurn} to the match
      * with the specified arguments

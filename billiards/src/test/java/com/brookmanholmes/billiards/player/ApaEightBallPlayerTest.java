@@ -1,5 +1,7 @@
 package com.brookmanholmes.billiards.player;
 
+import com.brookmanholmes.billiards.game.GameType;
+
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -7,19 +9,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 1/19/2016.
  */
-public class ApaEightBallPlayerTest extends AbstractPlayerTest<ApaEightBallPlayer> {
+public class ApaEightBallPlayerTest extends AbstractPlayerTest {
     int opponentRank = 2;
 
     @Override
     public void setUp() {
         rank = 5;
-        expected = new ApaEightBallPlayer(testName, rank, opponentRank);
-        actual = new ApaEightBallPlayer(testName, rank, opponentRank);
+        expected = new Player(testName, GameType.APA_EIGHT_BALL, rank, opponentRank);
+        actual = new Player(testName, GameType.APA_EIGHT_BALL, rank, opponentRank);
     }
 
     @Test
     public void addPlayerStatsWorksCorrectlyForNineBall() {
-        ApaEightBallPlayer player = new ApaEightBallPlayer(testName, rank, opponentRank);
+        Player player = new Player(testName, GameType.APA_EIGHT_BALL, rank, opponentRank);
 
         player.addEarlyWin();
         player.addWinOnBreak();

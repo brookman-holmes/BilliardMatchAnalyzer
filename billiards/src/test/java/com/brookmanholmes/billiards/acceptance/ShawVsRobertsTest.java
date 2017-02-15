@@ -4,13 +4,12 @@ import com.brookmanholmes.billiards.acceptance.shawroberts.GameStatusList;
 import com.brookmanholmes.billiards.acceptance.shawroberts.PlayerList;
 import com.brookmanholmes.billiards.acceptance.shawroberts.TurnEndOptionsList;
 import com.brookmanholmes.billiards.acceptance.shawroberts.TurnList;
-import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
 import com.brookmanholmes.billiards.player.Pair;
-import com.brookmanholmes.billiards.player.TenBallPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
 
 import org.junit.Test;
@@ -25,7 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ShawVsRobertsTest extends MatchTester {
     private PlayerController controller;
-    private List<Pair<AbstractPlayer>> expectedPairs;
+    private List<Pair<Player>> expectedPairs;
     @Override public void setUp() {
         expectedGameStatusList = GameStatusList.getGameStatuses();
         expectedTurnEndOptionsList = TurnEndOptionsList.getOptionsList();
@@ -38,7 +37,7 @@ public class ShawVsRobertsTest extends MatchTester {
 
     @Test
     public void verifyPlayerPairsWithList() {
-        Pair<TenBallPlayer> actualPair;
+        Pair<Player> actualPair;
         for (int i = 0; i < turns.size(); i++) {
             actualPair = controller.addTurn(expectedGameStatusList.get(i), turns.get(i));
             assertThat("afterTurn" + i, actualPair.getPlayer(), is(expectedPairs.get(i).getPlayer()));

@@ -5,7 +5,7 @@ import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 
 import org.junit.Before;
@@ -26,16 +26,17 @@ public class StraightPoolPlayerControllerTest {
     Game game;
     GameStatus.Builder statusBuilder;
 
-    StraightPoolPlayer actualPlayer, expectedPlayer;
+    Player actualPlayer, expectedPlayer;
 
     @Before
     public void setup() {
+        GameType gameType = GameType.STRAIGHT_POOL;
         playerController = new StraightPoolController(playerName, opponentName, playerRank, opponentRank);
-        turnBuilder = new TurnBuilder(GameType.STRAIGHT_POOL);
-        game = Game.newGame(GameType.STRAIGHT_POOL, PlayerTurn.PLAYER, BreakType.WINNER);
-        actualPlayer = new StraightPoolPlayer(playerName, playerRank);
-        expectedPlayer = new StraightPoolPlayer(playerName, playerRank);
-        statusBuilder = new GameStatus.Builder(GameType.STRAIGHT_POOL);
+        turnBuilder = new TurnBuilder(gameType);
+        game = Game.newGame(gameType, PlayerTurn.PLAYER, BreakType.WINNER);
+        actualPlayer = new Player(playerName, gameType, playerRank);
+        expectedPlayer = new Player(playerName, gameType, playerRank);
+        statusBuilder = new GameStatus.Builder(gameType);
     }
 
 

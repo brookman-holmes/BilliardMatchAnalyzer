@@ -24,5 +24,6 @@
     <dimen name="decoview_inset">8dp</dimen>
     <dimen name="adv_stat_title_text_size">16sp</dimen>
     <dimen name="adv_stat_body_text_size">14sp</dimen>
-    <dimen name="adv_stat_graph_text_size">10sp</dimen>
+    <dimen name="adv_stat_graph_text_size">12sp</dimen>
+    <dimen name="heat_graph_size">150dp</dimen>
 </resources>

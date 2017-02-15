@@ -55,7 +55,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            app:hit_color="@color/colorAccentLight"
+            app:hit_color="@color/bad"
             app:hit_indicator="10dp"
             app:line_width="1dp" />
 

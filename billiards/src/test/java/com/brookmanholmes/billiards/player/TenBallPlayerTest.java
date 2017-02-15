@@ -1,5 +1,7 @@
 package com.brookmanholmes.billiards.player;
 
+import com.brookmanholmes.billiards.game.GameType;
+
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -8,16 +10,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 1/19/2016.
  */
-public class TenBallPlayerTest extends AbstractPlayerTest<TenBallPlayer> {
-    @Override public void setUp() {
+public class TenBallPlayerTest extends AbstractPlayerTest {
+    @Override
+    public void setUp() {
         rank = 0;
-        expected = new TenBallPlayer(testName);
-        actual = new TenBallPlayer(testName);
+        expected = new Player(testName, GameType.BCA_TEN_BALL);
+        actual = new Player(testName, GameType.BCA_TEN_BALL);
     }
 
     @Test
     public void addPlayerStatsWorksCorrectlyForTenBall() {
-        TenBallPlayer player = new TenBallPlayer(testName);
+        Player player = new Player(testName, GameType.BCA_TEN_BALL);
 
         player.addEarlyWin();
 

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="adv_shooting_stat_heat_graph_alpha">32</integer>
+</resources>

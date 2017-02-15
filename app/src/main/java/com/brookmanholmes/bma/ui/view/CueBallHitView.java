@@ -29,6 +29,7 @@ public class CueBallHitView extends CueBallView {
         hitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         hitPaint.setColor(color);
         hitPaint.setStyle(Paint.Style.FILL);
+        hitPaint.setAlpha(alpha);
     }
 
     @Override

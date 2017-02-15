@@ -30,7 +30,8 @@
 -keepclasseswithmembernames class * { @butterknife.* <methods>; }
 
 -dontwarn butterknife.internal.**
--dontwarn com.github.mikephil.charting.data.realm.**
 -dontwarn java.awt.**
+-dontwarn okio.**
+-dontwarn retrofit2.Platform$Java8
 
 # for the about libaries to include the libraries it needs

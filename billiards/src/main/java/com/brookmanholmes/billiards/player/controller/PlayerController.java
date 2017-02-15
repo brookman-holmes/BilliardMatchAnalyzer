@@ -4,14 +4,11 @@ import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.EightBallPlayer;
-import com.brookmanholmes.billiards.player.NineBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
-import com.brookmanholmes.billiards.player.TenBallPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.ITurn;
 
-import java.util.Collection;
+import java.io.Serializable;
 
 import static com.brookmanholmes.billiards.turn.TurnEnd.BREAK_MISS;
 import static com.brookmanholmes.billiards.turn.TurnEnd.GAME_WON;
@@ -23,7 +20,7 @@ import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY_ERROR;
  * Created by Brookman Holmes on 10/28/2015.
  * A controller for adding up player stats based on the game they are playing
  */
-public abstract class PlayerController<T extends AbstractPlayer> {
+public abstract class PlayerController implements Serializable {
     GameStatus gameStatus;
     ITurn turn;
     String playerName, opponentName;
@@ -51,7 +48,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * @param opponentRank The rank of the opponent
      * @return returns a new player controller for BCA 9 ball matches
      */
-    public static PlayerController<NineBallPlayer> createNineBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
+    public static PlayerController createNineBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
         return new NineBallController(playerName, opponentName, playerRank, opponentRank);
     }
 
@@ -63,7 +60,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * @param opponentRank The rank of the opponent
      * @return returns a new player controller for BCA 10 ball matches
      */
-    public static PlayerController<TenBallPlayer> createTenBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
+    public static PlayerController createTenBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
         return new TenBallController(playerName, opponentName, playerRank, opponentRank);
     }
 
@@ -75,7 +72,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * @param opponentRank The rank of the opponent
      * @return returns a new player controller for BCA 8 ball matches
      */
-    public static PlayerController<EightBallPlayer> createEightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
+    public static PlayerController createEightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
         return new EightBallController(playerName, opponentName, playerRank, opponentRank);
     }
 
@@ -88,7 +85,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * @param opponentRank The rank of the opponent
      * @return  returns a new player controller based on the type of game passed in
      */
-    public static PlayerController<?> createController(Game game, String playerName, String opponentName, int playerRank, int opponentRank) {
+    public static PlayerController createController(Game game, String playerName, String opponentName, int playerRank, int opponentRank) {
         switch (game.getGameType()) {
             case BCA_NINE_BALL:
             case BCA_GHOST_NINE_BALL:
@@ -115,21 +112,6 @@ public abstract class PlayerController<T extends AbstractPlayer> {
             default:
                 throw new InvalidGameTypeException(game.getGameType().name());
         }
-    }
-
-    /**
-     * Adds player stats from a list into a new player
-     * @param players The stats you would like to collate
-     * @param newPlayer The player you'd like to put all those stats into
-     * @param <T> A type of player that extends AbstractPlayer
-     * @return The player with all those juicy stats collected into it
-     */
-    public static <T extends AbstractPlayer> T getPlayerFromList(Collection<T> players, T newPlayer) {
-        for (T player : players) {
-            newPlayer.addPlayerStats(player);
-        }
-
-        return newPlayer;
     }
 
     /**
@@ -170,15 +152,15 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * @param turn The turn that is being added to the match
      * @return A pair of players with scores based on this turn
      */
-    public Pair<T> addTurn(GameStatus gameStatus, ITurn turn) {
+    public Pair<Player> addTurn(GameStatus gameStatus, ITurn turn) {
         assert gameStatus != null;
         assert turn != null;
 
         this.gameStatus = gameStatus;
         this.turn = turn;
 
-        T player1 = newPlayer();
-        T player2 = newOpponent();
+        Player player1 = new Player(playerName, gameStatus.gameType, playerRank, opponentRank);
+        Player player2 = new Player(opponentName, gameStatus.gameType, opponentRank, playerRank);
 
         switch (gameStatus.turn) {
             case PLAYER:
@@ -203,7 +185,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * @param player1 The player
      * @param player2 The opponent
      */
-    void addGamesToPlayers(T player1, T player2) {
+    void addGamesToPlayers(Player player1, Player player2) {
         if (getGameWinner() == PlayerTurn.PLAYER) {
             player1.addGameWon();
             player2.addGameLost();
@@ -238,7 +220,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * Add all stats to the current player
      * @param player The player who's current turn it is
      */
-    private void addStatsToPlayer(T player) {
+    private void addStatsToPlayer(Player player) {
         addSafetyStats(player);
         addShootingStats(player);
 
@@ -253,7 +235,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * Add in safety stats for a player
      * @param player The player to add safety stats to
      */
-    void addSafetyStats(T player) {
+    void addSafetyStats(Player player) {
         if (turn.getTurnEnd() == SAFETY)
             player.addSafety(gameStatus.opponentPlayedSuccessfulSafe, turn.getShootingBallsMade());
         else if (turn.getTurnEnd() == SAFETY_ERROR)
@@ -271,7 +253,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * Add in shooting stats for a player
      * @param player The player to add shooting stats to
      */
-    void addShootingStats(T player) {
+    void addShootingStats(Player player) {
         if (turn.getTurnEnd() == MISS)
             player.addShootingMiss();
 
@@ -292,7 +274,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * Add breaking stats for this player
      * @param player The player to add breaking stats to
      */
-    void addBreakingStats(T player) {
+    void addBreakingStats(Player player) {
         if (gameStatus.gameType.isGhostGame()) {
             player.addBreakShot(turn.getBreakBallsMade(),
                     turn.getShootingBallsMade() > 0 && turn.getBreakBallsMade() > 0,
@@ -309,7 +291,7 @@ public abstract class PlayerController<T extends AbstractPlayer> {
      * Add run out stats to this player
      * @param player The player to add run out stats to
      */
-    void addRunOutStats(T player) {
+    void addRunOutStats(Player player) {
         if (gameStatus.newGame && getTotalBallsMade() >= getMaximumBallsMakeable()) // break and run
             player.addBreakAndRun();
         else if (turn.getShootingBallsMade() == getMaximumBallsMakeable()) // table run
@@ -336,19 +318,15 @@ public abstract class PlayerController<T extends AbstractPlayer> {
         return gameStatus.MAX_BALLS;
     }
 
-    /**
-     * Create a new player, this should really only be used with the method
-     * {@link com.brookmanholmes.billiards.player.controller.PlayerController#getPlayerFromList(Collection, AbstractPlayer)}
-     * to create a new player and collect stats for it
-     * @return A new blank player
-     */
-    public abstract T newPlayer();
-
-    /**
-     * Create a new opponent, this should really only be used with the method
-     * {@link com.brookmanholmes.billiards.player.controller.PlayerController#getPlayerFromList(Collection, AbstractPlayer)}
-     * to create a new player and collect stats for it
-     * @return A new blank opponent
-     */
-    public abstract T newOpponent();
+    @Override
+    public String toString() {
+        return "PlayerController{" +
+                "gameStatus=" + gameStatus +
+                ", turn=" + turn +
+                ", playerName='" + playerName + '\'' +
+                ", opponentName='" + opponentName + '\'' +
+                ", playerRank=" + playerRank +
+                ", opponentRank=" + opponentRank +
+                '}';
+    }
 }

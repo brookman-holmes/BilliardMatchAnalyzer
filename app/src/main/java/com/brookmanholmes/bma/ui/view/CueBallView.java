@@ -19,6 +19,7 @@ public class CueBallView extends BaseView {
     protected Paint linePaint;
     protected int size;
     protected int color;
+    protected int alpha;
 
     public CueBallView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -27,7 +28,8 @@ public class CueBallView extends BaseView {
 
         size = a.getDimensionPixelSize(R.styleable.CueBallView_hit_indicator, getDefaultSize());
 
-        color = a.getColor(R.styleable.CueBallView_hit_color, getColor(R.color.colorPrimarySuperTransparent));
+        color = a.getColor(R.styleable.CueBallView_hit_color, getColor(R.color.colorPrimary));
+        alpha = a.getInt(R.styleable.CueBallView_hit_indicator_alpha, 128);
 
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         linePaint.setStyle(Paint.Style.STROKE);

@@ -3,12 +3,13 @@ package com.brookmanholmes.billiards.turn;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.GameType;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Brookman Holmes on 1/31/2016.
  */
-public interface ITableStatus {
+public interface ITableStatus extends Serializable {
     /**
      * Returns the number of balls of status
      * {@link BallStatus#MADE}

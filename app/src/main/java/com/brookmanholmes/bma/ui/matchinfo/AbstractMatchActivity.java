@@ -29,7 +29,6 @@ import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
-import com.brookmanholmes.bma.data.MatchModel;
 import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.addturnwizard.AddTurnDialog;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnBuilder;
@@ -42,6 +41,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.ArrayList;
 
@@ -106,7 +106,7 @@ abstract class AbstractMatchActivity extends BaseActivity implements
 
     @Override
     public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
-        byte[] payload = MatchModel.marshall(match);
+        byte[] payload = SerializationUtils.serialize(match);
         String mime = getMimeType();
 
         return new NdefMessage(NdefRecord.createMime(mime, payload));
@@ -125,7 +125,7 @@ abstract class AbstractMatchActivity extends BaseActivity implements
         Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         NdefMessage message = (NdefMessage) rawMsgs[0];
 
-        Match match = MatchModel.unmarshall(message.getRecords()[0].getPayload()).getMatch();
+        Match match = SerializationUtils.deserialize(message.getRecords()[0].getPayload());
         DatabaseAdapter db = new DatabaseAdapter(this);
         final long matchId = db.insertMatch(match);
         getIntent().putExtra(ARG_MATCH_ID, matchId);
@@ -287,7 +287,7 @@ abstract class AbstractMatchActivity extends BaseActivity implements
         final UploadTask task = storage
                 .getReferenceFromUrl(getString(R.string.firebase_storage_ref))
                 .child("matches/" + matchKey + "/match")
-                .putBytes(MatchModel.marshall(match));
+                .putBytes(SerializationUtils.serialize(match));
 
         task.addOnFailureListener(this).addOnSuccessListener(this);
 

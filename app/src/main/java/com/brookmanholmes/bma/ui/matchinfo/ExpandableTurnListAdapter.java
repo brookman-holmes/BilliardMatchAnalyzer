@@ -12,8 +12,7 @@ import android.widget.TextView;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.bma.R;
@@ -243,7 +242,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(AbstractPlayer player, AbstractPlayer opponent) {
+        void bind(Player player, Player opponent) {
             String playerName = player.getName();
             String opponentName = opponent.getName();
 
@@ -286,7 +285,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         }
 
         @Override
-        void bind(AbstractPlayer player, AbstractPlayer opponent) {
+        void bind(Player player, Player opponent) {
             float points = player.getShootingBallsMade() + opponent.getShootingBallsMade();
             int rackTotal = (int) Math.floor(points / 14) + 1;
             String playerName = player.getName();
@@ -294,9 +293,9 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
 
             game.setText(itemView.getContext().getString(R.string.row_rack, rackTotal));
 
-            if (player instanceof StraightPoolPlayer && opponent instanceof StraightPoolPlayer) {
-                int playerScore = ((StraightPoolPlayer) player).getPoints();
-                int opponentScore = ((StraightPoolPlayer) opponent).getPoints();
+            if (player.getGameType().isStraightPool()) {
+                int playerScore = player.getPoints();
+                int opponentScore = opponent.getPoints();
 
                 float playerPct = (float) playerScore / (float) player.getRank();
                 float opponentPct = (float) opponentScore / (float) opponent.getRank();

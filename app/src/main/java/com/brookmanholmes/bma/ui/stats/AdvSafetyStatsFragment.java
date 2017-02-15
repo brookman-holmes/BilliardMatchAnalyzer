@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.databinding.FragmentAdvSafetyStatsBinding;
+import com.brookmanholmes.bma.ui.view.HowMissLayout;
 
 import java.util.ArrayList;
 
@@ -33,18 +34,14 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
     TextView safetyResults;
     @Bind(R.id.safetyErrorsTitle)
     TextView safetyErrorsTitle;
-    @Bind(R.id.over)
-    TextView overCut;
-    @Bind(R.id.under)
-    TextView underCut;
-    @Bind(R.id.fast)
-    TextView fast;
-    @Bind(R.id.slow)
-    TextView slow;
-    @Bind(R.id.kickLong)
-    TextView kickLong;
-    @Bind(R.id.kickShort)
-    TextView kickShort;
+
+    @Bind(R.id.hmlSpeed)
+    HowMissLayout speed;
+    @Bind(R.id.hmlCut)
+    HowMissLayout cut;
+    @Bind(R.id.hmlKick)
+    HowMissLayout kick;
+
     @Bind(R.id.miscues)
     TextView miscues;
 
@@ -67,23 +64,29 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
         return frag;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        model = new SafetyStatBinder(new ArrayList<StatLineItem>());
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_adv_safety_stats, container, false);
         ButterKnife.bind(this, binding.getRoot());
 
-        model = new SafetyStatBinder(new ArrayList<StatLineItem>());
         binding.setSafety(model);
 
+        updateView();
         return binding.getRoot();
     }
 
     @Override
     void updateView() {
-        StatsUtils.setLayoutWeights(stats, THIN, THICK, overCut, underCut);
-        StatsUtils.setLayoutWeights(stats, TOO_SOFT, TOO_HARD, slow, fast);
-        StatsUtils.setLayoutWeights(stats, KICK_SHORT, KICK_LONG, kickShort, kickLong);
+        cut.setWeights(StatsUtils.getHowError(stats, THIN, THICK));
+        kick.setWeights(StatsUtils.getHowError(stats, KICK_SHORT, KICK_LONG));
+        speed.setWeights(StatsUtils.getHowError(stats, TOO_SOFT, TOO_HARD));
 
         model.update(StatsUtils.getSafetyStats(stats));
 

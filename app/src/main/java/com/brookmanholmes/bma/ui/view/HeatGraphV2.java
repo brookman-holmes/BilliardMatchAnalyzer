@@ -65,6 +65,7 @@ public class HeatGraphV2 extends CueBallView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        circlePath.reset();
         circlePath.addCircle(getCenterX(), getCenterY(), getRadius(), Path.Direction.CCW);
 
         float height = getRectHeight();

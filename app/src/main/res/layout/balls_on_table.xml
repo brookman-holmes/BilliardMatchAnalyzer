@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="ballsOnTable"
+            type="com.brookmanholmes.bma.ui.matchinfo.BallsOnTableBinder" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="4dp"
+        android:paddingTop="8dp"
+        android:visibility="@{ballsOnTable.showCard ? View.VISIBLE : View.GONE}">
+
+        <android.support.v7.widget.GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{ballsOnTable.smallScreen ? View.GONE : View.VISIBLE}"
+            app:orientation="horizontal">
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(1)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/one_ball"
+                android:src="@drawable/ic_one_ball"
+                android:visibility="@{ballsOnTable.getVisibility(1)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(2)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/two_ball"
+                android:src="@drawable/ic_two_ball"
+                android:visibility="@{ballsOnTable.getVisibility(2)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(3)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/three_ball"
+                android:src="@drawable/ic_three_ball"
+                android:visibility="@{ballsOnTable.getVisibility(3)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(4)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/four_ball"
+                android:src="@drawable/ic_four_ball"
+                android:visibility="@{ballsOnTable.getVisibility(4)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(5)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/five_ball"
+                android:src="@drawable/ic_five_ball"
+                android:visibility="@{ballsOnTable.getVisibility(5)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(6)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/six_ball"
+                android:src="@drawable/ic_six_ball"
+                android:visibility="@{ballsOnTable.getVisibility(6)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(7)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/seven_ball"
+                android:src="@drawable/ic_seven_ball"
+                android:visibility="@{ballsOnTable.getVisibility(7)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(8)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/eight_ball"
+                android:src="@drawable/ic_eight_ball"
+                android:visibility="@{ballsOnTable.getVisibility(8)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(9)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/one_ball"
+                android:src="@drawable/ic_nine_ball"
+                android:visibility="@{ballsOnTable.getVisibility(9)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(10)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/two_ball"
+                android:src="@drawable/ic_ten_ball"
+                android:visibility="@{ballsOnTable.getVisibility(10)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(11)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/three_ball"
+                android:src="@drawable/ic_eleven_ball"
+                android:visibility="@{ballsOnTable.getVisibility(11)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(12)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/four_ball"
+                android:src="@drawable/ic_twelve_ball"
+                android:visibility="@{ballsOnTable.getVisibility(12)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(13)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/five_ball"
+                android:src="@drawable/ic_thirteen_ball"
+                android:visibility="@{ballsOnTable.getVisibility(13)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(14)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/six_ball"
+                android:src="@drawable/ic_fourteen_ball"
+                android:visibility="@{ballsOnTable.getVisibility(14)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(15)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/seven_ball"
+                android:src="@drawable/ic_fifteen_ball"
+                android:visibility="@{ballsOnTable.getVisibility(15)}" />
+        </android.support.v7.widget.GridLayout>
+
+        <android.support.v7.widget.GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{ballsOnTable.smallScreen ? View.VISIBLE : View.GONE}"
+            app:columnCount="8"
+            app:orientation="horizontal">
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(1)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/one_ball"
+                android:src="@drawable/ic_one_ball"
+                android:visibility="@{ballsOnTable.getVisibility(1)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(2)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/two_ball"
+                android:src="@drawable/ic_two_ball"
+                android:visibility="@{ballsOnTable.getVisibility(2)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(3)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/three_ball"
+                android:src="@drawable/ic_three_ball"
+                android:visibility="@{ballsOnTable.getVisibility(3)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(4)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/four_ball"
+                android:src="@drawable/ic_four_ball"
+                android:visibility="@{ballsOnTable.getVisibility(4)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(5)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/five_ball"
+                android:src="@drawable/ic_five_ball"
+                android:visibility="@{ballsOnTable.getVisibility(5)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(6)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/six_ball"
+                android:src="@drawable/ic_six_ball"
+                android:visibility="@{ballsOnTable.getVisibility(6)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(7)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/seven_ball"
+                android:src="@drawable/ic_seven_ball"
+                android:visibility="@{ballsOnTable.getVisibility(7)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(8)}"
+                android:background="@drawable/ic_background"
+                android:backgroundTint="@color/eight_ball"
+                android:src="@drawable/ic_eight_ball"
+                android:visibility="@{ballsOnTable.getVisibility(8)}"
+                app:layout_rowSpan="2" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(9)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/one_ball"
+                android:src="@drawable/ic_nine_ball"
+                android:visibility="@{ballsOnTable.getVisibility(9)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(10)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/two_ball"
+                android:src="@drawable/ic_ten_ball"
+                android:visibility="@{ballsOnTable.getVisibility(10)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(11)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/three_ball"
+                android:src="@drawable/ic_eleven_ball"
+                android:visibility="@{ballsOnTable.getVisibility(11)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(12)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/four_ball"
+                android:src="@drawable/ic_twelve_ball"
+                android:visibility="@{ballsOnTable.getVisibility(12)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(13)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/five_ball"
+                android:src="@drawable/ic_thirteen_ball"
+                android:visibility="@{ballsOnTable.getVisibility(13)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(14)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/six_ball"
+                android:src="@drawable/ic_fourteen_ball"
+                android:visibility="@{ballsOnTable.getVisibility(14)}" />
+
+            <ImageView
+                style="@style/ball_style"
+                android:alpha="@{ballsOnTable.getAlpha(15)}"
+                android:background="@drawable/ic_background_stripe"
+                android:backgroundTint="@color/seven_ball"
+                android:src="@drawable/ic_fifteen_ball"
+                android:visibility="@{ballsOnTable.getVisibility(15)}" />
+        </android.support.v7.widget.GridLayout>
+    </LinearLayout>
+</layout>

@@ -1,6 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -21,7 +21,7 @@ public class SafetiesBinder extends BindingAdapter {
 
     public String playerForcedFouls, opponentForcedFouls;
 
-    SafetiesBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded, boolean showCard) {
+    SafetiesBinder(Player player, Player opponent, String title, boolean expanded, boolean showCard) {
         super(expanded, showCard);
         this.title = title;
         helpLayout = R.layout.dialog_help_safeties;
@@ -29,7 +29,7 @@ public class SafetiesBinder extends BindingAdapter {
         update(player, opponent);
     }
 
-    public void update(AbstractPlayer player, AbstractPlayer opponent) {
+    public void update(Player player, Player opponent) {
         playerSafetyPct = pctf.format(player.getSafetyPct());
         opponentSafetyPct = pctf.format(opponent.getSafetyPct());
 

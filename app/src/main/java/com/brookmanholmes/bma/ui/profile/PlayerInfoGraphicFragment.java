@@ -18,8 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.CompPlayer;
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseRecyclerFragment;
@@ -86,7 +86,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
         database = new DatabaseAdapter(getContext());
         player = getArguments().getString(ARG_PLAYER);
 
-        adapter = new PlayerInfoGraphicAdapter(new ArrayList<Pair<AbstractPlayer, AbstractPlayer>>(), player, "");
+        adapter = new PlayerInfoGraphicAdapter(new ArrayList<Pair<Player, Player>>(), player, "");
     }
 
     @Override
@@ -153,26 +153,26 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
         static final int ITEM_BREAK_GRAPH = 3;
         static final int ITEM_BREAK_INFO = 4;
 
-        final List<AbstractPlayer> players = new ArrayList<>();
-        final List<AbstractPlayer> opponents = new ArrayList<>();
+        final List<Player> players = new ArrayList<>();
+        final List<Player> opponents = new ArrayList<>();
         final String playerName;
         final String opponentName;
 
-        PlayerInfoGraphicAdapter(List<Pair<AbstractPlayer, AbstractPlayer>> pairs, String playerName, String opponentName) {
+        PlayerInfoGraphicAdapter(List<Pair<Player, Player>> pairs, String playerName, String opponentName) {
             splitPlayers(pairs);
             this.playerName = playerName;
             this.opponentName = opponentName;
         }
 
-        private static CompPlayer getPlayerFromList(List<AbstractPlayer> players) {
+        private static Player getPlayerFromList(List<Player> players) {
             if (players.size() > 0) {
-                CompPlayer player = new CompPlayer(players.get(0).getName());
-                for (AbstractPlayer abstractPlayer : players) {
+                Player player = new Player(players.get(0).getName(), GameType.ALL);
+                for (Player abstractPlayer : players) {
                     player.addPlayerStats(abstractPlayer);
                 }
 
                 return player;
-            } else return new CompPlayer("");
+            } else return new Player("", GameType.ALL);
         }
 
         private static float roundNumber(int top, int bottom) {
@@ -180,14 +180,14 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
             return decimal.floatValue();
         }
 
-        private void splitPlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
-            for (Pair<AbstractPlayer, AbstractPlayer> pair : pairs) {
+        private void splitPlayers(List<Pair<Player, Player>> pairs) {
+            for (Pair<Player, Player> pair : pairs) {
                 players.add(pair.getLeft());
                 opponents.add(pair.getRight());
             }
         }
 
-        private void updatePlayers(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
+        private void updatePlayers(List<Pair<Player, Player>> pairs) {
             players.clear();
             opponents.clear();
             splitPlayers(pairs);
@@ -275,14 +275,14 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 ButterKnife.bind(this, itemView);
             }
 
-            public void bind(List<AbstractPlayer> players) {
+            public void bind(List<Player> players) {
                 List<PointValue> tsp = new ArrayList<>();
                 List<PointValue> shooting = new ArrayList<>();
                 List<PointValue> safeties = new ArrayList<>();
                 List<PointValue> breaking = new ArrayList<>();
 
                 float count = 0;
-                for (AbstractPlayer player : players) {
+                for (Player player : players) {
                     if (player.getShootingAttempts() + player.getSafetyAttempts() + player.getBreakAttempts() > 0)
                         tsp.add(new PointValue(count, (float) player.getTrueShootingPct()));
                     if (player.getShootingAttempts() > 0)
@@ -357,7 +357,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 setItemDesc();
             }
 
-            public abstract void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents);
+            public abstract void bind(List<Player> players, List<Player> opponents);
 
             abstract void setItemDesc();
         }
@@ -374,9 +374,9 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
             }
 
             @Override
-            public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
-                AbstractPlayer player = getPlayerFromList(players);
-                AbstractPlayer opponent = getPlayerFromList(opponents);
+            public void bind(List<Player> players, List<Player> opponents) {
+                Player player = getPlayerFromList(players);
+                Player opponent = getPlayerFromList(opponents);
 
                 float safetyPct = (float) (player.getSafetySuccesses() - opponent.getSafetyEscapes() - opponent.getSafetyReturns()) / (float) player.getSafetyAttempts();
                 int ballInHands = getForcedErrors(opponents);
@@ -385,10 +385,10 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 item2.setText(String.format(Locale.getDefault(), "%1$s", convertFloatToPercent(safetyPct)));
             }
 
-            int getForcedErrors(List<AbstractPlayer> opponents) {
+            int getForcedErrors(List<Player> opponents) {
                 int ballInHands = 0;
 
-                for (AbstractPlayer opp : opponents) {
+                for (Player opp : opponents) {
                     ballInHands += opp.getSafetyForcedErrors();
                 }
 
@@ -408,7 +408,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
             }
 
             @Override
-            public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
+            public void bind(List<Player> players, List<Player> opponents) {
                 float breakRunPct = (float) getPlayerFromList(players).getBreakAndRuns() / (float) getPlayerFromList(players).getBreakAttempts();
                 item1.setText(String.format(Locale.getDefault(), "%1$d", getPlayerFromList(players).getBreakAndRuns()));
                 item2.setText(String.format(Locale.getDefault(), "%1$s", convertFloatToPercent(breakRunPct)));
@@ -472,7 +472,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 decoView.configureAngles(300, 0);
             }
 
-            void bind(CompPlayer player) {
+            void bind(Player player) {
                 int attempts = player.getBreakAttempts();
 
                 float continuation = attempts != 0 ? roundNumber(player.getBreakContinuations(), attempts) : 0;
@@ -566,9 +566,9 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 color3 = getColor(R.color.chart1);
             }
 
-            public void bind(List<AbstractPlayer> players, List<AbstractPlayer> opponents) {
-                CompPlayer player = getPlayerFromList(players);
-                CompPlayer opponent = getPlayerFromList(opponents);
+            public void bind(List<Player> players, List<Player> opponents) {
+                Player player = getPlayerFromList(players);
+                Player opponent = getPlayerFromList(opponents);
                 int total = opponent.getSafetySuccesses();
 
                 float width = getDimension(R.dimen.decoview_inset) * 4;
@@ -618,13 +618,13 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
         }
     }
 
-    private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<AbstractPlayer, AbstractPlayer>>> {
+    private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<Player, Player>>> {
         @Override
-        protected List<Pair<AbstractPlayer, AbstractPlayer>> doInBackground(StatFilter... filter) {
-            List<Pair<AbstractPlayer, AbstractPlayer>> players = database.getPlayerPairs(player);
-            List<Pair<AbstractPlayer, AbstractPlayer>> filteredPlayers = new ArrayList<>();
+        protected List<Pair<Player, Player>> doInBackground(StatFilter... filter) {
+            List<Pair<Player, Player>> players = database.getPlayerPairs(player);
+            List<Pair<Player, Player>> filteredPlayers = new ArrayList<>();
 
-            for (Pair<AbstractPlayer, AbstractPlayer> pair : players) {
+            for (Pair<Player, Player> pair : players) {
                 if (filter[0].isPlayerQualified(pair.getRight()))
                     filteredPlayers.add(pair);
             }
@@ -633,7 +633,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
         }
 
         @Override
-        protected void onPostExecute(List<Pair<AbstractPlayer, AbstractPlayer>> pairs) {
+        protected void onPostExecute(List<Pair<Player, Player>> pairs) {
             adapter.updatePlayers(pairs);
         }
     }

@@ -1,14 +1,8 @@
 package com.brookmanholmes.bma.ui.stats;
 
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.AmericanRotationPlayer;
-import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
-import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
-import com.brookmanholmes.billiards.player.EightBallPlayer;
-import com.brookmanholmes.billiards.player.NineBallPlayer;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
-import com.brookmanholmes.billiards.player.TenBallPlayer;
+import com.brookmanholmes.billiards.player.Player;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -61,23 +55,23 @@ public class StatFilter {
         return date.after(this.date);
     }
 
-    private boolean isPlayerOfGameType(AbstractPlayer player) {
+    private boolean isPlayerOfGameType(Player player) {
         if (selectedGameType == 0)
             return true;
         else if (selectedGameType == 1)
-            return player instanceof ApaEightBallPlayer;
+            return player.getGameType().isApa8Ball();
         else if (selectedGameType == 2)
-            return player instanceof ApaNineBallPlayer;
+            return player.getGameType().isApa9Ball();
         else if (selectedGameType == 3)
-            return player instanceof TenBallPlayer;
+            return player.getGameType().isBca9Ball();
         else if (selectedGameType == 4)
-            return player instanceof EightBallPlayer;
+            return player.getGameType().isBca8Ball();
         else if (selectedGameType == 5)
-            return player instanceof NineBallPlayer;
+            return player.getGameType().isBca9Ball();
         else if (selectedGameType == 6)
-            return player instanceof StraightPoolPlayer;
+            return player.getGameType().isStraightPool();
         else if (selectedGameType == 7)
-            return player instanceof AmericanRotationPlayer;
+            return player.getGameType() == GameType.AMERICAN_ROTATION;
         else return false;
     }
 
@@ -112,7 +106,7 @@ public class StatFilter {
         this.date = cal.getTime();
     }
 
-    public boolean isPlayerQualified(AbstractPlayer player) {
+    public boolean isPlayerQualified(Player player) {
         return isPlayerNameCorrect(player.getName()) &&
                 isDateInRange(player.getMatchDate()) &&
                 isPlayerOfGameType(player);

@@ -1,12 +1,11 @@
 package com.brookmanholmes.billiards.player.controller;
 
-import com.brookmanholmes.billiards.player.EightBallPlayer;
 
 /**
  * Created by Brookman Holmes on 10/28/2015.
  * A controller for adding up player stats for BCA 8 ball
  */
-class EightBallController extends PlayerController<EightBallPlayer> {
+class EightBallController extends PlayerController {
     EightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
         super(playerName, opponentName, playerRank, opponentRank);
     }
@@ -14,15 +13,5 @@ class EightBallController extends PlayerController<EightBallPlayer> {
     @Override
     int getMaximumBallsMakeable() {
         return 8;
-    }
-
-    @Override
-    public EightBallPlayer newPlayer() {
-        return new EightBallPlayer(playerName, playerRank);
-    }
-
-    @Override
-    public EightBallPlayer newOpponent() {
-        return new EightBallPlayer(opponentName, opponentRank);
     }
 }

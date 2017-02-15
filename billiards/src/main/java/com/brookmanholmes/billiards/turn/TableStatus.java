@@ -273,14 +273,16 @@ final public class TableStatus implements ITableStatus, Serializable {
         TableStatus that = (TableStatus) o;
 
         if (GAME_BALL != that.GAME_BALL) return false;
+        if (gameType != that.gameType) return false;
         return table.equals(that.table);
 
     }
 
     @Override
     public int hashCode() {
-        int result = table.hashCode();
-        result = 31 * result + GAME_BALL;
+        int result = GAME_BALL;
+        result = 31 * result + gameType.hashCode();
+        result = 31 * result + table.hashCode();
         return result;
     }
 

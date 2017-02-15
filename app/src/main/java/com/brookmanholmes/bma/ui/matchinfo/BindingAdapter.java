@@ -8,6 +8,7 @@ import android.transition.TransitionManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 /**
@@ -62,8 +64,22 @@ public class BindingAdapter extends BaseObservable {
         imageView.setImageResource(resource);
     }
 
+    @android.databinding.BindingAdapter("android:layout_weight")
+    public static void setLayoutWeight(View view, float weight) {
+        TransitionManager.beginDelayedTransition((ViewGroup) view.getParent());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
+        params.weight = weight;
+        view.setLayoutParams(params);
+    }
+
     static int compare(String x, String y) {
         return Double.compare(Double.parseDouble(x), Double.parseDouble(y));
+    }
+
+    float round(float value) {
+        BigDecimal bd = new BigDecimal(Float.toString(value));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     public String getTitle() {

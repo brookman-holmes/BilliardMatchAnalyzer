@@ -3,9 +3,6 @@ package com.brookmanholmes.billiards.turn;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.GameType;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -164,16 +161,10 @@ public class Turn implements ITurn, Serializable {
     public String toString() {
         return "Turn{" +
                 "tableStatus=" + tableStatus +
-                "\n turnEnd=" + turnEnd +
-                "\n foul=" + foul +
+                ", turnEnd=" + turnEnd +
+                ", foul=" + foul +
+                ", seriousFoul=" + seriousFoul +
+                ", advStats=" + advStats +
                 '}';
-    }
-
-    private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
-        inputStream.defaultReadObject();
-    }
-
-    private void writeObject(ObjectOutputStream outputStream) throws IOException {
-        outputStream.defaultWriteObject();
     }
 }

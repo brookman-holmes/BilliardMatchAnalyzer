@@ -1,8 +1,8 @@
 package com.brookmanholmes.billiards.acceptance.eberlecoates;
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.NineBallPlayer;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Pair;
+import com.brookmanholmes.billiards.player.Player;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,80 +11,80 @@ import java.util.List;
  * Created by Brookman Holmes on 2/6/2016.
  */
 public class PlayerList {
-    private static NineBallPlayer jeff() {
-        return new NineBallPlayer("Jeff");
+    private static Player jeff() {
+        return new Player("Jeff", GameType.BCA_NINE_BALL);
     }
 
-    private static NineBallPlayer max() {
-        return new NineBallPlayer("Max");
+    private static Player max() {
+        return new Player("Max", GameType.BCA_NINE_BALL);
     }
 
-    private static Pair<AbstractPlayer> turn1() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn1() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addBreakShot(2, false, false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn2() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn2() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addSafetyAttempt(false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn3() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn3() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(7, false);
         max.addGameWon();
 
         jeff.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn4() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn4() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addBreakShot(1, false, false);
         jeff.addSafetyAttempt(false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn5() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn5() {
+        Player max = max();
+        Player jeff = jeff();
 
 
         max.addShootingBallsMade(2, false);
         max.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn6() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn6() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(6, false);
         jeff.addGameWon();
 
         max.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn7() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn7() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addBreakShot(3, true, false);
         max.addBreakAndRun();
@@ -93,23 +93,23 @@ public class PlayerList {
 
         jeff.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn8() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn8() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addBreakShot(2, false, false);
         jeff.addShootingBallsMade(0, false);
         jeff.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn9() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn9() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addGameLost();
 
@@ -117,103 +117,103 @@ public class PlayerList {
         max.addGameWon();
 
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn10() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn10() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addBreakShot(1, false, false);
         max.addShootingBallsMade(0, false);
         max.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn11() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn11() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(0, false);
         jeff.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn12() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn12() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(2, false);
         max.addSafetyAttempt(false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn13() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn13() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addSafety(false, 0);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn14() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn14() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(0, false);
         max.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn15() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn15() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(6, false);
         jeff.addGameWon();
 
         max.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn16() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn16() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addBreakShot(1, false, false);
         jeff.addShootingBallsMade(0, false);
         jeff.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn17() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn17() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addSafetyAttempt(false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn18() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn18() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addSafety(false, 0);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn19() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn19() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(8, false);
         max.addGameWon();
@@ -222,23 +222,23 @@ public class PlayerList {
 
         jeff.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn20() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn20() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addBreakShot(3, true, false);
         max.addShootingBallsMade(5, true);
         max.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn21() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn21() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(1, false);
         jeff.addGameWon();
@@ -246,73 +246,73 @@ public class PlayerList {
 
         max.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn22() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn22() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addBreakShot(2, false, false);
         jeff.addSafety(false, 0);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn23() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn23() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addSafetyAttempt(false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn24() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn24() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(0, false);
         jeff.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn25() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn25() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(0, true);
         max.addShootingMiss();
 
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn26() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn26() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(2, false);
         jeff.addSafety(false, 0);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn27() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn27() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingMiss();
         max.addShootingBallsMade(0, true);
         max.addSafetyForcedError();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn28() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn28() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(5, false);
         jeff.addGameWon();
@@ -320,95 +320,95 @@ public class PlayerList {
 
         max.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn29() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn29() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addBreakShot(2, false, false);
         max.addShootingMiss();
         max.addShootingBallsMade(0, false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn30() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn30() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(4, false);
         jeff.addSafety(false, 0);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn31() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn31() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(0, false);
         max.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn32() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn32() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(3, false);
         jeff.addGameWon();
         jeff.addFiveBallRun();
         max.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn33() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn33() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addBreakShot(2, false, false);
         jeff.addSafetyAttempt(false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn34() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn34() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(0, false);
         max.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn35() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn35() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(2, false);
         jeff.addSafety(false, 0);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn36() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn36() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingMiss();
         max.addShootingBallsMade(0, false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn37() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn37() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(5, false);
         jeff.addFiveBallRun();
@@ -416,72 +416,72 @@ public class PlayerList {
 
         max.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn38() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn38() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addBreakShot(1, false, false);
         max.addSafety(false, 0);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn39() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn39() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addSafety(true, 0);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn40() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn40() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addSafety(true, 0);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn41() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn41() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addSafetyAttempt(false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn42() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn42() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(8, false);
         max.addGameWon();
 
         jeff.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn43() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn43() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addBreakShot(1, true, false);
         jeff.addShootingBallsMade(5, false);
         jeff.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn44() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn44() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(3, false);
         max.addGameWon();
@@ -489,94 +489,94 @@ public class PlayerList {
 
         jeff.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn45() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn45() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addBreakShot(1, false, false);
         max.addShootingBallsMade(0, false);
         max.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn46() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn46() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(2, false);
         jeff.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn47() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn47() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(6, false);
         max.addGameWon();
 
         jeff.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn48() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn48() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addBreakShot(3, true, false);
         jeff.addShootingBallsMade(1, false);
         jeff.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn49() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn49() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addSafety(false, 0);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn50() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn50() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addSafetyAttempt(false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn51() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn51() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(0, false);
         max.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn52() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn52() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(1, false);
         jeff.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn53() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn53() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(4, false);
         max.addGameWon();
@@ -584,42 +584,42 @@ public class PlayerList {
 
         jeff.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn54() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn54() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addBreakShot(1, false, false);
         max.addSafetyAttempt(false);
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn55() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn55() {
+        Player max = max();
+        Player jeff = jeff();
 
         jeff.addShootingBallsMade(0, true);
         jeff.addShootingMiss();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    private static Pair<AbstractPlayer> turn56() {
-        NineBallPlayer max = max();
-        NineBallPlayer jeff = jeff();
+    private static Pair<Player> turn56() {
+        Player max = max();
+        Player jeff = jeff();
 
         max.addShootingBallsMade(8, false);
         max.addGameWon();
 
         jeff.addGameLost();
 
-        return new Pair<AbstractPlayer>(max, jeff);
+        return new Pair<Player>(max, jeff);
     }
 
-    public static List<Pair<AbstractPlayer>> getPlayerPairs() {
+    public static List<Pair<Player>> getPlayerPairs() {
         return Arrays.asList(
                 turn1(), turn2(), turn3(), turn4(), turn5(), turn6(), turn7(), turn8(), turn9(), turn10(),
                 turn11(), turn12(), turn13(), turn14(), turn15(), turn16(), turn17(), turn18(), turn19(), turn20(),

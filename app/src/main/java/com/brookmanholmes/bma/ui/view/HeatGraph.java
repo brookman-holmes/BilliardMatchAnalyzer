@@ -29,6 +29,7 @@ public class HeatGraph extends CueBallView {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(color);
+        paint.setAlpha(alpha);
     }
 
     @Override

@@ -4,6 +4,10 @@
         <variable
             name="apa"
             type="com.brookmanholmes.bma.ui.matchinfo.ApaBinder" />
+
+        <variable
+            name="winIndicator"
+            type="com.brookmanholmes.bma.ui.matchinfo.WinIndicatorBinder" />
         <import type="android.view.View" />
     </data>
 
@@ -30,6 +34,14 @@
                 android:orientation="vertical">
 
                 <android.support.v7.widget.GridLayout style="@style/match_info_grid">
+
+                    <include
+                        bind:showWinPctLayout="@{apa.showCard}"
+                        bind:winIndicator="@{winIndicator}"
+                        layout="@layout/container_win_pct_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_columnSpan="3" />
 
                     <TextView
                         style="@style/player_stats"

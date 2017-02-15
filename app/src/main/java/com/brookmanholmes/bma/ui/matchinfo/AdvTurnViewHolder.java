@@ -1,8 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
-import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,8 +9,7 @@ import android.widget.TextView;
 import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.bma.R;
@@ -44,7 +41,7 @@ class AdvTurnViewHolder extends MinimalTurnViewHolder {
     }
 
     @Override
-    void bind(ITurn turn, PlayerTurn playerTurn, AbstractPlayer player) {
+    void bind(ITurn turn, PlayerTurn playerTurn, Player player) {
         super.bind(turn, playerTurn, player);
         shootingPct.setText(itemView.getContext().getString(R.string.shooting_pct, ConversionUtils.pctf.format(player.getShootingPct())));
         safetyPct.setText(itemView.getContext().getString(R.string.safety_pct, ConversionUtils.pctf.format(player.getSafetyPct())));
@@ -54,22 +51,20 @@ class AdvTurnViewHolder extends MinimalTurnViewHolder {
         safetyLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getSafetyPct()));
         breakingLine.setColorFilter(ConversionUtils.getPctColor(itemView.getContext(), player.getBreakPct()));
 
-        if (!(player instanceof StraightPoolPlayer)) // set balls for non-straight-pool games
+        if (!(player.getGameType().isStraightPool())) // set balls for non-straight-pool games
             setBalls(turn);
     }
 
     void setBalls(ITableStatus tableStatus) {
         for (int ball = 1; ball <= tableStatus.size(); ball++) {
             ImageView childAt = (ImageView) ballContainer.getChildAt(ball - 1);
-            Drawable background = DrawableCompat.wrap(childAt.getBackground());
-            background.mutate();
 
             if (ballIsMade(tableStatus.getBallStatus(ball))) {
                 childAt.setVisibility(View.VISIBLE);
-                background.setTint(getBallColorTint(ball));
+                childAt.setAlpha(1f);
             } else if (ballIsDead(tableStatus.getBallStatus(ball))) {
                 childAt.setVisibility(View.VISIBLE);
-                background.setTint(getColor(R.color.dead_ball));
+                childAt.setAlpha(.2f);
             } else {
                 ballContainer.getChildAt(ball - 1).setVisibility(View.GONE);
             }

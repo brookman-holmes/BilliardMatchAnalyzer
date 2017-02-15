@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/baseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp">
+
+        <include layout="@layout/container_adv_shot_filter" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/line_divider" />
+
+        <include
+            layout="@layout/container_adv_stat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp" />
+
+        <include
+            layout="@layout/container_miscues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.brookmanholmes.bma.ui.view.HowMissLayout
+                    android:id="@+id/hmlKick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hml_left_label="@string/title_short"
+                    app:hml_right_label="@string/title_long"
+                    app:hml_title="@string/title_kick_error" />
+
+                <com.brookmanholmes.bma.ui.view.HowMissLayout
+                    android:id="@+id/hmlBank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hml_left_label="@string/title_short"
+                    app:hml_right_label="@string/title_long"
+                    app:hml_title="@string/title_bank_error" />
+
+                <com.brookmanholmes.bma.ui.view.HowMissLayout
+                    android:id="@+id/hmlCut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hml_left_label="@string/title_cut_over"
+                    app:hml_right_label="@string/title_cut_under"
+                    app:hml_title="@string/title_cut" />
+
+                <com.brookmanholmes.bma.ui.view.HowMissLayout
+                    android:id="@+id/hmlAim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hml_left_label="@string/title_aim_left"
+                    app:hml_right_label="@string/title_aim_right"
+                    app:hml_title="@string/title_aim" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.brookmanholmes.bma.ui.view.HeatGraph
+                    android:id="@+id/heatGraph"
+                    android:layout_width="@dimen/heat_graph_size"
+                    android:layout_height="@dimen/heat_graph_size"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    app:hit_color="@color/bad"
+                    app:hit_indicator="4dp"
+                    app:hit_indicator_alpha="@integer/adv_shooting_stat_heat_graph_alpha" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/description_heat_graph" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <lecho.lib.hellocharts.view.ColumnChartView
+                    android:id="@+id/speedChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:gravity="center"
+                    android:text="Speed"
+                    android:textColor="@color/primary_text" />
+            </LinearLayout>
+
+            <android.support.v4.widget.Space
+                android:layout_width="4dp"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <lecho.lib.hellocharts.view.ColumnChartView
+                    android:id="@+id/distanceChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:drawablePadding="4dp"
+                        android:drawableStart="@drawable/color_indicator_c5"
+                        android:text="From CB to OB" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Distance"
+                        android:textColor="@color/primary_text" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:drawablePadding="4dp"
+                        android:drawableStart="@drawable/color_indicator_c6"
+                        android:text="From OB to pocket" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

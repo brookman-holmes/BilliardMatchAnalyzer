@@ -2,22 +2,22 @@ package com.brookmanholmes.billiards.player.controller;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
 import com.brookmanholmes.billiards.player.Pair;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.ITurn;
 
 /**
  * Created by Brookman Holmes on 1/12/2016.
  * A controller for adding up player stats for APA 8 ball
  */
-class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
+class ApaEightBallController extends PlayerController {
     ApaEightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
         super(playerName, opponentName, playerRank, opponentRank);
     }
 
     @Override
-    public Pair<ApaEightBallPlayer> addTurn(GameStatus gameStatus, ITurn turn) {
-        Pair<ApaEightBallPlayer> pair = super.addTurn(gameStatus, turn);
+    public Pair<Player> addTurn(GameStatus gameStatus, ITurn turn) {
+        Pair<Player> pair = super.addTurn(gameStatus, turn);
 
         if (turn.isSeriousFoul()) {
             if (gameStatus.turn == PlayerTurn.PLAYER)
@@ -30,7 +30,7 @@ class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
     }
 
     @Override
-    void addBreakingStats(ApaEightBallPlayer player) {
+    void addBreakingStats(Player player) {
         super.addBreakingStats(player);
 
         if (turn.isGameBallMadeOnBreak()) {
@@ -42,16 +42,5 @@ class ApaEightBallController extends PlayerController<ApaEightBallPlayer> {
     @Override
     int getMaximumBallsMakeable() {
         return 8;
-    }
-
-
-    @Override
-    public ApaEightBallPlayer newPlayer() {
-        return new ApaEightBallPlayer(playerName, playerRank, opponentRank);
-    }
-
-    @Override
-    public ApaEightBallPlayer newOpponent() {
-        return new ApaEightBallPlayer(opponentName, opponentRank, playerRank);
     }
 }

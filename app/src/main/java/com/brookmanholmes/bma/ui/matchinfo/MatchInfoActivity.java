@@ -2,7 +2,6 @@ package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -10,18 +9,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.transition.AutoTransition;
-import android.transition.Transition;
-import android.transition.TransitionManager;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
@@ -31,7 +25,6 @@ import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.CustomViewPager;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,23 +45,15 @@ public class MatchInfoActivity extends AbstractMatchActivity {
     View opponentNameLayout;
     @Bind(R.id.pager)
     CustomViewPager pager;
-    @Bind(R.id.ballContainer)
-    ViewGroup ballContainer;
-    @Bind(R.id.playerWinPct)
-    ViewGroup playerWinPct;
-    @Bind(R.id.playerSpacing)
-    ViewGroup playerSpacing;
-    @Bind(R.id.opponentSpacing)
-    ViewGroup opponentSpacing;
-    @Bind(R.id.opponentWinPct)
-    ViewGroup opponentWinPct;
-    @Bind(R.id.winPctLayout)
-    ViewGroup winPctLayout;
 
     private Snackbar matchOverSnackbar;
+    private boolean matchOverSnackbarDismissed = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null)
+            matchOverSnackbarDismissed = savedInstanceState.getBoolean("snackbarDismissed", false);
+
         pager.setPagingEnabled(false);
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
@@ -80,46 +65,18 @@ public class MatchInfoActivity extends AbstractMatchActivity {
                     @Override
                     public void onClick(View view) {
                         matchOverSnackbar.dismiss();
+                        matchOverSnackbarDismissed = true;
                     }
                 });
 
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), getMatchId());
         pager.setAdapter(adapter);
-        setWinPctColors();
     }
 
-    private void setWinPctColors() { // works around api 21 tinting not working?
-        playerWinPct.getBackground().setColorFilter(getColor2(R.color.colorPrimaryLight), PorterDuff.Mode.SRC_IN);
-        opponentWinPct.getBackground().setColorFilter(getColor2(R.color.colorPrimaryLight), PorterDuff.Mode.SRC_IN);
-        ((LinearLayout) playerWinPct.getParent()).getBackground().setColorFilter(getColor2(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
-        ((LinearLayout) opponentWinPct.getParent()).getBackground().setColorFilter(getColor2(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
-    }
-
-    private void hideBalls() {
-        if (match.getGameStatus().gameType != GameType.STRAIGHT_POOL) {
-            for (int i = 0; i < ballContainer.getChildCount(); i++) {
-                ballContainer.getChildAt(i).setVisibility(View.INVISIBLE);
-            }
-        }
-    }
-
-    private void setBallsOnTable() {
-        if (match.getGameStatus().gameType != GameType.STRAIGHT_POOL) {
-            findViewById(R.id.ballContainer).setVisibility(View.VISIBLE);
-            findViewById(R.id.ballsRemaining).setVisibility(View.GONE);
-            for (int i = 0; i < match.getGameStatus().ballsOnTable.size(); i++) {
-                int ball = match.getGameStatus().ballsOnTable.get(i) - 1;
-                ballContainer.getChildAt(ball).setVisibility(View.VISIBLE);
-            }
-        } else {
-            findViewById(R.id.ballContainer).setVisibility(View.GONE);
-            findViewById(R.id.ballsRemaining).setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.ballsRemaining)).setText(getString(R.string.balls_remaining, getBallsRemaining()));
-        }
-    }
-
-    private int getBallsRemaining() {
-        return 15 - ((match.getPlayer().getShootingBallsMade() + match.getOpponent().getShootingBallsMade()) % 14);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("snackbarDismissed", matchOverSnackbarDismissed);
     }
 
     @OnClick({R.id.opponentNameLayout, R.id.playerNameLayout})
@@ -157,48 +114,16 @@ public class MatchInfoActivity extends AbstractMatchActivity {
         }
 
         updateFragments();
-        hideBalls();
-        setBallsOnTable();
-        setWinCompPct();
 
         if (match.isMatchOver()) {
             fabAddTurn.hide();
-            matchOverSnackbar.show();
+            if (!matchOverSnackbarDismissed)
+                matchOverSnackbar.show();
         } else {
-            matchOverSnackbar.dismiss();
             fabAddTurn.show();
+            if (matchOverSnackbar.isShown())
+                matchOverSnackbar.dismiss();
         }
-    }
-
-    private void setWinCompPct() {
-        float scaleValue = 10;
-        Transition transition = new AutoTransition();
-        transition.setStartDelay(1000);
-        transition.addTarget(playerWinPct)
-                .addTarget(playerSpacing)
-                .addTarget(opponentWinPct)
-                .addTarget(opponentSpacing);
-
-        TransitionManager.beginDelayedTransition(winPctLayout, transition);
-        float playerPct = round(match.getPlayer().getMatchCompletionPct(), 2) * scaleValue;
-        float opponentPct = round(match.getOpponent().getMatchCompletionPct(), 2) * scaleValue;
-        setWeight(playerWinPct, playerPct);
-        setWeight(playerSpacing, scaleValue - playerPct);
-        setWeight(opponentWinPct, opponentPct);
-        setWeight(opponentSpacing, scaleValue - opponentPct);
-    }
-
-    private void setWeight(View view, float weight) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
-        params.weight = weight;
-        params.gravity = Gravity.CENTER;
-        view.setLayoutParams(params);
-    }
-
-    private float round(float d, int places) {
-        BigDecimal bd = new BigDecimal(d);
-        bd = bd.setScale(places, BigDecimal.ROUND_HALF_UP);
-        return bd.floatValue();
     }
 
     @Override

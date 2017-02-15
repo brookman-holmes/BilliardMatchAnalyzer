@@ -1,8 +1,7 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 
 import java.util.List;
 
@@ -16,12 +15,12 @@ public class StraightPoolTableBinder extends BindingAdapter {
     public String playerBallsMade, opponentBallsMade;
     PlayerTurn initialTurn = PlayerTurn.PLAYER;
 
-    public StraightPoolTableBinder(AbstractPlayer player, AbstractPlayer opponent, boolean expanded) {
-        super(expanded, player instanceof StraightPoolPlayer);
+    public StraightPoolTableBinder(Player player, Player opponent, boolean expanded) {
+        super(expanded, player.getGameType().isStraightPool());
         ballsRemaining = 15 - ((player.getShootingBallsMade() + opponent.getShootingBallsMade()) % 14);
     }
 
-    public void update(AbstractPlayer player, AbstractPlayer opponent) {
+    public void update(Player player, Player opponent) {
         ballsRemaining = 15 - ((player.getShootingBallsMade() + opponent.getShootingBallsMade()) % 14);
         notifyChange();
     }

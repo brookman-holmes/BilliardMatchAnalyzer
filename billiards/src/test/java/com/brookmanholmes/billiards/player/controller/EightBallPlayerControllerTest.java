@@ -1,10 +1,10 @@
 package com.brookmanholmes.billiards.player.controller;
 
-import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.BreakType;
+import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.EightBallPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 
@@ -14,12 +14,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 1/30/2016.
  */
-public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<EightBallPlayer> {
+public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest {
     @Override public void setUp() {
         game = Game.newGame(GameType.BCA_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
         playerController = new EightBallController("", "", 0, 0);
-        actualPlayer = new EightBallPlayer("");
-        expectedPlayer = new EightBallPlayer("");
+        actualPlayer = new Player("", GameType.BCA_EIGHT_BALL);
+        expectedPlayer = new Player("", GameType.BCA_EIGHT_BALL);
         turnBuilder = new TurnBuilder(game.getGameType());
     }
 
@@ -39,8 +39,9 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<
         return turnBuilder.offTable(1, 2, 3).madeBalls(4, 5, 6, 7, 8).win();
     }
 
-    @Override EightBallPlayer getBreakAndRunPlayer() {
-        EightBallPlayer player = new EightBallPlayer("");
+    @Override
+    Player getBreakAndRunPlayer() {
+        Player player = new Player("", GameType.BCA_EIGHT_BALL);
         player.addBreakShot(3, true, false);
         player.addShootingBallsMade(7, false);
 
@@ -51,8 +52,9 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<
         return turnBuilder.breakBalls(1, 2, 3).miss();
     }
 
-    @Override EightBallPlayer fourBallRunOutPlayer() {
-        EightBallPlayer player = new EightBallPlayer("");
+    @Override
+    Player fourBallRunOutPlayer() {
+        Player player = new Player("", GameType.BCA_EIGHT_BALL);
         player.addShootingBallsMade(5, false);
         player.addGameWon();
         player.addFiveBallRun();
@@ -60,8 +62,9 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<
         return player;
     }
 
-    @Override EightBallPlayer failedRunOutPlayer() {
-        EightBallPlayer player = new EightBallPlayer("");
+    @Override
+    Player failedRunOutPlayer() {
+        Player player = new Player("", GameType.BCA_EIGHT_BALL);
         player.addBreakShot(3, false, false);
         player.addShootingBallsMade(0, false);
         player.addShootingMiss();
@@ -69,7 +72,8 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest<
         return player;
     }
 
-    @Override EightBallPlayer getBlankPlayer() {
-        return new EightBallPlayer("");
+    @Override
+    Player getBlankPlayer() {
+        return new Player("", GameType.BCA_EIGHT_BALL);
     }
 }

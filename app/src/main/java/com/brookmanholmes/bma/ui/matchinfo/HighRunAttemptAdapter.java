@@ -9,9 +9,7 @@ import android.widget.Button;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.IStraightPool;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.databinding.CardHighRunAttemptInfoBinding;
 import com.brookmanholmes.bma.ui.view.BaseViewHolder;
@@ -52,19 +50,19 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private HighRunAttemptActivity activity;
     private List<Integer> previousRunLengths;
 
-    HighRunAttemptAdapter(HighRunAttemptActivity activity, Match match, List<AbstractPlayer> players) {
+    HighRunAttemptAdapter(HighRunAttemptActivity activity, Match match, List<Player> players) {
         this.match = match;
         previousRunLengths = getRunLengths(players);
         this.activity = activity;
         setHasStableIds(true);
     }
 
-    private static List<Integer> getRunLengths(List<AbstractPlayer> players) {
+    private static List<Integer> getRunLengths(List<Player> players) {
         List<Integer> result = new ArrayList<>();
 
-        for (AbstractPlayer player : players) {
-            if (player instanceof StraightPoolPlayer)
-                result.addAll(((StraightPoolPlayer) player).getRunLengths());
+        for (Player player : players) {
+            if (player.getGameType().isStraightPool())
+                result.addAll(player.getRunLengths());
         }
 
         return result;
@@ -92,7 +90,7 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             int realPosition = position - 3;
 
             PlayerTurn turn = match.getGameStatus(realPosition).turn;
-            AbstractPlayer player = turn == PlayerTurn.PLAYER ?
+            Player player = turn == PlayerTurn.PLAYER ?
                     match.getPlayer(0, realPosition) : match.getOpponent(0, realPosition);
 
             ((MinimalTurnViewHolder) holder).bind(match.getTurns().get(realPosition), turn, player);
@@ -137,12 +135,12 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         RunViewHolder(View itemView, Match match, List<Integer> runLengths) {
             super(itemView);
             CardHighRunAttemptInfoBinding binder = DataBindingUtil.bind(itemView);
-            runAttemptBinder = new HighRunAttemptBinder((StraightPoolPlayer) match.getPlayer(), runLengths);
+            runAttemptBinder = new HighRunAttemptBinder(match.getPlayer(), runLengths);
             binder.setRunAttempt(runAttemptBinder);
         }
 
         private void bind(Match match) {
-            runAttemptBinder.update((StraightPoolPlayer) match.getPlayer());
+            runAttemptBinder.update(match.getPlayer());
         }
     }
 
@@ -176,7 +174,7 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         private void setStats(List<Integer> runLengths) {
             double[] combinedRuns = ArrayUtils.addAll(convertListToDoubleArray(runLengths),
-                    convertListToDoubleArray(((StraightPoolPlayer) match.getPlayer()).getRunLengths()));
+                    convertListToDoubleArray(match.getPlayer().getRunLengths()));
 
             highRun = (int) StatUtils.max(combinedRuns);
             averageRun = (float) StatUtils.mean(combinedRuns);
@@ -192,7 +190,7 @@ class HighRunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         private LineChartData getData() {
             List<PointValue> values = new ArrayList<>();
-            List<Integer> runLengths = ((IStraightPool) match.getPlayer()).getRunLengths();
+            List<Integer> runLengths = (match.getPlayer()).getRunLengths();
             int count = 0;
             for (Integer integer : runLengths) {
                 values.add(new PointValue(count++, integer));

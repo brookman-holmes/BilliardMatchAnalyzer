@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
 
@@ -32,7 +32,7 @@ public class HighRunAttemptActivity extends AbstractMatchActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        List<AbstractPlayer> players = new DatabaseAdapter(this)
+        List<Player> players = new DatabaseAdapter(this)
                 .getPlayer(match.getPlayer().getName(),
                         match.getGameStatus().gameType,
                         match.getMatchId());

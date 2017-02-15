@@ -5,6 +5,7 @@ import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import static com.brookmanholmes.billiards.game.PlayerColor.STRIPES;
  * Keeps track of the status of a game of pool
  * <p></p>Created by Brookman Holmes on 10/26/2015.
  */
-public abstract class Game {
+public abstract class Game implements Serializable {
     final int GAME_BALL;
     final int MAX_BALLS;
     final BreakType breakType;

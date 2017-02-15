@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
@@ -110,5 +111,9 @@ public class ConversionUtils {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, metrics);
+    }
+
+    public static String getColorString(@ColorInt int color) {
+        return String.format("#%02X%02X%02X", Color.red(color), Color.green(color), Color.blue(color));
     }
 }

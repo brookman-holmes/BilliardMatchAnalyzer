@@ -1,10 +1,12 @@
 package com.brookmanholmes.billiards.player;
 
+import java.io.Serializable;
+
 /**
  * Data class for keeping track of what two players need for their race in a match
  * Created by Brookman Holmes on 1/11/2016.
  */
-public class RaceTo {
+public class RaceTo implements Serializable {
     private final int playerRaceTo;
     private final int opponentRaceTo;
 

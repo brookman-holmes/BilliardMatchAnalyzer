@@ -1,7 +1,8 @@
 package com.brookmanholmes.billiards.player.controller;
 
 
-import com.brookmanholmes.billiards.player.EightBallPlayer;
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.player.Player;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,13 +18,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ControllerHelperTest {
     private final String playerName = "Player 1";
-    private List<EightBallPlayer> playerList;
-    private EightBallPlayer expectedPlayer;
+    private List<Player> playerList;
+    private Player expectedPlayer;
 
     @Before
     public void setUp() {
         playerList = new ArrayList<>();
-        expectedPlayer = new EightBallPlayer(playerName);
+        expectedPlayer = new Player(playerName, GameType.BCA_EIGHT_BALL);
 
     }
 
@@ -54,7 +55,7 @@ public class ControllerHelperTest {
         playerList.get(5).addShootingMiss();
         playerList.get(6).addShootingBallsMade(0, true);
 
-        assertThat(PlayerController.getPlayerFromList(playerList, createPlayer()), is(expectedPlayer));
+        assertThat(createPlayer(playerList), is(expectedPlayer));
     }
 
     @Test
@@ -64,7 +65,11 @@ public class ControllerHelperTest {
         addingUpPlayersInListResultsInCorrectPlayerState();
     }
 
-    private EightBallPlayer createPlayer() {
-        return new EightBallPlayer(playerName);
+    private Player createPlayer(List<Player> players) {
+        return new Player(playerName, GameType.BCA_EIGHT_BALL, players);
+    }
+
+    private Player createPlayer() {
+        return new Player(playerName, GameType.BCA_EIGHT_BALL);
     }
 }

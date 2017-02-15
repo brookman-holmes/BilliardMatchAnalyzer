@@ -1,11 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
-import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
-import com.brookmanholmes.billiards.player.IWinsOnBreak;
-import com.brookmanholmes.billiards.player.NineBallPlayer;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -28,23 +23,23 @@ public class BreaksBinder extends BindingAdapter {
     public String breakBall;
     private boolean showWinOnBreak = false;
 
-    BreaksBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
-        super(expanded, !(player instanceof StraightPoolPlayer));
+    BreaksBinder(Player player, Player opponent, String title, boolean expanded) {
+        super(expanded, !player.getGameType().isStraightPool());
         this.title = title;
         helpLayout = R.layout.dialog_help_breaks;
 
         update(player, opponent);
 
-        if (player instanceof ApaEightBallPlayer) {
+        if (player.getGameType().isApa8Ball()) {
             breakBall = "8";
-        } else if (player instanceof ApaNineBallPlayer || player instanceof NineBallPlayer) {
+        } else if (player.getGameType().is9Ball()) {
             breakBall = "9";
         } else {
             breakBall = "8/9";
         }
     }
 
-    public void update(AbstractPlayer player, AbstractPlayer opponent) {
+    public void update(Player player, Player opponent) {
         playerBallOnBreak = player.getBreakSuccesses();
         opponentBallOnBreak = opponent.getBreakSuccesses();
         playerBreaks = player.getBreakAttempts();
@@ -59,10 +54,10 @@ public class BreaksBinder extends BindingAdapter {
         playerFouls = player.getBreakFouls() + "";
         opponentFouls = opponent.getBreakFouls() + "";
 
-        if (player instanceof IWinsOnBreak && opponent instanceof IWinsOnBreak) {
+        if (player.getGameType().isWinOnBreak()) {
             showWinOnBreak = true;
-            playerWinOnBreak = ((IWinsOnBreak) player).getWinsOnBreak() + "";
-            opponentWinOnBreak = ((IWinsOnBreak) opponent).getWinsOnBreak() + "";
+            playerWinOnBreak = player.getWinsOnBreak() + "";
+            opponentWinOnBreak = opponent.getWinsOnBreak() + "";
         }
         notifyChange();
     }

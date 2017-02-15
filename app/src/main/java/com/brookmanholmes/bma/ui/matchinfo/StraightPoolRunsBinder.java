@@ -1,8 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.IStraightPool;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 
 /**
  * Created by Brookman Holmes on 12/7/2016.
@@ -16,25 +14,25 @@ public class StraightPoolRunsBinder extends ShootingBinder {
     public String playerMean = "0.0", opponentMean = "0.0";
     public String playerMedian = "0.0", opponentMedian = "0.0";
 
-    StraightPoolRunsBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded) {
+    StraightPoolRunsBinder(Player player, Player opponent, String title, boolean expanded) {
         super(player, opponent, title, expanded);
-        showCard = player instanceof IStraightPool;
-        isStraightPoolPlayer = player instanceof StraightPoolPlayer;
+        showCard = player.getGameType().isStraightPool();
+        isStraightPoolPlayer = player.getGameType().isStraightPool();
 
         update(player, opponent);
     }
 
     @Override
-    public void update(AbstractPlayer player, AbstractPlayer opponent) {
-        if (player instanceof IStraightPool && opponent instanceof IStraightPool) {
-            playerMax = Integer.toString(((IStraightPool) player).getHighRun());
-            opponentMax = Integer.toString(((IStraightPool) opponent).getHighRun());
+    public void update(Player player, Player opponent) {
+        if (player.getGameType().isStraightPool()) {
+            playerMax = Integer.toString(player.getHighRun());
+            opponentMax = Integer.toString(opponent.getHighRun());
 
-            playerMean = avgf.format(((IStraightPool) player).getAverageRunLength());
-            opponentMean = avgf.format(((IStraightPool) opponent).getAverageRunLength());
+            playerMean = avgf.format(player.getAverageRunLength());
+            opponentMean = avgf.format(opponent.getAverageRunLength());
 
-            playerMedian = avgf.format(((IStraightPool) player).getMedianRunLength());
-            opponentMedian = avgf.format(((IStraightPool) opponent).getMedianRunLength());
+            playerMedian = avgf.format(player.getMedianRunLength());
+            opponentMedian = avgf.format(opponent.getMedianRunLength());
         }
 
         super.update(player, opponent);

@@ -4,7 +4,7 @@ import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.TurnBuilder;
 
 import org.junit.Test;
@@ -15,20 +15,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 1/31/2016.
  */
 @SuppressWarnings("unused")
-public class ApaNineBallPlayerControllerTest extends AbstractNineBallPlayerControllerTest<ApaNineBallPlayer> {
+public class ApaNineBallPlayerControllerTest extends AbstractNineBallPlayerControllerTest {
     private final int playerRank = 4;
 
     @Override public void setUp() {
         game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
         int opponentRank = 4;
         playerController = new ApaNineBallController("", "", playerRank, opponentRank);
-        actualPlayer = new ApaNineBallPlayer("", playerRank, playerRank);
-        expectedPlayer = new ApaNineBallPlayer("", playerRank, playerRank);
+        actualPlayer = new Player("", GameType.BCA_NINE_BALL, playerRank, playerRank);
+        expectedPlayer = new Player("", GameType.BCA_NINE_BALL, playerRank, playerRank);
         turnBuilder = new TurnBuilder(game.getGameType());
     }
 
-    @Override ApaNineBallPlayer getBlankPlayer() {
-        return new ApaNineBallPlayer("", playerRank, playerRank);
+    @Override
+    Player getBlankPlayer() {
+        return new Player("", GameType.BCA_NINE_BALL, playerRank, playerRank);
     }
 
     @Test public void foulOnBreakAdds2DeadBalls() {

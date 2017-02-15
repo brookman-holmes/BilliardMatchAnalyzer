@@ -1,5 +1,7 @@
 package com.brookmanholmes.billiards.player;
 
+import com.brookmanholmes.billiards.game.GameType;
+
 /**
  * Utility class of useful functions for APA and BCA matches
  * Created by Brookman Holmes on 8/21/2016.
@@ -44,14 +46,14 @@ public class Players {
      * @param opponent The opponent in the match
      * @return True if the match is finished, false otherwise
      */
-    public static boolean isMatchOver(AbstractPlayer player, AbstractPlayer opponent) {
-        if (player instanceof ApaNineBallPlayer && opponent instanceof ApaNineBallPlayer)
-            return isMatchOverApa9((ApaNineBallPlayer)player, (ApaNineBallPlayer)opponent);
-        else if (player instanceof ApaEightBallPlayer && opponent instanceof ApaEightBallPlayer)
-            return isMatchOverApa8((ApaEightBallPlayer)player, (ApaEightBallPlayer)opponent);
-        else if (player instanceof StraightPoolPlayer && opponent instanceof StraightPoolPlayer) {
-            return player.getRank() <= ((StraightPoolPlayer) player).getPoints() ||
-                    opponent.getRank() <= ((StraightPoolPlayer) opponent).getPoints();
+    public static boolean isMatchOver(Player player, Player opponent) {
+        if (player.getGameType().isApa9Ball())
+            return isMatchOverApa9(player, opponent);
+        else if (player.getGameType().isApa8Ball())
+            return isMatchOverApa8(player, opponent);
+        else if (player.getGameType() == GameType.STRAIGHT_POOL) {
+            return player.getRank() <= player.getPoints() ||
+                    opponent.getRank() <= opponent.getPoints();
         } else
             return player.getRank() <= player.getWins() ||
                     opponent.getRank() <= opponent.getWins();
@@ -64,7 +66,7 @@ public class Players {
      * @param opponent The opponent in the match
      * @return True if the match is finished, false otherwise
      */
-    private static boolean isMatchOverApa9(ApaNineBallPlayer player, ApaNineBallPlayer opponent) {
+    private static boolean isMatchOverApa9(Player player, Player opponent) {
         return player.getPointsNeeded() <= player.getPoints() ||
                 opponent.getPointsNeeded() <= opponent.getPoints();
     }
@@ -76,7 +78,7 @@ public class Players {
      * @param opponent The opponent in the match
      * @return True if the match is finished, false otherwise
      */
-    private static boolean isMatchOverApa8(ApaEightBallPlayer player, ApaEightBallPlayer opponent) {
+    private static boolean isMatchOverApa8(Player player, Player opponent) {
         RaceTo raceTo = apa8BallRaceTo(player.getRank(), opponent.getRank());
 
         return raceTo.getPlayerRaceTo() <= player.getPoints() ||

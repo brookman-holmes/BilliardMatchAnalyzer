@@ -180,10 +180,6 @@ public class ShotPage extends FragmentDependentPage<ShotFragment> implements Req
         }
     }
 
-    public BallStatus getGameBallStatus() {
-        return tableStatus.getBallStatus(tableStatus.getGameBall());
-    }
-
     public void updateFragment() {
         PlayerColor currentPlayerColor = PlayerColor.valueOf(data.getString(CURRENT_PLAYER_COLOR_KEY));
         if (fragment != null) {
@@ -206,13 +202,5 @@ public class ShotPage extends FragmentDependentPage<ShotFragment> implements Req
 
             fragment.updateView(tableStatus.getBallStatuses(), playerColor);
         }
-    }
-
-    public int getGameBall() {
-        return tableStatus.getGameBall();
-    }
-
-    public BallStatus getBallStatus(int ball) {
-        return tableStatus.getBallStatus(ball);
     }
 }

@@ -16,6 +16,16 @@
         android:orientation="vertical">
 
         <RadioButton
+            android:id="@+id/gameWon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="@string/turn_won_game"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+        <RadioButton
             android:id="@+id/miss"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

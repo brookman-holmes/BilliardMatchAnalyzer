@@ -77,6 +77,7 @@
                 android:id="@+id/tvShootingPct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minEms="6"
                 android:text="Shooting .667"
                 android:textColor="@color/primary_text" />
         </LinearLayout>
@@ -100,7 +101,8 @@
                 android:id="@+id/tvSafetyPct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Shooting .667"
+                android:minEms="6"
+                android:text="Shooting 1.000"
                 android:textColor="@color/primary_text" />
         </LinearLayout>
 
@@ -123,6 +125,7 @@
                 android:id="@+id/tvBreakPct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minEms="6"
                 android:text="Shooting .667"
                 android:textColor="@color/primary_text" />
         </LinearLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -26,7 +26,6 @@
                 android:id="@+id/safetyErrorsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_safety_errors"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/primary_text" />
 
@@ -36,11 +35,33 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
 
-            <include layout="@layout/graph_cut" />
+            <com.brookmanholmes.bma.ui.view.HowMissLayout
+                android:id="@+id/hmlCut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:hml_left_label="@string/title_cut_over"
+                app:hml_right_label="@string/title_cut_under"
+                app:hml_title="@string/title_cut" />
 
-            <include layout="@layout/graph_speed" />
+            <com.brookmanholmes.bma.ui.view.HowMissLayout
+                android:id="@+id/hmlSpeed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:hml_left_label="@string/title_speed_slow"
+                app:hml_right_label="@string/title_speed_fast"
+                app:hml_title="@string/title_speed" />
 
-            <include layout="@layout/graph_kick" />
+            <com.brookmanholmes.bma.ui.view.HowMissLayout
+                android:id="@+id/hmlKick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:hml_left_label="@string/title_short"
+                app:hml_right_label="@string/title_long"
+                app:hml_title="@string/title_kick_error" />
+
 
             <include layout="@layout/divider" />
 

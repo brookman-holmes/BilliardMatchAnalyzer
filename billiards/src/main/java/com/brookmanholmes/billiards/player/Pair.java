@@ -1,10 +1,12 @@
 package com.brookmanholmes.billiards.player;
 
+import java.io.Serializable;
+
 /**
  * Data class for holding a pair of players
  * Created by Brookman Holmes on 2/3/2016.
  */
-public class Pair<T extends AbstractPlayer> {
+public class Pair<T extends Player> implements Serializable {
     private final T player;
     private final T opponent;
 

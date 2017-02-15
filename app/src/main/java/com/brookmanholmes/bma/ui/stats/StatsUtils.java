@@ -22,19 +22,13 @@ import java.util.Locale;
  * Created by Brookman Holmes on 3/20/2016.
  */
 class StatsUtils {
-    private static final int FULL_HOOK = 0,
-            PARTIAL_HOOK = 1,
-            LONG_T = 2,
-            SHORT_T = 3,
-            NO_DIRECT_SHOT = 4,
-            OPEN = 5;
 
     private StatsUtils() {
     }
 
     static void setLayoutWeights(List<AdvStats> stats, AdvStats.HowType left, AdvStats.HowType right,
                                  TextView leftView, TextView rightView) {
-        Pair<Float, Float> pair = getHowError(stats, left, right);
+        Pair<Integer, Integer> pair = getHowError(stats, left, right);
         float leftWeight;
         float rightWeight;
 
@@ -76,8 +70,8 @@ class StatsUtils {
         view.setLayoutParams(params);
     }
 
-    private static Pair<Float, Float> getHowError(List<AdvStats> stats, AdvStats.HowType left, AdvStats.HowType right) {
-        float fast = 0, slow = 0;
+    public static Pair<Integer, Integer> getHowError(List<AdvStats> stats, AdvStats.HowType left, AdvStats.HowType right) {
+        int fast = 0, slow = 0;
 
         for (AdvStats stat : stats) {
             if (stat.getHowTypes().contains(right))

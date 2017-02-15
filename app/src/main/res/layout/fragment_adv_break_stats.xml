@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -26,9 +27,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp" />
 
-        <include layout="@layout/graph_aim" />
+        <com.brookmanholmes.bma.ui.view.HowMissLayout
+            android:id="@+id/hmlAim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:hml_left_label="@string/title_aim_left"
+            app:hml_right_label="@string/title_aim_right"
+            app:hml_title="@string/title_aim" />
 
-        <include layout="@layout/graph_speed" />
+        <com.brookmanholmes.bma.ui.view.HowMissLayout
+            android:id="@+id/hmlSpeed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:hml_left_label="@string/title_speed_slow"
+            app:hml_right_label="@string/title_speed_fast"
+            app:hml_title="@string/title_speed" />
 
         <LinearLayout
             android:id="@+id/parentView"

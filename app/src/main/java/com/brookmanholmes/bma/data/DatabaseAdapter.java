@@ -14,7 +14,7 @@ import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TableStatus;
@@ -183,8 +183,8 @@ public class DatabaseAdapter {
         return names;
     }
 
-    public List<AbstractPlayer> getPlayers() {
-        List<AbstractPlayer> players = new ArrayList<>();
+    public List<Player> getPlayers() {
+        List<Player> players = new ArrayList<>();
 
         for (Match match : getMatches()) {
             combinePlayerInList(players, match.getPlayer());
@@ -192,9 +192,9 @@ public class DatabaseAdapter {
                 combinePlayerInList(players, match.getOpponent());
         }
 
-        Collections.sort(players, new Comparator<AbstractPlayer>() {
+        Collections.sort(players, new Comparator<Player>() {
             @Override
-            public int compare(AbstractPlayer o1, AbstractPlayer o2) {
+            public int compare(Player o1, Player o2) {
                 return o1.getName().compareTo(o2.getName());
             }
         });
@@ -202,10 +202,10 @@ public class DatabaseAdapter {
         return players;
     }
 
-    private void combinePlayerInList(List<AbstractPlayer> players, AbstractPlayer playerToAdd) {
+    private void combinePlayerInList(List<Player> players, Player playerToAdd) {
         boolean addPlayer = true;
 
-        for (AbstractPlayer player : players) {
+        for (Player player : players) {
             if (player.getName().equals(playerToAdd.getName())) {
                 addPlayer = false;
                 player.addPlayerStats(playerToAdd);
@@ -218,8 +218,8 @@ public class DatabaseAdapter {
         }
     }
 
-    public List<AbstractPlayer> getPlayer(String playerName, GameType gameType, long id) {
-        List<AbstractPlayer> result = new ArrayList<>();
+    public List<Player> getPlayer(String playerName, GameType gameType, long id) {
+        List<Player> result = new ArrayList<>();
 
         Cursor c = database.query(TABLE_PLAYERS,
                 new String[]{COLUMN_MATCH_ID},
@@ -243,8 +243,8 @@ public class DatabaseAdapter {
         return result;
     }
 
-    public List<Pair<AbstractPlayer, AbstractPlayer>> getPlayerPairs(String playerName) {
-        List<Pair<AbstractPlayer, AbstractPlayer>> players = new ArrayList<>();
+    public List<Pair<Player, Player>> getPlayerPairs(String playerName) {
+        List<Pair<Player, Player>> players = new ArrayList<>();
 
         Cursor c = database.query(TABLE_PLAYERS,
                 new String[]{COLUMN_MATCH_ID},
@@ -256,7 +256,7 @@ public class DatabaseAdapter {
 
         while (c.moveToNext()) {
             Match match = getMatchWithTurns(c.getLong(c.getColumnIndex(COLUMN_MATCH_ID)));
-            Pair<AbstractPlayer, AbstractPlayer> pair;
+            Pair<Player, Player> pair;
 
             if (match.getPlayer().getName().equals(playerName)) {
                 pair = new ImmutablePair<>(match.getPlayer(), match.getOpponent());
@@ -495,7 +495,7 @@ public class DatabaseAdapter {
         return matches;
     }
 
-    private void insertPlayer(AbstractPlayer player, long id) {
+    private void insertPlayer(Player player, long id) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, player.getName());

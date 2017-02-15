@@ -38,6 +38,6 @@
         android:layout_gravity="center"
         android:layout_marginBottom="24dp"
         android:text="Select random player"
-        android:textColor="@color/colorAccent" />
+        android:textColor="?colorAccent" />
 
 </LinearLayout>

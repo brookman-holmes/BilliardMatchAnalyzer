@@ -1,6 +1,6 @@
 package com.brookmanholmes.billiards.player.controller;
 
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 
 import static com.brookmanholmes.billiards.turn.TurnEnd.MISS;
 import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY;
@@ -10,23 +10,13 @@ import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY_ERROR;
  * Created by Brookman Holmes on 1/12/2016.
  * A controller for adding up player stats for straight pool
  */
-class StraightPoolController extends PlayerController<StraightPoolPlayer> {
+class StraightPoolController extends PlayerController {
     StraightPoolController(String playerName, String opponentName, int playerRank, int opponentRank) {
         super(playerName, opponentName, playerRank, opponentRank);
     }
 
     @Override
-    public StraightPoolPlayer newPlayer() {
-        return new StraightPoolPlayer(playerName, playerRank);
-    }
-
-    @Override
-    public StraightPoolPlayer newOpponent() {
-        return new StraightPoolPlayer(opponentName, opponentRank);
-    }
-
-    @Override
-    void addSafetyStats(StraightPoolPlayer player) {
+    void addSafetyStats(Player player) {
         if (turn.getTurnEnd() == SAFETY)
             player.addSafety(gameStatus.opponentPlayedSuccessfulSafe, turn.getShootingBallsMade());
         else if (turn.getTurnEnd() == SAFETY_ERROR)
@@ -41,7 +31,7 @@ class StraightPoolController extends PlayerController<StraightPoolPlayer> {
     }
 
     @Override
-    void addShootingStats(StraightPoolPlayer player) {
+    void addShootingStats(Player player) {
         if (turn.getTurnEnd() == MISS)
             player.addShootingMiss();
 
@@ -54,13 +44,13 @@ class StraightPoolController extends PlayerController<StraightPoolPlayer> {
     }
 
     @Override
-    void addBreakingStats(StraightPoolPlayer player) {
+    void addBreakingStats(Player player) {
         if (turn.getShootingBallsMade() == 0)
             player.addBreakShot(0, false, turn.isFoul());
     }
 
     @Override
-    void addRunOutStats(StraightPoolPlayer player) {
+    void addRunOutStats(Player player) {
 
     }
 

@@ -35,8 +35,6 @@ public class GameStatusViewBuilder {
     TextView opponentFoulInfo;
     @Bind(R.id.colorInfo)
     TextView colorInfo;
-    @Bind(R.id.ballContainer)
-    GridLayout ballContainer;
     @Bind(R.id.pushStatus)
     TextView pushStatus;
     @Bind(R.id.playerStatsTracked)
@@ -53,9 +51,11 @@ public class GameStatusViewBuilder {
         gameStatus.setText(context.getString(R.string.label_game,
                 getGameTypeString(context, match.getGameStatus().gameType)));
 
-        breakInfo.setText(context.getString(R.string.out_of_strings,
+        if (match.getGameStatus().gameType != GameType.STRAIGHT_POOL)
+            breakInfo.setText(context.getString(R.string.out_of_strings,
                 getBreakType(context, match.getGameStatus().breakType, playerName, opponentName),
                 getLastBreaker(context, match)));
+        else breakInfo.setVisibility(View.GONE);
 
         turnInfo.setText(getPlayerTurnString(context, match));
 
@@ -73,8 +73,6 @@ public class GameStatusViewBuilder {
             opponentFoulInfo.setText(
                     getPlayerFoulsString(context, opponentName, match.getGameStatus().consecutiveOpponentFouls));
         }
-
-        setBallsOnTable(match, ballContainer);
 
         playerStatsTracked.setText("Stats tracked for " + playerName + ": " +
                 MatchDialogHelperUtils.getDataCollectionStringsFromSet(
@@ -148,10 +146,12 @@ public class GameStatusViewBuilder {
     }
 
     private static void setBallsOnTable(Match match, GridLayout ballContainer) {
-        //reverse loop because you want to remove the last fucking ball and not change the count of the children by removing from the front
-        for (int ball = ballContainer.getChildCount() - 1; ball >= 0; ball--) {
+        while (ballContainer.getChildCount() > match.getGameStatus().MAX_BALLS) // remove balls that are not on the table
+            ballContainer.removeViewAt(ballContainer.getChildCount() - 1);
+
+        for (int ball = 0; ball < ballContainer.getChildCount(); ball++) {
             if (!match.getGameStatus().ballsOnTable.contains(ball + 1))
-                ballContainer.removeViewAt(ball);
+                ballContainer.getChildAt(ball).setAlpha(.4f);
         }
     }
 

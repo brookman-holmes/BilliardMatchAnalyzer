@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="apa"
+            type="com.brookmanholmes.bma.ui.matchinfo.ApaBinder" />
+
+        <variable
+            name="overview"
+            type="com.brookmanholmes.bma.ui.matchinfo.MatchOverviewBinder" />
+
+        <variable
+            name="shooting"
+            type="com.brookmanholmes.bma.ui.matchinfo.ShootingBinder" />
+
+        <variable
+            name="safeties"
+            type="com.brookmanholmes.bma.ui.matchinfo.SafetiesBinder" />
+
+        <variable
+            name="breaks"
+            type="com.brookmanholmes.bma.ui.matchinfo.BreaksBinder" />
+
+        <variable
+            name="runs"
+            type="com.brookmanholmes.bma.ui.matchinfo.RunsBinder" />
+
+        <variable
+            name="straight"
+            type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolBinder" />
+
+        <variable
+            name="straightRuns"
+            type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolRunsBinder" />
+
+        <variable
+            name="straightTable"
+            type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolTableBinder" />
+
+        <variable
+            name="ballsOnTable"
+            type="com.brookmanholmes.bma.ui.matchinfo.BallsOnTableBinder" />
+
+        <variable
+            name="winIndicator"
+            type="com.brookmanholmes.bma.ui.matchinfo.WinIndicatorBinder" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="56dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <include
+                        layout="@layout/card_apa_stats"
+                        bind:apa="@{apa}"
+                        bind:winIndicator="@{winIndicator}" />
+
+                    <include
+                        layout="@layout/card_straight_pool"
+                        bind:straight="@{straight}"
+                        bind:winIndicator="@{winIndicator}" />
+
+                    <include
+                        layout="@layout/card_match_overview"
+                        bind:overview="@{overview}"
+                        bind:winIndicator="@{winIndicator}" />
+
+                    <include
+                        layout="@layout/card_straight_pool_runs"
+                        bind:straightRuns="@{straightRuns}" />
+
+                    <include
+                        layout="@layout/card_shooting_pct"
+                        bind:shooting="@{shooting}" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <include
+                        layout="@layout/card_safeties"
+                        bind:safeties="@{safeties}" />
+
+                    <include
+                        layout="@layout/card_breaks"
+                        bind:breaks="@{breaks}" />
+
+                    <include
+                        layout="@layout/card_run_outs"
+                        bind:runs="@{runs}" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <include
+                layout="@layout/balls_on_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                bind:ballsOnTable="@{ballsOnTable}" />
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</layout>

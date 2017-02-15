@@ -1,12 +1,21 @@
 package com.brookmanholmes.billiards.player;
 
+import com.brookmanholmes.billiards.game.GameType;
+
+import org.apache.commons.math3.stat.StatUtils;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Data class for storing information about player stats
  * Created by Brookman Holmes on 10/28/2015.
  */
-public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
+public class Player implements Comparable<Player>, Serializable {
+
+    private final GameType gameType;
 
     Date date;
     int rank;
@@ -30,31 +39,54 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     int breakAndRuns = 0;
     int tableRuns = 0;
     int fiveBallRun = 0;
-    private String name = "";
+    int opponentRank;
+    int winsOnBreak = 0;
+    int earlyWins = 0;
+    int points;
+    int deadBalls;
+    int highRun;
+    int seriousFouls;
+    List<Integer> runLengths = new ArrayList<>();
+    String name = "";
+
+    public Player(String name, GameType gameType, List<Player> players) {
+        this(name, gameType, players.size() > 0 ? players.get(0).rank : 5);
+
+        for (Player player : players)
+            addPlayerStats(player);
+    }
+
+    public Player(String name, GameType gameType, int rank, int opponentRank) {
+        this.opponentRank = opponentRank;
+        this.name = name;
+        this.gameType = gameType;
+        this.rank = rank;
+    }
 
     /**
      * Creates a new player with the specified arguments
      * @param name The name of the player
      * @param rank The rank of the player
      */
-    public AbstractPlayer(String name, int rank) {
+    public Player(String name, GameType gameType, int rank) {
         this.name = name;
         this.rank = rank;
+        this.gameType = gameType;
     }
 
     /**
      * Creates a new player with the specified arguments, defaulting the rank to 0
      * @param name The name of the player
      */
-    public AbstractPlayer(String name) {
-        this(name, 0);
+    public Player(String name, GameType gameType) {
+        this(name, gameType, 0);
     }
 
     /**
      * Takes stats from another player and adds them to the this player
      * @param player The player whose stats you want to add
      */
-    public void addPlayerStats(AbstractPlayer player) {
+    public void addPlayerStats(Player player) {
         this.safetyAttempts += player.safetyAttempts;
         this.safetyReturns += player.safetyReturns;
         this.safetySuccesses += player.safetySuccesses;
@@ -79,6 +111,128 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
 
         gameTotal += player.gameTotal;
         gameWins += player.gameWins;
+
+        earlyWins += player.earlyWins;
+        winsOnBreak += player.winsOnBreak;
+        points += player.points;
+        deadBalls += player.deadBalls;
+
+        if (highRun < player.highRun)
+            highRun = player.highRun;
+
+        seriousFouls += player.seriousFouls;
+
+        if (gameType.isStraightPool()) {
+            if (player.shootingTurns > 0)
+                runLengths.add(player.shootingBallsMade);
+
+            if (player.points > player.rank)
+                gameWins++;
+        }
+    }
+
+    public int getMatchPoints(int opponentScore) {
+        if (gameType.isApa8Ball()) {
+            if (getWins() == Players.apa8BallRaceTo(rank, opponentRank).getPlayerRaceTo()) {
+                if (opponentScore == 0)
+                    return 3;
+                else return 2;
+            } else if (getWins() + 1 == Players.apa8BallRaceTo(rank, opponentRank).getPlayerRaceTo()) {
+                return 1;
+            } else return 0;
+        } else if (gameType.isApa9Ball()) {
+            if (points >= Players.apa9BallRaceTo(rank))
+                return 20 - Players.getMinimumMatchPointsEarned(opponentRank, opponentScore);
+            else return Players.getMinimumMatchPointsEarned(rank, points);
+        } else return 0;
+    }
+
+    public int getPoints() {
+        if (gameType.isApa8Ball()) {
+            return gameWins;
+        } else if (gameType.isApa9Ball()) {
+            return shootingBallsMade + breakBallsMade + gameWins;
+        } else if (gameType.isStraightPool()) {
+            return shootingBallsMade - shootingFouls - breakFouls - (seriousFouls * 15);
+        } else return gameWins;
+    }
+
+    public int getPointsNeeded() {
+        if (gameType.isApa8Ball()) {
+            return Players.apa8BallRaceTo(rank, opponentRank).getPlayerRaceTo();
+        } else if (gameType.isApa9Ball()) {
+            return Players.apa9BallRaceTo(rank);
+        } else return rank;
+    }
+
+    public int getDeadBalls() {
+        return deadBalls;
+    }
+
+    public void addDeadBalls(int deadBalls) {
+        this.deadBalls += deadBalls;
+    }
+
+    public void addWinOnBreak() {
+        winsOnBreak++;
+    }
+
+    public int getWinsOnBreak() {
+        return winsOnBreak;
+    }
+
+    public void addWinsOnBreak(int wins) {
+        winsOnBreak += wins;
+    }
+
+    public void addEarlyWin() {
+        earlyWins++;
+    }
+
+    public int getEarlyWins() {
+        return earlyWins;
+    }
+
+    public void addEarlyWins(int wins) {
+        earlyWins += wins;
+    }
+
+    public int getHighRun() {
+        return highRun;
+    }
+
+    public List<Integer> getRunLengths() {
+        return new ArrayList<>(runLengths);
+    }
+
+    public void addSeriousFoul() {
+        seriousFouls++;
+    }
+
+    public GameType getGameType() {
+        return gameType;
+    }
+
+    public double getAverageRunLength() {
+        if (runLengths.size() > 0) {
+            double[] runLengths = new double[this.runLengths.size()];
+            for (int i = 0; i < this.runLengths.size(); i++) {
+                runLengths[i] = this.runLengths.get(i);
+            }
+
+            return StatUtils.mean(runLengths);
+        } else return 0;
+    }
+
+    public double getMedianRunLength() {
+        if (runLengths.size() > 0) {
+            double[] runLengths = new double[this.runLengths.size()];
+            for (int i = 0; i < this.runLengths.size(); i++) {
+                runLengths[i] = this.runLengths.get(i);
+            }
+
+            return StatUtils.percentile(runLengths, 50);
+        } else return 0;
     }
 
     /**
@@ -191,8 +345,8 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     }
 
     /**
-     * Increments both {@link com.brookmanholmes.billiards.player.AbstractPlayer#gameTotal} and
-     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#gameWins} by 1
+     * Increments both {@link Player#gameTotal} and
+     * {@link Player#gameWins} by 1
      */
     public void addGameWon() {
         gameTotal++;
@@ -200,7 +354,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     }
 
     /**
-     * Increments both {@link com.brookmanholmes.billiards.player.AbstractPlayer#gameTotal} by 1
+     * Increments both {@link Player#gameTotal} by 1
      */
     public void addGameLost() {
         gameTotal++;
@@ -224,9 +378,9 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
 
     /**
      * Getter for the total number of fouls, combines
-     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#shootingFouls},
-     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#safetyFouls} and
-     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#breakFouls}
+     * {@link Player#shootingFouls},
+     * {@link Player#safetyFouls} and
+     * {@link Player#breakFouls}
      * @return The total number of times the player has fouled
      */
     public int getTotalFouls() {
@@ -243,8 +397,8 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
 
     /**
      * Getter for the total number of shooting attempts, combines
-     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#shootingMisses} and
-     * {@link com.brookmanholmes.billiards.player.AbstractPlayer#shootingBallsMade}
+     * {@link Player#shootingMisses} and
+     * {@link Player#shootingBallsMade}
      * @return The total number of shooting attempts
      */
     public int getShootingAttempts() {
@@ -460,7 +614,10 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     }
 
     public float getMatchCompletionPct() {
-        return (float) gameWins / (float) rank;
+        if (getPointsNeeded() == 0)
+            return 0;
+        else
+            return (float) getPoints() / (float) getPointsNeeded();
     }
 
     /**
@@ -491,8 +648,8 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
 
     /**
      * The aggressiveness of the player
-     * {@link AbstractPlayer#getShootingAttempts()} / (
-     * {@link AbstractPlayer#getShootingAttempts()} + {@link AbstractPlayer#getSafetyAttempts()})
+     * {@link Player#getShootingAttempts()} / (
+     * {@link Player#getShootingAttempts()} + {@link Player#getSafetyAttempts()})
      * @return The aggressiveness of the player
      */
     public double getAggressivenessRating() {
@@ -504,8 +661,8 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
 
     /**
      * The player's true shooting percentage, which is determined by
-     * {@link AbstractPlayer#getShotsSucceededOfAllTypes()} /
-     * {@link AbstractPlayer#getShotAttemptsOfAllTypes()}
+     * {@link Player#getShotsSucceededOfAllTypes()} /
+     * {@link Player#getShotAttemptsOfAllTypes()}
      * @return The player's true shooting percentage
      */
     public double getTrueShootingPct() {
@@ -515,7 +672,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     }
 
     @Override
-    public int compareTo(AbstractPlayer o) {
+    public int compareTo(Player o) {
         return this.name.compareTo(o.name);
     }
 
@@ -524,7 +681,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractPlayer that = (AbstractPlayer) o;
+        Player that = (Player) o;
 
         if (safetyAttempts != that.safetyAttempts) return false;
         if (safetySuccesses != that.safetySuccesses) return false;
@@ -576,7 +733,7 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
     }
 
     @Override public String toString() {
-        return "AbstractPlayer{" +
+        return "Player{" +
                 "name='" + name + '\'' +
                 "\n safetyAttempts=" + safetyAttempts +
                 "\n safetySuccesses=" + safetySuccesses +
@@ -599,5 +756,13 @@ public abstract class AbstractPlayer implements Comparable<AbstractPlayer> {
                 "\n gameTotal=" + gameTotal +
                 "\n gameWins=" + gameWins +
                 '}';
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
+    }
+
+    public int getSeriousFouls() {
+        return seriousFouls;
     }
 }

@@ -38,6 +38,14 @@
             name="straightTable"
             type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolTableBinder" />
 
+        <variable
+            name="ballsOnTable"
+            type="com.brookmanholmes.bma.ui.matchinfo.BallsOnTableBinder" />
+
+        <variable
+            name="winIndicator"
+            type="com.brookmanholmes.bma.ui.matchinfo.WinIndicatorBinder" />
+
         <import type="android.view.View" />
     </data>
 
@@ -55,16 +63,23 @@
             android:orientation="vertical">
 
             <include
+                layout="@layout/balls_on_table"
+                bind:ballsOnTable="@{ballsOnTable}" />
+
+            <include
                 layout="@layout/card_apa_stats"
-                bind:apa="@{apa}" />
+                bind:apa="@{apa}"
+                bind:winIndicator="@{winIndicator}" />
 
             <include
                 layout="@layout/card_straight_pool"
-                bind:straight="@{straight}" />
+                bind:straight="@{straight}"
+                bind:winIndicator="@{winIndicator}" />
 
             <include
                 layout="@layout/card_match_overview"
-                bind:overview="@{overview}" />
+                bind:overview="@{overview}"
+                bind:winIndicator="@{winIndicator}" />
 
             <include
                 layout="@layout/card_shooting_pct"
@@ -88,7 +103,7 @@
 
             <android.support.v4.widget.Space
                 android:layout_width="match_parent"
-                android:layout_height="96dp" />
+                android:layout_height="56dp" />
 
         </LinearLayout>
 

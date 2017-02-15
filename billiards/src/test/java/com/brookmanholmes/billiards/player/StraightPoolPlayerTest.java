@@ -1,5 +1,7 @@
 package com.brookmanholmes.billiards.player;
 
+import com.brookmanholmes.billiards.game.GameType;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,18 +13,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 
 public class StraightPoolPlayerTest {
-    StraightPoolPlayer player;
+    Player player;
     String name = "name";
     int rank = 100;
 
     @Before
     public void setup() {
-        player = new StraightPoolPlayer(name, rank);
+        player = new Player(name, GameType.STRAIGHT_POOL, rank);
     }
 
     @Test
     public void seriousFoulGetsAddedWhenAddingPlayerData() {
-        StraightPoolPlayer player2 = new StraightPoolPlayer(name, rank);
+        Player player2 = new Player(name, GameType.STRAIGHT_POOL, rank);
         player2.addSeriousFoul();
 
         player.addPlayerStats(player2);

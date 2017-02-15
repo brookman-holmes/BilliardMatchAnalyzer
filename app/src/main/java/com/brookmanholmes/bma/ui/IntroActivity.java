@@ -42,11 +42,10 @@ import android.widget.TextView;
 import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.AbstractPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.BuildConfig;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.data.DatabaseAdapter;
-import com.brookmanholmes.bma.data.MatchModel;
 import com.brookmanholmes.bma.ui.dialog.EditTextDialog;
 import com.brookmanholmes.bma.ui.matchinfo.HighRunAttemptActivity;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
@@ -66,6 +65,8 @@ import com.google.firebase.storage.StorageReference;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -139,7 +140,7 @@ public class IntroActivity extends BaseActivity {
 
         Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
         spinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.rounded_rectangle));
-        @SuppressWarnings("ConstantConditions") ArrayAdapter<String> adapter = new ArrayAdapter<>(getSupportActionBar().getThemedContext(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getSupportActionBar().getThemedContext(),
                 android.R.layout.simple_spinner_item,
                 new String[]{getString(R.string.matches), getString(R.string.players)});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -384,7 +385,7 @@ public class IntroActivity extends BaseActivity {
             positiveButton.setEnabled(true);
             TransitionManager.beginDelayedTransition((LinearLayout) view);
             try {
-                match = MatchModel.unmarshall(bytes).getMatch();
+                match = SerializationUtils.deserialize(bytes);
                 setLocation(match.getLocation());
                 date.setText(getDate(match.getCreatedOn()));
                 if (match.getGameStatus().gameType == GameType.STRAIGHT_GHOST) {
@@ -392,6 +393,7 @@ public class IntroActivity extends BaseActivity {
                     breakType.setText(getString(R.string.game_straight_ghost));
                 } else if (match.getGameStatus().gameType == GameType.STRAIGHT_POOL) {
                     playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
+                    breakType.setText(getString(R.string.game_straight));
                 } else {
                     playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
                     breakType.setText(getBreakType(match.getGameStatus().breakType, match.getPlayer().getName(), match.getOpponent().getName()));
@@ -504,7 +506,7 @@ public class IntroActivity extends BaseActivity {
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            adapter = new RecyclerAdapter(new ArrayList<AbstractPlayer>());
+            adapter = new RecyclerAdapter(new ArrayList<Player>());
         }
 
         @Override
@@ -550,14 +552,14 @@ public class IntroActivity extends BaseActivity {
                     Color.parseColor("#FF5722"), Color.parseColor("#795548"), Color.parseColor("#9E9E9E"),
                     Color.parseColor("#607D8B")};
 
-            List<AbstractPlayer> players;
+            List<Player> players;
 
-            RecyclerAdapter(List<AbstractPlayer> players) {
+            RecyclerAdapter(List<Player> players) {
                 Collections.sort(players);
                 this.players = players;
             }
 
-            public void update(List<AbstractPlayer> players) {
+            public void update(List<Player> players) {
                 this.players = players;
                 notifyDataSetChanged();
             }
@@ -626,7 +628,7 @@ public class IntroActivity extends BaseActivity {
                 ButterKnife.bind(this, itemView);
             }
 
-            private void bind(AbstractPlayer player, @ColorInt int color) {
+            private void bind(Player player, @ColorInt int color) {
                 playerName.setText(player.getName());
                 playerIcon.setBackgroundColor(color);
                 playerIcon.setTitleText(player.getName().substring(0, 1));

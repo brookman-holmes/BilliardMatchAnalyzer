@@ -1,9 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.ApaEightBallPlayer;
-import com.brookmanholmes.billiards.player.ApaNineBallPlayer;
-import com.brookmanholmes.billiards.player.IApa;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -24,32 +21,32 @@ public class ApaBinder extends BindingAdapter {
 
     public boolean apa8Ball;
 
-    ApaBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded, int innings) {
-        super(expanded, player instanceof IApa);
+    ApaBinder(Player player, Player opponent, String title, boolean expanded, int innings) {
+        super(expanded, player.getGameType().isApa());
         this.title = title;
         this.helpLayout = R.layout.dialog_help_apa;
 
         update(player, opponent, innings);
 
-        if (player instanceof ApaEightBallPlayer) {
+        if (player.getGameType().isApa8Ball()) {
             apa8Ball = true;
-        } else if (player instanceof ApaNineBallPlayer) {
-            deadBalls = ((ApaNineBallPlayer) player).getDeadBalls() + "";
+        } else if (player.getGameType().isApa9Ball()) {
+            deadBalls = player.getDeadBalls() + "";
         }
     }
 
-    public void update(AbstractPlayer player, AbstractPlayer opponent, int innings) {
-        if (player instanceof IApa && opponent instanceof IApa) {
+    public void update(Player player, Player opponent, int innings) {
+        if (player.getGameType().isApa()) {
             playerRank = player.getRank() + "";
             opponentRank = opponent.getRank() + "";
 
-            playerPoints = ((IApa) player).getPoints();
-            opponentPoints = ((IApa) opponent).getPoints();
-            playerPointsNeeded = ((IApa) player).getPointsNeeded();
-            opponentPointsNeeded = ((IApa) opponent).getPointsNeeded();
+            playerPoints = player.getPoints();
+            opponentPoints = opponent.getPoints();
+            playerPointsNeeded = player.getPointsNeeded();
+            opponentPointsNeeded = opponent.getPointsNeeded();
 
-            playerMatchPoints = ((IApa) player).getMatchPoints(((IApa) opponent).getPoints()) + "";
-            opponentMatchPoints = ((IApa) opponent).getMatchPoints(((IApa) player).getPoints()) + "";
+            playerMatchPoints = player.getMatchPoints(opponent.getPoints()) + "";
+            opponentMatchPoints = opponent.getMatchPoints(player.getPoints()) + "";
 
             playerDefenses = player.getSafetyAttempts() + "";
             opponentDefenses = opponent.getSafetyAttempts() + "";
@@ -57,8 +54,8 @@ public class ApaBinder extends BindingAdapter {
             this.innings = innings + "";
         }
 
-        if (player instanceof ApaNineBallPlayer) {
-            deadBalls = ((ApaNineBallPlayer) player).getDeadBalls() + "";
+        if (player.getGameType().isApa9Ball()) {
+            deadBalls = player.getDeadBalls() + "";
         }
 
         notifyChange();

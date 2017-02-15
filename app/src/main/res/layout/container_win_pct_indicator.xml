@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="winIndicator"
+            type="com.brookmanholmes.bma.ui.matchinfo.WinIndicatorBinder" />
+
+        <variable
+            name="showWinPctLayout"
+            type="boolean" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:visibility="@{(showWinPctLayout &amp;&amp; winIndicator.showCard) ? View.VISIBLE : View.GONE}">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:background="@color/colorAccentSuperTransparent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center"
+                android:layout_weight="@{winIndicator.playerMatchCompPct}"
+                android:background="?colorAccent"
+                android:orientation="horizontal" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center"
+                android:layout_weight="@{1f - winIndicator.playerMatchCompPct}"
+                android:orientation="horizontal" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Win"
+            android:textSize="@dimen/player_text_size" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:background="@color/colorAccentSuperTransparent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center"
+                android:layout_weight="@{1f - winIndicator.opponentMatchCompPct}"
+                android:orientation="horizontal" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center"
+                android:layout_weight="@{winIndicator.opponentMatchCompPct}"
+                android:background="?colorAccent"
+                android:orientation="horizontal" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -1,7 +1,6 @@
 package com.brookmanholmes.billiards.player.controller;
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.IWinsOnBreak;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.ITurn;
 
 import org.junit.Test;
@@ -12,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by Brookman Holmes on 1/31/2016.
  */
-public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPlayer & IWinsOnBreak> extends AbstractPlayerControllerTest<T> {
+public abstract class AbstractNineBallPlayerControllerTest extends AbstractPlayerControllerTest {
     @Test
     public void gameBallOnBreakGivesWinOnBreakAndEarlyWin() {
         playerController.turn = turnBuilder.breakBalls(game.getGameStatus().GAME_BALL).win();
@@ -38,8 +37,9 @@ public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPla
         return turnBuilder.offTable(1, 2, 3, 4, 5).madeBalls(6, 7, 8, 9).win();
     }
 
-    @Override T getBreakAndRunPlayer() {
-        T player = getBlankPlayer();
+    @Override
+    Player getBreakAndRunPlayer() {
+        Player player = getBlankPlayer();
         player.addBreakShot(2, true, false);
         player.addShootingBallsMade(7, false);
 
@@ -50,8 +50,9 @@ public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPla
         return turnBuilder.breakBalls(1, 2).madeBalls(3).safetyMiss();
     }
 
-    @Override T fourBallRunOutPlayer() {
-        T player = getBlankPlayer();
+    @Override
+    Player fourBallRunOutPlayer() {
+        Player player = getBlankPlayer();
         player.addShootingBallsMade(6, false);
         player.addGameWon();
         player.addFiveBallRun();
@@ -59,8 +60,9 @@ public abstract class AbstractNineBallPlayerControllerTest<T extends AbstractPla
         return player;
     }
 
-    @Override T failedRunOutPlayer() {
-        T player = getBlankPlayer();
+    @Override
+    Player failedRunOutPlayer() {
+        Player player = getBlankPlayer();
 
         player.addBreakShot(2, true, false);
         player.addShootingBallsMade(1, false);

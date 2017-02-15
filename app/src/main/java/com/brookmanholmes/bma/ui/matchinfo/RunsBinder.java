@@ -1,8 +1,6 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
-import com.brookmanholmes.billiards.player.AbstractPlayer;
-import com.brookmanholmes.billiards.player.IEarlyWins;
-import com.brookmanholmes.billiards.player.StraightPoolPlayer;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
 /**
@@ -19,8 +17,8 @@ public class RunsBinder extends BindingAdapter {
     public String playerEarlyWins = "0", opponentEarlyWins = "0";
     boolean showEarlyWins = false;
 
-    RunsBinder(AbstractPlayer player, AbstractPlayer opponent, String title, boolean expanded, boolean showCard) {
-        super(expanded, !(player instanceof StraightPoolPlayer) && showCard);
+    RunsBinder(Player player, Player opponent, String title, boolean expanded, boolean showCard) {
+        super(expanded, !(player.getGameType().isStraightPool()) && showCard);
         this.title = title;
         helpLayout = R.layout.dialog_help_runs;
 
@@ -33,14 +31,14 @@ public class RunsBinder extends BindingAdapter {
         playerFiveBallRuns = player.getFiveBallRun() + "";
         opponentFiveBallRuns = opponent.getFiveBallRun() + "";
 
-        if (player instanceof IEarlyWins && opponent instanceof IEarlyWins) {
-            playerEarlyWins = ((IEarlyWins) player).getEarlyWins() + "";
-            opponentEarlyWins = ((IEarlyWins) opponent).getEarlyWins() + "";
+        if (player.getGameType().isWinEarly()) {
+            playerEarlyWins = player.getEarlyWins() + "";
+            opponentEarlyWins = opponent.getEarlyWins() + "";
             showEarlyWins = true;
         }
     }
 
-    public void update(AbstractPlayer player, AbstractPlayer opponent) {
+    public void update(Player player, Player opponent) {
         playerBreakRuns = player.getBreakAndRuns() + "";
         opponentBreakRuns = opponent.getBreakAndRuns() + "";
 
@@ -50,9 +48,9 @@ public class RunsBinder extends BindingAdapter {
         playerFiveBallRuns = player.getFiveBallRun() + "";
         opponentFiveBallRuns = opponent.getFiveBallRun() + "";
 
-        if (player instanceof IEarlyWins && opponent instanceof IEarlyWins) {
-            playerEarlyWins = ((IEarlyWins) player).getEarlyWins() + "";
-            opponentEarlyWins = ((IEarlyWins) opponent).getEarlyWins() + "";
+        if (player.getGameType().isWinEarly()) {
+            playerEarlyWins = player.getEarlyWins() + "";
+            opponentEarlyWins = opponent.getEarlyWins() + "";
         }
 
         notifyChange();

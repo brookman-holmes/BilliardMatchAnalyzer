@@ -52,6 +52,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     private static final String ARG_FILTER_OPPONENT = "arg_filter_opponent";
     private static final String ARG_FILTER_GAME = "arg_filter_game";
     private static final String ARG_FILTER_DATE = "arg_filter_date";
+
     @Bind(R.id.playerName)
     TextView playerName;
     @Bind(R.id.opponentName)
@@ -85,10 +86,21 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
         playerName.setText(player);
         opponentName.setText(filter.getOpponent());
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), player);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),
+                new String[]{player, getString(R.string.stats), getString(R.string.matches),
+                        getString(R.string.title_shooting), getString(R.string.title_safeties),
+                        getString(R.string.title_breaks)});
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(this);
+        pager.setOffscreenPageLimit(3);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (pager.getCurrentItem() == ViewPagerAdapter.MATCH_LIST_FRAGMENT)
+            fab.show();
     }
 
     private void setupToolbar() {
@@ -244,28 +256,34 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
-        final String player;
+        private static final int INFO_GRAPHIC_FRAGMENT = 0;
+        private static final int INFO_FRAGMENT = 1;
+        private static final int MATCH_LIST_FRAGMENT = 2;
+        private static final int ADV_SHOOTING_FRAGMENT = 3;
+        private static final int ADV_SAFETY_FRAGMENT = 4;
+        private static final int ADV_BREAKING_FRAGMENT = 5;
+        private final String[] titles;
 
-        ViewPagerAdapter(FragmentManager fm, String player) {
+        ViewPagerAdapter(FragmentManager fm, String[] titles) {
             super(fm);
-            this.player = player;
+            this.titles = titles;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0:
-                    return PlayerInfoGraphicFragment.create(player);
-                case 1:
-                    return MatchInfoFragment.create(player);
-                case 2:
-                    return MatchListFragment.create(player, null);
-                case 3:
-                    return AdvShootingStatsFragment.create(player);
-                case 4:
-                    return AdvSafetyStatsFragment.create(player);
-                case 5:
-                    return AdvBreakingStatsFragment.create(player);
+                case INFO_GRAPHIC_FRAGMENT:
+                    return PlayerInfoGraphicFragment.create(titles[0]);
+                case INFO_FRAGMENT:
+                    return MatchInfoFragment.create(titles[0]);
+                case MATCH_LIST_FRAGMENT:
+                    return MatchListFragment.create(titles[0], null);
+                case ADV_SHOOTING_FRAGMENT:
+                    return AdvShootingStatsFragment.create(titles[0]);
+                case ADV_SAFETY_FRAGMENT:
+                    return AdvSafetyStatsFragment.create(titles[0]);
+                case ADV_BREAKING_FRAGMENT:
+                    return AdvBreakingStatsFragment.create(titles[0]);
                 default:
                     throw new IllegalStateException("View pager out of position (0 - 5): " + position);
             }
@@ -278,20 +296,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return player;
-                case 1:
-                    return "Stats";
-                case 2:
-                    return "Matches";
-                case 3:
-                    return "Shooting";
-                case 4:
-                    return "Safeties";
-                default:
-                    return "Breaking";
-            }
+            return titles[position];
         }
     }
 }

@@ -64,10 +64,10 @@
     <string name="hint_opponent_name">Player 2 Name</string>
     <string name="hint_location">Location (optional)</string>
     <string name="hint_notes">Notes (optional)</string>
-    <string name="title_break_errors">Break errors (%1$d)</string>
-    <string name="title_safety_errors">Safety errors (%1$d)</string>
-    <string name="title_safety_results">Safety results (%1$d)</string>
-    <string name="title_shooting_errors">Shooting errors (%1$d)</string>
+    <string name="title_break_errors">Break errors: %1$d</string>
+    <string name="title_safety_errors">Safety errors: %1$d</string>
+    <string name="title_safety_results">Safety results: %1$d</string>
+    <string name="title_shooting_errors">Shooting errors: %1$d</string>
     <string name="title_aim">Aim</string>
     <string name="title_aim_right">right</string>
     <string name="title_aim_left">left</string>
@@ -316,7 +316,6 @@
     <string name="cb_speed">Speed of shot</string>
     <string name="ball_distances">CB/OB distances</string>
     <string name="title_data_collection">%1$s data collection</string>
-
     <string name="firebase_storage_ref">gs://billiard-match-analyzer.appspot.com</string>
     <string name="angle_detailed">Detailed angles</string>
     <string name="angle_simple">Simple angles</string>
@@ -327,6 +326,7 @@
     <string name="straight_pool_balls_on_table">Balls remaining on table: %1$d</string>
     <string name="balls_remaining">Balls remaining on table: %1$d</string>
     <string name="title_straight_pool_runs">Runs</string>
+    <string name="title_straight_pool_runs_alt">Straight Pool Runs</string>
     <string name="lifetime_average">Lifetime average</string>
     <string name="this_session">This session</string>
     <string name="lifetime">Lifetime</string>
@@ -337,4 +337,5 @@
     <string name="run_length">Run length</string>
     <string name="turns">Turns</string>
     <string name="title_straight_pool">Input %1$s\'s turn</string>
+    <string name="stats">Stats</string>
 </resources>

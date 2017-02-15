@@ -12,10 +12,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 1/19/2016.
  */
 @SuppressWarnings("unused")
-public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
+public abstract class AbstractPlayerTest {
     final String testName = "";
-    T actual;
-    T expected;
+    Player actual;
+    Player expected;
     int rank;
 
     @Before
@@ -206,76 +206,76 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
 
     @Test
     public void checkGetWinPctTextIsCorrect() {
-        assertThat(actual.getWinPct(), is(".000"));
+        assertThat(actual.getWinPct(), is(0d));
 
         actual.addGameWon();
 
-        assertThat(actual.getWinPct(), is("1.000"));
+        assertThat(actual.getWinPct(), is(1d));
 
         actual.addGameLost();
 
-        assertThat(actual.getWinPct(), is(".500"));
+        assertThat(actual.getWinPct(), is(1d / 2d));
     }
 
     @Test
     public void checkGetAvgBallsTurnIsCorrect() {
-        assertThat(actual.getAvgBallsTurn(), is("0"));
+        assertThat(actual.getAvgBallsTurn(), is(0d));
 
         actual.addShootingBallsMade(5, false);
 
-        assertThat(actual.getAvgBallsTurn(), is("5"));
+        assertThat(actual.getAvgBallsTurn(), is(5d));
     }
 
     @Test
     public void checkGetAvgBreakBallsIsCorrect() {
-        assertThat(actual.getAvgBallsBreak(), is("0"));
+        assertThat(actual.getAvgBallsBreak(), is(0d));
 
         actual.addBreakShot(5, false, true);
 
-        assertThat(actual.getAvgBallsBreak(), is("0"));
+        assertThat(actual.getAvgBallsBreak(), is(0d));
 
         actual.addBreakShot(5, false, false);
 
-        assertThat(actual.getAvgBallsBreak(), is("2.5"));
+        assertThat(actual.getAvgBallsBreak(), is(2.5d));
     }
 
     @Test
     public void checkGetSafetyPctTextIsCorrect() {
-        assertThat(actual.getSafetyPct(), is(".000"));
+        assertThat(actual.getSafetyPct(), is(0d));
 
         actual.addSafety(false, 0);
 
-        assertThat(actual.getSafetyPct(), is("1.000"));
+        assertThat(actual.getSafetyPct(), is(1d));
 
         actual.addSafetyAttempt(false);
 
-        assertThat(actual.getSafetyPct(), is(".500"));
+        assertThat(actual.getSafetyPct(), is(1d / 2d));
     }
 
     @Test
     public void checkGetBreakPctTextIsCorrect() {
-        assertThat(actual.getBreakPct(), is(".000"));
+        assertThat(actual.getBreakPct(), is(0d));
 
         actual.addBreakShot(1, false, false);
 
-        assertThat(actual.getBreakPct(), is("1.000"));
+        assertThat(actual.getBreakPct(), is(1d));
 
         actual.addBreakShot(0, false, false);
 
-        assertThat(actual.getBreakPct(), is(".500"));
+        assertThat(actual.getBreakPct(), is(1d / 2d));
     }
 
     @Test
     public void checkGetShootingPctTextIsCorrect() {
-        assertThat(actual.getShootingPct(), is(".000"));
+        assertThat(actual.getShootingPct(), is(0d));
 
         actual.addShootingBallsMade(4, false);
 
-        assertThat(actual.getShootingPct(), is("1.000"));
+        assertThat(actual.getShootingPct(), is(1d));
 
         actual.addShootingMiss();
 
-        assertThat(actual.getShootingPct(), is(".800"));
+        assertThat(actual.getShootingPct(), is(4d / 5d));
     }
 
     @Test
@@ -297,22 +297,22 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
 
     @Test
     public void getAggressivenessRatingIsCorrect() {
-        assertThat(actual.getAggressivenessRating(), is(".000"));
+        assertThat(actual.getAggressivenessRating(), is(0d));
 
         actual.addShootingBallsMade(8, false);
         actual.addBreakShot(2, true, false);
 
-        assertThat(actual.getAggressivenessRating(), is("1.000"));
+        assertThat(actual.getAggressivenessRating(), is(1d));
 
         actual.addSafety(false, 0);
         actual.addSafetyAttempt(true);
 
-        assertThat(actual.getAggressivenessRating(), is(".800"));
+        assertThat(actual.getAggressivenessRating(), is(4d / 5d));
     }
 
     @Test
     public void getTrueShootingPctRatingIsCorrect() {
-        assertThat(actual.getTrueShootingPct(), is(".000"));
+        assertThat(actual.getTrueShootingPct(), is(0d));
 
         actual.addShootingBallsMade(8, false);
         actual.addBreakShot(2, true, false);
@@ -321,7 +321,7 @@ public abstract class AbstractPlayerTest<T extends AbstractPlayer> {
         actual.addSafety(false, 0);
         actual.addSafetyAttempt(true);
 
-        assertThat(actual.getTrueShootingPct(), is(".769"));
+        assertThat(actual.getTrueShootingPct(), is(10d / 13d));
     }
 
 }

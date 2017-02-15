@@ -15,6 +15,7 @@ import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.InvalidBallException;
 import com.brookmanholmes.billiards.turn.TurnEnd;
@@ -64,6 +65,7 @@ public class MatchDialogHelperUtils {
     public static final String PLAYER_FOULS_KEY = "player_fouls";
     public static final String PLAYER_COLOR_KEY = "player_color";
     public static final String DATA_COLLECTION_KEY = "data_collection_key";
+    public static final String POINTS_TO_WIN = "points_to_win";
 
     private MatchDialogHelperUtils() {
     }
@@ -88,6 +90,11 @@ public class MatchDialogHelperUtils {
         args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
         args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
         args.putSerializable(DATA_COLLECTION_KEY, match.getDetails());
+        Player player = match.getGameStatus().turn == PlayerTurn.PLAYER ? match.getPlayer() : match.getOpponent();
+        int pointsToWin = 0;
+        if (player.getGameType().isStraightPool())
+            pointsToWin = player.getRank() - player.getPoints();
+        args.putInt(POINTS_TO_WIN, pointsToWin);
         return args;
     }
 
