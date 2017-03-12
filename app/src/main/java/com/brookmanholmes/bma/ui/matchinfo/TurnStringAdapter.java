@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
 
-import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.billiards.turn.TurnEnd;
@@ -19,11 +18,11 @@ class TurnStringAdapter {
     private final StringBuilder turnBuilder = new StringBuilder();
     private final Context context;
 
-    TurnStringAdapter(Context context, ITurn turn, Player player, String color) {
+    TurnStringAdapter(Context context, ITurn turn, String name, String color) {
         this.turn = turn;
         this.context = context;
 
-        playerName = "<b><font color='" + color + "'>" + player.getName() + "</font></b>";
+        playerName = "<b><font color='" + color + "'>" + name + "</font></b>";
     }
 
     private boolean isBreakShot() {

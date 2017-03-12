@@ -19,17 +19,17 @@ public class ApaNineBallPlayerControllerTest extends AbstractNineBallPlayerContr
     private final int playerRank = 4;
 
     @Override public void setUp() {
-        game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
+        game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.WINNER, 100);
         int opponentRank = 4;
-        playerController = new ApaNineBallController("", "", playerRank, opponentRank);
-        actualPlayer = new Player("", GameType.BCA_NINE_BALL, playerRank, playerRank);
-        expectedPlayer = new Player("", GameType.BCA_NINE_BALL, playerRank, playerRank);
+        playerController = new ApaNineBallController("", "", "", "", playerRank, opponentRank);
+        actualPlayer = new Player("", "", GameType.BCA_NINE_BALL, playerRank, playerRank);
+        expectedPlayer = new Player("", "", GameType.BCA_NINE_BALL, playerRank, playerRank);
         turnBuilder = new TurnBuilder(game.getGameType());
     }
 
     @Override
     Player getBlankPlayer() {
-        return new Player("", GameType.BCA_NINE_BALL, playerRank, playerRank);
+        return new Player("", "", GameType.BCA_NINE_BALL, playerRank, playerRank);
     }
 
     @Test public void foulOnBreakAdds2DeadBalls() {

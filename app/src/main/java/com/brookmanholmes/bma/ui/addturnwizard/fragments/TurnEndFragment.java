@@ -19,12 +19,10 @@ import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.TurnEndPage;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +30,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_STATUS_KEY;
 import static com.brookmanholmes.bma.wizard.model.Page.SIMPLE_DATA_KEY;
 
 /**
@@ -105,7 +104,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         foulGroup = (RadioGroup) rootView.findViewById(R.id.foulGroup);
         foulGroup.setOnCheckedChangeListener(this);
         foulGroup.check(R.id.no);
-        GameStatus gameStatus = MatchDialogHelperUtils.getGameStatus(page.getData());
+        GameStatus gameStatus = (GameStatus) page.getData().getSerializable(GAME_STATUS_KEY);
         ((TextView) foulGroup.findViewById(R.id.seriousFoul)).setText(gameStatus.gameType == GameType.STRAIGHT_POOL ? R.string.foul_serious : R.string.foul_lost_game);
 
         ((TextView) rootView.findViewById(R.id.subTitle)).setText(getString(R.string.title_foul, page.getData().getString(MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY)));
@@ -166,13 +165,6 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
     }
 
     @Override
-    public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        super.onDestroy();
-    }
-
-    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         String selection = adapter.getItem(position);
         updateFoulLayout(selection);
@@ -186,7 +178,7 @@ public class TurnEndFragment extends ListFragment implements RadioGroup.OnChecke
         else if (checkedId == R.id.no)
             page.getData().putString(TurnEndPage.FOUL_KEY, getString(R.string.no));
         else if (checkedId == R.id.seriousFoul) {
-            GameStatus gameStatus = MatchDialogHelperUtils.getGameStatus(page.getData());
+            GameStatus gameStatus = (GameStatus) page.getData().getSerializable(GAME_STATUS_KEY);
             String result = gameStatus.gameType == GameType.STRAIGHT_POOL ? getString(R.string.foul_serious) : getString(R.string.foul_lost_game);
             page.getData().putString(TurnEndPage.FOUL_KEY, result);
         }

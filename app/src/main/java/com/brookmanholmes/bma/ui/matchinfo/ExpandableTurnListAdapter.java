@@ -34,11 +34,8 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
     private List<List<ITurn>> data = new ArrayList<>(); // list of list of turns, where each list is a group of turns that corresponds to that game
     private Match match;
 
-    ExpandableTurnListAdapter(Match match) {
-        this.match = match;
+    ExpandableTurnListAdapter() {
         setHasStableIds(true);
-        data = getData(match.getTurns());
-        // can't call scrollToLastItem() here because there is no guarantee that the recyclerview has been created yet
     }
 
     void updateMatch(Match match) {
@@ -84,7 +81,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         // add group at the end of the list to simulate a footer
         if (data.size() > 0 && data.get(data.size() - 1).size() > 0) {
             // if the last item is empty then it becomes the footer
-            // otherwise we create a new one
+            // otherwise we newInstance a new one
             data.add(new ArrayList<ITurn>());
         }
 
@@ -112,7 +109,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         // add group at the end of the list to simulate a footer
         if (data.size() > 0 && data.get(data.size() - 1).size() > 0) {
             // if the last item is empty then it becomes the footer
-            // otherwise we create a new one
+            // otherwise we newInstance a new one
             data.add(new ArrayList<ITurn>());
         }
 
@@ -243,16 +240,13 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         }
 
         void bind(Player player, Player opponent) {
-            String playerName = player.getName();
-            String opponentName = opponent.getName();
-
             int playerScore = player.getWins();
             int opponentScore = opponent.getWins();
             int gameTotal = playerScore + opponentScore + 1;
 
             game.setText(itemView.getContext().getString(R.string.row_game, gameTotal));
-            playerWins.setText(itemView.getContext().getString(R.string.player_wins, playerName, playerScore));
-            opponentWins.setText(itemView.getContext().getString(R.string.player_wins, opponentName, opponentScore));
+            playerWins.setText(itemView.getContext().getString(R.string.player_wins, player.getName(), playerScore));
+            opponentWins.setText(itemView.getContext().getString(R.string.player_wins, opponent.getName(), opponentScore));
 
             if (playerScore > opponentScore) {
                 playerWins.setTypeface(null, Typeface.BOLD);
@@ -288,8 +282,6 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
         void bind(Player player, Player opponent) {
             float points = player.getShootingBallsMade() + opponent.getShootingBallsMade();
             int rackTotal = (int) Math.floor(points / 14) + 1;
-            String playerName = player.getName();
-            String opponentName = opponent.getName();
 
             game.setText(itemView.getContext().getString(R.string.row_rack, rackTotal));
 
@@ -300,8 +292,8 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
                 float playerPct = (float) playerScore / (float) player.getRank();
                 float opponentPct = (float) opponentScore / (float) opponent.getRank();
 
-                playerWins.setText(itemView.getContext().getString(R.string.player_points, playerName, playerScore));
-                opponentWins.setText(itemView.getContext().getString(R.string.player_points, opponentName, opponentScore));
+                playerWins.setText(itemView.getContext().getString(R.string.player_points, player.getName(), playerScore));
+                opponentWins.setText(itemView.getContext().getString(R.string.player_points, opponent.getName(), opponentScore));
 
                 if (Float.compare(playerPct, opponentPct) > 0) {
                     playerWins.setTypeface(null, Typeface.BOLD);

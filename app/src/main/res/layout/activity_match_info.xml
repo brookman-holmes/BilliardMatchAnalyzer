@@ -30,52 +30,60 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/colorPrimary"
+            android:layout_height="wrap_content"
             android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="4dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/playerNameLayout"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/playerName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:drawableEnd="@drawable/ic_arrow_drop_down"
-                    android:ellipsize="marquee"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="23sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    style="@style/activity_player_name"
+                    android:text="Brookman Holmes" />
 
-            <LinearLayout
+                <LinearLayout
+                    android:id="@+id/playerTurnIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignLeft="@+id/playerName"
+                    android:layout_alignRight="@+id/playerName"
+                    android:layout_below="@+id/playerName"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimaryLight"
+                    android:orientation="horizontal" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/opponentNameLayout"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
+                android:elevation="4dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/opponentName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:drawableEnd="@drawable/ic_arrow_drop_down"
-                    android:ellipsize="marquee"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="23sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    style="@style/activity_player_name"
+                    android:text="Cliff Maxson" />
+
+                <LinearLayout
+                    android:id="@+id/opponentTurnIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignLeft="@+id/opponentName"
+                    android:layout_alignRight="@+id/opponentName"
+                    android:layout_below="@+id/opponentName"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/colorPrimaryLight"
+                    android:orientation="horizontal" />
+            </RelativeLayout>
+
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 

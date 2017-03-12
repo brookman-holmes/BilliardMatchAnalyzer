@@ -9,9 +9,13 @@ import com.brookmanholmes.billiards.turn.TurnEnd;
  * <p></p>Created by Brookman Holmes on 10/25/2015.
  */
 abstract class RotationGame extends Game {
-    RotationGame(GameType gameType, PlayerTurn playerTurn, BreakType breakType, int maxBalls, int gameBall) {
-        super(gameType, playerTurn, breakType, maxBalls, gameBall);
+    RotationGame(GameType gameType, PlayerTurn playerTurn, BreakType breakType) {
+        super(gameType, playerTurn, breakType);
         allowPush = true;
+    }
+
+    RotationGame(GameType gameType, PlayerTurn turn, BreakType breakType, int maxAttemptsPerGame) {
+        super(gameType, turn, breakType, maxAttemptsPerGame);
     }
 
     @Override

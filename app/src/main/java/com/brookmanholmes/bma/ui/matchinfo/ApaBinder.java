@@ -1,5 +1,9 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
+import android.support.annotation.Nullable;
+
+import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
@@ -8,34 +12,32 @@ import com.brookmanholmes.bma.R;
  */
 
 public class ApaBinder extends BindingAdapter {
-    public String playerRank, opponentRank;
+    public String playerRank = "0", opponentRank = "0";
 
     public int playerPoints, opponentPoints;
     public int playerPointsNeeded, opponentPointsNeeded;
 
-    public String playerMatchPoints, opponentMatchPoints;
+    public String playerMatchPoints = "0", opponentMatchPoints = "0";
 
-    public String playerDefenses, opponentDefenses;
+    public String playerDefenses = "0", opponentDefenses = "0";
 
-    public String innings, deadBalls = "0";
+    public String innings = "0", deadBalls = "0";
 
     public boolean apa8Ball;
 
-    ApaBinder(Player player, Player opponent, String title, boolean expanded, int innings) {
-        super(expanded, player.getGameType().isApa());
-        this.title = title;
+    ApaBinder(String title, boolean expanded, GameType gameType) {
+        super(title, expanded, gameType.isApa());
         this.helpLayout = R.layout.dialog_help_apa;
+    }
 
-        update(player, opponent, innings);
-
+    @Override
+    public void update(Player player, Player opponent, @Nullable GameStatus gameStatus) {
         if (player.getGameType().isApa8Ball()) {
             apa8Ball = true;
         } else if (player.getGameType().isApa9Ball()) {
             deadBalls = player.getDeadBalls() + "";
         }
-    }
 
-    public void update(Player player, Player opponent, int innings) {
         if (player.getGameType().isApa()) {
             playerRank = player.getRank() + "";
             opponentRank = opponent.getRank() + "";
@@ -51,7 +53,8 @@ public class ApaBinder extends BindingAdapter {
             playerDefenses = player.getSafetyAttempts() + "";
             opponentDefenses = opponent.getSafetyAttempts() + "";
 
-            this.innings = innings + "";
+            if (gameStatus != null)
+                this.innings = gameStatus.innings + "";
         }
 
         if (player.getGameType().isApa9Ball()) {

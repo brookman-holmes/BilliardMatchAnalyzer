@@ -23,6 +23,8 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_STATUS_KEY;
+
 
 /**
  * Created by Brookman Holmes on 12/1/2016.
@@ -97,7 +99,7 @@ public class StraightPoolShotFragment extends BasePageFragment<StraightPoolPage>
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         page = (StraightPoolPage) callbacks.onGetPage(key);
-        gameStatus = MatchDialogHelperUtils.getGameStatus(page.getData());
+        gameStatus = ((GameStatus) page.getData().getSerializable(GAME_STATUS_KEY));
         pointsToWin = page.getData().getInt(MatchDialogHelperUtils.POINTS_TO_WIN, 0);
         @LayoutRes int layout = gameStatus.gameType.isSinglePlayer() ? R.layout.select_straight_pool_balls_dialog_ghost : R.layout.select_straight_pool_balls_dialog;
 

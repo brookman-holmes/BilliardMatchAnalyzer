@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.BuildConfig;
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.BaseDialogFragment;
 import com.brookmanholmes.bma.ui.addturnwizard.model.AddTurnWizardModel;
@@ -33,8 +32,12 @@ import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.ui.PageFragmentCallbacks;
 import com.brookmanholmes.bma.wizard.ui.StepPagerStrip;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.squareup.leakcanary.RefWatcher;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -42,11 +45,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_STATUS_KEY;
+
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
 @SuppressWarnings("WeakerAccess")
-public class AddTurnDialog extends BaseDialogFragment implements PageFragmentCallbacks, ModelCallbacks, View.OnLayoutChangeListener {
+public class AddTurnDialog extends BaseDialogFragment implements PageFragmentCallbacks, ModelCallbacks,
+        View.OnLayoutChangeListener, ChildEventListener {
     private static final String TAG = "AddTurnDialog";
     @Bind(R.id.imgHelp)
     public ImageView help;
@@ -58,6 +64,8 @@ public class AddTurnDialog extends BaseDialogFragment implements PageFragmentCal
     Button nextButton;
     @Bind(R.id.prev_button)
     Button prevButton;
+
+    private List<String> turnIds = new ArrayList<>();
     private MyPagerAdapter pagerAdapter;
     private AddTurnWizardModel wizardModel;
     private List<Page> currentPageSequence;
@@ -68,10 +76,11 @@ public class AddTurnDialog extends BaseDialogFragment implements PageFragmentCal
     public AddTurnDialog() {
     }
 
-    public static AddTurnDialog create(Match match) {
+    public static AddTurnDialog create(Match match, ArrayList<String> turns) {
         Bundle args = new Bundle();
-
         args.putAll(MatchDialogHelperUtils.getBundle(match));
+        args.putString("match_id", match.getMatchId());
+        args.putStringArrayList("turn_ids", turns);
         AddTurnDialog addTurnDialog = new AddTurnDialog();
 
         addTurnDialog.setArguments(args);
@@ -81,6 +90,15 @@ public class AddTurnDialog extends BaseDialogFragment implements PageFragmentCal
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String matchId = getArguments().getString("match_id");
+        turnIds.addAll(getArguments().getStringArrayList("turn_ids"));
+
+        if (matchId == null)
+            throw new IllegalArgumentException("Must pass in a match id");
+
+        FirebaseDatabase.getInstance().getReference().child("turns")
+                .child(matchId).addChildEventListener(this);
+
         if (!MatchDialogHelperUtils.isTablet(getContext()) ||
                 getNecessaryHeight() > getContext().getResources().getDisplayMetrics().heightPixels) {// if the screen is really small then we remove the frame to make it 'bigger'
             setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
@@ -167,6 +185,32 @@ public class AddTurnDialog extends BaseDialogFragment implements PageFragmentCal
         }
     }
 
+    @Override
+    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        if (!turnIds.contains(dataSnapshot.getKey()))
+            dismiss();
+    }
+
+    @Override
+    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        if (!turnIds.contains(dataSnapshot.getKey()))
+            dismiss();
+    }
+
+    @Override
+    public void onChildRemoved(DataSnapshot dataSnapshot) {
+    }
+
+    @Override
+    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        if (!turnIds.contains(dataSnapshot.getKey()))
+            dismiss();
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+    }
+
     /**
      * Set the dialog height to something smaller if we're not using advanced data
      * or if we're on a tablet
@@ -184,7 +228,7 @@ public class AddTurnDialog extends BaseDialogFragment implements PageFragmentCal
     }
 
     private int getNecessaryHeight() {
-        GameStatus gameStatus = MatchDialogHelperUtils.getGameStatus(getArguments());
+        GameStatus gameStatus = (GameStatus) getArguments().getSerializable(GAME_STATUS_KEY);
         if (MatchDialogHelperUtils.currentPlayerTurnAndAdvancedStats(gameStatus.turn, EnumSet.copyOf((EnumSet<Match.StatsDetail>) getArguments().getSerializable(MatchDialogHelperUtils.DATA_COLLECTION_KEY)))) {
             return (int) ConversionUtils.convertDpToPx(getContext(), 700);
         } else if (MatchDialogHelperUtils.getLayout(gameStatus.gameType) == R.layout.select_eight_ball_dialog) {
@@ -200,13 +244,6 @@ public class AddTurnDialog extends BaseDialogFragment implements PageFragmentCal
     public void onDestroyView() {
         ButterKnife.unbind(this);
         super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        super.onDestroy();
     }
 
     @Override
@@ -283,46 +320,6 @@ public class AddTurnDialog extends BaseDialogFragment implements PageFragmentCal
             pager.setCurrentItem(pager.getCurrentItem() + 1);
             wizardModel.updatePagesWithTurnInfo();
         }
-    }
-
-    @Override
-    public void dismiss() {
-        // TODO: 8/24/2016 this probably doesn't work for pressing the back button? need to intercept it somehow
-        circularDeveal();
-    }
-
-    private void realDismiss() {
-        super.dismiss();
-    }
-
-    private void circularDeveal() {
-        View view = getView();
-        float finalRadius = (float) Math.hypot(view.getWidth(), view.getHeight());
-        // TODO: 8/24/2016 view.getWidth() and getHeight() are a workaround for finding the absolute location of the fab that starts this
-        Animator anim = ViewAnimationUtils.createCircularReveal(view, view.getWidth(), view.getHeight(), finalRadius, 0);
-        anim.setDuration(500);
-        anim.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                realDismiss();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
-        anim.start();
     }
 
     @OnClick(R.id.prev_button)

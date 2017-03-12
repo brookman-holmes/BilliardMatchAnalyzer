@@ -14,13 +14,13 @@ public class CompPlayerTest extends AbstractPlayerTest {
     @Override
     public void setUp() {
         rank = 0;
-        expected = new Player(testName, GameType.ALL);
-        actual = new Player(testName, GameType.ALL);
+        expected = new Player(testName, testName, GameType.ALL);
+        actual = new Player(testName, testName, GameType.ALL);
     }
 
     @Test
     public void addPlayerStatsWorksCorrectlyForNineBall() {
-        Player player = new Player(testName, GameType.ALL);
+        Player player = new Player(testName, testName, GameType.ALL);
 
         player.addEarlyWin();
         player.addWinOnBreak();

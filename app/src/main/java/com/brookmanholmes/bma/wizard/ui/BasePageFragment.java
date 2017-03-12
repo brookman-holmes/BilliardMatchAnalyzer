@@ -12,7 +12,7 @@ import com.brookmanholmes.bma.wizard.model.Page;
  */
 
 public abstract class BasePageFragment<T extends Page> extends Fragment {
-    private static final String ARG_KEY = "key";
+    protected static final String ARG_KEY = "key";
     protected PageFragmentCallbacks callbacks;
     protected T page;
     protected String key;

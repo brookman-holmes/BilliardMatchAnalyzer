@@ -23,7 +23,7 @@ public abstract class AbstractPlayerTest {
 
     @Test
     public void getNameReturnsName() {
-        assertThat(actual.getName(), is(""));
+        assertThat(actual.getId(), is(""));
     }
 
     @Test
@@ -83,6 +83,8 @@ public abstract class AbstractPlayerTest {
 
         expected.shootingBallsMade += 8;
         expected.shootingTurns++;
+        expected.highRun = 8;
+        expected.runLengths.add(8);
 
         assertThat(actual, is(expected));
     }
@@ -94,6 +96,8 @@ public abstract class AbstractPlayerTest {
         expected.shootingBallsMade += 8;
         expected.shootingFouls++;
         expected.shootingTurns++;
+        expected.highRun = 8;
+        expected.runLengths.add(8);
 
         assertThat(actual, is(expected));
     }
@@ -120,6 +124,7 @@ public abstract class AbstractPlayerTest {
         actual.addShootingBallsMade(0, false);
 
         expected.shootingTurns++;
+        expected.runLengths.add(0);
 
         assertThat(actual, is(expected));
     }

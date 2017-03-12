@@ -4,16 +4,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
 
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.turn.AdvStats;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
+import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
-import com.brookmanholmes.bma.wizard.model.BranchPage;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.PageList;
 
@@ -21,14 +22,9 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.ALLOW_BREAK_AGAIN_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.BALLS_ON_TABLE_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.CURRENT_PLAYER_NAME_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.NEW_GAME_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_STATUS_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.OPPOSING_PLAYER_NAME_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.SUCCESSFUL_SAFE_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.TURN_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringToAngle;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringToHowType;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertStringToShotType;
@@ -44,6 +40,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     private static final String TAG = "AddTurnWizardModel";
     private static final Page[] emptyPageArray = new Page[]{};
     private final Bundle matchData;
+    private final GameStatus gameStatus;
     private final TurnBuilder turnBuilder;
     private final String playerName;
     private final PlayerTurn turn;
@@ -52,13 +49,15 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     public AddTurnWizardModel(Context context, Bundle matchData) {
         super(context);
         this.matchData = matchData;
-        turn = PlayerTurn.valueOf(matchData.getString(TURN_KEY));
+        gameStatus = (GameStatus) matchData.getSerializable(GAME_STATUS_KEY);
+        if (gameStatus == null)
+            throw new IllegalArgumentException("Must pass in GameStatus object with key: " + GAME_STATUS_KEY);
+        turn = gameStatus.turn;
         playerName = matchData.getString(CURRENT_PLAYER_NAME_KEY);
         dataCollection = EnumSet.copyOf((EnumSet<Match.StatsDetail>) matchData.getSerializable(MatchDialogHelperUtils.DATA_COLLECTION_KEY));
-        turnBuilder = new TurnBuilder(GameType.valueOf(matchData.getString(GAME_TYPE_KEY)),
-                matchData.getIntegerArrayList(BALLS_ON_TABLE_KEY));
+        turnBuilder = new TurnBuilder(gameStatus.gameType, gameStatus.ballsOnTable);
 
-        turnBuilder.turnEnd = TurnEnd.MISS;
+        turnBuilder.turnEnd = TurnEndHelper.getTurnEndOptions(gameStatus).defaultCheck;
         turnBuilder.foul = false;
         turnBuilder.seriousFoul = false;
         turnBuilder.advStats.name(playerName);
@@ -97,16 +96,15 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     @Override
     protected PageList onNewRootPageList() {
-        GameType gameType = GameType.valueOf(matchData.getString(GAME_TYPE_KEY));
-        if (gameType == GameType.STRAIGHT_POOL) // straight pool pages must be higher than the rebreak option because they handle re-break option differently
+        if (gameStatus.gameType == GameType.STRAIGHT_POOL) // straight pool pages must be higher than the rebreak option because they handle re-break option differently
             return new PageList(getStraightPoolPage());
-        else if (gameType == GameType.STRAIGHT_GHOST)
+        else if (gameStatus.gameType == GameType.STRAIGHT_GHOST)
             return new PageList(getStraightPoolPage());
-        else if (matchData.getBoolean(ALLOW_BREAK_AGAIN_KEY))
+        else if (gameStatus.playerAllowedToBreakAgain)
             return new PageList(getTurnEndPage());
-        else if (gameType.isGhostGame())
+        else if (gameStatus.gameType.isSinglePlayer())
             return new PageList(getGhostBreakPage(), getTurnEndPage());
-        else if (matchData.getBoolean(NEW_GAME_KEY))
+        else if (gameStatus.newGame)
             return new PageList(getBreakPage(), getTurnEndPage());
         else
             return new PageList(getShotPage(), getTurnEndPage());
@@ -192,7 +190,10 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page getGhostBreakPage() {
-        return new GhostBreakPage(this, context.getString(R.string.title_break, playerName), context.getString(R.string.title_shot, playerName), matchData);
+        if (gameStatus.newGame)
+            return new GhostBreakPage(this, context.getString(R.string.title_break, playerName), context.getString(R.string.title_shot, playerName), matchData);
+        else
+            return new ShotPage(this, context.getString(R.string.title_shot, playerName), matchData);
     }
 
     private Page getBreakPage() {
@@ -210,7 +211,10 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 .addBranch(context.getString(R.string.turn_safety), getSafetyPage())
                 .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(CURRENT_PLAYER_NAME_KEY)))
                 .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(OPPOSING_PLAYER_NAME_KEY)))
-                .setValue(context.getString(R.string.turn_miss));
+                .setValue(MatchDialogHelperUtils.convertTurnEndToString(context,
+                        turnBuilder.turnEnd,
+                        matchData.getString(CURRENT_PLAYER_NAME_KEY),
+                        matchData.getString(OPPOSING_PLAYER_NAME_KEY)));
     }
 
     private Page getTurnEndPage() {
@@ -225,7 +229,10 @@ public class AddTurnWizardModel extends AbstractWizardModel {
                 .addBranch(context.getString(R.string.turn_skip))
                 .addBranch(context.getString(R.string.turn_current_player_breaks, matchData.getString(CURRENT_PLAYER_NAME_KEY)))
                 .addBranch(context.getString(R.string.turn_non_current_player_breaks, matchData.getString(OPPOSING_PLAYER_NAME_KEY)))
-                .setValue(context.getString(R.string.turn_miss));
+                .setValue(MatchDialogHelperUtils.convertTurnEndToString(context,
+                        turnBuilder.turnEnd,
+                        matchData.getString(CURRENT_PLAYER_NAME_KEY),
+                        matchData.getString(OPPOSING_PLAYER_NAME_KEY)));
     }
 
     private Page[] getCueingPage() {
@@ -247,18 +254,20 @@ public class AddTurnWizardModel extends AbstractWizardModel {
 
     private Page[] getMissBranchPage() {
         if (isShotType()) {
-            BranchPage page = new MissBranchPage(this, context.getString(R.string.title_miss, playerName))
-                    .addBranch(context.getString(R.string.miss_cut), combineArrays(getCutTypePage(), getAnglePage(),
-                            getHowMissPage(R.array.how_choices)))
-                    .addBranch(context.getString(R.string.miss_long), getHowMissPage(R.array.how_choices))
-                    .addBranch(context.getString(R.string.miss_bank), combineArrays(getBankPage(), getHowMissPage(R.array.how_choices_bank)))
-                    .addBranch(context.getString(R.string.miss_kick), combineArrays(getKickPage(), getHowMissPage(R.array.how_choices_kick)))
-                    .addBranch(context.getString(R.string.miss_combo), getHowMissPage(R.array.how_choices))
-                    .addBranch(context.getString(R.string.miss_carom), getHowMissPage(R.array.how_choices))
-                    .addBranch(context.getString(R.string.miss_jump), getHowMissPage(R.array.how_choices))
-                    .addBranch(context.getString(R.string.miss_masse), getHowMissPage(R.array.how_choices_masse));
-
-            return new Page[]{page.setValue(context.getString(R.string.miss_cut)).setRequired(true)};
+            return new Page[]{
+                    new MissBranchPage(this, context.getString(R.string.title_miss, playerName))
+                            .addBranch(context.getString(R.string.miss_cut), combineArrays(getCutTypePage(), getAnglePage(),
+                                    getHowMissPage(R.array.how_choices)))
+                            .addBranch(context.getString(R.string.miss_long), getHowMissPage(R.array.how_choices))
+                            .addBranch(context.getString(R.string.miss_bank), combineArrays(getBankPage(), getHowMissPage(R.array.how_choices_bank)))
+                            .addBranch(context.getString(R.string.miss_kick), combineArrays(getKickPage(), getHowMissPage(R.array.how_choices_kick)))
+                            .addBranch(context.getString(R.string.miss_combo), getHowMissPage(R.array.how_choices))
+                            .addBranch(context.getString(R.string.miss_carom), getHowMissPage(R.array.how_choices))
+                            .addBranch(context.getString(R.string.miss_jump), getHowMissPage(R.array.how_choices))
+                            .addBranch(context.getString(R.string.miss_masse), getHowMissPage(R.array.how_choices_masse))
+                            .setValue(context.getString(R.string.miss_cut))
+                            .setRequired(true)
+            };
         } else return emptyPageArray;
     }
 
@@ -302,14 +311,14 @@ public class AddTurnWizardModel extends AbstractWizardModel {
     }
 
     private Page[] getBankPage() {
-        if (isAngle()) {
+        if (isAngle() || isSimpleAngle()) {
             return new Page[]{new BankPage(this, context.getString(R.string.title_bank, playerName))
                     .setChoices(context.getResources().getStringArray(R.array.banks))};
         } else return emptyPageArray;
     }
 
     private Page[] getKickPage() {
-        if (isAngle()) {
+        if (isAngle() || isSimpleAngle()) {
             return new Page[]{new KickPage(this, context.getString(R.string.title_kick_type, playerName))
                     .setChoices(context.getResources().getStringArray(R.array.kicks))
                     .setValue(context.getString(R.string.one_rail))
@@ -360,7 +369,7 @@ public class AddTurnWizardModel extends AbstractWizardModel {
             if (page instanceof UpdatesTurnInfo)
                 ((UpdatesTurnInfo) page).updateTurnInfo(this);
 
-        turnBuilder.advStats.startingPosition(matchData.getBoolean(SUCCESSFUL_SAFE_KEY) ? "Safe" : "Open");
+        turnBuilder.advStats.startingPosition(gameStatus.opponentPlayedSuccessfulSafe ? "Safe" : "Open");
         return turnBuilder;
     }
 

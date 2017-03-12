@@ -24,87 +24,100 @@ public abstract class PlayerController implements Serializable {
     GameStatus gameStatus;
     ITurn turn;
     String playerName, opponentName;
+    String playerId, opponentId;
     int playerRank, opponentRank;
 
     /**
      * Creates a new player controller
-     * @param playerName The name of the player
-     * @param opponentName The name of the opponent
+     * @param playerId The name of the player
+     * @param opponentId The name of the opponent
      * @param playerRank The rank of the player
      * @param opponentRank The rank of the opponent
      */
-    PlayerController(String playerName, String opponentName, int playerRank, int opponentRank) {
+    PlayerController(String playerId, String opponentId,
+                     String playerName, String opponentName,
+                     int playerRank, int opponentRank) {
         this.playerName = playerName;
         this.opponentName = opponentName;
+        this.playerId = playerId;
+        this.opponentId = opponentId;
         this.playerRank = playerRank;
         this.opponentRank = opponentRank;
     }
 
     /**
      * Creates a new player controller
-     * @param playerName The name of the player
-     * @param opponentName The name of the opponent
+     * @param playerId The name of the player
+     * @param opponentId The name of the opponent
      * @param playerRank The rank of the player
      * @param opponentRank The rank of the opponent
      * @return returns a new player controller for BCA 9 ball matches
      */
-    public static PlayerController createNineBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
-        return new NineBallController(playerName, opponentName, playerRank, opponentRank);
+    public static PlayerController createNineBallController(String playerId, String opponentId,
+                                                            String playerName, String opponentName,
+                                                            int playerRank, int opponentRank) {
+        return new NineBallController(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
     }
 
     /**
      * Creates a new player controller
-     * @param playerName The name of the player
-     * @param opponentName The name of the opponent
+     * @param playerId The name of the player
+     * @param opponentId The name of the opponent
      * @param playerRank The rank of the player
      * @param opponentRank The rank of the opponent
      * @return returns a new player controller for BCA 10 ball matches
      */
-    public static PlayerController createTenBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
-        return new TenBallController(playerName, opponentName, playerRank, opponentRank);
+    public static PlayerController createTenBallController(String playerId, String opponentId,
+                                                           String playerName, String opponentName,
+                                                           int playerRank, int opponentRank) {
+        return new TenBallController(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
     }
 
     /**
      * Creates a new player controller
-     * @param playerName The name of the player
-     * @param opponentName The name of the opponent
+     * @param playerId The name of the player
+     * @param opponentId The name of the opponent
      * @param playerRank The rank of the player
      * @param opponentRank The rank of the opponent
      * @return returns a new player controller for BCA 8 ball matches
      */
-    public static PlayerController createEightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
-        return new EightBallController(playerName, opponentName, playerRank, opponentRank);
+    public static PlayerController createEightBallController(String playerId, String opponentId,
+                                                             String playerName, String opponentName,
+                                                             int playerRank, int opponentRank) {
+        return new EightBallController(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
     }
 
     /**
      * Creates a new player controller
      * @param game The game that this player controller will be based on
-     * @param playerName The name of the player
-     * @param opponentName The name of the opponent
+     * @param playerId The name of the player
+     * @param opponentId The name of the opponent
      * @param playerRank The rank of the player
      * @param opponentRank The rank of the opponent
      * @return  returns a new player controller based on the type of game passed in
      */
-    public static PlayerController createController(Game game, String playerName, String opponentName, int playerRank, int opponentRank) {
+    public static PlayerController createController(Game game, String playerId, String opponentId,
+                                                    String playerName, String opponentName,
+                                                    int playerRank, int opponentRank) {
         switch (game.getGameType()) {
             case BCA_NINE_BALL:
             case BCA_GHOST_NINE_BALL:
-                return new NineBallController(playerName, opponentName, playerRank, opponentRank);
+                return new NineBallController(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
             case BCA_TEN_BALL:
             case BCA_GHOST_TEN_BALL:
-                return new TenBallController(playerName, opponentName, playerRank, opponentRank);
+                return new TenBallController(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
             case APA_EIGHT_BALL:
             case APA_GHOST_EIGHT_BALL:
-                return new ApaEightBallController(playerName, opponentName, playerRank, opponentRank);
+                return new ApaEightBallController(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
             case APA_NINE_BALL:
             case APA_GHOST_NINE_BALL:
-                return new ApaNineBallController(playerName, opponentName, playerRank, opponentRank);
+                return new ApaNineBallController(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
             case BCA_EIGHT_BALL:
             case BCA_GHOST_EIGHT_BALL:
-                return new EightBallController(playerName, opponentName, playerRank, opponentRank);
+                return new EightBallController(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
             case STRAIGHT_POOL:
             case STRAIGHT_GHOST:
-                return new StraightPoolController(playerName, opponentName, playerRank, opponentRank);
+                return new StraightPoolController(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
             case EQUAL_OFFENSE:
                 return null; // TODO: 1/5/2017 implement equal offense here
             case EQUAL_DEFENSE:
@@ -114,36 +127,44 @@ public abstract class PlayerController implements Serializable {
         }
     }
 
-    /**
-     * Getter for the player name
-     * @return The name of the 'player'
-     */
+    public String getOpponentName() {
+        return opponentName;
+    }
+
     public String getPlayerName() {
         return playerName;
     }
 
     /**
-     * Setter for the player name
-     * @param newName The new name for 'player'
+     * Getter for the player name
+     * @return The name of the 'player'
      */
-    public void setPlayerName(String newName) {
-        playerName = newName;
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    /**
+     * Setter for the player name
+     * @param newId The new name for 'player'
+     */
+    public void setPlayerId(String newId) {
+        playerId = newId;
     }
 
     /**
      * Getter for the opponent name
      * @return The name of the 'opponent'
      */
-    public String getOpponentName() {
-        return opponentName;
+    public String getOpponentId() {
+        return opponentId;
     }
 
     /**
      * Setter for the opponent name
-     * @param newName The new name for 'opponent'
+     * @param newId The new name for 'opponent'
      */
-    public void setOpponentName(String newName) {
-        opponentName = newName;
+    public void setOpponentId(String newId) {
+        opponentId = newId;
     }
 
     /**
@@ -159,14 +180,16 @@ public abstract class PlayerController implements Serializable {
         this.gameStatus = gameStatus;
         this.turn = turn;
 
-        Player player1 = new Player(playerName, gameStatus.gameType, playerRank, opponentRank);
-        Player player2 = new Player(opponentName, gameStatus.gameType, opponentRank, playerRank);
+        Player player1 = new Player(playerId, playerName, gameStatus.gameType, playerRank, opponentRank);
+        Player player2 = new Player(opponentId, opponentName, gameStatus.gameType, opponentRank, playerRank);
 
         switch (gameStatus.turn) {
             case PLAYER:
+                player1.addTurn(turn);
                 addStatsToPlayer(player1);
                 break;
             case OPPONENT:
+                player2.addTurn(turn);
                 addStatsToPlayer(player2);
                 break;
             default:
@@ -200,7 +223,8 @@ public abstract class PlayerController implements Serializable {
      * @return true if the game is over, false otherwise
      */
     boolean isGameOver() {
-        return turn.getTurnEnd() == GAME_WON || turn.isSeriousFoul();
+        return turn.getTurnEnd() == GAME_WON || turn.isSeriousFoul()
+                || (gameStatus.gameType.isSinglePlayer() && gameStatus.maxAttemptsPerGame <= gameStatus.turnsThisGame + 1);
     }
 
     /**
@@ -213,6 +237,8 @@ public abstract class PlayerController implements Serializable {
             return gameStatus.turn;
         else if (turn.isSeriousFoul())
             return gameStatus.turn.nextPlayer();
+        else if (gameStatus.gameType.isSinglePlayer() && gameStatus.maxAttemptsPerGame <= gameStatus.turnsThisGame + 1) // the ghost wins if you exceed your max attempts per game
+            return PlayerTurn.OPPONENT;
         else throw new IllegalStateException("Should not be called if the game is not over");
     }
 
@@ -275,7 +301,7 @@ public abstract class PlayerController implements Serializable {
      * @param player The player to add breaking stats to
      */
     void addBreakingStats(Player player) {
-        if (gameStatus.gameType.isGhostGame()) {
+        if (gameStatus.gameType.isSinglePlayer()) {
             player.addBreakShot(turn.getBreakBallsMade(),
                     turn.getShootingBallsMade() > 0 && turn.getBreakBallsMade() > 0,
                     turn.getDeadBallsOnBreak() > 0);
@@ -315,7 +341,40 @@ public abstract class PlayerController implements Serializable {
      * @return An integer of the maximum number of balls makeable
      */
     int getMaximumBallsMakeable() {
-        return gameStatus.MAX_BALLS;
+        return gameStatus.gameType.getMaxBalls();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlayerController that = (PlayerController) o;
+
+        if (playerRank != that.playerRank) return false;
+        if (opponentRank != that.opponentRank) return false;
+        if (gameStatus != null ? !gameStatus.equals(that.gameStatus) : that.gameStatus != null)
+            return false;
+        if (turn != null ? !turn.equals(that.turn) : that.turn != null) return false;
+        if (!playerName.equals(that.playerName)) return false;
+        if (!opponentName.equals(that.opponentName)) return false;
+        if (!playerId.equals(that.playerId)) return false;
+        return opponentId.equals(that.opponentId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = gameStatus != null ? gameStatus.hashCode() : 0;
+        result = 31 * result + (turn != null ? turn.hashCode() : 0);
+        result = 31 * result + playerName.hashCode();
+        result = 31 * result + opponentName.hashCode();
+        result = 31 * result + playerId.hashCode();
+        result = 31 * result + opponentId.hashCode();
+        result = 31 * result + playerRank;
+        result = 31 * result + opponentRank;
+        return result;
     }
 
     @Override
@@ -323,10 +382,18 @@ public abstract class PlayerController implements Serializable {
         return "PlayerController{" +
                 "gameStatus=" + gameStatus +
                 ", turn=" + turn +
-                ", playerName='" + playerName + '\'' +
-                ", opponentName='" + opponentName + '\'' +
+                ", playerId='" + playerId + '\'' +
+                ", opponentId='" + opponentId + '\'' +
                 ", playerRank=" + playerRank +
                 ", opponentRank=" + opponentRank +
                 '}';
+    }
+
+    public int getOpponentRank() {
+        return opponentRank;
+    }
+
+    public int getPlayerRank() {
+        return playerRank;
     }
 }

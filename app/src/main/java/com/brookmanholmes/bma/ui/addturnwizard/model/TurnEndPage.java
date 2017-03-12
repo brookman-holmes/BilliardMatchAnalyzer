@@ -3,35 +3,37 @@ package com.brookmanholmes.bma.ui.addturnwizard.model;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
 import com.brookmanholmes.billiards.turn.helpers.TurnEndHelper;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.TurnEndFragment;
-import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.FragmentDependentBranch;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 
 import java.util.ArrayList;
+
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_STATUS_KEY;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
  */
 public class TurnEndPage extends FragmentDependentBranch<TurnEndFragment> implements RequiresUpdatedTurnInfo, UpdatesTurnInfo {
     public static final String FOUL_KEY = "foul_key";
+    private final GameStatus gameStatus;
 
     TurnEndPage(ModelCallbacks callbacks, String title, Bundle matchData) {
         super(callbacks, title);
         data.putAll(matchData);
+        gameStatus = (GameStatus) matchData.getSerializable(GAME_STATUS_KEY);
         setRequired(true);
     }
 
     @Override
     public Fragment createFragment() {
-        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.getGameStatus(data),
-                TableStatus.newTable(GameType.valueOf(data.getString(MatchDialogHelperUtils.GAME_TYPE_KEY)),
-                        data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY)));
+        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(gameStatus,
+                TableStatus.newTable(gameStatus.gameType, gameStatus.ballsOnTable));
         ArrayList<String> stringList = new ArrayList<>();
         for (TurnEnd ending : options.possibleEndings) {
             stringList.add(ending.name());
@@ -42,8 +44,6 @@ public class TurnEndPage extends FragmentDependentBranch<TurnEndFragment> implem
 
     @Override
     public void getNewTurnInfo(AddTurnWizardModel model) {
-        TurnEndOptions options = TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.getGameStatus(data),
-                model.getTableStatus());
         updateFragment();
     }
 
@@ -79,7 +79,7 @@ public class TurnEndPage extends FragmentDependentBranch<TurnEndFragment> implem
     }
 
     public TurnEndOptions getTurnEndOptions() {
-        return TurnEndHelper.getTurnEndOptions(MatchDialogHelperUtils.getGameStatus(data), ((AddTurnWizardModel) modelCallbacks).getTableStatus());
+        return TurnEndHelper.getTurnEndOptions(gameStatus, ((AddTurnWizardModel) modelCallbacks).getTableStatus());
     }
 
     @Override

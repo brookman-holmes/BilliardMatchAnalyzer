@@ -16,7 +16,7 @@
         android:layout_marginLeft="-16dp"
         android:layout_marginRight="-16dp"
         android:background="@drawable/line_divider"
-        android:orientation="horizontal"></LinearLayout>
+        android:orientation="horizontal" />
 
     <TextView
         android:id="@+id/turn"

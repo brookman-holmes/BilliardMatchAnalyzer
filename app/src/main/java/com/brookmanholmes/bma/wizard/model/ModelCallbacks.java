@@ -16,12 +16,6 @@
 
 package com.brookmanholmes.bma.wizard.model;
 
-import com.brookmanholmes.bma.ui.IntroActivity;
-
-/**
- * Callback interface connecting {@link Page}, {@link AbstractWizardModel}, and model container
- * objects (e.g. {@link IntroActivity}.
- */
 public interface ModelCallbacks {
     void onPageDataChanged(Page page);
 

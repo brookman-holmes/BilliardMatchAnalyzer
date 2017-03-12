@@ -11,8 +11,8 @@ import static com.brookmanholmes.billiards.turn.TurnEnd.SAFETY_ERROR;
  * A controller for adding up player stats for straight pool
  */
 class StraightPoolController extends PlayerController {
-    StraightPoolController(String playerName, String opponentName, int playerRank, int opponentRank) {
-        super(playerName, opponentName, playerRank, opponentRank);
+    public StraightPoolController(String playerId, String opponentId, String playerName, String opponentName, int playerRank, int opponentRank) {
+        super(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
     }
 
     @Override

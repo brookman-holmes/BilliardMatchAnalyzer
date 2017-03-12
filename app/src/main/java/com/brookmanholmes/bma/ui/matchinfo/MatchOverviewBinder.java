@@ -1,6 +1,10 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 
+import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
@@ -10,51 +14,48 @@ import com.brookmanholmes.bma.R;
  */
 
 public class MatchOverviewBinder extends BindingAdapter {
-    public String playerWinPct, opponentWinPct;
+    public String playerWinPct = "0", opponentWinPct = "0";
 
-    public int playerGamesWon, opponentGamesWon;
-    public int playerGamesPlayed, opponentGamesPlayed;
+    public int playerGamesWon = 0, opponentGamesWon = 0;
+    public int playerGamesPlayed = 0, opponentGamesPlayed = 0;
 
-    public String playerTsp, opponentTsp;
+    public String playerTsp = defaultPct, opponentTsp = defaultPct;
 
-    public int playerShotsSuccess, opponentShotsSuccess;
-    public int playerTotalShots, opponentTotalShots;
+    public int playerShotsSuccess = 0, opponentShotsSuccess = 0;
+    public int playerTotalShots = 0, opponentTotalShots = 0;
 
-    public String playerTotalFouls, opponentTotalFouls;
+    public String playerTotalFouls = "0", opponentTotalFouls = "0";
 
-    public String playerAggRating, opponentAggRating;
+    public String playerAggRating = defaultPct, opponentAggRating = defaultPct;
 
-    public boolean apaTitle = false;
+    public boolean apaTitle;
 
     public boolean showWinPctLayout;
 
-    MatchOverviewBinder(Player player, Player opponent, String title, boolean expanded) {
-        super(expanded, !(player.getGameType().isStraightPool()));
+    MatchOverviewBinder(String title, boolean expanded, GameType gameType) {
+        super(title, expanded, !gameType.isStraightPool());
 
-        if (useGameTotal(player)) {
-            apaTitle = true;
-        }
-
-        update(player, opponent);
-
-        this.title = title;
+        apaTitle = useGameTotal(gameType);
         helpLayout = R.layout.dialog_help_match_overview;
-        showWinPctLayout = !(player.getGameType().isApa());
+        showWinPctLayout = !gameType.isApa();
     }
 
-    public void update(Player player, Player opponent) {
+    @Override
+    public void update(Player player, Player opponent, @Nullable GameStatus gameStatus) {
         playerWinPct = pctf.format(player.getWinPct());
         opponentWinPct = pctf.format(opponent.getWinPct());
 
         playerGamesWon = player.getWins();
         opponentGamesWon = opponent.getWins();
 
-        if (useGameTotal(player)) {
+        if (useGameTotal(player.getGameType())) {
             playerGamesPlayed = player.getGameTotal();
             opponentGamesPlayed = opponent.getGameTotal();
+            Log.i(TAG, "update: " + (player.getGameTotal() == player.getPointsNeeded()));
         } else {
             playerGamesPlayed = player.getRank();
             opponentGamesPlayed = opponent.getRank();
+            Log.i(TAG, "update: " + (player.getRank() == player.getPointsNeeded()));
         }
 
         playerTsp = pctf.format(player.getTrueShootingPct());
@@ -83,8 +84,7 @@ public class MatchOverviewBinder extends BindingAdapter {
         return compare(playerTotalFouls, opponentTotalFouls) * -1;
     }
 
-    private boolean useGameTotal(Player player) {
-        return (player.getGameType().isApa()) ||
-                (player.getGameType() == GameType.ALL);
+    private boolean useGameTotal(GameType gameType) {
+        return (gameType.isApa()) || (gameType == GameType.ALL);
     }
 }

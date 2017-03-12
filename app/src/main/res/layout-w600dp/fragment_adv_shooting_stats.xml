@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
+        android:paddingBottom="56dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp">
@@ -22,19 +22,26 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/line_divider" />
 
-        <include
-            layout="@layout/container_adv_stat_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <include
-            layout="@layout/container_miscues"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp" />
+            <include
+                layout="@layout/container_adv_stat_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="32dp"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/container_miscues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,10 +53,17 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:text="How the ball was missed" />
 
                 <com.brookmanholmes.bma.ui.view.HowMissLayout
                     android:id="@+id/hmlKick"
@@ -91,22 +105,22 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:text="@string/description_heat_graph" />
+
                 <com.brookmanholmes.bma.ui.view.HeatGraph
                     android:id="@+id/heatGraph"
                     android:layout_width="@dimen/heat_graph_size"
                     android:layout_height="@dimen/heat_graph_size"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
                     app:hit_color="@color/bad"
                     app:hit_indicator="4dp"
                     app:hit_indicator_alpha="@integer/adv_shooting_stat_heat_graph_alpha" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="@string/description_heat_graph" />
             </LinearLayout>
         </LinearLayout>
 

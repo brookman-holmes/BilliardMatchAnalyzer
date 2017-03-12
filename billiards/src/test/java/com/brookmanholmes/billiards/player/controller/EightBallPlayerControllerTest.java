@@ -16,10 +16,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest {
     @Override public void setUp() {
-        game = Game.newGame(GameType.BCA_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
-        playerController = new EightBallController("", "", 0, 0);
-        actualPlayer = new Player("", GameType.BCA_EIGHT_BALL);
-        expectedPlayer = new Player("", GameType.BCA_EIGHT_BALL);
+        game = Game.newGame(GameType.BCA_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.WINNER, 100);
+        playerController = new EightBallController("", "", "", "", 0, 0);
+        actualPlayer = new Player("", "", GameType.BCA_EIGHT_BALL);
+        expectedPlayer = new Player("", "", GameType.BCA_EIGHT_BALL);
         turnBuilder = new TurnBuilder(game.getGameType());
     }
 
@@ -41,7 +41,7 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest 
 
     @Override
     Player getBreakAndRunPlayer() {
-        Player player = new Player("", GameType.BCA_EIGHT_BALL);
+        Player player = new Player("", "", GameType.BCA_EIGHT_BALL);
         player.addBreakShot(3, true, false);
         player.addShootingBallsMade(7, false);
 
@@ -54,7 +54,7 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest 
 
     @Override
     Player fourBallRunOutPlayer() {
-        Player player = new Player("", GameType.BCA_EIGHT_BALL);
+        Player player = new Player("", "", GameType.BCA_EIGHT_BALL);
         player.addShootingBallsMade(5, false);
         player.addGameWon();
         player.addFiveBallRun();
@@ -64,7 +64,7 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest 
 
     @Override
     Player failedRunOutPlayer() {
-        Player player = new Player("", GameType.BCA_EIGHT_BALL);
+        Player player = new Player("", "", GameType.BCA_EIGHT_BALL);
         player.addBreakShot(3, false, false);
         player.addShootingBallsMade(0, false);
         player.addShootingMiss();
@@ -74,6 +74,6 @@ public class EightBallPlayerControllerTest extends AbstractPlayerControllerTest 
 
     @Override
     Player getBlankPlayer() {
-        return new Player("", GameType.BCA_EIGHT_BALL);
+        return new Player("", "", GameType.BCA_EIGHT_BALL);
     }
 }

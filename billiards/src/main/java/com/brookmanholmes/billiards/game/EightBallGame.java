@@ -16,15 +16,16 @@ import static com.brookmanholmes.billiards.game.PlayerColor.STRIPES;
  * <p></p>Created by Brookman Holmes on 10/26/2015.
  */
 class EightBallGame extends Game {
-    private final static int GAME_BALL = 8;
-    private final static int MAX_BALLS = 15;
-
     EightBallGame(PlayerTurn turn, BreakType breakType) {
-        super(GameType.BCA_EIGHT_BALL, turn, breakType, MAX_BALLS, GAME_BALL);
+        super(GameType.BCA_EIGHT_BALL, turn, breakType);
     }
 
     EightBallGame(GameType gameType, PlayerTurn turn, BreakType breakType) throws InvalidGameTypeException {
-        super(gameType, turn, breakType, MAX_BALLS, GAME_BALL);
+        super(gameType, turn, breakType);
+    }
+
+    EightBallGame(GameType gameType, PlayerTurn turn, BreakType breakType, int maxAttemptsPerGame) {
+        super(gameType, turn, breakType, maxAttemptsPerGame);
     }
 
     /**
@@ -73,7 +74,7 @@ class EightBallGame extends Game {
     boolean setAllowPlayerToBreakAgain(ITurn turn) {
         return turn.getTurnEnd() == TurnEnd.BREAK_MISS
                 && turn.isFoul()
-                && turn.getBallsToRemoveFromTable().contains(GAME_BALL);
+                && turn.getBallsToRemoveFromTable().contains(gameType.getGameBall());
     }
 
     @Override

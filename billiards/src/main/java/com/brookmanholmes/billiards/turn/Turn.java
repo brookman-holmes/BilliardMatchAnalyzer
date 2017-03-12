@@ -132,6 +132,18 @@ public class Turn implements ITurn, Serializable {
         return tableStatus.getGameBall();
     }
 
+
+    @Override
+    public String toString() {
+        return "Turn{" +
+                "tableStatus=" + tableStatus +
+                ", turnEnd=" + turnEnd +
+                ", foul=" + foul +
+                ", seriousFoul=" + seriousFoul +
+                ", advStats=" + advStats +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -155,16 +167,5 @@ public class Turn implements ITurn, Serializable {
         result = 31 * result + (seriousFoul ? 1 : 0);
         result = 31 * result + advStats.hashCode();
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Turn{" +
-                "tableStatus=" + tableStatus +
-                ", turnEnd=" + turnEnd +
-                ", foul=" + foul +
-                ", seriousFoul=" + seriousFoul +
-                ", advStats=" + advStats +
-                '}';
     }
 }

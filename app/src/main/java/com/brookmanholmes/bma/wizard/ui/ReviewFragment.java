@@ -30,14 +30,12 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.player.Players;
 import com.brookmanholmes.billiards.player.RaceTo;
-import com.brookmanholmes.bma.MyApplication;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage;
 import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.Page;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,13 +101,6 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
         callbacks = null;
 
         wizardModel.unregisterListener(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        super.onDestroy();
     }
 
     @Override

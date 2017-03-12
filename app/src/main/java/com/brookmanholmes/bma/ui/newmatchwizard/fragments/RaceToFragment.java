@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.RaceToPage;
 import com.brookmanholmes.bma.wizard.ui.BaseFragmentDependentPageFragment;
@@ -75,14 +74,14 @@ public class RaceToFragment extends BaseFragmentDependentPageFragment<RaceToPage
         // find stored rank if it's available
         SharedPreferences preferences = getActivity().getSharedPreferences("com.brookmanholmes.bma", MODE_PRIVATE);
         if (page.getGameType().isApa()) {
-            if (page.getGameType() == GameType.APA_EIGHT_BALL || page.getGameType() == GameType.APA_GHOST_EIGHT_BALL) {
+            if (page.getGameType().isApa8Ball()) {
                 playerChoice = preferences.getInt("apa8" + page.getPlayerName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY));
                 opponentChoice = preferences.getInt("apa8" + page.getOpponentName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY));
-            } else if (page.getGameType() == GameType.APA_NINE_BALL || page.getGameType() == GameType.APA_GHOST_NINE_BALL) {
+            } else if (page.getGameType().isApa9Ball()) {
                 playerChoice = preferences.getInt("apa9" + page.getPlayerName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY));
                 opponentChoice = preferences.getInt("apa9" + page.getOpponentName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY));
             }
-        } else if (page.getGameType() == GameType.STRAIGHT_POOL) {
+        } else if (page.getGameType().isStraightPool()) {
             playerChoice = preferences.getInt("straight" + page.getPlayerName() + page.getOpponentName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY));
             opponentChoice = preferences.getInt("straight" + page.getOpponentName() + page.getPlayerName(), getArguments().getInt(ARG_DEFAULT_CHOICE_KEY));
         }

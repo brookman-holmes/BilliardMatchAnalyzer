@@ -63,18 +63,18 @@ public abstract class AbstractGameTest {
 
     @Test
     public void removeBallsFromTableDoesntRemoveGameBall() {
-        game.removeBallsFromTable(Arrays.asList(game.GAME_BALL, 3, 5));
+        game.removeBallsFromTable(Arrays.asList(game.gameType.getGameBall(), 3, 5));
 
-        assertThat(game.ballsOnTable.contains(game.GAME_BALL), is(true));
+        assertThat(game.ballsOnTable.contains(game.gameType.getGameBall()), is(true));
     }
 
     @Test
     public void removeBallsFromTableRemovesThe5and3() {
-        game.removeBallsFromTable(Arrays.asList(game.GAME_BALL, 3, 5));
+        game.removeBallsFromTable(Arrays.asList(game.gameType.getGameBall(), 3, 5));
 
         assertThat(game.ballsOnTable.contains(3), is(false));
         assertThat(game.ballsOnTable.contains(5), is(false));
-        assertThat(game.ballsOnTable.contains(game.GAME_BALL), is(true));
+        assertThat(game.ballsOnTable.contains(game.gameType.getGameBall()), is(true));
     }
 
     @Test
@@ -124,7 +124,7 @@ public abstract class AbstractGameTest {
     public void getPlayerTurnReturnsPlayer() {
         assertThat(game.getTurn(), is(PlayerTurn.PLAYER));
 
-        game.addTurn(turn().madeBalls(1, 2, 3, 4, 5, 6, 7, game.GAME_BALL).win());
+        game.addTurn(turn().madeBalls(1, 2, 3, 4, 5, 6, 7, game.gameType.getGameBall()).win());
 
         assertThat(game.getTurn(), is(PlayerTurn.PLAYER));
     }
@@ -198,7 +198,7 @@ public abstract class AbstractGameTest {
 
     @Test(expected = InvalidGameTypeException.class)
     public void testStaticNewGameMethodThrowsException() {
-        Game.newGame(GameType.AMERICAN_ROTATION, PlayerTurn.PLAYER, BreakType.ALTERNATE);
+        Game.newGame(GameType.AMERICAN_ROTATION, PlayerTurn.PLAYER, BreakType.ALTERNATE, 100);
     }
 
     @Test
@@ -217,6 +217,6 @@ public abstract class AbstractGameTest {
     abstract List<Integer> populateList();
 
     private Game newGame(GameType type) {
-        return Game.newGame(type, PlayerTurn.PLAYER, BreakType.WINNER);
+        return Game.newGame(type, PlayerTurn.PLAYER, BreakType.WINNER, 100);
     }
 }

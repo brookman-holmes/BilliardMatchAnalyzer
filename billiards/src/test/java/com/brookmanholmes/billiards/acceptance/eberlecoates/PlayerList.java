@@ -12,11 +12,11 @@ import java.util.List;
  */
 public class PlayerList {
     private static Player jeff() {
-        return new Player("Jeff", GameType.BCA_NINE_BALL);
+        return new Player("Jeff", "Jeff", GameType.BCA_NINE_BALL);
     }
 
     private static Player max() {
-        return new Player("Max", GameType.BCA_NINE_BALL);
+        return new Player("Max", "Max", GameType.BCA_NINE_BALL);
     }
 
     private static Pair<Player> turn1() {

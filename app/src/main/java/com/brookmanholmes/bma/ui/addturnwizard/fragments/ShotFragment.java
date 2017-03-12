@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.ShotPage;
-import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.ui.BaseFragmentDependentPageFragment;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_STATUS_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertBallToId;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertIdToBall;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayout;
@@ -55,8 +55,8 @@ public abstract class ShotFragment extends BaseFragmentDependentPageFragment<Sho
 
         ShotFragment fragment;
 
-        GameType gameType = GameType.valueOf(matchData.getString(GAME_TYPE_KEY));
-        if (isEightBall(gameType))
+        GameStatus gameStatus = (GameStatus) matchData.getSerializable(GAME_STATUS_KEY);
+        if (gameStatus.gameType.is8Ball())
             fragment = new EightBallShotFragment();
         else fragment = new RotationShotFragment();
 
@@ -75,7 +75,7 @@ public abstract class ShotFragment extends BaseFragmentDependentPageFragment<Sho
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        gameType = GameType.valueOf(getArguments().getString(GAME_TYPE_KEY));
+        gameType = ((GameStatus) getArguments().getSerializable(GAME_STATUS_KEY)).gameType;
     }
 
     @Nullable
@@ -113,8 +113,8 @@ public abstract class ShotFragment extends BaseFragmentDependentPageFragment<Sho
     }
 
     private void setBallView(BallStatus status, ImageView ballImage) {
-        if (gameType.isGhostGame() &&
-                convertIdToBall(ballImage.getId()) == MatchDialogHelperUtils.getGameStatus(getArguments()).GAME_BALL) {
+        if (gameType.isSinglePlayer() &&
+                convertIdToBall(ballImage.getId()) == ((GameStatus) getArguments().getSerializable(GAME_STATUS_KEY)).gameType.getGameBall()) {
             if (status == BallStatus.GAME_BALL_DEAD_ON_BREAK || ballIsOnTable(status))
                 setViewToBallOnTable(ballImage);
             else if (status == BallStatus.GAME_BALL_DEAD_ON_BREAK_THEN_MADE || ballIsMade(status))

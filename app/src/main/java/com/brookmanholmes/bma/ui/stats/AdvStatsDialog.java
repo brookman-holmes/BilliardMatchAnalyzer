@@ -15,9 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
+import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.BaseDialogFragment;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,10 +32,9 @@ import butterknife.ButterKnife;
  */
 @SuppressWarnings("WeakerAccess")
 public class AdvStatsDialog extends BaseDialogFragment {
-    static final String ARG_MATCH_ID = "match id";
-    static final String ARG_PLAYER_NAME = "player name";
-    static final String ARG_PLAYER_TURN = "player turn";
-
+    static final String ARG_MATCH_ID = "match_id";
+    static final String ARG_PLAYER_TURN = "player_turn";
+    private static final String TAG = "AdvStatsDialog";
     @Bind(R.id.pager)
     ViewPager pager;
     @Bind(R.id.tabs)
@@ -38,19 +42,20 @@ public class AdvStatsDialog extends BaseDialogFragment {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    String playerName;
     PlayerTurn turn;
+    List<ITurn> turns = new ArrayList<>();
+    List<TurnListener> listeners = new ArrayList<>();
 
     public AdvStatsDialog() {
     }
 
-    public static AdvStatsDialog create(long matchId, String player, PlayerTurn playerTurn) {
+    public static AdvStatsDialog create(Match match, PlayerTurn turn) {
         Bundle args = new Bundle();
 
         AdvStatsDialog dialog = new AdvStatsDialog();
-        args.putString(ARG_PLAYER_NAME, player);
-        args.putLong(ARG_MATCH_ID, matchId);
-        args.putString(ARG_PLAYER_TURN, playerTurn.toString());
-
+        args.putSerializable("match", match);
+        args.putSerializable(ARG_PLAYER_TURN, turn);
         dialog.setArguments(args);
 
         return dialog;
@@ -59,12 +64,19 @@ public class AdvStatsDialog extends BaseDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Match match = (Match) getArguments().getSerializable("match");
+        turn = (PlayerTurn) getArguments().getSerializable(ARG_PLAYER_TURN);
+
         if (MatchDialogHelperUtils.isTablet(getContext()))
             setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AlertDialogTheme);
         else
             setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MyAppTheme);
 
-        turn = PlayerTurn.valueOf(getArguments().getString(ARG_PLAYER_TURN));
+        if (match == null)
+            throw new IllegalStateException("Match must be passed into this dialog");
+
+        playerName = match.getPlayer(turn).getName();
+        turns.addAll(match.getPlayer(turn).getTurns());
     }
 
     @Override
@@ -82,7 +94,7 @@ public class AdvStatsDialog extends BaseDialogFragment {
         View view = inflater.inflate(R.layout.fragment_adv_stats, container, false);
         ButterKnife.bind(this, view);
 
-        toolbar.setTitle(getString(R.string.title_advanced_stats, getArguments().getString(ARG_PLAYER_NAME, "ERROR NO NAME PRESENT IN ARGUMENTS")));
+        toolbar.setTitle(getString(R.string.title_advanced_stats, playerName));
         toolbar.setTitleTextColor(getColor(android.R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -95,6 +107,21 @@ public class AdvStatsDialog extends BaseDialogFragment {
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         return view;
+    }
+
+    public void addAdvStatListener(TurnListener listener) {
+        listeners.add(listener);
+        updateListeners();
+    }
+
+    public void removeAdvStatListener(TurnListener listener) {
+        listeners.remove(listener);
+    }
+
+    public void updateListeners() {
+        for (TurnListener listener : listeners) {
+            listener.setAdvStats(turns);
+        }
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -115,11 +142,11 @@ public class AdvStatsDialog extends BaseDialogFragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return AdvShootingStatsFragment.create(args);
+                    return new AdvShootingStatsFragment();
                 case 1:
-                    return AdvSafetyStatsFragment.create(args);
+                    return new AdvSafetyStatsFragment();
                 case 2:
-                    return AdvBreakingStatsFragment.create(args);
+                    return new AdvBreakingStatsFragment();
                 default:
                     throw new IllegalStateException("View pager out of position (0, 1, 2): " + position);
             }

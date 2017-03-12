@@ -8,11 +8,8 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
-import com.brookmanholmes.billiards.game.BreakType;
-import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
-import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.Player;
@@ -46,53 +43,25 @@ import static com.brookmanholmes.billiards.match.Match.StatsDetail.SPEED_PLAYER;
  */
 @SuppressWarnings("WeakerAccess")
 public class MatchDialogHelperUtils {
-    public static final String NEW_GAME_KEY = "new_game";
     public static final String OPPOSING_PLAYER_NAME_KEY = "opposing_player_name";
     public static final String CURRENT_PLAYER_NAME_KEY = "player_name";
-    public static final String GAME_TYPE_KEY = "game_type";
-    public static final String BALLS_ON_TABLE_KEY = "balls_on_table";
-    public static final String TURN_KEY = "turn";
-    public static final String ALLOW_PUSH_KEY = "allow_push";
-    public static final String ALLOW_TURN_SKIP_KEY = "allow_skip";
-    public static final String ALLOW_BREAK_AGAIN_KEY = "re_break";
-    public static final String CURRENT_PLAYER_COLOR_KEY = "current_player_color";
-    public static final String BREAKER_KEY = "breaker";
-    public static final String CONSECUTIVE_FOULS_KEY = "current_player_consecutive_fouls";
-    public static final String BREAK_TYPE_KEY = "break_type";
-    public static final String SUCCESSFUL_SAFE_KEY = "successful_safe";
-    public static final String STATS_LEVEL_KEY = "stats_level";
-    public static final String OPPONENT_FOULS_KEY = "opponent_fouls";
-    public static final String PLAYER_FOULS_KEY = "player_fouls";
-    public static final String PLAYER_COLOR_KEY = "player_color";
     public static final String DATA_COLLECTION_KEY = "data_collection_key";
     public static final String POINTS_TO_WIN = "points_to_win";
+    public static final String GAME_STATUS_KEY = "game_status";
 
     private MatchDialogHelperUtils() {
     }
 
     public static Bundle getBundle(Match match) {
         Bundle args = new Bundle();
-
-        args.putBoolean(ALLOW_TURN_SKIP_KEY, match.getGameStatus().allowTurnSkip);
-        args.putBoolean(NEW_GAME_KEY, match.getGameStatus().newGame);
-        args.putBoolean(ALLOW_PUSH_KEY, match.getGameStatus().allowPush);
+        args.putSerializable(GAME_STATUS_KEY, match.getGameStatus());
         args.putString(CURRENT_PLAYER_NAME_KEY, getCurrentPlayersName(match));
         args.putString(OPPOSING_PLAYER_NAME_KEY, getOpposingPlayersName(match));
-        args.putString(GAME_TYPE_KEY, match.getGameStatus().gameType.name());
-        args.putIntegerArrayList(BALLS_ON_TABLE_KEY, new ArrayList<>(match.getGameStatus().ballsOnTable));
-        args.putString(TURN_KEY, match.getGameStatus().turn.name());
-        args.putString(CURRENT_PLAYER_COLOR_KEY, match.getGameStatus().currentPlayerColor.name());
-        args.putString(BREAKER_KEY, match.getGameStatus().breaker.name());
-        args.putInt(CONSECUTIVE_FOULS_KEY, match.getGameStatus().currentPlayerConsecutiveFouls);
-        args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.name());
-        args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
-        args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
-        args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
-        args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
         args.putSerializable(DATA_COLLECTION_KEY, match.getDetails());
+
         Player player = match.getGameStatus().turn == PlayerTurn.PLAYER ? match.getPlayer() : match.getOpponent();
         int pointsToWin = 0;
-        if (player.getGameType().isStraightPool())
+        if (match.getGameStatus().gameType.isStraightPool())
             pointsToWin = player.getRank() - player.getPoints();
         args.putInt(POINTS_TO_WIN, pointsToWin);
         return args;
@@ -107,22 +76,14 @@ public class MatchDialogHelperUtils {
      */
     public static Bundle getStrippedBundle(Match match) {
         Bundle args = new Bundle();
-
-        args.putBoolean(ALLOW_TURN_SKIP_KEY, match.getGameStatus().allowTurnSkip);
-        args.putBoolean(NEW_GAME_KEY, match.getGameStatus().newGame);
-        args.putBoolean(ALLOW_PUSH_KEY, match.getGameStatus().allowPush);
-        args.putString(GAME_TYPE_KEY, match.getGameStatus().gameType.name());
-        args.putIntegerArrayList(BALLS_ON_TABLE_KEY, new ArrayList<>(match.getGameStatus().ballsOnTable));
-        args.putString(TURN_KEY, match.getGameStatus().turn.name());
-        args.putString(CURRENT_PLAYER_COLOR_KEY, match.getGameStatus().currentPlayerColor.name());
-        args.putString(BREAKER_KEY, match.getGameStatus().breaker.name());
-        args.putInt(CONSECUTIVE_FOULS_KEY, match.getGameStatus().currentPlayerConsecutiveFouls);
-        args.putString(BREAK_TYPE_KEY, match.getGameStatus().breakType.name());
-        args.putBoolean(SUCCESSFUL_SAFE_KEY, match.getGameStatus().opponentPlayedSuccessfulSafe);
-        args.putBoolean(ALLOW_BREAK_AGAIN_KEY, match.getGameStatus().playerAllowedToBreakAgain);
-        args.putInt(PLAYER_FOULS_KEY, match.getGameStatus().consecutivePlayerFouls);
-        args.putInt(OPPONENT_FOULS_KEY, match.getGameStatus().consecutiveOpponentFouls);
+        args.putSerializable(GAME_STATUS_KEY, match.getGameStatus());
         args.putSerializable(DATA_COLLECTION_KEY, match.getDetails());
+
+        Player player = match.getGameStatus().turn == PlayerTurn.PLAYER ? match.getPlayer() : match.getOpponent();
+        int pointsToWin = 0;
+        if (match.getGameStatus().gameType.isStraightPool())
+            pointsToWin = player.getRank() - player.getPoints();
+        args.putInt(POINTS_TO_WIN, pointsToWin);
         return args;
     }
 
@@ -209,26 +170,6 @@ public class MatchDialogHelperUtils {
             default:
                 throw new InvalidGameTypeException("Game type not implemented yet: " + gameType.toString());
         }
-    }
-
-    public static GameStatus getGameStatus(Bundle args) {
-        GameStatus.Builder gameStatus = new GameStatus.Builder(GameType.valueOf(args.getString(GAME_TYPE_KEY)));
-
-        if (args.getBoolean(NEW_GAME_KEY)) gameStatus.newGame();
-        if (args.getBoolean(ALLOW_PUSH_KEY)) gameStatus.allowPush();
-        if (args.getBoolean(ALLOW_TURN_SKIP_KEY)) gameStatus.allowSkip();
-        if (args.getBoolean(ALLOW_BREAK_AGAIN_KEY)) gameStatus.reBreak();
-        gameStatus.breakType(BreakType.valueOf(args.getString(BREAK_TYPE_KEY)));
-        if (args.getBoolean(SUCCESSFUL_SAFE_KEY)) gameStatus.safetyLastTurn();
-        gameStatus.turn(PlayerTurn.valueOf(args.getString(TURN_KEY)));
-        gameStatus.breaker(PlayerTurn.valueOf(args.getString(BREAKER_KEY)));
-        gameStatus.currentPlayerColor(PlayerColor.valueOf(args.getString(CURRENT_PLAYER_COLOR_KEY)));
-        gameStatus.consecutiveOpponentFouls(args.getInt(OPPONENT_FOULS_KEY));
-        gameStatus.consecutivePlayerFouls(args.getInt(PLAYER_FOULS_KEY));
-        gameStatus.currentPlayerConsecutiveFouls(args.getInt(CONSECUTIVE_FOULS_KEY));
-        gameStatus.setBalls(args.getIntegerArrayList(BALLS_ON_TABLE_KEY));
-
-        return gameStatus.build();
     }
 
     public static int convertIdToBall(@IdRes int id) {

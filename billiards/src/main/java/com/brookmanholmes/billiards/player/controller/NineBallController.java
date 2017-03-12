@@ -11,8 +11,8 @@ import com.brookmanholmes.billiards.turn.ITurn;
  * A controller for adding up player stats for BCA 9 ball
  */
 class NineBallController extends PlayerController {
-    NineBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
-        super(playerName, opponentName, playerRank, opponentRank);
+    public NineBallController(String playerId, String opponentId, String playerName, String opponentName, int playerRank, int opponentRank) {
+        super(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
     }
 
     @Override

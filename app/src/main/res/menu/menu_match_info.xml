@@ -43,13 +43,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_share_match"
-        android:icon="@drawable/ic_share"
-        android:orderInCategory="3"
-        android:title="@string/share_match"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/action_submit_feedback"
         android:orderInCategory="500"
         android:title="@string/submit_feedback"

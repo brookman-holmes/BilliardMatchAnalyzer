@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.OPPONENT_NAME_KEY;
+import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.OPPONENT_ID_KEY;
 import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.PLAYER_NAME_KEY;
 
 /**
@@ -36,7 +36,7 @@ public class DataCollectionPage extends FragmentDependentPage<DataCollectionFrag
     @Override
     public void setPlayerNames(String playerName, String opponentName) {
         data.putString(PLAYER_NAME_KEY, playerName);
-        data.putString(OPPONENT_NAME_KEY, opponentName);
+        data.putString(OPPONENT_ID_KEY, opponentName);
 
         if (fragment != null) {
             updateFragment();
@@ -45,7 +45,7 @@ public class DataCollectionPage extends FragmentDependentPage<DataCollectionFrag
 
     public void updateFragment() {
         if (fragment != null)
-            fragment.setPlayerNames(data.getString(PLAYER_NAME_KEY), data.getString(OPPONENT_NAME_KEY));
+            fragment.setPlayerNames(data.getString(PLAYER_NAME_KEY), data.getString(OPPONENT_ID_KEY));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class DataCollectionPage extends FragmentDependentPage<DataCollectionFrag
 
         dest.add(new ReviewItem(String.format(Locale.getDefault(), reviewTitle, data.getString(PLAYER_NAME_KEY)), MatchDialogHelperUtils.formatAdvShotData(playerItems, "\n"), getKey()));
         if (!isGhost)
-            dest.add(new ReviewItem(String.format(Locale.getDefault(), reviewTitle, data.getString(OPPONENT_NAME_KEY)), MatchDialogHelperUtils.formatAdvShotData(opponentItems, "\n"), getKey()));
+            dest.add(new ReviewItem(String.format(Locale.getDefault(), reviewTitle, data.getString(OPPONENT_ID_KEY)), MatchDialogHelperUtils.formatAdvShotData(opponentItems, "\n"), getKey()));
     }
 
 }

@@ -47,25 +47,58 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/color_indicator_c2"
-                    android:text="@string/run_length"
-                    android:textSize="12sp" />
+                    android:orientation="vertical">
 
-                <TextView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:drawablePadding="4dp"
+                        android:drawableStart="@drawable/blue_circle"
+                        android:text="@string/run_length"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:drawablePadding="4dp"
+                        android:drawableStart="@drawable/legend_limit_line"
+                        android:text="@string/lifetime_average"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/legend_limit_line"
-                    android:text="@string/lifetime_average"
-                    android:textSize="12sp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:drawablePadding="4dp"
+                        android:drawableStart="@drawable/ghost_won_game_indicator"
+                        android:text="Won game"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:drawablePadding="4dp"
+                        android:drawableStart="@drawable/ghost_lost_game_indicator"
+                        android:text="Lost game"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

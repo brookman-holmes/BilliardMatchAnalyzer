@@ -9,7 +9,7 @@ public class EightBallPlayerTest extends AbstractPlayerTest {
     @Override
     public void setUp() {
         rank = 0;
-        expected = new Player(testName, GameType.BCA_EIGHT_BALL);
-        actual = new Player(testName, GameType.BCA_EIGHT_BALL);
+        expected = new Player(testName, testName, GameType.BCA_EIGHT_BALL);
+        actual = new Player(testName, testName, GameType.BCA_EIGHT_BALL);
     }
 }

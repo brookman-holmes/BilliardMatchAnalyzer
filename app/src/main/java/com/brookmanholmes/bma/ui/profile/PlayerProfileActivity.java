@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.profile;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,22 +23,41 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.match.Match;
+import com.brookmanholmes.billiards.player.Player;
+import com.brookmanholmes.billiards.turn.ITurn;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.data.MatchModel;
+import com.brookmanholmes.bma.data.TurnModel;
 import com.brookmanholmes.bma.ui.BaseActivity;
 import com.brookmanholmes.bma.ui.MatchListFragment;
+import com.brookmanholmes.bma.ui.SignInActivity;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoFragment;
+import com.brookmanholmes.bma.ui.matchinfo.MatchListener;
+import com.brookmanholmes.bma.ui.matchinfo.PlayersListener;
 import com.brookmanholmes.bma.ui.newmatchwizard.CreateNewMatchActivity;
 import com.brookmanholmes.bma.ui.stats.AdvBreakingStatsFragment;
 import com.brookmanholmes.bma.ui.stats.AdvSafetyStatsFragment;
 import com.brookmanholmes.bma.ui.stats.AdvShootingStatsFragment;
-import com.brookmanholmes.bma.ui.stats.Filterable;
 import com.brookmanholmes.bma.ui.stats.StatFilter;
+import com.brookmanholmes.bma.ui.stats.TurnListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,7 +67,8 @@ import butterknife.OnClick;
  * Created by Brookman Holmes on 4/13/2016.
  */
 public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
-    public static final String ARG_PLAYER_NAME = "arg_player_name";
+    public static final String ARG_ACCOUNT_ID = "arg_player_id";
+    public static final String ARG_ACCOUNT_NAME = "arg_player_name";
     private static final String TAG = "PlayerProfileAct";
     private static final String ARG_FILTER_OPPONENT = "arg_filter_opponent";
     private static final String ARG_FILTER_GAME = "arg_filter_game";
@@ -67,10 +88,99 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     TabLayout tabLayout;
     @Bind(R.id.createMatch)
     FloatingActionButton fab;
-
-    private List<Filterable> listeners = new ArrayList<>();
+    DatabaseReference matchRef;
+    private List<TurnListener> advStatsListeners = new ArrayList<>();
+    private List<PlayersListener> statListeners = new ArrayList<>();
+    private List<MatchListener> matchListeners = new ArrayList<>();
     private StatFilter filter;
-    private String player;
+    private Map<String, List<String>> matchTurnIds = new HashMap<>();
+    private Map<String, Match> matches = new HashMap<>();
+    private final ChildEventListener turnChildEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            matches.get(dataSnapshot.getRef().getParent().getKey()).addTurn(TurnModel.getTurn(dataSnapshot.getValue(TurnModel.class)));
+            matchTurnIds.get(dataSnapshot.getRef().getParent().getKey()).add(dataSnapshot.getKey());
+            updateStats();
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            matches.get(dataSnapshot.getRef().getParent().getKey()).undoTurn();
+            matchTurnIds.get(dataSnapshot.getRef().getParent().getKey()).remove(dataSnapshot.getKey());
+            updateStats();
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
+    private final ChildEventListener matchChildEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            FirebaseDatabase.getInstance().getReference()
+                    .child("matches")
+                    .child(dataSnapshot.getKey())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            MatchModel model = dataSnapshot.getValue(MatchModel.class);
+                            matches.put(dataSnapshot.getKey(), MatchModel.createMatch(model));
+                            matchTurnIds.put(dataSnapshot.getKey(), new ArrayList<String>());
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("turns")
+                                    .child(dataSnapshot.getKey())
+                                    .addChildEventListener(turnChildEventListener);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            FirebaseDatabase.getInstance().getReference().child("turns").child(dataSnapshot.getKey()).removeEventListener(turnChildEventListener);
+            matches.remove(dataSnapshot.getKey());
+            matchTurnIds.remove(dataSnapshot.getKey());
+            updateStats();
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
+    private String id, name;
+
+    public static Intent newInstance(Context context, String id, String name) {
+        Intent intent = new Intent(context, PlayerProfileActivity.class);
+        intent.putExtra(ARG_ACCOUNT_ID, id);
+        intent.putExtra(ARG_ACCOUNT_NAME, name);
+        return intent;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,36 +188,51 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         setContentView(R.layout.activity_player_profile);
         ButterKnife.bind(this);
 
-        analytics.logEvent("viewed_profile", getIntent().getExtras());
-        setupFilter(savedInstanceState);
+        if (auth.getCurrentUser() != null) {
+            id = auth.getCurrentUser().getUid();
+            name = auth.getCurrentUser().getDisplayName();
+            matchRef = FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(id)
+                    .child("matches");
+            analytics.logEvent("viewed_profile", getIntent().getExtras());
+            setupFilter(savedInstanceState);
 
-        player = getIntent().getExtras().getString(ARG_PLAYER_NAME);
-        setupToolbar();
-
-        playerName.setText(player);
-        opponentName.setText(filter.getOpponent());
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),
-                new String[]{player, getString(R.string.stats), getString(R.string.matches),
-                        getString(R.string.title_shooting), getString(R.string.title_safeties),
-                        getString(R.string.title_breaks)});
-        pager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(pager);
-        pager.addOnPageChangeListener(this);
-        pager.setOffscreenPageLimit(3);
+            playerName.setText(name);
+            opponentName.setText(filter.getOpponent());
+            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),
+                    new String[]{name, getString(R.string.stats), getString(R.string.matches),
+                            getString(R.string.title_shooting), getString(R.string.title_safeties),
+                            getString(R.string.title_breaks)});
+            pager.setAdapter(adapter);
+            tabLayout.setupWithViewPager(pager);
+            pager.addOnPageChangeListener(this);
+            pager.setOffscreenPageLimit(3);
+            setupToolbar();
+        } else {
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (pager.getCurrentItem() == ViewPagerAdapter.MATCH_LIST_FRAGMENT)
-            fab.show();
+        matchRef.addChildEventListener(matchChildEventListener);
+        fab.show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        matchRef.removeEventListener(matchChildEventListener);
     }
 
     private void setupToolbar() {
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getString(R.string.title_player_profile, player));
+            getSupportActionBar().setTitle(getString(R.string.title_player_profile, auth.getCurrentUser().getDisplayName()));
         }
     }
 
@@ -153,9 +278,7 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
             @Override
             public void onHidden(FloatingActionButton fab) {
                 super.onHidden(fab);
-                Intent intent = new Intent(PlayerProfileActivity.this, CreateNewMatchActivity.class);
-                intent.putExtra(ARG_PLAYER_NAME, player);
-                startActivity(intent);
+                startActivity(new Intent(PlayerProfileActivity.this, CreateNewMatchActivity.class));
             }
         });
     }
@@ -185,37 +308,94 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
                         opponentName.setText(filter.getOpponent());
                         filter.setDate((String) dateSpinner.getSelectedItem());
                         filter.setGameType((String) gameSpinner.getSelectedItem());
-                        updateListeners();
+                        updateStats();
                     }
                 })
                 .create().show();
     }
 
-    public void addListener(Filterable filterable) {
-        listeners.add(filterable);
-        updateListeners();
+    public void addAdvStatListener(TurnListener listener) {
+        advStatsListeners.add(listener);
     }
 
-    private void updateListeners() {
-        for (Filterable filterable : listeners) {
-            filterable.setFilter(filter);
+    public void removeAdvStatListener(TurnListener listener) {
+        advStatsListeners.remove(listener);
+    }
+
+    public void addMatchListener(MatchListener listener) {
+        matchListeners.add(listener);
+        updateStats();
+    }
+
+    public void removeMatchListener(MatchListener listener) {
+        matchListeners.remove(listener);
+    }
+
+    public void addStatListener(PlayersListener listener) {
+        statListeners.add(listener);
+        updateStats();
+    }
+
+    private void updateStats() {
+        List<Player> players = new ArrayList<>(), opponents = new ArrayList<>();
+        List<ITurn> turns = new ArrayList<>();
+        List<Match> matches = new ArrayList<>();
+
+        for (Match match : this.matches.values()) {
+            if (filter.isMatchQualified(match)) {
+                matches.add(match);
+                if (match.getPlayer().getId().equals(auth.getCurrentUser().getUid())) {
+                    turns.addAll(match.getPlayer().getTurns());
+                    players.add(match.getPlayer());
+                    opponents.add(match.getOpponent());
+                } else {
+                    turns.addAll(match.getOpponent().getTurns());
+                    players.add(match.getOpponent());
+                    opponents.add(match.getPlayer());
+                }
+            }
+        }
+
+        Collections.sort(matches, new Comparator<Match>() {
+            @Override
+            public int compare(Match o1, Match o2) {
+                return -o1.getCreatedOn().compareTo(o2.getCreatedOn());
+            }
+        });
+
+        for (PlayersListener listener : statListeners)
+            listener.updatePlayers(players, opponents);
+
+        for (TurnListener listener : advStatsListeners) {
+            listener.setAdvStats(turns);
+        }
+
+        for (MatchListener listener : matchListeners) {
+            listener.update(matches, matchTurnIds);
         }
     }
 
-    public void removeListener(Filterable filterable) {
-        listeners.remove(filterable);
+    public void removeStatListener(PlayersListener updateStats) {
+        statListeners.remove(updateStats);
     }
 
     private List<String> getGames() {
         ArrayList<String> list = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.games)));
-        Collections.sort(list);
         list.add(0, "All games");
 
         return list;
     }
 
     private List<String> getOpponents() {
-        ArrayList<String> list = new ArrayList<>(new DatabaseAdapter(this).getOpponentsOf(player));
+        List<String> list = new ArrayList<>();
+
+        for (Match match : matches.values()) {
+            if (!match.getPlayer().getId().equals(id))
+                list.add(match.getPlayer().getName());
+            if (!match.getOpponent().getId().equals(id))
+                list.add(match.getOpponent().getName());
+        }
+
         Collections.sort(list);
         list.add(0, "All opponents");
 
@@ -242,15 +422,15 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
     public void onPageScrollStateChanged(int state) {
         switch (state) {
             case ViewPager.SCROLL_STATE_IDLE:
-                if (pager.getCurrentItem() == 1)
+                if (pager.getCurrentItem() == 1) {
                     playerNameLayout.animate().translationY(0).start();
-                else if (pager.getCurrentItem() == 2)
-                    fab.show();
+                    fab.animate().translationY(-playerNameLayout.getHeight()).start();
+                }
                 break;
             case ViewPager.SCROLL_STATE_DRAGGING:
             case ViewPager.SCROLL_STATE_SETTLING:
-                fab.hide();
                 playerNameLayout.animate().translationY(playerNameLayout.getHeight()).start();
+                fab.animate().translationY(0).start();
                 break;
         }
     }
@@ -263,27 +443,32 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
         private static final int ADV_SAFETY_FRAGMENT = 4;
         private static final int ADV_BREAKING_FRAGMENT = 5;
         private final String[] titles;
+        private String id;
 
         ViewPagerAdapter(FragmentManager fm, String[] titles) {
             super(fm);
             this.titles = titles;
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null)
+                id = user.getUid();
+            else throw new IllegalStateException("User must be signed in");
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case INFO_GRAPHIC_FRAGMENT:
-                    return PlayerInfoGraphicFragment.create(titles[0]);
+                    return new PlayerInfoGraphicFragment();
                 case INFO_FRAGMENT:
-                    return MatchInfoFragment.create(titles[0]);
+                    return MatchInfoFragment.newInstance(GameType.ALL);
                 case MATCH_LIST_FRAGMENT:
-                    return MatchListFragment.create(titles[0], null);
+                    return MatchListFragment.create(id, null);
                 case ADV_SHOOTING_FRAGMENT:
-                    return AdvShootingStatsFragment.create(titles[0]);
+                    return new AdvShootingStatsFragment();
                 case ADV_SAFETY_FRAGMENT:
-                    return AdvSafetyStatsFragment.create(titles[0]);
+                    return new AdvSafetyStatsFragment();
                 case ADV_BREAKING_FRAGMENT:
-                    return AdvBreakingStatsFragment.create(titles[0]);
+                    return new AdvBreakingStatsFragment();
                 default:
                     throw new IllegalStateException("View pager out of position (0 - 5): " + position);
             }

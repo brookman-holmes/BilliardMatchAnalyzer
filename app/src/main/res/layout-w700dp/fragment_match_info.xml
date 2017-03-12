@@ -1,53 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bind="http://schemas.android.com/apk/res-auto">
-
     <data>
-
         <variable
             name="apa"
             type="com.brookmanholmes.bma.ui.matchinfo.ApaBinder" />
-
         <variable
             name="overview"
             type="com.brookmanholmes.bma.ui.matchinfo.MatchOverviewBinder" />
-
         <variable
             name="shooting"
             type="com.brookmanholmes.bma.ui.matchinfo.ShootingBinder" />
-
         <variable
             name="safeties"
             type="com.brookmanholmes.bma.ui.matchinfo.SafetiesBinder" />
-
         <variable
             name="breaks"
             type="com.brookmanholmes.bma.ui.matchinfo.BreaksBinder" />
-
         <variable
             name="runs"
             type="com.brookmanholmes.bma.ui.matchinfo.RunsBinder" />
-
         <variable
             name="straight"
             type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolBinder" />
-
         <variable
             name="straightRuns"
             type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolRunsBinder" />
-
-        <variable
-            name="straightTable"
-            type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolTableBinder" />
-
         <variable
             name="ballsOnTable"
             type="com.brookmanholmes.bma.ui.matchinfo.BallsOnTableBinder" />
-
         <variable
             name="winIndicator"
             type="com.brookmanholmes.bma.ui.matchinfo.WinIndicatorBinder" />
-
         <import type="android.view.View" />
     </data>
 
@@ -99,7 +83,9 @@
                         layout="@layout/card_shooting_pct"
                         bind:shooting="@{shooting}" />
 
-
+                    <include
+                        layout="@layout/balls_on_table"
+                        bind:ballsOnTable="@{ballsOnTable}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -121,15 +107,6 @@
                         bind:runs="@{runs}" />
                 </LinearLayout>
             </LinearLayout>
-
-            <include
-                layout="@layout/balls_on_table"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|bottom"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                bind:ballsOnTable="@{ballsOnTable}" />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

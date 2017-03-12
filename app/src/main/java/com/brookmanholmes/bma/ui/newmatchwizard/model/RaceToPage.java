@@ -13,7 +13,7 @@ import com.brookmanholmes.bma.wizard.model.ReviewItem;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.OPPONENT_NAME_KEY;
+import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.OPPONENT_ID_KEY;
 import static com.brookmanholmes.bma.ui.newmatchwizard.model.PlayerNamePage.PLAYER_NAME_KEY;
 
 /**
@@ -64,7 +64,7 @@ public class RaceToPage extends FragmentDependentPage<RaceToFragment> implements
     @Override
     public void setPlayerNames(String playerName, String opponentName) {
         data.putString(PLAYER_NAME_KEY, playerName);
-        data.putString(OPPONENT_NAME_KEY, opponentName);
+        data.putString(OPPONENT_ID_KEY, opponentName);
 
         if (fragment != null) {
             updateFragment();
@@ -99,7 +99,7 @@ public class RaceToPage extends FragmentDependentPage<RaceToFragment> implements
     }
 
     public String getOpponentName() {
-        return data.getString(OPPONENT_NAME_KEY, "Player 2");
+        return data.getString(OPPONENT_ID_KEY, "Player 2");
     }
 
     public GameType getGameType() {

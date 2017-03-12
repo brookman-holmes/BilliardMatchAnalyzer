@@ -1,99 +1,44 @@
-<!--
-  Copyright 2013 Google Inc.
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-      http://www.apache.org/licenses/LICENSE-2.0
-  
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
-    <LinearLayout
+    <TextView style="@style/WizardPageTitle" />
+
+    <TextView
+        android:id="@+id/playerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp" />
+
+    <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
+        android:id="@+id/opponentName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:completionThreshold="1"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_search"
+        android:hint="@string/hint_opponent_name"
+        android:imeOptions="actionNext"
+        android:inputType="textCapWords"
+        android:nextFocusDown="@+id/location"
+        android:nextFocusForward="@+id/location"
+        android:nextFocusRight="@+id/location"
+        android:textSize="16sp"
+        app:met_floatingLabel="normal"
+        app:met_floatingLabelText="@string/hint_opponent_name" />
 
-        <TextView style="@style/WizardPageTitle" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-        <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
-            android:id="@+id/playerName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:completionThreshold="1"
-            android:hint="@string/hint_player_name"
-            android:imeOptions="actionNext"
-            android:inputType="textCapWords"
-            android:nextFocusDown="@+id/opponentName"
-            android:nextFocusForward="@+id/opponentName"
-            android:nextFocusRight="@+id/opponentName"
-            android:textSize="16sp"
-            app:met_floatingLabel="normal"
-            app:met_floatingLabelText="@string/hint_player_name" />
-
-        <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
-            android:id="@+id/opponentName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:completionThreshold="1"
-            android:hint="@string/hint_opponent_name"
-            android:imeOptions="actionNext"
-            android:inputType="textCapWords"
-            android:nextFocusDown="@+id/location"
-            android:nextFocusForward="@+id/location"
-            android:nextFocusRight="@+id/location"
-            android:textSize="16sp"
-            app:met_floatingLabel="normal"
-            app:met_floatingLabelText="@string/hint_opponent_name" />
-
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:hint="@string/hint_location"
-            android:imeOptions="actionNext"
-            android:inputType="textCapWords"
-            android:nextFocusDown="@+id/extra"
-            android:nextFocusForward="@+id/extra"
-            android:nextFocusRight="@+id/extra"
-            android:textSize="16sp"
-            app:met_floatingLabel="normal"
-            app:met_floatingLabelText="@string/hint_location" />
-
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/extra"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:hint="@string/hint_notes"
-            android:inputType="textMultiLine"
-            android:minLines="3"
-            android:textSize="16sp"
-            app:met_floatingLabel="normal"
-            app:met_floatingLabelText="@string/hint_notes" />
-
-        <CheckBox
-            android:id="@+id/cbGhost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/single_player" />
-
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</LinearLayout>

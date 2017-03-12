@@ -13,15 +13,15 @@ import com.brookmanholmes.billiards.turn.TurnBuilder;
 public class NineBallPlayerControllerTest extends AbstractNineBallPlayerControllerTest {
     @Override
     public void setUp() {
-        game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.WINNER);
-        playerController = new NineBallController("", "", 0, 0);
-        actualPlayer = new Player("", GameType.BCA_NINE_BALL);
-        expectedPlayer = new Player("", GameType.BCA_NINE_BALL);
+        game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.WINNER, 100);
+        playerController = new NineBallController("", "", "", "", 0, 0);
+        actualPlayer = new Player("", "", GameType.BCA_NINE_BALL);
+        expectedPlayer = new Player("", "", GameType.BCA_NINE_BALL);
         turnBuilder = new TurnBuilder(game.getGameType());
     }
 
     @Override
     Player getBlankPlayer() {
-        return new Player("", GameType.BCA_NINE_BALL);
+        return new Player("", "", GameType.BCA_NINE_BALL);
     }
 }

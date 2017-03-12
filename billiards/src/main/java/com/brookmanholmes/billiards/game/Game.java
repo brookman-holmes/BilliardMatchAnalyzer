@@ -19,8 +19,6 @@ import static com.brookmanholmes.billiards.game.PlayerColor.STRIPES;
  * <p></p>Created by Brookman Holmes on 10/26/2015.
  */
 public abstract class Game implements Serializable {
-    final int GAME_BALL;
-    final int MAX_BALLS;
     final BreakType breakType;
     final GameType gameType;
     private final PlayerTurn firstPlayerToShoot;
@@ -36,6 +34,8 @@ public abstract class Game implements Serializable {
     int consecutivePlayerFouls = 0;
     int consecutiveOpponentFouls = 0;
     int innings = 0;
+    int maxAttemptsPerGame = 1;
+    int turnsThisGame = 0;
 
     List<Integer> ballsOnTable;
 
@@ -45,21 +45,21 @@ public abstract class Game implements Serializable {
      * @param gameType  the type of game being played
      * @param turn      the turn of the first player
      * @param breakType the type of break that the game will use
-     * @param MAX_BALLS The maximum balls in the game
-     * @param GAME_BALL The ball that ends the game (8,9,10 generally)
      */
-    Game(GameType gameType, PlayerTurn turn, BreakType breakType, int MAX_BALLS, int GAME_BALL) {
+    Game(GameType gameType, PlayerTurn turn, BreakType breakType) {
         this.gameType = gameType;
         this.breakType = breakType;
-
-        this.GAME_BALL = GAME_BALL;
-        this.MAX_BALLS = MAX_BALLS;
 
         this.turn = turn;
         this.breaker = turn;
         firstPlayerToShoot = turn;
 
         ballsOnTable = newTable();
+    }
+
+    Game(GameType gameType, PlayerTurn turn, BreakType breakType, int maxAttemptsPerGame) {
+        this(gameType, turn, breakType);
+        this.maxAttemptsPerGame = maxAttemptsPerGame;
     }
 
     /**
@@ -70,7 +70,7 @@ public abstract class Game implements Serializable {
      * @return A new game with the supplied parameters
      * @throws InvalidGameTypeException
      */
-    public static Game newGame(GameType gameType, PlayerTurn turn, BreakType breakType) throws InvalidGameTypeException {
+    public static Game newGame(GameType gameType, PlayerTurn turn, BreakType breakType, int maxAttemptsPerGame) throws InvalidGameTypeException {
         // TODO: 10/27/2015 implement american rotation games
         switch (gameType) {
             case BCA_NINE_BALL:
@@ -84,15 +84,15 @@ public abstract class Game implements Serializable {
             case BCA_EIGHT_BALL:
                 return new EightBallGame(turn, breakType);
             case BCA_GHOST_EIGHT_BALL:
-                return new EightBallGame(GameType.BCA_GHOST_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
+                return new EightBallGame(GameType.BCA_GHOST_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.PLAYER, maxAttemptsPerGame);
             case BCA_GHOST_NINE_BALL:
-                return new NineBallGame(GameType.BCA_GHOST_NINE_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
+                return new NineBallGame(GameType.BCA_GHOST_NINE_BALL, PlayerTurn.PLAYER, BreakType.PLAYER, maxAttemptsPerGame);
             case BCA_GHOST_TEN_BALL:
-                return new TenBallGame(GameType.BCA_GHOST_TEN_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
+                return new TenBallGame(GameType.BCA_GHOST_TEN_BALL, PlayerTurn.PLAYER, BreakType.PLAYER, maxAttemptsPerGame);
             case APA_GHOST_EIGHT_BALL:
-                return new EightBallGame(GameType.APA_GHOST_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
+                return new EightBallGame(GameType.APA_GHOST_EIGHT_BALL, PlayerTurn.PLAYER, BreakType.PLAYER, maxAttemptsPerGame);
             case APA_GHOST_NINE_BALL:
-                return new NineBallGame(GameType.APA_GHOST_NINE_BALL, PlayerTurn.PLAYER, BreakType.PLAYER);
+                return new NineBallGame(GameType.APA_GHOST_NINE_BALL, PlayerTurn.PLAYER, BreakType.PLAYER, maxAttemptsPerGame);
             case STRAIGHT_POOL:
                 return new StraightPoolGame(turn);
             case STRAIGHT_GHOST:
@@ -112,6 +112,7 @@ public abstract class Game implements Serializable {
      * @return The new game status of the game
      */
     final public GameStatus addTurn(ITurn turn) {
+        turnsThisGame++;
         if (isGameOver(turn))
             startNewGame(turn);
         else if (turn.getTurnEnd() == TurnEnd.CONTINUE_WITH_GAME) {
@@ -191,10 +192,14 @@ public abstract class Game implements Serializable {
      * @return Which player shoots next
      */
     PlayerTurn changeTurn(PlayerTurn turn) {
-        if (turn.nextPlayer() == firstPlayerToShoot)
-            innings++;
+        if (gameType.isSinglePlayer()) {
+            return PlayerTurn.PLAYER;
+        } else {
+            if (turn.nextPlayer() == firstPlayerToShoot)
+                innings++;
 
-        return turn.nextPlayer();
+            return turn.nextPlayer();
+        }
     }
 
     /**
@@ -203,7 +208,10 @@ public abstract class Game implements Serializable {
      * @return true for the game is over, false for the game is not over
      */
     boolean isGameOver(ITurn turn) {
-        return turn.getTurnEnd() == TurnEnd.GAME_WON || turn.isSeriousFoul();
+        if (gameType.isSinglePlayer())
+            return turnsThisGame >= maxAttemptsPerGame || turn.getTurnEnd() == TurnEnd.GAME_WON;
+        else
+            return turn.getTurnEnd() == TurnEnd.GAME_WON || turn.isSeriousFoul();
     }
 
     /**
@@ -212,6 +220,7 @@ public abstract class Game implements Serializable {
      */
     void startNewGame(ITurn turn) {
         this.breaker = setBreaker(getGameWinner(turn));
+        turnsThisGame = 0;
         startNewGame(breaker);
     }
 
@@ -274,8 +283,8 @@ public abstract class Game implements Serializable {
      * @return a list of integers between 1 and MAX_BALLS
      */
     private List<Integer> newTable() {
-        List<Integer> table = new ArrayList<>(MAX_BALLS);
-        for (int i = 1; i <= MAX_BALLS; i++)
+        List<Integer> table = new ArrayList<>(gameType.getMaxBalls());
+        for (int i = 1; i <= gameType.getMaxBalls(); i++)
             table.add(i);
 
         return table;
@@ -306,8 +315,8 @@ public abstract class Game implements Serializable {
     void removeBallsFromTable(List<Integer> ballsToRemove) {
         ballsOnTable.removeAll(ballsToRemove);
 
-        if (!ballsOnTable.contains(GAME_BALL))
-            ballsOnTable.add(GAME_BALL);
+        if (!ballsOnTable.contains(gameType.getGameBall()))
+            ballsOnTable.add(gameType.getGameBall());
     }
 
     /**
@@ -410,8 +419,6 @@ public abstract class Game implements Serializable {
 
     @Override public String toString() {
         return "Game{" +
-                "GAME_BALL=" + GAME_BALL +
-                "\n MAX_BALLS=" + MAX_BALLS +
                 "\n breakType=" + breakType +
                 "\n gameType=" + gameType +
                 "\n firstPlayerToShoot=" + firstPlayerToShoot +
@@ -430,14 +437,13 @@ public abstract class Game implements Serializable {
                 '}';
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Game game = (Game) o;
 
-        if (GAME_BALL != game.GAME_BALL) return false;
-        if (MAX_BALLS != game.MAX_BALLS) return false;
         if (playerAllowedToBreakAgain != game.playerAllowedToBreakAgain) return false;
         if (newGame != game.newGame) return false;
         if (allowTurnSkip != game.allowTurnSkip) return false;
@@ -446,6 +452,7 @@ public abstract class Game implements Serializable {
         if (consecutivePlayerFouls != game.consecutivePlayerFouls) return false;
         if (consecutiveOpponentFouls != game.consecutiveOpponentFouls) return false;
         if (innings != game.innings) return false;
+        if (maxAttemptsPerGame != game.maxAttemptsPerGame) return false;
         if (breakType != game.breakType) return false;
         if (gameType != game.gameType) return false;
         if (firstPlayerToShoot != game.firstPlayerToShoot) return false;
@@ -456,10 +463,9 @@ public abstract class Game implements Serializable {
 
     }
 
-    @Override public int hashCode() {
-        int result = GAME_BALL;
-        result = 31 * result + MAX_BALLS;
-        result = 31 * result + breakType.hashCode();
+    @Override
+    public int hashCode() {
+        int result = breakType.hashCode();
         result = 31 * result + gameType.hashCode();
         result = 31 * result + firstPlayerToShoot.hashCode();
         result = 31 * result + playerColor.hashCode();
@@ -473,6 +479,7 @@ public abstract class Game implements Serializable {
         result = 31 * result + consecutivePlayerFouls;
         result = 31 * result + consecutiveOpponentFouls;
         result = 31 * result + innings;
+        result = 31 * result + maxAttemptsPerGame;
         result = 31 * result + ballsOnTable.hashCode();
         return result;
     }

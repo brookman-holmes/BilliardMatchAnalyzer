@@ -10,7 +10,7 @@ import java.util.List;
 
 class StraightPoolGame extends Game {
     StraightPoolGame(PlayerTurn turn) {
-        super(GameType.STRAIGHT_POOL, turn, BreakType.WINNER, 999, 999);
+        super(GameType.STRAIGHT_POOL, turn, BreakType.WINNER);
     }
 
     @Override

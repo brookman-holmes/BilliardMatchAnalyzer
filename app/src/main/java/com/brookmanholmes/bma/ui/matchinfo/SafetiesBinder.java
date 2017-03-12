@@ -1,5 +1,9 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
+import android.support.annotation.Nullable;
+
+import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
@@ -8,28 +12,26 @@ import com.brookmanholmes.bma.R;
  */
 
 public class SafetiesBinder extends BindingAdapter {
-    public String playerSafetyPct, opponentSafetyPct;
+    public String playerSafetyPct = defaultPct, opponentSafetyPct = defaultPct;
 
-    public int playerSafetiesMade, opponentSafetiesMade;
-    public int playerSafeties, opponentSafeties;
+    public int playerSafetiesMade = 0, opponentSafetiesMade = 0;
+    public int playerSafeties = 0, opponentSafeties = 0;
 
-    public String playerSafetyFouls, opponentSafetyFouls;
+    public String playerSafetyFouls = "0", opponentSafetyFouls = "0";
 
-    public String playerSafetyEscapes, opponentSafetyEscapes;
+    public String playerSafetyEscapes = "0", opponentSafetyEscapes = "0";
 
-    public String playerSafetyReturns, opponentSafetiesReturns;
+    public String playerSafetyReturns = "0", opponentSafetiesReturns = "0";
 
-    public String playerForcedFouls, opponentForcedFouls;
+    public String playerForcedFouls = "0", opponentForcedFouls = "0";
 
-    SafetiesBinder(Player player, Player opponent, String title, boolean expanded, boolean showCard) {
-        super(expanded, showCard);
-        this.title = title;
+    SafetiesBinder(String title, boolean expanded, GameType gameType) {
+        super(title, expanded, !gameType.isSinglePlayer());
         helpLayout = R.layout.dialog_help_safeties;
-
-        update(player, opponent);
     }
 
-    public void update(Player player, Player opponent) {
+    @Override
+    public void update(Player player, Player opponent, @Nullable GameStatus gameStatus) {
         playerSafetyPct = pctf.format(player.getSafetyPct());
         opponentSafetyPct = pctf.format(opponent.getSafetyPct());
 

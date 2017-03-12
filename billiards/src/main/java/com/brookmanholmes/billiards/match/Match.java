@@ -1,6 +1,5 @@
 package com.brookmanholmes.billiards.match;
 
-import com.brookmanholmes.billiards.game.BallStatus;
 import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.Game;
 import com.brookmanholmes.billiards.game.GameStatus;
@@ -10,11 +9,7 @@ import com.brookmanholmes.billiards.player.Pair;
 import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.billiards.player.Players;
 import com.brookmanholmes.billiards.player.controller.PlayerController;
-import com.brookmanholmes.billiards.turn.AdvStats;
-import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.billiards.turn.ITurn;
-import com.brookmanholmes.billiards.turn.Turn;
-import com.brookmanholmes.billiards.turn.TurnEnd;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,7 +36,7 @@ public class Match implements Serializable {
     private final LinkedList<ITurn> undoneTurns = new LinkedList<>();
     private final LinkedList<GameStatus> games = new LinkedList<>();
     private final EnumSet<StatsDetail> details;
-    private long matchId;
+    private String matchId;
     private String location;
     private String notes;
     private boolean matchOver;
@@ -50,18 +45,18 @@ public class Match implements Serializable {
         location = builder.location;
         notes = builder.notes;
         matchId = builder.id;
-        game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
-        initialGameState = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType);
+        game = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType, builder.maxAttemptsPerGame);
+        initialGameState = Game.newGame(builder.gameType, builder.playerTurn, builder.breakType, builder.maxAttemptsPerGame);
         this.playerController = playerController;
         createdOn = (builder.date == null ? new Date() : builder.date);
         details = EnumSet.copyOf(builder.details);
     }
 
-    public long getMatchId() {
+    public String getMatchId() {
         return matchId;
     }
 
-    public void setMatchId(long matchId) {
+    public void setMatchId(String matchId) {
         this.matchId = matchId;
     }
 
@@ -85,6 +80,12 @@ public class Match implements Serializable {
         return game.getGameStatus();
     }
 
+    public Player getPlayer(PlayerTurn turn) {
+        if (turn == PlayerTurn.PLAYER)
+            return getPlayer();
+        else return getOpponent();
+    }
+
     public GameStatus getGameStatus(int turn) {
         if (games.size() == 0)
             return game.getGameStatus();
@@ -92,59 +93,51 @@ public class Match implements Serializable {
     }
 
     public Player getPlayer() {
-        return new Player(playerController.getPlayerName(), getGameStatus().gameType, player1);
+        Player player = new Player(playerController.getPlayerId(), playerController.getPlayerName(), getGameStatus().gameType, playerController.getPlayerRank(), player1);
+        player.setMatchDate(getCreatedOn());
+        return player;
     }
 
     public Player getOpponent() {
-        return new Player(playerController.getOpponentName(), getGameStatus().gameType, player2);
+        Player player = new Player(playerController.getOpponentId(), playerController.getOpponentName(), getGameStatus().gameType, playerController.getOpponentRank(), player2);
+        player.setMatchDate(getCreatedOn());
+        return player;
     }
 
     public Player getPlayer(int from, int to) {
-        return new Player(playerController.getPlayerName(), getGameStatus().gameType, player1.subList(from, to));
+        Player player = new Player(playerController.getPlayerId(), playerController.getPlayerName(), getGameStatus().gameType, playerController.getPlayerRank(), player1.subList(from, to));
+        player.setMatchDate(getCreatedOn());
+        return player;
     }
 
     public Player getOpponent(int from, int to) {
-        return new Player(playerController.getOpponentName(), getGameStatus().gameType, player2.subList(from, to));
+        Player player = new Player(playerController.getOpponentId(), playerController.getOpponentName(), getGameStatus().gameType, playerController.getOpponentRank(), player2.subList(from, to));
+        player.setMatchDate(getCreatedOn());
+        return player;
     }
 
-    public String getCurrentPlayersName() {
+    public String getCurrentPlayersId() {
         if (game.getTurn() == PlayerTurn.PLAYER)
-            return playerController.getPlayerName();
-        else return playerController.getOpponentName();
+            return playerController.getPlayerId();
+        else return playerController.getOpponentId();
     }
 
-    public String getNonCurrentPlayersName() {
+    public String getNonCurrentPlayersId() {
         if (game.getTurn() == PlayerTurn.OPPONENT)
-            return playerController.getPlayerName();
-        else return playerController.getOpponentName();
+            return playerController.getPlayerId();
+        else return playerController.getOpponentId();
     }
 
-    public void setPlayerName(String newName) {
-        playerController.setPlayerName(newName);
+    public void setPlayerId(String id) {
+        playerController.setPlayerId(id);
         for (Player player : player1)
-            player.setName(newName);
+            player.setId(id);
     }
 
-    public void setOpponentName(String newName) {
-        playerController.setOpponentName(newName);
+    public void setOpponentId(String id) {
+        playerController.setOpponentId(id);
         for (Player player : player2)
-            player.setName(newName);
-    }
-
-    public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean foul, boolean isGameLost, AdvStats advStats) {
-        ITurn turn = new Turn(turnEnd, tableStatus, foul, isGameLost, advStats);
-        undoneTurns.clear();
-        addTurn(turn);
-
-        return turn;
-    }
-
-    public ITurn createAndAddTurn(ITableStatus tableStatus, TurnEnd turnEnd, boolean foul, boolean isGameLost) {
-        ITurn turn = new Turn(turnEnd, tableStatus, foul, isGameLost, new AdvStats.Builder("").build());
-        undoneTurns.clear();
-        addTurn(turn);
-
-        return turn;
+            player.setId(id);
     }
 
     public boolean isMatchOver() {
@@ -152,13 +145,15 @@ public class Match implements Serializable {
     }
 
     public void addTurn(ITurn turn) {
+        if (undoneTurns.size() > 0) {
+            if (!undoneTurns.peekLast().equals(turn))
+                undoneTurns.clear();
+            else undoneTurns.removeLast();
+        }
+
         updatePlayerStats(turn);
         updateGameState(turn);
         turns.addLast(turn);
-
-        if (getGameStatus().gameType.isGhostGame() && turn.getTurnEnd() != TurnEnd.GAME_WON) {
-            insertGameWonForGhost();
-        }
 
         matchOver = isPlayersRaceFinished();
     }
@@ -170,18 +165,6 @@ public class Match implements Serializable {
      */
     private boolean isPlayersRaceFinished() {
         return Players.isMatchOver(getPlayer(), getOpponent());
-    }
-
-    /**
-     * Creates a new turn for the ghost (where they win) and adds it to the match
-     */
-    private void insertGameWonForGhost() {
-        ITableStatus tableStatus = game.getCurrentTableStatus();
-        tableStatus.setBallTo(BallStatus.MADE, game.getGhostBallsToWinGame());
-
-        ITurn turn = new Turn(TurnEnd.GAME_WON, tableStatus, false, false, null);
-
-        addTurn(turn);
     }
 
     /**
@@ -238,10 +221,8 @@ public class Match implements Serializable {
         return turns.size() > 0;
     }
 
-    public ITurn redoTurn() {
+    public ITurn getRedoTurn() {
         if (isRedoTurn()) {
-            addTurn(undoneTurns.removeLast());
-
             return turns.peekLast();
         } else return null;
     }
@@ -255,11 +236,6 @@ public class Match implements Serializable {
 
             undoneTurns.addLast(turns.removeLast());
             matchOver = isPlayersRaceFinished();
-
-            if (game.getGameStatus().gameType.isGhostGame()) {
-                if (game.getGameStatus().turn == PlayerTurn.OPPONENT)
-                    undoTurn(); // repeat undoing the turn if it's the ghost's turn
-            }
         }
     }
 
@@ -282,7 +258,6 @@ public class Match implements Serializable {
 
         Match match = (Match) o;
 
-        if (matchId != match.matchId) return false;
         if (matchOver != match.matchOver) return false;
         if (!playerController.equals(match.playerController)) return false;
         if (!createdOn.equals(match.createdOn)) return false;
@@ -294,6 +269,7 @@ public class Match implements Serializable {
         if (!undoneTurns.equals(match.undoneTurns)) return false;
         if (!games.equals(match.games)) return false;
         if (!details.equals(match.details)) return false;
+        if (!matchId.equals(match.matchId)) return false;
         if (!location.equals(match.location)) return false;
         return notes.equals(match.notes);
 
@@ -311,31 +287,15 @@ public class Match implements Serializable {
         result = 31 * result + undoneTurns.hashCode();
         result = 31 * result + games.hashCode();
         result = 31 * result + details.hashCode();
-        result = 31 * result + (int) (matchId ^ (matchId >>> 32));
+        result = 31 * result + matchId.hashCode();
         result = 31 * result + location.hashCode();
         result = 31 * result + notes.hashCode();
         result = 31 * result + (matchOver ? 1 : 0);
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Match{" +
-                "playerController=" + playerController +
-                ", createdOn=" + createdOn +
-                ", game=" + game +
-                ", initialGameState=" + initialGameState +
-                ", player1=" + player1 +
-                ", player2=" + player2 +
-                ", turns=" + turns +
-                ", undoneTurns=" + undoneTurns +
-                ", games=" + games +
-                ", details=" + details +
-                ", matchId=" + matchId +
-                ", location='" + location + '\'' +
-                ", notes='" + notes + '\'' +
-                ", matchOver=" + matchOver +
-                '}';
+    public List<GameStatus> getGameStatuses() {
+        return new ArrayList<>(games);
     }
 
     public enum StatsDetail {
@@ -388,34 +348,27 @@ public class Match implements Serializable {
     }
 
     public static class Builder {
-        private String playerName, opponentName;
         private int playerRank = 100, opponentRank = 100;
         private BreakType breakType = BreakType.ALTERNATE;
         private PlayerTurn playerTurn = PlayerTurn.PLAYER;
         private GameType gameType = GameType.BCA_EIGHT_BALL;
         private String location = "";
         private String notes = "";
-        private long id;
+        private String id;
         private Date date;
         private EnumSet<StatsDetail> details = EnumSet.noneOf(StatsDetail.class);
+        private String playerId;
+        private String opponentId;
+        private String playerName, opponentName;
+        private int maxAttemptsPerGame;
 
-        public Builder(String playerName, String opponentName) {
-            this.playerName = playerName;
-            this.opponentName = opponentName;
+        public Builder(String playerId, String opponentId) {
+            this.opponentId = opponentId;
+            this.playerId = playerId;
         }
 
         public Builder() {
 
-        }
-
-        public Builder setPlayerName(String name) {
-            playerName = name;
-            return this;
-        }
-
-        public Builder setOpponentName(String name) {
-            opponentName = name;
-            return this;
         }
 
         public Builder setPlayerRanks(int playerRank, int opponentRank) {
@@ -434,9 +387,17 @@ public class Match implements Serializable {
             return this;
         }
 
+        public Builder setMaxAttemptsPerGhostGame(int maxAttemptsPerGame) {
+            this.maxAttemptsPerGame = maxAttemptsPerGame;
+            return this;
+        }
+
         public Match build(GameType gameType) {
             this.gameType = gameType;
-            return new Match(this, PlayerController.createController(Game.newGame(gameType, playerTurn, breakType), playerName, opponentName, playerRank, opponentRank));
+            return new Match(this, PlayerController.createController(Game.newGame(gameType, playerTurn, breakType, maxAttemptsPerGame),
+                    playerId, opponentId,
+                    playerName, opponentName,
+                    playerRank, opponentRank));
         }
 
         public Builder setBreakType(BreakType breakType) {
@@ -459,7 +420,7 @@ public class Match implements Serializable {
             return this;
         }
 
-        public Builder setMatchId(long id) {
+        public Builder setMatchId(String id) {
             this.id = id;
             return this;
         }
@@ -483,8 +444,8 @@ public class Match implements Serializable {
 
         @Override public String toString() {
             return "Builder{" +
-                    "playerName='" + playerName + '\'' +
-                    ", opponentName='" + opponentName + '\'' +
+                    "playerId='" + playerId + '\'' +
+                    ", opponentId='" + playerId + '\'' +
                     ", playerRank=" + playerRank +
                     ", opponentRank=" + opponentRank +
                     ", breakType=" + breakType +
@@ -494,6 +455,22 @@ public class Match implements Serializable {
                     ", notes='" + notes + '\'' +
                     ", id=" + id +
                     '}';
+        }
+
+        public Builder setPlayerId(String playerId) {
+            this.playerId = playerId;
+            return this;
+        }
+
+        public Builder setOpponentId(String opponentId) {
+            this.opponentId = opponentId;
+            return this;
+        }
+
+        public Builder setPlayerNames(String playerName, String opponentName) {
+            this.playerName = playerName;
+            this.opponentName = opponentName;
+            return this;
         }
     }
 }

@@ -8,8 +8,8 @@ android {
         applicationId "com.brookmanholmes.bma"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 40
-        versionName "1.3.0"
+        versionCode 50
+        versionName "2.0.0"
     }
 
     buildTypes {
@@ -56,37 +56,39 @@ dependencies {
     }
     testCompile 'junit:junit:4.12'
     compile project(':billiards')
+    // play services & firebase
+    compile 'com.google.android.gms:play-services-auth:10.2.0'
+    compile 'com.google.firebase:firebase-crash:10.2.0'
+    compile 'com.google.firebase:firebase-core:10.2.0'
+    compile 'com.google.firebase:firebase-storage:10.2.0'
+    compile 'com.google.firebase:firebase-database:10.2.0'
+    compile 'com.google.firebase:firebase-auth:10.2.0'
+    // support library
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:support-annotations:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.android.support:cardview-v7:25.2.0'
+    compile 'com.android.support:gridlayout-v7:25.2.0'
+    // custom views
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'com.makeramen:roundedimageview:2.3.0'
     compile 'com.github.pavlospt:roundedletterview:1.2'
-    compile 'com.google.firebase:firebase-crash:9.8.0'
-    compile 'com.google.firebase:firebase-core:9.8.0'
-    compile 'com.google.firebase:firebase-storage:9.8.0'
-    compile 'com.google.firebase:firebase-auth:9.8.0'
-    compile 'com.firebaseui:firebase-ui-auth:1.0.0'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:support-annotations:25.1.0'
-    compile 'com.android.support:design:25.1.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
-    compile 'com.android.support:cardview-v7:25.1.0'
-    compile 'com.android.support:gridlayout-v7:25.1.0'
+    compile 'com.shawnlin:number-picker:2.3.0'
+    compile 'com.appyvet:materialrangebar:1.3'
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    compile 'com.github.bmarrdev:android-DecoView-charting:v1.2'
+    // apache things
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.apache.commons:commons-collections4:4.1'
-    compile 'com.rengwuxian.materialedittext:library:2.1.4'
-    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.3@aar'
     compile 'de.cketti.mailto:email-intent-builder:1.0.0'
-    compile 'com.shawnlin:number-picker:2.3.0'
-    compile('com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar') {
-        transitive = true
-    }
     compile('com.mikepenz:aboutlibraries:5.8.1@aar') {
         transitive = true
     }
-    compile 'com.appyvet:materialrangebar:1.3'
-    compile 'com.github.bmarrdev:android-DecoView-charting:v1.2'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

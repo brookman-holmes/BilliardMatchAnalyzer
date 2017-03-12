@@ -5,8 +5,8 @@ package com.brookmanholmes.billiards.player.controller;
  * A controller for adding up player stats for American Rotation
  */
 class AmericanRotationController extends PlayerController {
-    AmericanRotationController(String playerName, String opponentName, int playerRank, int opponentRank) {
-        super(playerName, opponentName, playerRank, opponentRank);
+    public AmericanRotationController(String playerId, String opponentId, String playerName, String opponentName, int playerRank, int opponentRank) {
+        super(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
     }
 
     @Override

@@ -48,22 +48,6 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
     SafetyStatBinder model;
     FragmentAdvSafetyStatsBinding binding;
 
-    public static AdvSafetyStatsFragment create(Bundle args) {
-        AdvSafetyStatsFragment frag = new AdvSafetyStatsFragment();
-        frag.setArguments(args);
-
-        return frag;
-    }
-
-    public static AdvSafetyStatsFragment create(String name) {
-        AdvSafetyStatsFragment frag = new AdvSafetyStatsFragment();
-        Bundle args = new Bundle();
-        args.putString(AdvStatsDialog.ARG_PLAYER_NAME, name);
-        frag.setArguments(args);
-
-        return frag;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,12 +80,12 @@ public class AdvSafetyStatsFragment extends BaseAdvStatsFragment {
     }
 
     @Override
-    String[] getShotTypes() {
-        return AdvStats.ShotType.getSafeties();
+    int getLayoutId() {
+        return R.layout.fragment_adv_safety_stats;
     }
 
     @Override
-    int getLayoutId() {
-        return R.layout.fragment_adv_safety_stats;
+    AdvStats.ShotType[] getShotTypes() {
+        return AdvStats.ShotType.getSafeties();
     }
 }

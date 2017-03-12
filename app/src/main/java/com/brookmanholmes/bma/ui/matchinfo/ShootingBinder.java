@@ -1,5 +1,9 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
+import android.support.annotation.Nullable;
+
+import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
@@ -8,23 +12,26 @@ import com.brookmanholmes.bma.R;
  */
 
 public class ShootingBinder extends BindingAdapter {
-    public String playerShootingPct, opponentShootingPct;
+    public String playerShootingPct = "0", opponentShootingPct = "0";
 
-    public int playerShotsMade, opponentShotsMade;
-    public int playerShots, opponentShots;
+    public int playerShotsMade = 0, opponentShotsMade = 0;
+    public int playerShots = 0, opponentShots = 0;
 
-    public String playerAvg, opponentAvg;
+    public String playerAvg = defaultAvg, opponentAvg = defaultAvg;
 
-    public String playerFouls, opponentFouls;
+    public String playerFouls = "0", opponentFouls = "0";
 
-    ShootingBinder(Player player, Player opponent, String title, boolean expanded) {
-        super(expanded, !(player.getGameType().isStraightPool()));
-        update(player, opponent);
-        this.title = title;
+    ShootingBinder(String title, boolean expanded, GameType gameType) {
+        super(title, expanded, !(gameType.isStraightPool()));
         helpLayout = R.layout.dialog_help_shooting;
     }
 
-    public void update(Player player, Player opponent) {
+    ShootingBinder(String title, boolean expanded, boolean showCard) {
+        super(title, expanded, showCard);
+    }
+
+    @Override
+    public void update(Player player, Player opponent, @Nullable GameStatus gameStatus) {
         playerShootingPct = pctf.format(player.getShootingPct());
         opponentShootingPct = pctf.format(opponent.getShootingPct());
 

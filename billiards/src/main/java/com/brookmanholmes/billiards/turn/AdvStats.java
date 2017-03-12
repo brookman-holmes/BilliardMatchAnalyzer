@@ -167,6 +167,25 @@ public class AdvStats implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "AdvStats{" +
+                "player='" + player + '\'' +
+                ", shotType=" + shotType +
+                ", shotSubtype=" + shotSubtype +
+                ", howTypes=" + howTypes +
+                ", whyTypes=" + whyTypes +
+                ", angles=" + angles +
+                ", cbToOb=" + cbToOb +
+                ", obToPocket=" + obToPocket +
+                ", speed=" + speed +
+                ", cueX=" + cueX +
+                ", cueY=" + cueY +
+                ", startingPosition='" + startingPosition + '\'' +
+                ", use=" + use +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -205,25 +224,6 @@ public class AdvStats implements Serializable {
         result = 31 * result + startingPosition.hashCode();
         result = 31 * result + (use ? 1 : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "AdvStats{" +
-                "player='" + player + '\'' +
-                ", shotType=" + shotType +
-                ", shotSubtype=" + shotSubtype +
-                ", howTypes=" + howTypes +
-                ", whyTypes=" + whyTypes +
-                ", angles=" + angles +
-                ", cbToOb=" + cbToOb +
-                ", obToPocket=" + obToPocket +
-                ", speed=" + speed +
-                ", cueX=" + cueX +
-                ", cueY=" + cueY +
-                ", startingPosition='" + startingPosition + '\'' +
-                ", use=" + use +
-                '}';
     }
 
     /**
@@ -277,28 +277,29 @@ public class AdvStats implements Serializable {
         SAFETY_ERROR,
         BREAK_SHOT;
 
-        public static String[] getShots() {
-            return new String[]{
-                    NONE.name(),
-                    CUT.name(),
-                    STRAIGHT_SHOT.name(),
-                    BANK.name(),
-                    KICK.name(),
-                    COMBO.name(),
-                    CAROM.name(),
-                    JUMP.name(),
-                    MASSE.name()};
+        public static ShotType[] getShots() {
+            return new ShotType[]{
+                    // none is commented out because I can't remember why it's supposed to be in here
+                    //NONE,
+                    CUT,
+                    STRAIGHT_SHOT,
+                    BANK,
+                    KICK,
+                    COMBO,
+                    CAROM,
+                    JUMP,
+                    MASSE};
         }
 
-        public static String[] getSafeties() {
-            return new String[]{
-                    SAFETY.name(),
-                    SAFETY_ERROR.name()};
+        public static ShotType[] getSafeties() {
+            return new ShotType[]{
+                    SAFETY,
+                    SAFETY_ERROR};
         }
 
-        public static String[] getBreaks() {
-            return new String[]{
-                    BREAK_SHOT.name()};
+        public static ShotType[] getBreaks() {
+            return new ShotType[]{
+                    BREAK_SHOT};
         }
     }
 
@@ -318,6 +319,7 @@ public class AdvStats implements Serializable {
         CURVE_EARLY,
         CURVE_LATE
     }
+
 
     public enum WhyType {
         POSITION,
@@ -370,7 +372,6 @@ public class AdvStats implements Serializable {
             }
         }
     }
-
 
     /**
      * Builder for creating a new AdvStats object

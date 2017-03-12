@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.addturnwizard.model.BreakPage;
@@ -20,7 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_STATUS_KEY;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertBallToId;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.convertIdToBall;
 import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getLayout;
@@ -115,7 +116,7 @@ public class BreakFragment extends BasePageFragment<BreakPage> {
     }
 
     private GameType getGameType() {
-        return GameType.valueOf(getArguments().getString(GAME_TYPE_KEY));
+        return ((GameStatus) getArguments().getSerializable(GAME_STATUS_KEY)).gameType;
     }
 
     private void setBallView(BallStatus status, ImageView ballImage) {

@@ -13,7 +13,7 @@ class GhostTurnEndHelper extends TurnEndHelper {
 
     @Override
     boolean showWin() {
-        return tableStatus.getShootingBallsMade() + tableStatus.getBreakBallsMade() >= game.MAX_BALLS && tableStatus.isGameBallMade();
+        return tableStatus.getBallsRemaining() == 0;
     }
 
     @Override

@@ -35,4 +35,13 @@ public class StatLineItem implements Comparable<StatLineItem> {
     public int compareTo(@NonNull StatLineItem another) {
         return Integer.compare(count, another.count);
     }
+
+    @Override
+    public String toString() {
+        return "StatLineItem{" +
+                "total=" + total +
+                ", count=" + count +
+                ", stringRes=" + stringRes +
+                '}';
+    }
 }

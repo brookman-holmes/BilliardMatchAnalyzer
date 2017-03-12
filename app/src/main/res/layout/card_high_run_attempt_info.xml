@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="runAttempt"
-            type="com.brookmanholmes.bma.ui.matchinfo.HighRunAttemptBinder" />
+            type="com.brookmanholmes.bma.ui.matchinfo.RunAttemptBinder" />
 
         <import type="android.view.View" />
     </data>

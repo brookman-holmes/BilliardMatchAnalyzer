@@ -31,8 +31,8 @@ public class EberleVsCoatesTest extends MatchTester {
         expectedPairs = PlayerList.getPlayerPairs();
         turns = TurnList.getTurns();
 
-        game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.ALTERNATE);
-        controller = PlayerController.createNineBallController("Max", "Jeff", 0, 0);
+        game = Game.newGame(GameType.BCA_NINE_BALL, PlayerTurn.PLAYER, BreakType.ALTERNATE, 100);
+        controller = PlayerController.createNineBallController("Max", "Jeff", "Max", "Jeff", 0, 0);
     }
 
     @Test

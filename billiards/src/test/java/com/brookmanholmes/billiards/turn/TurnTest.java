@@ -90,6 +90,14 @@ public class TurnTest {
         assertThat(turn.getTurnEnd(), is(MISS));
     }
 
+    @Test
+    public void isEqual() {
+        TableStatus tableStatus = TableStatus.newTable(GameType.BCA_EIGHT_BALL);
+        ITurn turn1 = new Turn(MISS, tableStatus, true, false, new AdvStats.Builder("").build());
+        ITurn turn2 = new Turn(MISS, tableStatus, true, false, new AdvStats.Builder("").build());
+
+        assertThat(turn1, is(turn2));
+    }
 
     private ITurn createGameTurn(TableStatus table, boolean foul, TurnEnd turnEnd, boolean isGameLost) {
         return new Turn(turnEnd, table, foul, isGameLost, null);

@@ -13,6 +13,7 @@ import java.util.Locale;
  */
 
 public class SafetyStatBinder extends BaseObservable {
+    private static final String TAG = "SafetyStatBinder";
     private int fullHookCount;
     private int partialHookCount;
     private int longTCount;

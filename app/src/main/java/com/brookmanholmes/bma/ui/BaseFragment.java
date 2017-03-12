@@ -5,9 +5,6 @@ import android.support.annotation.ColorRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 
-import com.brookmanholmes.bma.MyApplication;
-import com.squareup.leakcanary.RefWatcher;
-
 import butterknife.ButterKnife;
 
 /**
@@ -18,13 +15,6 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         ButterKnife.unbind(this);
         super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-        super.onDestroy();
     }
 
     @ColorInt

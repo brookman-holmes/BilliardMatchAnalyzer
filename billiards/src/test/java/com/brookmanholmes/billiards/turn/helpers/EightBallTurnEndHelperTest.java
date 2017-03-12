@@ -25,13 +25,13 @@ public class EightBallTurnEndHelperTest extends AbstractTurnEndHelperTest {
 
     @Override
     void setupLossStuff() {
-        tableStatus.setBallTo(BallStatus.DEAD, gameBuilder.build().GAME_BALL);
+        tableStatus.setBallTo(BallStatus.DEAD, gameBuilder.build().gameType.getGameBall());
     }
 
     @Test
     public void madeBallOnBreakDoesNotShowPush() {
         tableStatus.setBallTo(BallStatus.MADE_ON_BREAK, 1);
-        GameStatus status = Game.newGame(gameBuilder.build().gameType, PlayerTurn.PLAYER, BreakType.WINNER).getGameStatus();
+        GameStatus status = Game.newGame(gameBuilder.build().gameType, PlayerTurn.PLAYER, BreakType.WINNER, 100).getGameStatus();
 
         TurnEndOptions options = TurnEndHelper.getTurnEndOptions(status, tableStatus);
 

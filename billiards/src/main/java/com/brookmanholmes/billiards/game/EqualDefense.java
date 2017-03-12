@@ -8,7 +8,7 @@ import com.brookmanholmes.billiards.turn.ITurn;
 
 class EqualDefense extends Game {
     EqualDefense(PlayerTurn turn) {
-        super(GameType.EQUAL_DEFENSE, turn, BreakType.WINNER, 2, 2);
+        super(GameType.EQUAL_DEFENSE, turn, BreakType.WINNER);
     }
 
     @Override

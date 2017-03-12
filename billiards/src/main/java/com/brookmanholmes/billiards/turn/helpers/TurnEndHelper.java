@@ -4,6 +4,7 @@ import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.InvalidGameTypeException;
 import com.brookmanholmes.billiards.turn.ITableStatus;
+import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.billiards.turn.TurnEnd;
 import com.brookmanholmes.billiards.turn.TurnEndOptions;
 
@@ -82,6 +83,19 @@ public abstract class TurnEndHelper {
      */
     public static TurnEndOptions getTurnEndOptions(GameStatus game, ITableStatus tableStatus) {
         TurnEndHelper turnEndHelper = create(game, tableStatus);
+        return turnEndHelper.getTurnEndOptions();
+    }
+
+    /**
+     * Creates a new {@link com.brookmanholmes.billiards.turn.TurnEndOptions} object with a list of
+     * the possible turn endings based on the current status of the game and the status of the table
+     * for the next turn
+     *
+     * @param game The current status of the game
+     * @return A new {@link com.brookmanholmes.billiards.turn.TurnEndOptions} object
+     */
+    public static TurnEndOptions getTurnEndOptions(GameStatus game) {
+        TurnEndHelper turnEndHelper = create(game, TableStatus.newTable(game.gameType, game.ballsOnTable));
         return turnEndHelper.getTurnEndOptions();
     }
 

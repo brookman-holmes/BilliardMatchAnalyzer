@@ -87,11 +87,10 @@ public class GameStatusBuilderTest {
         );
 
         for (GameType type : gameTypes) {
-            Game game = Game.newGame(type, PlayerTurn.PLAYER, BreakType.WINNER);
+            Game game = Game.newGame(type, PlayerTurn.PLAYER, BreakType.WINNER, 100);
             GameStatus gameStatus = new GameStatus.Builder(type).build();
 
-            assertThat(gameStatus.MAX_BALLS, is(game.MAX_BALLS));
-            assertThat(gameStatus.GAME_BALL, is(game.GAME_BALL));
+            assertThat(gameStatus.gameType, is(game.gameType));
             assertThat(gameStatus.winOnBreak, is(game.winOnBreak()));
         }
     }

@@ -1,5 +1,7 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
+import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Player;
 
 /**
@@ -11,20 +13,17 @@ public class StraightPoolRunsBinder extends ShootingBinder {
 
     public String playerMax = "0", opponentMax = "0";
 
-    public String playerMean = "0.0", opponentMean = "0.0";
-    public String playerMedian = "0.0", opponentMedian = "0.0";
+    public String playerMean = defaultAvg, opponentMean = defaultAvg;
+    public String playerMedian = defaultAvg, opponentMedian = defaultAvg;
 
-    StraightPoolRunsBinder(Player player, Player opponent, String title, boolean expanded) {
-        super(player, opponent, title, expanded);
-        showCard = player.getGameType().isStraightPool();
-        isStraightPoolPlayer = player.getGameType().isStraightPool();
-
-        update(player, opponent);
+    StraightPoolRunsBinder(String title, boolean expanded, GameType gameType) {
+        super(title, expanded, gameType.isStraightPool() || gameType == GameType.ALL);
+        isStraightPoolPlayer = gameType.isStraightPool();
     }
 
     @Override
-    public void update(Player player, Player opponent) {
-        if (player.getGameType().isStraightPool()) {
+    public void update(Player player, Player opponent, GameStatus gameStatus) {
+        if (gameStatus != null && gameStatus.gameType.isStraightPool()) {
             playerMax = Integer.toString(player.getHighRun());
             opponentMax = Integer.toString(opponent.getHighRun());
 
@@ -35,7 +34,7 @@ public class StraightPoolRunsBinder extends ShootingBinder {
             opponentMedian = avgf.format(opponent.getMedianRunLength());
         }
 
-        super.update(player, opponent);
+        super.update(player, opponent, gameStatus);
     }
 
     public int highlightMax() {

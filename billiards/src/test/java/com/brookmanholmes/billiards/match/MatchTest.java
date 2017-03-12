@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -21,13 +22,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by Brookman Holmes on 1/31/2016.
  */
 public class MatchTest {
-    private final long matchId = 1001;
+    private final String matchId = "1";
     private final String location = "Sam's";
     private final BreakType breakType = BreakType.WINNER;
     private final GameType gameType = GameType.BCA_EIGHT_BALL;
     private final PlayerTurn turn = PlayerTurn.OPPONENT;
     private Match match;
     private TurnBuilder turnBuilder;
+    private Date date;
 
 
     private Player player1;
@@ -56,7 +58,10 @@ public class MatchTest {
         String opponentName = "Player 2";
         int playerRank = 4;
         int opponentRank = 5;
+        date = new Date();
         match = new Match.Builder(playerName, opponentName)
+                .setPlayerNames(playerName, opponentName)
+                .setDate(date)
                 .setMatchId(matchId)
                 .setLocation(location)
                 .setPlayerRanks(playerRank, opponentRank)
@@ -66,13 +71,37 @@ public class MatchTest {
 
         turnBuilder = new TurnBuilder(gameType);
 
-        player1 = new Player(playerName, GameType.BCA_EIGHT_BALL);
-        player2 = new Player(opponentName, GameType.BCA_EIGHT_BALL);
+        player1 = new Player(playerName, playerName, GameType.BCA_EIGHT_BALL, 4);
+        player2 = new Player(opponentName, opponentName, GameType.BCA_EIGHT_BALL, 5);
+        player1.setMatchDate(date);
+        player2.setMatchDate(date);
+    }
+
+    @Test
+    public void addTurnDoesntClearUndoneTurnList() {
+        ITurn turn = turnBuilder.breakMiss();
+        ITurn turn1 = turnBuilder.miss();
+        match.addTurn(turn);
+        match.addTurn(turn1);
+        match.addTurn(turn1);
+        match.addTurn(turn1);
+        match.addTurn(turn1);
+        match.addTurn(turn1);
+        match.addTurn(turn1);
+        match.undoTurn();
+        match.undoTurn();
+        match.undoTurn();
+        match.undoTurn();
+
+        assertThat(match.isUndoTurn(), is(true));
+
+        match.addTurn(turn1);
+        assertThat(match.isUndoTurn(), is(true));
     }
 
     @Test
     public void updateGameStateUpdatesTheStateOfTheGame() {
-        Game game = Game.newGame(gameType, turn, breakType);
+        Game game = Game.newGame(gameType, turn, breakType, 1);
 
         ITurn turn = turnBuilder.miss();
 
@@ -108,7 +137,7 @@ public class MatchTest {
 
     @Test
     public void setMatchIdSetsMatchId() {
-        long newMatchId = 1;
+        String newMatchId = "5";
         match.setMatchId(newMatchId);
 
         assertThat(match.getMatchId(), is(newMatchId));
@@ -134,7 +163,6 @@ public class MatchTest {
 
     private void addTurnOne() {
         player2.addBreakShot(0, false, false);
-
     }
 
     @Test

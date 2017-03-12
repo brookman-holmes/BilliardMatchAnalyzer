@@ -3,6 +3,7 @@ package com.brookmanholmes.bma.ui.matchinfo;
 import android.databinding.BaseObservable;
 import android.graphics.Typeface;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.transition.TransitionManager;
 import android.util.TypedValue;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 
@@ -23,12 +26,15 @@ import java.text.DecimalFormat;
  * Created by Brookman Holmes on 9/21/2016.
  */
 
-public class BindingAdapter extends BaseObservable {
+public abstract class BindingAdapter extends BaseObservable {
     // formatter for percentages (e.g. .875)
     final static DecimalFormat pctf = ConversionUtils.pctf;
     // formatter for average number of balls made per turn (e.g. 5.33)
     final static DecimalFormat avgf = ConversionUtils.avgf;
-    private static final String TAG = "BindingAdapter";
+    final static String defaultPct = pctf.format(0);
+    final static String defaultAvg = avgf.format(0);
+
+    static final String TAG = "BindingAdapter";
     public boolean expanded = false;
     @DrawableRes
     public int imageResource;
@@ -36,11 +42,11 @@ public class BindingAdapter extends BaseObservable {
     String title;
     int helpLayout;
 
-    public BindingAdapter(boolean expanded, boolean showCard) {
+    public BindingAdapter(String title, boolean expanded, boolean showCard) {
+        imageResource = (expanded ? R.drawable.ic_action_collapse : R.drawable.ic_action_expand);
+        this.title = title;
         this.expanded = expanded;
         this.showCard = showCard;
-
-        imageResource = (expanded ? R.drawable.ic_action_collapse : R.drawable.ic_action_expand);
     }
 
     @android.databinding.BindingAdapter("android:typeface")
@@ -75,6 +81,8 @@ public class BindingAdapter extends BaseObservable {
     static int compare(String x, String y) {
         return Double.compare(Double.parseDouble(x), Double.parseDouble(y));
     }
+
+    public abstract void update(Player player, Player opponent, @Nullable GameStatus gameStatus);
 
     float round(float value) {
         BigDecimal bd = new BigDecimal(Float.toString(value));

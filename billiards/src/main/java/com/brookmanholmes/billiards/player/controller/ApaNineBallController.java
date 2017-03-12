@@ -10,8 +10,8 @@ import com.brookmanholmes.billiards.turn.ITurn;
  * A controller for adding up player stats for APA 9 ball
  */
 class ApaNineBallController extends PlayerController {
-    ApaNineBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
-        super(playerName, opponentName, playerRank, opponentRank);
+    public ApaNineBallController(String playerId, String opponentId, String playerName, String opponentName, int playerRank, int opponentRank) {
+        super(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
     }
 
     @Override

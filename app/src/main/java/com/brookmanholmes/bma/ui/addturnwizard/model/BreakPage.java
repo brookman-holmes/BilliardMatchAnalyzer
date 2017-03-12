@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.BreakFragment;
@@ -18,7 +19,7 @@ import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_DEAD_ON_BRE
 import static com.brookmanholmes.billiards.game.BallStatus.GAME_BALL_MADE_ON_BREAK;
 import static com.brookmanholmes.billiards.game.BallStatus.MADE_ON_BREAK;
 import static com.brookmanholmes.billiards.game.BallStatus.ON_TABLE;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_STATUS_KEY;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
@@ -34,7 +35,7 @@ public class BreakPage extends FragmentDependentBranch<BreakFragment> implements
         super(callbacks, title);
 
         data.putAll(matchData);
-        gameType = getGameStatus(matchData).gameType;
+        gameType = ((GameStatus) matchData.getSerializable(GAME_STATUS_KEY)).gameType;
         tableStatus = TableStatus.newTable(gameType);
         data.putSerializable(TABLE_STATUS_KEY, tableStatus);
 

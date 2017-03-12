@@ -169,7 +169,7 @@ public abstract class AbstractPlayerControllerTest {
     @Test
     public void maximumMakeableBallsReturnsMaxBalls() {
         playerController.gameStatus = game.getGameStatus();
-        assertThat(playerController.getMaximumBallsMakeable(), is(game.getGameStatus().MAX_BALLS));
+        assertThat(playerController.getMaximumBallsMakeable(), is(game.getGameStatus().gameType.getMaxBalls()));
     }
 
     @Test
@@ -240,6 +240,7 @@ public abstract class AbstractPlayerControllerTest {
     public void isGameOverReturnsFalse() {
         ITurn mockedTurn = Mockito.mock(ITurn.class);
         playerController.turn = mockedTurn;
+        playerController.gameStatus = game.getGameStatus();
         for (TurnEnd turnEnd : TurnEnd.values()) {
             if (turnEnd != TurnEnd.GAME_WON) {
                 when(mockedTurn.getTurnEnd()).thenReturn(turnEnd);
@@ -267,12 +268,12 @@ public abstract class AbstractPlayerControllerTest {
     }
 
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = NullPointerException.class)
     public void updatePlayerStatsThrowsIllegalStateExceptionOnNullInput() {
         playerController.addTurn(game.getGameStatus(), null);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = NullPointerException.class)
     public void updatePlayerStatsThrowsIllegalStateExceptionOnNullInput2() {
         playerController.addTurn(null, turnBuilder.miss());
     }

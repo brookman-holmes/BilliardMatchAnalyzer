@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.brookmanholmes.billiards.game.BallStatus;
-import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.PlayerColor;
 import com.brookmanholmes.billiards.turn.TableStatus;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.ShotFragment;
@@ -28,11 +28,7 @@ import static com.brookmanholmes.billiards.turn.TableUtils.getSolidsMade;
 import static com.brookmanholmes.billiards.turn.TableUtils.getSolidsMadeOnBreak;
 import static com.brookmanholmes.billiards.turn.TableUtils.getStripesMade;
 import static com.brookmanholmes.billiards.turn.TableUtils.getStripesMadeOnBreak;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.BALLS_ON_TABLE_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.CURRENT_PLAYER_COLOR_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_TYPE_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.NEW_GAME_KEY;
-import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.getGameStatus;
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_STATUS_KEY;
 
 /**
  * Created by Brookman Holmes on 2/20/2016.
@@ -41,17 +37,18 @@ public class ShotPage extends FragmentDependentPage<ShotFragment> implements Req
     private static final String TAG = "ShotPage";
     private static final String TABLE_STATUS_KEY = "table_status";
     private TableStatus tableStatus;
-    private PlayerColor playerColor = PlayerColor.OPEN;
+    private GameStatus gameStatus;
+    private PlayerColor playerColor;
 
     ShotPage(ModelCallbacks callbacks, String title, Bundle matchData) {
         super(callbacks, title);
 
         data.putAll(matchData);
 
-        tableStatus = TableStatus.newTable(getGameStatus(matchData).gameType,
-                data.getIntegerArrayList(BALLS_ON_TABLE_KEY));
+        gameStatus = (GameStatus) matchData.getSerializable(GAME_STATUS_KEY);
+        playerColor = gameStatus.currentPlayerColor;
+        tableStatus = TableStatus.newTable(gameStatus.gameType, gameStatus.ballsOnTable);
         data.putSerializable(TABLE_STATUS_KEY, tableStatus);
-        playerColor = PlayerColor.valueOf(data.getString(CURRENT_PLAYER_COLOR_KEY));
     }
 
     @Override
@@ -181,19 +178,17 @@ public class ShotPage extends FragmentDependentPage<ShotFragment> implements Req
     }
 
     public void updateFragment() {
-        PlayerColor currentPlayerColor = PlayerColor.valueOf(data.getString(CURRENT_PLAYER_COLOR_KEY));
         if (fragment != null) {
-            GameType gameType = GameType.valueOf(data.getString(GAME_TYPE_KEY));
 
-            if (gameType == GameType.BCA_EIGHT_BALL || gameType == GameType.BCA_GHOST_EIGHT_BALL) {
+            if (gameStatus.gameType.isBca8Ball()) {
 
-                if (currentPlayerColor == PlayerColor.OPEN)
+                if (gameStatus.currentPlayerColor == PlayerColor.OPEN)
                     playerColor = setPlayerColorFromBallsMade();
 
-            } else if (gameType == GameType.APA_EIGHT_BALL || gameType == GameType.APA_GHOST_EIGHT_BALL) {
+            } else if (gameStatus.gameType.isApa8Ball()) {
 
-                if (currentPlayerColor == PlayerColor.OPEN) {
-                    if (data.getBoolean(NEW_GAME_KEY) && setPlayerColorFromBreakBallsMade() != PlayerColor.OPEN)
+                if (gameStatus.currentPlayerColor == PlayerColor.OPEN) {
+                    if (gameStatus.newGame && setPlayerColorFromBreakBallsMade() != PlayerColor.OPEN)
                         playerColor = setPlayerColorFromBreakBallsMade();
                     else
                         playerColor = setPlayerColorFromBallsMade();

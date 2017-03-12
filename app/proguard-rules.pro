@@ -10,13 +10,15 @@
 # Add any project specific keep options here:
 
 # If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
+# and specify the fully qualified class id to the JavaScript interface
 # class:
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
 
 # ButterKnife 7
+
+-keepattributes Signature
 
 -keep class butterknife.** { *; }
 -keep class **$$ViewBinder { *; }
@@ -28,6 +30,22 @@
 
 -keepclasseswithmembernames class * { @butterknife.* <fields>; }
 -keepclasseswithmembernames class * { @butterknife.* <methods>; }
+
+-keepclassmembers class com.brookmanholmes.bma.data.TurnModel {
+    *;
+}
+-keepclassmembers class com.brookmanholmes.bma.data.UserModel {
+    *;
+}
+-keepclassmembers class com.brookmanholmes.bma.data.MatchModel {
+     *;
+}
+-keepclassmembers class com.brookmanholmes.bma.data.AdvStatsModel {
+     *;
+}
+ -keepclassmembers class com.brookmanholmes.billiards.match.Match {
+    *;
+}
 
 -dontwarn butterknife.internal.**
 -dontwarn java.awt.**

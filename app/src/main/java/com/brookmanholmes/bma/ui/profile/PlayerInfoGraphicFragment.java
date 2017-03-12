@@ -2,7 +2,6 @@ package com.brookmanholmes.bma.ui.profile;
 
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -21,19 +20,16 @@ import android.widget.TextView;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.data.DatabaseAdapter;
 import com.brookmanholmes.bma.ui.BaseRecyclerFragment;
-import com.brookmanholmes.bma.ui.stats.Filterable;
-import com.brookmanholmes.bma.ui.stats.StatFilter;
+import com.brookmanholmes.bma.ui.matchinfo.PlayersListener;
 import com.brookmanholmes.bma.ui.view.BaseViewHolder;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,31 +41,22 @@ import butterknife.ButterKnife;
 import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter;
 import lecho.lib.hellocharts.formatter.SimpleLineChartValueFormatter;
 import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
 /**
  * Created by helios on 5/15/2016.
  */
-public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGraphicFragment.PlayerInfoGraphicAdapter> implements Filterable {
-    private static final String ARG_PLAYER = "arg_player";
+public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGraphicFragment.PlayerInfoGraphicAdapter>
+        implements PlayersListener {
+    private static final String TAG = "PIGF";
     DecimalFormat df = new DecimalFormat("#.###");
-    private DatabaseAdapter database;
-    private String player;
-    private UpdatePlayersAsync task;
 
     public PlayerInfoGraphicFragment() {
-    }
-
-    public static PlayerInfoGraphicFragment create(String player) {
-        PlayerInfoGraphicFragment fragment = new PlayerInfoGraphicFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PLAYER, player);
-
-        fragment.setArguments(args);
-        return fragment;
     }
 
     private static String convertFloatToPercent(float val) {
@@ -83,16 +70,14 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         df.setRoundingMode(RoundingMode.FLOOR);
-        database = new DatabaseAdapter(getContext());
-        player = getArguments().getString(ARG_PLAYER);
+        adapter = new PlayerInfoGraphicAdapter(new ArrayList<Player>(), new ArrayList<Player>());
 
-        adapter = new PlayerInfoGraphicAdapter(new ArrayList<Pair<Player, Player>>(), player, "");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getActivity() instanceof PlayerProfileActivity) {
-            ((PlayerProfileActivity) getActivity()).addListener(this);
+            ((PlayerProfileActivity) getActivity()).addStatListener(this);
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -101,25 +86,14 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
     @Override
     public void onDestroy() {
         if (getActivity() instanceof PlayerProfileActivity) {
-            ((PlayerProfileActivity) getActivity()).removeListener(this);
+            ((PlayerProfileActivity) getActivity()).removeStatListener(this);
         }
-        if (task != null)
-            task.cancel(true);
         super.onDestroy();
     }
 
     @Override
-    public void setFilter(StatFilter filter) {
-        if (task == null) {
-            task = new UpdatePlayersAsync();
-            task.execute(filter);
-        }
-
-        if (task.getStatus() != AsyncTask.Status.RUNNING) {
-            task.cancel(true);
-            task = new UpdatePlayersAsync();
-            task.execute(filter);
-        }
+    public void updatePlayers(List<Player> players, List<Player> opponents) {
+        adapter.updatePlayers(players, opponents);
     }
 
     @Override
@@ -152,27 +126,25 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
         static final int ITEM_SAFETY_GRAPH = 2;
         static final int ITEM_BREAK_GRAPH = 3;
         static final int ITEM_BREAK_INFO = 4;
+        static final int ITEM_FOOTER = 5;
 
-        final List<Player> players = new ArrayList<>();
-        final List<Player> opponents = new ArrayList<>();
-        final String playerName;
-        final String opponentName;
+        final List<Player> players;
+        final List<Player> opponents;
 
-        PlayerInfoGraphicAdapter(List<Pair<Player, Player>> pairs, String playerName, String opponentName) {
-            splitPlayers(pairs);
-            this.playerName = playerName;
-            this.opponentName = opponentName;
+        PlayerInfoGraphicAdapter(List<Player> players, List<Player> opponents) {
+            this.players = new ArrayList<>(players);
+            this.opponents = new ArrayList<>(opponents);
         }
 
         private static Player getPlayerFromList(List<Player> players) {
             if (players.size() > 0) {
-                Player player = new Player(players.get(0).getName(), GameType.ALL);
+                Player player = new Player(players.get(0).getId(), players.get(0).getName(), GameType.ALL);
                 for (Player abstractPlayer : players) {
                     player.addPlayerStats(abstractPlayer);
                 }
 
                 return player;
-            } else return new Player("", GameType.ALL);
+            } else return new Player("", "", GameType.ALL);
         }
 
         private static float roundNumber(int top, int bottom) {
@@ -180,17 +152,11 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
             return decimal.floatValue();
         }
 
-        private void splitPlayers(List<Pair<Player, Player>> pairs) {
-            for (Pair<Player, Player> pair : pairs) {
-                players.add(pair.getLeft());
-                opponents.add(pair.getRight());
-            }
-        }
-
-        private void updatePlayers(List<Pair<Player, Player>> pairs) {
-            players.clear();
-            opponents.clear();
-            splitPlayers(pairs);
+        private void updatePlayers(List<Player> players, List<Player> opponents) {
+            this.players.clear();
+            this.opponents.clear();
+            this.players.addAll(players);
+            this.opponents.addAll(opponents);
             notifyItemRangeChanged(0, getItemCount());
         }
 
@@ -217,12 +183,13 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                     break;
                 case ITEM_BREAK_INFO:
                     ((TwoItemHolder) holder).bind(players, opponents);
+                    break;
             }
         }
 
         @Override
         public int getItemCount() {
-            return 5;
+            return 6;
         }
 
         @Override
@@ -243,6 +210,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                     return R.layout.card_two_item_holder;
                 case ITEM_SAFETY_GRAPH:
                     return R.layout.card_deco_view;
+                case ITEM_FOOTER:
+                    return R.layout.footer;
                 default:
                     throw new IllegalArgumentException("No such view type: " + viewType);
             }
@@ -260,6 +229,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                     return new SafetyGraphViewHolder(view);
                 case ITEM_BREAK_INFO:
                     return new BreakTwoItemHolder(view);
+                case ITEM_FOOTER:
+                    return new FooterViewHolder(view);
                 default:
                     throw new IllegalArgumentException("No such view type: " + viewType);
             }
@@ -280,58 +251,77 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 List<PointValue> shooting = new ArrayList<>();
                 List<PointValue> safeties = new ArrayList<>();
                 List<PointValue> breaking = new ArrayList<>();
+                List<AxisValue> xAxisValues = new ArrayList<>();
 
                 float count = 0;
                 for (Player player : players) {
-                    if (player.getShootingAttempts() + player.getSafetyAttempts() + player.getBreakAttempts() > 0)
+                    if (player.getShootingAttempts() + player.getSafetyAttempts() + player.getBreakAttempts() > 0) {
                         tsp.add(new PointValue(count, (float) player.getTrueShootingPct()));
-                    if (player.getShootingAttempts() > 0)
-                        shooting.add(new PointValue(count, (float) player.getShootingPct()));
-                    if (player.getSafetyAttempts() > 0)
-                        safeties.add(new PointValue(count, (float) player.getSafetyPct()));
-                    if (player.getBreakAttempts() > 0)
-                        breaking.add(new PointValue(count, (float) player.getBreakPct()));
+                        xAxisValues.add(new AxisValue(count, DateFormat.getDateInstance(DateFormat.SHORT).format(player.getMatchDate()).toCharArray()));
+                        if (player.getShootingAttempts() > 0)
+                            shooting.add(new PointValue(count, (float) player.getShootingPct()));
+                        if (player.getSafetyAttempts() > 0)
+                            safeties.add(new PointValue(count, (float) player.getSafetyPct()));
+                        if (player.getBreakAttempts() > 0)
+                            breaking.add(new PointValue(count, (float) player.getBreakPct()));
+                    }
 
                     count += 1;
                 }
 
                 LineChartData data = new LineChartData(getLines(tsp, shooting, safeties, breaking, getDummyLine((int) count)));
 
-                Axis axis = new Axis();
-                axis.setHasSeparationLine(true)
-                        .setFormatter(new SimpleAxisValueFormatter())
+                List<AxisValue> yAxisValues = new ArrayList<>();
+                for (int i = 0; i <= 10; i++) {
+                    yAxisValues.add(new AxisValue(i * .1f));
+                }
+                Axis xAxis = new Axis(xAxisValues);
+                xAxis.setHasTiltedLabels(false)
+                        .setHasSeparationLine(true);
+
+                Axis yAxis = new Axis(yAxisValues);
+                yAxis.setHasSeparationLine(true)
+                        .setTextSize(16)
+                        .setFormatter(new SimpleAxisValueFormatter(3))
+                        .setInside(true)
                         .setHasLines(true);
-                data.setAxisYLeft(axis);
+
+                data.setAxisYRight(yAxis);
+                data.setAxisXBottom(xAxis);
                 data.setValueLabelTextSize(24);
 
                 chart.setLineChartData(data);
+                if (chart != null) {
+                    final Viewport viewPort = new Viewport();
+                    viewPort.set(-1000f, 1.1f, xAxisValues.size() + 1f, -.5f);
+                    chart.setCurrentViewport(viewPort);
+                    chart.setMaximumViewport(viewPort);
+                }
             }
 
-            private Line getLine(List<PointValue> values, @ColorRes int color, int radiusModifer) {
+            private Line getLine(List<PointValue> values, @ColorRes int color) {
                 return new Line(values)
-                        .setPointRadius(3 + radiusModifer)
+                        .setPointRadius(itemView.getContext().getResources().getInteger(R.integer.graph_point_size))
                         .setColor(getColor(color))
                         .setPointColor(getColor(color))
                         .setHasLabels(false)
-                        .setStrokeWidth(2)
+                        .setStrokeWidth(itemView.getContext().getResources().getInteger(R.integer.graph_line_size))
                         .setHasPoints(true)
-                        .setCubic(true)
                         .setHasLabelsOnlyForSelected(true)
-                        .setFormatter(new SimpleLineChartValueFormatter(3))
-                        .setFilled(false);
+                        .setFormatter(new SimpleLineChartValueFormatter(3));
             }
 
             private Line getDummyLine(int count) {
-                return new Line(Arrays.asList(new PointValue(0, 0), new PointValue(count, 1.05f)))
+                return new Line(Arrays.asList(new PointValue(0, 0), new PointValue(count, 1.1f)))
                         .setColor(getColor(android.R.color.transparent))
                         .setHasPoints(false);
             }
 
             private List<Line> getLines(List<PointValue> tsp, List<PointValue> shooting, List<PointValue> safeties, List<PointValue> breaking, Line line) {
-                return Arrays.asList(getLine(shooting, R.color.chart1, 1),
-                        getLine(safeties, R.color.chart3, 1),
-                        getLine(breaking, R.color.chart2, 1),
-                        getLine(tsp, R.color.chart, 0),
+                return Arrays.asList(getLine(shooting, R.color.chart1),
+                        getLine(safeties, R.color.chart3),
+                        getLine(breaking, R.color.chart2),
+                        getLine(tsp, R.color.chart),
                         line);
             }
 
@@ -616,25 +606,11 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 return itemView.getContext().getResources().getDimensionPixelSize(dimen);
             }
         }
-    }
 
-    private class UpdatePlayersAsync extends AsyncTask<StatFilter, Void, List<Pair<Player, Player>>> {
-        @Override
-        protected List<Pair<Player, Player>> doInBackground(StatFilter... filter) {
-            List<Pair<Player, Player>> players = database.getPlayerPairs(player);
-            List<Pair<Player, Player>> filteredPlayers = new ArrayList<>();
-
-            for (Pair<Player, Player> pair : players) {
-                if (filter[0].isPlayerQualified(pair.getRight()))
-                    filteredPlayers.add(pair);
+        static class FooterViewHolder extends BaseViewHolder {
+            FooterViewHolder(View itemView) {
+                super(itemView);
             }
-
-            return filteredPlayers;
-        }
-
-        @Override
-        protected void onPostExecute(List<Pair<Player, Player>> pairs) {
-            adapter.updatePlayers(pairs);
         }
     }
 }

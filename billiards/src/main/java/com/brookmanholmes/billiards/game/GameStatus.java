@@ -9,8 +9,6 @@ import java.util.List;
  * <p></p>Created by Brookman Holmes on 10/30/2015.
  */
 public final class GameStatus implements Serializable {
-    public final int GAME_BALL;
-    public final int MAX_BALLS;
     public final boolean playerAllowedToBreakAgain;
     public final boolean newGame;
     public final boolean opponentPlayedSuccessfulSafe;
@@ -27,12 +25,12 @@ public final class GameStatus implements Serializable {
     public final boolean winOnBreak;
     public final List<Integer> ballsOnTable;
     public final BreakType breakType;
+    public final int turnsThisGame;
+    public final int maxAttemptsPerGame;
     public final int innings; // not put into equals and hashcode because it's only used for APA and is meaningless in alternating break format
 
     GameStatus(Game game) {
         playerAllowedToBreakAgain = game.playerAllowedToBreakAgain;
-        GAME_BALL = game.GAME_BALL;
-        MAX_BALLS = game.MAX_BALLS;
         newGame = game.newGame;
         opponentPlayedSuccessfulSafe = game.opponentPlayedSuccessfulSafe;
         turn = game.turn;
@@ -46,7 +44,8 @@ public final class GameStatus implements Serializable {
         ballsOnTable = new ArrayList<>(game.ballsOnTable);
         breakType = game.breakType;
         innings = game.innings;
-
+        turnsThisGame = game.turnsThisGame;
+        maxAttemptsPerGame = game.maxAttemptsPerGame;
         playerColor = game.playerColor;
         consecutiveOpponentFouls = game.consecutiveOpponentFouls;
         consecutivePlayerFouls = game.consecutivePlayerFouls;
@@ -64,49 +63,49 @@ public final class GameStatus implements Serializable {
         currentPlayerColor = builder.currentPlayerColor;
         currentPlayerConsecutiveFouls = builder.currentPlayerConsecutiveFouls;
         winOnBreak = builder.winOnBreak;
-        MAX_BALLS = builder.MAX_BALLS;
-        GAME_BALL = builder.GAME_BALL;
         ballsOnTable = builder.ballsOnTable;
         breakType = builder.breakType;
         innings = builder.innings;
+        turnsThisGame = builder.turnsThisGame;
+        maxAttemptsPerGame = builder.maxAttemptsPerGame;
 
         playerColor = builder.playerColor;
         consecutiveOpponentFouls = builder.consecutiveOpponentFouls;
         consecutivePlayerFouls = builder.consecutivePlayerFouls;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "GameStatus{" +
-                "GAME_BALL=" + GAME_BALL +
-                "\n MAX_BALLS=" + MAX_BALLS +
-                "\n playerAllowedToBreakAgain=" + playerAllowedToBreakAgain +
-                "\n newGame=" + newGame +
-                "\n opponentPlayedSuccessfulSafe=" + opponentPlayedSuccessfulSafe +
-                "\n turn=" + turn +
-                "\n breaker=" + breaker +
-                "\n gameType=" + gameType +
-                "\n allowPush=" + allowPush +
-                "\n allowTurnSkip=" + allowTurnSkip +
-                "\n currentPlayerColor=" + currentPlayerColor +
-                "\n playerColor=" + playerColor +
-                "\n currentPlayerConsecutiveFouls=" + currentPlayerConsecutiveFouls +
-                "\n consecutivePlayerFouls=" + consecutivePlayerFouls +
-                "\n consecutiveOpponentFouls=" + consecutiveOpponentFouls +
-                "\n winOnBreak=" + winOnBreak +
-                "\n ballsOnTable=" + ballsOnTable +
-                "\n breakType=" + breakType +
-                "\n innings=" + innings +
+                "playerAllowedToBreakAgain=" + playerAllowedToBreakAgain +
+                ", newGame=" + newGame +
+                ", opponentPlayedSuccessfulSafe=" + opponentPlayedSuccessfulSafe +
+                ", turn=" + turn +
+                ", breaker=" + breaker +
+                ", gameType=" + gameType +
+                ", allowPush=" + allowPush +
+                ", allowTurnSkip=" + allowTurnSkip +
+                ", currentPlayerColor=" + currentPlayerColor +
+                ", playerColor=" + playerColor +
+                ", currentPlayerConsecutiveFouls=" + currentPlayerConsecutiveFouls +
+                ", consecutivePlayerFouls=" + consecutivePlayerFouls +
+                ", consecutiveOpponentFouls=" + consecutiveOpponentFouls +
+                ", winOnBreak=" + winOnBreak +
+                ", ballsOnTable=" + ballsOnTable +
+                ", breakType=" + breakType +
+                ", turnsThisGame=" + turnsThisGame +
+                ", maxAttemptsPerGame=" + maxAttemptsPerGame +
+                ", innings=" + innings +
                 '}';
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         GameStatus that = (GameStatus) o;
 
-        if (GAME_BALL != that.GAME_BALL) return false;
-        if (MAX_BALLS != that.MAX_BALLS) return false;
         if (playerAllowedToBreakAgain != that.playerAllowedToBreakAgain) return false;
         if (newGame != that.newGame) return false;
         if (opponentPlayedSuccessfulSafe != that.opponentPlayedSuccessfulSafe) return false;
@@ -121,17 +120,15 @@ public final class GameStatus implements Serializable {
         if (gameType != that.gameType) return false;
         if (currentPlayerColor != that.currentPlayerColor) return false;
         if (playerColor != that.playerColor) return false;
-        if (!ballsOnTable.containsAll(that.ballsOnTable)) return false;
-        if (!that.ballsOnTable.containsAll(ballsOnTable)) return false;
-        if (ballsOnTable.size() != that.ballsOnTable.size()) return false;
+        if (!ballsOnTable.containsAll(((GameStatus) o).ballsOnTable)) return false;
+        if (!((GameStatus) o).ballsOnTable.containsAll(ballsOnTable)) return false;
         return breakType == that.breakType;
 
     }
 
-    @Override public int hashCode() {
-        int result = GAME_BALL;
-        result = 31 * result + MAX_BALLS;
-        result = 31 * result + (playerAllowedToBreakAgain ? 1 : 0);
+    @Override
+    public int hashCode() {
+        int result = (playerAllowedToBreakAgain ? 1 : 0);
         result = 31 * result + (newGame ? 1 : 0);
         result = 31 * result + (opponentPlayedSuccessfulSafe ? 1 : 0);
         result = 31 * result + turn.hashCode();
@@ -153,8 +150,6 @@ public final class GameStatus implements Serializable {
     // TODO: 9/4/2016 JavaDoc this class
     public static final class Builder {
         private final GameType gameType;
-        private int MAX_BALLS;
-        private int GAME_BALL;
         private boolean playerAllowedToBreakAgain = false;
         private boolean newGame = false;
         private boolean opponentPlayedSuccessfulSafe = false;
@@ -168,6 +163,8 @@ public final class GameStatus implements Serializable {
         private List<Integer> ballsOnTable;
         private BreakType breakType;
         private int innings;
+        private int turnsThisGame = 0;
+        private int maxAttemptsPerGame = 0;
 
         private int consecutivePlayerFouls;
         private int consecutiveOpponentFouls;
@@ -178,63 +175,39 @@ public final class GameStatus implements Serializable {
 
             switch (gameType) {
                 case BCA_NINE_BALL:
-                    MAX_BALLS = 9;
-                    GAME_BALL = 9;
                     winOnBreak = true;
                     break;
                 case BCA_EIGHT_BALL:
-                    MAX_BALLS = 15;
-                    GAME_BALL = 8;
                     winOnBreak = false;
                     break;
                 case BCA_TEN_BALL:
-                    MAX_BALLS = 10;
-                    GAME_BALL = 10;
                     winOnBreak = false;
                     break;
                 case APA_EIGHT_BALL:
-                    MAX_BALLS = 15;
-                    GAME_BALL = 8;
                     winOnBreak = true;
                     break;
                 case APA_NINE_BALL:
-                    MAX_BALLS = 9;
-                    GAME_BALL = 9;
                     winOnBreak = true;
                     break;
                 case BCA_GHOST_NINE_BALL:
-                    MAX_BALLS = 9;
-                    GAME_BALL = 9;
                     winOnBreak = true;
                     break;
                 case BCA_GHOST_EIGHT_BALL:
-                    MAX_BALLS = 15;
-                    GAME_BALL = 8;
                     winOnBreak = false;
                     break;
                 case BCA_GHOST_TEN_BALL:
-                    MAX_BALLS = 10;
-                    GAME_BALL = 10;
                     winOnBreak = false;
                     break;
                 case APA_GHOST_EIGHT_BALL:
-                    MAX_BALLS = 15;
-                    GAME_BALL = 8;
                     winOnBreak = true;
                     break;
                 case APA_GHOST_NINE_BALL:
-                    MAX_BALLS = 9;
-                    GAME_BALL = 9;
                     winOnBreak = true;
                     break;
                 case STRAIGHT_POOL:
-                    MAX_BALLS = 200;
-                    GAME_BALL = 200;
                     winOnBreak = false;
                     break;
                 case STRAIGHT_GHOST:
-                    MAX_BALLS = 200;
-                    GAME_BALL = 200;
                     winOnBreak = false;
                     break;
                 default:
@@ -242,9 +215,19 @@ public final class GameStatus implements Serializable {
             }
 
             ballsOnTable = new ArrayList<>();
-            for (int i = 1; i <= MAX_BALLS; i++) {
+            for (int i = 1; i <= gameType.getMaxBalls(); i++) {
                 ballsOnTable.add(i);
             }
+        }
+
+        public Builder turnsThisGame(int turns) {
+            turnsThisGame = turns;
+            return this;
+        }
+
+        public Builder maxAttemptsPerGame(int maxAttempts) {
+            maxAttemptsPerGame = maxAttempts;
+            return this;
         }
 
         public Builder reBreak() {

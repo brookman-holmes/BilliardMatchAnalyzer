@@ -12,8 +12,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ApaNineBallPlayerTest extends AbstractPlayerTest {
     @Override public void setUp() {
         rank = 5;
-        expected = new Player(testName, GameType.APA_NINE_BALL, rank, rank);
-        actual = new Player(testName, GameType.APA_NINE_BALL, rank, rank);
+        expected = new Player(testName, testName, GameType.APA_NINE_BALL, rank, rank);
+        actual = new Player(testName, testName, GameType.APA_NINE_BALL, rank, rank);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest {
 
     @Test
     public void addPlayerStatsWorksCorrectlyForNineBall() {
-        Player player = new Player(testName, GameType.APA_NINE_BALL, rank, rank);
+        Player player = new Player(testName, testName, GameType.APA_NINE_BALL, rank, rank);
 
         player.addEarlyWin();
         player.addWinOnBreak();
@@ -53,40 +53,9 @@ public class ApaNineBallPlayerTest extends AbstractPlayerTest {
         assertThat(actual, is(expected));
     }
 
-    @Override @Test
-    public void addBreakShotWithBallsMadeButNoContinuation() {
-        expected.points += 2;
-        super.addBreakShotWithBallsMadeButNoContinuation();
-    }
-
-    @Override @Test
-    public void addGameWonAddsOneToTotalAndWins() {
-        expected.points += 1;
-        super.addGameWonAddsOneToTotalAndWins();
-    }
-
-    @Test
-    public void addBreakShotWithBallsMadeWithContinuation() {
-        expected.points += 2;
-        super.addBreakShotWithBallsMadeWithContinuation();
-    }
-
-    @Test
-    public void addShootingBallsMadeAdds8BallsMade() {
-        expected.points += 8;
-        super.addShootingBallsMadeAdds8BallsMade();
-    }
-
-    @Override @Test
-    public void addShootingBallsMadeAdds8BallsMadeWithFoul() {
-        expected.points += 8;
-        super.addShootingBallsMadeAdds8BallsMadeWithFoul();
-    }
-
-
     @Test
     public void addDeadBallsEquals3() {
-        Player player = new Player(testName, GameType.APA_NINE_BALL, rank, rank);
+        Player player = new Player(testName, testName, GameType.APA_NINE_BALL, rank, rank);
 
         player.addDeadBalls(3);
 

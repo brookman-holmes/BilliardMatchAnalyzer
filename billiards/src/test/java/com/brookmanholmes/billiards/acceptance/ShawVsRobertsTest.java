@@ -31,8 +31,8 @@ public class ShawVsRobertsTest extends MatchTester {
         expectedPairs = PlayerList.getPlayerPairs();
         turns = TurnList.getTurns();
 
-        game = Game.newGame(GameType.BCA_TEN_BALL, PlayerTurn.OPPONENT, BreakType.ALTERNATE);
-        controller = PlayerController.createTenBallController("Shaw", "Roberts", 7, 7);
+        game = Game.newGame(GameType.BCA_TEN_BALL, PlayerTurn.OPPONENT, BreakType.ALTERNATE, 100);
+        controller = PlayerController.createTenBallController("Shaw", "Roberts", "Shaw", "Roberts", 7, 7);
     }
 
     @Test

@@ -26,4 +26,6 @@
     <dimen name="adv_stat_body_text_size">14sp</dimen>
     <dimen name="adv_stat_graph_text_size">12sp</dimen>
     <dimen name="heat_graph_size">150dp</dimen>
+    <dimen name="safety_stat_text_size">14sp</dimen>
+    <dimen name="player_name_text_size">18sp</dimen>
 </resources>

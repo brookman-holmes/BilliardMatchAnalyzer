@@ -24,7 +24,7 @@ public class ControllerHelperTest {
     @Before
     public void setUp() {
         playerList = new ArrayList<>();
-        expectedPlayer = new Player(playerName, GameType.BCA_EIGHT_BALL);
+        expectedPlayer = new Player(playerName, playerName, GameType.BCA_EIGHT_BALL, 5);
 
     }
 
@@ -37,7 +37,6 @@ public class ControllerHelperTest {
         expectedPlayer.addShootingBallsMade(10, false);
         expectedPlayer.addShootingMiss();
         expectedPlayer.addShootingBallsMade(0, true);
-
 
         playerList.add(createPlayer());
         playerList.add(createPlayer());
@@ -66,10 +65,10 @@ public class ControllerHelperTest {
     }
 
     private Player createPlayer(List<Player> players) {
-        return new Player(playerName, GameType.BCA_EIGHT_BALL, players);
+        return new Player(playerName, playerName, GameType.BCA_EIGHT_BALL, 5, players);
     }
 
     private Player createPlayer() {
-        return new Player(playerName, GameType.BCA_EIGHT_BALL);
+        return new Player(playerName, playerName, GameType.BCA_EIGHT_BALL);
     }
 }

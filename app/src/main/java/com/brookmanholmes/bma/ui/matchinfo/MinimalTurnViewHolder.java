@@ -65,9 +65,8 @@ class MinimalTurnViewHolder extends BaseViewHolder {
     }
 
     void bind(ITurn turn, PlayerTurn playerTurn, Player player) {
-        String color = ConversionUtils.getColorString(playerTurn == PlayerTurn.PLAYER ? getColor(R.color.colorAccent) : getColor(R.color.colorAccent));
-        TurnStringAdapter turnStringAdapter = new TurnStringAdapter(itemView.getContext(), turn, player, color);
-
+        String color = ConversionUtils.getColorString(getColor(R.color.colorAccent));
+        TurnStringAdapter turnStringAdapter = new TurnStringAdapter(itemView.getContext(), turn, player.getName(), color);
         turnString.setText(turnStringAdapter.getTurnString());
 
         if (turn.getAdvStats() != null) {
@@ -83,11 +82,12 @@ class MinimalTurnViewHolder extends BaseViewHolder {
         }
     }
 
-    void showDivider(boolean showDivider) {
-        divider.setVisibility(showDivider ? View.VISIBLE : View.GONE);
+    void showDivider(boolean showDivider, boolean newGame) {
+        divider.setVisibility((showDivider && !newGame) ? View.VISIBLE : View.GONE);
+
         CardView.LayoutParams params = new CardView.LayoutParams(itemView.getLayoutParams());
         params.topMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
-        params.bottomMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 0);
+        params.bottomMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), newGame ? -6 : 8);
         params.leftMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
         params.rightMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
         itemView.setLayoutParams(params);
@@ -108,6 +108,7 @@ class MinimalTurnViewHolder extends BaseViewHolder {
         }
 
         if (turn.getAdvStats().getSpeed() > 0) {
+            shotSpeed.setVisibility(View.VISIBLE);
             shotSpeed.setText(String.format(Locale.getDefault(), "Speed: %1$d/10", turn.getAdvStats().getSpeed()));
             shotSpeed.setPercentage(turn.getAdvStats().getSpeed() * 10);
         } else {

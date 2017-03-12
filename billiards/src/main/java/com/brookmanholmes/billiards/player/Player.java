@@ -1,11 +1,13 @@
 package com.brookmanholmes.billiards.player;
 
 import com.brookmanholmes.billiards.game.GameType;
+import com.brookmanholmes.billiards.turn.ITurn;
 
 import org.apache.commons.math3.stat.StatUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -47,39 +49,51 @@ public class Player implements Comparable<Player>, Serializable {
     int highRun;
     int seriousFouls;
     List<Integer> runLengths = new ArrayList<>();
+    List<ITurn> turns = new ArrayList<>();
+    String id = "";
     String name = "";
 
-    public Player(String name, GameType gameType, List<Player> players) {
-        this(name, gameType, players.size() > 0 ? players.get(0).rank : 5);
+    public Player(Player player) {
+        this(player.id, player.name, player.gameType, player.rank, player.opponentRank);
+        addPlayerStats(player);
+    }
+
+    public Player(String id, String name, GameType gameType, int rank, List<Player> players) {
+        this(id, name, gameType, rank);
 
         for (Player player : players)
             addPlayerStats(player);
     }
 
-    public Player(String name, GameType gameType, int rank, int opponentRank) {
+    public Player(String id, String name, GameType gameType, int rank, int opponentRank) {
+        this(id, name, gameType, rank);
         this.opponentRank = opponentRank;
-        this.name = name;
-        this.gameType = gameType;
-        this.rank = rank;
     }
 
     /**
      * Creates a new player with the specified arguments
-     * @param name The name of the player
+     * @param id The id of the player
      * @param rank The rank of the player
      */
-    public Player(String name, GameType gameType, int rank) {
+    public Player(String id, String name, GameType gameType, int rank) {
         this.name = name;
+        this.id = id;
         this.rank = rank;
         this.gameType = gameType;
     }
 
     /**
      * Creates a new player with the specified arguments, defaulting the rank to 0
-     * @param name The name of the player
+     * @param id The id of the player
      */
-    public Player(String name, GameType gameType) {
-        this(name, gameType, 0);
+    public Player(String id, String name, GameType gameType) {
+        this(id, name, gameType, 0);
+    }
+
+    public void addPlayerStats(Collection<Player> players) {
+        for (Player player : players) {
+            addPlayerStats(player);
+        }
     }
 
     /**
@@ -122,13 +136,26 @@ public class Player implements Comparable<Player>, Serializable {
 
         seriousFouls += player.seriousFouls;
 
-        if (gameType.isStraightPool()) {
-            if (player.shootingTurns > 0)
-                runLengths.add(player.shootingBallsMade);
+        runLengths.addAll(player.runLengths);
 
+        if (gameType.isStraightPool()) {
             if (player.points > player.rank)
                 gameWins++;
         }
+
+        turns.addAll(player.turns);
+    }
+
+    public void addTurn(ITurn turn) {
+        turns.add(turn);
+    }
+
+    public void addTurns(Collection<ITurn> turns) {
+        this.turns.addAll(turns);
+    }
+
+    public List<ITurn> getTurns() {
+        return new ArrayList<>(turns);
     }
 
     public int getMatchPoints(int opponentScore) {
@@ -162,7 +189,14 @@ public class Player implements Comparable<Player>, Serializable {
             return Players.apa8BallRaceTo(rank, opponentRank).getPlayerRaceTo();
         } else if (gameType.isApa9Ball()) {
             return Players.apa9BallRaceTo(rank);
-        } else return rank;
+        } else if (gameType == GameType.ALL) {
+            return gameTotal;
+        } else
+            return rank;
+    }
+
+    public int getShootingTurns() {
+        return shootingTurns;
     }
 
     public int getDeadBalls() {
@@ -236,19 +270,19 @@ public class Player implements Comparable<Player>, Serializable {
     }
 
     /**
-     * Getter for the player name
-     * @return The name of the player
+     * Getter for the player id
+     * @return The id of the player
      */
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
     /**
-     * Setter for the player name
-     * @param name The new name of the player
+     * Setter for the player id
+     * @param id The new id of the player
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -308,6 +342,10 @@ public class Player implements Comparable<Player>, Serializable {
      */
     public void addShootingBallsMade(int ballsMade, boolean foul) {
         shootingBallsMade += ballsMade;
+        runLengths.add(ballsMade);
+        if (ballsMade > highRun)
+            highRun = ballsMade;
+
         shootingTurns++;
 
         if (foul)
@@ -673,7 +711,7 @@ public class Player implements Comparable<Player>, Serializable {
 
     @Override
     public int compareTo(Player o) {
-        return this.name.compareTo(o.name);
+        return this.id.compareTo(o.id);
     }
 
     @Override
@@ -681,40 +719,53 @@ public class Player implements Comparable<Player>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Player that = (Player) o;
+        Player player = (Player) o;
 
-        if (safetyAttempts != that.safetyAttempts) return false;
-        if (safetySuccesses != that.safetySuccesses) return false;
-        if (safetyFouls != that.safetyFouls) return false;
-        if (safetyReturns != that.safetyReturns) return false;
-        if (safetyEscapes != that.safetyEscapes) return false;
-        if (safetyForcedErrors != that.safetyForcedErrors) return false;
-        if (breakSuccesses != that.breakSuccesses) return false;
-        if (breakAttempts != that.breakAttempts) return false;
-        if (breakContinuations != that.breakContinuations) return false;
-        if (breakFouls != that.breakFouls) return false;
-        if (breakBallsMade != that.breakBallsMade) return false;
-        if (shootingBallsMade != that.shootingBallsMade) return false;
-        if (shootingTurns != that.shootingTurns) return false;
-        if (shootingMisses != that.shootingMisses) return false;
-        if (shootingFouls != that.shootingFouls) return false;
-        if (breakAndRuns != that.breakAndRuns) return false;
-        if (tableRuns != that.tableRuns) return false;
-        if (fiveBallRun != that.fiveBallRun) return false;
-        if (gameTotal != that.gameTotal) return false;
-        if (gameWins != that.gameWins) return false;
-        return name.equals(that.name);
+        if (rank != player.rank) return false;
+        if (safetyAttempts != player.safetyAttempts) return false;
+        if (safetySuccesses != player.safetySuccesses) return false;
+        if (safetyFouls != player.safetyFouls) return false;
+        if (safetyReturns != player.safetyReturns) return false;
+        if (breakSuccesses != player.breakSuccesses) return false;
+        if (breakAttempts != player.breakAttempts) return false;
+        if (breakContinuations != player.breakContinuations) return false;
+        if (breakFouls != player.breakFouls) return false;
+        if (breakBallsMade != player.breakBallsMade) return false;
+        if (shootingBallsMade != player.shootingBallsMade) return false;
+        if (shootingTurns != player.shootingTurns) return false;
+        if (shootingMisses != player.shootingMisses) return false;
+        if (shootingFouls != player.shootingFouls) return false;
+        if (gameTotal != player.gameTotal) return false;
+        if (gameWins != player.gameWins) return false;
+        if (safetyEscapes != player.safetyEscapes) return false;
+        if (safetyForcedErrors != player.safetyForcedErrors) return false;
+        if (breakAndRuns != player.breakAndRuns) return false;
+        if (tableRuns != player.tableRuns) return false;
+        if (fiveBallRun != player.fiveBallRun) return false;
+        if (opponentRank != player.opponentRank) return false;
+        if (winsOnBreak != player.winsOnBreak) return false;
+        if (earlyWins != player.earlyWins) return false;
+        if (points != player.points) return false;
+        if (deadBalls != player.deadBalls) return false;
+        if (highRun != player.highRun) return false;
+        if (seriousFouls != player.seriousFouls) return false;
+        if (gameType != player.gameType) return false;
+        if (date != null ? !date.equals(player.date) : player.date != null) return false;
+        if (!runLengths.equals(player.runLengths)) return false;
+        if (!id.equals(player.id)) return false;
+        return name.equals(player.name);
 
     }
 
-    @Override public int hashCode() {
-        int result = name.hashCode();
+    @Override
+    public int hashCode() {
+        int result = gameType.hashCode();
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + rank;
         result = 31 * result + safetyAttempts;
         result = 31 * result + safetySuccesses;
         result = 31 * result + safetyFouls;
         result = 31 * result + safetyReturns;
-        result = 31 * result + safetyEscapes;
-        result = 31 * result + safetyForcedErrors;
         result = 31 * result + breakSuccesses;
         result = 31 * result + breakAttempts;
         result = 31 * result + breakContinuations;
@@ -724,23 +775,36 @@ public class Player implements Comparable<Player>, Serializable {
         result = 31 * result + shootingTurns;
         result = 31 * result + shootingMisses;
         result = 31 * result + shootingFouls;
+        result = 31 * result + gameTotal;
+        result = 31 * result + gameWins;
+        result = 31 * result + safetyEscapes;
+        result = 31 * result + safetyForcedErrors;
         result = 31 * result + breakAndRuns;
         result = 31 * result + tableRuns;
         result = 31 * result + fiveBallRun;
-        result = 31 * result + gameTotal;
-        result = 31 * result + gameWins;
+        result = 31 * result + opponentRank;
+        result = 31 * result + winsOnBreak;
+        result = 31 * result + earlyWins;
+        result = 31 * result + points;
+        result = 31 * result + deadBalls;
+        result = 31 * result + highRun;
+        result = 31 * result + seriousFouls;
+        result = 31 * result + runLengths.hashCode();
+        result = 31 * result + id.hashCode();
+        result = 31 * result + name.hashCode();
         return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Player{" +
-                "name='" + name + '\'' +
+                "gameType=" + gameType +
+                "\n date=" + date +
+                "\n rank=" + rank +
                 "\n safetyAttempts=" + safetyAttempts +
                 "\n safetySuccesses=" + safetySuccesses +
                 "\n safetyFouls=" + safetyFouls +
                 "\n safetyReturns=" + safetyReturns +
-                "\n safetyEscapes=" + safetyEscapes +
-                "\n safetyForcedErrors=" + safetyForcedErrors +
                 "\n breakSuccesses=" + breakSuccesses +
                 "\n breakAttempts=" + breakAttempts +
                 "\n breakContinuations=" + breakContinuations +
@@ -750,11 +814,23 @@ public class Player implements Comparable<Player>, Serializable {
                 "\n shootingTurns=" + shootingTurns +
                 "\n shootingMisses=" + shootingMisses +
                 "\n shootingFouls=" + shootingFouls +
+                "\n gameTotal=" + gameTotal +
+                "\n gameWins=" + gameWins +
+                "\n safetyEscapes=" + safetyEscapes +
+                "\n safetyForcedErrors=" + safetyForcedErrors +
                 "\n breakAndRuns=" + breakAndRuns +
                 "\n tableRuns=" + tableRuns +
                 "\n fiveBallRun=" + fiveBallRun +
-                "\n gameTotal=" + gameTotal +
-                "\n gameWins=" + gameWins +
+                "\n opponentRank=" + opponentRank +
+                "\n winsOnBreak=" + winsOnBreak +
+                "\n earlyWins=" + earlyWins +
+                "\n points=" + points +
+                "\n deadBalls=" + deadBalls +
+                "\n highRun=" + highRun +
+                "\n seriousFouls=" + seriousFouls +
+                "\n runLengths=" + runLengths +
+                "\n id='" + id + '\'' +
+                "\n name='" + name + '\'' +
                 '}';
     }
 
@@ -764,5 +840,9 @@ public class Player implements Comparable<Player>, Serializable {
 
     public int getSeriousFouls() {
         return seriousFouls;
+    }
+
+    public String getName() {
+        return name;
     }
 }

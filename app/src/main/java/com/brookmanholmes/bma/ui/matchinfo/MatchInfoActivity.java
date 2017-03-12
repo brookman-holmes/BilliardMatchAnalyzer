@@ -1,99 +1,103 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
-import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.dialog.GameStatusViewBuilder;
-import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.CustomViewPager;
-import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
 public class MatchInfoActivity extends AbstractMatchActivity {
     private static final String TAG = "MatchInfoActivity";
-    private final List<UpdateMatchInfo> listeners = new ArrayList<>();
+    private final List<MatchInfoListener> listeners = new ArrayList<>();
 
     @Bind(R.id.playerName)
     TextView playerName;
     @Bind(R.id.opponentName)
     TextView opponentName;
-    @Bind(R.id.playerNameLayout)
-    View playerNameLayout;
-    @Bind(R.id.opponentNameLayout)
-    View opponentNameLayout;
+    @Bind(R.id.playerTurnIndicator)
+    ViewGroup playerTurnIndicator;
+    @Bind(R.id.opponentTurnIndicator)
+    ViewGroup opponentTurnIndicator;
+
+    @Nullable
+    @Bind(R.id.playerTurnIndicatorSec)
+    ViewGroup playerTurnIndicatorSec;
+    @Nullable
+    @Bind(R.id.opponentTurnIndicatorSec)
+    ViewGroup opponentTurnIndicatorSec;
+
+    @Nullable
+    @Bind(R.id.playerNameSecondary)
+    TextView playerNameSec;
+    @Nullable
+    @Bind(R.id.opponentNameSecondary)
+    TextView opponentNameSec;
     @Bind(R.id.pager)
     CustomViewPager pager;
 
     private Snackbar matchOverSnackbar;
-    private boolean matchOverSnackbarDismissed = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null)
-            matchOverSnackbarDismissed = savedInstanceState.getBoolean("snackbarDismissed", false);
 
         pager.setPagingEnabled(false);
         playerName.setText(match.getPlayer().getName());
         opponentName.setText(match.getOpponent().getName());
-        // no reason to click on The Ghost
-        opponentNameLayout.setEnabled(!match.getGameStatus().gameType.isGhostGame());
-
+        if (playerNameSec != null && opponentNameSec != null) {
+            playerNameSec.setText(match.getPlayer().getName());
+            opponentNameSec.setText(match.getOpponent().getName());
+        }
         matchOverSnackbar = makeSnackbar(R.string.match_over, Snackbar.LENGTH_INDEFINITE)
                 .setAction(android.R.string.ok, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         matchOverSnackbar.dismiss();
-                        matchOverSnackbarDismissed = true;
                     }
                 });
 
-        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), getMatchId());
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean("show_match_over_snackbar", false))
+                matchOverSnackbar.show();
+        }
+
+        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), match.getGameStatus().gameType);
         pager.setAdapter(adapter);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean("snackbarDismissed", matchOverSnackbarDismissed);
-    }
-
-    @OnClick({R.id.opponentNameLayout, R.id.playerNameLayout})
-    public void showPlayerOptionsMenu(LinearLayout view) {
-        String name = ((TextView) view.getChildAt(0)).getText().toString();
-        PlayerTurn turn = match.getPlayer().getName().equals(name) ? PlayerTurn.PLAYER : PlayerTurn.OPPONENT;
-        showChoiceDialog(name, turn, view);
+        outState.putBoolean("show_match_over_snackbar", matchOverSnackbar.isShown());
     }
 
     @Override
     public void updatePlayerName(String name, String newName) {
         if (opponentName.getText().toString().equals(name)) {
             opponentName.setText(newName);
-            match.setOpponentName(newName);
+            match.setOpponentId(newName);
         } else if (playerName.getText().toString().equals(name)) {
             playerName.setText(newName);
-            match.setPlayerName(newName);
+            match.setPlayerId(newName);
         }
     }
 
@@ -103,27 +107,55 @@ public class MatchInfoActivity extends AbstractMatchActivity {
             updateMenuItems();
 
         if (match.isMatchOver()) {
-            playerName.setAlpha(1);
-            opponentName.setAlpha(1);
+            setNameEnabled(true, true);
         } else if (match.getGameStatus().turn == PlayerTurn.PLAYER) {
-            playerName.setAlpha(1);
-            opponentName.setAlpha(.7f);
+            setNameEnabled(true, false);
         } else {
-            playerName.setAlpha(.7f);
-            opponentName.setAlpha(1);
+            setNameEnabled(false, true);
         }
 
         updateFragments();
 
         if (match.isMatchOver()) {
             fabAddTurn.hide();
-            if (!matchOverSnackbarDismissed)
+            if (!matchOverSnackbar.isShown())
                 matchOverSnackbar.show();
         } else {
             fabAddTurn.show();
             if (matchOverSnackbar.isShown())
                 matchOverSnackbar.dismiss();
         }
+    }
+
+    private void setNameEnabled(boolean player, boolean opponent) {
+        setPlayerTurnIndicator(playerTurnIndicator, player);
+        setPlayerTurnIndicator(opponentTurnIndicator, opponent);
+
+        if (opponentTurnIndicatorSec != null)
+            setPlayerTurnIndicator(opponentTurnIndicatorSec, opponent);
+        if (playerTurnIndicatorSec != null)
+            setPlayerTurnIndicator(playerTurnIndicatorSec, player);
+
+        isPlayerTurn(playerName, player);
+        isPlayerTurn(opponentName, opponent);
+        if (opponentNameSec != null)
+            isPlayerTurn(opponentNameSec, opponent);
+        if (playerNameSec != null)
+            isPlayerTurn(playerNameSec, player);
+
+    }
+
+    private void setPlayerTurnIndicator(ViewGroup turnIndicator, boolean enabled) {
+        if (enabled)
+            turnIndicator.setBackgroundColor(getColor2(R.color.colorPrimary));
+        else turnIndicator.setBackgroundColor(getColor2(R.color.colorPrimary));
+    }
+
+    private void isPlayerTurn(TextView textView, boolean enabled) {
+        if (enabled)
+            textView.setTextColor(getColor2(R.color.white));
+        else
+            textView.setTextColor(getColor(R.color.white, 159));
     }
 
     @Override
@@ -163,47 +195,17 @@ public class MatchInfoActivity extends AbstractMatchActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showChoiceDialog(final String name, final PlayerTurn turn, final View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
-
-        if (MatchDialogHelperUtils.currentPlayerTurnAndAdvancedStats(turn, match.getDetails()))
-            popupMenu.inflate(R.menu.menu_player_adv);
-        else popupMenu.inflate(R.menu.menu_player);
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-
-                if (id == R.id.action_adv_stats)
-                    showAdvancedStatsDialog(name, turn);
-
-                if (id == R.id.action_edit_name)
-                    showEditPlayerNameDialog(name);
-
-                if (id == R.id.action_view_profile) {
-                    Intent intent = new Intent(MatchInfoActivity.this, PlayerProfileActivity.class);
-                    intent.putExtra(ARG_PLAYER_NAME, name);
-                    startActivity(intent);
-                }
-
-                return true;
-            }
-        });
-
-        popupMenu.show();
-    }
-
-    void registerFragment(UpdateMatchInfo info) {
+    void registerFragment(MatchInfoListener info) {
         listeners.add(info);
+        info.update(match);
     }
 
-    void removeFragment(UpdateMatchInfo info) {
+    void removeFragment(MatchInfoListener info) {
         listeners.remove(info);
     }
 
     private void updateFragments() {
-        for (UpdateMatchInfo listener : listeners) {
+        for (MatchInfoListener listener : listeners) {
             listener.update(match);
         }
     }
@@ -215,34 +217,25 @@ public class MatchInfoActivity extends AbstractMatchActivity {
     }
 
     @Override
-    protected String getMimeType() {
-        return "application/com.brookmanholmes.bma.matchmodel";
-    }
-
-    @Override
     protected int getLayout() {
         return R.layout.activity_match_info;
     }
 
-    interface UpdateMatchInfo {
-        void update(Match match);
-    }
-
     private static class PagerAdapter extends FragmentPagerAdapter {
-        private final long matchId;
+        private final GameType gameType;
 
-        PagerAdapter(FragmentManager fm, long matchId) {
+        PagerAdapter(FragmentManager fm, GameType gameType) {
             super(fm);
-            this.matchId = matchId;
+            this.gameType = gameType;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return MatchInfoFragment.create(matchId);
+                    return MatchInfoFragment.newInstance(gameType);
                 default:
-                    return TurnListFragment.create(matchId);
+                    return new TurnListFragment();
             }
         }
 

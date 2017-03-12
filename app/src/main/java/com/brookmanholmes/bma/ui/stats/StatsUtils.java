@@ -15,6 +15,7 @@ import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,7 +71,7 @@ class StatsUtils {
         view.setLayoutParams(params);
     }
 
-    public static Pair<Integer, Integer> getHowError(List<AdvStats> stats, AdvStats.HowType left, AdvStats.HowType right) {
+    public static Pair<Integer, Integer> getHowError(Collection<AdvStats> stats, AdvStats.HowType left, AdvStats.HowType right) {
         int fast = 0, slow = 0;
 
         for (AdvStats stat : stats) {
@@ -83,7 +84,7 @@ class StatsUtils {
         return new Pair<>(slow, fast);
     }
 
-    public static List<StatLineItem> getSafetyStats(List<AdvStats> stats) {
+    public static List<StatLineItem> getSafetyStats(Collection<AdvStats> stats) {
         int total = stats.size();
 
         List<StatLineItem> list = new ArrayList<>();
@@ -101,22 +102,24 @@ class StatsUtils {
         return list;
     }
 
-    private static int getCountOfSubTypesInList(List<AdvStats> stats, @StringRes int res) {
+    private static int getCountOfSubTypesInList(Collection<AdvStats> stats, @StringRes int res) {
         int count = 0;
 
         if (res == R.string.safety_open) {
-            for (AdvStats stat : stats)
+            for (AdvStats stat : stats) {
                 if (stat.getShotType() == AdvStats.ShotType.SAFETY_ERROR)
                     count++;
+            }
         } else
-            for (AdvStats stat : stats)
+            for (AdvStats stat : stats) {
                 if (res == MatchDialogHelperUtils.convertSubTypeToStringRes(stat.getShotSubtype()))
                     count++;
+            }
 
         return count;
     }
 
-    public static int getFailedSafeties(List<AdvStats> stats) {
+    public static int getFailedSafeties(Collection<AdvStats> stats) {
         int count = 0;
         for (AdvStats stat : stats)
             if (stat.getShotSubtype() == AdvStats.SubType.OPEN)
@@ -125,7 +128,7 @@ class StatsUtils {
         return count;
     }
 
-    public static int getMiscues(List<AdvStats> stats) {
+    public static int getMiscues(Collection<AdvStats> stats) {
         int count = 0;
 
         for (AdvStats stat : stats) {

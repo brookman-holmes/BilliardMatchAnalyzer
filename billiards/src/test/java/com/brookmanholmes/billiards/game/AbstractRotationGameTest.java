@@ -26,7 +26,7 @@ public abstract class AbstractRotationGameTest extends AbstractGameTest {
 
     @Test
     public void allowPushIsTrueAfterNewGame() {
-        game.startNewGame(turn().breakBalls(4).madeBalls(1, 2, 3, game.GAME_BALL).win());
+        game.startNewGame(turn().breakBalls(4).madeBalls(1, 2, 3, game.gameType.getGameBall()).win());
 
         assertThat(game.allowPush, is(true));
     }
@@ -53,6 +53,6 @@ public abstract class AbstractRotationGameTest extends AbstractGameTest {
     }
 
     @Override void removeBalls() {
-        game.ballsOnTable.removeAll(Arrays.asList(1, (game.GAME_BALL - 1)));
+        game.ballsOnTable.removeAll(Arrays.asList(1, (game.gameType.getGameBall() - 1)));
     }
 }

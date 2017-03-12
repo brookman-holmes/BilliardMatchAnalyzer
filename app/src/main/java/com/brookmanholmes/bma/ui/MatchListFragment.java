@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -24,20 +23,23 @@ import com.brookmanholmes.billiards.game.BreakType;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.data.DatabaseAdapter;
-import com.brookmanholmes.bma.ui.matchinfo.HighRunAttemptActivity;
+import com.brookmanholmes.bma.data.FireDataSource;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
+import com.brookmanholmes.bma.ui.matchinfo.MatchListener;
+import com.brookmanholmes.bma.ui.matchinfo.RunAttemptActivity;
 import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
-import com.brookmanholmes.bma.ui.stats.Filterable;
-import com.brookmanholmes.bma.ui.stats.StatFilter;
 import com.brookmanholmes.bma.ui.view.BaseViewHolder;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,12 +49,13 @@ import butterknife.OnLongClick;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.MatchListRecyclerAdapter> implements Filterable {
+public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.MatchListRecyclerAdapter>
+        implements MatchListener {
     private static final String TAG = "MatchListFragment";
     private static final String ARG_PLAYER = "arg_player";
     private static final String ARG_OPPONENT = "arg_opponent";
+
     private String player, opponent;
-    private DatabaseAdapter database;
 
     public MatchListFragment() {
     }
@@ -71,22 +74,21 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        database = new DatabaseAdapter(getContext());
         if (getArguments() != null) {
             player = getArguments().getString(ARG_PLAYER, null);
             opponent = getArguments().getString(ARG_OPPONENT, null);
         }
 
-        adapter = new MatchListRecyclerAdapter(database.getMatches(player, opponent));
+        adapter = new MatchListRecyclerAdapter(player, new ArrayList<Match>());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getActivity() instanceof PlayerProfileActivity) {
-            ((PlayerProfileActivity) getActivity()).addListener(this);
-        }
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+        if (getActivity() instanceof PlayerProfileActivity) {
+            ((PlayerProfileActivity) getActivity()).addMatchListener(this);
+        }
 
         Drawable divider = getContext().getDrawable(R.drawable.line_divider);
         if (recyclerView.getLayoutManager() instanceof GridLayoutManager)
@@ -99,26 +101,11 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        update();
-    }
-
-    @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         if (getActivity() instanceof PlayerProfileActivity) {
-            ((PlayerProfileActivity) getActivity()).removeListener(this);
+            ((PlayerProfileActivity) getActivity()).removeMatchListener(this);
         }
-        super.onDestroy();
-    }
-
-    public void update() {
-        adapter.update(database.getMatches(player, opponent));
-    }
-
-    @Override
-    public void setFilter(StatFilter filter) {
-        new FilterPlayers().execute(filter);
+        super.onDestroyView();
     }
 
     @Override
@@ -135,13 +122,21 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
         }
     }
 
+    @Override
+    public void update(List<Match> matches, Map<String, List<String>> turnIds) {
+        adapter.update(matches, turnIds);
+    }
+
     static class MatchListRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         private static final int MATCH_VIEW = 0;
         private static final int FOOTER = 1;
         List<Match> matches;
+        Map<String, List<String>> turnIds = new HashMap<>();
+        String playerId;
 
-        MatchListRecyclerAdapter(List<Match> matches) {
+        MatchListRecyclerAdapter(String playerId, List<Match> matches) {
             this.matches = matches;
+            this.playerId = playerId;
         }
 
         @Override
@@ -171,45 +166,20 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
             return position == getItemCount() - 1 ? FOOTER : MATCH_VIEW;
         }
 
-        private void update(List<Match> matches) {
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MatchListDiffCallback(this.matches, matches));
-            this.matches = matches;
+        public void update(List<Match> matches, Map<String, List<String>> turnIds) {
+            Collections.sort(matches, new Comparator<Match>() {
+                @Override
+                public int compare(Match o1, Match o2) {
+                    // take the negative because I want it sorted newest match first
+                    return -o1.getCreatedOn().compareTo(o2.getCreatedOn());
+                }
+            });
+
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MatchListDiffCallback(matches, this.matches));
+            this.matches.clear();
+            this.matches.addAll(matches);
+            this.turnIds = turnIds;
             diffResult.dispatchUpdatesTo(this);
-        }
-
-
-
-        private static class MatchListDiffCallback extends DiffUtil.Callback {
-            private List<Match> oldList;
-            private List<Match> newList;
-
-            MatchListDiffCallback(List<Match> oldList, List<Match> newList) {
-                this.oldList = oldList;
-                this.newList = newList;
-            }
-
-            @Override
-            public int getOldListSize() {
-                return oldList != null ? oldList.size() : 0;
-            }
-
-            @Override
-            public int getNewListSize() {
-                return newList != null ? newList.size() : 0;
-            }
-
-            @Override
-            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                return Long.compare(newList.get(newItemPosition).getMatchId(), oldList.get(oldItemPosition).getMatchId()) == 0;
-            }
-
-            @Override
-            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                Match oldMatch = oldList.get(oldItemPosition);
-                Match newMatch = newList.get(newItemPosition);
-
-                return oldMatch.equals(newMatch);
-            }
         }
 
         static class FooterHolder extends BaseViewHolder {
@@ -219,7 +189,7 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
         }
 
         class ListItemHolder extends BaseViewHolder {
-            long id;
+            String id;
 
             @Bind(R.id.players)
             TextView playerNames;
@@ -242,9 +212,12 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
             public void bind(Match match) {
                 setLocation(match.getLocation());
                 date.setText(getDate(match.getCreatedOn()));
-                if (match.getGameStatus().gameType == GameType.STRAIGHT_GHOST) {
+                if (match.getGameStatus().gameType.isSinglePlayer()) {
                     playerNames.setText(match.getPlayer().getName());
-                    breakType.setText(getString(R.string.game_straight_ghost));
+                    if (match.getGameStatus().gameType.isStraightPool())
+                        breakType.setText(getString(R.string.game_straight_ghost));
+                    else
+                        breakType.setText("vs. The Ghost");
                 } else if (match.getGameStatus().gameType == GameType.STRAIGHT_POOL) {
                     playerNames.setText(getString(R.string.and, match.getPlayer().getName(), match.getOpponent().getName()));
                     breakType.setText(getString(R.string.game_straight));
@@ -258,7 +231,7 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
             }
 
             void setLocation(String location) {
-                if (location.isEmpty())
+                if (location == null || location.isEmpty())
                     this.location.setVisibility(View.GONE);
                 else {
                     this.location.setVisibility(View.VISIBLE);
@@ -269,39 +242,39 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
             @OnClick(R.id.container)
             public void onClick() {
                 final Intent intent = matches.get(getAdapterPosition()).getGameStatus().gameType.isSinglePlayer() ?
-                        new Intent(getContext(), HighRunAttemptActivity.class) :
+                        new Intent(getContext(), RunAttemptActivity.class) :
                         new Intent(getContext(), MatchInfoActivity.class);
-                intent.putExtra(BaseActivity.ARG_MATCH_ID, id);
+
+                intent.putExtra("match", matches.get(getAdapterPosition()));
+                ArrayList<String> turnList = new ArrayList<>((turnIds.get(id) == null ? new ArrayList<String>() : turnIds.get(id)));
+                ArrayList<Match> accessoryMatches = new ArrayList<>();
+                for (Match match : matches) {
+                    if (match.getGameStatus().gameType == matches.get(getAdapterPosition()).getGameStatus().gameType
+                            && !match.getMatchId().equals(matches.get(getAdapterPosition()).getMatchId()))
+                        accessoryMatches.add(match);
+                }
+                intent.putExtra("turnIds", turnList);
+                intent.putExtra("accessory_matches", accessoryMatches);
                 getContext().startActivity(intent);
             }
 
             @OnLongClick(R.id.container)
             boolean onLongClick() {
-                // only display delete dialog from IntroActivity otherwise the user can wrap
-                // around to deleting all their matches and then going back to a nonexistent match
-                if (getContext() instanceof IntroActivity) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-                    builder.setMessage(getString(R.string.delete_match))
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    new DatabaseAdapter(getContext()).deleteMatch(id); // remove from the database
-                                    // update recyclerView
-                                    matches.remove(getAdapterPosition());
-                                    notifyItemRemoved(getAdapterPosition());
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                builder.setMessage(getString(R.string.delete_match))
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new FireDataSource().deleteMatch(matches.get(getAdapterPosition()), playerId); // remove from the database
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
 
-                                    // remove the share match string if it exists
-                                    IntroActivity activity = (IntroActivity) getContext();
-                                    activity.getPreferences().edit().remove(IntroActivity.ARG_MATCH_ID + id).apply();
-                                }
-                            })
-                            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).create().show();
-                }
                 return true;
             }
 
@@ -400,35 +373,32 @@ public class MatchListFragment extends BaseRecyclerFragment<MatchListFragment.Ma
         }
     }
 
-    private class FilterPlayers extends AsyncTask<StatFilter, Void, List<Match>> {
-        @Override
-        protected void onPostExecute(List<Match> matches) {
-            if (isAdded() && !isCancelled())
-                adapter.update(matches);
+    private static class MatchListDiffCallback extends DiffUtil.Callback {
+        private List<Match> newList, oldList;
+
+        public MatchListDiffCallback(List<Match> newList, List<Match> oldList) {
+            this.newList = newList;
+            this.oldList = oldList;
         }
 
         @Override
-        protected List<Match> doInBackground(StatFilter... filter) {
-            List<Match> filteredMatches = new ArrayList<>();
+        public int getOldListSize() {
+            return oldList.size();
+        }
 
-            String opponent = filter[0].getOpponent();
-            if (opponent.equals("All opponents"))
-                opponent = null;
+        @Override
+        public int getNewListSize() {
+            return newList.size();
+        }
 
-            // some error is occurring with a null context? Trying to guard against that here
-            List<Match> matches = new ArrayList<>();
-            DatabaseAdapter db = getContext() != null ? new DatabaseAdapter(getContext()) : null;
-            if (db != null) {
-                matches.addAll(db.getMatches(player, opponent));
-            }
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return newList.get(newItemPosition).getMatchId().equals(oldList.get(oldItemPosition).getMatchId());
+        }
 
-            for (Match match : matches) {
-                if (filter[0].isMatchQualified(match)) {
-                    filteredMatches.add(match);
-                }
-            }
-
-            return filteredMatches;
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return newList.get(newItemPosition).equals(oldList.get(oldItemPosition));
         }
     }
 }

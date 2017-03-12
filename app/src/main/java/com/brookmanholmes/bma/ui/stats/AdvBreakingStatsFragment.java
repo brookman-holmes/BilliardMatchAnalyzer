@@ -1,6 +1,5 @@
 package com.brookmanholmes.bma.ui.stats;
 
-import android.os.Bundle;
 import android.widget.TextView;
 
 import com.brookmanholmes.billiards.turn.AdvStats;
@@ -29,22 +28,6 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
     @Bind(R.id.miscues)
     TextView miscues;
 
-    public static AdvBreakingStatsFragment create(Bundle args) {
-        AdvBreakingStatsFragment frag = new AdvBreakingStatsFragment();
-        frag.setArguments(args);
-
-        return frag;
-    }
-
-    public static AdvBreakingStatsFragment create(String name) {
-        AdvBreakingStatsFragment frag = new AdvBreakingStatsFragment();
-        Bundle args = new Bundle();
-        args.putString(AdvStatsDialog.ARG_PLAYER_NAME, name);
-        frag.setArguments(args);
-
-        return frag;
-    }
-
     @Override
     void updateView() {
         speed.setWeights(StatsUtils.getHowError(stats, TOO_SOFT, TOO_HARD));
@@ -54,12 +37,12 @@ public class AdvBreakingStatsFragment extends BaseAdvStatsFragment {
     }
 
     @Override
-    String[] getShotTypes() {
-        return AdvStats.ShotType.getBreaks();
+    int getLayoutId() {
+        return R.layout.fragment_adv_break_stats;
     }
 
     @Override
-    int getLayoutId() {
-        return R.layout.fragment_adv_break_stats;
+    AdvStats.ShotType[] getShotTypes() {
+        return AdvStats.ShotType.getBreaks();
     }
 }

@@ -14,17 +14,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class StraightPoolPlayerTest {
     Player player;
-    String name = "name";
+    String name = "id";
     int rank = 100;
 
     @Before
     public void setup() {
-        player = new Player(name, GameType.STRAIGHT_POOL, rank);
+        player = new Player(name, name, GameType.STRAIGHT_POOL, rank);
     }
 
     @Test
     public void seriousFoulGetsAddedWhenAddingPlayerData() {
-        Player player2 = new Player(name, GameType.STRAIGHT_POOL, rank);
+        Player player2 = new Player(name, name, GameType.STRAIGHT_POOL, rank);
         player2.addSeriousFoul();
 
         player.addPlayerStats(player2);

@@ -1,5 +1,9 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
+import android.support.annotation.Nullable;
+
+import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
@@ -10,36 +14,34 @@ import com.brookmanholmes.bma.R;
 public class BreaksBinder extends BindingAdapter {
 
     private static final String TAG = "BreaksBinder";
-    public int playerBallOnBreak, opponentBallOnBreak;
-    public int playerBreaks, opponentBreaks;
+    public int playerBallOnBreak = 0, opponentBallOnBreak = 0;
+    public int playerBreaks = 0, opponentBreaks = 0;
 
-    public String playerAvg, opponentAvg;
+    public String playerAvg = defaultAvg, opponentAvg = defaultAvg;
 
-    public String playerContinuation, opponentContinuation;
+    public String playerContinuation = "0", opponentContinuation = "0";
 
-    public String playerFouls, opponentFouls;
+    public String playerFouls = "0", opponentFouls = "0";
 
     public String playerWinOnBreak = "0", opponentWinOnBreak = "0";
     public String breakBall;
     private boolean showWinOnBreak = false;
 
-    BreaksBinder(Player player, Player opponent, String title, boolean expanded) {
-        super(expanded, !player.getGameType().isStraightPool());
-        this.title = title;
+    BreaksBinder(String title, boolean expanded, GameType gameType) {
+        super(title, expanded, !gameType.isStraightPool());
         helpLayout = R.layout.dialog_help_breaks;
 
-        update(player, opponent);
-
-        if (player.getGameType().isApa8Ball()) {
+        if (gameType.isApa8Ball()) {
             breakBall = "8";
-        } else if (player.getGameType().is9Ball()) {
+        } else if (gameType.is9Ball()) {
             breakBall = "9";
         } else {
             breakBall = "8/9";
         }
     }
 
-    public void update(Player player, Player opponent) {
+    @Override
+    public void update(Player player, Player opponent, @Nullable GameStatus gameStatus) {
         playerBallOnBreak = player.getBreakSuccesses();
         opponentBallOnBreak = opponent.getBreakSuccesses();
         playerBreaks = player.getBreakAttempts();
@@ -59,6 +61,7 @@ public class BreaksBinder extends BindingAdapter {
             playerWinOnBreak = player.getWinsOnBreak() + "";
             opponentWinOnBreak = opponent.getWinsOnBreak() + "";
         }
+
         notifyChange();
     }
 

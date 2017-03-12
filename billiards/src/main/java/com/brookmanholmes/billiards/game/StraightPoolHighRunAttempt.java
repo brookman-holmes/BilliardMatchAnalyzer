@@ -10,7 +10,7 @@ import java.util.List;
 
 class StraightPoolHighRunAttempt extends Game {
     StraightPoolHighRunAttempt() {
-        super(GameType.STRAIGHT_GHOST, PlayerTurn.PLAYER, BreakType.WINNER, 999, 999);
+        super(GameType.STRAIGHT_GHOST, PlayerTurn.PLAYER, BreakType.WINNER);
     }
 
     @Override

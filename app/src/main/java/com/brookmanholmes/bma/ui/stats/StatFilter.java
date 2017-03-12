@@ -2,7 +2,6 @@ package com.brookmanholmes.bma.ui.stats;
 
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.match.Match;
-import com.brookmanholmes.billiards.player.Player;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -12,15 +11,15 @@ import java.util.Date;
  */
 public class StatFilter {
     private final String[] dates;
-    private final String[] gameTypes;
+    private final String[] gameTypeStrings;
     private String opponent;
     private int selectedDate = 0;
     private int selectedGameType = 0;
     private Date date;
 
-    public StatFilter(String opponent, String[] gameTypes, String[] dates) {
+    public StatFilter(String opponent, String[] gameTypeStrings, String[] dates) {
         this.opponent = opponent;
-        this.gameTypes = gameTypes;
+        this.gameTypeStrings = gameTypeStrings;
         this.dates = dates;
 
         setDate(dates[0]);
@@ -35,12 +34,12 @@ public class StatFilter {
     }
 
     public String getGameType() {
-        return gameTypes[selectedGameType];
+        return gameTypeStrings[selectedGameType];
     }
 
     public void setGameType(String gameType) {
-        for (int i = 0; i < gameTypes.length; i++) {
-            if (gameTypes[i].equals(gameType))
+        for (int i = 0; i < gameTypeStrings.length; i++) {
+            if (gameTypeStrings[i].equals(gameType))
                 selectedGameType = i;
         }
     }
@@ -53,26 +52,6 @@ public class StatFilter {
 
     private boolean isDateInRange(Date date) {
         return date.after(this.date);
-    }
-
-    private boolean isPlayerOfGameType(Player player) {
-        if (selectedGameType == 0)
-            return true;
-        else if (selectedGameType == 1)
-            return player.getGameType().isApa8Ball();
-        else if (selectedGameType == 2)
-            return player.getGameType().isApa9Ball();
-        else if (selectedGameType == 3)
-            return player.getGameType().isBca9Ball();
-        else if (selectedGameType == 4)
-            return player.getGameType().isBca8Ball();
-        else if (selectedGameType == 5)
-            return player.getGameType().isBca9Ball();
-        else if (selectedGameType == 6)
-            return player.getGameType().isStraightPool();
-        else if (selectedGameType == 7)
-            return player.getGameType() == GameType.AMERICAN_ROTATION;
-        else return false;
     }
 
     public String getDate() {
@@ -106,18 +85,34 @@ public class StatFilter {
         this.date = cal.getTime();
     }
 
-    public boolean isPlayerQualified(Player player) {
-        return isPlayerNameCorrect(player.getName()) &&
-                isDateInRange(player.getMatchDate()) &&
-                isPlayerOfGameType(player);
+    private boolean isGameType(GameType gameType) {
+        switch (selectedGameType) {
+            case 0:
+                return true;
+            case 1:
+                return gameType.isApa8Ball();
+            case 2:
+                return gameType.isApa9Ball();
+            case 3:
+                return gameType.isBca8Ball();
+            case 4:
+                return gameType.isBca9Ball();
+            case 5:
+                return gameType.is10Ball();
+            case 6:
+                return gameType.isStraightPool();
+            default:
+                throw new IllegalArgumentException("No such mapping between " + gameType + " and gameTypeStrings[selectedGameType]");
+        }
     }
 
-    private boolean isPlayerNameCorrect(String name) {
-        return opponent.equals("All opponents") || opponent.equals(name);
+    private boolean isOpponentName(Match match) {
+        return opponent.equals("All opponents") || opponent.equals(match.getPlayer().getName())
+                || opponent.equals(match.getOpponent().getName());
     }
 
     public boolean isMatchQualified(Match match) {
-        return isDateInRange(match.getCreatedOn()) &&
-                isPlayerOfGameType(match.getPlayer());
+        return isDateInRange(match.getCreatedOn()) && isGameType(match.getGameStatus().gameType)
+                && isOpponentName(match);
     }
 }

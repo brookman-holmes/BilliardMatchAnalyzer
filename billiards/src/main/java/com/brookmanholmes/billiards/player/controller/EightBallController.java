@@ -6,8 +6,8 @@ package com.brookmanholmes.billiards.player.controller;
  * A controller for adding up player stats for BCA 8 ball
  */
 class EightBallController extends PlayerController {
-    EightBallController(String playerName, String opponentName, int playerRank, int opponentRank) {
-        super(playerName, opponentName, playerRank, opponentRank);
+    public EightBallController(String playerId, String opponentId, String playerName, String opponentName, int playerRank, int opponentRank) {
+        super(playerId, opponentId, playerName, opponentName, playerRank, opponentRank);
     }
 
     @Override

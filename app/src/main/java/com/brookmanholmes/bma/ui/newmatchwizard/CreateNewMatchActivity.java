@@ -30,12 +30,12 @@ import android.widget.Button;
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
-import com.brookmanholmes.bma.data.DatabaseAdapter;
+import com.brookmanholmes.bma.data.DataSource;
+import com.brookmanholmes.bma.data.FireDataSource;
 import com.brookmanholmes.bma.ui.BaseActivity;
-import com.brookmanholmes.bma.ui.matchinfo.HighRunAttemptActivity;
 import com.brookmanholmes.bma.ui.matchinfo.MatchInfoActivity;
+import com.brookmanholmes.bma.ui.matchinfo.RunAttemptActivity;
 import com.brookmanholmes.bma.ui.newmatchwizard.model.CreateNewMatchWizardModel;
-import com.brookmanholmes.bma.ui.profile.PlayerProfileActivity;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.AbstractWizardModel;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
@@ -54,7 +54,6 @@ public class CreateNewMatchActivity extends BaseActivity implements
         PageFragmentCallbacks,
         ReviewFragment.Callbacks,
         ModelCallbacks {
-    public static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_PLAYER_NAME;
     private static final String TAG = "CreateNewMatchAct";
     @Bind(R.id.pager)
     ViewPager pager;
@@ -76,7 +75,7 @@ public class CreateNewMatchActivity extends BaseActivity implements
         setContentView(R.layout.activity_create_new_match);
 
         analytics.logEvent("create_match", null);
-        wizardModel = new CreateNewMatchWizardModel(this, getIntent().getExtras().getString(ARG_PLAYER_NAME, ""));
+        wizardModel = new CreateNewMatchWizardModel(this);
 
         ButterKnife.bind(this);
         if (savedInstanceState != null) {
@@ -125,16 +124,16 @@ public class CreateNewMatchActivity extends BaseActivity implements
         Match match = wizardModel.createMatch();
         if (match.getGameStatus().gameType.isApa()) {
             if (match.getGameStatus().gameType == GameType.APA_EIGHT_BALL || match.getGameStatus().gameType == GameType.APA_GHOST_EIGHT_BALL)
-                preferences.edit().putInt("apa8" + match.getPlayer().getName(), match.getPlayer().getRank()).putInt("apa8" + match.getOpponent().getName(), match.getOpponent().getRank()).apply();
+                preferences.edit().putInt("apa8" + match.getPlayer().getId(), match.getPlayer().getRank()).putInt("apa8" + match.getOpponent().getId(), match.getOpponent().getRank()).apply();
             else if (match.getGameStatus().gameType == GameType.APA_NINE_BALL || match.getGameStatus().gameType == GameType.APA_GHOST_NINE_BALL)
-                preferences.edit().putInt("apa9" + match.getPlayer().getName(), match.getPlayer().getRank()).putInt("apa9" + match.getOpponent().getName(), match.getOpponent().getRank()).apply();
+                preferences.edit().putInt("apa9" + match.getPlayer().getId(), match.getPlayer().getRank()).putInt("apa9" + match.getOpponent().getId(), match.getOpponent().getRank()).apply();
         }
-        DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
-        long matchId = databaseAdapter.insertMatch(match);
+        DataSource db = new FireDataSource();
+        db.insertMatch(match);
         final Intent intent = match.getGameStatus().gameType.isSinglePlayer() ?
-                new Intent(this, HighRunAttemptActivity.class) :
+                new Intent(this, RunAttemptActivity.class) :
                 new Intent(this, MatchInfoActivity.class);
-        intent.putExtra(ARG_MATCH_ID, matchId);
+        intent.putExtra("match", match);
 
         startActivity(intent);
         analytics.logEvent("match_created", MatchDialogHelperUtils.getStrippedBundle(match));

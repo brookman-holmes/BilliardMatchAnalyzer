@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public abstract class AbstractNineBallPlayerControllerTest extends AbstractPlayerControllerTest {
     @Test
     public void gameBallOnBreakGivesWinOnBreakAndEarlyWin() {
-        playerController.turn = turnBuilder.breakBalls(game.getGameStatus().GAME_BALL).win();
+        playerController.turn = turnBuilder.breakBalls(game.getGameStatus().gameType.getGameBall()).win();
         playerController.gameStatus = game.getGameStatus();
         playerController.addBreakingStats(actualPlayer);
 

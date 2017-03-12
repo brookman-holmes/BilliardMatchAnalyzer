@@ -28,7 +28,7 @@ public abstract class AbstractTurnEndHelperTest {
 
     @Test
     public void showWinIfWinOnBreakIsTrue() {
-        tableStatus.setBallTo(BallStatus.MADE_ON_BREAK, gameBuilder.build().GAME_BALL);
+        tableStatus.setBallTo(BallStatus.MADE_ON_BREAK, gameBuilder.build().gameType.getGameBall());
 
         helper = TurnEndHelper.create(gameBuilder.newGame().build(), tableStatus);
 

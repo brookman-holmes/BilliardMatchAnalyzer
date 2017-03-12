@@ -45,8 +45,8 @@ public class GameStatusViewBuilder {
     private GameStatusViewBuilder(Match match, View view) {
         ButterKnife.bind(this, view);
         Context context = view.getContext();
-        String playerName = match.getPlayer().getName();
-        String opponentName = match.getOpponent().getName();
+        String playerName = match.getPlayer().getId();
+        String opponentName = match.getOpponent().getId();
 
         gameStatus.setText(context.getString(R.string.label_game,
                 getGameTypeString(context, match.getGameStatus().gameType)));
@@ -98,8 +98,8 @@ public class GameStatusViewBuilder {
 
     private static String getPlayerName(Match match, PlayerTurn turn) {
         if (turn == PlayerTurn.PLAYER)
-            return match.getPlayer().getName();
-        else return match.getOpponent().getName();
+            return match.getPlayer().getId();
+        else return match.getOpponent().getId();
     }
 
     private static String getPlayerTurnString(Context context, Match match) {
@@ -124,16 +124,16 @@ public class GameStatusViewBuilder {
         if (match.getGameStatus().playerColor == PlayerColor.OPEN)
             return "";
         else if (match.getGameStatus().playerColor == PlayerColor.STRIPES)
-            return context.getString(R.string.stripes_table, match.getPlayer().getName());
-        else return context.getString(R.string.solids_table, match.getPlayer().getName());
+            return context.getString(R.string.stripes_table, match.getPlayer().getId());
+        else return context.getString(R.string.solids_table, match.getPlayer().getId());
     }
 
     private static String getOpponentColorString(Context context, Match match) {
         if (match.getGameStatus().playerColor == PlayerColor.OPEN)
             return "";
         else if (match.getGameStatus().playerColor == PlayerColor.SOLIDS)
-            return context.getString(R.string.stripes_table, match.getOpponent().getName());
-        else return context.getString(R.string.solids_table, match.getOpponent().getName());
+            return context.getString(R.string.stripes_table, match.getOpponent().getId());
+        else return context.getString(R.string.solids_table, match.getOpponent().getId());
     }
 
     private static String getPushStatusString(Context context, Match match) {
@@ -146,7 +146,7 @@ public class GameStatusViewBuilder {
     }
 
     private static void setBallsOnTable(Match match, GridLayout ballContainer) {
-        while (ballContainer.getChildCount() > match.getGameStatus().MAX_BALLS) // remove balls that are not on the table
+        while (ballContainer.getChildCount() > match.getGameStatus().gameType.getMaxBalls()) // remove balls that are not on the table
             ballContainer.removeViewAt(ballContainer.getChildCount() - 1);
 
         for (int ball = 0; ball < ballContainer.getChildCount(); ball++) {

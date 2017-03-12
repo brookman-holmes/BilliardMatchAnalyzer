@@ -15,10 +15,10 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest {
     @Override
     public void setUp() {
         GameType gameType = GameType.BCA_TEN_BALL;
-        game = Game.newGame(gameType, PlayerTurn.PLAYER, BreakType.WINNER);
-        playerController = new TenBallController("", "", 0, 0);
-        actualPlayer = new Player("", gameType);
-        expectedPlayer = new Player("", gameType);
+        game = Game.newGame(gameType, PlayerTurn.PLAYER, BreakType.WINNER, 100);
+        playerController = new TenBallController("", "", "", "", 0, 0);
+        actualPlayer = new Player("", "", gameType);
+        expectedPlayer = new Player("", "", gameType);
         turnBuilder = new TurnBuilder(game.getGameType());
     }
 
@@ -39,7 +39,7 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest {
 
     @Override
     Player getBlankPlayer() {
-        return new Player("", GameType.BCA_TEN_BALL);
+        return new Player("", "", GameType.BCA_TEN_BALL);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest {
 
     @Override
     Player failedRunOutPlayer() {
-        Player player = new Player("", GameType.BCA_TEN_BALL);
+        Player player = new Player("", "", GameType.BCA_TEN_BALL);
         player.addBreakShot(2, true, false);
         player.addShootingBallsMade(1, false);
         player.addSafety(false, 0);
@@ -59,7 +59,7 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest {
 
     @Override
     Player fourBallRunOutPlayer() {
-        Player player = new Player("", GameType.BCA_TEN_BALL);
+        Player player = new Player("", "", GameType.BCA_TEN_BALL);
         player.addShootingBallsMade(4, false);
         player.addGameWon();
         player.addFiveBallRun();
@@ -69,7 +69,7 @@ public class TenBallPlayerControllerTest extends AbstractPlayerControllerTest {
 
     @Override
     Player getBreakAndRunPlayer() {
-        Player player = new Player("", GameType.BCA_TEN_BALL);
+        Player player = new Player("", "", GameType.BCA_TEN_BALL);
         player.addBreakShot(2, true, false);
         player.addShootingBallsMade(8, false);
 

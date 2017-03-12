@@ -110,6 +110,13 @@ public class BranchPage extends SingleFixedChoicePage {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "BranchPage{" +
+                "branches=" + branches +
+                '}';
+    }
+
     protected static class Branch {
         public final PageList childPageList;
         public String choice;
@@ -117,6 +124,14 @@ public class BranchPage extends SingleFixedChoicePage {
         public Branch(String choice, PageList childPageList) {
             this.choice = choice;
             this.childPageList = childPageList;
+        }
+
+        @Override
+        public String toString() {
+            return "Branch{" +
+                    "childPageList=" + childPageList +
+                    ", choice='" + choice + '\'' +
+                    '}';
         }
     }
 }

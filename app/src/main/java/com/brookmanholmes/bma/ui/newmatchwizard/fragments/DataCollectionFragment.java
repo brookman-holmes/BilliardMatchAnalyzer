@@ -27,7 +27,6 @@ import butterknife.OnCheckedChanged;
  */
 
 public class DataCollectionFragment extends BasePageFragment<DataCollectionPage> {
-    private static final String ARG_KEY = "key";
     private static final String ARG_GHOST = "arg_ghost";
     private static final int[] checkBoxes = new int[]{R.id.cbShotTypePlayer, R.id.cbShotTypeOpponent, R.id.cbCuePlayer,
             R.id.cbCueOpponent, R.id.cbHowPlayer, R.id.cbHowOpponent, R.id.cbSafetiesPlayer,

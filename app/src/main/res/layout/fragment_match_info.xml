@@ -35,10 +35,6 @@
             type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolRunsBinder" />
 
         <variable
-            name="straightTable"
-            type="com.brookmanholmes.bma.ui.matchinfo.StraightPoolTableBinder" />
-
-        <variable
             name="ballsOnTable"
             type="com.brookmanholmes.bma.ui.matchinfo.BallsOnTableBinder" />
 

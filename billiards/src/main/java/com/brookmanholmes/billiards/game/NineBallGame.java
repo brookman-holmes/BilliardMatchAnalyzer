@@ -6,15 +6,16 @@ package com.brookmanholmes.billiards.game;
  * <p></p>Created by Brookman Holmes on 10/27/2015.
  */
 class NineBallGame extends RotationGame {
-    private final static int GAME_BALL = 9;
-    private final static int MAX_BALLS = 9;
-
     NineBallGame(PlayerTurn playerTurn, BreakType breakType) {
-        super(GameType.BCA_NINE_BALL, playerTurn, breakType, MAX_BALLS, GAME_BALL);
+        super(GameType.BCA_NINE_BALL, playerTurn, breakType);
     }
 
     NineBallGame(GameType gameType, PlayerTurn playerTurn, BreakType breakType) throws InvalidGameTypeException {
-        super(gameType, playerTurn, breakType, MAX_BALLS, GAME_BALL);
+        super(gameType, playerTurn, breakType);
+    }
+
+    NineBallGame(GameType gameType, PlayerTurn playerTurn, BreakType breakType, int maxAttemptsPerGame) throws InvalidGameTypeException {
+        super(gameType, playerTurn, breakType, maxAttemptsPerGame);
     }
 
     @Override boolean winOnBreak() {

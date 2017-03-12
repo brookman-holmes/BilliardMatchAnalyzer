@@ -8,12 +8,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.NFC" />
 
-    <uses-feature
-        android:name="android.hardware.nfc"
-        android:required="false" />
-
     <application
-        android:name="com.brookmanholmes.bma.MyApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/mybackupscheme"
         android:icon="@mipmap/ic_launcher"
@@ -23,42 +18,23 @@
         tools:replace="supportsRtl">
 
         <activity
-            android:name=".ui.IntroActivity"
-            android:label="@string/app_name">
+            android:name=".ui.newmatchwizard.CreateNewMatchActivity"
+            android:theme="@style/AppTheme.CreateMatch"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".ui.matchinfo.MatchInfoActivity" />
+
+        <activity android:name=".ui.matchinfo.RunAttemptActivity" />
+
+        <activity android:name=".ui.profile.PlayerProfileActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.newmatchwizard.CreateNewMatchActivity"
-            android:theme="@style/AppTheme.CreateMatch"
-            android:windowSoftInputMode="adjustResize" />
-
-        <activity
-            android:name=".ui.matchinfo.MatchInfoActivity"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/com.brookmanholmes.bma.matchmodel" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.matchinfo.HighRunAttemptActivity"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/com.brookmanholmes.bma.hramatchmodel" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.profile.PlayerProfileActivity"
-            android:label="Player Profile" />
+        <activity android:name=".ui.SignInActivity" />
     </application>
 
 </manifest>

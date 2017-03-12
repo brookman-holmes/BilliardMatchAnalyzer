@@ -31,11 +31,11 @@ public class StraightPoolPlayerControllerTest {
     @Before
     public void setup() {
         GameType gameType = GameType.STRAIGHT_POOL;
-        playerController = new StraightPoolController(playerName, opponentName, playerRank, opponentRank);
+        playerController = new StraightPoolController(playerName, opponentName, playerName, opponentName, playerRank, opponentRank);
         turnBuilder = new TurnBuilder(gameType);
-        game = Game.newGame(gameType, PlayerTurn.PLAYER, BreakType.WINNER);
-        actualPlayer = new Player(playerName, gameType, playerRank);
-        expectedPlayer = new Player(playerName, gameType, playerRank);
+        game = Game.newGame(gameType, PlayerTurn.PLAYER, BreakType.WINNER, 100);
+        actualPlayer = new Player(playerName, playerName, gameType, playerRank);
+        expectedPlayer = new Player(playerName, playerName, gameType, playerRank);
         statusBuilder = new GameStatus.Builder(gameType);
     }
 

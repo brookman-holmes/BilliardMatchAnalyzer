@@ -4,14 +4,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.brookmanholmes.billiards.game.BallStatus;
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.turn.ITableStatus;
 import com.brookmanholmes.bma.ui.addturnwizard.fragments.StraightPoolShotFragment;
-import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 import com.brookmanholmes.bma.wizard.model.BranchPage;
 import com.brookmanholmes.bma.wizard.model.ModelCallbacks;
 import com.brookmanholmes.bma.wizard.model.ReviewItem;
 
 import java.util.ArrayList;
+
+import static com.brookmanholmes.bma.utils.MatchDialogHelperUtils.GAME_STATUS_KEY;
 
 /**
  * Created by Brookman Holmes on 12/1/2016.
@@ -22,9 +24,12 @@ public class StraightPoolPage extends BranchPage implements UpdatesTurnInfo {
     private static final String TAG = "StraightPoolPage";
     private static final String TABLE_STATUS_KEY = "table_status";
 
+    private final GameStatus gameStatus;
+
     StraightPoolPage(ModelCallbacks model, String title, Bundle matchData) {
         super(model, title);
 
+        gameStatus = (GameStatus) matchData.getSerializable(GAME_STATUS_KEY);
         data.putAll(matchData);
         data.putInt(BALLS_MADE_KEY, 0);
     }
@@ -43,9 +48,8 @@ public class StraightPoolPage extends BranchPage implements UpdatesTurnInfo {
     public void updateTurnInfo(AddTurnWizardModel turnWizardModel) {
         clearTable(turnWizardModel.getTableStatus()); // reset all the balls to back to on the table
         int ballsMade = data.getInt(BALLS_MADE_KEY);
-        ArrayList<Integer> ballsOnTable = data.getIntegerArrayList(MatchDialogHelperUtils.BALLS_ON_TABLE_KEY);
         for (int i = 0; i < ballsMade; i++) {
-            turnWizardModel.getTableStatus().setBallTo(BallStatus.MADE, ballsOnTable.get(i));
+            turnWizardModel.getTableStatus().setBallTo(BallStatus.MADE, gameStatus.ballsOnTable.get(i));
         }
 
         turnWizardModel.setTurnEnd(data.getString(SIMPLE_DATA_KEY), data.getString(FOUL_KEY));

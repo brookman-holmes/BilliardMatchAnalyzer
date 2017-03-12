@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="expanded_match_info_cards">false</bool>
+    <integer name="graph_line_size">2</integer>
+    <integer name="graph_point_size">4</integer>
 </resources>

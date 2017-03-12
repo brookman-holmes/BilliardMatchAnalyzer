@@ -1,5 +1,7 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
+import com.brookmanholmes.billiards.game.GameStatus;
+import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.player.Player;
 import com.brookmanholmes.bma.R;
 
@@ -24,19 +26,15 @@ public class StraightPoolBinder extends BindingAdapter {
 
     public int ballsRemaining;
 
-    StraightPoolBinder(Player player, Player opponent, String title, boolean expanded) {
-        super(expanded, player.getGameType().isStraightPool());
-
-        if (player.getGameType().isStraightPool()) {
-            update(player, opponent);
-        }
+    StraightPoolBinder(String title, boolean expanded, GameType gameType) {
+        super(title, expanded, gameType.isStraightPool());
 
         this.title = title;
         this.helpLayout = R.layout.dialog_help_straight_pool;
     }
 
-    public void update(Player player, Player opponent) {
-        if (player.getGameType().isStraightPool()) {
+    public void update(Player player, Player opponent, GameStatus gameStatus) {
+        if (gameStatus != null && gameStatus.gameType.isStraightPool()) {
             playerPoints = player.getPoints();
             opponentPoints = opponent.getPoints();
             playerPointsNeeded = player.getRank();

@@ -47,11 +47,14 @@ public class Players {
      * @return True if the match is finished, false otherwise
      */
     public static boolean isMatchOver(Player player, Player opponent) {
-        if (player.getGameType().isApa9Ball())
+        GameType gameType = player.getGameType();
+        if (gameType.isSinglePlayer())
+            return false;
+        if (gameType.isApa9Ball())
             return isMatchOverApa9(player, opponent);
-        else if (player.getGameType().isApa8Ball())
+        else if (gameType.isApa8Ball())
             return isMatchOverApa8(player, opponent);
-        else if (player.getGameType() == GameType.STRAIGHT_POOL) {
+        else if (gameType == GameType.STRAIGHT_POOL) {
             return player.getRank() <= player.getPoints() ||
                     opponent.getRank() <= opponent.getPoints();
         } else

@@ -5,18 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/createMatch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:elevation="12dp"
-        android:src="@android:drawable/ic_input_add"
-        android:tint="@color/white"
-        android:visibility="invisible"
-        app:borderWidth="0dp" />
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,36 +41,50 @@
     <LinearLayout
         android:id="@+id/playerNameLayout"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="32dp"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
         android:elevation="8dp"
         android:orientation="horizontal"
-        android:translationY="48dp">
+        android:translationY="32dp">
 
         <TextView
             android:id="@+id/playerName"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:ellipsize="marquee"
             android:gravity="center"
+            android:maxLines="1"
             android:textColor="@color/white"
-            android:textSize="23sp"
+            android:textSize="@dimen/player_name_text_size"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/opponentName"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:ellipsize="marquee"
             android:gravity="center"
+            android:maxLines="1"
             android:textColor="@color/white"
-            android:textSize="23sp"
+            android:textSize="@dimen/player_name_text_size"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/createMatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:elevation="12dp"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@color/white" />
 
 </android.support.design.widget.CoordinatorLayout>

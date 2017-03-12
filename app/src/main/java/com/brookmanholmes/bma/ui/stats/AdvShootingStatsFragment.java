@@ -17,6 +17,8 @@ import com.brookmanholmes.bma.ui.view.HeatGraph;
 import com.brookmanholmes.bma.ui.view.HowMissLayout;
 import com.brookmanholmes.bma.utils.MatchDialogHelperUtils;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.ColumnChartView;
 
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_LEFT;
@@ -42,8 +45,6 @@ import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICK_LONG;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.KICK_SHORT;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THICK;
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.THIN;
-import static com.brookmanholmes.bma.ui.stats.AdvStatsDialog.ARG_MATCH_ID;
-import static com.brookmanholmes.bma.ui.stats.AdvStatsDialog.ARG_PLAYER_NAME;
 
 /**
  * Created by Brookman Holmes on 3/12/2016.
@@ -119,37 +120,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         }
     };
 
-
-    public static AdvShootingStatsFragment create(String name, long matchId) {
-        AdvShootingStatsFragment frag = new AdvShootingStatsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PLAYER_NAME, name);
-        args.putLong(ARG_MATCH_ID, matchId);
-        frag.setArguments(args);
-        return frag;
-    }
-
-    public static AdvShootingStatsFragment create(Bundle args) {
-        AdvShootingStatsFragment frag = new AdvShootingStatsFragment();
-        frag.setArguments(args);
-
-        return frag;
-    }
-
-    public static AdvShootingStatsFragment create(String name) {
-        AdvShootingStatsFragment frag = new AdvShootingStatsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PLAYER_NAME, name);
-        frag.setArguments(args);
-
-        return frag;
-    }
-
-    @Override
-    String[] getShotTypes() {
-        return AdvStats.ShotType.getShots();
-    }
-
     private List<AdvStats> getFilteredStats() {
         List<AdvStats> list = new ArrayList<>();
 
@@ -166,7 +136,10 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
     private boolean isShotType(AdvStats stat) {
         // all has to go first otherwise it throws an illegal argument exception
-        return shotType.equals(getString(R.string.all)) || stat.getShotType() == MatchDialogHelperUtils.convertStringToShotType(getContext(), shotType);
+        if (shotType.equals(getString(R.string.all)))
+            return ArrayUtils.contains(AdvStats.ShotType.getShots(), stat.getShotType());
+        else
+            return stat.getShotType() == MatchDialogHelperUtils.convertStringToShotType(getContext(), shotType);
     }
 
     private boolean isSubType(AdvStats stat) {
@@ -204,6 +177,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (shotType == null)
             shotType = getString(R.string.all);
         if (cutTypes == null)
@@ -237,6 +211,10 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         speedChart.setColumnChartData(speedData);
         distanceChart.setColumnChartData(distanceData);
 
+        distanceChart.setZoomEnabled(false);
+        speedChart.setZoomEnabled(false);
+        distanceChart.setViewportCalculationEnabled(false);
+
         shotTypeSpinner.setAdapter(createAdapter(new ArrayList<String>()));
         shotSubTypeSpinner.setAdapter(createAdapter(new ArrayList<String>()));
         angleSpinner.setAdapter(createAdapter(new ArrayList<String>()));
@@ -259,8 +237,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
             values.add(new MySubColumnValue(0f, getColor(R.color.colorPrimary)));
             if (stacked)
                 values.add(new MySubColumnValue(0f, getColor(R.color.colorTertiary)));
-            column.setValues(values)
-                    .setHasLabels(true);
+            column.setValues(values).setHasLabels(true);
         }
 
         ColumnChartData data = new ColumnChartData(columns);
@@ -282,12 +259,14 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return axis;
     }
 
-    private void setData(List<AdvStats> stats) {
+    private void setData(Collection<AdvStats> stats) {
         // clear values
         for (Column column : speedData.getColumns()) {
             for (SubcolumnValue value : column.getValues())
                 value.setValue(0f);
         }
+
+        float max = 0;
         for (Column column : distanceData.getColumns()) {
             for (SubcolumnValue value : column.getValues())
                 value.setValue(0f);
@@ -305,15 +284,25 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
             if (stat.getCbToOb() >= 0) {
                 SubcolumnValue value = distanceData.getColumns().get(cbCol).getValues().get(0);
                 float newVal = value.getValue() + 1;
+                max = max < newVal ? newVal : max;
                 value.setValue(newVal);
             }
 
             if (stat.getObToPocket() >= 0) {
                 SubcolumnValue value = distanceData.getColumns().get(obCol).getValues().get(1);
-                float newVal = value.getValue() + 1;
+                float newVal = value.getValue() - 1;
+                max = max < newVal ? newVal : max;
                 value.setValue(newVal);
             }
         }
+
+        if (distanceChart != null) {
+            final Viewport viewPort = new Viewport();
+            viewPort.set(-.5f, max, 19.5f, -max);
+            distanceChart.setCurrentViewport(viewPort);
+            distanceChart.setMaximumViewport(viewPort);
+        }
+
     }
 
     private void setSpinnerItems() {
@@ -409,6 +398,11 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         return R.layout.fragment_adv_shooting_stats;
     }
 
+    @Override
+    AdvStats.ShotType[] getShotTypes() {
+        return AdvStats.ShotType.getShots();
+    }
+
     private static class MySubColumnValue extends SubcolumnValue {
         private static NumberFormat formatter = DecimalFormat.getNumberInstance();
 
@@ -423,7 +417,7 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         @Override
         public SubcolumnValue setValue(float value) {
-            setLabel(formatter.format(value));
+            setLabel(formatter.format(Math.abs(value)));
             return super.setValue(value);
         }
     }

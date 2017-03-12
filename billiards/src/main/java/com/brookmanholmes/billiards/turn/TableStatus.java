@@ -285,12 +285,4 @@ final public class TableStatus implements ITableStatus, Serializable {
         result = 31 * result + table.hashCode();
         return result;
     }
-
-    @Override
-    public String toString() {
-        return "TableStatus{" +
-                "table=" + table.toString() +
-                ", GAME_BALL=" + GAME_BALL +
-                '}';
-    }
 }

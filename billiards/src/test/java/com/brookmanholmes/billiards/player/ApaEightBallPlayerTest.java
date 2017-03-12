@@ -15,13 +15,13 @@ public class ApaEightBallPlayerTest extends AbstractPlayerTest {
     @Override
     public void setUp() {
         rank = 5;
-        expected = new Player(testName, GameType.APA_EIGHT_BALL, rank, opponentRank);
-        actual = new Player(testName, GameType.APA_EIGHT_BALL, rank, opponentRank);
+        expected = new Player(testName, testName, GameType.APA_EIGHT_BALL, rank, opponentRank);
+        actual = new Player(testName, testName, GameType.APA_EIGHT_BALL, rank, opponentRank);
     }
 
     @Test
     public void addPlayerStatsWorksCorrectlyForNineBall() {
-        Player player = new Player(testName, GameType.APA_EIGHT_BALL, rank, opponentRank);
+        Player player = new Player(testName, testName, GameType.APA_EIGHT_BALL, rank, opponentRank);
 
         player.addEarlyWin();
         player.addWinOnBreak();
