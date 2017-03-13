@@ -1,5 +1,6 @@
 package com.brookmanholmes.bma.ui.profile;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -29,7 +30,6 @@ import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,17 +98,19 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
 
     @Override
     protected RecyclerView.LayoutManager getLayoutManager() {
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
+        final int screenLayout = getResources().getConfiguration().screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+        final int columns = screenLayout >= 3 ? 5 : 3;
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), columns);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 switch (adapter.getItemViewType(position)) {
                     case PlayerInfoGraphicAdapter.ITEM_GRAPH:
-                        return 3;
+                        return columns;
                     case PlayerInfoGraphicAdapter.ITEM_SAFETY_GRAPH:
-                        return 2;
+                        return columns - 1;
                     case PlayerInfoGraphicAdapter.ITEM_BREAK_GRAPH:
-                        return 2;
+                        return columns - 1;
                     default:
                         return 1;
                 }
@@ -251,13 +253,11 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 List<PointValue> shooting = new ArrayList<>();
                 List<PointValue> safeties = new ArrayList<>();
                 List<PointValue> breaking = new ArrayList<>();
-                List<AxisValue> xAxisValues = new ArrayList<>();
 
                 float count = 0;
                 for (Player player : players) {
                     if (player.getShootingAttempts() + player.getSafetyAttempts() + player.getBreakAttempts() > 0) {
                         tsp.add(new PointValue(count, (float) player.getTrueShootingPct()));
-                        xAxisValues.add(new AxisValue(count, DateFormat.getDateInstance(DateFormat.SHORT).format(player.getMatchDate()).toCharArray()));
                         if (player.getShootingAttempts() > 0)
                             shooting.add(new PointValue(count, (float) player.getShootingPct()));
                         if (player.getSafetyAttempts() > 0)
@@ -275,9 +275,6 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 for (int i = 0; i <= 10; i++) {
                     yAxisValues.add(new AxisValue(i * .1f));
                 }
-                Axis xAxis = new Axis(xAxisValues);
-                xAxis.setHasTiltedLabels(false)
-                        .setHasSeparationLine(true);
 
                 Axis yAxis = new Axis(yAxisValues);
                 yAxis.setHasSeparationLine(true)
@@ -287,13 +284,12 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                         .setHasLines(true);
 
                 data.setAxisYRight(yAxis);
-                data.setAxisXBottom(xAxis);
                 data.setValueLabelTextSize(24);
 
                 chart.setLineChartData(data);
                 if (chart != null) {
                     final Viewport viewPort = new Viewport();
-                    viewPort.set(-1000f, 1.1f, xAxisValues.size() + 1f, -.5f);
+                    viewPort.set(-1000f, 1.1f, players.size(), -.5f);
                     chart.setCurrentViewport(viewPort);
                     chart.setMaximumViewport(viewPort);
                 }

@@ -92,7 +92,7 @@ class RunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             Player player = match.getPlayer(0, realPosition);
 
             ((MinimalTurnViewHolder) holder).bind(match.getTurns().get(realPosition), PlayerTurn.PLAYER, player);
-            ((MinimalTurnViewHolder) holder).showDivider(realPosition != 0, match.getGameStatus(realPosition).newGame);
+            ((MinimalTurnViewHolder) holder).showDivider(realPosition != 0, match.getGameStatus(realPosition));
         } else if (holder instanceof RunViewHolder) {
             ((RunViewHolder) holder).bind(match, previousPlayers);
         } else if (holder instanceof RunGraphViewHolder) {
@@ -243,7 +243,7 @@ class RunAttemptAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
             Line averageLine = new Line(Arrays.asList(new PointValue(0, averageRun),
                     new PointValue(match.getPlayer().getRunLengths().size(), averageRun)))
-                    .setColor(getColor(R.color.chart))
+                    .setColor(getColor(R.color.chart1))
                     .setHasPoints(false)
                     .setHasLabels(false)
                     .setStrokeWidth(1);

@@ -6,6 +6,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
+import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.PlayerTurn;
 import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.billiards.player.Player;
@@ -82,12 +83,14 @@ class MinimalTurnViewHolder extends BaseViewHolder {
         }
     }
 
-    void showDivider(boolean showDivider, boolean newGame) {
-        divider.setVisibility((showDivider && !newGame) ? View.VISIBLE : View.GONE);
+    void showDivider(boolean showDivider, GameStatus gameStatus) {
+        divider.setVisibility((showDivider && !gameStatus.newGame) ? View.VISIBLE : View.GONE);
+
+        boolean scrunchBottomMargin = gameStatus.newGame || gameStatus.gameType.isStraightPool();
 
         CardView.LayoutParams params = new CardView.LayoutParams(itemView.getLayoutParams());
         params.topMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
-        params.bottomMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), newGame ? -6 : 8);
+        params.bottomMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), scrunchBottomMargin ? -6 : 8);
         params.leftMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
         params.rightMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
         itemView.setLayoutParams(params);

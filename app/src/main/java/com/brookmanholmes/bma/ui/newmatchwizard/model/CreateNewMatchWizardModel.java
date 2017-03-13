@@ -80,21 +80,21 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
 
     private Page getPlayerNamePage() {
         return new PlayerNamePage(this, context.getString(R.string.title_page_players), context, "PNG", playerName)
-                .addBranch(Boolean.TRUE.toString(), getLocationPage("glp"), getGhostGameChoicePage(), getMaxAttemptsPage(), getDataCollectPage("GDCP", true))
+                .addBranch(Boolean.TRUE.toString(), getLocationPage("glp"), getGhostGameChoicePage(), getDataCollectPage("GDCP", true))
                 .addBranch(Boolean.FALSE.toString(), getLocationPage("lp"), getGameChoicePage(), getDataCollectPage("DCP", false))
                 .setValue(Boolean.FALSE.toString())
                 .setRequired(true);
     }
 
-    private Page getMaxAttemptsPage() {
-        return new MaxAttemptsPage(this, "Select the max attempts per game", "gmap").setRaceToChoices(1, 5, 1);
+    private Page getMaxAttemptsPage(String parentKey) {
+        return new MaxAttemptsPage(this, "Select the max attempts per game", parentKey).setRaceToChoices(1, 5, 1);
     }
 
     private Page getGhostGameChoicePage() {
         return new GameChoicePage(this, context.getString(R.string.title_page_games), context, "GGCP")
-                .addBranch(context.getString(R.string.game_bca_eight_ghost))
-                .addBranch(context.getString(R.string.game_bca_nine_ghost))
-                .addBranch(context.getString(R.string.game_bca_ten_ghost))
+                .addBranch(context.getString(R.string.game_bca_eight_ghost), getMaxAttemptsPage("gbca8"))
+                .addBranch(context.getString(R.string.game_bca_nine_ghost), getMaxAttemptsPage("gbca9"))
+                .addBranch(context.getString(R.string.game_bca_ten_ghost), getMaxAttemptsPage("gbca10"))
                 .addBranch(context.getString(R.string.game_straight_ghost))
                 .setValue(context.getString(R.string.game_bca_nine_ghost))
                 .setRequired(true);

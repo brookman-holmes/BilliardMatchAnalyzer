@@ -4,5 +4,5 @@
     <size
         android:width="10dp"
         android:height="2dp" />
-    <solid android:color="@color/chart" />
+    <solid android:color="@color/chart1" />
 </shape>
