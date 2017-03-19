@@ -21,12 +21,12 @@
 
     <TextView
         android:id="@+id/tvShootingPct"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Shooting .667"
-        android:textColor="@color/primary_text"
-        android:textSize="12sp" />
+        android:textSize="@dimen/shooting_pct_container_text_size" />
 
     <ImageView
         android:id="@+id/safetyLine"
@@ -40,12 +40,12 @@
 
     <TextView
         android:id="@+id/tvSafetyPct"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Shooting .667"
-        android:textColor="@color/primary_text"
-        android:textSize="12sp" />
+        android:textSize="@dimen/shooting_pct_container_text_size" />
 
     <ImageView
         android:id="@+id/breakingLine"
@@ -59,11 +59,11 @@
 
     <TextView
         android:id="@+id/tvBreakPct"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Shooting .667"
-        android:textColor="@color/primary_text"
-        android:textSize="12sp" />
+        android:textSize="@dimen/shooting_pct_container_text_size" />
 
 </LinearLayout>

@@ -223,7 +223,7 @@ public class Match implements Serializable {
 
     public ITurn getRedoTurn() {
         if (isRedoTurn()) {
-            return turns.peekLast();
+            return undoneTurns.peekLast();
         } else return null;
     }
 

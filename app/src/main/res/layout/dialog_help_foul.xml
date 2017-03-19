@@ -19,8 +19,7 @@
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/foul_lost_game"
-        android:textColor="@color/primary_text" />
+        android:text="@string/foul_lost_game" />
 
     <TextView
         style="@style/help_dialog_text"
@@ -28,8 +27,7 @@
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/yes"
-        android:textColor="@color/primary_text" />
+        android:text="@string/yes" />
 
     <TextView
         style="@style/help_dialog_text"
@@ -37,8 +35,7 @@
 
     <TextView
         style="@style/help_dialog_title"
-        android:text="@string/no"
-        android:textColor="@color/primary_text" />
+        android:text="@string/no" />
 
     <TextView
         style="@style/help_dialog_text"

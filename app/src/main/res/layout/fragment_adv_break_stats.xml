@@ -16,10 +16,9 @@
 
         <TextView
             android:id="@+id/tvBreakErrorsTitle"
+            style="@style/Base.TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/primary_text" />
+            android:layout_height="wrap_content" />
 
         <include
             layout="@layout/container_miscues"

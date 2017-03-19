@@ -14,14 +14,13 @@
         tools:ignore="UseCompoundDrawables">
 
         <TextView
+            style="@style/Base.TextAppearance.AppCompat.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:paddingLeft="16dp"
-            android:text="@{title.title}"
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/title_size" />
+            android:text="@{title.title}" />
 
         <ImageView
             android:id="@+id/collapseExpandButton"

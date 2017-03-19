@@ -12,21 +12,19 @@
 
     <TextView
         android:id="@+id/date"
+        style="@style/Base.TextAppearance.AppCompat.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="12sp" />
+        android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/players"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/date"
             android:layout_marginStart="72dp"
-            android:paddingEnd="16dp"
-            android:textColor="@color/primary_text"
-            android:textSize="16sp" />
+            android:paddingEnd="16dp" />
 
         <TextView
             android:id="@+id/breakType"

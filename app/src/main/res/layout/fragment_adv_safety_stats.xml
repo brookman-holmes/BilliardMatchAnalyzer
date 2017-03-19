@@ -22,10 +22,9 @@
 
             <TextView
                 android:id="@+id/safetyErrorsTitle"
+                style="@style/Base.TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/primary_text" />
+                android:layout_height="wrap_content" />
 
             <include
                 layout="@layout/container_miscues"
@@ -65,11 +64,10 @@
 
             <TextView
                 android:id="@+id/successfulSafetiesTitle"
+                style="@style/Base.TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/primary_text" />
+                android:paddingTop="8dp" />
 
             <android.support.v7.widget.GridLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="wrap_content"
@@ -78,182 +76,183 @@
                 app:useDefaultMargins="true">
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
-                    android:text="Safety type"
-                    android:textSize="16sp" />
+                    android:text="Safety type" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
-                    android:text="Count"
-                    android:textSize="16sp" />
+                    android:text="Count" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
-                    android:text="Percentage"
-                    android:textSize="16sp" />
+                    android:text="Percentage" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
-                    android:text="@string/safety_full_hook"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
+                    android:text="@string/safety_full_hook" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.fullHookCount}"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.fullHookPct}"
-                    android:textColor="@color/primary_text"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
                     android:text="@string/safety_partial_hook"
-                    android:textSize="16sp" />
+                    android:textColor="@color/secondary_text" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.partialHookCount}"
-                    android:textSize="16sp"
+                    android:textColor="@color/secondary_text"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.partialHookPct}"
-                    android:textSize="16sp"
+                    android:textColor="@color/secondary_text"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
-                    android:text="@string/safety_long_t"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
+                    android:text="@string/safety_long_t" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.longTCount}"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.longTPct}"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
                     android:text="@string/safety_short_t"
-                    android:textSize="16sp" />
+                    android:textColor="@color/secondary_text" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.shortTCount}"
-                    android:textSize="16sp"
+                    android:textColor="@color/secondary_text"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.shortTPct}"
-                    android:textSize="16sp"
+                    android:textColor="@color/secondary_text"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
-                    android:text="@string/safety_no_shot"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
+                    android:text="@string/safety_no_shot" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.noShotCount}"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.noShotPct}"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
                     android:text="@string/safety_open"
-                    android:textSize="16sp" />
+                    android:textColor="@color/secondary_text" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.openCount}"
-                    android:textSize="16sp"
+                    android:textColor="@color/secondary_text"
                     app:layout_gravity="center" />
 
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@{safety.openPct}"
-                    android:textSize="16sp"
+                    android:textColor="@color/secondary_text"
                     app:layout_gravity="center" />
             </android.support.v7.widget.GridLayout>
 

@@ -150,6 +150,8 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
         }
 
         private static float roundNumber(int top, int bottom) {
+            if (bottom == 0)
+                return 0f;
             BigDecimal decimal = new BigDecimal((float) top / (float) bottom).round(new MathContext(4, RoundingMode.FLOOR));
             return decimal.floatValue();
         }
@@ -431,42 +433,41 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 color4 = getColor(R.color.chart);
                 grey = getColor(R.color.chart4);
                 decoView.deleteAll();
-                decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 1, 1)
-                        .setLineWidth(width)
-                        .setCapRounded(false)
-                        .build());
-                decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 1, 1)
-                        .setLineWidth(width)
-                        .setCapRounded(false)
-                        .setInset(new PointF(width, width))
-                        .build());
-                decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 1, 1)
-                        .setLineWidth(width)
-                        .setCapRounded(false)
-                        .setInset(new PointF(width * 2, width * 2))
-                        .build());
-                decoView.addSeries(new SeriesItem.Builder(grey)
-                        .setRange(0, 1, 1)
-                        .setLineWidth(width)
-                        .setCapRounded(false)
-                        .setInset(new PointF(width * 3, width * 3))
-                        .build());
-
+                setBackgroundSeries(width);
                 decoView.configureAngles(300, 0);
             }
 
             void bind(Player player) {
-                int attempts = player.getBreakAttempts();
-
-                float continuation = attempts != 0 ? roundNumber(player.getBreakContinuations(), attempts) : 0;
-                float successes = attempts != 0 ? roundNumber(player.getBreakSuccesses(), attempts) : 0;
-                float wins = attempts != 0 ? roundNumber(player.getWinsOnBreak(), attempts) : 0;
-                float fouls = attempts != 0 ? roundNumber(player.getBreakFouls(), attempts) : 0;
-
                 float width = getDimension(R.dimen.decoview_inset);
+                decoView.deleteAll();
+                setSeries(width, player);
+                successfulBreak.setText(getString(R.string.successful_breaks,
+                        player.getBreakSuccesses(),
+                        player.getBreakAttempts(),
+                        convertFloatToPercent((float) player.getBreakSuccesses() / (float) player.getBreakAttempts())));
+                continuationBreak.setText(getString(R.string.continuation_after_the_break,
+                        player.getBreakContinuations(),
+                        player.getBreakAttempts(),
+                        convertFloatToPercent((float) player.getBreakContinuations() / (float) player.getBreakAttempts())));
+                winBreak.setText(getString(R.string._8_9_on_the_break,
+                        player.getWinsOnBreak(),
+                        player.getBreakAttempts(),
+                        convertFloatToPercent((float) player.getWinsOnBreak() / (float) player.getBreakAttempts())));
+                foulBreak.setText(getString(R.string.fouls_on_the_break,
+                        player.getBreakFouls(),
+                        player.getBreakAttempts(),
+                        convertFloatToPercent((float) player.getBreakFouls() / (float) player.getBreakAttempts())));
+            }
+
+
+            private void setSeries(float width, Player player) {
+                int attempts = player.getBreakAttempts();
+                float continuation = roundNumber(player.getBreakContinuations(), attempts);
+                float successes = roundNumber(player.getBreakSuccesses(), attempts);
+                float wins = roundNumber(player.getWinsOnBreak(), attempts);
+                float fouls = roundNumber(player.getBreakFouls(), attempts);
+
+                setBackgroundSeries(width);
 
                 if (player.getBreakSuccesses() > 0)
                     decoView.addSeries(new SeriesItem.Builder(color1)
@@ -496,23 +497,32 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                             .setLineWidth(width)
                             .setCapRounded(false)
                             .build());
+            }
 
-                successfulBreak.setText(getString(R.string.successful_breaks,
-                        player.getBreakSuccesses(),
-                        player.getBreakAttempts(),
-                        convertFloatToPercent((float) player.getBreakSuccesses() / (float) player.getBreakAttempts())));
-                continuationBreak.setText(getString(R.string.continuation_after_the_break,
-                        player.getBreakContinuations(),
-                        player.getBreakAttempts(),
-                        convertFloatToPercent((float) player.getBreakContinuations() / (float) player.getBreakAttempts())));
-                winBreak.setText(getString(R.string._8_9_on_the_break,
-                        player.getWinsOnBreak(),
-                        player.getBreakAttempts(),
-                        convertFloatToPercent((float) player.getWinsOnBreak() / (float) player.getBreakAttempts())));
-                foulBreak.setText(getString(R.string.fouls_on_the_break,
-                        player.getBreakFouls(),
-                        player.getBreakAttempts(),
-                        convertFloatToPercent((float) player.getBreakFouls() / (float) player.getBreakAttempts())));
+            private void setBackgroundSeries(float width) {
+                decoView.addSeries(new SeriesItem.Builder(grey)
+                        .setRange(0, 1, 1)
+                        .setLineWidth(width)
+                        .setCapRounded(false)
+                        .build());
+                decoView.addSeries(new SeriesItem.Builder(grey)
+                        .setRange(0, 1, 1)
+                        .setLineWidth(width)
+                        .setCapRounded(false)
+                        .setInset(new PointF(width, width))
+                        .build());
+                decoView.addSeries(new SeriesItem.Builder(grey)
+                        .setRange(0, 1, 1)
+                        .setLineWidth(width)
+                        .setCapRounded(false)
+                        .setInset(new PointF(width * 2, width * 2))
+                        .build());
+                decoView.addSeries(new SeriesItem.Builder(grey)
+                        .setRange(0, 1, 1)
+                        .setLineWidth(width)
+                        .setCapRounded(false)
+                        .setInset(new PointF(width * 3, width * 3))
+                        .build());
             }
 
             private String getString(@StringRes int res, Object... formatArgs) {
@@ -567,7 +577,6 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                         returns = 0;
                     if (escapes < 0)
                         escapes = 0;
-
 
                     decoView.addSeries(new SeriesItem.Builder(color3)
                             .setRange(0, 1, 1)

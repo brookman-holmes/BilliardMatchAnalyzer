@@ -45,8 +45,8 @@ public class GameStatusViewBuilder {
     private GameStatusViewBuilder(Match match, View view) {
         ButterKnife.bind(this, view);
         Context context = view.getContext();
-        String playerName = match.getPlayer().getId();
-        String opponentName = match.getOpponent().getId();
+        String playerName = match.getPlayer().getName();
+        String opponentName = match.getOpponent().getName();
 
         gameStatus.setText(context.getString(R.string.label_game,
                 getGameTypeString(context, match.getGameStatus().gameType)));

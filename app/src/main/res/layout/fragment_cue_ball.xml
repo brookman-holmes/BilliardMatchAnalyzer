@@ -36,10 +36,9 @@
 
             <TextView
                 android:id="@+id/cbText"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content" />
 
             <com.appyvet.rangebar.RangeBar
                 android:id="@+id/rangeOb"
@@ -57,11 +56,10 @@
 
             <TextView
                 android:id="@+id/obText"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
+                android:layout_marginBottom="8dp" />
 
             <ImageView
                 android:id="@+id/distanceDivider"
@@ -78,13 +76,12 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Where on the cue ball did you hit?"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
+                android:text="Where on the cue ball did you hit?" />
 
             <com.brookmanholmes.bma.ui.view.CueBallHitView
                 android:id="@+id/hit"
@@ -127,10 +124,8 @@
 
             <TextView
                 android:id="@+id/speedText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent" />
         </LinearLayout>
 
     </LinearLayout>

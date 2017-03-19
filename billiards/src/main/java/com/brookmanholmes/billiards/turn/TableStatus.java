@@ -121,8 +121,8 @@ final public class TableStatus implements ITableStatus, Serializable {
             case BCA_GHOST_NINE_BALL:
                 return new TableStatus(9, 9, gameType, ballsOnTable);
             case BCA_TEN_BALL:
-                return new TableStatus(10, 10, gameType, ballsOnTable);
             case BCA_GHOST_TEN_BALL:
+                return new TableStatus(10, 10, gameType, ballsOnTable);
             case STRAIGHT_POOL:
             case STRAIGHT_GHOST:
                 return new TableStatus(999, 999, gameType, ballsOnTable);

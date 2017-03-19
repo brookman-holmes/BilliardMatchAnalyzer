@@ -71,7 +71,7 @@
         <item name="android:background">@color/white</item>
     </style>
 
-    <style name="WizardPageTitle">
+    <style name="WizardPageTitle" parent="Base.TextAppearance.AppCompat.Display1">
         <item name="android:id">@android:id/title</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -79,7 +79,6 @@
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:paddingLeft">?android:attr/listPreferredItemPaddingLeft</item>
-        <item name="android:textSize">36sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
@@ -107,10 +106,9 @@
         <item name="android:paddingRight">24dp</item>
     </style>
 
-    <style name="player_stats">
+    <style name="player_stats" parent="Base.TextAppearance.AppCompat.Body1">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/player_text_size</item>
         <item name="layout_gravity">center</item>
         <item name="layout_columnWeight">1</item>
         <item name="android:gravity">center</item>
@@ -134,7 +132,7 @@
         <item name="android:windowExitAnimation">@anim/slide_out_from_right</item>
     </style>
 
-    <style name="help_dialog_title">
+    <style name="help_dialog_title" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingTop">8dp</item>
@@ -142,13 +140,11 @@
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="help_dialog_text">
+    <style name="help_dialog_text" parent="TextAppearance.AppCompat.Body1">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="alert_dialog_padding">
@@ -176,25 +172,6 @@
         <item name="useDefaultMargins">true</item>
     </style>
 
-    <style name="rank_selection_text">
-        <item name="android:layout_width">30dp</item>
-        <item name="android:layout_height">30dp</item>
-        <item name="android:background">@drawable/circle</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="straight_pool_input_text_view">
-        <item name="layout_columnWeight">1</item>
-        <item name="layout_gravity">center</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">32sp</item>
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
-    </style>
-
     <style name="win_indicator">
         <item name="android:tint">@color/colorPrimaryLight</item>
         <item name="android:src">@drawable/circle</item>
@@ -209,7 +186,7 @@
         <item name="np_dividerColor">@color/colorPrimary</item>
     </style>
 
-    <style name="activity_player_name">
+    <style name="activity_player_name" parent="Base.TextAppearance.AppCompat.Title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerHorizontal">true</item>
@@ -217,7 +194,6 @@
         <item name="android:ellipsize">marquee</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/player_name_text_size</item>
-        <item name="android:textColor">@color/white</item>
         <item name="android:maxLines">1</item>
     </style>
 </resources>

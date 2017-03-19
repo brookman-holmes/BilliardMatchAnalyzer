@@ -40,13 +40,12 @@
 
         <TextView
             android:id="@+id/playerName"
+            style="@style/Base.TextAppearance.AppCompat.Body2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
-            android:text="Player 1"
-            android:textColor="@color/primary_text"
-            android:textSize="16sp" />
+            android:text="Player 1" />
     </LinearLayout>
 
 

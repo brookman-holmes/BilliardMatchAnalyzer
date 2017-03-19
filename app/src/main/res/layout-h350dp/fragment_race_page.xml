@@ -15,11 +15,11 @@
 
     <TextView
         android:id="@+id/playerName"
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Select player 1's rank"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+        android:text="Select player 1's rank" />
 
     <com.shawnlin.numberpicker.NumberPicker
         android:id="@+id/playerPicker"
@@ -44,11 +44,11 @@
 
     <TextView
         android:id="@+id/opponentName"
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Select player 2's rank"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+        android:text="Select player 2's rank" />
 
     <com.shawnlin.numberpicker.NumberPicker
         android:id="@+id/opponentPicker"

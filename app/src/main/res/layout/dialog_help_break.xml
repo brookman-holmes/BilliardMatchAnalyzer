@@ -18,6 +18,7 @@
             android:textColor="@color/colorPrimary" />
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -26,10 +27,10 @@
             android:gravity="left"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:text="@string/description_ball_on_table"
-            android:textSize="16sp" />
+            android:text="@string/description_ball_on_table" />
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -39,10 +40,10 @@
             android:gravity="right"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:text="@string/description_ball_selected"
-            android:textSize="16sp" />
+            android:text="@string/description_ball_selected" />
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -51,10 +52,10 @@
             android:gravity="left"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:text="@string/description_ball_dead"
-            android:textSize="16sp" />
+            android:text="@string/description_ball_dead" />
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -64,8 +65,7 @@
             android:gravity="right"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:text="@string/description_ball_off_table"
-            android:textSize="16sp" />
+            android:text="@string/description_ball_off_table" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -19,29 +19,29 @@
 
             <TextView
                 android:id="@+id/shotType"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:text="Shot type: type"
-                android:textColor="@color/primary_text" />
+                android:text="Shot type: type" />
 
             <TextView
                 android:id="@+id/angle"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:text="Angles:"
-                android:textColor="@color/primary_text" />
+                android:text="Angles:" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/howMissDescription"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:text="How the shot was missed:"
-            android:textColor="@color/primary_text" />
+            android:text="How the shot was missed:" />
     </LinearLayout>
 
     <LinearLayout
