@@ -14,7 +14,7 @@
         tools:ignore="UseCompoundDrawables">
 
         <TextView
-            style="@style/Base.TextAppearance.AppCompat.Title"
+            style="@style/Base.TextAppearance.AppCompat.Headline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

@@ -98,8 +98,8 @@ public class GameStatusViewBuilder {
 
     private static String getPlayerName(Match match, PlayerTurn turn) {
         if (turn == PlayerTurn.PLAYER)
-            return match.getPlayer().getId();
-        else return match.getOpponent().getId();
+            return match.getPlayer().getName();
+        else return match.getOpponent().getName();
     }
 
     private static String getPlayerTurnString(Context context, Match match) {
@@ -124,16 +124,16 @@ public class GameStatusViewBuilder {
         if (match.getGameStatus().playerColor == PlayerColor.OPEN)
             return "";
         else if (match.getGameStatus().playerColor == PlayerColor.STRIPES)
-            return context.getString(R.string.stripes_table, match.getPlayer().getId());
-        else return context.getString(R.string.solids_table, match.getPlayer().getId());
+            return context.getString(R.string.stripes_table, match.getPlayer().getName());
+        else return context.getString(R.string.solids_table, match.getPlayer().getName());
     }
 
     private static String getOpponentColorString(Context context, Match match) {
         if (match.getGameStatus().playerColor == PlayerColor.OPEN)
             return "";
         else if (match.getGameStatus().playerColor == PlayerColor.SOLIDS)
-            return context.getString(R.string.stripes_table, match.getOpponent().getId());
-        else return context.getString(R.string.solids_table, match.getOpponent().getId());
+            return context.getString(R.string.stripes_table, match.getOpponent().getName());
+        else return context.getString(R.string.solids_table, match.getOpponent().getName());
     }
 
     private static String getPushStatusString(Context context, Match match) {

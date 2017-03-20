@@ -23,7 +23,7 @@ public class StraightPoolRunsBinder extends ShootingBinder {
 
     @Override
     public void update(Player player, Player opponent, GameStatus gameStatus) {
-        if (gameStatus != null && gameStatus.gameType.isStraightPool()) {
+        if (player.getGameType().isStraightPool() || player.getGameType() == GameType.ALL) {
             playerMax = Integer.toString(player.getHighRun());
             opponentMax = Integer.toString(opponent.getHighRun());
 

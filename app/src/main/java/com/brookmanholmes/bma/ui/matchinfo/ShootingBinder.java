@@ -1,6 +1,7 @@
 package com.brookmanholmes.bma.ui.matchinfo;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.brookmanholmes.billiards.game.GameStatus;
 import com.brookmanholmes.billiards.game.GameType;
@@ -36,6 +37,7 @@ public class ShootingBinder extends BindingAdapter {
         opponentShootingPct = pctf.format(opponent.getShootingPct());
 
         playerShotsMade = player.getShootingBallsMade();
+        Log.i(TAG, "update: " + player.getShootingBallsMade());
         opponentShotsMade = opponent.getShootingBallsMade();
         playerShots = player.getShootingAttempts();
         opponentShots = opponent.getShootingAttempts();

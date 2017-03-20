@@ -112,7 +112,7 @@ public class Players {
      */
     public static RaceTo apa8BallRaceTo(int playerRank, int opponentRank) {
         if (playerRank > 7 || playerRank < 2 || opponentRank > 7 || opponentRank < 2)
-            throw new IllegalArgumentException("Player ranks must be between 2 and 7 inclusive");
+            throw new IllegalArgumentException("Player ranks must be between 2 and 7 inclusive, ranks were: " + playerRank + " and " + opponentRank);
         else
             return apa8BallRaceTable[playerRank - 2][opponentRank - 2];
     }

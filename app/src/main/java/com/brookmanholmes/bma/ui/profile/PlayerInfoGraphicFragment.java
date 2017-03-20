@@ -70,8 +70,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         df.setRoundingMode(RoundingMode.FLOOR);
-        adapter = new PlayerInfoGraphicAdapter(new ArrayList<Player>(), new ArrayList<Player>());
-
+        adapter = new PlayerInfoGraphicAdapter(new ArrayList<Player>());
     }
 
     @Override
@@ -131,22 +130,12 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
         static final int ITEM_FOOTER = 5;
 
         final List<Player> players;
-        final List<Player> opponents;
+        Player player, opponent;
 
-        PlayerInfoGraphicAdapter(List<Player> players, List<Player> opponents) {
+        PlayerInfoGraphicAdapter(List<Player> players) {
             this.players = new ArrayList<>(players);
-            this.opponents = new ArrayList<>(opponents);
-        }
-
-        private static Player getPlayerFromList(List<Player> players) {
-            if (players.size() > 0) {
-                Player player = new Player(players.get(0).getId(), players.get(0).getName(), GameType.ALL);
-                for (Player abstractPlayer : players) {
-                    player.addPlayerStats(abstractPlayer);
-                }
-
-                return player;
-            } else return new Player("", "", GameType.ALL);
+            this.player = new Player("", "", GameType.ALL);
+            this.opponent = new Player("", "", GameType.ALL);
         }
 
         private static float roundNumber(int top, int bottom) {
@@ -158,9 +147,13 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
 
         private void updatePlayers(List<Player> players, List<Player> opponents) {
             this.players.clear();
-            this.opponents.clear();
             this.players.addAll(players);
-            this.opponents.addAll(opponents);
+
+            this.player = new Player("", "", GameType.ALL);
+            this.opponent = new Player("", "", GameType.ALL);
+
+            player.addPlayerStats(players);
+            opponent.addPlayerStats(opponents);
             notifyItemRangeChanged(0, getItemCount());
         }
 
@@ -177,16 +170,16 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                     ((GraphViewHolder) holder).bind(players);
                     break;
                 case ITEM_SAFETY_INFO:
-                    ((TwoItemHolder) holder).bind(players, opponents);
+                    ((TwoItemHolder) holder).bind(player, opponent);
                     break;
                 case ITEM_SAFETY_GRAPH:
-                    ((SafetyGraphViewHolder) holder).bind(players, opponents);
+                    ((SafetyGraphViewHolder) holder).bind(player, opponent);
                     break;
                 case ITEM_BREAK_GRAPH:
-                    ((BreaksGraphViewHolder) holder).bind(getPlayerFromList(players));
+                    ((BreaksGraphViewHolder) holder).bind(player);
                     break;
                 case ITEM_BREAK_INFO:
-                    ((TwoItemHolder) holder).bind(players, opponents);
+                    ((TwoItemHolder) holder).bind(player, opponent);
                     break;
             }
         }
@@ -345,7 +338,7 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 setItemDesc();
             }
 
-            public abstract void bind(List<Player> players, List<Player> opponents);
+            public abstract void bind(Player player, Player opponent);
 
             abstract void setItemDesc();
         }
@@ -362,25 +355,12 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
             }
 
             @Override
-            public void bind(List<Player> players, List<Player> opponents) {
-                Player player = getPlayerFromList(players);
-                Player opponent = getPlayerFromList(opponents);
-
+            public void bind(Player player, Player opponent) {
                 float safetyPct = (float) (player.getSafetySuccesses() - opponent.getSafetyEscapes() - opponent.getSafetyReturns()) / (float) player.getSafetyAttempts();
-                int ballInHands = getForcedErrors(opponents);
+                int ballInHands = opponent.getSafetyForcedErrors();
 
                 item1.setText(String.format(Locale.getDefault(), "%1$d", ballInHands));
                 item2.setText(String.format(Locale.getDefault(), "%1$s", convertFloatToPercent(safetyPct)));
-            }
-
-            int getForcedErrors(List<Player> opponents) {
-                int ballInHands = 0;
-
-                for (Player opp : opponents) {
-                    ballInHands += opp.getSafetyForcedErrors();
-                }
-
-                return ballInHands;
             }
         }
 
@@ -396,9 +376,9 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
             }
 
             @Override
-            public void bind(List<Player> players, List<Player> opponents) {
-                float breakRunPct = (float) getPlayerFromList(players).getBreakAndRuns() / (float) getPlayerFromList(players).getBreakAttempts();
-                item1.setText(String.format(Locale.getDefault(), "%1$d", getPlayerFromList(players).getBreakAndRuns()));
+            public void bind(Player player, Player opponent) {
+                float breakRunPct = (float) player.getBreakAndRuns() / (float) player.getBreakAttempts();
+                item1.setText(String.format(Locale.getDefault(), "%1$d", player.getBreakAndRuns()));
                 item2.setText(String.format(Locale.getDefault(), "%1$s", convertFloatToPercent(breakRunPct)));
             }
         }
@@ -562,12 +542,11 @@ public class PlayerInfoGraphicFragment extends BaseRecyclerFragment<PlayerInfoGr
                 color3 = getColor(R.color.chart1);
             }
 
-            public void bind(List<Player> players, List<Player> opponents) {
-                Player player = getPlayerFromList(players);
-                Player opponent = getPlayerFromList(opponents);
+            public void bind(Player player, Player opponent) {
                 int total = opponent.getSafetySuccesses();
 
                 float width = getDimension(R.dimen.decoview_inset) * 4;
+                decoView.deleteAll();
 
                 if (opponent.getSafetySuccesses() > 0) {
                     float returns = roundNumber(player.getSafetyReturns(), total);

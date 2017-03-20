@@ -58,13 +58,6 @@ public class Player implements Comparable<Player>, Serializable {
         addPlayerStats(player);
     }
 
-    public Player(String id, String name, GameType gameType, int rank, List<Player> players) {
-        this(id, name, gameType, rank);
-
-        for (Player player : players)
-            addPlayerStats(player);
-    }
-
     public Player(String id, String name, GameType gameType, int rank, int opponentRank) {
         this(id, name, gameType, rank);
         this.opponentRank = opponentRank;

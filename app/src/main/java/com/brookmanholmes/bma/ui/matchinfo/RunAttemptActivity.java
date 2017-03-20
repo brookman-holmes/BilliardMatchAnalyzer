@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 
 import com.brookmanholmes.billiards.game.PlayerTurn;
@@ -45,8 +44,6 @@ public class RunAttemptActivity extends AbstractMatchActivity implements ChildEv
             else if (match.getOpponent().getId().equals(auth.getCurrentUser().getUid()))
                 previousPlayers.add(match.getOpponent());
         }
-
-        Log.i(TAG, "onCreate: " + previousPlayers);
 
         adapter = new RunAttemptAdapter(this, match, previousPlayers);
         recyclerView.setAdapter(adapter);

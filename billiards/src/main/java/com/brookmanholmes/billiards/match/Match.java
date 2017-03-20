@@ -93,25 +93,29 @@ public class Match implements Serializable {
     }
 
     public Player getPlayer() {
-        Player player = new Player(playerController.getPlayerId(), playerController.getPlayerName(), getGameStatus().gameType, playerController.getPlayerRank(), player1);
+        Player player = new Player(playerController.getPlayerId(), playerController.getPlayerName(), getGameStatus().gameType, playerController.getPlayerRank(), playerController.getOpponentRank());
+        player.addPlayerStats(player1);
         player.setMatchDate(getCreatedOn());
         return player;
     }
 
     public Player getOpponent() {
-        Player player = new Player(playerController.getOpponentId(), playerController.getOpponentName(), getGameStatus().gameType, playerController.getOpponentRank(), player2);
+        Player player = new Player(playerController.getOpponentId(), playerController.getOpponentName(), getGameStatus().gameType, playerController.getOpponentRank(), playerController.getPlayerRank());
+        player.addPlayerStats(player2);
         player.setMatchDate(getCreatedOn());
         return player;
     }
 
     public Player getPlayer(int from, int to) {
-        Player player = new Player(playerController.getPlayerId(), playerController.getPlayerName(), getGameStatus().gameType, playerController.getPlayerRank(), player1.subList(from, to));
+        Player player = new Player(playerController.getPlayerId(), playerController.getPlayerName(), getGameStatus().gameType, playerController.getPlayerRank(), playerController.getOpponentRank());
+        player.addPlayerStats(player1.subList(from, to));
         player.setMatchDate(getCreatedOn());
         return player;
     }
 
     public Player getOpponent(int from, int to) {
-        Player player = new Player(playerController.getOpponentId(), playerController.getOpponentName(), getGameStatus().gameType, playerController.getOpponentRank(), player2.subList(from, to));
+        Player player = new Player(playerController.getOpponentId(), playerController.getOpponentName(), getGameStatus().gameType, playerController.getOpponentRank(), playerController.getPlayerRank());
+        player.addPlayerStats(player2.subList(from, to));
         player.setMatchDate(getCreatedOn());
         return player;
     }

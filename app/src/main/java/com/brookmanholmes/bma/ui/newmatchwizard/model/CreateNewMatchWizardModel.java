@@ -23,6 +23,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     private static final String TAG = "CreateNewMatchModel";
     private final Match.Builder builder = new Match.Builder();
     private String playerName = "";
+    private String opponentId = "Player 2";
     private String opponentName = "Player 2";
     private GameType gameType;
     private boolean playTheGhost;
@@ -44,7 +45,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
         super.onPageDataChanged(page);
 
         if (page instanceof UpdatesPlayerNames) {
-            opponentName = ((PlayerNamePage) page).getOpponentName();
+            opponentId = ((PlayerNamePage) page).getOpponentName();
             updatePlayerNames();
         }
 
@@ -69,7 +70,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
     private void updatePlayerNames() {
         for (int i = 0; i < getCurrentPageSequence().size(); i++) {
             if (getCurrentPageSequence().get(i) instanceof RequiresPlayerNames)
-                ((RequiresPlayerNames) getCurrentPageSequence().get(i)).setPlayerNames(playerName, opponentName);
+                ((RequiresPlayerNames) getCurrentPageSequence().get(i)).setPlayerNames(playerName, opponentId);
         }
     }
 
@@ -144,7 +145,7 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
 
     private Page getFirstBreakPage(String parentKey) {
         return new FirstBreakPage(this, context.getString(R.string.title_page_first_break), parentKey)
-                .setChoices(playerName, opponentName)
+                .setChoices(playerName, opponentId)
                 .setValue(playerName)
                 .setRequired(true);
     }
@@ -164,13 +165,14 @@ public class CreateNewMatchWizardModel extends AbstractWizardModel {
                 .addBranch(context.getString(R.string.break_loser),
                         getFirstBreakPage(parentKey))
                 .addBranch(context.getString(R.string.break_player, playerName))
-                .addBranch(context.getString(R.string.break_player, opponentName))
+                .addBranch(context.getString(R.string.break_player, opponentId))
                 .setValue(context.getString(R.string.break_winner))
                 .setRequired(true);
     }
 
     void setPlayerName(String opponentId, String opponentName, boolean playGhost) {
-        this.opponentName = opponentId;
+        this.opponentId = opponentId;
+        this.opponentName = opponentName;
 
         builder.setPlayerId(user.getUid())
                 .setOpponentId(opponentId)

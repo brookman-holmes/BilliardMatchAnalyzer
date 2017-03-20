@@ -356,10 +356,11 @@ public class PlayerProfileActivity extends BaseActivity implements ViewPager.OnP
             }
         }
 
-        Collections.sort(matches, new Comparator<Match>() {
+        // sort the players by date, oldest first
+        Collections.sort(players, new Comparator<Player>() {
             @Override
-            public int compare(Match o1, Match o2) {
-                return -o1.getCreatedOn().compareTo(o2.getCreatedOn());
+            public int compare(Player o1, Player o2) {
+                return o1.getMatchDate().compareTo(o2.getMatchDate());
             }
         });
 

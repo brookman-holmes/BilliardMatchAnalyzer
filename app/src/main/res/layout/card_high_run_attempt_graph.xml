@@ -10,12 +10,14 @@
         android:orientation="horizontal">
 
         <TextView
+            style="@style/Base.TextAppearance.AppCompat.Body2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:paddingStart="8dp"
-            android:text="Run lengths" />
+            android:text="Run lengths"
+            android:textColor="?android:attr/textColorSecondary" />
 
         <Button
             android:id="@+id/button"

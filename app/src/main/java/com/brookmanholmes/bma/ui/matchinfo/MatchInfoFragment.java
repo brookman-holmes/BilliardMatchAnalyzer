@@ -81,7 +81,7 @@ public class MatchInfoFragment extends BaseFragment implements MatchInfoListener
         safeties = new SafetiesBinder(getString(R.string.title_safeties), expanded || expandedCards[3], gameType);
         breaks = new BreaksBinder(getString(R.string.title_breaks), expanded || expandedCards[4], gameType);
         runs = new RunsBinder(getString(R.string.title_run_outs), expanded || expandedCards[5], gameType);
-        straightPool = new StraightPoolBinder(getString(R.string.title_straight_pool), expanded || expandedCards[6], gameType);
+        straightPool = new StraightPoolBinder(getString(R.string.title_match_overview), expanded || expandedCards[6], gameType);
         straightPoolRuns = new StraightPoolRunsBinder(getString(R.string.title_straight_pool_runs), expanded || expandedCards[7], gameType);
         ballsOnTable = new BallsOnTableBinder(gameType, ConversionUtils.convertPxToDp(getContext(), getResources().getDisplayMetrics().widthPixels));
         winIndicator = new WinIndicatorBinder();
@@ -147,17 +147,13 @@ public class MatchInfoFragment extends BaseFragment implements MatchInfoListener
 
     @Override
     public void updatePlayers(List<Player> players, List<Player> opponents) {
-        if (players.size() > 0 && opponents.size() > 0) {
-            Player player = new Player(players.get(0).getId(),
-                    players.get(0).getName(),
-                    GameType.ALL, 0,
-                    players);
-            Player opponent = new Player(opponents.get(0).getId(),
-                    opponents.get(0).getName(),
-                    GameType.ALL, 0,
-                    opponents);
-            update(player, opponent, null);
-        }
+        Player player = new Player("", "", GameType.ALL);
+        Player opponent = new Player("", "", GameType.ALL);
+
+        player.addPlayerStats(players);
+        opponent.addPlayerStats(opponents);
+
+        update(player, opponent, null);
     }
 
     @Override
