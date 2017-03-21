@@ -260,7 +260,7 @@ class ExpandableTurnListAdapter extends AbstractExpandableItemAdapter<Expandable
             }
         }
 
-        private void setIconState(boolean isExpanded, boolean animate) {
+        void setIconState(boolean isExpanded, boolean animate) {
             if (animate) {
                 expandIndicator.animate().rotationXBy(180f);
             } else {

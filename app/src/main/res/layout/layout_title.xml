@@ -14,11 +14,12 @@
         tools:ignore="UseCompoundDrawables">
 
         <TextView
-            style="@style/Base.TextAppearance.AppCompat.Headline"
+            style="@style/Base.TextAppearance.AppCompat.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:paddingLeft="16dp"
             android:text="@{title.title}" />
 

@@ -34,7 +34,6 @@ import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.SubcolumnValue;
-import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.ColumnChartView;
 
 import static com.brookmanholmes.billiards.turn.AdvStats.HowType.AIM_LEFT;
@@ -213,7 +212,6 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
 
         distanceChart.setZoomEnabled(false);
         speedChart.setZoomEnabled(false);
-        distanceChart.setViewportCalculationEnabled(false);
 
         shotTypeSpinner.setAdapter(createAdapter(new ArrayList<String>()));
         shotSubTypeSpinner.setAdapter(createAdapter(new ArrayList<String>()));
@@ -235,8 +233,10 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
         for (Column column : columns) {
             List<SubcolumnValue> values = new ArrayList<>();
             values.add(new MySubColumnValue(0f, getColor(R.color.colorPrimary)));
-            if (stacked)
+            if (stacked) {
                 values.add(new MySubColumnValue(0f, getColor(R.color.colorTertiary)));
+                values.add(new MySubColumnValue(0f, getColor(android.R.color.transparent)));
+            }
             column.setValues(values).setHasLabels(true);
         }
 
@@ -296,13 +296,8 @@ public class AdvShootingStatsFragment extends BaseAdvStatsFragment {
             }
         }
 
-        if (distanceChart != null) {
-            final Viewport viewPort = new Viewport();
-            viewPort.set(-.5f, max, 19.5f, -max);
-            distanceChart.setCurrentViewport(viewPort);
-            distanceChart.setMaximumViewport(viewPort);
-        }
-
+        distanceData.getColumns().get(0).getValues().get(2).setValue(max);
+        distanceData.getColumns().get(1).getValues().get(2).setValue(-max);
     }
 
     private void setSpinnerItems() {

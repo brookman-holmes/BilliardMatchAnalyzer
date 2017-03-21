@@ -61,6 +61,7 @@ public class TurnListFragment extends BaseFragment implements
     public void update(Match match) {
         adapter.updateMatch(match);
         // after update scroll to the end of the data
+        adapter.notifyItemRangeChanged(0, adapter.getGroupCount());
         itemManager.expandGroup(adapter.getGroupCount() >= 2 ? adapter.getGroupCount() - 2 : 0);
 
         layoutManager.scrollToPositionWithOffset(adapter.getGroupCount() + 2, 0);
@@ -88,6 +89,7 @@ public class TurnListFragment extends BaseFragment implements
         if (adapter.getGroupCount() > 1) {
             itemManager.expandGroup(adapter.getGroupCount() - 2);
             itemManager.scrollToGroup(adapter.getGroupCount() - 2, 0);
+            adapter.notifyItemRangeChanged(0, adapter.getGroupCount());
         }
         return view;
     }

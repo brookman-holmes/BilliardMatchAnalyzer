@@ -84,10 +84,4 @@ public class RunAttemptActivity extends AbstractMatchActivity implements ChildEv
         adapter.update(match);
         updateMenuItems();
     }
-
-    @Override
-    public void updatePlayerName(String playerToUpdate, String newName) {
-        match.setPlayerId(newName);
-        adapter.update(match);
-    }
 }

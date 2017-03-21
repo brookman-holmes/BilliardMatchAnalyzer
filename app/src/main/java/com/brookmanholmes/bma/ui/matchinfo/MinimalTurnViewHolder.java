@@ -86,11 +86,11 @@ class MinimalTurnViewHolder extends BaseViewHolder {
     void showDivider(boolean showDivider, GameStatus gameStatus) {
         divider.setVisibility((showDivider && !gameStatus.newGame) ? View.VISIBLE : View.GONE);
 
-        boolean scrunchBottomMargin = gameStatus.newGame || gameStatus.gameType.isStraightPool();
+        boolean scrunchTopMargin = !gameStatus.newGame || gameStatus.gameType.isStraightPool();
 
         CardView.LayoutParams params = new CardView.LayoutParams(itemView.getLayoutParams());
-        params.topMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
-        params.bottomMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), scrunchBottomMargin ? -6 : 8);
+        params.topMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), scrunchTopMargin ? -6 : 8);
+        params.bottomMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
         params.leftMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
         params.rightMargin = (int) ConversionUtils.convertDpToPx(itemView.getContext(), 4);
         itemView.setLayoutParams(params);

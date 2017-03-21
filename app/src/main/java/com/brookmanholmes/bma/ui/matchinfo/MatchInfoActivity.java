@@ -16,15 +16,18 @@ import android.widget.TextView;
 
 import com.brookmanholmes.billiards.game.GameType;
 import com.brookmanholmes.billiards.game.PlayerTurn;
+import com.brookmanholmes.billiards.match.Match;
 import com.brookmanholmes.bma.R;
 import com.brookmanholmes.bma.ui.dialog.GameStatusViewBuilder;
 import com.brookmanholmes.bma.utils.ConversionUtils;
 import com.brookmanholmes.bma.utils.CustomViewPager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 public class MatchInfoActivity extends AbstractMatchActivity {
     private static final String TAG = "MatchInfoActivity";
@@ -91,17 +94,6 @@ public class MatchInfoActivity extends AbstractMatchActivity {
     }
 
     @Override
-    public void updatePlayerName(String name, String newName) {
-        if (opponentName.getText().toString().equals(name)) {
-            opponentName.setText(newName);
-            match.setOpponentId(newName);
-        } else if (playerName.getText().toString().equals(name)) {
-            playerName.setText(newName);
-            match.setPlayerId(newName);
-        }
-    }
-
-    @Override
     protected void updateViews() {
         if (menu != null)
             updateMenuItems();
@@ -145,6 +137,7 @@ public class MatchInfoActivity extends AbstractMatchActivity {
 
     }
 
+    @Deprecated
     private void setPlayerTurnIndicator(ViewGroup turnIndicator, boolean enabled) {
         if (enabled)
             turnIndicator.setBackgroundColor(getColor2(R.color.colorPrimary));
@@ -214,6 +207,33 @@ public class MatchInfoActivity extends AbstractMatchActivity {
     protected void setToolbarTitle() {
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(getString(R.string.title_match_info, ConversionUtils.getGameTypeString(this, match.getGameStatus().gameType)));
+    }
+
+    @Nullable
+    @OnClick({R.id.playerNameLayout, R.id.playerNameLayoutSecondary, R.id.opponentNameLayout, R.id.opponentNameLayoutSecondary})
+    void showAdvDialog(View view) {
+        Collection<Match.StatsDetail> collection = new ArrayList<>();
+        switch (view.getId()) {
+            case R.id.playerNameLayout:
+            case R.id.playerNameLayoutSecondary:
+                collection.addAll(Match.StatsDetail.getPlayerStatsTracked());
+                break;
+            default:
+                collection.addAll(Match.StatsDetail.getOpponentStatsTracked());
+        }
+
+        collection.retainAll(match.getDetails());
+
+        switch (view.getId()) {
+            case R.id.playerNameLayout:
+            case R.id.playerNameLayoutSecondary:
+                if (!collection.isEmpty())
+                    showAdvancedStatsDialog(PlayerTurn.PLAYER);
+                break;
+            default:
+                if (!collection.isEmpty())
+                    showAdvancedStatsDialog(PlayerTurn.OPPONENT);
+        }
     }
 
     @Override

@@ -47,7 +47,7 @@ import butterknife.OnClick;
  */
 
 abstract class AbstractMatchActivity extends BaseActivity implements
-        AddTurnDialog.AddTurnListener, UpdatesPlayerNames, ChildEventListener {
+        AddTurnDialog.AddTurnListener, ChildEventListener {
     static final String ARG_PLAYER_NAME = PlayerProfileActivity.ARG_ACCOUNT_ID;
     static final String KEY_UNDONE_TURNS = "key_undone_turns";
     static final String ARG_MATCH_KEY = "arg_match_key";
